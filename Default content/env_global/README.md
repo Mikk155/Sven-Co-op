@@ -45,4 +45,5 @@ trigger_counter (use game_counter instead)
 trigger_hurt
 trigger_monsterjump
 ```
-Documentation by Sparks.
+
+Author Sparks
