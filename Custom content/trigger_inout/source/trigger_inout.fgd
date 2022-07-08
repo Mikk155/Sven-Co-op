@@ -1,0 +1,20 @@
+@SolidClass = trigger_inout : "triggerwhen in/out"
+[
+	targetname(target_source) : "Name"
+	target(target_destination) : "Target"
+	spawnflags(flags) =
+	[
+		1: "Start Off" : 0
+	]
+]
+@PointClass = trigger_inout : "triggerwhen in/out"
+[
+	targetname(target_source) : "Name"
+	target(target_destination) : "Target"
+	spawnflags(flags) =
+	[
+		1: "Start Off" : 0
+	]
+    minhullsize(string) : "minhullsize (X Y Z)"
+	maxhullsize(string) : "maxhullsize (X Y Z)"
+]
