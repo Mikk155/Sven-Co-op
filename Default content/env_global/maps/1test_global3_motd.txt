@@ -1,0 +1,14 @@
+1test_global3.bsp = Map 1
+1test_global4.bsp = Map 2
+
+In Map 1, the left hand button sets the global variable and turns on the green sprite.
+
+The right hand button clears the global variable and turns off the sprite.
+
+Walking directly forward in either map triggers a changelevel to the alternate map.
+
+The sprite in the alternate map should mirror the state of the one in the previous map.
+
+(To view current globalstates set sv_cheats 2, developer 1 + impulse 104 in console.)
+
+Sparks
