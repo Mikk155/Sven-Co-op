@@ -14,7 +14,7 @@ Globals are set by env_global and are read by only two entities, [trigger_auto](
 
 [trigger_auto](https://sites.google.com/site/svenmanor/entguide/trigger_auto) determines what happens at map start and [multisource](https://sites.google.com/site/svenmanor/entguide/multisource) can be used to disable/lock various entities, in this case the global acts as an on/off control for multisource which in turn acts as on/off control for doors, trigger, buttons etc.
 
-Globals are only on (1) or off (0), they can't be used to transfer numerical values or text in the way that *trigger_save](https://sites.google.com/site/svenmanor/entguide/trigger_save) or/and [trigger_load](https://sites.google.com/site/svenmanor/entguide/trigger_load) can.
+Globals are only on (1) or off (0), they can't be used to transfer numerical values or text in the way that [trigger_save](https://sites.google.com/site/svenmanor/entguide/trigger_save) or/and [trigger_load](https://sites.google.com/site/svenmanor/entguide/trigger_load) can.
 However because they are read by multisource, using them to control entities between maps is much easier than using trigger_save/load which requires several additional entities in order to make use of the saved data. (It's more flexible though.)
 
 **Example**
