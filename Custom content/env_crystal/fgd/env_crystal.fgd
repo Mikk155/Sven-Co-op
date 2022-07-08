@@ -1,0 +1,20 @@
+@PointClass size(16 16 16) color(255 0 0) = env_crystal : "BMS inspired crystal"
+[
+    targetname(target_source) : "Name"
+    type(choices) : "Crystal type" : 0 =
+    [
+        0 : "Electricity (damage)"
+        1 : "Water (health)"
+        2 : "Energy (armor)"
+        3 : "Radiation (gauss ammo)"
+    ]
+    radius(string) : "Entity radius" : "128"
+	// update every this time (in seconds)
+    wait(string) : "Every this frames" : "1.0"
+	// deal this damage every update
+    dmg(string) : "Damage per frames" : "1"
+    spawnflags(flags) =
+    [
+        1: "Start Off" : 0
+    ]
+]
