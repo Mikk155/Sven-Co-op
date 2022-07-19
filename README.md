@@ -6,11 +6,15 @@ if you're newbie i'll recomend you to see [Svenmanor](https://sites.google.com/s
 we're not going to add documentation that already exist there unless a better description is needed.
 
 
-**List**
+**Mapping**
 
 - [Dynamic scrolling down-up credits](https://github.com/Mikk155/Sven-Co-op/tree/main/Default%20content/dynamic%20credits)
 
 - [Pass a trigger from one map to another](https://github.com/Mikk155/Sven-Co-op/tree/main/Default%20content/env_global)
+
+- [Un-Embeed textures from a BSP compiled map](
+
+**Scriptig**
 
 - [Angelscript snippets for Sven Co-op's API](https://github.com/Mikk155/Sven-Co-op/blob/main/Default%20content/sc-angelscript.snippets.json)
 
