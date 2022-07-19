@@ -1,6 +1,6 @@
-a simple sistem for getting a "credits" effect, you kow, those scrolling down-to-top.
+a simple sistem for getting a "credits" effect, you know, those scrolling down-to-top.
 
-this sistem i've made consist in 6 different entities. 
+this system i've made consist in 6 different entities. 
 
 [func_breakable](https://sites.google.com/site/svenmanor/entguide/func_breakable) (or any entity that can be hurt)
 
@@ -24,4 +24,8 @@ once the second trigger_copyvalue finish it fires a trigger_changevalue that wil
 
 then a trigger_condition will read <= Less 110 and will delete the game_text and counter of the func_breakable column.
 
-NOTES: the map is actually using 8 channels for game_text. make sure a player is not blocking another's player vision. in that case chanel 8 (i think) will flicke.
+**NOTES:**
+
+- the map is actually using 8 channels for game_text. make sure a player is not blocking another's player vision. in that case chanel 8 (i think) will flicke.
+
+- make sure place the func_breakables far away from the players unless you want them to hear a glass breaking.
