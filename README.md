@@ -12,7 +12,7 @@ we're not going to add documentation that already exist there unless a better de
 
 - [Pass a trigger from one map to another](https://github.com/Mikk155/Sven-Co-op/tree/main/Default%20content/env_global)
 
-- [Un-Embeed textures from a BSP compiled map](
+- [Un-Embeed textures from a BSP compiled map](https://github.com/Mikk155/Sven-Co-op/blob/main/Default%20content/un-embed_textures.md)
 
 **Scriptig**
 

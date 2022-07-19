@@ -2,7 +2,7 @@ A tool for un-embed textures that are **Hardcoded** in a BSP File.
 
 Downlaod the tool [BSPTexR](https://github.com/Litude/BSPTexRM)
 
-The use of this and any wad editor [wally](https://gamebanana.com/tools/4774] And Ripent
+The use of this and any wad editor [wally](https://gamebanana.com/tools/4774) And Ripent
 
 You can safely extract wads from maps (ripent), merge them (wally), and remove the embedded textures from the maps (BSPTexRM)
 
