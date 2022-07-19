@@ -14,6 +14,8 @@ we're not going to add documentation that already exist there unless a better de
 
 - [Un-Embeed textures from a BSP compiled map](https://github.com/Mikk155/Sven-Co-op/blob/main/Default%20content/un-embed_textures.md)
 
+- [Store score and show list](https://github.com/Mikk155/Sven-Co-op/tree/main/Default%20content/store%20score)
+
 **Scriptig**
 
 - [Angelscript snippets for Sven Co-op's API](https://github.com/Mikk155/Sven-Co-op/blob/main/Default%20content/sc-angelscript.snippets.json)
