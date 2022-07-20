@@ -14,7 +14,7 @@ we're not going to add documentation that already exist there unless a better de
 
 - [Un-Embeed textures from a BSP compiled map](https://github.com/Mikk155/Sven-Co-op/blob/main/utilities/un-embed_textures.md)
 
-- [Trigger something whe someone enter/exit a zone](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/trigger_inout)
+- [Trigger something when someone enter/exit a zone](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/trigger_inout)
 
 - [Pass a trigger from a map to the next](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/env_global)
 
