@@ -24,4 +24,4 @@ we're not going to add documentation that already exist there unless a better de
 
 - [Force the !activator or all players to execute a client-side cvar](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/trigger_client_cvar)
 
-- No cooldown (messages) survival mode + Anti-ammo-duplication](https://github.com/Mikk155/Sven-Co-op/tree/main/utilities/survival-no-cooldown)
+- [No cooldown (messages) survival mode + Anti-ammo-duplication](https://github.com/Mikk155/Sven-Co-op/tree/main/utilities/survival-no-cooldown)
