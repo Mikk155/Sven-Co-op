@@ -6,22 +6,22 @@ if you're newbie i'll recomend you to see [Svenmanor](https://sites.google.com/s
 we're not going to add documentation that already exist there unless a better description is needed.
 
 
-**Mapping**
+**Links**
 
-- [Dynamic scrolling down-up credits](https://github.com/Mikk155/Sven-Co-op/tree/main/Default%20content/dynamic%20credits)
+- [Angelscript snippets for Sven Co-op's API](https://github.com/Mikk155/Sven-Co-op/blob/main/utilities/sc-angelscript.snippets.json)
 
-- [Pass a trigger from one map to another](https://github.com/Mikk155/Sven-Co-op/tree/main/Default%20content/env_global)
+- [Dynamic scrolling down-up credits](https://github.com/Mikk155/Sven-Co-op/tree/main/utilities/scroll%20down-up%20credits)
 
-- [Un-Embeed textures from a BSP compiled map](https://github.com/Mikk155/Sven-Co-op/blob/main/Default%20content/un-embed_textures.md)
+- [Un-Embeed textures from a BSP compiled map](https://github.com/Mikk155/Sven-Co-op/blob/main/utilities/un-embed_textures.md)
 
-- [Store score and show list](https://github.com/Mikk155/Sven-Co-op/tree/main/Default%20content/store%20score)
+- [Trigger something whe someone enter/exit a zone](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/trigger_inout)
 
-**Scriptig**
+- [Pass a trigger from a map to the next](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/env_global)
 
-- [Angelscript snippets for Sven Co-op's API](https://github.com/Mikk155/Sven-Co-op/blob/main/Default%20content/sc-angelscript.snippets.json)
+- [Store score and show list](https://github.com/Mikk155/Sven-Co-op/tree/main/utilities/store%20score)
 
-**Custom List**
+- [Alterative checkpoint Singleplayer-like](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/trigger_autosave)
 
-- [Trigger something whe someone enter/exit a zone](https://github.com/Mikk155/Sven-Co-op/tree/main/Custom%20content/trigger_inout)
+- [Force the !activator or all players to execute a client-side cvar](https://github.com/Mikk155/Sven-Co-op/tree/main/entities/trigger_client_cvar)
 
-- [Black mesa source xen's crystals](https://github.com/Mikk155/Sven-Co-op/tree/main/Custom%20content/env_crystal)
+- No cooldown (messages) survival mode + Anti-ammo-duplication](https://github.com/Mikk155/Sven-Co-op/tree/main/utilities/survival-no-cooldown)
