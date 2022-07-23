@@ -10,6 +10,8 @@ we're not going to add documentation that already exist there unless a better de
 
 - [Angelscript snippets for Sven Co-op's API](https://github.com/Mikk155/Sven-Co-op/blob/main/utilities/sc-angelscript.snippets.json)
 
+- [Randomizable Numerical padlock](https://github.com/Mikk155/Sven-Co-op/tree/main/utilities/numerical%20pad%20lock)
+
 - [Dynamic scrolling down-up credits](https://github.com/Mikk155/Sven-Co-op/tree/main/utilities/scroll%20down-up%20credits)
 
 - [Un-Embeed textures from a BSP compiled map](https://github.com/Mikk155/Sven-Co-op/blob/main/utilities/un-embed_textures.md)
