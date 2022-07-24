@@ -1,4 +1,4 @@
-Creates a full customizable code for a numerical padlock. this system works using a game_counter and a trigger_random for randomizing the code needed, feel free to make a better randomizing sistem from 0 to 9 digits.
+Creates a full customizable code for a numerical padlock. this system works using a game_counter and a trigger_random for randomizing the code needed, feel free to make a better randomizing sistem of 3 digits from number 0 to 9
 
 once you fire the "randomizing button" 3 copyvalue will paste those random numbers into a trigger_condition.
 
