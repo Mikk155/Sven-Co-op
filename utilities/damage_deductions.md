@@ -69,7 +69,7 @@
 **monster_hwgrunt**
 | Hitbox | Default | Acid | Blast | BULLET | BURN | CLUB |
 |---------|---------|------|-------|--------|------|------|
-| HWGRUNT | x0.3 | x1 | x1 + wdrop	- X0.3 | X1 | X1 |
+| HWGRUNT | x0.3 | x1 | x1 + wdrop | X0.3 | X1 | X1 |
 
 **monster_robogrunt**
 | Hitbox | Default | Acid | Blast | BULLET | BURN | CLUB |
@@ -85,7 +85,7 @@
 | Hitbox | Default | Acid | Blast | BULLET | BURN | CLUB |
 |---------|---------|------|-------|--------|------|------|
 | HELMET/CHESS | -20P | X1 | X1 | -20P | X1 | -20P |
-| PELVIS | X0.5 -1P	- X1 | X0.5 -1P | X0.5 -1P | X1 | X1 |
+| PELVIS | X0.5 -1P | X1 | X0.5 -1P | X0.5 -1P | X1 | X1 |
 | ARMS/LEGS/FACE | X1 | X1 | X1 | X1 | X1 | X1 |
 
 **monster_otis**
