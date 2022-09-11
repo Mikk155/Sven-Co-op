@@ -1,0 +1,31 @@
+"entity"
+{
+"maxhullsize" "2676 -374 -2211"
+"classname" "trigger_once_mp"
+"minhullsize" "2157 -1193 -2521"
+"target" "percent_lock_1"
+"netname" "*177"
+}
+"entity"
+{
+"classname" "trigger_once"
+"target" "changelevel"
+"delay" "2"
+"master" "percent_lock_1"
+"$i_ignore" "1"
+"model" "*177"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}
+"entity"
+{
+"classname" "func_wall"
+"renderamt" "0"
+"rendermode" "5"
+"model" "*176"
+"$i_ignore" "1"
+"origin" "-96 432 7"
+}

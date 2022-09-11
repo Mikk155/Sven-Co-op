@@ -1,0 +1,53 @@
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-798 -3079 -2289"
+"frags" "20"
+"target" "norush_frags"
+"minhullsize" "-1648 -3727 -2533"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-4504 -3757 -1609"
+"targetname" "deathgrunt_lock_1"
+"target" "percent_lock_1"
+"health" "16"
+"minhullsize" "-5954 -4850 -2005"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "1564 -737 -1557"
+"target" "percent_lock_2"
+"minhullsize" "53 -1289 -2387"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "3819 -5191 -1487"
+"targetname" "lastlock_skull"
+"target" "percent_lock_3"
+"health" "17"
+"minhullsize" "2500 -6023 -1868"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_2"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_3"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "norush_frags"
+}

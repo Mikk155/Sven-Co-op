@@ -1,0 +1,14 @@
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "5086 -719 -2651"
+"targetname" "DeathCounter"
+"target" "percent_lock_1"
+"health" "3"
+"minhullsize" "4137 -2121 -3425"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}

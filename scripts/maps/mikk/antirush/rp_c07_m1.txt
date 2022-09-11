@@ -1,0 +1,72 @@
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-7810 -862 -2900"
+"target" "percent_lock_1"
+"minhullsize" "-8323 -2607 -3349"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_3"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_4"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"targetname" "percent_lock_2"
+"origin" "-4048 -4048 -1344"
+"model" "*353"
+"rendermode" "4"
+"renderamt" "0"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-899 -25 -2729"
+"targetname" "skullgrunts"
+"health" "4"
+"target" "percent_lock_2"
+"minhullsize" "-2184 -860 -3274"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"target" "percent_lock_3"
+"origin" "-2768 -1568 -2896"
+"model" "*390"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"targetname" "aaaaaaaaaaaagggg"
+"health" "2"
+"target" "percent_lock_4"
+"origin" "5545 -2754 -2646"
+"model" "*390"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"target" "percent_lock_5"
+"origin" "3317 -2514 -2983"
+"model" "*390"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"targetname" "percent_lock_5"
+"origin" "4022 -4928 -544"
+"model" "*33"
+"rendermode" "4"
+"renderamt" "0"
+}

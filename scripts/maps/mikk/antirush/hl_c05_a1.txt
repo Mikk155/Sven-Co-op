@@ -1,0 +1,39 @@
+"entity"
+{
+"model" "*91"
+"origin" "0 -4 0"
+"renderamt" "0"
+"rendermode" "5"
+"targetname" "percent_lock_1"
+"$i_ignore" "1"
+"classname" "func_wall_toggle"
+}
+"entity"
+{
+"maxhullsize" "-326 -2381 -1388"
+"classname" "trigger_once_mp"
+"minhullsize" "-2088 -3264 -1961"
+"target" "percent_lock_1"
+}
+"entity"
+{
+"model" "*25"
+"target" "lift"
+"delay" "5"
+"wait" "25"
+"sounds" "9"
+"speed" "5"
+"spawnflags" "1"
+"classname" "func_button"
+"$i_ignore" "1"
+"master" "percent_lock_2"
+}
+"entity"
+{
+"maxhullsize" "-326 -2381 -1388"
+"classname" "trigger_once_mp"
+"minhullsize" "-2088 -3264 -1961"
+"target" "percent_lock_2"
+"frags" "15"
+"netname" "*25"
+}

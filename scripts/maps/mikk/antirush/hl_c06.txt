@@ -1,0 +1,122 @@
+"entity"
+{
+"maxhullsize" "851 -1186 261"
+"classname" "trigger_once_mp"
+"minhullsize" "338 -2093 -58"
+"target" "percent_lock_1"
+"frags" "25"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"renderamt" "0"
+"targetname" "percent_lock_1"
+"rendermode" "5"
+"model" "*322"
+"$i_ignore" "1"
+"origin" "-1456 111 4"
+}
+"entity"
+{
+"maxhullsize" "1080 1422 61"
+"classname" "trigger_once_mp"
+"minhullsize" "-420 985 -239"
+"target" "percent_lock_2"
+}
+"entity"
+{
+"targetname" "percent_lock_2"
+"classname" "multisource"
+}
+"entity"
+{
+"model" "*168"
+"origin" "775 1241 -143"
+"use_type" "2"
+"startdirection" "Forward"
+"renderamt" "255"
+"rendercolor" "255 255 255"
+"target" "shaft_door_1"
+"speed" "50"
+"angles" "0 0 0"
+"distance" "90"
+"sounds" "21"
+"spawnflags" "64"
+"classname" "momentary_rot_button"
+"master" "percent_lock_2"
+"$i_ignore" "1"
+}
+"entity"
+{
+"maxhullsize" "951 1443 22"
+"classname" "trigger_once_mp"
+"minhullsize" "-247 1092 -223"
+"targetname" "spawns2_forcezone"
+"killtarget" "spawns2_forcezone"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"spawnflags" "1"
+"renderamt" "0"
+"targetname" "spawns2_forcezone"
+"rendermode" "5"
+"model" "*200"
+"origin" "-1056 390 -538"
+"$i_ignore" "1"
+}
+"entity"
+{
+"maxhullsize" "177 2404 437"
+"classname" "trigger_once_mp"
+"minhullsize" "-1328 1575 -68"
+"target" "percent_lock_4"
+"killtarget" "percent_lock_4_hurt"
+"netname" "*67"
+}
+"entity"
+"targetname" "percent_lock_4"
+"classname" "multisource"
+}
+"entity"
+{
+"model" "*67"
+"origin" "-1244 2418 73"
+"use_type" "3"
+"target" "transformer_gr/red"
+"rendercolor" "0 0 0"
+"wait" "-1"
+"speed" "50"
+"angles" "0 0 0"
+"distance" "80"
+"sounds" "21"
+"spawnflags" "66"
+"master" "percent_lock_4"
+"classname" "func_rot_button"
+"$i_ignore" "1"
+}
+"entity"
+{
+"classname" "trigger_hurt"
+"dmg" "1000"
+"targetname" "percent_lock_4_hurt"
+"model" "*239"
+"origin" "557 -4466 446"
+"$i_ignore" "1"
+}
+"entity"
+{
+"maxhullsize" "2797 -1420 245"
+"classname" "trigger_once_mp"
+"minhullsize" "1366 -2212 -16"
+"target" "percent_lock_5"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"renderamt" "0"
+"targetname" "percent_lock_5"
+"rendermode" "5"
+"model" "*161"
+"$i_ignore" "1"
+}

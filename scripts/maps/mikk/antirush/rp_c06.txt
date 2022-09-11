@@ -1,0 +1,66 @@
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-1861 -528 -717"
+"target" "percent_lock_1"
+"minhullsize" "-2309 -1135 -1813"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-2720 -2062 -591"
+"targetname" "enable_zones"
+"health" "1"
+"target" "percent_lock_2"
+"minhullsize" "-4091 -3176 -961"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-1646 2180 -1686"
+"targetname" "unlockantirush"
+"health" "2"
+"target" "percent_lock_3"
+"minhullsize" "-2809 1626 -2174"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-2674 2695 -1897"
+"targetname" "gaaaaaaaaaaa"
+"health" "1"
+"target" "percent_lock_4"
+"minhullsize" "-4079 1968 -2186"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "2775 -3073 -1812"
+"target" "percent_lock_5"
+"minhullsize" "1988 -3848 -2001"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_2"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_3"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_4"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_5"
+}

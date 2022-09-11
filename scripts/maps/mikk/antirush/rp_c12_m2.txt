@@ -1,0 +1,50 @@
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-802 -1651 -1139"
+"targetname" "arcountportal"
+"target" "percent_lock_1"
+"health" "7"
+"minhullsize" "-2695 -2922 -1820"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"targetname" "percent_lock_2"
+"origin" "1987 -3947 -2207"
+"model" "*104"
+"rendermode" "4"
+"renderamt" "0"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "3186 -4001 -1814"
+"targetname" "deathalien"
+"target" "percent_lock_2"
+"health" "8"
+"minhullsize" "879 -4969 -2450"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"targetname" "percent_lock_3"
+"origin" "-4634 1143 -3749"
+"model" "*1"
+"rendermode" "4"
+"renderamt" "0"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-5279 4272 -2408"
+"targetname" "spwsnsns"
+"target" "percent_lock_3"
+"health" "7"
+"minhullsize" "-7047 3267 -2919"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}

@@ -1,0 +1,34 @@
+"entity"
+{
+"classname" "func_wall_toggle"
+"targetname" "percent_lock_1"
+"origin" "-3320 -2870 588"
+"model" "*373"
+"rendermode" "4"
+"renderamt" "0"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-1692 -465 -793"
+"target" "percent_lock_1"
+"minhullsize" "-2467 -796 -945"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"targetname" "percent_lock_2"
+"origin" "2056 -1511 -1220"
+"model" "*388"
+"rendermode" "4"
+"renderamt" "0"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "1847 -1098 -462"
+"targetname" "percent_lock_2_count"
+"health" "7"
+"target" "percent_lock_2"
+"minhullsize" "914 -2169 -782"
+}

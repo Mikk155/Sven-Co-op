@@ -1,0 +1,53 @@
+"entity"
+{
+"classname" "trigger_once_mp"
+"origin" "800 -5000 -1424"
+"model" "*36"
+"frags" "30"
+"target" "norushintro"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "1572 -2934 -2150"
+"targetname" "gzdeathds"
+"target" "percent_lock_1"
+"health" "3"
+"minhullsize" "620 -3615 -2424"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-840 -3047 -1901"
+"targetname" "iCount_arpercent"
+"target" "percent_lock_3"
+"health" "6"
+"minhullsize" "-1767 -4045 -2162"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"maxhullsize" "-2663 3720 -1623"
+"target" "percent_lock_4"
+"minhullsize" "-3308 2411 -2165"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "norushintro"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_3"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_4"
+}

@@ -1,0 +1,84 @@
+"entity"
+{
+"maxhullsize" "-1997 7471 -285"
+"classname" "trigger_once_mp"
+"minhullsize" "-3352 6845 -583"
+"target" "percent_lock_1"
+"netname" "*46"
+}
+"entity"
+{
+"model" "*46"
+"$i_ignore" "1"
+"origin" "-3120 7040 -437"
+"use_type" "3"
+"angles" "0 0 0"
+"target" "testroom1"
+"rendercolor" "0 0 0"
+"wait" "-1"
+"speed" "100"
+"distance" "45"
+"sounds" "21"
+"spawnflags" "160"
+"classname" "func_rot_button"
+"master" "percent_lock_1"
+}
+"entity"
+{
+"maxhullsize" "-3329 2910 -1498"
+"classname" "trigger_once_mp"
+"percent" "0.001"
+"frags" "20"
+"minhullsize" "-3584 2612 -1819"
+"target" "percent_lock_2"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"renderamt" "0"
+"$i_ignore" "1"
+"rendermode" "5"
+"targetname" "percent_lock_2"
+"model" "*288"
+"$i_ignore" "1"
+"origin" "189 730 148"
+}
+"entity"
+{
+"maxhullsize" "999 3591 -1648"
+"classname" "trigger_once_mp"
+"percent" "0.001"
+"frags" "20"
+"minhullsize" "195 3376 -1929"
+"target" "percent_lock_3"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"renderamt" "0"
+"rendermode" "5"
+"targetname" "percent_lock_3"
+"$i_ignore" "1"
+"model" "*186"
+"origin" "-760 -220 15"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"renderamt" "0"
+"rendermode" "5"
+"targetname" "percent_lock_3"
+"model" "*186"
+"origin" "-760 -220 143"
+"$i_ignore" "1"
+}
+"entity"
+{
+"classname" "func_wall_toggle"
+"renderamt" "0"
+"rendermode" "5"
+"targetname" "percent_lock_3"
+"model" "*186"
+"$i_ignore" "1"
+"origin" "-760 -220 265"
+}

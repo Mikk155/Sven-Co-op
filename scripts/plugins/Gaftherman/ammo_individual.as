@@ -4,11 +4,12 @@
 	"plugin"
 	{
 		"name" "HLSP Individually Ammunition"
-		"script" "../maps/gaftherman/misc/ammo_individual_plugin"
+		"script" "Gaftherman/ammo_individual"
 	}
 
 */
 #include "ammo_individual"
+#include "../../maps/gaftherman/misc/callbacks"
 
 void PluginInit()
 {

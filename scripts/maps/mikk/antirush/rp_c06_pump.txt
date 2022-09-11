@@ -1,0 +1,26 @@
+"entity"
+{
+"classname" "trigger_once_mp"
+"origin" "1698 -3713 -2620"
+"model" "*84"
+"target" "percent_lock_1"
+}
+"entity"
+{
+"classname" "trigger_once_mp"
+"target" "percent_lock_2"
+"targetname" "unlockbackwards"
+"spawnflags" "1"
+"origin" "1177 -1872 -2553"
+"model" "*84"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_1"
+}
+"entity"
+{
+"classname" "multisource"
+"targetname" "percent_lock_2"
+}
