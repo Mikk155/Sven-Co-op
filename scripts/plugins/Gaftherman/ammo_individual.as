@@ -8,8 +8,7 @@
 	}
 
 */
-#include "ammo_individual"
-#include "../../maps/gaftherman/misc/callbacks"
+#include "../../maps/gaftherman/misc/ammo_individual"
 
 void PluginInit()
 {
