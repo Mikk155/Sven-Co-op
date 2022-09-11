@@ -2,6 +2,9 @@
 	Usage:
 	
 	"m_iszScriptFile" "mikk/callbacks"
+	
+	See the wiki
+	https://github.com/Mikk155/Sven-Co-op/wiki/callbacks-Spanish
 
 */
 
@@ -12,13 +15,6 @@ HUDTextParams HudParams;
 
 namespace CTriggerScripts
 {
-	/*
-		Call via monster's TriggerCondition to get the killer entity as activator instead of the monster who die.
-		"netname" "things that the killer will fire"
-		"targetname" "monster's TriggerTarget"
-		"m_iszScriptFunctionName" "CTriggerScripts::GetKillerTriggerTarget"
-		"m_iMode" "1"
-	*/
 	void GetKillerTriggerTarget( CBaseEntity@ pActivator,CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
 	{
 		CBaseEntity@ pInflictor = g_EntityFuncs.Instance( pActivator.pev.dmg_inflictor );
@@ -29,19 +25,12 @@ namespace CTriggerScripts
 		{
 			if( string( pMonsterActivator.m_iszTriggerTarget ) == string( pTriggerScript.pev.targetname ) )
 			{
-				if( DebugMode ) { g_Game.AlertMessage( at_console, "TS DEBUG-: Monster Fire it's condition.\nfound " + pTriggerScript.pev.classname + "\n netname " + pTriggerScript.pev.netname + " has been fired.\n" ); }
+				if( DebugMode ) { g_Game.AlertMessage( at_console, "\n\nTS DEBUG-: Monster Fire it's condition.\nfound " + pTriggerScript.pev.classname + "\n netname " + pTriggerScript.pev.netname + " has been fired.\n\n" ); }
 				g_EntityFuncs.FireTargets( pTriggerScript.pev.netname, pInflictor, pInflictor, USE_TOGGLE );
 			}
 		}
 	}
 
-
-	/*
-		Call for Toggle survival mode.
-
-		"m_iszScriptFunctionName" "CTriggerScripts::ToggleSurvivalMode"
-		"m_iMode" "1"
-	*/
 	void ToggleSurvivalMode( CBaseEntity@ pActivator,CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
 	{
 		if( !g_SurvivalMode.IsActive()
@@ -49,39 +38,13 @@ namespace CTriggerScripts
 		{
 			g_SurvivalMode.Activate( true );
 			g_SurvivalMode.Enable();
-			if( DebugMode ) { g_Game.AlertMessage( at_console, "TS DEBUG-: Survival mode has been enabled\n" ); }
-		}
-		else
-		{
+			if( DebugMode ) { g_Game.AlertMessage( at_console, "\n\nTS DEBUG-: Survival mode has been enabled\n\n" ); }
+		}else{
 			g_SurvivalMode.Disable();
-			if( DebugMode ) { g_Game.AlertMessage( at_console, "TS DEBUG-: Survival mode has been disabled\n" ); }
+			if( DebugMode ) { g_Game.AlertMessage( at_console, "\n\nTS DEBUG-: Survival mode has been disabled\n\n" ); }
 		}
 	}
 
-
-	/*
-		Call for trigger something depending the ammt of players connected
-		Your entities logics should be named "players_+(number of players)" stack your map logics up to 32
-
-		"m_iszScriptFunctionName" "CTriggerScripts::currentplayers"
-		"m_iMode" "1"
-	*/
-	void GetPlayersConnected( CBaseEntity@ pActivator,CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
-	{
-		g_EntityFuncs.FireTargets( "players_" + g_PlayerFuncs.GetNumPlayers(), null, null, USE_TOGGLE, 0.0f, 0.0f );
-		if( DebugMode ) { g_Game.AlertMessage( at_console, "TS DEBUG-: found players. fired entity players_" + g_PlayerFuncs.GetNumPlayers() +"\n" ); }
-	}
-
-
-	/*
-		Call for implementation of "Stealth" in Episode-One series.
-
-		"m_iszScriptFunctionName" "CTriggerScripts::Stealth"
-		"m_iMode" "2"
-		"target" "name of the monster to watch for"
-		"netname" "entity to teleport the player at location when he is seen by the monster target"
-		"message" "Fire target for !activator when he is seen"
-	*/
 	void Stealth( CBaseEntity@ pTriggerScript )
 	{
 		CBaseEntity@ pEnemy = null;
@@ -96,6 +59,7 @@ namespace CTriggerScripts
 				{
 					pMoster.m_hEnemy.GetEntity().SetOrigin( pTeleport.pev.origin );
 					g_EntityFuncs.FireTargets( string(pTriggerScript.pev.message), pMoster.m_hEnemy.GetEntity(), pMoster.m_hEnemy.GetEntity(), USE_TOGGLE, 0.0f, 0.0f );
+			if( DebugMode ) { g_Game.AlertMessage( at_console, "\n\nTS DEBUG-: Player"+pMoster.m_hEnemy.GetEntity()+" spotted. fired target and teleported.\n\n" ); }
 				}
 
 				pMoster.m_hEnemy = null;
@@ -103,49 +67,19 @@ namespace CTriggerScripts
 		}
 	}
 
-
-	/*
-		Call for Render something progressively
-		
-		"m_iszScriptFunctionName" "CTriggerScripts::RenderProgressive"
-		"m_iMode" "2"
-		"target" "entity to affect"
-		"renderamt" "value to change progressively"
-	*/
 	void RenderProgressive(CBaseEntity@ pTriggerScript)
 	{
 		CBaseEntity@ pEntity = null;
 		while((@pEntity = g_EntityFuncs.FindEntityByTargetname(pEntity, pTriggerScript.pev.target)) !is null)
 		{
-			if( pTriggerScript.pev.renderamt > pEntity.pev.renderamt )
-			{
-				pEntity.pev.renderamt += 1;
-			}
-			else
-			{
-				pEntity.pev.renderamt -= 1;
-			}
+			if( pTriggerScript.pev.renderamt > pEntity.pev.renderamt ) pEntity.pev.renderamt += 1; else pEntity.pev.renderamt -= 1;
 
-			if( pEntity.pev.renderamt == pTriggerScript.pev.renderamt )
-			{
-				g_EntityFuncs.FireTargets( ""+pTriggerScript.pev.targetname+"", null, null, USE_TOGGLE );
-			}
+			if( pEntity.pev.renderamt == pTriggerScript.pev.renderamt ) g_EntityFuncs.FireTargets( ""+pTriggerScript.pev.targetname+"", null, null, USE_TOGGLE );
 		}
 	}
 
-
-	/*
-		Call for showing a timer as "The game will start in X seconds"
-		
-		"m_iszScriptFunctionName" "CTriggerScripts::ShowTimer"
-		"m_iMode" "2"
-		"m_flThinkDelta" "1.0"
-		"health" "time in seconds"
-		"netname" "fire when time expire"
-	*/
 	void ShowTimer( CBaseEntity@ pTriggerScript )
 	{
-		// TODO feature pal game_text_custom para mostrar un timer.
 		HudParams.x = -1;
 		HudParams.y = 0.90;
 		HudParams.effect = 0;
@@ -174,11 +108,11 @@ namespace CTriggerScripts
 			int iLanguage = int(ckLenguageIs.GetFloat());
 			
 			if(iLanguage == 1 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "El juego comenzara en "+int(pTriggerScript.pev.health)+" segundos.\n" );
-			else if(iLanguage == 2 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Portuguese "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 3 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "German "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 4 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "French "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 5 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Italian "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 6 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Esperanto "+int(pTriggerScript.pev.health)+" .\n" );
+			else if(iLanguage == 2 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "O jogo comecara em "+int(pTriggerScript.pev.health)+" segundos.\n" );
+			else if(iLanguage == 3 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Das Spiel beginnt in "+int(pTriggerScript.pev.health)+" Sekunden.\n" );
+			else if(iLanguage == 4 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Le jeu commencera dans "+int(pTriggerScript.pev.health)+" secondes.\n" );
+			else if(iLanguage == 5 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Il gioco iniziera tra "+int(pTriggerScript.pev.health)+" secondi.\n" );
+			else if(iLanguage == 6 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "La ludo komencigos en "+int(pTriggerScript.pev.health)+" sekundoj.\n" );
 			else g_PlayerFuncs.HudMessage( pPlayer, HudParams, "The game will start in "+int(pTriggerScript.pev.health)+" seconds.\n" );
         }
 
@@ -187,6 +121,7 @@ namespace CTriggerScripts
 		if( int( pTriggerScript.pev.health) <= 0 )
 		{
 			g_EntityFuncs.FireTargets( string( pTriggerScript.pev.netname ), pTriggerScript, pTriggerScript, USE_TOGGLE );
+			if( DebugMode ) { g_Game.AlertMessage( at_console, "\n\nTS DEBUG-: Counter ended. netname Fired.\n\n" ); }
 			g_EntityFuncs.Remove( pTriggerScript );
 		}
 	}
