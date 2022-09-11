@@ -1,6 +1,6 @@
 /*
 	This plugin will let people select the language they want to see in-game ( only scripts/maps that uses this feature )
-	To see how to mod with this feature please check the wiki at https://github.com/Mikk155/AngelScript-Sven-Co-op/wiki/Multi-Language
+	To see how to mod with this feature please check the wiki at https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish
 	
 	"plugin"
 	{
