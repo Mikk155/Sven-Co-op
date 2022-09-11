@@ -167,91 +167,28 @@ namespace CTriggerScripts
 		{
 			CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
-			if( pPlayer is null || !pPlayer.IsConnected() )
-				continue;
+			if( pPlayer is null || !pPlayer.IsConnected() ) continue;
 
 			CustomKeyvalues@ ckLenguage = pPlayer.GetCustomKeyvalues();
 			CustomKeyvalue ckLenguageIs = ckLenguage.GetKeyvalue("$f_lenguage");
 			int iLanguage = int(ckLenguageIs.GetFloat());
 			
-			if(iLanguage == 1 )
-				g_PlayerFuncs.HudMessage( pPlayer, HudParams, "El juego comenzara en "+int(pTriggerScript.pev.health)+" segundos.\n" );
-			else if(iLanguage == 2 )
-				g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Portuguese "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 3 )
-				g_PlayerFuncs.HudMessage( pPlayer, HudParams, "German "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 4 )
-				g_PlayerFuncs.HudMessage( pPlayer, HudParams, "French "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 5 )
-				g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Italian "+int(pTriggerScript.pev.health)+" .\n" );
-			else if(iLanguage == 6 )
-				g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Esperanto "+int(pTriggerScript.pev.health)+" .\n" );
-			else
-				g_PlayerFuncs.HudMessage( pPlayer, HudParams, "The game will start in "+int(pTriggerScript.pev.health)+" seconds.\n" );
+			if(iLanguage == 1 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "El juego comenzara en "+int(pTriggerScript.pev.health)+" segundos.\n" );
+			else if(iLanguage == 2 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Portuguese "+int(pTriggerScript.pev.health)+" .\n" );
+			else if(iLanguage == 3 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "German "+int(pTriggerScript.pev.health)+" .\n" );
+			else if(iLanguage == 4 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "French "+int(pTriggerScript.pev.health)+" .\n" );
+			else if(iLanguage == 5 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Italian "+int(pTriggerScript.pev.health)+" .\n" );
+			else if(iLanguage == 6 ) g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Esperanto "+int(pTriggerScript.pev.health)+" .\n" );
+			else g_PlayerFuncs.HudMessage( pPlayer, HudParams, "The game will start in "+int(pTriggerScript.pev.health)+" seconds.\n" );
         }
 
 		pTriggerScript.pev.health -= 1;
-		
+
 		if( int( pTriggerScript.pev.health) <= 0 )
 		{
 			g_EntityFuncs.FireTargets( string( pTriggerScript.pev.netname ), pTriggerScript, pTriggerScript, USE_TOGGLE );
 			g_EntityFuncs.Remove( pTriggerScript );
 		}
 	}
-
-
-	// Start of DupeFix script
-	
-	// Call GM::DupeFixSurvivalOff( true, true, true );
-	// Change the true to false for disable the next features in order
-	// The first argument defines Show/hide survival mode countdown messages
-	// The second argument defines Block drop weapons while survival is Off
-	// The third argument defines Do a blip noise when survival is enabled
-	const bool bSurvivalEnabled = g_EngineFuncs.CVarGetFloat("mp_survival_starton") == 1 && g_EngineFuncs.CVarGetFloat("mp_survival_supported") == 1;
-
-	const bool bDropWeapEnabled = g_EngineFuncs.CVarGetFloat("mp_dropweapons") == 1;
-
-	float flSurvivalStartDelay = g_EngineFuncs.CVarGetFloat( "mp_survival_startdelay" );
-
-	void DupeFixSurvivalOff( const bool blcooldown = true , const bool bldrop = true , const bool blaudio = true )
-	{
-		if( bSurvivalEnabled )
-		{
-			if( blcooldown )
-			{
-				g_SurvivalMode.Disable();
-				g_EngineFuncs.CVarSetFloat( "mp_survival_startdelay", 0 );
-				g_EngineFuncs.CVarSetFloat( "mp_survival_starton", 0 );
-				g_Scheduler.SetTimeout( "SurvivalModeEnable", flSurvivalStartDelay );
-			}
-		}
-		if( bDropWeapEnabled && bldrop )
-		{
-			g_EngineFuncs.CVarSetFloat( "mp_dropweapons", 0 );
-			g_Scheduler.SetTimeout( "SetDrop", flSurvivalStartDelay );
-		}
-		if( blaudio )
-		{
-			g_Scheduler.SetTimeout( "SetAudio", flSurvivalStartDelay );
-		}
-	}
-
-	void SurvivalModeEnable()
-	{
-		g_SurvivalMode.Activate( true );
-	}
-
-	void SetDrop()
-	{
-		g_EngineFuncs.CVarSetFloat( "mp_dropweapons", 1 );
-	}
-
-	void SetAudio()
-	{
-		NetworkMessage message( MSG_ALL, NetworkMessages::SVC_STUFFTEXT );
-		message.WriteString( "spk buttons/bell1" );
-		message.End();
-	}
-	// Ends of DupeFix script
 }
 // End of namespace

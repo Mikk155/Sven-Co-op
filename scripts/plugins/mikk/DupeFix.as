@@ -8,7 +8,7 @@
 	}
 
 */
-#include "../../maps/mikk/callbacks"
+#include "../../maps/mikk/DupeFix"
 
 void PluginInit()
 {
@@ -23,5 +23,5 @@ void PluginInit()
 // The third argument defines Do a blip noise when survival is enabled
 void MapInit()
 {
-	CTriggerScripts::DupeFixSurvivalOff( true, true, true );
+	CSurvival::AmmoDupeFix( true, true, true );
 }
