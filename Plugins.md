@@ -1,6 +1,6 @@
 Description | Download
 ------------|---------
-Simple script that takes anything that an admin/owner says and adds a their respective role before its name  [!image](https://github.com/Mikk155/Sven-Co-op/blob/main/images/AdministratorSays.jpg) [AdministratorSays.as](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/AdministratorSays.as)
+Simple script that takes anything that an admin/owner says and adds a their respective role before its name  [image](!https://github.com/Mikk155/Sven-Co-op/blob/main/images/AdministratorSays.jpg) [AdministratorSays.as](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/AdministratorSays.as)
 Simple script that move AFK people to spec mode and also lets you manually join spec mode. when a server full. afk people will be kicked from the server so other new players can join. [!image](https://github.com/Mikk155/Sven-Co-op/blob/main/images/AFKManager.jpg) | [AFKManager.as](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/AfkManager.as)
 Simple script i've did for UHS owner halloween event or something | [Halloween.as](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/Halloween.as) & [Halloween.rar](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/Halloween.rar)
 Simple script that changes your server's hostname dynamically depending the map playing | [RenameServer.as](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/RenameServer.as)
