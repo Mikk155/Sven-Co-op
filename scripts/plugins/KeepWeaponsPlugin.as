@@ -1,15 +1,3 @@
-/*
-	When respawn keep your collected weapons that you've take before die.
-
-	"plugin"
-	{
-		"name" "KeepWeaponsPlugin"
-		"script" "KeepWeaponsPlugin"
-	}
-	
-	in svencoop/scripts/maps/ Requires you to install https://github.com/Outerbeast/Entities-and-Gamemodes/blob/master/respawndead_keepweapons.as
-*/
-
 #include "../maps/respawndead_keepweapons"
 
 void PluginInit()
