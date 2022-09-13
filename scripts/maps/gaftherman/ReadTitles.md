@@ -1,6 +1,7 @@
-## ENGLISH
+[See in english](#english)
+[Leer en español](#spanish)
 
-Leer en [español]()
+# ENGLISH
 
 Custom titles.txt sadly is not a feature and probably will never be. but do not worry. we have the perfect "tool" (if it can be called like that) for lazy people like you!
 
@@ -127,7 +128,7 @@ Imagine a tool into a game🦃
 
 
 
-## SPANISH
+# SPANISH
 
 Custom titles.txt sadly is not a feature and probably will never be. but do not worry. we have the perfect "tool" (if it can be called like that) for lazy people like you!
 
