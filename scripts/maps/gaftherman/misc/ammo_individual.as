@@ -1,34 +1,3 @@
-/*
-	A custom script that will add new ammunition to the game. this ammunitions has a special feature.
-	Every item will be able to be take'd ONCE Per player. an attempt to play with the same ammo ammout as HLSP campaigns.
-
-	Credits:
-	Mikk idea
-	Gaftherman Script
-	
-	
-#include "gaftherman/misc/ammo_individual"
-
-void MapInit()
-{
-	RegisterAmmoIndividual();
-}
-
-void MapActivate()
-{
-	AmmoIndividualRemap();
-}
-
-
-
-	If you're mapper then you can use this by 2 diferent ways.
-	
-	1 - Hardcode the classnames in your maps and do not use AmmoIndividualRemap()
-	2 - use AmmoIndividualRemap() and exclude some items by adding custom keyvalue "$i_ignore_item"
-	
-	CTRL+F "-Planned"
-*/
-
 void RegisterAmmoIndividual()
 {
 	DefaultRegister( "ammo_9mmclip_individual" );
