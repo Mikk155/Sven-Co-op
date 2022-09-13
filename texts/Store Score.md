@@ -24,6 +24,7 @@ The yellow button invokes the high score table.
         └── 📁maps
             └── 📄1test_score_store.bsp
             └── 📄1test_score_store_motd.txt
+            └── 📄1test_score_store.rmf
 ```
 
 # SPANISH
