@@ -1,0 +1,9 @@
+@PointClass base(TargetName, Target) color(164 0 255) = tram_ride_train : "tram_ride_train"
+[
+	targetname(target_source) : "Name"
+	target(target_destination) : "Target"
+	spawnflags(flags) =
+	[
+		1 : "Start Off" : 0
+	]
+]

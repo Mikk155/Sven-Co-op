@@ -1,0 +1,52 @@
+@PointClass color(192 255 0) = game_text_custom : "Custom Text Messages"
+[
+	targetname(target_source) : "Name"
+	target(target_destination) : "Target"
+	killtarget(target_destination) : "Kill Target"
+	spawnflags(flags) =
+	[
+		1: "All Players" : 0
+		2: "No console echo" : 0
+	]
+	effect(Choices) : "Text Effect" : 0 =
+	[
+		0 : "Fade In/Out"
+		1 : "Credits"
+		2 : "Scan Out"
+		// Using bellow values meant you dont need the keyvalues that you would use for game_text.
+		3 : "Triggers-like"
+		4 : "MOTD"
+		5 : "Chat message"
+		6 : "Subtitle (WiP)"
+		7 : "Key-Bind Print"
+	]
+	x(string) : "X (0 - 1.0 = left to right) (-1 centers)" : "-1"
+	y(string) : "Y (0 - 1.0 = top to bottom) (-1 centers)" : "0.67"
+	color(color255) : "Color 1 (Add 4th number >0 for opaque)" : "100 100 100"
+	color2(color255) : "Color 2 (Add 4th number >0 for opaque)" : "240 110 0"
+	fadein(string) : "Fade in Time (or character scan time)" : "0.1"
+	fadeout(string) : "Fade Out Time" : "1.5"
+	holdtime(string) : "Hold Time" : "10.0"
+	fxtime(string) : "Scan time (scan effect only)" : "0.25"
+	channel(choices) : "Channel" : 1 =
+	[
+		1 : "Channel 1"
+		2 : "Channel 2"
+		3 : "Channel 3 (not recomend)"
+		4 : "Channel 4"
+		5 : "Channel 5"
+		6 : "Channel 6 (Plugins)"
+		7 : "Channel 7 (Plugins)"
+		8 : "Channel 8 (Plugins)"
+	]
+	messagesound(sound) : "Sound when fire"
+	messagevolume(string) : "volume"
+	frags(string) : "!frags to show value"
+	message(string) : "MSG: Default/english"
+	message_spanish(string) : "MSG: Spanish"
+	message_portuguese(string) : "MSG: Portuguese"
+	message_german(string) : "MSG: Germany"
+	message_french(string) : "MSG: French"
+	message_italian(string) : "MSG: Italian"
+	message_esperanto(string) : "MSG: Esperanto"
+]

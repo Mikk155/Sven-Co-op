@@ -2,6 +2,7 @@
 // Change the true to false for disable the next features in order
 // The first argument defines Show/hide survival mode countdown messages
 // The second argument defines Block drop weapons while survival is Off
+// If all the arguments is false then this script will not work.
 
 namespace CSurvival
 {
@@ -14,6 +15,8 @@ namespace CSurvival
 
 	void AmmoDupeFix( const bool blcooldown = true , const bool bldrop = true , const bool blaudio = true )
 	{
+		if( !blcooldown && !bldrop && !blaudio ) return;
+
 		if( bSurvivalEnabled )
 		{
 			if( blcooldown )

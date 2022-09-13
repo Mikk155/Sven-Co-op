@@ -9,7 +9,7 @@
 */
 
 // Enable to see debugs
-bool DebugMode = false;
+bool DebugMode = true;
 
 HUDTextParams HudParams;
 
@@ -59,7 +59,7 @@ namespace CTriggerScripts
 				{
 					pMoster.m_hEnemy.GetEntity().SetOrigin( pTeleport.pev.origin );
 					g_EntityFuncs.FireTargets( string(pTriggerScript.pev.message), pMoster.m_hEnemy.GetEntity(), pMoster.m_hEnemy.GetEntity(), USE_TOGGLE, 0.0f, 0.0f );
-			if( DebugMode ) { g_Game.AlertMessage( at_console, "\n\nTS DEBUG-: Player"+pMoster.m_hEnemy.GetEntity()+" spotted. fired target and teleported.\n\n" ); }
+					if( DebugMode ) { g_Game.AlertMessage( at_console, "\n\nTS DEBUG-: Player"+pMoster.m_hEnemy.GetEntity().pev.netname+" spotted. fired target and teleported.\n\n" ); }
 				}
 
 				pMoster.m_hEnemy = null;
@@ -67,7 +67,7 @@ namespace CTriggerScripts
 		}
 	}
 
-	void RenderProgressive(CBaseEntity@ pTriggerScript)
+	void RenderProgressive( CBaseEntity@ pTriggerScript )
 	{
 		CBaseEntity@ pEntity = null;
 		while((@pEntity = g_EntityFuncs.FindEntityByTargetname(pEntity, pTriggerScript.pev.target)) !is null)

@@ -1,0 +1,5 @@
+@PointClass base(TargetName) color(192 255 0) = game_debug : "Shows a mapper debug message"
+[
+	targetname(target_source) : "Name"
+	message(string) : "message to show"
+]

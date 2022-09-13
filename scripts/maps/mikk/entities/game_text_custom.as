@@ -212,9 +212,9 @@ class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 		else if( TextParams.effect == 5 ) g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, ""+ReadLanguage+"\n" );
 
 		// Subtitle -WiP
-		else if( TextParams.effect == 6 ) g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Effect not implemented yet.\n" );
+		else if( TextParams.effect == 6 )  g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, ""+ReadLanguage+"\n (Subtitle effect not implemented yet)\n" );
 
-		// Prints the key binded see the wiki "enum binds"
+		// Prints the key binded "use +alt1 to attack" -> "use [MOUSE3] to attack"
 		else if( TextParams.effect == 7 ) g_PlayerFuncs.PrintKeyBindingString( pPlayer, ""+ReadLanguage+"\n"  );
 
 		// env_message legacy

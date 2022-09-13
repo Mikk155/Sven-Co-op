@@ -1,9 +1,3 @@
-/*
-    a "Tool" for getting titles.txt into a bunch of game_text ( or game_text_custom ) into a text file ready for copypaste into your maps.
-    useful for porting mods that uses titles.txt for showing messages. refeer to the wiki for more information:
-    https://github.com/Mikk155/Sven-Co-op/wiki/lazy-port-mod's-titles.txt-Spanish
-    
-*/
 string EntityName = "game_text";
 bool RipentStyle = true;
 bool DebugMode = true;
