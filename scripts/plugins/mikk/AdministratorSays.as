@@ -1,14 +1,3 @@
-/*
-	Simple script that takes anything that an admin/owner says and adds a their respective role before its name
-	
-
-	"plugin"
-	{
-		"name" "AdministratorSays"
-		"script" "mikk/AdministratorSays"
-	}
-
-*/
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );

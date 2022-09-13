@@ -1,13 +1,3 @@
-/*
-	This plugin will let people select the language they want to see in-game ( only scripts/maps that uses this feature )
-	To see how to mod with this feature please check the wiki at https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish
-	
-	"plugin"
-	{
-		"name" "Multi-Language"
-		"script" "mikk/multi_language"
-	}
-*/
 void PluginInit()
 {
 	g_Module.ScriptInfo.SetAuthor( "Mikk & Gaftherman" );
