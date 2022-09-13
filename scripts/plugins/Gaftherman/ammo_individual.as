@@ -1,13 +1,3 @@
-/*
-	INSTALL:
-
-	"plugin"
-	{
-		"name" "HLSP Individually Ammunition"
-		"script" "Gaftherman/ammo_individual"
-	}
-
-*/
 #include "../../maps/gaftherman/misc/ammo_individual"
 
 void PluginInit()
