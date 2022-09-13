@@ -9,6 +9,8 @@ A script that will fix the ammo-duplication exploit while survival mode is disab
 The third things are optional as well.
 
 **INSTALL**
+
+- As map script
 ```angelscript
 #include "mikk/DupeFix"
 
@@ -16,6 +18,14 @@ void MapInit()
 {
 	CSurvival::AmmoDupeFix( true, true, true );
 }
+```
+- As a [plugin](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/DupeFix.as)
+```angelscript
+	"plugin"
+	{
+		"name" "DupeFix"
+		"script" "mikk/DupeFix"
+	}
 ```
 Change the ``true`` to ``false`` for variate effects.
 
@@ -32,6 +42,7 @@ Un script simple que arregla el exploit de duplicar municion mientras el modo de
 Las tres cosas son opcionales.
 
 **INSTALAR**
+- Como mapscript
 ```angelscript
 #include "mikk/DupeFix"
 
@@ -39,6 +50,14 @@ void MapInit()
 {
 	CSurvival::AmmoDupeFix( true, true, true );
 }
+```
+- Como [plugin](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/DupeFix.as)
+```angelscript
+	"plugin"
+	{
+		"name" "DupeFix"
+		"script" "mikk/DupeFix"
+	}
 ```
 Cambia el ``true`` por ``false`` para variar los efectos.
 
