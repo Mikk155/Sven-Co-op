@@ -8,6 +8,14 @@
 
 An assortment of test maps, additional information for SC stuff, Angelscript plugins / map-scripts, new entities and anything related to SC.
 
+[Plugins](#plugins)
+
+[Entities](#Entities)
+
+[Scripts](#Scripts)
+
+[Tutorials](#Tutorials)
+
 Credits:
 
 [Gaftherman](https://github.com/Gaftherman)
@@ -18,13 +26,15 @@ Credits:
 
 [Sparks]()
 
-[Plugins](#plugins)
+# PLUGINS
 
-[Entities](#Entities)
+Description | Link | Author
+------------|------|-------
+When respawn keep your collected weapons that you've take before die. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/KeepWeaponsPlugin.md) | [Outerbeast](https://github.com/Outerbeast)
 
-[Scripts](#Scripts)
-
-[Tutorials](#Tutorials)
+Descripción | Enlace | Autor
+------------|--------|------
+Cuando revives mantienes las armas que recolectaste mientras estuviste vivo. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/KeepWeaponsPlugin.md) | [Outerbeast](https://github.com/Outerbeast)
 
 # TUTORIALS
 
@@ -36,17 +46,17 @@ env_globals that are used to transport information between maps. | [Github](http
 Creates a permanent server-side record of high scores for a given map. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/Store%20Score.md) | Sparks
 Creates a full customizable code on-the-fly for a numerical padlock | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/Numerical%20Padlock.md) | Mikk
 
-Description | Link | Author
-------------|------|-------
-Una herramienta que elimina texturas importadas en los mapas (-wadinclude) y asi reducir el tamaño del BSP considerablemente. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/un%20embed%20BSP%20Textures.md) | [Litude](https://github.com/Litude/BSPTexRM)
-Simple pre-fab que te ayudará a saber cuantos jugadores vivos, muertos o en total hay en el servidor y hacer cosas en tu mapa a base de ello. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/get%20number%20of%20players.md) | Mikk
-env_globals que son usados para transportar informacion a travez de los mapas. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/env_global.md) | Sparks
-Crea permanentemente por el lado del servidor un archivo con las puntuaciones mas altas de un mapa. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/Store%20Score.md) | Sparks
-Crea un codigo enteramente customizable en el aire para un boton de codigo | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/Numerical%20Padlock.md) | Mikk
-
 # SPANISH
 
 Un conjunto de mapas de pruebas. informacion adicional sobre SC, Angelscript plugins / map-scripts, nuevas entidades y cualquier cosa relacionada a SC.
+
+[Plugins](#plugins-spanish)
+
+[Entities](#Entities-spanish)
+
+[Scripts](#Scripts-spanish)
+
+[Tutorials](#Tutorials-spanish)
 
 Creditos:
 
@@ -58,10 +68,12 @@ Creditos:
 
 [Sparks]()
 
-[Plugins](#plugins-spanish)
+# TUTORIALS SPANISH
 
-[Entities](#Entities-spanish)
-
-[Scripts](#Scripts-spanish)
-
-[Tutorials](#Tutorials-spanish)
+Descripción | Enlace | Autor
+------------|--------|------
+Una herramienta que elimina texturas importadas en los mapas (-wadinclude) y asi reducir el tamaño del BSP considerablemente. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/un%20embed%20BSP%20Textures.md) | [Litude](https://github.com/Litude/BSPTexRM)
+Simple pre-fab que te ayudará a saber cuantos jugadores vivos, muertos o en total hay en el servidor y hacer cosas en tu mapa a base de ello. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/get%20number%20of%20players.md) | Mikk
+env_globals que son usados para transportar informacion a travez de los mapas. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/env_global.md) | Sparks
+Crea permanentemente por el lado del servidor un archivo con las puntuaciones mas altas de un mapa. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/Store%20Score.md) | Sparks
+Crea un codigo enteramente customizable en el aire para un boton de codigo | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/texts/Numerical%20Padlock.md) | Mikk

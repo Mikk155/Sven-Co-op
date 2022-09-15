@@ -1,27 +1,10 @@
-
-/*
-	A simple script that changes your server's hostname dynamically
-
-	Install:
-	
-	"plugin"
-	{
-		"name" "RenameServer"
-		"script" "mikk/RenameServer"
-	}
-*/
-
-// Starts of customizable zone
-
 // Name of your server
 const string strHostname = "[US] Limitless Potential (Hardcore + Anti-Rush)";
 
 // < name of your map		|		title of your hostname >
 
 string[][] strMaps = 
-{ 
-	{"infested",		"Tronal's caca"},
-
+{
 	{"hl",				"Half-Life"},
 
 	{"rp",				"Residual Point"},
