@@ -19,6 +19,9 @@ Script by [Gaftherman](https://github.com/Gaftherman)
 Model taken from [Spirinity](https://www.moddb.com/mods/spirinity)
 
 **INSTALL:**
+
+-As a mapscript
+
 ```angelscript
 #include "mikk/bloodpuddle"
 
@@ -30,16 +33,43 @@ void MapInit()
 
 **Directory:**
 ```
-└── 📁svencoop
-    └── 📁scripts
-    │   └── 📁maps
-    │       └── 📁mikk
-    │           └── 📄bloodpuddle.as
-    └── 📁models  
-    	└── 📁mikk  
-    		└── 📁misc  
-                └── 📄bloodpuddle.mdl
+└───📁svencoop
+    ├──📁scripts
+    │   └──📁maps
+    │      └──📁mikk
+    │         └── 📄bloodpuddle.as
+    └──📁models  
+       └───📁mikk  
+           └───📁misc  
+               └───📄bloodpuddle.mdl
 ```
+
+- As a plugin
+```angelscript
+	"plugin"
+	{
+		"name" "Blood-Puddle"
+		"script" "mikk/bloodpuddle"
+	}
+```
+
+**Directorio:**
+```
+└──📁svencoop
+    ├───📁scripts
+    │   ├───📁maps
+    │   │   └───📁mikk
+    │   │       └───📄bloodpuddle.as
+    │   └───📁plugins
+    │       └───📁mikk
+    │           └───📄bloodpuddle.as
+    │
+    └──📁models  
+       └───📁mikk  
+           └───📁misc  
+               └───📄bloodpuddle.mdl
+```
+
 Download the [model](https://github.com/Mikk155/Sven-Co-op/blob/main/models/mikk/misc/bloodpuddle.mdl)
 
 # SPANISH
@@ -59,6 +89,9 @@ Script por [Gaftherman](https://github.com/Gaftherman)
 Modelo tomado de [Spirinity](https://www.moddb.com/mods/spirinity)
 
 **INSTALAR:**
+
+- Como script
+
 ```angelscript
 #include "mikk/bloodpuddle"
 
@@ -70,14 +103,41 @@ void MapInit()
 
 **Directorio:**
 ```
-└── 📁svencoop
-    └── 📁scripts
-    │   └── 📁maps
-    │       └── 📁mikk
-    │           └── 📄bloodpuddle.as
-    └── 📁models  
-    	└── 📁mikk  
-    		└── 📁misc  
-                └── 📄bloodpuddle.mdl
+└───📁svencoop
+    ├──📁scripts
+    │   └──📁maps
+    │      └──📁mikk
+    │         └── 📄bloodpuddle.as
+    └──📁models  
+       └───📁mikk  
+           └───📁misc  
+               └───📄bloodpuddle.mdl
+```
+
+- Como plugin
+
+```angelscript
+	"plugin"
+	{
+		"name" "Blood-Puddle"
+		"script" "mikk/bloodpuddle"
+	}
+```
+
+**Directorio:**
+```
+└──📁svencoop
+    ├───📁scripts
+    │   ├───📁maps
+    │   │   └───📁mikk
+    │   │       └───📄bloodpuddle.as
+    │   └───📁plugins
+    │       └───📁mikk
+    │           └───📄bloodpuddle.as
+    │
+    └──📁models  
+       └───📁mikk  
+           └───📁misc  
+               └───📄bloodpuddle.mdl
 ```
 Download the [model](https://github.com/Mikk155/Sven-Co-op/blob/main/models/mikk/misc/bloodpuddle.mdl)
