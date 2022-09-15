@@ -1,12 +1,3 @@
-/*
-	Simple script that requires players press E on items to take them.
-	
-	"plugin"
-	{
-		"name" "UseOnlyItems"
-		"script" "mikk/UseOnlyItems"
-	}
-*/
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
