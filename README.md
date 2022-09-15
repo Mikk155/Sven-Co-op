@@ -26,6 +26,14 @@ Credits:
 
 [Sparks]()
 
+# SCRIPTS
+
+Description | Link | Author
+------------|------|-------
+a bunch of trigger_script's usage | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.md) | Mikk
+A script that will fix the ammo-duplication exploit while survival mode is disabled and re enable it when it is enabled | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.md) | Mikk
+Simple script that creates a blood puddle when a monster die | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/bloodpuddle.md) | [Gaftherman](https://github.com/Gaftherman)
+
 # PLUGINS
 
 Description | Link | Author
@@ -72,12 +80,7 @@ Creditos:
 
 [Sparks]()
 
-# SCRIPTS
-Description | Link | Author
-------------|------|-------
-a bunch of trigger_script's usage | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.md) | Mikk
-A script that will fix the ammo-duplication exploit while survival mode is disabled and re enable it when it is enabled | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.md) | Mikk
-Simple script that creates a blood puddle when a monster die | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/bloodpuddle.md) | [Gaftherman](https://github.com/Gaftherman)
+# SCRIPTS SPANISH
 
 Descripción | Enlace | Autor
 ------------|--------|------
