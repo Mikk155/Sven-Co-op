@@ -30,11 +30,14 @@ Credits:
 
 Description | Link | Author
 ------------|------|-------
-When respawn keep your collected weapons that you've take before die. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/KeepWeaponsPlugin.md) | [Outerbeast](https://github.com/Outerbeast)
-
-Descripción | Enlace | Autor
-------------|--------|------
-Cuando revives mantienes las armas que recolectaste mientras estuviste vivo. | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/KeepWeaponsPlugin.md) | [Outerbeast](https://github.com/Outerbeast)
+When respawn keep your collected weapons that you've take before die | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/KeepWeaponsPlugin.md) | [Outerbeast](https://github.com/Outerbeast)
+Ammunition clips equips All players once | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/Gaftherman/ammo_individual.md) | [Gaftherman](https://github.com/Gaftherman)
+When an administrator/owner uses chat add to their names their respective role | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/AdministratorSays.md) | Mikk
+A script that will fix the ammo-duplication exploit while survival mode is disabled and re enable it when it is enabled | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/DupeFix.md) | Mikk
+Simple script that replace some models. made for UHS owner as a halloween event | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/Halloween.as) | Mikk
+A simple script that changes your server's hostname dynamically | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/RenameServer.md) | Mikk
+Simple script that requires players press E on items to take them | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/UseOnlyitems.md) | Mikk
+Multi-Language offers to Scriptes and Mappers the hability of doing use of adding language support for player's choice that they can change on-the-fly dynamically | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/multi_language.md) | Mikk & [Gaftherman](https://github.com/Gaftherman)
 
 # TUTORIALS
 
@@ -67,6 +70,18 @@ Creditos:
 [KEZÆIV]()
 
 [Sparks]()
+
+# PLUGINS SPANISH
+Descripción | Enlace | Autor
+------------|--------|------
+Cuando revives mantienes las armas que recolectaste mientras estuviste vivo | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/KeepWeaponsPlugin.md) | [Outerbeast](https://github.com/Outerbeast)
+Munición que equipará a todos los jugadores una vez | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/Gaftherman/ammo_individual.md) | [Gaftherman](https://github.com/Gaftherman)
+cuando un administrador/owner usa el chat agrega su respectivo rol | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/AdministratorSays.md) | Mikk
+Un script simple que arregla el exploit de duplicar municion mientras el modo de supervivencia esta desactivado y luego lo activa cuando este mismo esta activado | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/DupeFix.md) | Mikk
+Un script simple que reemplaza algunos modelos. hecho para el owner de UHS como un evento de halloween | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/Halloween.as) | Mikk
+Un script simple que cambiará dinamicamente el nombre de tu servidor | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/RenameServer.md) | Mikk
+Un script simple que necesita que los jugadores presionen E en los objetos para tomarlos | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/UseOnlyitems.md) | Mikk
+Multi-Language Ofrece a los mappers y scriptes la habilidad de dar uso al soporte de multi-lenguaje por elección de los jugadores que puede ser cambiado en el aire y dinamicamente | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/multi_language.md) | Mikk & [Gaftherman](https://github.com/Gaftherman)
 
 # TUTORIALS SPANISH
 
