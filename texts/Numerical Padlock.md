@@ -22,10 +22,9 @@ then every numerical plate will add a value of their owns into another entity wh
 ```
 └── 📁svencoop
     └── 📁maps
-        └── 📁maps
-            └── 📄1test_numpad.bsp
-            └── 📄1test_numpad_motd.txt
-            └── 📄1test_numpad.rmf
+        └── 📄1test_numpad.bsp
+        └── 📄1test_numpad_motd.txt
+        └── 📄1test_numpad.rmf
 ```
 
 # SPANISH
@@ -48,8 +47,7 @@ Luego cada boton numerico va a añadir un valor dependiendo su numero en otra en
 ```
 └── 📁svencoop
     └── 📁maps
-        └── 📁maps
-            └── 📄1test_numpad.bsp
-            └── 📄1test_numpad_motd.txt
-            └── 📄1test_numpad.rmf
+        └── 📄1test_numpad.bsp
+        └── 📄1test_numpad_motd.txt
+        └── 📄1test_numpad.rmf
 ```

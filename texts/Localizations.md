@@ -14,6 +14,7 @@ Si quieres hacer alguna traducción hazmelo saber por mi discord Mikk#3885 o hac
 
 Los mapas que soportan esta mecanica estan enlistados abajo.
 
+# LIST
 Map | Spanish | PT/BR | German | French | Italian | Esperanto
 ----|---------|-------|--------|--------|---------|----------
 [Restriction](http://scmapdb.com/map:restriction) |✔️Mikk|✔️Teemo|❌|✔️Loulimi|❌|❌
