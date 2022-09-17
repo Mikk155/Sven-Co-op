@@ -4,7 +4,8 @@
 
 # ENGLISH
 
-[callbacks.as](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.as) es un script con un monton de utilidades que he decidido combinar en un solo archivo a los que encontré utiles para uso común. todos ellos son accesibles con el uso de [trigger_script](https://sites.google.com/site/svenmanor/entguide/trigger_script). A continuación verás sus funciones y como usar estos scripts.
+[callbacks.as](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.as) 
+is a script with a bunch of utilities that i've decided to merge into one script all those i've find utils for common use. all of them are for the use of [trigger_script](https://sites.google.com/site/svenmanor/entguide/trigger_script). you'll see their functions explained and how to use those scripts.
 
 [Turn the killer as activator through TriggerTarget](#getkiller)
 
@@ -42,7 +43,7 @@ graph TD;
 
 No method exist to disable/enable survival mode from mapping with stock entities. there is where this function can be used.
 
-This function is very simble. if survival mode is activated this will deactivate it and viceversa
+This function is very simple. if survival mode is activated this will deactivate it and viceversa
 ```angelscript
 "m_iszScriptFunctionName" "CTriggerScripts::ToggleSurvivalMode"
 "m_iMode" "1"
@@ -92,7 +93,7 @@ Notas:
 
 - Multiple entities can be affected.
 
-- The redneramt value can be changed in-game with changevalue.
+- The renderamt value can be changed in-game with changevalue.
 
 # Timer
 
