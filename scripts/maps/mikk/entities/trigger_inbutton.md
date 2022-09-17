@@ -10,6 +10,17 @@ Sample that you use one that need player to be inside a specified zone and press
 
 Good combination is game_text_custom with MOTD message.
 
+**INSTALL:**
+```angelscript
+#include "mikk/entities/utils"
+#include "mikk/entities/zone_caller"
+
+void MapInit()
+{
+	RegisterTriggerInButtons();
+}
+```
+
 **Information:**
 
 - As same as game_text_custom this entity supports multi-language messages as well. all supported by utils.as is included.
@@ -37,6 +48,17 @@ Util si quieres dar informacion sin lanzarla en la cara de los jugadores. y deja
 Ejemplo si tienes una y un jugador se encuentra dentro de una zona especifica y presiona +USE ahora el jugador vera un mensaje u otro de tu preferencia.
 
 Una buena combinación es game_text_custom con el mensaje estilo MOTD.
+
+**INSTALAR:**
+```angelscript
+#include "mikk/entities/utils"
+#include "mikk/entities/zone_caller"
+
+void MapInit()
+{
+	RegisterTriggerInButtons();
+}
+```
 
 **Información**
 

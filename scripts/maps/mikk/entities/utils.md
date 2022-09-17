@@ -4,20 +4,20 @@
 
 # ENGLISH
 
-Entity Utils es un script de codigo expuesto asi que otras entidades/scripts pueden interactuar con el. mi "utils" esta en el directorio ``scripts/maps/mikk/entities/utils.as`` deberas incluir este script en tu script principal o en tu entidad custom funcionará tambien 
+Entity Utils is a script with exposed code soo that other entities/scripts can interact with it. my "utils" are in the directory ``scripts/maps/mikk/entities/utils.as`` you will have to include this script in your main script or in your custom entity would work too
 ```angelscript
 #include "mikk/entities/utils"
 ```
-Esto te ofrecerá las siguientes mecanicas.
+this will offer the next mechanics.
 
-Necesitar que una entidad este dentro de otra
+Need that an entity be inside other
 Usage:
 ```angelscript
 	if( UTILS::InsideZone( pPlayer, self ) )
 ```
-En este caso ``pPlayer`` se refiere a la entidad que debera estar dentro de ``self``
+In this case ``pPlayer`` refers that entity that must be inside ``self``
 
-Codigo original tomado de [Cubemath](https://github.com/CubeMath/UCHFastDL2/blob/master/svencoop/scripts/maps/cubemath/trigger_once_mp.as#L63)
+Original code taken from [Cubemath](https://github.com/CubeMath/UCHFastDL2/blob/master/svencoop/scripts/maps/cubemath/trigger_once_mp.as#L63)
 ```angelscript
 bool InsideZone( CBaseEntity@ pInsider, CBaseEntity@ pCornerZone )
 {
@@ -56,22 +56,22 @@ void SetSize( CBaseEntity@ pMaxMin )
 }
 ```
 
-Permite que tu entidad custom pueda utilizar [Multi-Language](https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish)
+Allows that your custom entity is able to use [Multi-Language](https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish)
 
-Deberas añadir el siguiente codigo en orden para ello.
+You have to add the next code for it to work.
 
-- | Primero debes llamar la función ``MLAN::MoreKeyValues`` justo luego de tu class.
+- | first you have to call the function ``MLAN::MoreKeyValues`` just after your class.
 
-**Ejemplo:**
+**Example:**
 ```angelscript
 class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 {
 }
 ```
 
-- 2 Ahora debes añadir los nuevos valores dentro de las keyvalues de tu entidad. ``SexKeyValues(szKey, szValue);``
+- 2 Now you have to add the new values inside the keyvalues of your entity. ``SexKeyValues(szKey, szValue);``
 
-**Ejemplo:**
+**Example:**
 ```angelscript
 bool KeyValue( const string& in szKey, const string& in szValue )
 {
@@ -94,12 +94,12 @@ bool KeyValue( const string& in szKey, const string& in szValue )
 }
 ```
 
-- 3 Llama a todos los jugadores o pActivator/pOther para ver su custom keyvalue y obtener su lenguaje
+- 3 Call all the players or pActivator/pOther to see their custom keyvalue and obtain their language
 ```angelscript
 int iLanguage = MLAN::GetCKV(pPlayer, "$f_lenguage");
 ```
 
-**Ejemplo:**
+**Example:**
 ```angelscript
 void Use(CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue)
 {
@@ -125,30 +125,30 @@ void CallText( CBasePlayer@ pPlayer )
 {
 	int iLanguage = MLAN::GetCKV(pPlayer, "$f_lenguage");
 ```
-(Los siguientes ejemplos provienen de la misma función CallText)
+(The next examples com from the same function CallText)
 
-- 4 Ahora debes agregar el metodo de Remplazo ya que hemos actualizado una mecanica en game_text_custom que necesitabamos.
+- 4 Now you have to add the replacement method since we updated a mechanic in game_text_custom wich we needed.
 ```angelscript
 string ReadLanguage = MLAN::Replace(ReadLanguages(iLanguage), { { "!frags", ""+int(self.pev.frags) }, {"!activator", ""+self.pev.netname } } );
 ```
 
-- 5 Ahora una vez llegados al final simplemente muestra el debido mensaje a el jugador.
+- 5 Now once we reached the end simply show the correct message to the player.
 
-**Ejemplo:**
+**Example:**
 ```angelscript
 g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 ```
-Luego de todo ese codigo. la función ``ReadLanguage`` contendrá la keyvalue correspondiente a el valor del jugador y será mostrado el mensaje correcto.
+After all that code. the function ``ReadLanguage`` will contain the respective keyvalue to the value of the player and it will show in the correct message.
 
-**Probables preguntas:**
-- Si estoy usando un idioma que el mapa no tiene me perderé los mensajes?
-	No. mientras que un mensaje no exista siempre se te mostrará el mensaje original ``message``
+**Possible questions:**
+- If i am using a language that the map does not have will i miss the messages?
+	No. while a message does not exist the original ``message`` will always show
 
-- Hay limites de idioma?
-	Tecnicamente no. la unica limitante es que estamos ligados a usar solamente romaji sencillo.
+- Is there a language limit?
+	Technically no. the only limiting factor that we are bound to is using simple romaji.
 
-- Porque el codigo es externo?
-	De este modo tu no debes modificar tu entidad cuando un lenguaje nuevo sea añadido.
+- Why the code is external?
+	This way you don't have to modify your entity when a new language is added.
 
 # SPANISH
 

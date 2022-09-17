@@ -1,22 +1,3 @@
-/*
-	a brush entity that will drop a message or a custom one if set. telling players to press E to trigger something.
-	Useful if you want to give information about something but dont actually spam it into player's face.
-	you could use this in conjunction with Outerbeast's game_popup.
-	https://github.com/Outerbeast/Entities-and-Gamemodes/blob/master/game_popup.as
-
-
-INSTALL:
-
-#include "mikk/entities/utils"
-#include "mikk/entities/zone_caller"
-
-void MapInit()
-{
-	RegisterTriggerInButtons();
-}
-
-*/
-
 void RegisterTriggerInButtons()
 {
     g_CustomEntityFuncs.RegisterCustomEntity( "trigger_inbutton", "trigger_inbutton" );
