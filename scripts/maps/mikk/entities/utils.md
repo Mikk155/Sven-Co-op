@@ -11,6 +11,7 @@ Entity Utils is a script with exposed code soo that other entities/scripts can i
 this will offer the next mechanics.
 
 Need that an entity be inside other
+
 Usage:
 ```angelscript
 	if( UTILS::InsideZone( pPlayer, self ) )
@@ -31,16 +32,17 @@ bool InsideZone( CBaseEntity@ pInsider, CBaseEntity@ pCornerZone )
 	return blInside;
 }
 ```
-Permite que tu entidad elija ser SolidBase (BSPClip) o PointBase ([BBox](https://developer.valvesoftware.com/wiki/Bounding_box))
 
-Uso:
+Let your entity choose to be SolidBase (BSPClip) or PointBase ([BBox](https://developer.valvesoftware.com/wiki/Bounding_box))
+
+Usage:
 ```angelscript
 void Spawn()
 {
 	UTILS::SetSize( self );
 }
 ```
-Para hacerla SolidBase simplemente asigna un brush-model a entidad. de lo contrario puedes crear la [BBox](https://developer.valvesoftware.com/wiki/Bounding_box) con las keys ``vuser1`` y ``vuser2`` MinHullSize y MaxHullSize respectivamente.
+To make it SolidBase just asign it to a brush-model otherwise you can set a [BBox](https://developer.valvesoftware.com/wiki/Bounding_box) with the keys ``vuser1`` and ``vuser2`` MinHullSize and MaxHullSize respectivelly.
 ```angelscript
 void SetSize( CBaseEntity@ pMaxMin )
 {
@@ -125,24 +127,30 @@ void CallText( CBasePlayer@ pPlayer )
 {
 	int iLanguage = MLAN::GetCKV(pPlayer, "$f_lenguage");
 ```
-(The next examples com from the same function CallText)
+(The next examples comes from the same function CallText)
 
-- 4 Now you have to add the replacement method since we updated a mechanic in game_text_custom wich we needed.
+- 4
+```angelscript
+g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, string(ReadLanguages(iLanguage))+"\n" );
+```
+After all that code. the function ``ReadLanguage`` will contain the respective keyvalue to the value of the player and it will show in the correct message.
+
+**Alternativelly to step 4**
+
+You have to add the replacement method since we updated a mechanic in game_text_custom wich we needed.
 ```angelscript
 string ReadLanguage = MLAN::Replace(ReadLanguages(iLanguage), { { "!frags", ""+int(self.pev.frags) }, {"!activator", ""+self.pev.netname } } );
 ```
-
-- 5 Now once we reached the end simply show the correct message to the player.
-
+Now once we reached the end simply show the correct message to the player.
 **Example:**
 ```angelscript
 g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 ```
-After all that code. the function ``ReadLanguage`` will contain the respective keyvalue to the value of the player and it will show in the correct message.
+
 
 **Possible questions:**
 - If i am using a language that the map does not have will i miss the messages?
-	No. while a message does not exist the original ``message`` will always show
+	No. while a message does not exist the original ``message`` will be shown
 
 - Is there a language limit?
 	Technically no. the only limiting factor that we are bound to is using simple romaji.
@@ -159,6 +167,7 @@ Entity Utils es un script de codigo expuesto asi que otras entidades/scripts pue
 Esto te ofrecerá las siguientes mecanicas.
 
 Necesitar que una entidad este dentro de otra
+
 Usage:
 ```angelscript
 	if( UTILS::InsideZone( pPlayer, self ) )
@@ -275,18 +284,23 @@ void CallText( CBasePlayer@ pPlayer )
 ```
 (Los siguientes ejemplos provienen de la misma función CallText)
 
-- 4 Ahora debes agregar el metodo de Remplazo ya que hemos actualizado una mecanica en game_text_custom que necesitabamos.
+- 4
+```angelscript
+g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, string(ReadLanguages(iLanguage))+"\n" );
+```
+Luego de todo ese codigo. la función ``ReadLanguage`` contendrá la keyvalue correspondiente a el valor del jugador y será mostrado el mensaje correcto.
+
+**Alternativamente para el paso 4**
+
+Puedes agregar el metodo de Remplazo ya que hemos actualizado una mecanica en game_text_custom que necesitabamos.
 ```angelscript
 string ReadLanguage = MLAN::Replace(ReadLanguages(iLanguage), { { "!frags", ""+int(self.pev.frags) }, {"!activator", ""+self.pev.netname } } );
 ```
-
-- 5 Ahora una vez llegados al final simplemente muestra el debido mensaje a el jugador.
-
+Ahora una vez llegados al final simplemente muestra el debido mensaje a el jugador.
 **Ejemplo:**
 ```angelscript
 g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 ```
-Luego de todo ese codigo. la función ``ReadLanguage`` contendrá la keyvalue correspondiente a el valor del jugador y será mostrado el mensaje correcto.
 
 **Probables preguntas:**
 - Si estoy usando un idioma que el mapa no tiene me perderé los mensajes?
