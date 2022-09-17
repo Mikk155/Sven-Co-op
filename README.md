@@ -26,12 +26,22 @@ Credits:
 
 [Sparks]()
 
+# ENTITIES
+
+Description | Link | Author
+------------|------|-------
+A script that will fix the ammo-duplication exploit while survival mode is disabled and re enable it when it is enabled | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.md) | Mikk
+A custom entity that will make survival mode (DISABLED) better. This will let players join spec mode for some seconds until they get respawned | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/survival_manager.md) | Mikk & [Outerbeast](https://github.com/Outerbeast)
+A custom entity aimed to replace game_text but adding support for languages and some other new features | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/game_text_custom.md) | Mikk, [Gaftherman](https://github.com/Gaftherman) & [Kmkz](https://github.com/kmkz27)
+A custom entity for showing hud sprites | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/env_spritehud.md) | Mikk
+A custom entity that requires the player that is touching it to press a certain key to trigger something | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_inbutton.md#spanish) | Mikk & [Gaftherman](https://github.com/Gaftherman)
+A custom entity for implement Anti-Rush with some extended features | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_once_mp.md#spanish) | Mikk, [Gaftherman](https://github.com/Gaftherman) & [Cubemath](https://github.com/CubeMath)
+
 # SCRIPTS
 
 Description | Link | Author
 ------------|------|-------
 a bunch of trigger_script's usage | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.md) | Mikk
-A script that will fix the ammo-duplication exploit while survival mode is disabled and re enable it when it is enabled | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.md) | Mikk
 Simple script that creates a blood puddle when a monster die | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/bloodpuddle.md) | [Gaftherman](https://github.com/Gaftherman)
 
 # PLUGINS
@@ -81,12 +91,23 @@ Creditos:
 
 [Sparks]()
 
+# ENTITIES SPANISH
+
+Description | Link | Author
+------------|------|-------
+Un script simple que arregla el exploit de duplicar municion mientras el modo de supervivencia esta desactivado y luego lo activa cuando este mismo esta activado | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.md) | Mikk
+Una entidad custom que hace del survival mode (DESACTIVADO) mejor. Esto permite a los jugadores entrar en el modo espectador por unos segundos antes de reaparecer | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/survival_manager.md) | Mikk & [Outerbeast](https://github.com/Outerbeast)
+Una entidad custom que apunta a reemplazar game_text pero añadiendo soporte para lenguajes y otras nuevas mecanicas | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/game_text_custom.md) | Mikk, [Gaftherman](https://github.com/Gaftherman) & [Kmkz](https://github.com/kmkz27)
+Una entidad custom para mostrar sprites en el HUD Pantalla | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/env_spritehud.md) | Mikk
+Una entidad custom que necesita del jugador que esta tocandola presione una tecla especificada para activar algo | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_inbutton.md#spanish) | Mikk & [Gaftherman](https://github.com/Gaftherman)
+Una entidad custom que implementa Anti-Rush con algunas mecanicas extendidas | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_once_mp.md#spanish) | Mikk, [Gaftherman](https://github.com/Gaftherman) & [Cubemath](https://github.com/CubeMath)
+
+
 # SCRIPTS SPANISH
 
 Descripción | Enlace | Autor
 ------------|--------|------
 Un monton de usos para trigger_script | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.md) | Mikk
-Un script simple que arregla el exploit de duplicar municion mientras el modo de supervivencia esta desactivado y luego lo activa cuando este mismo esta activado | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.md) | Mikk
 Script simple que crea un charco de sangre cuando un npc muere | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/bloodpuddle.md) | [Gaftherman](https://github.com/Gaftherman)
 
 # PLUGINS SPANISH
