@@ -1,5 +1,3 @@
-//	See https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.md
-
 #include "../../maps/mikk/entities/survival_manager"
 
 void PluginInit()
