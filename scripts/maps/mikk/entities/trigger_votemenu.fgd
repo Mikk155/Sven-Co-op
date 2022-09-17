@@ -1,5 +1,5 @@
 // Open  smart edit and add there keyvalues. the method is key = option to show while value = thing to trigger
-@PointClass base(TargetName) color(164 0 255) = trigger_votemenu : "Vote Menu"
+@PointClass base(TargetName) color(40 40 40) = trigger_votemenu : "Vote Menu"
 [
 	targetname(target_source) : "Name"
 	health(string) : "Time to vote"

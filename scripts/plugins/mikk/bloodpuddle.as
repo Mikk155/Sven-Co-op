@@ -4,7 +4,7 @@
 
 void PluginInit()
 {
-    g_Module.ScriptInfo.SetAuthor( "Mikk" );
+    g_Module.ScriptInfo.SetAuthor( "Gaftherman" );
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155" );
 }
 

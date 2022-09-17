@@ -53,7 +53,7 @@ void MapInit()
 	}
 ```
 
-**Directorio:**
+**Directory:**
 ```
 └──📁svencoop
     ├───📁scripts
