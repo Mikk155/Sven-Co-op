@@ -46,6 +46,7 @@ Simple script that replace some models. made for UHS owner as a halloween event 
 A simple script that changes your server's hostname dynamically | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/RenameServer.md) | Mikk
 Simple script that requires players press E on items to take them | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/UseOnlyitems.md) | Mikk
 Multi-Language offers to Scriptes and Mappers the hability of doing use of adding language support for player's choice that they can change on-the-fly dynamically | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/multi_language.md) | Mikk & [Gaftherman](https://github.com/Gaftherman)
+A custom entity that will make survival mode (DISABLED) better. This will let players join spec mode for some seconds until they get respawned | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/SpecOnDead.md) | Mikk & [Outerbeast](https://github.com/Outerbeast)
 
 # TUTORIALS
 
@@ -99,6 +100,7 @@ Un script simple que reemplaza algunos modelos. hecho para el owner de UHS como 
 Un script simple que cambiará dinamicamente el nombre de tu servidor | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/RenameServer.md) | Mikk
 Un script simple que necesita que los jugadores presionen E en los objetos para tomarlos | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/UseOnlyitems.md) | Mikk
 Multi-Language Ofrece a los mappers y scriptes la habilidad de dar uso al soporte de multi-lenguaje por elección de los jugadores que puede ser cambiado en el aire y dinamicamente | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/multi_language.md) | Mikk & [Gaftherman](https://github.com/Gaftherman)
+Una entidad custom que hace del modo supervivencia (DESACTIVADO) mucho mejor. Este modo hará que los jugadores entren al modo espectador por algunos segundos antes de re aparecer | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/SpecOnDead.md) | Mikk & [Outerbeast](https://github.com/Outerbeast)
 
 # TUTORIALS SPANISH
 Descripción | Enlace | Autor
