@@ -16,9 +16,7 @@ this will offer the next mechanics.
 
 - [Let your entity decide being solid or point type](#Let-your-entity-decide-being-solid-or-point-type)
 
-- [Shows a motd information box](#Shows a motd information box)
-
-# Requires a entity be inside other entity
+- [Shows a motd information box](#Shows-a-motd-information-box)
 
 **namespace MLAN**
 
@@ -26,19 +24,21 @@ this will offer the next mechanics.
 
 **namespace NETWORKMSG**
 
-[Show scoreboard like when game end](#Show-scoreboard-like-when-game-end)
+- [Show scoreboard like when game end](#show-scoreboard-like-when-game-end)
 
-[Toggle third/first person](#Toggle-third/first-person)
+- [Toggle third/first person](#Toggle-third-&-first-person)
 
-[Shake camera](#Shake-camera)
+- [Shake camera](#Shake-camera)
 
-[Show HλLF-LIFE logo](#Show-HλLF-LIFE-logo)
+- [Show HλLF-LIFE logo](#Show-HλLF-LIFE-logo)
 
-[Scoreboard Title](#Scoreboard-Title)
+- [Scoreboard Title](#Scoreboard-Title)
 
-[ScoreInfo Players](#ScoreInfo-Players)
+- [ScoreInfo Players](#ScoreInfo-Players)
 
-**namespace UTILS**
+## namespace UTILS
+
+# Requires a entity be inside other entity
 
 Usage:
 ```angelscript
@@ -95,7 +95,7 @@ void SetSize( CBaseEntity@ pMaxMin )
 	UTILS::ShowMOTD( pPlayer, "motd title", "motd contain" );
 ```
 
-**namespace MLAN**
+## namespace MLAN
 
 # Allows your custom entity to be able to use Multi Language
 
@@ -199,7 +199,7 @@ g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 - Why the code is external?
 	This way you don't have to modify your entity when a new language is added.
 
-**namespace NETWORKMSG**
+## namespace NETWORKMSG
 
 Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScripts/blob/master/lib/networkmessage.as)
 
@@ -210,7 +210,7 @@ Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScr
 	NETWORKMSG::SVC_INTERMISSION();
 ```
 
-# Toggle third/first person
+# Toggle third & first person
 
 ```angelscript
 	NETWORKMSG::ViewMode( 1, pPlayer );
@@ -342,7 +342,7 @@ Esto te ofrecerá las siguientes mecanicas.
 
 [Muestra la tabla de puntuación como si el juego terminara](#Muestra-la-tabla-de-puntuación-como-si-el-juego-terminara)
 
-[Varia entre tercera/primera persona](#Varia-entre-tercera/primera persona)
+[Varia entre tercera/primera persona](#Varia-entre-tercera-y-primera-persona)
 
 [Sacude la camera](#Sacude-la-camera)
 
@@ -352,7 +352,7 @@ Esto te ofrecerá las siguientes mecanicas.
 
 [Jugadores en la tabla de puntuación](#Jugadores-en-la-tabla-de-puntuación)
 
-**namespace UTILS**
+## namespace UTILS
 
 # Necesita que una entidad este dentro de otra
 
@@ -410,7 +410,7 @@ void SetSize( CBaseEntity@ pMaxMin )
 	UTILS::ShowMOTD( pPlayer, "motd title", "motd contain" );
 ```
 
-**namespace MLAN**
+## namespace MLAN
 
 # Permite que tu entidad haga uso de multiples lenguajes
 
@@ -513,7 +513,7 @@ g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 - Porque el codigo es externo?
 	De este modo tu no debes modificar tu entidad cuando un lenguaje nuevo sea añadido.
 
-**namespace NETWORKMSG**
+## namespace NETWORKMSG
 
 Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScripts/blob/master/lib/networkmessage.as)
 
@@ -524,7 +524,7 @@ Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScr
 	NETWORKMSG::SVC_INTERMISSION();
 ```
 
-# Varia entre tercera/primera persona
+# Varia entre tercera y primera persona
 
 ```angelscript
 	NETWORKMSG::ViewMode( 1, pPlayer );
