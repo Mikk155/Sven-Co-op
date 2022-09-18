@@ -206,12 +206,24 @@ Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScr
 # Show scoreboard like when game end
 
 - can't disable
+
+**Usage:**
 ```angelscript
 	NETWORKMSG::SVC_INTERMISSION();
 ```
 
+code:
+```angelscript
+    void SVC_INTERMISSION()
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::SVC_INTERMISSION );
+        message.End();
+    }
+```
+
 # Toggle third & first person
 
+**Usage:**
 ```angelscript
 	NETWORKMSG::ViewMode( 1, pPlayer );
 ```
@@ -221,102 +233,141 @@ Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScr
 
 - 1 third person
 
+Code:
+```angelscript
+
+    void ViewMode( int imode, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::ViewMode, pPlayer.edict() );
+            message.WriteByte(imode);
+        message.End();
+    }
+```
+
 # Shake camera
 
+**Usage:**
 ```angelscript
 	NETWORKMSG::Concuss( 15, -15, 15, pPlayer );
 ```
 the arguments defines:
 
--1 yall
+- 1 yall
 
--2 pitch
+- 2 pitch
 
--3 roll
+- 3 roll
+
+Code:
+```angelscript
+    void Concuss( int yall, int pitch, int roll, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::Concuss, pPlayer.edict() );
+            message.WriteFloat(yall);
+            message.WriteFloat(pitch);
+            message.WriteFloat(roll);
+        message.End();
+    }
+```
 
 # Show HλLF-LIFE logo
+
+**Usage:**
 ```angelscript
 	NETWORKMSG::GameTitle();
 ```
 
+Code:
+```angelscript
+    void GameTitle()
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::GameTitle );
+        message.WriteByte(1);
+        message.End();
+    }
+```
+
 # Scoreboard Title
+
+**Usage:**
 Change server hostname at score board. do not actually touchs hostname. only shows on scoreboard
 ```angelscript
 	NETWORKMSG::ServerName("The best fucking map");
 ```
 
+Code:
+```angelscript
+    void ServerName( const string StrTitle)
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::ServerName );
+            message.WriteString(StrTitle);
+        message.End();
+    }
+```
+
 # ScoreInfo Players
 
+**Usage:**
 On scoreboard information. doesn't modify player values only visual in scoreboard.
 ```angelscript
 	NETWORKMSG::ScoreInfo(0, 0, 0, 0, 0, 0, 0, pPlayer );
 ```
 The arguments defines:
 
--1 points (frags)
+- 1 points (frags)
 
--2
+- 2 deaths
 
--3 deaths
+- 3 health
 
--4 health
+- 4 armor
 
--5 armor
+- 5 team
 
--6 team
+- 6 icon (See bellow)
 
--7 icon (See bellow)
-
--7 server icon (See bellow)
+- 7 server icon (See bellow)
 
 **Icon**
 
--0 none
+- 0 none
 
--1 electro crowbar
+- 1 electro crowbar
 
--2 golden uzi
+- 2 golden uzi
 
--3 dollar
+- 3 dollar
 
--4 tester
+- 4 tester
 
--5 artist
+- 5 artist
 
--6 developer
+- 6 developer
 
 **Server Icon**
 
--0 none
+- 0 none
 
--1 admin
+- 1 admin
 
--2 serverowner
+- 2 serverowner
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Code:
+```angelscript
+    void ScoreInfo(int frags, int death, int health, int armor, int team, int icon, int server, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::ScoreInfo, pPlayer.edict() );
+            message.WriteByte(1);
+            message.WriteFloat(frags);
+            message.WriteLong(death);
+            message.WriteFloat(health);
+            message.WriteFloat(armor);
+            message.WriteByte(team);
+            message.WriteShort(icon);
+            message.WriteShort(server);
+        message.End();
+    }
+```
 
 # SPANISH
 
@@ -340,17 +391,17 @@ Esto te ofrecerá las siguientes mecanicas.
 
 **namespace NETWORKMSG**
 
-[Muestra la tabla de puntuación como si el juego terminara](#Muestra-la-tabla-de-puntuación-como-si-el-juego-terminara)
+- [Muestra la tabla de puntuación como si el juego terminara](#Muestra-la-tabla-de-puntuación-como-si-el-juego-terminara)
 
-[Varia entre tercera/primera persona](#Varia-entre-tercera-y-primera-persona)
+- [Varia entre tercera/primera persona](#Varia-entre-tercera-y-primera-persona)
 
-[Sacude la camera](#Sacude-la-camera)
+- [Sacude la camera](#Sacude-la-camera)
 
-[Muestra el logo de HλLF-LIFE](#Muestra-el-logo-de-HλLF-LIFE)
+- [Muestra el logo de HλLF-LIFE](#Muestra-el-logo-de-HλLF-LIFE)
 
-[Titulo en la tabla de puntuación](#Titulo-en-la-tabla-de-puntuación)
+- [Titulo en la tabla de puntuación](#Titulo-en-la-tabla-de-puntuación)
 
-[Jugadores en la tabla de puntuación](#Jugadores-en-la-tabla-de-puntuación)
+- [Jugadores en la tabla de puntuación](#Jugadores-en-la-tabla-de-puntuación)
 
 ## namespace UTILS
 
@@ -520,12 +571,24 @@ Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScr
 # Muestra la tabla de puntuación como si el juego terminara
 
 - No puede ser desactivado
+
+**Uso:**
 ```angelscript
 	NETWORKMSG::SVC_INTERMISSION();
 ```
 
+codigo:
+```angelscript
+    void SVC_INTERMISSION()
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::SVC_INTERMISSION );
+        message.End();
+    }
+```
+
 # Varia entre tercera y primera persona
 
+**Uso:**
 ```angelscript
 	NETWORKMSG::ViewMode( 1, pPlayer );
 ```
@@ -535,72 +598,138 @@ Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScr
 
 - 1 Tercera persona
 
+Codigo:
+```angelscript
+
+    void ViewMode( int imode, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::ViewMode, pPlayer.edict() );
+            message.WriteByte(imode);
+        message.End();
+    }
+```
+
 # Sacude la camera
 
+**Uso:**
 ```angelscript
 	NETWORKMSG::Concuss( 15, -15, 15, pPlayer );
 ```
 Los argumentos definen:
 
--1 yall
+- 1 yall
 
--2 pitch
+- 2 pitch
 
--3 roll
+- 3 roll
+
+Codigo:
+```angelscript
+    void Concuss( int yall, int pitch, int roll, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::Concuss, pPlayer.edict() );
+            message.WriteFloat(yall);
+            message.WriteFloat(pitch);
+            message.WriteFloat(roll);
+        message.End();
+    }
+```
 
 # Muestra el logo de HλLF-LIFE
+
+**Uso:**
 ```angelscript
 	NETWORKMSG::GameTitle();
 ```
 
+Codigo:
+```angelscript
+    void GameTitle()
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::GameTitle );
+        message.WriteByte(1);
+        message.End();
+    }
+```
+
 # Titulo en la tabla de puntuación
+
+**Uso:**
 Cambia el nombre del servidor en la tabla de puntuación. no modifica el nombre realmente. solo en la tabla de puntuación.
 ```angelscript
 	NETWORKMSG::ServerName("The best fucking map");
 ```
 
+Codigo:
+```angelscript
+    void ServerName( const string StrTitle)
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::ServerName );
+            message.WriteString(StrTitle);
+        message.End();
+    }
+```
+
 # Jugadores en la tabla de puntuación
 
+**Uso:**
 Información en la tabla de puntuación. No modifican valores del jugador simplemente es visual.
 ```angelscript
 	NETWORKMSG::ScoreInfo(0, 0, 0, 0, 0, 0, 0, pPlayer );
 ```
 Los argumentos definen:
 
--1 puntos (frags)
+- 1 puntos (frags)
 
--2duertes
+- 2 duertes
 
--3 vida
+- 3 vida
 
--4 armadura
+- 4 armadura
 
--5 equipo
+- 5 equipo
 
--6 icono del jugador (Ver abajo)
+- 6 icono del jugador (Ver abajo)
 
--7 icono del servidor (Ver abajo)
+- 7 icono del servidor (Ver abajo)
 
 **Icono**
 
--0 ninguno
+- 0 ninguno
 
--1 palanca electrica
+- 1 palanca electrica
 
--2 uzi dorada
+- 2 uzi dorada
 
--3 dolar
+- 3 dolar
 
--4 tester
+- 4 tester
 
--5 artista
+- 5 artista
 
--6 desarollador
+- 6 desarollador
 
 **Iconos del servidor**
 
--0 ninguno
+- 0 ninguno
 
--1 administrador
+- 1 administrador
 
--2 Owner del server
+- 2 Owner del server
+
+Codigo:
+```angelscript
+    void ScoreInfo(int frags, int death, int health, int armor, int team, int icon, int server, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::ScoreInfo, pPlayer.edict() );
+            message.WriteByte(1);
+            message.WriteFloat(frags);
+            message.WriteLong(death);
+            message.WriteFloat(health);
+            message.WriteFloat(armor);
+            message.WriteByte(team);
+            message.WriteShort(icon);
+            message.WriteShort(server);
+        message.End();
+    }
+```
