@@ -1,6 +1,6 @@
 /*
 	See our scripts reference or check the wiki for more information
-	https://github.com/Mikk155/Sven-Co-op/wiki/Entity-Utils-Spanish
+	https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/utils.md
 */
 namespace UTILS
 {
@@ -30,7 +30,6 @@ namespace UTILS
 		}
 	}
 
-    /*	Shows a MOTD message to the player -Code by Geigue	*/
     void ShowMOTD(EHandle hPlayer, const string& in szTitle, const string& in szMessage)
     {
         if(!hPlayer){return;}
@@ -71,6 +70,60 @@ namespace UTILS
         NetworkMessage restore( MSG_ONE_UNRELIABLE, NetworkMessages::ServerName, pPlayer.edict() );
         restore.WriteString( g_EngineFuncs.CVarGetString( "hostname" ) );
         restore.End();
+    }
+}
+// End of namespace
+
+namespace NETWORKMSG
+{
+    void SVC_INTERMISSION()
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::SVC_INTERMISSION );
+        message.End();
+    }
+
+    void ViewMode( int imode, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::ViewMode, pPlayer.edict() );
+            message.WriteByte(imode);
+        message.End();
+    }
+
+    void Concuss( int yall, int pitch, int roll, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::Concuss, pPlayer.edict() );
+            message.WriteFloat(yall);
+            message.WriteFloat(pitch);
+            message.WriteFloat(roll);
+        message.End();
+    }
+
+    void GameTitle()
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::GameTitle );
+        message.WriteByte(1);
+        message.End();
+    }
+
+    void ScoreInfo(int frags, int death, int health, int armor, int team, int icon, int server, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::ScoreInfo, pPlayer.edict() );
+            message.WriteByte(1);
+            message.WriteFloat(frags);
+            message.WriteLong(death);
+            message.WriteFloat(health);
+            message.WriteFloat(armor);
+            message.WriteByte(team);
+            message.WriteShort(icon);
+            message.WriteShort(server);
+        message.End();
+    }
+
+    void ServerName( const string StrTitle)
+    {
+        NetworkMessage message( MSG_ALL, NetworkMessages::ServerName );
+            message.WriteString(StrTitle);
+        message.End();
     }
 }
 // End of namespace
@@ -120,12 +173,12 @@ namespace MLAN
             dictionary Languages =
             {
                 {"0", self.pev.message},
-                {"1", message_spanish},
-                {"2", message_portuguese},
-                {"3", message_german},
-                {"4", message_french},
-                {"5", message_italian},
-                {"6", message_esperanto}
+                {"1", string(message_spanish).IsEmpty() ? self.pev.message : message_spanish},
+                {"2", string(message_portuguese).IsEmpty() ? self.pev.message : message_portuguese},
+                {"3", string(message_german).IsEmpty() ? self.pev.message : message_portuguese},
+                {"4", string(message_french).IsEmpty() ? self.pev.message : message_french},
+                {"5", string(message_italian).IsEmpty() ? self.pev.message : message_italian},
+                {"6", string(message_esperanto).IsEmpty() ? self.pev.message : message_esperanto}
             };
 
             return string_t(Languages[ iLanguage ]);

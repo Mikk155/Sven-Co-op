@@ -10,7 +10,35 @@ Entity Utils is a script with exposed code soo that other entities/scripts can i
 ```
 this will offer the next mechanics.
 
-Need that an entity be inside other
+**namespace UTILS**
+
+- [Requires a entity be inside other entity](#Requires-a-entity-be-inside-other-entity)
+
+- [Let your entity decide being solid or point type](#Let-your-entity-decide-being-solid-or-point-type)
+
+- [Shows a motd information box](#Shows a motd information box)
+
+# Requires a entity be inside other entity
+
+**namespace MLAN**
+
+- [Allows your custom entity to be able to use Multi Language](#Allows-your-custom-entity-to-be-able-to-use-Multi-Language)
+
+**namespace NETWORKMSG**
+
+[Show scoreboard like when game end](#Show-scoreboard-like-when-game-end)
+
+[Toggle third/first person](#Toggle-third/first-person)
+
+[Shake camera](#Shake-camera)
+
+[Show HλLF-LIFE logo](#Show-HλLF-LIFE-logo)
+
+[Scoreboard Title](#Scoreboard-Title)
+
+[ScoreInfo Players](#ScoreInfo-Players)
+
+**namespace UTILS**
 
 Usage:
 ```angelscript
@@ -32,6 +60,8 @@ bool InsideZone( CBaseEntity@ pInsider, CBaseEntity@ pCornerZone )
 	return blInside;
 }
 ```
+
+# Let your entity decide being solid or point type
 
 Let your entity choose to be SolidBase (BSPClip) or PointBase ([BBox](https://developer.valvesoftware.com/wiki/Bounding_box))
 
@@ -58,7 +88,18 @@ void SetSize( CBaseEntity@ pMaxMin )
 }
 ```
 
-Allows that your custom entity is able to use [Multi-Language](https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish)
+# Shows a motd information box
+
+- Code by Geigue
+```angelscript
+	UTILS::ShowMOTD( pPlayer, "motd title", "motd contain" );
+```
+
+**namespace MLAN**
+
+# Allows your custom entity to be able to use Multi Language
+
+[Multi-Language](https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish)
 
 You have to add the next code for it to work.
 
@@ -158,6 +199,125 @@ g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 - Why the code is external?
 	This way you don't have to modify your entity when a new language is added.
 
+**namespace NETWORKMSG**
+
+Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScripts/blob/master/lib/networkmessage.as)
+
+# Show scoreboard like when game end
+
+- can't disable
+```angelscript
+	NETWORKMSG::SVC_INTERMISSION();
+```
+
+# Toggle third/first person
+
+```angelscript
+	NETWORKMSG::ViewMode( 1, pPlayer );
+```
+- The first argument defines the mode.
+
+- 0 first person
+
+- 1 third person
+
+# Shake camera
+
+```angelscript
+	NETWORKMSG::Concuss( 15, -15, 15, pPlayer );
+```
+the arguments defines:
+
+-1 yall
+
+-2 pitch
+
+-3 roll
+
+# Show HλLF-LIFE logo
+```angelscript
+	NETWORKMSG::GameTitle();
+```
+
+# Scoreboard Title
+Change server hostname at score board. do not actually touchs hostname. only shows on scoreboard
+```angelscript
+	NETWORKMSG::ServerName("The best fucking map");
+```
+
+# ScoreInfo Players
+
+On scoreboard information. doesn't modify player values only visual in scoreboard.
+```angelscript
+	NETWORKMSG::ScoreInfo(0, 0, 0, 0, 0, 0, 0, pPlayer );
+```
+The arguments defines:
+
+-1 points (frags)
+
+-2
+
+-3 deaths
+
+-4 health
+
+-5 armor
+
+-6 team
+
+-7 icon (See bellow)
+
+-7 server icon (See bellow)
+
+**Icon**
+
+-0 none
+
+-1 electro crowbar
+
+-2 golden uzi
+
+-3 dollar
+
+-4 tester
+
+-5 artist
+
+-6 developer
+
+**Server Icon**
+
+-0 none
+
+-1 admin
+
+-2 serverowner
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # SPANISH
 
 Entity Utils es un script de codigo expuesto asi que otras entidades/scripts pueden interactuar con el. mi "utils" esta en el directorio ``scripts/maps/mikk/entities/utils.as`` deberas incluir este script en tu script principal o en tu entidad custom funcionará tambien 
@@ -166,7 +326,35 @@ Entity Utils es un script de codigo expuesto asi que otras entidades/scripts pue
 ```
 Esto te ofrecerá las siguientes mecanicas.
 
-Necesitar que una entidad este dentro de otra
+**namespace UTILS**
+
+- [Necesita que una entidad este dentro de otra](#Necesita-que-una-entidad-este-dentro-de-otra)
+
+- [Permite que tu entidad pueda ser solid o point based](#Permite-que-tu-entidad-pueda-ser-solid-o-point-based)
+
+- [Muestra un motd con informacion en su caja](#Muestra-un-motd-con-informacion-en-su-caja)
+
+**namespace MLAN**
+
+- [Permite que tu entidad haga uso de multiples lenguajes](#Permite-que-tu-entidad-haga-uso-de-multiples-lenguajes)
+
+**namespace NETWORKMSG**
+
+[Muestra la tabla de puntuación como si el juego terminara](#Muestra-la-tabla-de-puntuación-como-si-el-juego-terminara)
+
+[Varia entre tercera/primera persona](#Varia-entre-tercera/primera persona)
+
+[Sacude la camera](#Sacude-la-camera)
+
+[Muestra el logo de HλLF-LIFE](#Muestra-el-logo-de-HλLF-LIFE)
+
+[Titulo en la tabla de puntuación](#Titulo-en-la-tabla-de-puntuación)
+
+[Jugadores en la tabla de puntuación](#Jugadores-en-la-tabla-de-puntuación)
+
+**namespace UTILS**
+
+# Necesita que una entidad este dentro de otra
 
 Usage:
 ```angelscript
@@ -188,6 +376,8 @@ bool InsideZone( CBaseEntity@ pInsider, CBaseEntity@ pCornerZone )
 	return blInside;
 }
 ```
+
+# Permite que tu entidad pueda ser solid o point based
 Permite que tu entidad elija ser SolidBase (BSPClip) o PointBase ([BBox](https://developer.valvesoftware.com/wiki/Bounding_box))
 
 Uso:
@@ -213,7 +403,18 @@ void SetSize( CBaseEntity@ pMaxMin )
 }
 ```
 
-Permite que tu entidad custom pueda utilizar [Multi-Language](https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish)
+# Muestra un motd con informacion en su caja
+
+- Codigo por Geigue
+```angelscript
+	UTILS::ShowMOTD( pPlayer, "motd title", "motd contain" );
+```
+
+**namespace MLAN**
+
+# Permite que tu entidad haga uso de multiples lenguajes
+
+[Multi-Language](https://github.com/Mikk155/Sven-Co-op/wiki/Multi-Language-Spanish)
 
 Deberas añadir el siguiente codigo en orden para ello.
 
@@ -311,3 +512,95 @@ g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 
 - Porque el codigo es externo?
 	De este modo tu no debes modificar tu entidad cuando un lenguaje nuevo sea añadido.
+
+**namespace NETWORKMSG**
+
+Code taken from [DrAbcOficial](https://github.com/Mikk155/DrAbcOfficial-AngelScripts/blob/master/lib/networkmessage.as)
+
+# Muestra la tabla de puntuación como si el juego terminara
+
+- No puede ser desactivado
+```angelscript
+	NETWORKMSG::SVC_INTERMISSION();
+```
+
+# Varia entre tercera/primera persona
+
+```angelscript
+	NETWORKMSG::ViewMode( 1, pPlayer );
+```
+- El primer argumento define el modo.
+
+- 0 Primera persona
+
+- 1 Tercera persona
+
+# Sacude la camera
+
+```angelscript
+	NETWORKMSG::Concuss( 15, -15, 15, pPlayer );
+```
+Los argumentos definen:
+
+-1 yall
+
+-2 pitch
+
+-3 roll
+
+# Muestra el logo de HλLF-LIFE
+```angelscript
+	NETWORKMSG::GameTitle();
+```
+
+# Titulo en la tabla de puntuación
+Cambia el nombre del servidor en la tabla de puntuación. no modifica el nombre realmente. solo en la tabla de puntuación.
+```angelscript
+	NETWORKMSG::ServerName("The best fucking map");
+```
+
+# Jugadores en la tabla de puntuación
+
+Información en la tabla de puntuación. No modifican valores del jugador simplemente es visual.
+```angelscript
+	NETWORKMSG::ScoreInfo(0, 0, 0, 0, 0, 0, 0, pPlayer );
+```
+Los argumentos definen:
+
+-1 puntos (frags)
+
+-2duertes
+
+-3 vida
+
+-4 armadura
+
+-5 equipo
+
+-6 icono del jugador (Ver abajo)
+
+-7 icono del servidor (Ver abajo)
+
+**Icono**
+
+-0 ninguno
+
+-1 palanca electrica
+
+-2 uzi dorada
+
+-3 dolar
+
+-4 tester
+
+-5 artista
+
+-6 desarollador
+
+**Iconos del servidor**
+
+-0 ninguno
+
+-1 administrador
+
+-2 Owner del server
