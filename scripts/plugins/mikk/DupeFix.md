@@ -10,7 +10,7 @@ The third things are optional as well.
 
 **INSTALL**
 
-- As [map-script*(https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.as)
+- As [map-script](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.as)
 ```angelscript
 #include "mikk/DupeFix"
 
@@ -42,7 +42,7 @@ Un script simple que arregla el exploit de duplicar municion mientras el modo de
 Las tres cosas son opcionales.
 
 **INSTALAR**
-- Como [map-script*(https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.as)
+- Como [map-script](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/DupeFix.as)
 ```angelscript
 #include "mikk/DupeFix"
 
