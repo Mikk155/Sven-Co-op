@@ -36,6 +36,7 @@ A custom entity aimed to replace game_text but adding support for languages and 
 A custom entity for showing hud sprites | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/env_spritehud.md) | Mikk
 A custom entity that requires the player that is touching it to press a certain key to trigger something | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_inbutton.md#spanish) | Mikk & [Gaftherman](https://github.com/Gaftherman)
 A custom entity for implement Anti-Rush with some extended features | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_once_mp.md#spanish) | Mikk, [Gaftherman](https://github.com/Gaftherman) & [Cubemath](https://github.com/CubeMath)
+A custom entity for trigger when player or monster are inside and then trigger again when outside | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_inout.md) | Mikk
 
 # SCRIPTS
 
@@ -101,6 +102,7 @@ Una entidad custom que apunta a reemplazar game_text pero añadiendo soporte par
 Una entidad custom para mostrar sprites en el HUD Pantalla | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/env_spritehud.md) | Mikk
 Una entidad custom que necesita del jugador que esta tocandola presione una tecla especificada para activar algo | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_inbutton.md#spanish) | Mikk & [Gaftherman](https://github.com/Gaftherman)
 Una entidad custom que implementa Anti-Rush con algunas mecanicas extendidas | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_once_mp.md#spanish) | Mikk, [Gaftherman](https://github.com/Gaftherman) & [Cubemath](https://github.com/CubeMath)
+Una entidad custom que hace trigger cuando un jugador o npc esta dentro y luego de nuevo cuando este fuera | [Github](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/trigger_inout.md) | Mikk
 
 
 # SCRIPTS SPANISH
