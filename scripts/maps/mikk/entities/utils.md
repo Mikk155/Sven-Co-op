@@ -12,6 +12,8 @@ this will offer the next mechanics.
 
 **namespace UTILS**
 
+- [Send trigger state the same as a multi_manager does](#send-trigger-state-the-same-as-a-multi_manager-does)
+
 - [Requires a entity be inside other entity](#Requires-a-entity-be-inside-other-entity)
 
 - [Let your entity decide being solid or point type](#Let-your-entity-decide-being-solid-or-point-type)
@@ -37,6 +39,24 @@ this will offer the next mechanics.
 - [ScoreInfo Players](#ScoreInfo-Players)
 
 ## namespace UTILS
+
+# Send trigger state the same as a multi_manager does
+[multi_manager](https://sites.google.com/site/svenmanor/entguide/multi_manager) has the hability to send different trigger types for their targets as USE_ON, USE_OFF, USE_KILL, USE_TOGGLE (default)
+
+So we've do a this for using that feature on our custom entities.
+
+**USAGE:**
+```
+UTILS::TriggerMode(self, self.pev.target, pPlayer);
+```
+
+In your entity just use ``"target" "TriggerThis#1"``
+
+- The first argument "self" defines your custom entity. dont change
+
+- The second argument defines the key that you're using. we've used target, netname and message for multiples triggers
+
+- The third argument defines the activator.
 
 # Requires a entity be inside other entity
 
@@ -379,6 +399,8 @@ Esto te ofrecerá las siguientes mecanicas.
 
 **namespace UTILS**
 
+- [Enviar un tipo de trigger igual como multi_manager lo hace](#enviar-un-tipo-de-trigger-igual-como-multi_manager-lo-hace)
+
 - [Necesita que una entidad este dentro de otra](#Necesita-que-una-entidad-este-dentro-de-otra)
 
 - [Permite que tu entidad pueda ser solid o point based](#Permite-que-tu-entidad-pueda-ser-solid-o-point-based)
@@ -404,6 +426,26 @@ Esto te ofrecerá las siguientes mecanicas.
 - [Jugadores en la tabla de puntuación](#Jugadores-en-la-tabla-de-puntuación)
 
 ## namespace UTILS
+
+# Enviar un tipo de trigger igual como multi_manager lo hace
+
+[multi_manager](https://sites.google.com/site/svenmanor/entguide/multi_manager) Tiene la habilidad de enviar diferentes tipos de trigger a sus targets como USE_ON, USE_OFF, USE_KILL, USE_TOGGLE (por defecto)
+
+Asi que hemos hecho esto para usar esa mecanica en nuestras entidades custom.
+
+**USO:**
+```
+UTILS::TriggerMode(self, self.pev.target, pPlayer);
+```
+
+En tu entidad luego solo usarias ``"target" "TriggerThis#1"``
+
+- El primer argumento "self" define tu entidad custom. no cambiar
+
+- El segundo argumento define la key que estas usando. usamos target, netname y message para multiples triggers.
+
+- El tercer argumento define el activador.
+
 
 # Necesita que una entidad este dentro de otra
 

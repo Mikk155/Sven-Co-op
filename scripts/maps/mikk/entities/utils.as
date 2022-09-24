@@ -30,6 +30,33 @@ namespace UTILS
 		}
 	}
 
+	void TriggerMode( CBaseEntity@ self, string key, CBaseEntity@ pActivator )
+	{
+		string ReadTarget = MLAN::Replace(key,{
+            { "#0", "" },
+            { "#1", "" },
+            { "#2", "" }
+        });
+
+        if( string( key ).EndsWith( "#0" ) )
+        {
+            g_EntityFuncs.FireTargets( ReadTarget, pActivator, pActivator, USE_OFF );
+        }
+        else if( string( key ).EndsWith( "#1" ) )
+        {
+            g_EntityFuncs.FireTargets( ReadTarget, pActivator, pActivator, USE_ON );
+        }
+        else if( string( key ).EndsWith( "#2" ) )
+        {
+            do g_EntityFuncs.Remove( g_EntityFuncs.FindEntityByTargetname( null, ReadTarget ) );
+            while( g_EntityFuncs.FindEntityByTargetname( null, ReadTarget ) !is null );
+        }
+        else
+        {
+            g_EntityFuncs.FireTargets( ReadTarget, pActivator, pActivator, USE_TOGGLE );
+        }
+	}
+
     void ShowMOTD(EHandle hPlayer, const string& in szTitle, const string& in szMessage)
     {
         if(!hPlayer){return;}
