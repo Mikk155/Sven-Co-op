@@ -17,6 +17,8 @@ is a script with a bunch of utilities that i've decided to merge into one script
 
 [Show a timer of your selection on screen](#timer)
 
+[players can auto-bhopping](#auto-bhop)
+
 # GetKiller
 
 The use of ``!activator`` is esencial when creating a map in MP mode if you want to make the correct actions to the respective player.
@@ -112,6 +114,16 @@ Notas:
 - The message supports multi-language and these are already defined internally in the script.
 
 - Do not change``m_flThinkDelta`` because it will stop being 1.0 second it will not count each second.
+
+# AUTO BHOP
+let players be able to do auto-bhopping with just pressing A/D relativelly. 
+
+**USAGE:**
+```angelscript
+"m_iszScriptFunctionName" "CTriggerScripts::AutoHop"
+"m_iMode" "2"
+"m_flThinkDelta" "0.1"
+```
 
 # SPANISH
 
@@ -222,3 +234,13 @@ Notas:
 - El mensaje soporta multi-lenguaje y estos ya estan definidos internamente en el script.
 
 - No cambiar ``m_flThinkDelta`` ya que si deja de ser 1.0 un segundo ya no será un segundo.
+
+# AUTO BHOP SPANISH
+deja que los jugadores hagan bhop automaticamente con solo presionar A/D relativamente.
+
+**USO:**
+```angelscript
+"m_iszScriptFunctionName" "CTriggerScripts::AutoHop"
+"m_iMode" "2"
+"m_flThinkDelta" "0.1"
+```

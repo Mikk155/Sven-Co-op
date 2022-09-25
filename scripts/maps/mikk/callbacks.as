@@ -3,28 +3,15 @@
 	
 	"m_iszScriptFile" "mikk/callbacks"
 	
-	See the wiki
-	https://github.com/Mikk155/Sven-Co-op/wiki/callbacks-Spanish
+	See information at here
+	https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.md
 
 */
 
 // Enable to see debugs
-bool DebugMode = true;
+bool DebugMode = false;
 
 HUDTextParams HudParams;
-HudParams.x = -1;
-HudParams.effect = 0;
-HudParams.r1 = RGBA_SVENCOOP.r;
-HudParams.g1 = RGBA_SVENCOOP.g;
-HudParams.b1 = RGBA_SVENCOOP.b;
-HudParams.a1 = 0;
-HudParams.r2 = RGBA_SVENCOOP.r;
-HudParams.g2 = RGBA_SVENCOOP.g;
-HudParams.b2 = RGBA_SVENCOOP.b;
-HudParams.a2 = 0;
-HudParams.fadeinTime = 0; 
-HudParams.fadeoutTime = 0.25;
-HudParams.fxTime = 0;
 
 namespace CTriggerScripts
 {
@@ -92,6 +79,19 @@ namespace CTriggerScripts
 
     void ShowTimer( CBaseEntity@ pTriggerScript )
     {
+        HudParams.x = -1;
+        HudParams.effect = 0;
+        HudParams.r1 = RGBA_SVENCOOP.r;
+        HudParams.g1 = RGBA_SVENCOOP.g;
+        HudParams.b1 = RGBA_SVENCOOP.b;
+        HudParams.a1 = 0;
+        HudParams.r2 = RGBA_SVENCOOP.r;
+        HudParams.g2 = RGBA_SVENCOOP.g;
+        HudParams.b2 = RGBA_SVENCOOP.b;
+        HudParams.a2 = 0;
+        HudParams.fadeinTime = 0; 
+        HudParams.fadeoutTime = 0.25;
+        HudParams.fxTime = 0;
         HudParams.holdTime = 2;
         HudParams.channel = 3;
         HudParams.y = 0.90;
@@ -127,6 +127,19 @@ namespace CTriggerScripts
 
     void Invisibility( CBaseEntity@ pTriggerScript )
     {
+        HudParams.x = -1;
+        HudParams.effect = 0;
+        HudParams.r1 = RGBA_SVENCOOP.r;
+        HudParams.g1 = RGBA_SVENCOOP.g;
+        HudParams.b1 = RGBA_SVENCOOP.b;
+        HudParams.a1 = 0;
+        HudParams.r2 = RGBA_SVENCOOP.r;
+        HudParams.g2 = RGBA_SVENCOOP.g;
+        HudParams.b2 = RGBA_SVENCOOP.b;
+        HudParams.a2 = 0;
+        HudParams.fadeinTime = 0; 
+        HudParams.fadeoutTime = 0.25;
+        HudParams.fxTime = 0;
         HudParams.holdTime = 1.2;
         HudParams.channel = 5;
         HudParams.y = 0.70;
@@ -174,6 +187,59 @@ namespace CTriggerScripts
                 else if(iLanguage == 5 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Entering invisible mode in "+ckinviint+ " seconds.\n" );
                 else if(iLanguage == 6 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Entering invisible mode in "+ckinviint+ " seconds.\n" );
                 else g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Entering invisible mode in "+ckinviint+ " seconds.\n" );
+            }
+        }
+    }
+
+    void AutoHop( CBaseEntity@ pTriggerScript )
+    {
+        HudParams.effect = 0;
+        HudParams.r1 = RGBA_SVENCOOP.r;
+        HudParams.g1 = RGBA_SVENCOOP.g;
+        HudParams.b1 = RGBA_SVENCOOP.b;
+        HudParams.a1 = 0;
+        HudParams.r2 = RGBA_SVENCOOP.r;
+        HudParams.g2 = RGBA_SVENCOOP.g;
+        HudParams.b2 = RGBA_SVENCOOP.b;
+        HudParams.a2 = 0;
+        HudParams.fadeinTime = 0; 
+        HudParams.fadeoutTime = 0.25;
+        HudParams.fxTime = 0;
+        HudParams.holdTime = 0.2;
+        HudParams.channel = 5;
+        HudParams.y = 0.90;
+        HudParams.x = -1;
+
+        for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
+        {
+            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+
+            if( pPlayer is null or !pPlayer.IsAlive() or !pPlayer.IsConnected() )
+                continue;
+
+            float iLanguage = pPlayer.GetCustomKeyvalues().GetKeyvalue("$f_lenguage").GetFloat();
+            float ibhopp = pPlayer.GetCustomKeyvalues().GetKeyvalue("$f_bhoppingmsg").GetFloat();
+
+            if( pPlayer.pev.button & IN_MOVELEFT != 0 or pPlayer.pev.button & IN_MOVERIGHT != 0 )
+            {
+                NetworkMessage msg(MSG_ONE, NetworkMessages::SVC_STUFFTEXT, pPlayer.edict());
+                    msg.WriteString( ( pPlayer.pev.flags & FL_ONGROUND != 0 ) ? "+jump;" : "-jump;" );
+                msg.End();
+            }
+            else if( ibhopp != 1 )
+            {
+                if( pPlayer.pev.button & IN_USE != 0 )
+                {
+                    pPlayer.GetCustomKeyvalues().SetKeyvalue( "$f_bhoppingmsg", 1 );
+                }
+
+                if(iLanguage == 1 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Presiona y mantiene las teclas moverse izquierda/derecha para saltar automaticamente.\n Presiona E para esconder este mensaje\n" );
+                else if(iLanguage == 2 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Press and hold move left/right keys to auto hopping.\n Press E to hide this message.\n" );
+                else if(iLanguage == 3 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Press and hold move left/right keys to auto hopping.\n Press E to hide this message.\n" );
+                else if(iLanguage == 4 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Press and hold move left/right keys to auto hopping.\n Press E to hide this message.\n" );
+                else if(iLanguage == 5 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Press and hold move left/right keys to auto hopping.\n Press E to hide this message.\n" );
+                else if(iLanguage == 6 )g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Press and hold move left/right keys to auto hopping.\n Press E to hide this message.\n" );
+                else g_PlayerFuncs.HudMessage( pPlayer, HudParams, "Press and hold move left/right keys to auto hopping.\n Press E to hide this message.\n" );
             }
         }
     }
