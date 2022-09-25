@@ -3,7 +3,6 @@
 
 INSTALL:
 
-#include "mikk/entities/utils"
 #include "mikk/entities/trigger_once_individual"
 
 void MapInit()
@@ -12,6 +11,7 @@ void MapInit()
 }
 
 */
+#include "utils"
 
 void RegisterTriggerOnceIndividual() 
 {

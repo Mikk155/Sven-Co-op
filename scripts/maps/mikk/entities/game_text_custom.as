@@ -5,7 +5,6 @@
 
 INSTALL:
 
-#include "mikk/entities/utils"
 #include "mikk/entities/game_text_custom"
 
 void MapInit()
@@ -26,6 +25,7 @@ void MapInit()
 	-
 	-
 */
+#include "utils"
 
 void RegisterCustomTextGame()
 {

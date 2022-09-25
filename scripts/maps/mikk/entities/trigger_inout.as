@@ -1,16 +1,3 @@
-/*Original Script by Cubemath*/
-/*
-	Trigger something when someone enter the zone. trigger again when no one is in the zone.
-
-INSTALL:
-
-#include "mikk/entities/trigger_inout"
-
-void MapInit()
-{
-	RegisterCBaseInOut( "trigger_inout" );
-}*/
-
 #include "utils"
 
 void RegisterCBaseInOut( const string ClassName = "trigger_inout" )

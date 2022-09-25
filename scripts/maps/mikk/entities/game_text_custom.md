@@ -14,14 +14,11 @@ Then modified by me and [Gaftherman](https://github.com/Gaftherman)
 
 **Installation:**
 ```angelscript
-#include "mikk/multi_language"
-#include "mikk/entities/utils"
 #include "mikk/entities/game_text_custom"
 
 void MapInit()
 {
 	RegisterCustomTextGame();
-	MultiLanguageInit();
 }
 ```
 

@@ -12,7 +12,6 @@ Good combination is game_text_custom with MOTD message.
 
 **INSTALL:**
 ```angelscript
-#include "mikk/entities/utils"
 #include "mikk/entities/zone_caller"
 
 void MapInit()
@@ -51,7 +50,6 @@ Una buena combinación es game_text_custom con el mensaje estilo MOTD.
 
 **INSTALAR:**
 ```angelscript
-#include "mikk/entities/utils"
 #include "mikk/entities/zone_caller"
 
 void MapInit()
