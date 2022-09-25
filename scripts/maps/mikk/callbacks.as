@@ -3,13 +3,13 @@
 	
 	"m_iszScriptFile" "mikk/callbacks"
 	
-	See information at here
-	https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/callbacks.md
+	See the wiki
+	https://github.com/Mikk155/Sven-Co-op/wiki/callbacks-Spanish
 
 */
 
 // Enable to see debugs
-bool DebugMode = false;
+bool DebugMode = true;
 
 HUDTextParams HudParams;
 
@@ -217,16 +217,18 @@ namespace CTriggerScripts
             if( pPlayer is null or !pPlayer.IsAlive() or !pPlayer.IsConnected() )
                 continue;
 
+            float ibhoppp = pPlayer.GetCustomKeyvalues().GetKeyvalue("$f_bhopping").GetFloat();
             float iLanguage = pPlayer.GetCustomKeyvalues().GetKeyvalue("$f_lenguage").GetFloat();
-            float ibhopp = pPlayer.GetCustomKeyvalues().GetKeyvalue("$f_bhoppingmsg").GetFloat();
+            float ibhopmsg = pPlayer.GetCustomKeyvalues().GetKeyvalue("$f_bhoppingmsg").GetFloat();
 
-            if( pPlayer.pev.button & IN_MOVELEFT != 0 or pPlayer.pev.button & IN_MOVERIGHT != 0 )
-            {
-                NetworkMessage msg(MSG_ONE, NetworkMessages::SVC_STUFFTEXT, pPlayer.edict());
-                    msg.WriteString( ( pPlayer.pev.flags & FL_ONGROUND != 0 ) ? "+jump;" : "-jump;" );
-                msg.End();
-            }
-            else if( ibhopp != 1 )
+            if( ibhoppp == 1 )
+                continue;
+
+            NetworkMessage msg(MSG_ONE, NetworkMessages::SVC_STUFFTEXT, pPlayer.edict());
+                msg.WriteString( (pPlayer.pev.button & IN_MOVELEFT != 0 && pPlayer.pev.flags & FL_ONGROUND != 0 ) ? "+jump" : (pPlayer.pev.button & IN_MOVERIGHT != 0 && pPlayer.pev.flags & FL_ONGROUND != 0 ) ? "+jump" : "-jump;" );
+            msg.End();
+
+            if( ibhopmsg != 1 )
             {
                 if( pPlayer.pev.button & IN_USE != 0 )
                 {
