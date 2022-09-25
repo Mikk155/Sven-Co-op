@@ -4,35 +4,35 @@
 */
 namespace UTILS
 {
-	bool InsideZone( CBaseEntity@ pInsider, CBaseEntity@ pCornerZone )
-	{
-		bool blInside = true;
-		blInside = blInside && pInsider.pev.origin.x + pInsider.pev.maxs.x >= pCornerZone.pev.origin.x + pCornerZone.pev.mins.x;
-		blInside = blInside && pInsider.pev.origin.y + pInsider.pev.maxs.y >= pCornerZone.pev.origin.y + pCornerZone.pev.mins.y;
-		blInside = blInside && pInsider.pev.origin.z + pInsider.pev.maxs.z >= pCornerZone.pev.origin.z + pCornerZone.pev.mins.z;
-		blInside = blInside && pInsider.pev.origin.x + pInsider.pev.mins.x <= pCornerZone.pev.origin.x + pCornerZone.pev.maxs.x;
-		blInside = blInside && pInsider.pev.origin.y + pInsider.pev.mins.y <= pCornerZone.pev.origin.y + pCornerZone.pev.maxs.y;
-		blInside = blInside && pInsider.pev.origin.z + pInsider.pev.mins.z <= pCornerZone.pev.origin.z + pCornerZone.pev.maxs.z;
+    bool InsideZone( CBaseEntity@ pInsider, CBaseEntity@ pCornerZone )
+    {
+        bool blInside = true;
+        blInside = blInside && pInsider.pev.origin.x + pInsider.pev.maxs.x >= pCornerZone.pev.origin.x + pCornerZone.pev.mins.x;
+        blInside = blInside && pInsider.pev.origin.y + pInsider.pev.maxs.y >= pCornerZone.pev.origin.y + pCornerZone.pev.mins.y;
+        blInside = blInside && pInsider.pev.origin.z + pInsider.pev.maxs.z >= pCornerZone.pev.origin.z + pCornerZone.pev.mins.z;
+        blInside = blInside && pInsider.pev.origin.x + pInsider.pev.mins.x <= pCornerZone.pev.origin.x + pCornerZone.pev.maxs.x;
+        blInside = blInside && pInsider.pev.origin.y + pInsider.pev.mins.y <= pCornerZone.pev.origin.y + pCornerZone.pev.maxs.y;
+        blInside = blInside && pInsider.pev.origin.z + pInsider.pev.mins.z <= pCornerZone.pev.origin.z + pCornerZone.pev.maxs.z;
 
-		return blInside;
-	}
+        return blInside;
+    }
 
-	void SetSize( CBaseEntity@ pMaxMin )
-	{
-		if( pMaxMin.GetClassname() == string(pMaxMin.pev.classname) && string( pMaxMin.pev.model )[0] == "*" && pMaxMin.IsBSPModel() )
+    void SetSize( CBaseEntity@ pMaxMin )
+    {
+        if( pMaxMin.GetClassname() == string(pMaxMin.pev.classname) && string( pMaxMin.pev.model )[0] == "*" && pMaxMin.IsBSPModel() )
         {
             g_EntityFuncs.SetModel( pMaxMin, pMaxMin.pev.model );
             g_EntityFuncs.SetSize( pMaxMin.pev, pMaxMin.pev.mins, pMaxMin.pev.maxs );
         }
-		else
-		{
-			g_EntityFuncs.SetSize( pMaxMin.pev, pMaxMin.pev.vuser1, pMaxMin.pev.vuser2 );		
-		}
-	}
+        else
+        {
+            g_EntityFuncs.SetSize( pMaxMin.pev, pMaxMin.pev.vuser1, pMaxMin.pev.vuser2 );		
+        }
+    }
 
-	void TriggerMode( CBaseEntity@ self, string key, CBaseEntity@ pActivator )
-	{
-		string ReadTarget = MLAN::Replace(key,{
+    void TriggerMode( CBaseEntity@ self, string key, CBaseEntity@ pActivator )
+    {
+        string ReadTarget = MLAN::Replace(key,{
             { "#0", "" },
             { "#1", "" },
             { "#2", "" }
@@ -55,7 +55,7 @@ namespace UTILS
         {
             g_EntityFuncs.FireTargets( ReadTarget, pActivator, pActivator, USE_TOGGLE );
         }
-	}
+    }
 
     void ShowMOTD(EHandle hPlayer, const string& in szTitle, const string& in szMessage)
     {
