@@ -1,3 +1,4 @@
+#include "utils"
 void RegisterTriggerInButtons()
 {
     g_CustomEntityFuncs.RegisterCustomEntity( "trigger_inbutton", "trigger_inbutton" );
@@ -73,7 +74,7 @@ class trigger_inbutton : ScriptBaseEntity, MLAN::MoreKeyValues
 
                 if( pPlayer.pev.button & pevButton != 0)
                 {
-                    g_EntityFuncs.FireTargets( ""+self.pev.target+"", pPlayer, pPlayer, USE_TOGGLE );
+                    UTILS::TriggerMode(self, self.pev.target, pPlayer);
                 }
             }
         }
