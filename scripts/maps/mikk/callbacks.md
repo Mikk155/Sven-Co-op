@@ -139,6 +139,8 @@ let players be able to do auto-bhopping with just pressing A/D relativelly.
 
 [Muestra un contador de tu eleccion en la pantalla](#timer-spanish)
 
+[Los jugadores pueden saltar automaticamente](#auto-bhop-spanish)
+
 # GetKiller SPANISH
 
 El uso de ``!activator`` es algo escencial a la hora de crear un mapa en un juego MP si quieres lograr efectuar acciones al respectivo jugador.
