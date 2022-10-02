@@ -13,7 +13,7 @@
 // Choose a channel (1-8) of your preference for this plugin uses messages.
 float flChannel = 8;
 
-// Maximun time players can be afk before joining spectator mode.
+// Maximun time players can be afk before joining spectator mode. 0 = disable feature
 const int AFKMaxTime = 300;
 
 // End of customizable zone
@@ -102,7 +102,7 @@ void AFKThink()
             pPlayer.pev.nextthink = ( g_Engine.time + 2.0 );
 		}
 
-		if( ExcludedMapList() )
+		if( ExcludedMapList() || AFKMaxTime == 0 )
 			return;
 
 		int iafktimer = MLAN::GetCKV(pPlayer, "$i_afktimer");
