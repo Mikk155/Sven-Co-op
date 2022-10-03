@@ -171,16 +171,11 @@ class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 					CallText( pPlayer );
 				}
 			}
-			// Game text legacy -
-			g_EntityFuncs.FireTargets( string( self.pev.target ), null, null, USE_TOGGLE );
 		}
 		else if( pActivator !is null && pActivator.IsPlayer() )
 		{
 			self.pev.netname = pActivator.pev.netname;
 			CallText( cast<CBasePlayer@>(pActivator) );
-
-			// Game text legacy -
-			g_EntityFuncs.FireTargets( string( self.pev.target ), pActivator, pActivator, USE_TOGGLE );
 		}
 		// Game text legacy -
 		if( killtarget != "" && killtarget != self.GetTargetname() )
@@ -192,7 +187,10 @@ class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 
 	void CallText( CBasePlayer@ pPlayer )
 	{
-		int iLanguage = MLAN::GetCKV(pPlayer, "$f_lenguage");
+		// Game text legacy - with addition of multi_manager feature for TriggerState
+		UTILS::TriggerMode( self, self.pev.target, pPlayer );
+		
+		int iLanguage = MLAN::GetCKV( pPlayer, "$f_lenguage");
 		
 		string ReadLanguage = MLAN::Replace(ReadLanguages(iLanguage), { { "!frags", ""+int(self.pev.frags) }, {"!activator", ""+self.pev.netname } } );
 
@@ -206,7 +204,7 @@ class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 		else if( TextParams.effect == 3 ) g_PlayerFuncs.ShowMessage( pPlayer, ""+ReadLanguage+"\n" );
 
 		// Motd message
-		else if( TextParams.effect == 4 ) UTILS::ShowMOTD( pPlayer, string( "motd info" ), ReadLanguage+"\n" );
+		else if( TextParams.effect == 4 ) UTILS::ShowMOTD( pPlayer, string( "motd" ), ReadLanguage+"\n" );
 
 		// Chat message
 		else if( TextParams.effect == 5 ) g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, ""+ReadLanguage+"\n" );

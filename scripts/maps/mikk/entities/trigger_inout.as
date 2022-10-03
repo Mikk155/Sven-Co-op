@@ -126,7 +126,7 @@ class CBaseInOut : ScriptBaseEntity
                     {
                         if( pPlayer.GetCustomKeyvalues().GetKeyvalue("$i_trigger_inout").GetFloat() == 0 )
                         {
-                            UTILS::TriggerMode(self, self.pev.target, pPlayer);
+                            UTILS::TriggerMode(self, self.pev.target, pPlayer );
                             pPlayer.GetCustomKeyvalues().SetKeyvalue( "$i_trigger_inout", 1 );
                         }
                     }
