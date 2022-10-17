@@ -157,6 +157,8 @@ class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 
 	void Use(CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue)
 	{
+		self.pev.netname = pActivator.pev.netname;
+
 		// All players flag
 		if ( self.pev.SpawnFlagBitSet( 1 ) )
 		{
@@ -174,7 +176,6 @@ class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 		}
 		else if( pActivator !is null && pActivator.IsPlayer() )
 		{
-			self.pev.netname = pActivator.pev.netname;
 			CallText( cast<CBasePlayer@>(pActivator) );
 		}
 		// Game text legacy -
