@@ -1,6 +1,19 @@
+/*Original Script by Cubemath*/
+/*
+	Trigger something when someone enter the zone. trigger again when no one is in the zone.
+
+INSTALL:
+
+#include "mikk/entities/trigger_inout"
+
+void MapInit()
+{
+	RegisterCBaseInOut();
+}*/
+
 #include "utils"
 
-void RegisterCBaseInOut( const string ClassName = "trigger_inout" )
+void RegisterCBaseInOut()
 {
     g_CustomEntityFuncs.RegisterCustomEntity( "CBaseInOut", ClassName );
 }
@@ -126,7 +139,7 @@ class CBaseInOut : ScriptBaseEntity
                     {
                         if( pPlayer.GetCustomKeyvalues().GetKeyvalue("$i_trigger_inout").GetFloat() == 0 )
                         {
-                            UTILS::TriggerMode(self, self.pev.target, pPlayer );
+                            UTILS::TriggerMode(self, self.pev.target, pPlayer);
                             pPlayer.GetCustomKeyvalues().SetKeyvalue( "$i_trigger_inout", 1 );
                         }
                     }
