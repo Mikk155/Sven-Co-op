@@ -1,0 +1,22 @@
+@PointClass base(TargetName) color(40 40 40) = player_elseif : "IF or ELSE cases"
+[
+	targetname(target_source) : "Name"
+	target(target_destination) : "True case target"
+	netname(target_destination) : "False case target"
+	health(Choices) : "Condition" : 0 =
+	[
+		// Returns whether the player has an HEV suit.
+		0 : "HasSuit"
+	]
+]
+@PointClass base(TargetName) color(40 40 40) = monster_elseif : "IF or ELSE cases"
+[
+	targetname(target_source) : "Name"
+	target(target_destination) : "True case target"
+	netname(target_destination) : "False case target"
+	health(Choices) : "Condition" : 0 =
+	[
+		// Returns whether this monster is ally to players.
+		0 : "IsPlayerAlly"
+	]
+]
