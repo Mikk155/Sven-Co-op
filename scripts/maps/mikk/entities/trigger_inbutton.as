@@ -74,7 +74,7 @@ class trigger_inbutton : ScriptBaseEntity, MLAN::MoreKeyValues
 
                 if( pPlayer.pev.button & pevButton != 0)
                 {
-                    UTILS::TriggerMode(self, self.pev.target, pPlayer);
+                    UTILS::TriggerMode( self.pev.target, pPlayer);
                 }
             }
         }

@@ -189,7 +189,7 @@ class game_text_custom : ScriptBaseEntity, MLAN::MoreKeyValues
 	void CallText( CBasePlayer@ pPlayer )
 	{
 		// Game text legacy - with addition of multi_manager feature for TriggerState
-		UTILS::TriggerMode( self, self.pev.target, pPlayer );
+		UTILS::TriggerMode( self.pev.target, pPlayer );
 		
 		int iLanguage = MLAN::GetCKV( pPlayer, "$f_lenguage");
 		

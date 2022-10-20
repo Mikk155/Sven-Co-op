@@ -20,7 +20,7 @@ void RegisterEnvSpriteHud()
 class env_spritehud : ScriptBaseEntity
 {
 	HUDSpriteParams params;
-	
+
     private int color1 = 0;
     private int color2 = 0;
     private int effect = 0;

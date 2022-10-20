@@ -30,7 +30,7 @@ namespace UTILS
         }
     }
 
-    void TriggerMode( CBaseEntity@ self, string key, CBaseEntity@ pActivator )
+    void TriggerMode( string key, CBaseEntity@ pActivator )
     {
         string ReadTarget = MLAN::Replace(key,{
             { "#0", "" },

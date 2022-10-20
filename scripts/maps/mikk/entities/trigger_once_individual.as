@@ -74,7 +74,7 @@ class trigger_once_individual : ScriptBaseEntity
 
 			if( UTILS::InsideZone( pPlayer, self ) )
 			{
-                UTILS::TriggerMode(self, self.pev.target, pPlayer );
+                UTILS::TriggerMode( self.pev.target, pPlayer );
 				ckvThis.SetKeyvalue("$i_"+string(self.pev.target), 1 );
 			}
 		}

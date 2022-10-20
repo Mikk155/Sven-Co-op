@@ -139,7 +139,7 @@ class CBaseInOut : ScriptBaseEntity
                     {
                         if( pPlayer.GetCustomKeyvalues().GetKeyvalue("$i_trigger_inout").GetFloat() == 0 )
                         {
-                            UTILS::TriggerMode(self, self.pev.target, pPlayer);
+                            UTILS::TriggerMode( self.pev.target, pPlayer);
                             pPlayer.GetCustomKeyvalues().SetKeyvalue( "$i_trigger_inout", 1 );
                         }
                     }
@@ -147,7 +147,7 @@ class CBaseInOut : ScriptBaseEntity
                     {
                         if( pPlayer.GetCustomKeyvalues().GetKeyvalue("$i_trigger_inout").GetFloat() == 1 )
                         {
-                            UTILS::TriggerMode(self, self.pev.netname, pPlayer);
+                            UTILS::TriggerMode( self.pev.netname, pPlayer);
 
                             if( self.pev.SpawnFlagBitSet( SF_INOUT_OUTREMOVE ) )
                             {
@@ -168,7 +168,7 @@ class CBaseInOut : ScriptBaseEntity
                     {
                         if( !OnePpInsideState )
                         {
-                            UTILS::TriggerMode(self, self.pev.target, pPlayer);
+                            UTILS::TriggerMode( self.pev.target, pPlayer);
                             OnePpInsideState = true;
                         }
                     }
@@ -181,7 +181,7 @@ class CBaseInOut : ScriptBaseEntity
 
                         if( currentPercentage >= 1.00 && OnePpInsideState ) 
                         {
-                            UTILS::TriggerMode(self, self.pev.netname, self);
+                            UTILS::TriggerMode( self.pev.netname, self);
 
                             if( self.pev.SpawnFlagBitSet( SF_INOUT_OUTREMOVE ) )
                             {
@@ -205,7 +205,7 @@ class CBaseInOut : ScriptBaseEntity
                 {
                     if( pMonster.GetCustomKeyvalues().GetKeyvalue("$i_trigger_inout").GetFloat() == 0 )
                     {
-                        UTILS::TriggerMode(self, self.pev.target, pMonster);
+                        UTILS::TriggerMode( self.pev.target, pMonster);
 
                         pMonster.GetCustomKeyvalues().SetKeyvalue( "$i_trigger_inout", 1 );
                     }
@@ -214,7 +214,7 @@ class CBaseInOut : ScriptBaseEntity
                 {
                     if( pMonster.GetCustomKeyvalues().GetKeyvalue("$i_trigger_inout").GetFloat() == 1 )
                     {
-                        UTILS::TriggerMode(self, self.pev.netname, pMonster);
+                        UTILS::TriggerMode( self.pev.netname, pMonster);
                         pMonster.GetCustomKeyvalues().SetKeyvalue( "$i_trigger_inout", 0 );
                     }
                 }

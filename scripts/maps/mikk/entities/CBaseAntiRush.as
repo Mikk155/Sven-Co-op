@@ -197,7 +197,7 @@ class CBaseAntiRushMultiPlayer : ScriptBaseEntity
 
 			while((@pLocker = g_EntityFuncs.FindEntityByClassname(pLocker, "*")) !is null)
 			{
-				if( ""+self.pev.netname+"" == ""+pLocker.pev.model+"" )
+				if( string( self.pev.netname ) == string( pLocker.pev.model ) )
 				{
 					if( pLocker.GetCustomKeyvalues().HasKeyvalue( "$i_ignore" ) )
 						continue;
@@ -250,6 +250,35 @@ class CBaseAntiRushMultiPlayer : ScriptBaseEntity
 	
 	void TriggerThink() 
 	{
+		if( !string( self.pev.noise ).IsEmpty() )
+		{
+			CBaseEntity@ pLevelChange = null;
+
+			while((@pLevelChange = g_EntityFuncs.FindEntityByClassname(pLevelChange, "trigger_changelevel")) !is null)
+			{
+				if( string( self.pev.noise ) == string( pLevelChange.pev.model ) )
+				{
+					if( pLevelChange.pev.spawnflags != 2 )
+					{
+						g_EntityFuncs.DispatchKeyValue( edict_t@ pLevelChange, "spawnflags", "2" );
+					}
+					for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
+					{
+						CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+
+						if( pPlayer is null || !pPlayer.IsConnected() || !pPlayer.IsAlive() )
+							continue;
+
+						if( UTILS::InsideZone( pPlayer, pLevelChange ) )
+						{
+							// logica
+						}
+				}
+			}
+			self.pev.nextthink = g_Engine.time + 0.1f;
+			return;
+		}
+
 		float TotalPlayers = 0, PlayersTrigger = 0, CurrentPercentage = 0;
 
 		for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
@@ -343,7 +372,7 @@ class CBaseAntiRushMultiPlayer : ScriptBaseEntity
 			while( g_EntityFuncs.FindEntityByTargetname( null, killtarget ) !is null );
 		}
 
-        UTILS::TriggerMode( self, self.pev.target, self );
+        UTILS::TriggerMode( self.pev.target, self );
 
 		UpdateOnRemove();
 
