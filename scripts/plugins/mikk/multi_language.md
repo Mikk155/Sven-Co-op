@@ -4,127 +4,93 @@
 
 # ENGLISH
 
-Multi-Language offers to Scriptes and Mappers the hability of doing use of adding language support for player's choice that they can change on-the-fly dynamically.
-
-it works by adding to them a custom keyvalue. see more about custom keyvalues at [svenmanor](https://sites.google.com/site/svenmanor/entguide/custom-keyvalues)
-
-Other plugins, scripts or custom entities can interact with those keyvalues and get their values for showing the correct message.
-
-**INSTALL:**
-```angelscript
-	"plugin"
-	{
-		"name" "Multi-Language"
-		"script" "mikk/multi_language"
-	}
-```
-
-Setup your plugin is pretty easy. you only need to get this value from players and then show the proper message. the basic code looks like this
-
-```angelscript
-void YourFuction()
-{
-	CustomKeyvalues@ ckLenguage = pPlayer.GetCustomKeyvalues();
-	CustomKeyvalue ckLenguageIs = ckLenguage.GetKeyvalue("$f_lenguage");
-	int iLanguage = int(ckLenguageIs.GetFloat());
-
-	if(iLanguage == 1 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 1 (Spanish)" );
-	}
-	else if(iLanguage == 2 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 2 (Portuguese)" );
-	}
-	else if(iLanguage == 3 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 3 (German)" );
-	}
-	else if(iLanguage == 4 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 4 (French)" );
-	}
-	else if(iLanguage == 5 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 5 (Italian)" );
-	}
-	else if(iLanguage == 6 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 6 (Esperanto)" );
-	}
-	else
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 0 or anything else (English)" );
-	}
-}
-```
-
-For set up your custom entity see [utils](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/utils.md)
-
-For supported languages see [Suported languages](https://github.com/Mikk155/Sven-Co-op/wiki/Supported-Languages)
-
-For maps translations see [Localizations list](https://github.com/Mikk155/Sven-Co-op/wiki/Localizations)
-
 # SPANISH
 
-Multi-Language Ofrece a los mappers y scriptes la habilidad de dar uso al soporte de multi-lenguaje por elección de los jugadores que puede ser cambiado en el aire y dinamicamente.
+Multi-Language ofrece a los Scripters y Mappers la habilidad de dar uso a multiples lenguajes dependiendo de la eleccion individual de cada jugador.
 
-Esto funciona añadiendo una custom keyvalue en ellos. mas informacion sobre custom keyvalues en [svenmanor](https://sites.google.com/site/svenmanor/entguide/custom-keyvalues)
+esto puede ser elegido sobre la marcha y por un tiempo prolongado la eleccion del jugador se mantendrá durante cambios de nivel o tras abandonar y reconectarte al servidor
 
-Otros plugins, scripts o entidades custom pueden iteractuar con esta keyvalue y tomar su valor para luego mostrar el mensaje correcto a su lenguaje.
+La idea original fue creada por [Kmkz](https://github.com/kmkz27) y luego desarrollada por [Mikk](https://github.com/Mikk155) y [Gaftherman](https://github.com/Gaftherman)
 
-**INSTALAR:**
-```angelscript
-	"plugin"
-	{
-		"name" "Multi-Language"
-		"script" "mikk/multi_language"
-	}
-```
+Esta mecanica funciona tanto para mappers que quieren agregar lenguajes en sus mapas como para otras personas que simplemente quieren traducir mensajes ya existentes que utilicen trigger_multiple, game_text o env_message.
 
-Configurar tu script es bastante simple. solo debes tomar el valor de los jugadores y mostrar el mensaje correcto. la base del codigo luce asi
+Pero los scripters tambien pueden utilizar esta mecanica en sus propios scripts simplemente verificando al jugador primero, ya que la manera de identificarlo fue creada utilizando [Custom keyvalues](https://sites.google.com/site/svenmanor/entguide/custom-keyvalues)
+
+
+**INSTALACIÓN**
+
+ir a **svencoop/default_plugins.txt** y añadir lo siguiente:
 
 ```angelscript
-void YourFuction()
-{
-	CustomKeyvalues@ ckLenguage = pPlayer.GetCustomKeyvalues();
-	CustomKeyvalue ckLenguageIs = ckLenguage.GetKeyvalue("$f_lenguage");
-	int iLanguage = int(ckLenguageIs.GetFloat());
-
-	if(iLanguage == 1 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 1 (Spanish)" );
-	}
-	else if(iLanguage == 2 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 2 (Portuguese)" );
-	}
-	else if(iLanguage == 3 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 3 (German)" );
-	}
-	else if(iLanguage == 4 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 4 (French)" );
-	}
-	else if(iLanguage == 5 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 5 (Italian)" );
-	}
-	else if(iLanguage == 6 )
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 6 (Esperanto)" );
-	}
-	else
-	{
-		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "This message will be shown if player choice is equal to 0 or anything else (English)" );
-	}
-}
+    "plugin"
+    {
+        "name" "multi_language"
+        "script" "mikk/multi_language"
+    }
 ```
+Tras instalar paquetes separados estos deben ir localizados en **svencoop_addon/scripts/plugins/mikk/translations/**
 
-Para configurar tu entidad custom mira [utils](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/maps/mikk/entities/utils.md)
 
-Para saber los lenguajes soportados mira [Suported languages](https://github.com/Mikk155/Sven-Co-op/wiki/Supported-Languages)
+Este script abrirá un archivo ".mlang" con el nombre del mapa actual. ese archivo contendrá informacion de traducciónes.
 
-Para ver lista de mapas traducidos mira [Localizations list](https://github.com/Mikk155/Sven-Co-op/wiki/Localizations)
+**LOCALIZAR MAPAS**
 
+La sintesis es similar a ripent, iniciando y terminando entidad con brackets ( **{** / **}** )
+
+Solo que no utilizaremos comillas ( **"** ) para el trabajo.
+
+Recomendamos instalar el paquete de lenguaje enriquecido para evitar confusiones en la sintesis [multi_language.XML](https://github.com/Mikk155/Sven-Co-op/blob/main/scripts/plugins/mikk/multi_language.xml)
+
+**INSTALAR XML EN NOTEPAD++**
+![image1](https://github.com/Mikk155/Sven-Co-op/blob/main/images/RichTextCode_1.png)
+
+Crea tu propio lenguaje definido
+
+![image2](https://github.com/Mikk155/Sven-Co-op/blob/main/images/RichTextCode_2.png)
+
+![image3](https://github.com/Mikk155/Sven-Co-op/blob/main/images/RichTextCode_3.png)
+
+Nombra tu lenguaje y finalmente carga tu lenguaje.
+
+![image4](https://github.com/Mikk155/Sven-Co-op/blob/main/images/RichTextCode_4.png)
+
+NOTA: puede susceder que se crean dos o mas lenguajes definidos. asegurate de tener solo uno cargado verificando que sus valores no sean nulos.
+
+hemos añadido mecanicas adicionales a nuestra entidad ademas de que esta ya funciona exactamente igual a game_text.
+
+**KEYVALUES ADICIONALES**
+
+key "effect" fue ampliada y los efectos adicionales no requieren especificaciones de otras keyvalues tales como color, posicion etc.
+
+value | descripción
+------|------------
+3 | usa el mismo efecto color y tiempo que BaseTriggers con su keyvalue "message"
+4 | Muestra una pagina de MOTD
+5 | Muestra un mensaje en el chat
+6 | Muestra un subtitulo [Trabajo en progreso]
+7 | Muestra una tecla bindeada en pantalla
+
+"target" ahora soporta la misma mecanica que multi_manager para enviar tipos de trigger (ON/OFF/KILL)
+
+Para dar uso se debe especificar el monto al final del valor.
+
+Ejemplo: **"target" "TriggerThis#1"**
+valor | tipo
+------|-----
+#0 | USE_OFF
+#1 | USE_ON
+#2 | USE_KILL
+
+"messagesound" y "messagevolume" fueron añadidos como soporte de env_message y funcionan igual.
+
+al asignarle un brush-model existente a game_text_custom este usara la entidad con el modelo especificado como Touch() y se disparará el texto. en caso de ser un trigger_multiple game_text_custom será renombrado como el target del multiple. si el multiple no tiene target entonces será el caso contrario.
+
+el netname de !activator será guardado en la keyvalue "netname" de game_text_custom y puede utilizarse en cualquier key de mensaje como "!activator" 
+
+Ejemplo: **"message" "El jugador !activator ha activado la bomba"**
+
+"frags" se utiliza para almacenar numeros principalmente, aunque puedes almacenar strings tambien, la idea es utilizarlo en conjunto con trigger_copyvalue/changevalue y a su vez activar game_text_custom luego de la acción.
+
+Ejemplo: **"frags" "25"** -> **"message" "quedan !frags segundos para terminar"** -> "quedan 25 segundos para terminar"
+
+De esta forma puedes facilmente hacer un contador y modificarlo globalmente para todos los lenguajes.
