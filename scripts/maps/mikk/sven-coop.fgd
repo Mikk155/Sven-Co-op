@@ -7044,3 +7044,315 @@
         8 : "Non Solid" : 0
     ]
 ]
+
+// Start of custom entities -Mikk
+
+
+@BaseClass = HullSetSizes
+[
+    minhullsize(string) : "Custom Min Hull Size (X Y Z)"
+    maxhullsize(string) : "Custom Max Hull Size (X Y Z)"
+]
+
+@BaseClass base(Targetname) = ElseIf
+[
+	target(target_destination) : "True case target"
+	netname(target_destination) : "False case target"
+]
+
+@BaseClass base(TargetName) = BaseInOut
+[
+	target(target_destination) : "Target when IN"
+	netname(target_destination) : "Target when OUT"
+	message(target_destination) : "Monster to watch for"
+
+	spawnflags(flags) =
+	[
+		1: "Start Off" : 0
+		2: "Disable when OUT" : 0
+		4: "Multi-Threated" : 0
+		8: "No clients" : 0
+		16: "Monsters" : 0
+	]
+]
+
+@BaseClass base(TargetName, Target) = BaseButtons
+[
+	spawnflags(flags) =
+	[
+		1: "Start Off" : 0
+	]
+	// Set a number value equal to the monsters that will trigger this entity. the same as game_counter.
+	netname(choices) : "Required Button" =
+	[
+		"+use" : "use" : 0
+		"+showscores" : "showscores" : 0
+		"+alt1" : "alt1" : 0
+		"+reload" : "reload" : 0
+		"+forward" : "forward" : 0
+		"+attack2" : "attack2" : 0
+		"+moveright" : "moveright" : 0
+		"+moveleft" : "moveleft" : 0
+		"+right" : "right" : 0
+		"+left" : "left" : 0
+		"+cancelselect" : "cancelselect" : 0
+		"+back" : "back" : 0
+		"+forward" : "forward" : 0
+		"+duck" : "duck" : 0
+		"+jump" : "jump" : 0
+		"+attack" : "attack" : 0
+	]
+]
+
+@SolidClass base(Target, Targetname) = trigger_once_individual : "Trigger individually per player"[]
+@PointClass base(Target, Targetname, HullSetSizes) color(164 0 255) = trigger_once_individual : "Trigger individually per player"[]
+
+@PointClass base(ElseIf) color(40 40 40) = player_elseif : "IF or ELSE cases"
+[
+	health(Choices) : "Condition" : 0 =
+	[
+		// Returns whether the player has an HEV suit.
+		0 : "HasSuit"
+	]
+]
+@PointClass base(ElseIf) color(40 40 40) = monster_elseif : "IF or ELSE cases"
+[
+	health(Choices) : "Condition" : 0 =
+	[
+		// Returns whether this monster is ally to players.
+		0 : "IsPlayerAlly"
+	]
+]
+
+@SolidClass base(Targetname) = trigger_sound : "Trigger DSP Sound"
+[
+    // Target is the target o affect when trigger the entity.
+    // Leave empty for set to everyone.
+	target(target_destination) : "Target ( empty for everyone )" : "!activator"
+    roomtype(Choices) : "Room Type" : 0 =
+    [
+        0 : "Normal (off)"
+        1 : "Generic"
+
+        2 : "Metal Small"
+        3 : "Metal Medium"
+        4 : "Metal Large"
+
+        5 : "Tunnel Small"
+        6 : "Tunnel Medium"
+        7 : "Tunnel Large"
+
+        8 : "Chamber Small"
+        9 : "Chamber Medium"
+        10: "Chamber Large"
+
+        11: "Bright Small"
+        12: "Bright Medium"
+        13: "Bright Large"
+
+        14: "Water Small"
+        15: "Water Medium"
+        16: "Water Large"
+
+        17: "Concrete Small"
+        18: "Concrete Medium"
+        19: "Concrete Large"
+
+        20: "Big Room"
+        21: "Bigger Room"
+        22: "Biggest Room"
+
+        23: "Cavern Small"
+        24: "Cavern Medium"
+        25: "Cavern Large"
+
+        26: "Weirdo - Drugged"
+        27: "Weirdo - Dizzy"
+        28: "Weirdo - Psychotic"
+    ]
+    master(string) : "Master"
+    spawnflags(flags) =
+    [
+        1 : "USE Only" : 0
+    ]
+]
+
+@PointClass base(Targetname) = env_spritehud : "Show Sprite At HUD"
+[
+	target(target_destination) : "Target ( empty for everyone )" : "!activator"
+	
+	spawnflags(flags) =
+	[
+		// (1) X position in pixels.
+		1: "HUD_ELEM_ABSOLUTE_X" : 0
+		
+		// (2) Y position in pixels.
+		2 : "HUD_ELEM_ABSOLUTE_Y" : 0
+		
+		// (4) X position relative to the center of the screen.
+		4 : "HUD_ELEM_SCR_CENTER_X" : 1
+		
+		// (8) Y position relative to the center of the screen.
+		8 : "HUD_ELEM_SCR_CENTER_Y" : 0
+		
+		// (16) Ignore the client-side HUD border (hud_bordersize).
+		16 : "HUD_ELEM_NO_BORDER" : 0
+		
+		// (32) Create a hidden element.
+		32 : "HUD_ELEM_HIDDEN" : 0
+		
+		// (64) Play the effect only once.
+		64 : "HUD_ELEM_EFFECT_ONCE" : 0
+		
+		// (128) Use the default client-side HUD alpha (hud_defaultalpha).
+		128 : "HUD_ELEM_DEFAULT_ALPHA" : 0
+
+		// (256) Use the default client-side HUD alpha and flash the element when updated.
+		256 : "HUD_ELEM_DYNAMIC_ALPHA" : 0
+		
+		// (65536) Draw opaque sprite.
+		65536 : "HUD_SPR_OPAQUE" : 0
+		
+		// (131072) Draw masked sprite.
+		131072 : "HUD_SPR_MASKED" : 0
+		
+		// (262144) Play the animation only once.
+		262144 : "HUD_SPR_PLAY_ONCE" : 0
+		
+		// (524288) Hide the sprite when the animation stops.
+		524288 : "HUD_SPR_HIDE_WHEN_STOPPED" : 0
+	]
+
+	model(string) : "Sprite ( Don't 'sprites/' )" : "mikk/tcis/logo.spr"
+	
+	// Horizontal position on the screen. <0, 1.0> = left to right. (-1.0, 0) = right to left. -1.0 = centered
+	x(string) : "X (0 - 1.0 = left to right) (-1 centers)" : "0"
+	
+	// Vertical position on the screen. <0, 1.0> = top to bottom. (-1.0, 0) = bottom to top. -1.0 = centered
+	y(string) : "Y (0 - 1.0 = top to bottom) (-1 centers)" : "0.48"
+	
+	// Channel. Range: 0-15 (each module type has its own channel group).
+	channel(Choices) : "HUD Channel" : 4 =
+	[
+		0 : "Channel 0"
+		1 : "Channel 1"
+		2 : "Channel 2"
+		3 : "Channel 3"
+		4 : "Channel 4"
+		5 : "Channel 5"
+		6 : "Channel 6"
+		7 : "Channel 7"
+		8 : "Channel 8"
+		9 : "Channel 9"
+		10 : "Channel 10"
+		11 : "Channel 11"
+		12 : "Channel 12"
+		13 : "Channel 13"
+		14 : "Channel 14"
+		15 : "Channel 15"
+	]
+
+	color1(Choices) : "HUD Color 1" : 0 =
+	[
+		0 : "RGBA_WHITE"
+		1 : "RGBA_BLACK"
+		2 : "RGBA_RED"
+		3 : "RGBA_GREEN"
+		4 : "RGBA_BLUE"
+		5 : "RGBA_YELLOW"
+		6 : "RGBA_ORANGE"
+		7 : "RGBA_SVENCOOP"
+	]
+
+	color2(Choices) : "HUD Color 2" : 0 =
+	[
+		0 : "RGBA_WHITE"
+		1 : "RGBA_BLACK"
+		2 : "RGBA_RED"
+		3 : "RGBA_GREEN"
+		4 : "RGBA_BLUE"
+		5 : "RGBA_YELLOW"
+		6 : "RGBA_ORANGE"
+		7 : "RGBA_SVENCOOP"
+	]
+
+	effect(Choices) : "HUD Effect" : 0 =
+	[
+		//	(0) No effect.
+		0 : "HUD_EFFECT_NONE"
+		//	(1) Linear ramp up from color1 to color2.
+		1 : "HUD_EFFECT_RAMP_UP"
+		//	(2) Linear ramp down from color2 to color1.
+		2 : "HUD_EFFECT_RAMP_DOWN"
+		//	(3) Linear ramp up and ramp down from color1 through color2 back to color1.
+		3 : "HUD_EFFECT_TRIANGLE"
+		//	(4) Cosine ramp up from color1 to color2.
+		4 : "HUD_EFFECT_COSINE_UP"
+		//	(5) Cosine ramp down from color2 to color1.
+		5 : "HUD_EFFECT_COSINE_DOWN"
+		//	(6) Cosine ramp up and ramp down from color1 through color2 back to color1.
+		6 : "HUD_EFFECT_COSINE"
+		//	(7) Toggle between color1 and color2.
+		7 : "HUD_EFFECT_TOGGLE"
+		//	(8) Sine pulse from color1 through zero to color2.
+		8 : "HUD_EFFECT_SINE_PULSE"
+	]
+	
+	frame(string) : "Show Frame"
+	
+	// Sprite top offset. Range: 0-255
+	top(string) : "top"
+	
+	// Sprite left offset. Range: 0-255
+	left(string) : "left"
+	
+	// Sprite width. Range: 0-512 (0: auto; use total width of the sprite)
+	width(string) : "width"
+	
+	// Sprite height. Range: 0-512 (0: auto; use total height of the sprite)
+	height(string) : "height"
+	
+	numframes(string) : "Number of frames" : "1"
+	
+	framerate(string) : "Speed of framerate" : "1.0"
+	
+	holdTime(string) : "Hold Time" : "1.0"
+	
+	fadeinTime(string) : "Fade In Time" : "0.5"
+	
+	fadeoutTime(string) : "Fade Out Time" : "0.5"
+]
+
+@PointClass base(TargetName) color(192 255 0) = game_debug : "Shows a mapper debug message"
+[
+	message(string) : "message to show"
+]
+
+@SolidClass base(BaseInOut) = trigger_inout: "Trigger when press button"[]
+@PointClass base(BaseInOut, HullSetSizes) size(-5 -5 -5, 5 5 5) = trigger_inout : "Trigger when press button"[]
+
+@PointClass base(TargetName) color(192 255 0) = trigger_client_cvar : "Execute a console variable from client"
+[
+	spawnflags(flags) =
+	[
+		1: "All Players" : 0
+	]
+	message(string) : "Console variable"
+]
+
+@PointClass base(TargetName) size(-32 -32 -32, 32 32 32) = item_airbubble : "Air Bubble Tank"
+[
+	targetname(target_source) : "Name"
+	model(studio) : "Custom Model" : "models/w_oxygen.mdl"
+]
+
+@PointClass base(TargetName, Target) color(164 0 255) = tram_ride_train : "tram_ride_train"
+[
+	spawnflags(flags) =
+	[
+		1 : "Start Off" : 0
+	]
+]
+
+@SolidClass base(BaseButtons) = trigger_inbutton: "Trigger when press button"[]
+@PointClass base(BaseButtons, HullSetSizes) size(-5 -5 -5, 5 5 5) = trigger_inbutton : "Trigger when press button"[]

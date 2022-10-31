@@ -1,9 +1,0 @@
-@PointClass color(192 255 0) = trigger_client_cvar : "Execute a console variable from client"
-[
-	targetname(target_source) : "Name"
-	spawnflags(flags) =
-	[
-		1: "All Players" : 0
-	]
-	message(string) : "Console variable"
-]
