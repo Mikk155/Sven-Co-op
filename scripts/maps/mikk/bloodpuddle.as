@@ -1,5 +1,20 @@
+/*
+INSTALL:
+
+#include "mikk/bloodpuddle"
+
+void MapInit()
+{
+	RegisterBloodPuddle();
+}
+
+*/
+
 void RegisterBloodPuddle()
 {
+    if( g_CustomEntityFuncs.IsCustomEntity( "blood" ) )
+        return;
+
 	g_CustomEntityFuncs.RegisterCustomEntity( "blood", "blood" );
 	g_Game.PrecacheOther( "blood" );
 
