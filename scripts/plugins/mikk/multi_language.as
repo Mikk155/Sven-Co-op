@@ -18,12 +18,12 @@ void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk, Gaftherman, Kmkz" );
     g_Module.ScriptInfo.SetContactInfo
-	(
-		"Mikk: https://github.com/Mikk155
-		Gaftherman: https://github.com/Gaftherman
+    (
+        "Mikk: https://github.com/Mikk155
+        Gaftherman: https://github.com/Gaftherman
         Kmkz: https://github.com/kmkz27
-		Discord: https://discord.gg/VsNnE3A7j8 \n"
-	);
+        Discord: https://discord.gg/VsNnE3A7j8 \n"
+    );
 
     // Used to let players choose their language choice and store them.
     g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
@@ -47,7 +47,7 @@ HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
         {
             PlayerLoadLenguage( g_EngineFuncs.IndexOfEdict( pPlayer.edict() ), SteamID );
         }
-        UTILS::TriggerMode( "MLANGUAGE_CREDITS#1", pPlayer, 5.5f );
+        UTILS::TriggerMode( "MLANGUAGE_CREDITS", pPlayer, 5.1f );
     }
     return HOOK_CONTINUE;
 }
@@ -76,11 +76,13 @@ void MapInit()
     // Register the entity before creating them.
     g_CustomEntityFuncs.RegisterCustomEntity( "CBaseGameTextCustom", "multi_language" );
 
-    // Create the localizated texts
-    UTILS::LoadRipentFile( "scripts/plugins/ripent/translations/" + string( g_Engine.mapname ) + ".ent" );
-    
-    // Create the text that this plugin uses to tell messages.
-    UTILS::LoadRipentFile( "scripts/plugins/ripent/translations/multi_language_default.ent" );
+	if( g_CustomEntityFuncs.IsCustomEntity( "multi_language" ) )
+	{
+		// Create the localizated texts
+		UTILS::LoadRipentFile( "scripts/plugins/ripent/translations/" + string( g_Engine.mapname ) + ".ent" );
+		// Create the text that this plugin uses to tell messages.
+		UTILS::LoadRipentFile( "scripts/plugins/mikk/multi_language.ent" );
+	}
 }
 
 // Array of ClientSay arguments to open the menu

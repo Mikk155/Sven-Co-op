@@ -20,8 +20,7 @@ class CBaseGameTextCustom : ScriptBaseEntity, UTILS::MoreKeyValues
 {
     HUDTextParams TextParams;
     private string killtarget, key_from_entity, focus_entity;
-    private string messagesound = "null.wav";
-    private string messagesentence = "";
+    private string messagesound, messagesentence;
     private float messagevolume = 10;
     private float messageattenuation = 0;
     private float flDelay = 0.0f;
@@ -139,8 +138,11 @@ class CBaseGameTextCustom : ScriptBaseEntity, UTILS::MoreKeyValues
 
     void Precache()
     {
-        g_SoundSystem.PrecacheSound( messagesound );
-        g_Game.PrecacheGeneric( "sound/" + messagesound );
+        if( !string( messagesound ).IsEmpty() )
+        {
+            g_SoundSystem.PrecacheSound( messagesound );
+            g_Game.PrecacheGeneric( "sound/" + messagesound );
+        }
 
         BaseClass.Precache();
     }
@@ -201,8 +203,6 @@ class CBaseGameTextCustom : ScriptBaseEntity, UTILS::MoreKeyValues
             return;
         }
 
-        self.pev.noise = UTILS::GetCKV( ( string( focus_entity ).IsEmpty() ) ? cast<CBasePlayer@>(pActivator) : cast<CBasePlayer@>(g_EntityFuncs.FindEntityByTargetname( null, focus_entity )), string( key_from_entity ) );
-
         string strMonster = string( pActivator.pev.classname ).Replace( "monster_", "" );
 
         self.pev.netname = ( pActivator.IsMonster() ) ? string( strMonster ).Replace( "_", " " ) : ( pActivator.IsPlayer() ) ? string( pActivator.pev.netname ) : "Worldspawn" ;
@@ -233,7 +233,7 @@ class CBaseGameTextCustom : ScriptBaseEntity, UTILS::MoreKeyValues
         {
             { "!frags", string( self.pev.frags ) },
             { "!activator", string( self.pev.netname ) },
-            { "!value", string( self.pev.noise ) }
+            { "!value", string( UTILS::GetCKV( ( string( focus_entity ).IsEmpty() ) ? pPlayer : cast<CBasePlayer@>( g_EntityFuncs.FindEntityByTargetname( null, focus_entity ) ) , string( key_from_entity ) ) ) }
         } );
 
         if( TextParams.effect == 3 )

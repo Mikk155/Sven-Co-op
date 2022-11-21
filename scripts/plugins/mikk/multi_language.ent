@@ -1,5 +1,5 @@
 
-// DO NOT MODIF THIS FILE SINCE THE PLUGIN USES THIS FOR SHOWING GENERAL MESSAGES
+// DO NOT MODIFY THIS FILE SINCE THE PLUGIN USES THIS FOR SHOWING GENERAL MESSAGES
 
 // This is a comment and will be ignored by the script
 
@@ -27,20 +27,5 @@
 "message_french" "Certains caracteres ne seront pas affiches en raison des limitations."
 "message_italian" "Alcuni caratteri non verranno mostrati per limitazioni."
 "message_esperanto" "Monda tahemarki piirangute tottu ei kuvata."
-"classname" "multi_language"
-}
-{
-"effect" "5"
-"messagesound" "misc/talk.wav"
-"targetname" "game_playerspawn"
-"target" "MLANGUAGE_NOTICE_TWO"
-"message" "[Multi-Language] This map supports Multi-Language"
-"classname" "multi_language"
-}
-{
-"effect" "5"
-"messagesound" "misc/talk.wav"
-"targetname" "MLANGUAGE_NOTICE_TWO"
-"message" "Say 'language' to see available ones."
 "classname" "multi_language"
 }
