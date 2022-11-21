@@ -1,0 +1,89 @@
+
+// DO NOT MODIFY THIS FILE SINCE THE PLUGIN USES THIS FOR SHOWING GENERAL MESSAGES
+
+// This is a comment and will be ignored by the script
+
+{
+"effect" "2"
+"fadein" "0.0"
+"y" "0.80"
+"spawnflags" "2"
+"targetname" "AFK_EXIT_MODE"
+"message" "[AFKManager] Say '/afk' for exiting 'Away From Keyboard' mode."
+"message_spanish" "[AFKManager] Escriba '/afk' para salir del modo 'Lejos del teclado'"
+"message_portuguese" "[AFKManager] Digite '/afk' para sair do modo 'Longe do teclado'"
+"message_german" "[AFKManager] Geben Sie '/afk' ein, um den Modus zu verlassen 'Nicht am Computer'"
+"message_french" "[AFKManager] Tapez '/afk' pour quitter le mode 'loin du clavier'"
+"message_italian" "[AFKManager] Pronuncia '/afk' per uscire dalla modalita 'Lontano dalla tastiera'"
+"message_esperanto" "[AFKManager] Tajpu '/afk' por eliri regimon 'For de Klavaro'"
+"classname" "multi_language"
+}
+{
+"effect" "5"
+"spawnflags" "1"
+"messagesound" "misc/talk.wav"
+"targetname" "AFK_ENTER_MODE"
+"message" "[AFKManager] !activator Is in AFK mode."
+"message_spanish" "[AFKManager] !activator Esta en modo AFK."
+"message_portuguese" "[AFKManager] !activator Esta no modo AFK."
+"message_german" "[AFKManager] !activator Ist im AFK-Modus."
+"message_french" "[AFKManager] !activator Est en mode AFK."
+"message_italian" "[AFKManager] !activator E in modalita AFK."
+"message_esperanto" "[AFKManager] !activator Estas en AFK-regimo."
+"classname" "multi_language"
+}
+{
+"effect" "6"
+"messagesound" "misc/talk.wav"
+"targetname" "AFK_GOING_MODE"
+"key_from_entity" "$i_afktimer"
+"message" "[AFKManager] You will join AFK-Mode in !value seconds"
+"message_spanish" "[AFKManager] Vas a entrar al modo-AFK en !value segundos."
+"message_portuguese" "[AFKManager] Voce ingressara no AFK-Mode em !value segundos"
+"message_german" "[AFKManager] Sie treten dem AFK-Modus bei !value sekunden"
+"message_french" "[AFKManager] Vous rejoindrez AFK-Mode dans !value secondes"
+"message_italian" "[AFKManager] Entrerai in modalita AFK in !value secondi"
+"message_esperanto" "[AFKManager] Vi aligos al AFK-Mode !value sekundoj"
+"classname" "multi_language"
+}
+{
+"effect" "5"
+"messagesound" "misc/talk.wav"
+"targetname" "AFK_TELL_MODE"
+"message" "[AFKManager] say /afk to join spectator mode"
+"message_spanish" "[AFKManager] Escribe /afk para unirte al modo espectador"
+"message_portuguese" "[AFKManager] Digite /afk para entrar no modo espectador"
+"message_german" "[AFKManager] Geben Sie /afk ein, um dem Zuschauermodus beizutreten"
+"message_french" "[AFKManager] Tapez /afk pour rejoindre le mode spectateur"
+"message_italian" "[AFKManager] Digita /afk per entrare in modalita spettatore"
+"message_esperanto" "[AFKManager] Tajpu /afk por aligi al spektantregimo"
+"classname" "multi_language"
+}
+{
+"effect" "5"
+"spawnflags" "1"
+"messagesound" "misc/talk.wav"
+"targetname" "AFK_LEFT_MODE"
+"message" "[AFKManager] !activator Left AFK mode."
+"message_spanish" "[AFKManager] !activator Salio del modo AFK."
+"message_portuguese" "[AFKManager] !activator Saiu do modo AFK."
+"message_german" "[AFKManager] !activator Verlassen Sie den AFK-Modus."
+"message_french" "[AFKManager] !activator A quitte le mode AFK."
+"message_italian" "[AFKManager] !activator Ha lasciato la modalità AFK."
+"message_esperanto" "[AFKManager] !activator Forlasis la AFK-regimon."
+"classname" "multi_language"
+}
+{
+"effect" "5"
+"spawnflags" "1"
+"messagesound" "misc/talk.wav"
+"targetname" "AFK_KICK_MODE"
+"message" "[AFKManager] !activator was kicked for being AFK on a full server."
+"message_spanish" "[AFKManager] !activator fue expulsado por estar AFK en servidor lleno."
+"message_portuguese" "[AFKManager] !activator foi expulso por ser AFK em servidor completo."
+"message_german" "[AFKManager] !activator wurde gekickt, weil er AFK auf einem vollen Server war."
+"message_french" "[AFKManager] !activator a ete expulse pour avoir ete AFK sur un serveur complet."
+"message_italian" "[AFKManager] !activator e stato espulso perche AFK su un server completo."
+"message_esperanto" "[AFKManager] !activator estis piedbatita por esti AFK sur plena servilo."
+"classname" "multi_language"
+}

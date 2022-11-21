@@ -1,0 +1,19 @@
+// This is a map blacklist for the plugin AFKManager. place here maps that you don't want people to spec mode.
+// just in case that the map is NON-Survival mode and the mapper don't actually want people to be free roaming around the map.
+// Using the wildcard "*" for series
+
+// Don't want people to see the hidden archievements and secrets >:C
+rp_c00_lobby
+
+// Intro maps
+hl_c00
+of0a0
+of_c00
+th_ep1_00
+rp_c00
+
+// Don't want people to see the hidden archievements and secrets >:C
+hcl_lobby
+
+// Let people be part of the vote logic
+dynamic_mapvot*
