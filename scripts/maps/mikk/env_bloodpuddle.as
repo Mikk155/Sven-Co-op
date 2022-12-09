@@ -117,6 +117,10 @@ namespace env_bloodpuddle
             {
                 self.pev.origin = pOwner.pev.origin;
             }
+            else
+            {
+                g_EntityFuncs.Remove( self );
+            }
 
             self.StudioFrameAdvance();
             self.pev.nextthink = g_Engine.time + 0.1;
