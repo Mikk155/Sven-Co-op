@@ -15,7 +15,7 @@ https://github.com/Mikk155/Sven-Co-op/releases/tag/player_data
 
 namespace player_data
 {
-    CScheduledFunction@ g_Renders = g_Scheduler.SetTimeout( "InitPlayerDataStore", 0.0f );
+    CScheduledFunction@ g_PlayerData = g_Scheduler.SetTimeout( "InitPlayerDataStore", 0.0f );
 
     void InitPlayerDataStore()
     {
