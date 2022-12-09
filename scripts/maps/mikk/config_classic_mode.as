@@ -1,7 +1,7 @@
 /*
 DOWNLOAD:
 
-scripts/maps/mikk/game_level_config.as
+scripts/maps/mikk/config_classic_mode.as
 scripts/maps/mikk/utils.as
 
 
