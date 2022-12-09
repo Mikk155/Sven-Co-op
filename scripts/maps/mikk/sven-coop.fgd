@@ -169,6 +169,16 @@
     ]
 ]
 
+// -Mikk feature for passing a monster's Attacker/damage inflictor as a !activator.
+@BaseClass = PassDamageInflictor
+[
+    $f_damage_inflictor(choices) : "[AS] TriggerTarget's !activator" : 0 =
+    [
+        0: "This monster"
+        1: "Damage Inflictor/Attacker"
+    ]
+]
+
 // -Mikk feature for preventing a model being replaced in config_classic_mode
 @BaseClass = ClassicModeIgnore
 [
@@ -372,7 +382,7 @@
     m_flCustomRespawnTime(string) : "Custom respawn time"
 ]
 
-@BaseClass size(-16 -16 0, 16 16 32) color(2 64 240) base(Pickup, CustomRespawnDelay, ClassicModeIgnore) = Weapon
+@BaseClass size(-16 -16 0, 16 16 32) color(2 64 240) base(Pickup, CustomRespawnDelay, ClassicModeIgnore, TriggerIndividual) = Weapon
 [
     dmg(integer) : "Custom Damage" : 0
 
@@ -396,7 +406,7 @@
     model(studio) : "Custom Model" : ""
 ]
 
-@BaseClass size(-8 -8 0, 8 8 16) color(0 0 200) base(Pickup, CustomRespawnDelay, ClassicModeIgnore) = Item
+@BaseClass size(-8 -8 0, 8 8 16) color(0 0 200) base(Pickup, CustomRespawnDelay, ClassicModeIgnore, TriggerIndividual) = Item
 [
     model(studio) : "Custom Model" : ""
     skin(integer) : "Skin" : 0
@@ -567,7 +577,7 @@
     ]
 ]
 
-@BaseClass base(Targetname, Target, RenderFields, Angles, AttackObject, NotRevivable, ClassicModeIgnore) color(0 200 200) = Monster
+@BaseClass base(Targetname, Target, RenderFields, Angles, AttackObject, NotRevivable, ClassicModeIgnore, PassDamageInflictor) color(0 200 200) = Monster
 [
     spawnflags(Flags) =
     [
@@ -1471,40 +1481,28 @@
 ]
 
 @PointClass base(Ammo, Targetx) studio("models/w_357ammobox.mdl") = ammo_357 : "357 / desert eagle round box" []
-@PointClass base(Ammo, Targetx) studio("models/w_357ammobox.mdl") = ammo_357_individual : "357 / desert eagle round box" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_saw_clip.mdl") = ammo_556 : "5.56mm round box" []
-@PointClass base(Ammo, Targetx) studio("models/w_saw_clip.mdl") = ammo_556_individual : "5.56mm round box" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_9mmARclip.mdl") = ammo_556clip : "5.56mm M16 rifle magazine" []
-@PointClass base(Ammo, Targetx) studio("models/w_9mmARclip.mdl") = ammo_556clip_individual : "5.56mm M16 rifle magazine" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_m40a1clip.mdl") = ammo_762 : "7.62mm sniper rifle magazine" []
-@PointClass base(Ammo, Targetx) studio("models/w_m40a1clip.mdl") = ammo_762_individual : "7.62mm sniper rifle magazine" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_mp5_clip.mdl") = ammo_9mmAR : "9mm assault rifle magazine" []
-@PointClass base(Ammo, Targetx) studio("models/w_mp5_clip.mdl") = ammo_9mmAR_individual : "9mm assault rifle magazine" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_chainammo.mdl") = ammo_9mmbox : "9mm round box (big)" []
-@PointClass base(Ammo, Targetx) studio("models/w_chainammo.mdl") = ammo_9mmbox_individual : "9mm round box (big)" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_9mmclip.mdl") = ammo_9mmclip : "9mm pistol magazine" []
-@PointClass base(Ammo, Targetx) studio("models/w_9mmclip.mdl") = ammo_9mmclip_individual : "9mm pistol magazine" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_argrenade.mdl") = ammo_ARgrenades : "M16's M203 grenades (x2)" []
-@PointClass base(Ammo, Targetx) studio("models/w_argrenade.mdl") = ammo_ARgrenades_individual : "M16's M203 grenades (x2)" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_shotbox.mdl") = ammo_buckshot : "Shotgun shell box" []
-@PointClass base(Ammo, Targetx) studio("models/w_shotbox.mdl") = ammo_buckshot_individual : "Shotgun shell box" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
-@PointClass base(Ammo, Targetx) studio("models/w_crossbow_clip.mdl") = ammo_crossbow_individual : "Crossbow bolt magazine" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_gaussammo.mdl") = ammo_gaussclip : "Gauss/Gluon gun battery" []
-@PointClass base(Ammo, Targetx) studio("models/w_gaussammo.mdl") = ammo_gaussclip_individual : "Gauss/Gluon gun battery" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_rpgammo.mdl") = ammo_rpgclip : "Rockets (x2)" []
-@PointClass base(Ammo, Targetx) studio("models/w_rpgammo.mdl") = ammo_rpgclip_individual : "Rockets (x2)" []
 
 @PointClass base(Ammo, Targetx) size(-16 -16 -16, 16 16 16) studio("models/vhe-models/spore_ammo_hammer.mdl") = ammo_spore : "Spore plant"
 [
@@ -1518,10 +1516,8 @@
 ]
 
 @PointClass base(Ammo, Targetx) studio("models/spore.mdl") = ammo_sporeclip : "Spore" []
-@PointClass base(Ammo, Targetx) studio("models/spore.mdl") = ammo_sporeclip_individual : "Spore" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_uzi_clip.mdl") = ammo_uziclip : "9mm Uzi magazine" []
-@PointClass base(Ammo, Targetx) studio("models/w_uzi_clip.mdl") = ammo_uziclip_individual : "9mm Uzi magazine" []
 
 @SolidClass base(Target, ZHLT, Master) = button_target : "Target Button"
 [
@@ -4077,7 +4073,6 @@ name your light_spot as "global_light" and its pattern will be dynamically chang
     health(integer) : "Charge Supplied" : 0
     healthcap(integer) : "Charge Cap" : 0
 ]
-@PointClass size(-4 -4 0, 4 4 16) base(Targetx, Item) studio("models/w_battery.mdl") = item_battery_individual : "HEV battery"[]
 
 @PointClass base(ItemWithDefaultModel, Targetx) studio() = item_generic : "Generic scenery item" []
 
@@ -4092,8 +4087,6 @@ name your light_spot as "global_light" and its pattern will be dynamically chang
     health(integer) : "Health Supplied" : 0
     healthcap(integer) : "Health Cap" : 0
 ]
-
-@PointClass size(-12 -12 0, 12 12 8) base(Targetx, Item) studio("models/w_medkit.mdl") = item_healthkit_individual : "Health kit"[]
 
 @PointClass size(-8 -8 0, 8 8 20) base(Targetx, Item) studio("models/barney_helmet.mdl") = item_helmet : "Helmet" []
 
@@ -4492,46 +4485,6 @@ name your light_spot as "global_light" and its pattern will be dynamically chang
         1: "On"
         2: "Set"
         3: "Toggle"
-    ]
-]
-
-//  -Mikk Made as a replacement for player_loadsaved having in mind the MP problems. but you are free to use this in other ways.
-// If you attack a monster with TriggerCondition/Target and it trigger this entity...
-// The damage inflictor will be the activator of this entity
-@PointClass base(Targetname, Master, TargetMMStyle) = monster_dmg_inflictor : "Get damage inflictor as activator"
-[
-    delay(string) : "Delay before trigger"
-
-    spawnflags(Flags) =
-    [
-        1 : "Don't fade screen" : 0
-    ]
-    
-    // Those bellow are some additions for just changing their classnames. the magic is only the "target" :p
-
-    // we'll use a game_text_custom instead of here.
-	message(target_destination) : "Entity to use message"
-
-    // Time in seconds to wait until fire message
-    messagetime(string) : "Show Message delay" : "0"
-
-    duration(string) : "Fade Duration (seconds)" : "2"
-    holdtime(string) : "Hold Fade (seconds)" : "0"
-    renderamt(integer) : "Fade Alpha" : 255
-    rendercolor(color255) : "Fade Color (R G B)" : "0 0 0"
-
-    health(choices) : "Fade effect" : 0 =
-    [
-        0 : "Fade Out"
-        1 : "Fade In"
-        2 : "Modulate"
-        3 : "Stayout"
-    ]
-
-    loadtime(choices) : "Kill activator?" : 0 =
-    [
-        0 : "No"
-        1 : "Yes"
     ]
 ]
 
@@ -7803,7 +7756,6 @@ name your light_spot as "global_light" and its pattern will be dynamically chang
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_bgrap.mdl") = weapon_grapple : "Barnacle Grapple" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_grenade.mdl") = weapon_handgrenade : "Hand Grenade" []
-@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_grenade.mdl") = weapon_handgrenade_individual : "Hand Grenade" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_hgun.mdl") = weapon_hornetgun : "Hornet Gun" []
 
@@ -7812,7 +7764,6 @@ name your light_spot as "global_light" and its pattern will be dynamically chang
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_saw.mdl") = weapon_m249 : "M249 SAW" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_medkit.mdl") = weapon_medkit : "Medkit" []
-@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_medkit.mdl") = ammo_medkit_individual : "Medkit" []
 
 @PointClass base(Weapon, Targetx) studio("models/w_minigun.mdl") = weapon_minigun : "Minigun" []
 
@@ -7821,45 +7772,24 @@ name your light_spot as "global_light" and its pattern will be dynamically chang
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_rpg.mdl") = weapon_rpg : "RPG" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_satchel.mdl") = weapon_satchel : "Satchel Charge" []
-@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_satchel.mdl") = weapon_satchel_individual : "Satchel Charge" []
 
 @PointClass base(Weapon, Targetx) studio("models/w_shock_rifle.mdl") = weapon_shockrifle : "Shock Rifle" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_shotgun.mdl") = weapon_shotgun : "Shotgun" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_sqknest.mdl") = weapon_snark : "Squeak Grenade" []
-@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_sqknest.mdl") = weapon_snarks_individual : "Squeak Grenade" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_m40a1.mdl") = weapon_sniperrifle : "Sniper Rifle" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_spore_launcher.mdl") = weapon_sporelauncher : "Spore Launcher" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/vhe-models/w_tripmine_hammer.mdl") = weapon_tripmine : "Tripmine" []
-@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/vhe-models/w_tripmine_hammer.mdl") = weapon_tripmine_individual : "Tripmine" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_uzi.mdl") = weapon_uzi : "Single UZI (2 UZIs for Akimbo)" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_2uzis.mdl") = weapon_uziakimbo : "Akimbo UZIs" []
 
 @PointClass base(Item, CustomRespawnDelay) studio("models/w_weaponbox.mdl") = weaponbox : "Weapon/Ammo Container"
-[
-    bullet9mm(integer) : "Packed 9mm rounds"
-    bullet357(integer) : "Packed 357 rounds"
-    buckshot(integer) : "Packed shotgun shells"
-    bolts(integer) : "Packed crossbow bolts"
-    bullet556(integer) : "Packed 5.56mm rounds"
-    ARgrenades(integer) : "Packed assault rifle grenades"
-    rockets(integer) : "Packed rockets"
-    uranium(integer) : "Packed gauss charges"
-    handgrenade(integer) : "Packed hand grenades"
-    satchelcharge(integer) : "Packed satchels"
-    tripmine(integer) : "Packed trip mines"
-    Snarks(integer) : "Packed snarks"
-    m40a1(integer) : "Packed 7.62mm rounds"
-    sporeclip(integer) : "Packed spores"
-]
-
-@PointClass base(Item, CustomRespawnDelay) studio("models/w_weaponbox.mdl") = weaponbox_individual : "Weapon/Ammo Container"
 [
     bullet9mm(integer) : "Packed 9mm rounds"
     bullet357(integer) : "Packed 357 rounds"
