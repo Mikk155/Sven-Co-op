@@ -33,10 +33,20 @@ namespace config_classic_mode
             get const { return g_ItemMappings.getKeys(); }
         }
 
+        private string
+            target_toggle,
+				target_failed,
+                    target_enabled,
+                        target_disabled;
+
         bool KeyValue( const string& in szKey, const string& in szValue ) 
         {
             ExtraKeyValues(szKey, szValue);
             g_ItemMappings[ szKey ] = szValue;
+            if( szKey == "target_toggle" ) target_toggle = szValue;
+            else if( szKey == "target_failed" ) target_failed = szValue;
+            else if( szKey == "target_enabled" ) target_enabled = atof( szValue );
+            else if( szKey == "target_disabled" ) target_disabled = atof( szValue );
             return true;
         }
 
@@ -52,7 +62,7 @@ namespace config_classic_mode
                     if( string( Key ).StartsWith( "models/" ) )
                     {
                         g_Game.PrecacheModel( Value );
-                        g_Game.AlertMessage( at_console, "[config_classic_mode::Precache()] Precached model '" + Value + "'\n" );
+                        UTILS::Debug( "[config_classic_mode::Precache()] Precached model '" + Value + "'" );
                     }
                 }
             }
@@ -76,12 +86,12 @@ namespace config_classic_mode
                         g_changemodel [ "model" ] = Value;
                         g_changemodel [ "targetname" ] =  "CCM_" + Key;
                         g_EntityFuncs.CreateEntity( "trigger_changemodel", g_changemodel, true );
-                        g_Game.AlertMessage( at_console, "[config_classic_mode::Spawn()] Created trigger_changemodel replaces '" + Key + "' -> '" + Value + "' \n" );
+                        UTILS::Debug( "[config_classic_mode::Spawn()] Created trigger_changemodel replaces '" + Key + "' -> '" + Value + "'" );
                     }
                 }
             }
 
-            UTILS::Trigger( ( g_ClassicMode.IsEnabled() ) ? self.pev.noise1 : self.pev.noise2 , self, self, USE_TOGGLE, 0.0f );
+            UTILS::Trigger( ( g_ClassicMode.IsEnabled() ) ? target_enabled : target_disabled , self, self, USE_TOGGLE, delay );
 
             SetThink( ThinkFunction( this.Think ) );
             self.pev.nextthink = g_Engine.time + 0.1f;
@@ -98,7 +108,7 @@ namespace config_classic_mode
             else
             if( g_ClassicMode.IsEnabled() && useType == USE_ON || !g_ClassicMode.IsEnabled() && useType == USE_OFF )
             {
-                UTILS::Trigger( self.pev.message, pActivator, self, useType, 0.0f );
+                UTILS::Trigger( target_failed, pActivator, self, useType, delay );
                 return;
             }
 
@@ -106,7 +116,7 @@ namespace config_classic_mode
 
             g_ClassicMode.Toggle();
 
-            UTILS::Trigger( self.pev.target, pActivator, self, useType, 0.0f );
+            UTILS::Trigger( target_toggle, pActivator, self, useType, delay );
         }
 
         void Think()
@@ -125,18 +135,23 @@ namespace config_classic_mode
                     {
                         if( pEntity !is null && pEntity.GetCustomKeyvalues().GetKeyvalue( "$i_classic_mode_ignore" ).GetInteger() != 1 )
                         {
-                            g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, "[config_classic_mode::Think()] replaced '" + string( pEntity.pev.model ) + "' -> '" + string( Value ) + "' \n" );
+                            UTILS::Debug( "[config_classic_mode::Think()] replaced '" + string( pEntity.pev.model ) + "' -> '" + string( Value ) + "'" );
                             UTILS::Trigger( "CCM_" + Key, pEntity, self, USE_ON, 0.0f );
                         }
                     }
 
-                    while( ( @pWeapon = g_EntityFuncs.FindEntityByString( pWeapon, "classname", Key ) ) !is null )
+                    if(string( Key ).StartsWith( 'weapon') 
+                    or string( Key ).StartsWith( 'item_' )
+                    or string( Key ).StartsWith( 'ammo_' ) )
                     {
-                        if( pWeapon !is null )
+                        while( ( @pWeapon = g_EntityFuncs.FindEntityByString( pWeapon, "classname", Key ) ) !is null )
                         {
-                            g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, "[config_classic_mode::Think()] replaced '" + string( pWeapon.pev.classname ) + "' -> '" + string( Value ) + "' \n" );
-                            g_EntityFuncs.Create( Value, pWeapon.pev.origin, pWeapon.pev.angles, false);
-                            g_EntityFuncs.Remove( pWeapon );
+                            if( pWeapon !is null )
+                            {
+                                UTILS::Debug( "[config_classic_mode::Think()] replaced '" + string( pWeapon.pev.classname ) + "' -> '" + string( Value ) + "'" );
+                                g_EntityFuncs.Create( Value, pWeapon.pev.origin, pWeapon.pev.angles, false);
+                                g_EntityFuncs.Remove( pWeapon );
+                            }
                         }
                     }
                 }
