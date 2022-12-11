@@ -24,7 +24,6 @@ namespace UTILS
     {
         if( string( key ).IsEmpty() )
         {
-            Debug("[UTILS::Trigger]: Empty target set. return." );
             return;
         }
 
@@ -39,14 +38,18 @@ namespace UTILS
         // Those values overrides the default USE_TYPE
         if( string( key ).EndsWith( "#0" ) ){NewUseType = USE_OFF;}
         if( string( key ).EndsWith( "#1" ) ){NewUseType = USE_ON;}
-        if( string( key ).EndsWith( "#2" ) ){NewUseType = USE_KILL;
-            // because it doesn't work.
-            CBaseEntity@ pKillEnt = null;
-                while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, ReadTarget ) ) !is null )
-                    g_EntityFuncs.Remove( pKillEnt );
+        if( string( key ).EndsWith( "#2" ) ){NewUseType = USE_KILL;}
+
+        if( NewUseType == USE_KILL )
+        {
+            CBaseEntity@ pKillEnt = null; // hack because USE_KILL doesn't work.
+            while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, ReadTarget ) ) !is null ){
+                g_EntityFuncs.Remove( pKillEnt );
+            }
+        }else{
+            g_EntityFuncs.FireTargets( ReadTarget, pActivator, pCaller, NewUseType, flDelay );
         }
 
-        g_EntityFuncs.FireTargets( ReadTarget, pActivator, pCaller, NewUseType, flDelay );
 
         Debug( "[UTILS::Trigger]" );
         Debug( "Fired entity '" + ReadTarget + "'" );
