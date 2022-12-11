@@ -23,7 +23,7 @@ namespace monster_dmg_inflictor
         while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, "monster_*" ) ) !is null )
         {
             if( pEntity !is null
-            && pEntity.GetCustomKeyvalues().GetKeyvalue( "$f_damage_inflictor" ).GetFloat() == 1
+            && pEntity.GetCustomKeyvalues().GetKeyvalue( "$i_damage_inflictor" ).GetFloat() == 1
             && !string( cast<CBaseMonster@>(pEntity).m_iszTriggerTarget ).IsEmpty() )
             {
                 dictionary g_keyvalues =
