@@ -32,7 +32,6 @@ namespace item_oxygentank
     {
         private string sprite = "sprites/bubble.spr";
         private string splashsound = "debris/bustflesh1.wav";
-        private string tankmodel = "models/w_oxygen.mdl";
         private float x_velocity = 128.0f, y_velocity = 128.0f, z_velocity = 128.0f;
 
         bool KeyValue( const string& in szKey, const string& in szValue ) 
@@ -40,7 +39,6 @@ namespace item_oxygentank
             ExtraKeyValues(szKey, szValue);
             if( szKey == "sprite" ) sprite = szValue;
             else if( szKey == "splashsound" ) splashsound = szValue;
-            else if( szKey == "tankmodel" ) tankmodel = szValue;
             else if( szKey == "x_velocity" ) x_velocity = atof( szValue );
             else if( szKey == "y_velocity" ) y_velocity = atof( szValue );
             else if( szKey == "z_velocity" ) z_velocity = atof( szValue );
@@ -51,7 +49,7 @@ namespace item_oxygentank
         {
             BaseClass.Precache();
             g_Game.PrecacheModel( sprite );
-            g_Game.PrecacheModel( tankmodel );
+            g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ) ? "models/w_oxygen.mdl" : string( self.pev.model ) );
             g_Game.PrecacheGeneric( 'sound/' + splashsound );
             g_SoundSystem.PrecacheSound( splashsound );
         }
@@ -62,7 +60,7 @@ namespace item_oxygentank
             self.pev.movetype = self.pev.movetype;
             self.pev.solid = SOLID_TRIGGER;
 
-            g_EntityFuncs.SetModel( self, tankmodel );
+            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ) ? "models/w_oxygen.mdl" : string( self.pev.model ) );
 
             origin_to_world = 1;
 
