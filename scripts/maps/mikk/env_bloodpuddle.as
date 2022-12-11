@@ -26,7 +26,7 @@ namespace env_bloodpuddle
         if( g_CustomEntityFuncs.IsCustomEntity( "env_bloodpuddle" ) )
             return;
 
-		g_Scheduler.SetInterval( "bloodpuddleThink", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
+        g_Scheduler.SetInterval( "bloodpuddleThink", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
         g_CustomEntityFuncs.RegisterCustomEntity( "env_bloodpuddle::env_bloodpuddle", "env_bloodpuddle" );
         g_Game.PrecacheOther( "env_bloodpuddle" );
     }
