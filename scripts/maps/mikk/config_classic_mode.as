@@ -35,7 +35,7 @@ namespace config_classic_mode
 
         private string
             target_toggle,
-				target_failed,
+                target_failed,
                     target_enabled,
                         target_disabled;
 
