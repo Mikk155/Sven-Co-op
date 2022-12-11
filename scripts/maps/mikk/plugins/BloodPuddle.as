@@ -8,11 +8,11 @@ scripts/maps/mikk/plugins/BloodPuddle.as
 
 INSTALL:
 
-	"plugin"
-	{
-		"name" "BloodPuddle"
-		"script" "../maps/mikk/plugins/BloodPuddle"
-	}
+    "plugin"
+    {
+        "name" "BloodPuddle"
+        "script" "../maps/mikk/plugins/BloodPuddle"
+    }
 */
 
 #include "../env_bloodpuddle"
