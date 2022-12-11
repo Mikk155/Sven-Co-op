@@ -319,7 +319,7 @@
 
 @BaseClass base(ZHLTbmodel) = ZHLT
 [
-    zhlt_lightflags(choices) : "ZHLT Light Flags" : 0 =
+    zhlt_lightflags(choices) : "ZHLT Light flags" : 0 =
     [
         0 : "Default"
         1 : "Embedded Fix"
@@ -343,7 +343,7 @@
 
 @BaseClass = Appearflags
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         2048 : "Not in Deathmatch" : 0
     ]
@@ -394,7 +394,7 @@
 
 @BaseClass size(0 0 0, 32 32 32) color(80 0 200) base(Targetname, Appearflags, Angles) = Pickup
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         128 : "TOUCH Only" : 0
         256 : "USE Only" : 0
@@ -608,7 +608,7 @@
 
 @BaseClass base(Targetname, Target, Appearflags, Angles) size(-16 -16 -36, 16 16 36) color(0 255 0) = PlayerDmClass
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         // Disable this spawn point when the map starts
         2 : "Start Off" : 0
@@ -650,7 +650,7 @@
 
 @BaseClass base(Targetname, Target, RenderFields, Angles, AttackObject, NotRevivable, ClassicModeIgnore, PassDamageInflictor, HullSetSizes) color(0 200 200) = Monster
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "WaitTillSeen" : 0
         2 : "Gag" : 0
@@ -726,7 +726,7 @@
 
 @BaseClass base(Targetname, Angles) size(-8 -8 -8, 8 8 8) = GibShooterBase
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Repeatable"  : 0
     ]
@@ -766,7 +766,7 @@
         9 : "Slow strobe"
     ]
     pattern(string) : "Custom Appearance"
-    spawnflags(Flags) = [ 2 : "Remove on Spawn" : 0 ]
+    spawnflags(flags) = [ 2 : "Remove on Spawn" : 0 ]
 ]
 
 @BaseClass base(Targetname, Targetx, Global, AttackObject, RenderFields, ZHLT) = Breakable
@@ -1002,7 +1002,7 @@
     health(integer) : "Strength" : 0
     _minlight(string) : "Minimum light level"
     soundlist(string) : "Sound Replacement File"
-    m_iOpenFlags(choices) : "Who can open this" : 0 =
+    m_iOpenflags(choices) : "Who can open this" : 0 =
     [
         0: "Default (0)"
         1: "Pushables (1)"
@@ -1418,7 +1418,7 @@
         0 : "Default AI"
         1 : "Ambush"
     ]
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         4 : "Repeatable"        : 0
         8 : "Leave Corpse"    : 0
@@ -1641,7 +1641,7 @@
 // -Mikk A custom entity that allow mappers to configure Classic Mode.
 @PointClass base(Targetname, Master) color(0 255 255) = config_classic_mode : "Map ClassicMode configuration"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         // if set. the current map will be restarted to apply the changes.
         1 : "Restart now" : 0
@@ -1892,7 +1892,7 @@
     density(integer) : "Bubble density" : 2
     frequency(integer) : "Bubble frequency" : 2
     current(integer) : "Speed of Current" : 0
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start Off"     : 0
     ]
@@ -2047,7 +2047,7 @@
 
 @PointClass base(Targetname, RenderFields) = env_render_individual : "Per-player render settings for entities"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1: "No Renderfx" : 0
         2: "No Renderamt" : 0
@@ -2067,7 +2067,7 @@
 
 @PointClass base(Target, Targetname) size(-16 -16 -16, 16 16 16) iconsprite("sprites/vhe-iconsprites/env_sentence.spr") color(164 128 164) = env_sentence : "Announcement Sentence"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Activator Only" : 0
     ]
@@ -2387,7 +2387,7 @@
 
 @SolidClass base(Targetname, RenderFields, Angles, ZHLTbmodel) = env_weather : "Weather Effect"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start On" : 1
     ]
@@ -2513,7 +2513,7 @@
 
 @SolidClass base(Targetname, Angles, ZHLTbmodel) = func_clip : "Clip"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start Off" : 1
         2 : "Directional (Angles)" : 0
@@ -2582,7 +2582,7 @@
 
 @SolidClass base(Targetname, RenderFields, AttackObject, Global, ZHLT) = func_guntarget : "Moving platform"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start On" : 0
     ]
@@ -2691,7 +2691,7 @@
 
 @SolidClass base(Targetname, Global, RenderFields, PlatSounds, BasePlat, ZHLT) = func_plat : "Elevator"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1: "Toggle" : 0
     ]
@@ -2702,7 +2702,7 @@
 
 @SolidClass base(Targetname, Global, RenderFields, PlatSounds, BasePlat, Angles, ZHLT) = func_platrot : "Moving Rotating platform"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1: "Toggle" : 1
         64: "X Axis" : 0
@@ -3100,51 +3100,182 @@
     master(string) : "Master"
 ]
 
-@PointClass base(Targetname, Targetx) color(100 100 110) = game_team_set : "Sets team of team_master"
+@PointClass base(Targetname, Master, Targetx) color(100 100 110) = game_team_set : "Sets team of team_master"
 [
     spawnflags(flags) =
     [
         1: "Remove On fire" : 0
     ]
-    master(string) : "Master"
 ]
 
-@PointClass base(Targetname, Targetx) color(192 255 0) = game_text : "HUD Text Message"
+@BaseClass base(Targetname, Master) = BaseGameText
 [
     spawnflags(flags) =
     [
         1: "All Players" : 0
         2: "No console echo" : 0
     ]
+    // changed string to float.
+    fadein(float) : "Fade in Time (or character scan time)" : 0.0
+    fadeout(float) : "Fade Out Time" : 2.0
+    holdtime(float) : "Hold Time" : 2.0
+    fxtime(float) : "Scan time (scan effect only)" : 0.0
+    x(float) : "X (0 - 1.0 = left to right) (-1 centers)" : -1
+    y(float) : "Y (0 - 1.0 = top to bottom) (-1 centers)" : 0.67
+    color(color255) : "Color 1 (Add 4th number >0 for opaque)" : "100 100 100"
+    color2(color255) : "Color 2 (Add 4th number >0 for opaque)" : "240 110 0"
+    channel(choices) : "Text Channel" : 1 =
+    [
+        // -Mikk added channels up to 8 because the game supports them.
+		1 : "Channel 1"
+		2 : "Channel 2"
+        // Monster's hud information uses this channel.
+		3 : "Channel 3 (not recomend)"
+		4 : "Channel 4"
+		5 : "Channel 5"
+        // Plugins normally uses those channels.
+		6 : "Channel 6 (Plugins)"
+		7 : "Channel 7 (Plugins)"
+		8 : "Channel 8 (Plugins)"
+    ]
+]
 
-    message(string) : "Message Text"
-    x(string) : "X (0 - 1.0 = left to right) (-1 centers)" : "-1"
-    y(string) : "Y (0 - 1.0 = top to bottom) (-1 centers)" : "0.67"
-    effect(choices) : "Text Effect" : 0 =
+@PointClass base(Targetx, BaseGameText) color(192 255 0) = game_text : "HUD Text Message"
+[
+    effect(Choices) : "Text Effect" : 0 =
     [
         0 : "Fade In/Out"
         1 : "Credits"
         2 : "Scan Out"
     ]
-    color(color255) : "Color 1 (Add 4th number >0 for opaque)" : "100 100 100"
-    color2(color255) : "Color 2 (Add 4th number >0 for opaque)" : "240 110 0"
-    fadein(string) : "Fade in Time (or character scan time)" : "1.5"
-    fadeout(string) : "Fade Out Time" : "0.5"
-    holdtime(string) : "Hold Time" : "1.2"
-    fxtime(string) : "Scan time (scan effect only)" : "0.25"
-    channel(choices) : "Text Channel" : 1 =
+    message(string) : "Message Text"
+]
+
+// new entity replacemet for game_text and env_message with lot of new additions -Mikk
+@PointClass base(BaseGameText) color(192 255 0) = game_text_custom : "Custom Text Messages"
+[
+	target(target_destination) : "Target (USE_TYPE)"
+	killtarget(target_destination) : "Kill Target"
+	delay(float) : "Delay before kill/target" : 0.0
+
+    // Enum of supported styles of text.
+	effect(Choices) : "Text Effect" : 0 =
+	[
+        // Native game_text's effects
+		0 : "Fade In/Out"
+		1 : "Credits"
+		2 : "Scan Out"
+
+		// Using the next values meant you don't need the keyvalues that you would use for game_text.
+        
+        // The same effect that trigger_once/multiple's "message" provides.
+		3 : "Print HUD"
+
+        // Shows a MOTD pop up with the given message.
+		4 : "Print MOTD"
+        // Set in "frags" how many chars (from the start) you want to take to be the title of the MOTD.
+
+        // Readable file so mappers avoid the characters limit in JACK -TODO
+
+        // Shows a message on the chat.
+		5 : "Print Chat"
+        
+        // Prints a notify at the top left side
+		6 : "Print Notify"
+        
+        // Prints a keybind print, the format is "Press +use to interact" and will be shown as "Press [e] to interact"
+		7 : "Print Key-Bind"
+        
+        // Prints at the console ( set flag 2 or double message will be shown )
+		8 : "Print Console"
+        
+        // Prints at the center of the screen
+		9 : "Print Center"
+
+        // Shows the text as the server's hostname but only apply to the score board popup
+        // 10 : "Print scoreboard" 
+        
+        // Shows a sprite at the location of the entity. "message" must be the sprite file.
+        // While languages should be a frame of it. keyvalues are also the sames as env_sprite. -TODO
+		// 11 : "Sprite"
+        
+        // Shows a text pre-defined as a subtitle. set "color" and "holdtime" for coloring and time respectively. -TODO
+		// 12 : "Caption"
+	]
+
+	spawnflags(flags) =
+	[
+		// If set. the target will be fired once every time the entity is triggered.
+		// Otherwise the target is fired for every player that sees the message.
+		4: "Fire once" : 0
+	]
+
+    // env_message's legacy
+    messagesound(sound) : "Sound Effect"
+    messagevolume(string) : "Volume 0-10" : "10"
+    messageattenuation(Choices) : "Sound Radius" : 0 =
     [
-        1 : "Channel 1"
-        2 : "Channel 2"
-        3 : "Channel 3"
-        4 : "Channel 4"
-    ]
-    master(string) : "Master"
+        0 : "Small Radius"
+        1 : "Medium Radius"
+        2 : "Large  Radius"
+        3 : "Play Everywhere"
+        4 : "Activator only"
+    ]// -TODO
+
+    // Plays a sentence using this entity as a speaker
+    messagesentence(string) : "Play sentence (!SENTENCENAME)"
+
+	// Replacing code:
+	// We've added a function for replacing a string command into another string.
+	// In this case you want the game_text_custom show a countdown with a message.
+	key_integer(integer) : "!integer"
+    // "message" "The bomb will explode in !frags seconds"
+    // "frags" "25"
+    // so you can update in any time that "frags" value and when trigger the entity it will show the proper time that frags contains.
+    // The same but it is a float.
+	key_float(float) : "!float"
+    // The same but it is a string.
+	key_string(string) : "!string"
+
+	// "!activator" This command will contains the nickname or classname of the player or monster that activated this entity.
+    // "message" "The player !activator is trapped in sector C"
+    // !activator is replaced by the entity's activator netname or classname in case of non-player
+
+    // Made for myself but probably is useful to you.
+    // Sets a entity's targetname at here to target the function of the next keyvalue. empty = activator. if null = none
+    focus_entity(string) : "!value target entity"
+
+    // Gets the value of the given custom-keyvalue from the previusly given entity.
+    key_from_entity(string) : "!value custom keyvalue from entity"
+	// string "!value" will be replaced for what that custom keyvalue from that entity contains.
+
+    // The first amount of chars you specify here will be the MOTD title.
+    motd_title(integer) : "MOTD title first chars" : 5
+
+    // Place here a brush model "*" to add language. used by the plugin to replace CTriggers "message" keyvalue.
+    // when the trigger_once/multiple doesn't have a "target" set. you must set a "targetname" to your multi_language entity.
+    // model(string) : "model (PLUGIN USES)"
+    
+    // Supported languages.
+	message(string) : "English"
+	message_spanish(string) : "Spanish Latam"
+	message_spanish2(string) : "Spanish Spain"
+	message_portuguese(string) : "Portuguese"
+	message_german(string) : "Germany"
+	message_french(string) : "French"
+	message_italian(string) : "Italian"
+	message_esperanto(string) : "Esperanto"
+	message_czech(string) : "Czech"
+	message_dutch(string) : "Dutch"
+	message_indonesian(string) : "Indonesian"
+	message_romanian(string) : "Romanian"
+	message_turkish(string) : "Turkish"
+	message_albanian(string) : "Albanian"
 ]
 
 @SolidClass base(Targetname, ZHLTbmodel) = game_zone_player : "Player Zone brush"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Ignore Dead Players" : 0
     ]
@@ -3172,7 +3303,7 @@
 
 @PointClass base(Targetname) size(-24 -24 0, 24 24 16) color(20 190 60) = info_bigmomma : "Big Mamma Node"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Run To Node" : 0
         2 : "Wait Indefinitely" : 0
@@ -3189,7 +3320,7 @@
 
 @PointClass color(255 231 127) = info_compile_parameters : "Map Compile Parameters"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Ignore shared settings" : 0
         2 : "Ignore CSG settings" : 0
@@ -3588,7 +3719,7 @@
 // Goal pathing entity
 @PointClass base(Targetname, Target) color(230 230 232) = info_monster_goal : "Monster goal entity"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         8  : "Start Off" : 0
 
@@ -3785,7 +3916,7 @@
 
 @PointClass size(-16 -16 0, 16 16 72) base(PlayerClass)  color(255 128 240) = info_teleport_destination : "Teleport destination"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "Trigger on arrival" : 0
     ]
@@ -4009,7 +4140,7 @@
     
     delay(float) : "Delay before reset" : 1.0
 
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         // If set. every player can use this item ONCE
         1 : "ONE Use Only" : 0
@@ -4034,7 +4165,7 @@
 
 @PointClass size(-15 -15 0, 15 15 64) base(Targetx, Item) studio("models/w_suit.mdl") = item_suit : "HEV Suit"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Short Logon" : 0
     ]
@@ -4042,7 +4173,7 @@
 
 @PointClass iconsprite("sprites/vhe-iconsprites/light.spr") base(Target, Targetname, Light, ZHLTpoint) = light : "Invisible lightsource"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Initially dark" : 0
         2 : "Remove Entity" : 0
@@ -4134,7 +4265,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    spawnflags(Flags) = [ 1 : "Initially dark" : 0 ]
+    spawnflags(flags) = [ 1 : "Initially dark" : 0 ]
     style(choices) : "Appearance" : 0 =
     [
         0 : "Normal"
@@ -4263,7 +4394,7 @@
 @PointClass base(Monster) size(-40 -40 0, 40 40 64) studio("models/baby_voltigore.mdl") = monster_alien_babyvoltigore : "Baby Voltigore"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4284,7 +4415,7 @@
 
     netname(string) : "Squad Name"
 
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4293,7 +4424,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/islave.mdl") = monster_alien_slave : "Vortigaunt"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
         64 : "IgnorePlayer" : 0
@@ -4303,7 +4434,7 @@
 @PointClass base(Monster) size(-32 -32 0, 32 32 64) studio("models/Tor.mdl") = monster_alien_tor : "Alien Tor"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4312,7 +4443,7 @@
 @PointClass base(Monster) size(-80 -80 0, 80 80 90) studio("models/voltigore.mdl") = monster_alien_voltigore : "Voltigore"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4320,7 +4451,7 @@
 
 @PointClass base(Monster) size(-360 -360 -172, 360 360 8) studio("models/apache.mdl") = monster_apache : "Apache"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         8 : "NoWreckage"    : 0
         64 : "Start Inactive" : 0
@@ -4330,7 +4461,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/massn.mdl") = monster_assassin_repel : "Male Assassin (Repel)"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4425,7 +4556,7 @@
 [
     netname(string) : "First node" : ""
 
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1024: "No Babycrabs" : 0
     ]
@@ -4433,7 +4564,7 @@
 
 @PointClass base(Monster) size(-480 -480 -112, 480 480 24) studio("models/blkop_osprey.mdl") = monster_blkop_osprey : "Black Ops Osprey"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         64 : "Start Inactive" : 0
     ]
@@ -4441,7 +4572,7 @@
 
 @PointClass base(Monster) size(-360 -360 -172, 360 360 8) studio("models/blkop_apache.mdl") = monster_blkop_apache : "Black Ops Apache"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         8 : "NoWreckage"    : 0
         64 : "Start Inactive" : 0
@@ -4585,7 +4716,7 @@
 @PointClass base(Monster, RenderFields) size(-16 -16 -36, 16 16 36) studio() = monster_generic : "Generic Script Monster"
 [
     sequence(string) : "Animation Sequence (Number)" : "0"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         4 : "Not solid"    : 0
         8 : "Head Controller" : 0
@@ -4605,7 +4736,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/hgrunt_opfor.mdl") = monster_grunt_ally_repel : "Human Grunt Ally (Repel)"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4639,7 +4770,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/hgrunt.mdl") = monster_grunt_repel : "Human Grunt (Repel)"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4717,7 +4848,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 36) studio("models/houndeye.mdl") = monster_houndeye : "Houndeye"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4727,7 +4858,7 @@
 
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/hgrunt.mdl") = monster_human_grunt : "Human Grunt (camo)"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4749,7 +4880,7 @@
 @PointClass base(Monster, TalkMonster) size(-16 -16 0, 16 16 72) studio("models/hgruntf.mdl") = monster_human_grunt_ally : "Human Grunt Ally (camo)"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4817,7 +4948,7 @@
 @PointClass base(Monster, TalkMonster) size(-16 -16 0, 16 16 72) studio("models/hgrunt_medicf.mdl") = monster_human_medic_ally : "Medic"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4839,7 +4970,7 @@
 @PointClass base(Monster, TalkMonster) size(-16 -16 0, 16 16 72) studio("models/hgrunt_torchf.mdl") = monster_human_torch_ally : "Torch"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4853,7 +4984,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/hwgrunt.mdl") = monster_hwgrunt : "Heavy Weapons Grunt"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4877,7 +5008,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/hwgrunt.mdl") = monster_hwgrunt_repel : "Heavy Weapons Grunt (Repel)"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4901,7 +5032,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/massn.mdl") = monster_male_assassin : "Male Assassin"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4927,7 +5058,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/hgrunt_medicf.mdl") = monster_medic_ally_repel : "Human Medic Ally (Repel)"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -4957,7 +5088,7 @@
         0 : "Floor Mount"
         1 : "Ceiling Mount"
     ]
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "Autostart" : 0
         64 : "Start Inactive" : 0
@@ -4971,7 +5102,7 @@
 
 @PointClass base(Monster) size(-480 -480 -112, 480 480 24) studio("models/osprey.mdl") = monster_osprey : "Osprey"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         64 : "Start Inactive" : 0
     ]
@@ -5066,7 +5197,7 @@
 
 @PointClass base(Monster) size(-24 -24 0, 24 24 32) studio("models/pit_drone.mdl") = monster_pitdrone : "Pit Drone"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -5078,7 +5209,7 @@
 
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/rgrunt.mdl") = monster_robogrunt : "Robot Grunt"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -5245,7 +5376,7 @@
 
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/sentry.mdl") = monster_sentry : "Sentry Turret Gun"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "Autostart" : 0
         64 : "Start Inactive" : 0
@@ -5259,7 +5390,7 @@
 @PointClass base(Monster) size(-24 -24 0, 24 24 32) studio("models/strooper.mdl") = monster_shocktrooper : "Shock Trooper"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
         1024: "No Shockroach" : 0
@@ -5307,7 +5438,7 @@
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/hgrunt_torchf.mdl") = monster_torch_ally_repel : "Human Torch Ally (Repel)"
 [
     netname(string) : "Squad Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "SquadLeader" : 0
     ]
@@ -5324,7 +5455,7 @@
 
 @PointClass base(Monster) studio("models/vhe-models/w_tripmine_hammer.mdl") = monster_tripmine : "Active Tripmine"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Instant On" : 1
     ]
@@ -5337,7 +5468,7 @@
         0 : "Floor Mount"
         1 : "Ceiling Mount"
     ]
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         32 : "Autostart" : 0
         64 : "Start Inactive" : 0
@@ -5398,7 +5529,7 @@
     target(string) : "Target On Release"
     monstertype(string) : "Monster Type"
     netname(string) : "Childrens' Name"
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start ON"     : 0
         //2 : "PVS On/Off" : 0
@@ -5430,7 +5561,7 @@
 
 @PointClass base(Targetname) color(255 128 0) = multi_manager : "MultiTarget Manager"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "multithreaded" : 0
     ]
@@ -5443,7 +5574,7 @@
 
 @PointClass base(Targetname, AttackObject) studio("models/mortar.mdl") = op4mortar : "Op4 Mortar"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1  : "Active" : 0
         16 : "Line of Sight" : 1
@@ -5466,7 +5597,7 @@
 
 @PointClass base(Targetname, Angles) size(16 16 16) color(247 181 82) = path_corner : "Moving platform stop"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1: "Wait for retrigger" : 0
         2: "Teleport to this" : 0
@@ -5485,7 +5616,7 @@
 //Processes and selects a path_condition for the NPC. Allows for multiple path_conditions to be used for a single NPC.
 @PointClass base(Targetname) color(145 255 145) = path_condition_controller : "NPC Path Condition Controller"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start Off" : 0 // If checked, this controller starts in-active and can not be used until triggered.
     ]
@@ -5504,7 +5635,7 @@
 //Processes and selects a path_waypoint for the NPC or path_condition_controller.
 @PointClass base(Targetname) color(225 148 32) = path_condition : "NPC Path Condition"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start Off" : 0     // If checked, this path_condition starts in-active and can not be used until triggered with USE_ON or USE_TOGGLE.
     ]
@@ -5653,7 +5784,7 @@
 
 @PointClass base(Targetname, Angles) size(16 16 16)  color(255 148 0) = path_track : "Train Track Path"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1: "Disabled" : 0
         2: "Fire once" : 0
@@ -5692,7 +5823,7 @@
 
 @PointClass base(Targetname) size(-16 -16 -16, 16 16 16) color(96 32 128) = player_weaponstrip : "Strips player's weapons"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Strip suit, too" : 0
     ]
@@ -5715,7 +5846,7 @@
 
 @PointClass base(Targetname, Targetx) size(-16 -16 0, 16 16 72) color(255 0 200) = scripted_sentence : "Scripted Sentence"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Fire Once"     : 1
         2 : "Followers Only"    : 0
@@ -5754,7 +5885,7 @@
         5 : "No - Turn to Face"
     ]
     moveto_radius(integer) : "Move to Radius" : 0
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         4 : "Repeatable"    : 0
         8 : "Leave Corpse"    : 0
@@ -5793,7 +5924,7 @@
 
 @PointClass base(Targetname, Angles, RenderFields, AttackObject, NotRevivable, HullSetSizes) size(-16 -16 0, 16 16 72) color(245 128 96) = squadmaker : "Squad Maker"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start ON"     : 0
         //2 : "PVS On/Off" : 0
@@ -5970,7 +6101,7 @@
 
 @PointClass base(Targetx) color(250 10 165) = trigger_auto : "AutoTrigger"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Remove On fire" : 1
     ]
@@ -6373,8 +6504,9 @@
 // -Mikk alternative to trigger_setcvar but you can set more than one cvar per entity and can modify its values on-the-fly
 @PointClass base(Targetname, Master) color(40 200 150) = trigger_changecvar : "Sets a CVAR"
 [
-	target(target_destination) : "Target after set (#0#1#2)"
+	target(target_destination) : "Target after set (USE_TYPE)"
     delay(string) : "delay before trigger"
+
     mp_allowplayerinfo(integer) : "mp_allowplayerinfo"
     mp_allowmonsterinfo(integer) : "mp_allowmonsterinfo"
     mp_barnacle_paralyze(integer) : "mp_barnacle_paralyze"
@@ -6412,6 +6544,8 @@
     mp_survival_starton(integer) : "mp_survival_starton"
     mp_survival_startdelay(integer) : "mp_survival_startdelay"
     mp_survival_nextmap(integer) : "mp_survival_nextmap"
+    mp_footsteps(integer) : "mp_footsteps"
+    mp_friendlyfire(integer) : "mp_friendlyfire"
     npc_dropweapons(integer) : "npc_dropweapons"
     sv_friction(integer) : "sv_friction"
     sv_airaccelerate(integer) : "sv_airaccelerate"
@@ -6423,6 +6557,10 @@
     sv_waterfriction(integer) : "sv_waterfriction"
     sv_zmax(integer) : "sv_zmax"
     sv_cheats(integer) : "sv_cheats"
+    sv_aim(integer) : "sv_aim"
+    sv_voiceenable(integer) : "sv_voiceenable"
+    voice_enable(integer) : "voice_enable"
+    say(integer) : "say"
     weaponmode_9mmhandgun(integer) : "weaponmode_9mmhandgun"
     weaponmode_357(integer) : "weaponmode_357"
     weaponmode_mp5(integer) : "weaponmode_mp5"
@@ -6431,7 +6569,7 @@
     weaponmode_eagle(integer) : "weaponmode_eagle"
     weaponmode_rpg(integer) : "weaponmode_rpg"
     weaponmode_displacer(integer) : "weaponmode_displacer"
-
+// -TODO testear y quitar los que no funcan de sv_
 // This was so massive. add them by your own xD
 //    skill(integer) : "skill (unused)"
 //    sk_controller_health(float) : "sk_controller_health"
@@ -6665,7 +6803,7 @@
 // Change any entity keyvalue during runtime, allows set, basic arithmetic operations and bitwise logical operations (useful for flags)
 @PointClass base(Targetname) color(90 215 60) = trigger_changevalue : "Trigger Change Value"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
 
         // For Vectors:
@@ -6717,7 +6855,7 @@
 // Copy value of one entity to another value of another entity
 @PointClass base(Targetname) color(60 90 215) = trigger_copyvalue : "Trigger Copy Value"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         // For vectors
         1 : "Don't use X" : 0
@@ -6789,7 +6927,7 @@
 // Checks values of entities and triggers if true or false
 @PointClass base(Targetname) color(120 180 10) = trigger_condition : "Trigger Condition"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start Off" : 0
 
@@ -7046,7 +7184,7 @@
 
 @PointClass base(Targetname, Target) = trigger_hurt_remote : "Trigger Hurt (non-touch)"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Instant Kill" : 0
         2 : "Constant" : 0
@@ -7094,7 +7232,7 @@
 
 @PointClass base(Targetname, Angles) = trigger_lookat : "Forces one Ent to look at another Ent"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start On" : 0
         2 : "Set Once" : 0
@@ -7169,7 +7307,7 @@
 
 @PointClass base(BaseRandom) color(255 230 150) = trigger_random : "Trigger Random"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Start On (Timed only)" : 0
         2 : "Trigger Once (Timed only)" : 0
@@ -7191,7 +7329,7 @@
 // Unique Trigger Random. Randomly selects an unused trigger.
 @PointClass base(BaseRandom) color(225 170 70) = trigger_random_unique : "Trigger Random Unique"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Re-usable" : 0
     ]
@@ -7223,7 +7361,7 @@
 // Giving mappers the ability to set the triggering player's targetname
 @PointClass base(Targetname) color(192 255 128) = trigger_renameplayer : "Trigger Player Target"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         // If set, trigger_playertarget won't remove itself after being used.
         1 : "Reusable" : 0
@@ -7234,7 +7372,7 @@
 // Respawn all players without affecting the current player status, like health and weapons
 @PointClass base(Targetname, Target) size(-16 -16 -16, 16 16 16) color(255 64 2) = trigger_respawn : "Trigger Respawn"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         // Respawn target entity instead of all players.
         1 : "Respawn Target" : 0
@@ -7270,7 +7408,7 @@
 
 @PointClass base(Targetname) color(40 200 150) = trigger_setcvar : "Sets a CVAR"
 [
-    //spawnflags(Flags) =
+    //spawnflags(flags) =
     //[
     //    1 : "Set silently" : 0 // Unimplemented!
     //]
@@ -7420,7 +7558,7 @@
 
 @PointClass base(Targetname, Target) color(255 220 28) = trigger_track_goal : "Trigger Track Goal"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         // Only functions if train is not moving.
         1 : "Stopped Only" : 0
@@ -7564,7 +7702,7 @@
 
 @PointClass base(Targetname, RenderFields, Angles) size(-8 -8 0, 8 8 32 ) studio("models/hair.mdl") = xen_hair : "Xen Hair"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         1 : "Sync Movement" : 0
         2 : "Drop To Ground" : 0
@@ -7574,7 +7712,7 @@
 
 @PointClass base(Targetname, Target, RenderFields, Angles, AttackObject) size(-48 -48 0, 48 48 32 ) studio("models/light.mdl") = xen_plantlight : "Xen Plant Light"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         2 : "Drop To Ground" : 0
         4 : "Face Randomly" : 0
@@ -7583,7 +7721,7 @@
 
 @PointClass base(Targetname, RenderFields, Angles) size(-90 -90 0, 90 90 220 ) studio("models/fungus(large).mdl") = xen_spore_large : "Xen Spore (large)"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         2 : "Drop To Ground" : 0
         4 : "Face Randomly" : 0
@@ -7593,7 +7731,7 @@
 
 @PointClass base(Targetname, RenderFields, Angles) size(-40 -40 0, 40 40 120 ) studio("models/fungus.mdl") = xen_spore_medium : "Xen Spore (medium)"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         2 : "Drop To Ground" : 0
         4 : "Face Randomly" : 0
@@ -7603,7 +7741,7 @@
 
 @PointClass base(Targetname, RenderFields, Angles) size(-16 -16 0, 16 16 64 ) studio("models/fungus(small).mdl") = xen_spore_small : "Xen Spore (small)"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         2 : "Drop To Ground" : 0
         4 : "Face Randomly" : 0
@@ -7613,7 +7751,7 @@
 
 @PointClass base(Targetname, RenderFields, Angles) size(-24 -24 0, 24 24 188 ) studio("models/tree.mdl") = xen_tree : "Xen Tree"
 [
-    spawnflags(Flags) =
+    spawnflags(flags) =
     [
         2 : "Drop To Ground" : 0
         4 : "Face Randomly" : 0
