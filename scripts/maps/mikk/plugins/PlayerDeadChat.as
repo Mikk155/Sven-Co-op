@@ -7,11 +7,11 @@ scripts/maps/mikk/plugins/PlayerDeadChat.as
 
 INSTALL:
 
-	"plugin"
-	{
-		"name" "PlayerDeadChat"
-		"script" "../maps/mikk/plugins/PlayerDeadChat"
-	}
+    "plugin"
+    {
+        "name" "PlayerDeadChat"
+        "script" "../maps/mikk/plugins/PlayerDeadChat"
+    }
 */
 
 #include "../player_deadchat"
