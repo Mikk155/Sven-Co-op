@@ -37,10 +37,10 @@ namespace trigger_changecvar
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-			if( master() )
-			{
-				return;
-			}
+            if( master() )
+            {
+                return;
+            }
 
             UTILS::Debug( "[trigger_changecvar::Use()]" );
 
@@ -73,7 +73,7 @@ namespace trigger_changecvar
 
                     UTILS::Debug( "Set CVAR '" + Key + "' : '" + oldvalue + "'  -> '" + newvalue + "'" );
                 }
-			}
+            }
 
             UTILS::Trigger( self.pev.target, ( pActivator is null ) ? self : pActivator, self, useType, delay );
         }
