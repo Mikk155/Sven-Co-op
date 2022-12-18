@@ -1,7 +1,7 @@
 /*
 DOWNLOAD:
 
-scripts/maps/mikk/env_render_fade.as
+scripts/maps/mikk/env_render.as
 scripts/maps/mikk/utils.as
 
 
