@@ -211,6 +211,24 @@
     ]
 ]
 
+// -Mikk Feature created for the campaign Episode One map
+@BaseClass = MonsterTriggersStealth
+[
+    // If set to 1. when the monster (if enemy) sees a player and gets angry.
+    // it moves him to spectator mode and fire the monster's target with the player as activator.
+    $i_stealth(choices) : "[AS] Stealth gamemode" : 0 =
+    [
+        0: "No"
+        1: "Yes"
+    ]
+    // If not set. players and monsters that are enemy of this entity will dissapear when seen.
+    $i_stealthmode(choices) : "[AS] Stealth allow monsters" : 0 =
+    [
+        0: "Yes"
+        1: "No"
+    ]
+]
+
 // -Mikk Some entities supports this feature.
 // You can use the same method as multi_manager to send USE_OFF/ON/KILL. ( #0 / #1 / #2 )
 // By just adding the respective value at the end of the target's value.
@@ -475,7 +493,7 @@
     ]
 ]
 
-@BaseClass size(-8 -8 0, 8 8 16) color(4 128 240) base(Pickup, CustomRespawnDelay, ClassicModeIgnore) = Ammo
+@BaseClass size(-8 -8 0, 8 8 16) color(4 128 240) base(Pickup, CustomRespawnDelay, ClassicModeIgnore, TriggerIndividual) = Ammo
 [
     model(studio) : "Custom Model" : ""
 ]
@@ -606,7 +624,7 @@
 
 @BaseClass base(Targetname, Target, Appearflags, Angles) size(-16 -16 -36, 16 16 36) color(0 255 0) = PlayerClass []
 
-@BaseClass base(Targetname, Target, Appearflags, Angles) size(-16 -16 -36, 16 16 36) color(0 255 0) = PlayerDmClass
+@BaseClass base(Targetname, Target, Master , Appearflags, Angles) size(-16 -16 -36, 16 16 36) color(0 255 0) = PlayerDmClass
 [
     spawnflags(flags) =
     [
@@ -628,7 +646,6 @@
     netname(string) : "New Player Targetname"
     // Use a semi-colon ';' to specify multiple targetnames
     message(string) : "Filter Player Targetname"
-    master(string) : "Master"
     frags(string) : "Repel Speed"
     triggerstate(choices) : "Trigger State" : 0 =
     [
@@ -648,7 +665,7 @@
     ]
 ]
 
-@BaseClass base(Targetname, Target, RenderFields, Angles, AttackObject, NotRevivable, ClassicModeIgnore, PassDamageInflictor, HullSetSizes) color(0 200 200) = Monster
+@BaseClass base(Targetname, Target, RenderFields, Angles, AttackObject, NotRevivable, ClassicModeIgnore, PassDamageInflictor, MonsterTriggersStealth, HullSetSizes) color(0 200 200) = Monster
 [
     spawnflags(flags) =
     [
@@ -958,10 +975,9 @@
     ]
 ]
 
-@BaseClass base(Appearflags, Global, Targetname, Targetx, FilterIn, FilterOut, InventoryRules, AttackObject, RenderFields, Angles, ZHLT, BaseLockable, StartStopable, OpenClosable) = Door
+@BaseClass base(Appearflags, Global, Targetname, Targetx, Master , FilterIn, FilterOut, InventoryRules, AttackObject, RenderFields, Angles, ZHLT, BaseLockable, StartStopable, OpenClosable) = Door
 [
     speed(integer) : "Speed" : 100
-    master(string) : "Master"
     movesnd(choices) : "Move Sound" : 0 =
     [
         0: "No Sound"
@@ -1348,10 +1364,9 @@
     noise2(sound) : "Blocked Sound"
 ]
 
-@BaseClass base(Targetx, Targetname, FilterIn, FilterOut, InventoryRules, ZHLTbmodel, Appearflags) = Trigger
+@BaseClass base(Targetx, Targetname, Master , FilterIn, FilterOut, InventoryRules, ZHLTbmodel, Appearflags) = Trigger
 [
     netname(target_destination) : "Target Path"
-    master(string) : "Master"
     sounds(choices) : "Sound style" : 0 =
     [
         0 : "No Sound"
@@ -1368,6 +1383,7 @@
         2: "No Clients" : 0
         4: "Pushables": 0
         8: "Everything else": 0
+// -TODO ver inout o no se xd
         16: "Fire On Enter": 0
         32: "Fire On Exit": 0
     ]
@@ -1590,14 +1606,13 @@
 
 @PointClass base(Ammo, Targetx) studio("models/w_uzi_clip.mdl") = ammo_uziclip : "9mm Uzi magazine" []
 
-@SolidClass base(Target, ZHLT) = button_target : "Target Button"
+@SolidClass base(Target, Master , ZHLT) = button_target : "Target Button"
 [
     spawnflags(flags) =
     [
         1: "Use Activates" : 1
         2: "Start On" : 0
     ]
-    master(string) : "Master"
     renderfx(choices) : "Render FX" : 0 =
     [
         0: "Normal"
@@ -1677,6 +1692,7 @@
     // using (on any entity) custom keyvalue "$i_classic_mode_ignore" will prevent their model being changed or item being replaced.
 ]
 
+// -TODO txt, monsters,
 @PointClass color(165 185 160) = custom_precache : "Custom Precache"
 [
     model_1(studio): "Model 1"
@@ -1931,6 +1947,9 @@
     spawnflags(flags) =
     [
         1: "Start Off" : 0
+
+        // -Mikk Render only for !activator. if flag 1 is set.
+        2: "[AS] Activator Only" : 0
     ]
     rendercolor(color255) : "Fog Color (RGB)" : "0 0 0"
 //    iuser1(integer) : "Fog Field Radius" : 8192
@@ -2470,12 +2489,11 @@
     _minlight(string) : "Minimum light level"
 ]
 
-@SolidClass base(Global, Targetname, Targetx, InventoryRules, AttackObject, RenderFields, Angles, ZHLT, BaseLockable, TriggerIndividual) = func_button : "Button"
+@SolidClass base(Global, Targetname, Targetx, Master , InventoryRules, AttackObject, RenderFields, Angles, ZHLT, BaseLockable, TriggerIndividual) = func_button : "Button"
 [
     speed(integer) : "Speed" : 5
     health(integer) : "Health (shootable if > 0)" : 0
     lip(integer) : "Lip"
-    master(string) : "Master"
     sounds(choices) : "Sounds" : 0 =
     [
         0: "None"
@@ -2511,6 +2529,7 @@
     ]
 ]
 
+// -TODO attempt to fix this shiet
 @SolidClass base(Targetname, Angles, ZHLTbmodel) = func_clip : "Clip"
 [
     spawnflags(flags) =
@@ -2565,6 +2584,7 @@
     distance(integer) : "Distance (deg)" : 90
 ]
 
+// -TODO attempt to fix this shiet
 @SolidClass base(Appearflags, RenderFields, ZHLT) = func_friction : "Surface with a change in friction"
 [
     modifier(integer) : "Percentage of standard (0 - 100)" : 15
@@ -2629,6 +2649,7 @@
     _minlight(string) : "Minimum light level"
 ]
 
+// -TODO attempt to make point entity
 @SolidClass base(Targetname, ZHLTbmodel) = func_ladder : "Ladder"
 [
   spawnflags(flags) =
@@ -2746,11 +2767,10 @@
 [
 ]
 
-@SolidClass base(Targetname, Target, Global, InventoryRules, RenderFields, Angles, ZHLT, BaseLockable) = func_rot_button : "RotatingButton"
+@SolidClass base(Targetname, Target, Master , Global, InventoryRules, RenderFields, Angles, ZHLT, BaseLockable) = func_rot_button : "RotatingButton"
 [
     // changetarget will change the button's target's TARGET field to the button's changetarget.
     changetarget(target_destination) : "ChangeTarget Name"
-    master(string) : "Master"
     speed(integer) : "Speed" : 50
     health(integer) : "Health (shootable if > 0)"
     sounds(choices) : "Sounds" : 21 =
@@ -2978,7 +2998,12 @@
     WaveHeight(string) : "Wave Height" : "3.2"
 ]
 
-@PointClass base(Targetname, Targetx) color(238 240 238) = game_counter : "Fires when it hits limit"
+
+// -Mikk custom entity used by AFKManager plugin. players that Intersects with this entity are ignored by the plugin.
+@SolidClass base( Targetname, Master ) = afkmanager_zone : "Ignore AFK players in zone"[]
+@PointClass base( Targetname, Master, HullSetSizes ) = afkmanager_zone : "Ignore AFK players in zone"[]
+
+@PointClass base(Targetname, Targetx, Master ) color(238 240 238) = game_counter : "Fires when it hits limit"
 [
     spawnflags(flags) =
     [
@@ -2986,25 +3011,20 @@
         2: "Reset On fire" : 1
         4: "Fire if over limit": 1
     ]
-    master(string) : "Master"
     frags(integer) : "Initial Value" : 0
     health(integer) : "Limit Value" : 10
 ]
 
-@PointClass base(Targetname, Targetx) color(238 240 200) = game_counter_set : "Sets a game_counter"
+@PointClass base(Targetname, Targetx, Master ) color(238 240 200) = game_counter_set : "Sets a game_counter"
 [
     spawnflags(flags) =
     [
         1: "Remove On fire" : 0
     ]
-    master(string) : "Master"
     frags(integer) : "New Value" : 10
 ]
 
-@PointClass base(Targetname) color(80 80 0) = game_end : "End this multiplayer game"
-[
-    master(string) : "Master"
-]
+@PointClass base(Targetname, Master ) color(80 80 0) = game_end : "End this multiplayer game"[]
 
 // Counts number of clients on the server and triggers if it matches min or max value
 @PointClass color(0 255 96) = game_player_counter : "Game Player Counter"
@@ -3016,7 +3036,7 @@
     message(string) : "Filter Player Targetname"
 ]
 
-@PointClass base(Targetname, Targetx) color(200 100 0) = game_player_equip : "Initial player equipment"
+@PointClass base(Targetname, Targetx, Master ) color(200 100 0) = game_player_equip : "Initial player equipment"
 [
     spawnflags(flags) =
     [
@@ -3025,7 +3045,6 @@
         4: "Re-Equip on Use" : 0
         8: "Append Map CFG" : 0
     ]
-    master(string) : "Team Master"
 
     equipmode(choices) : "Equip mode" : 0 =
     [
@@ -3044,17 +3063,16 @@
     ]
 ]
 
-@PointClass base(Targetname, Targetx) color(255 2 0) = game_player_hurt : "Hurts player who fires"
+@PointClass base(Targetname, Targetx, Master ) color(255 2 0) = game_player_hurt : "Hurts player who fires"
 [
     dmg(string) : "Damage To Apply" : "65535"
     spawnflags(flags) =
     [
         1: "Remove On fire" : 0
     ]
-    master(string) : "Master"
 ]
 
-@PointClass base(Targetname) color(100 100 145) = game_player_team : "Allows player to change teams"
+@PointClass base(Targetname, Master ) color(100 100 145) = game_player_team : "Allows player to change teams"
 [
     spawnflags(flags) =
     [
@@ -3063,10 +3081,9 @@
         4 : "Gib Player" : 0
     ]
     target(string) : "game_team_master to use"
-    master(string) : "Master"
 ]
 
-@PointClass base(Targetname, Targetx) color(255 205 0) = game_score : "Award/Deduct Points"
+@PointClass base(Targetname, Targetx, Master ) color(255 205 0) = game_score : "Award/Deduct Points"
 [
     spawnflags(flags) =
     [
@@ -3075,7 +3092,6 @@
     ]
 
     points(integer) : "Points to add (+/-)" : 1
-    master(string) : "Master"
 ]
 
 // Counts number of slots on the server and triggers if it matches value
@@ -3084,7 +3100,7 @@
     frags(integer) : "Value" : 12
 ]
 
-@PointClass base(Targetname, Targetx) color(100 100 170) = game_team_master : "Team based master/relay"
+@PointClass base(Targetname, Targetx, Master ) color(100 100 170) = game_team_master : "Team based master/relay"
 [
     spawnflags(flags) =
     [
@@ -3097,7 +3113,6 @@
         2: "Toggle"
     ]
     teamindex(integer) : "Team Index (-1 = no team)" : -1
-    master(string) : "Master"
 ]
 
 @PointClass base(Targetname, Master, Targetx) color(100 100 110) = game_team_set : "Sets team of team_master"
@@ -3127,16 +3142,16 @@
     channel(choices) : "Text Channel" : 1 =
     [
         // -Mikk added channels up to 8 because the game supports them.
-		1 : "Channel 1"
-		2 : "Channel 2"
+        1 : "Channel 1"
+        2 : "Channel 2"
         // Monster's hud information uses this channel.
-		3 : "Channel 3 (not recomend)"
-		4 : "Channel 4"
-		5 : "Channel 5"
+        3 : "Channel 3 (not recomend)"
+        4 : "Channel 4"
+        5 : "Channel 5"
         // Plugins normally uses those channels.
-		6 : "Channel 6 (Plugins)"
-		7 : "Channel 7 (Plugins)"
-		8 : "Channel 8 (Plugins)"
+        6 : "Channel 6 (Plugins)"
+        7 : "Channel 7 (Plugins)"
+        8 : "Channel 8 (Plugins)"
     ]
 ]
 
@@ -3154,61 +3169,61 @@
 // new entity replacemet for game_text and env_message with lot of new additions -Mikk
 @PointClass base(BaseGameText) color(192 255 0) = game_text_custom : "Custom Text Messages"
 [
-	target(target_destination) : "Target (USE_TYPE)"
-	killtarget(target_destination) : "Kill Target"
-	delay(float) : "Delay before kill/target" : 0.0
+    target(target_destination) : "Target (USE_TYPE)"
+    killtarget(target_destination) : "Kill Target"
+    delay(float) : "Delay before kill/target" : 0.0
 
     // Enum of supported styles of text.
-	effect(Choices) : "Text Effect" : 0 =
-	[
+    effect(Choices) : "Text Effect" : 0 =
+    [
         // Native game_text's effects
-		0 : "Fade In/Out"
-		1 : "Credits"
-		2 : "Scan Out"
+        0 : "Fade In/Out"
+        1 : "Credits"
+        2 : "Scan Out"
 
-		// Using the next values meant you don't need the keyvalues that you would use for game_text.
+        // Using the next values meant you don't need the keyvalues that you would use for game_text.
         
         // The same effect that trigger_once/multiple's "message" provides.
-		3 : "Print HUD"
+        3 : "Print HUD"
 
         // Shows a MOTD pop up with the given message.
-		4 : "Print MOTD"
+        4 : "Print MOTD"
         // Set in "frags" how many chars (from the start) you want to take to be the title of the MOTD.
 
         // Readable file so mappers avoid the characters limit in JACK -TODO
 
         // Shows a message on the chat.
-		5 : "Print Chat"
+        5 : "Print Chat"
         
         // Prints a notify at the top left side
-		6 : "Print Notify"
+        6 : "Print Notify"
         
         // Prints a keybind print, the format is "Press +use to interact" and will be shown as "Press [e] to interact"
-		7 : "Print Key-Bind"
+        7 : "Print Key-Bind"
         
         // Prints at the console ( set flag 2 or double message will be shown )
-		8 : "Print Console"
+        8 : "Print Console"
         
         // Prints at the center of the screen
-		9 : "Print Center"
+        9 : "Print Center"
 
         // Shows the text as the server's hostname but only apply to the score board popup
         // 10 : "Print scoreboard" 
         
         // Shows a sprite at the location of the entity. "message" must be the sprite file.
         // While languages should be a frame of it. keyvalues are also the sames as env_sprite. -TODO
-		// 11 : "Sprite"
+        // 11 : "Sprite"
         
         // Shows a text pre-defined as a subtitle. set "color" and "holdtime" for coloring and time respectively. -TODO
-		// 12 : "Caption"
-	]
+        // 12 : "Caption"
+    ]
 
-	spawnflags(flags) =
-	[
-		// If set. the target will be fired once every time the entity is triggered.
-		// Otherwise the target is fired for every player that sees the message.
-		4: "Fire once" : 0
-	]
+    spawnflags(flags) =
+    [
+        // If set. the target will be fired once every time the entity is triggered.
+        // Otherwise the target is fired for every player that sees the message.
+        4: "Fire once" : 0
+    ]
 
     // env_message's legacy
     messagesound(sound) : "Sound Effect"
@@ -3225,29 +3240,29 @@
     // Plays a sentence using this entity as a speaker
     messagesentence(string) : "Play sentence (!SENTENCENAME)"
 
-	// Replacing code:
-	// We've added a function for replacing a string command into another string.
-	// In this case you want the game_text_custom show a countdown with a message.
-	key_integer(integer) : "!integer"
+    // Replacing code:
+    // We've added a function for replacing a string command into another string.
+    // In this case you want the game_text_custom show a countdown with a message.
+    key_integer(integer) : "!integer"
     // "message" "The bomb will explode in !frags seconds"
     // "frags" "25"
     // so you can update in any time that "frags" value and when trigger the entity it will show the proper time that frags contains.
     // The same but it is a float.
-	key_float(float) : "!float"
+    key_float(float) : "!float"
     // The same but it is a string.
-	key_string(string) : "!string"
+    key_string(string) : "!string"
 
-	// "!activator" This command will contains the nickname or classname of the player or monster that activated this entity.
+    // "!activator" This command will contains the nickname or classname of the player or monster that activated this entity.
     // "message" "The player !activator is trapped in sector C"
     // !activator is replaced by the entity's activator netname or classname in case of non-player
 
     // Made for myself but probably is useful to you.
     // Sets a entity's targetname at here to target the function of the next keyvalue. empty = activator. if null = none
-    focus_entity(string) : "!value target entity"
+    focus_entity(target_destination) : "!value target entity"
 
     // Gets the value of the given custom-keyvalue from the previusly given entity.
     key_from_entity(string) : "!value custom keyvalue from entity"
-	// string "!value" will be replaced for what that custom keyvalue from that entity contains.
+    // string "!value" will be replaced for what that custom keyvalue from that entity contains.
 
     // The first amount of chars you specify here will be the MOTD title.
     motd_title(integer) : "MOTD title first chars" : 5
@@ -3257,33 +3272,63 @@
     // model(string) : "model (PLUGIN USES)"
     
     // Supported languages.
-	message(string) : "English"
-	message_spanish(string) : "Spanish Latam"
-	message_spanish2(string) : "Spanish Spain"
-	message_portuguese(string) : "Portuguese"
-	message_german(string) : "Germany"
-	message_french(string) : "French"
-	message_italian(string) : "Italian"
-	message_esperanto(string) : "Esperanto"
-	message_czech(string) : "Czech"
-	message_dutch(string) : "Dutch"
-	message_indonesian(string) : "Indonesian"
-	message_romanian(string) : "Romanian"
-	message_turkish(string) : "Turkish"
-	message_albanian(string) : "Albanian"
+    message(string) : "English"
+    message_spanish(string) : "Spanish Latam"
+    message_spanish2(string) : "Spanish Spain"
+    message_portuguese(string) : "Portuguese"
+    message_german(string) : "Germany"
+    message_french(string) : "French"
+    message_italian(string) : "Italian"
+    message_esperanto(string) : "Esperanto"
+    message_czech(string) : "Czech"
+    message_dutch(string) : "Dutch"
+    message_indonesian(string) : "Indonesian"
+    message_romanian(string) : "Romanian"
+    message_turkish(string) : "Turkish"
+    message_albanian(string) : "Albanian"
 ]
 
-@SolidClass base(Targetname, ZHLTbmodel) = game_zone_player : "Player Zone brush"
+// -Mikk A custom entity that allow mappers to create maps with "real time" set. meant to be used for changing map events or even light style (sun/moon)
+// the entity will start working as soon as the map starts. if not locked by a multisource.
+// every time a minute/hour/day gets updated it fires a trigger with the name of the current time. see entity's debug messages.
+// name your light_spot as "global_light" and its pattern will be dynamically changed depending the hours time.
+@PointClass base(Targetname, Master) color(0 255 255) = game_time : "Map Global Time"
+[
+    // using a value of 60 mean that one minute (in-game) is equal to one minute (in real life)
+    // using a value of 1  mean that one minute (in-game) is equal to one second (in real life)
+    health(string) : "One minute is (IRL-seconds)" : "60"
+    
+    // Internal values that will be updated by the entity current time and can be set though changevalue.
+    TimerS(integer) : "Current Second" : 0
+    TimerM(integer) : "Current Minute" : 0
+    TimerH(integer) : "Current Hour" : 0
+    TimerD(integer) : "Current Day" : 0
+    
+    spawnflags(Flags) =
+    [
+        // If set. you can modify the time speed by changing the keyvalue "health"
+        1 : "On-Demand" : 0
+        
+        // If set. the entity will start with the host's real time
+        2 : "Real Time" : 0
+        // -TODO get real day of the year but in a separated flag
+    ]
+]
+// automatically set a renderamt (dynamically) to a func_illusionary with a special targetname -TODO
+
+// -TODO verificar master si anda. estaba comentado
+// -TODO game_zone_monster
+@SolidClass base(Targetname, Master , ZHLTbmodel) = game_zone_player : "Player Zone brush"
 [
     spawnflags(flags) =
     [
         1 : "Ignore Dead Players" : 0
     ]
+// -TODO float value para hacerlo think mode :o
     intarget(target_destination) : "Target for IN players"
     outtarget(target_destination) : "Target for OUT players"
     incount(target_destination) : "Counter for IN players"
     outcount(target_destination) : "Counter for OUT players"
-    // master(string) : "Master"
 ]
 
 
@@ -4348,10 +4393,9 @@
     ]
 ]
 
-@SolidClass base(Targetname, Target, Angles, RenderFields, ZHLT) = momentary_rot_button : "Direct wheel control"
+@SolidClass base(Targetname, Target, Master, Angles, RenderFields, ZHLT) = momentary_rot_button : "Direct wheel control"
 [
     speed(integer) : "Speed" : 50
-    master(string) : "Master"
     sounds(choices) : "Sounds" : 0 =
     [
         0: "None"
@@ -5808,6 +5852,89 @@
         1: "All Players" : 0
     ]
     message(string) : "Console variable"
+    // -TODO when trigger. it saves the old's value and paste it into the same player as a custom keyvalue. then USE_OFF returns that value again.
+]
+
+// -Mikk a entity that watch for player's conditions be true. once all conditions are true, it fires it's target.
+@PointClass base(Targetname, Master, HullSetSizesCustom) color(192 255 0) = player_condition : "Verify player's conditions"
+[
+    target(target_destination) : "Target (USE_TYPE)"
+    delay(float) : "Delay Before Trigger"
+    // -TODO flag think o trigger(activator)
+
+    // When player intersects with this entity (must be a BSP Model or at least use BBox)
+    Intersects(choices) : "Intersects with this entity" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
+
+    Intersects_target(target_destination) : "Intersects with the given entity"
+
+    HasNamedItem(target_destination) : "Has the given item"
+
+    inbuttons(choices) : "Pressing a button" = 0
+    [
+        0 : "Disabled."
+        1 : "+attack"
+        2 : "+jump"
+        4 : "+duck"
+        8 : "+forward"
+        16 : "+back"
+        32 : "+use"
+        64 : "+cancelselect"
+        128 : "+left"
+        256 : "+right"
+        512 : "+moveleft"
+        1024 : "+moveright"
+        2048 : "+attack2"
+        4096 : "+speed"
+        8192 : "+reload"
+        16384 : "+alt1"
+        32768 : "+showscores"
+    ]
+
+    IsAlive(choices) : "Is Alive" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
+
+    IsObserver(choices) : "Is Observer" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
+
+    IsMoving(choices) : "Is Moving" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
+
+    IsOnLadder(choices) : "Is On Ladder" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
+
+    FlashlightIsOn(choices) : "Flashlight Is On" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
+
+    HasSuit(choices) : "Has Suit" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
+
+    m_fLongJump(choices) : "Has Longjump" = 0
+    [
+        0 : "Disabled."
+        1 : "Enabled"
+    ]
 ]
 
 @PointClass base(Targetname) size(-16 -16 -16, 16 16 16) = player_loadsaved : "Load Auto-Saved game"
@@ -5821,6 +5948,58 @@
     loadtime(string) : "Reload delay" : "0"
 ]
 
+// -Mikk ClientSayHook as a entity.
+@PointClass base(Targetname, Master) = player_talk : "Controlls client's chat"
+[
+    spawnflags(flags) =
+    [
+        // If set. requires trigger the entity to start thinking
+        1: "Start off" : 0
+    ]
+
+    // if 1 = ShouldHide is set to true. player's message will be hidden from chat.
+    should_hide(choices) : "Hide message" : 0 =
+    [
+        0 : "No"
+        1 : "Yes"
+    ]
+
+    // If set. it is the name of a entity to modify its value.
+    sendstring_target(target_destination) : "Target entity"
+    
+    // Paste the string of what the player said in this key value.
+    sendstring_keyvalue(string) : "Key to modify"
+    
+    // The message must contain this to activate the entity. if empty = ALL player's messages
+    text_contain(string) : "Arg0"
+    text_contain1(string) : "Arg1"
+    text_contain2(string) : "Arg2"
+
+    fire_when(choices) : "Fire target when" : 0 =
+    [
+            // Fire if the whole sentence contains at least Arg0 anywhere.
+        0 : "Full sentence has (Arg0)"
+
+            // Fire when the first argument is equal to Arg0
+        1 : "First argument is (Arg0)"
+
+            // Fire when the sentence is Arg0
+        2 : "full sentence is (Arg0)"
+
+            // Fire when the sentence is Arg0 and Arg1
+        3 : "full sentence is (Arg0 & Arg1)"
+
+            // Fire when the sentence is Arg0 and Arg1 and Arg2
+        4 : "full sentence is (Arg0 & Arg1 & Arg2)"
+    ]
+
+    target(target_destination) : "Target (USE_TYPE)"
+
+    // if set. this argument will be censured from the chat.
+    censure_argument(string) : "Censure this Argument"
+]
+
+// -TODO custom keyvalues yes/no de items por defecto.
 @PointClass base(Targetname) size(-16 -16 -16, 16 16 16) color(96 32 128) = player_weaponstrip : "Strips player's weapons"
 [
     spawnflags(flags) =
@@ -5828,6 +6007,13 @@
         1 : "Strip suit, too" : 0
     ]
     m_iAffected(choices) : "Players to strip" : 0 =
+    [
+        0 : "Activator only (default)"
+        1 : "All players"
+        2 : "All players except activator"
+    ]
+
+    $i_affected(choices) : "[AS] Players to strip" : 0 =
     [
         0 : "Activator only (default)"
         1 : "All players"
@@ -5842,6 +6028,16 @@
         0: "Respawn all outside"
         1: "Respawn all inside"
     ]
+// -TODO 
+    // $i_zonetype(choices) : "Respawn" : 0 =
+    // [
+        // 0: "Outsiders + dead players"
+        // 1: "Insiders + dead players"
+        // 2: "Dead players"
+        // 3: "Everyone"
+        // 4: "Outsiders"
+        // 5: "Insiders"
+    // ]
 ]
 
 @PointClass base(Targetname, Targetx) size(-16 -16 0, 16 16 72) color(255 0 200) = scripted_sentence : "Scripted Sentence"
@@ -6060,6 +6256,7 @@
     function_name(string) : "Angelscript function name" //Angelscript function to call on creation of a monster. Format: void FunctionName(MonsterEntity@ pSquadmaker, Entity@ pMonster)
 ]
 
+// -TODO agregar los nombres de las canciones
 @PointClass base(Targetname) color(255 240 128) = target_cdaudio : "CD Audio Target"
 [
     health(choices) : "Track #" : -1 =
@@ -6461,6 +6658,7 @@
     mouse_digital_action_reset(string) : "Mouse Digital Action Reset Time" : "0"
 ]
 
+// -TODO agregar los nombres de los rolones mejor xd
 @SolidClass base(Targetname, ZHLTbmodel) = trigger_cdaudio : "Trigger CD Audio"
 [
     health(choices) : "Track #" : -1 =
@@ -6504,7 +6702,7 @@
 // -Mikk alternative to trigger_setcvar but you can set more than one cvar per entity and can modify its values on-the-fly
 @PointClass base(Targetname, Master) color(40 200 150) = trigger_changecvar : "Sets a CVAR"
 [
-	target(target_destination) : "Target after set (USE_TYPE)"
+    target(target_destination) : "Target after set (USE_TYPE)"
     delay(string) : "delay before trigger"
 
     mp_allowplayerinfo(integer) : "mp_allowplayerinfo"
@@ -6993,13 +7191,12 @@
     m_fCheckInterval(string) : "Check-interval (seconds)" : "0.1"
 ]
 
-@SolidClass base(Trigger, Targetname, ZHLTbmodel) color(238 240 238) = trigger_counter : "Trigger Counter"
+@SolidClass base(Trigger, Targetname, ZHLTbmodel, Master ) color(238 240 238) = trigger_counter : "Trigger Counter"
 [
     spawnflags(flags) =
     [
         1 : "No Message" : 0
     ]
-    master(string) : "Master"
     count(integer) : "Count before activation" : 2
 ]
 
@@ -7020,6 +7217,7 @@
     ]
 ]
 
+// -TODO mejorar esta pinchila
 @PointClass base(Targetname, Target) color(60 90 215) = trigger_effect : "Trigger Effect"
 [
     effect_glow_mode(choices) : "Glow shell mode" : 0 =
@@ -7108,6 +7306,7 @@
     ]
 ]
 
+// -TODO mas filtros xdn't
 @PointClass base(Targetname) size(-12 -12 -12, 12 12 12) color(255 255 0) = trigger_entity_iterator : "Entity Iterator"
 [
     name_filter(target_destination) : "Filter Entities by Name"
@@ -7142,7 +7341,7 @@
     gravity(integer) : "Gravity (0-1)" : 1
 ]
 
-@SolidClass base(Targetname, Target, InventoryRules, ZHLTbmodel) = trigger_hurt : "Trigger Hurt"
+@SolidClass base(Targetname, Target, Master, InventoryRules, ZHLTbmodel) = trigger_hurt : "Trigger Hurt"
 [
     spawnflags(flags) =
     [
@@ -7153,7 +7352,6 @@
         32: "TouchClientOnly" : 0
         64: "Affect non-moving NPC's": 0
     ]
-    master(string) : "Master"
     dmg(integer) : "Damage" : 10
     delay(string) : "Delay before trigger" : "0"
     damagetype(choices) : "Damage Type" : 0 =
@@ -7190,6 +7388,10 @@
         2 : "Constant" : 0
         4 : "Start On" : 0
         8 : "Do Armor" : 0
+        
+        // -Mikk If set. the target will die instantly and won't drop any gibs.
+        // -TODO arreglar que hice un while pero afecta a todos xd
+        16 : "[AS] Don't Gib + Instant Kill" : 0
     ]
     targetclass(string) : "Target Class" : ""
     dmg(integer) : "Damage" : 10
@@ -7250,6 +7452,11 @@
 
 @SolidClass base(Trigger, TriggerIndividual) = trigger_multiple : "Trigger: Activate multiple"
 [
+    spawnflags(flags) =
+    [
+        // -Mikk if set. all players inside will trigger the target instead of just one random player.
+        64: "Multi-Threaded": 0
+    ]
     wait(integer) : "Delay before reset" : 10
 ]
 
@@ -7284,9 +7491,19 @@
     speed(integer) : "Speed of push" : 40
 ]
 
-@BaseClass base(Targetname) = BaseRandom
+@PointClass base(Targetname) color(255 230 150) = trigger_random : "Trigger Random"
 [
+    // -Mikk Gets a random number between a minimun and a maximun value defined here.
+    $f_math_min(float) : "[AS] Minimun value"
+    $f_math_max(float) : "[AS] Maximun value"
+    // Once triggered. the random value is set in this two keyvalues.
+    $i_math_result(float) : "[AS] Result (integer)"
+    $f_math_result(float) : "[AS] Result (float)"
+
+
     target_count(integer) : "Target Count" : 4
+    min_delay(string) : "Minimum Delay (0 = off)" : "3.0"
+    max_delay(string) : "Maximum Delay (0 = off)" : "7.0"
     target1(target_destination) : "Target 1"
     target2(target_destination) : "Target 2"
     target3(target_destination) : "Target 3"
@@ -7303,10 +7520,7 @@
     target14(target_destination) : "Target 14"
     target15(target_destination) : "Target 15"
     target16(target_destination) : "Target 16"
-]
 
-@PointClass base(BaseRandom) color(255 230 150) = trigger_random : "Trigger Random"
-[
     spawnflags(flags) =
     [
         1 : "Start On (Timed only)" : 0
@@ -7314,24 +7528,6 @@
         4 : "Reusable (Unique only)" : 0
         8 : "Timed" : 0
         16 : "Unique" : 0
-    ]
-
-    min_delay(string) : "Minimum Delay (0 = off)" : "3.0"
-    max_delay(string) : "Maximum Delay (0 = off)" : "7.0"
-]
-
-//Obsolete: use trigger_random with Timed flag
-@PointClass base(trigger_random) color(135 205 255) = trigger_random_time : "Trigger Random Time"
-[
-]
-
-//Obsolete: use trigger_ranom with Random flag
-// Unique Trigger Random. Randomly selects an unused trigger.
-@PointClass base(BaseRandom) color(225 170 70) = trigger_random_unique : "Trigger Random Unique"
-[
-    spawnflags(flags) =
-    [
-        1 : "Re-usable" : 0
     ]
 ]
 
@@ -7524,6 +7720,7 @@
 
 @SolidClass base(Trigger) = trigger_teleport : "Trigger Teleport"
 [
+// -TODO si "monsters" esta activa. crear un trigger_push cerca xd
     spawnflags(flags) =
     [
         64: "Random Destination" : 0
@@ -7583,6 +7780,81 @@
     noise(string) : "No Vote Target"
     m_iszYesString(string) : "Yes string (optional)"
     m_iszNoString(string) : "No string (optional)"
+]
+// -TODO
+
+// -Mikk A custom vote menu ( buy menu-Like )
+// Open smart edit and add there keyvalues.
+// key = option to show
+// value = thing to trigger if the voted passed.
+// The entity will also fire its target when the vote ends.
+// Those values also supports the same system as a multi_manager ( #0 - #1 - #2 )
+@PointClass base(Targetname,) color(40 40 40) = trigger_votemenu : "Vote Menu"
+[
+    target(target_destination) : "Target (USE_TYPE)"
+    health(string) : "Time to vote"
+    netname(string) : "Title to show"
+    spawnflags(flags) =
+    [
+        // If set. the vote will be for activator only.
+        1: "Activator only" : 0
+    ]
+
+// -TODO target if nothing was voted.
+
+// Angelscript: Not allowed: in section 'trigger_votemenu.as', at (158, 13):Angelscript:  Function Angelscript: trigger_votemenu::Results:
+// Angelscript: Message: Index out of bounds
+// ERROR: Angelscript: CASBaseCallable::Call: Execution of function 'trigger_votemenu::Results' failed!
+// ERROR: Angelscript: CScheduler::Think: execution of function trigger_votemenu::Results failed!
+]
+
+// A custom entity that allows mapper to change !activator's weapon keyvalues. -Mikk
+// This script has been created for modifying displacer target. feedback by Sparks.
+// Pass activator to trigger the entity and his weapon's keyvalue will be updated.
+@PointClass base( Targetname, Master ) = weapon_changevalue : "Change value of weapons"
+[
+    weapon_classname(string) : "Weapon classname"
+    skin(integer) : "Skin" : 0
+    body(integer) : "Body" : 0
+    exclusivehold(choices) : "Exclusive Hold" : 0 =
+    [
+        0 : "No"
+        1 : "Yes"
+    ]
+
+    dmg(integer) : "Custom Damage"
+
+    wpn_v_model(studio) : "Custom V_Model"
+    wpn_w_model(studio) : "Custom W_Model"
+    wpn_p_model(studio) : "Custom P_Model"
+
+    soundlist(string) : "Sound Replacement File"
+
+    CustomSpriteDir(string) : "Custom sprite directory"
+
+    spawnflags(flags) =
+    [
+        64: "Random Destination" : 0
+        128: "Rotate (Dest Angles)" : 0
+        256: "Keep Angles" : 0
+        512: "Keep velocity" : 0
+        4096 : "Ignore delay" : 0
+    ]
+
+    m_TertiaryMode(choices) : "Tertiary fire mode" : 0 =
+    [
+        0 : "Default (weaponmode_displacer)"
+        1 : "Disable"
+        2 : "Enable"
+    ]
+
+    m_flPortalSpeed(string) : "Portal Speed"
+    m_flPortalRadius(string) : "Portal Radius"
+    m_iszTeleportDestination(target_destination) : "Teleport destination"
+
+    m_flPrimaryAmmoNeeded(string) : "Ammo needed/used to fire primary"
+    m_flSecondaryAmmoNeeded(string) : "Ammo needed/used to fire secondary"
+    m_flTertiaryAmmoNeeded(string) : "Ammo needed/used to fire tertiary"
 ]
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_357.mdl") = weapon_357 : "357 Handgun" []
