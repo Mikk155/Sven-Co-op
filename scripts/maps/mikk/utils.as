@@ -16,9 +16,9 @@ namespace UTILS
 
             void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float value )
             {
-				UTILS::Trigger( self.pev.target, pActivator, pCaller, useType, delay_key_value )
-			}
-		now your entity supports the usage of USE_TYPE the same as multi_manager (#0 #1 #2) at the end of the target value
+                UTILS::Trigger( self.pev.target, pActivator, pCaller, useType, 0.0f )
+            }
+        now your entity supports the usage of USE_TYPE the same as multi_manager (#0 #1 #2) at the end of the target value
     */
     void Trigger( string key, CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flDelay = 0.0f )
     {
@@ -33,29 +33,52 @@ namespace UTILS
             { "#2", "" }
         });
 
+        CBaseEntity@ pFind = g_EntityFuncs.FindEntityByTargetname( pFind, ReadTarget );
+
+        if( pFind is null )
+        {
+            Debug( "[UTILS::Trigger]" );
+            Debug( "No entity found with targetname '" + ReadTarget + "'" );
+            return;
+        }
+
         USE_TYPE NewUseType = useType;
 
         // Those values overrides the default USE_TYPE
-        if( string( key ).EndsWith( "#0" ) ){NewUseType = USE_OFF;}
-        if( string( key ).EndsWith( "#1" ) ){NewUseType = USE_ON;}
-        if( string( key ).EndsWith( "#2" ) ){NewUseType = USE_KILL;}
+        if( string( key ).EndsWith( "#0" ) )
+        {
+            NewUseType = USE_OFF;
+        }
+        if( string( key ).EndsWith( "#1" ) )
+        {
+            NewUseType = USE_ON;
+        }
+        if( string( key ).EndsWith( "#2" ) )
+        {
+            NewUseType = USE_KILL;
+        }
 
         if( NewUseType == USE_KILL )
         {
             CBaseEntity@ pKillEnt = null; // hack because USE_KILL doesn't work.
-            while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, ReadTarget ) ) !is null ){
+
+            while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, ReadTarget ) ) !is null )
+            {
                 g_EntityFuncs.Remove( pKillEnt );
             }
-        }else{
+        }
+        else
+        {
             g_EntityFuncs.FireTargets( ReadTarget, pActivator, pCaller, NewUseType, flDelay );
         }
 
+        string What = ( NewUseType == USE_OFF ) ? "OFF" : ( NewUseType == USE_ON ) ? "ON" : ( NewUseType == USE_KILL ) ? "KILL" : "TOGGLE";
 
         Debug( "[UTILS::Trigger]" );
         Debug( "Fired entity '" + ReadTarget + "'" );
         Debug( "!activator '"+ string( pActivator.pev.classname ) + "' " + string( pActivator.pev.netname ) );
         Debug( "!caller '" + pCaller.pev.classname + "'" );
-        Debug( "USE_TYPE '" + NewUseType + "'" );
+        Debug( "USE_TYPE '" + NewUseType + "' ( " + What + " )" );
         Debug( "Delay '" + flDelay + "'" );
     }
 
@@ -64,13 +87,13 @@ namespace UTILS
 
         SAMPLE:
 
-			class CBaseGameTextCustom : ScriptBaseEntity, UTILS::MoreKeyValues
-			{
-				bool KeyValue( const string& in szKey, const string& in szValue )
-				{
-					ExtraKeyValues(szKey, szValue);
-				}
-			}
+            class CBaseGameTextCustom : ScriptBaseEntity, UTILS::MoreKeyValues
+            {
+                bool KeyValue( const string& in szKey, const string& in szValue )
+                {
+                    ExtraKeyValues(szKey, szValue);
+                }
+            }
     */
     mixin class MoreKeyValues
     {
