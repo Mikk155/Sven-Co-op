@@ -1,6 +1,4 @@
 /*
-    Original script by Cubemath: https://github.com/CubeMath/UCHFastDL2/blob/master/svencoop/scripts/maps/cubemath/item_airbubble.as
-
 DOWNLOAD:
 
 scripts/maps/mikk/item_oxygentank.as
@@ -16,6 +14,7 @@ void MapInit()
     item_oxygentank::Register();
 }
 
+Original script by Cubemath: https://github.com/CubeMath/UCHFastDL2/blob/master/svencoop/scripts/maps/cubemath/item_airbubble.as
 */
 
 #include "utils"
