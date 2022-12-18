@@ -23,6 +23,7 @@ namespace trigger_individual
         "trigger_multiple",
         "trigger_relay",
         "item_*",
+        "ammo_*",
         "weapon_*"
     };
 
