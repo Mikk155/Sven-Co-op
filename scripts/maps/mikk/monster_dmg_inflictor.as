@@ -23,8 +23,8 @@ namespace monster_dmg_inflictor
         while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, "monster_*" ) ) !is null )
         {
             if( pEntity !is null
-            && pEntity.GetCustomKeyvalues().GetKeyvalue( "$i_damage_inflictor" ).GetFloat() == 1
-            && !string( cast<CBaseMonster@>(pEntity).m_iszTriggerTarget ).IsEmpty() )
+            && !string( cast<CBaseMonster@>(pEntity).m_iszTriggerTarget ).IsEmpty()
+            && pEntity.GetCustomKeyvalues().GetKeyvalue( "$i_damage_inflictor" ).GetInteger() == 1 )
             {
                 dictionary g_keyvalues =
                 {
@@ -32,13 +32,10 @@ namespace monster_dmg_inflictor
                     { "m_iMode", "1" },
                     { "targetname", "DMG_INFLICTOR_" + string( cast<CBaseMonster@>(pEntity).m_iszTriggerTarget ) }
                 };
-                g_EntityFuncs.CreateEntity( "trigger_script", g_keyvalues );
+                CBaseEntity@ pScript = g_EntityFuncs.CreateEntity( "trigger_script", g_keyvalues );
 
-                UTILS::Debug( "[monster_dmg_inflictor::CreateScript]" );
-                UTILS::Debug( "Created trigger_script for entity '" + pEntity.pev.classname + "'" );
-                UTILS::Debug( "with target '" + string( cast<CBaseMonster@>(pEntity).m_iszTriggerTarget ) + "'" );
-                UTILS::Debug( "when TriggerCondition fired. Attacker will be passed as !activator" );
-                g_EntityFuncs.DispatchKeyValue( pEntity.edict(), "TriggerTarget", "DMG_INFLICTOR_" + string( cast<CBaseMonster@>(pEntity).m_iszTriggerTarget ) );
+                if( pScript !is null )
+                    g_EntityFuncs.DispatchKeyValue( pEntity.edict(), "TriggerTarget", "DMG_INFLICTOR_" + string( cast<CBaseMonster@>(pEntity).m_iszTriggerTarget ) );
             }
         }
     }
