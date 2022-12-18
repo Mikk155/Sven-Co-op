@@ -63,13 +63,9 @@ namespace player_data
 
         if( pSetValue !is null )
         {
-            // g_Game.AlertMessage( at_console, "player_data::SetDataOnValues() saved " + pPlayer.pev.netname + "'s data. " + '"' + key + '" "' + value + '"\n');
             pSetValue.Use( pPlayer, pPlayer, USE_ON, 0.0f );
             g_EntityFuncs.Remove( pSetValue );
         }
-
-        // this doesn't work. it sets a empty string.
-        //pPlayer.GetCustomKeyvalues().SetKeyvalue( key, value );
     }
 }
 // End of namespace
