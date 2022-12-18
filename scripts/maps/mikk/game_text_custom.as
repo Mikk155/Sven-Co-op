@@ -254,7 +254,7 @@ namespace game_text_custom
                 ShowText( cast<CBasePlayer@>(pActivator) );
             }
 
-			// game_text legacy
+            // game_text legacy
             if( !string( killtarget ).IsEmpty() )
             {
                 UTILS::Trigger( killtarget + "#2", self, pCaller, USE_KILL, delay );
@@ -273,7 +273,11 @@ namespace game_text_custom
 
             // Find entity to get its value as string for !value
             string strvalue;
-            if( !focus_entity.IsEmpty() )
+            if( focus_entity == "!activator" )
+            {
+                strvalue = EhActivator.GetEntity().GetCustomKeyvalues().GetKeyvalue( key_from_entity ).GetString();
+            }
+            else if( !focus_entity.IsEmpty() )
             {
                 CBaseEntity@ pTarget = g_EntityFuncs.FindEntityByTargetname( pTarget, focus_entity );
                 
@@ -281,10 +285,6 @@ namespace game_text_custom
                 {
                     strvalue = pTarget.GetCustomKeyvalues().GetKeyvalue( key_from_entity ).GetString();
                 }
-            }
-            else
-            {
-                strvalue = EhActivator.GetEntity().GetCustomKeyvalues().GetKeyvalue( key_from_entity ).GetString();
             }
 
             // Gets entity classname or netname for !activator
