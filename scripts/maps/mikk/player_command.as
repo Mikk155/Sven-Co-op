@@ -17,11 +17,6 @@ void MapInit()
 
 BLACKLISTED COMMANDS:
 - say
--
--
--
--
--
 
 */
 
