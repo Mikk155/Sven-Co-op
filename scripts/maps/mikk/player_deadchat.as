@@ -17,9 +17,12 @@ namespace player_deadchat
 
     void InitPlayerDeadChat()
     {
-        g_Hooks.RemoveHook( Hooks::Player::ClientSay, @DeathChatClientSay );
+        if( !g_CustomEntityFuncs.IsCustomEntity( "player_talk" ) )
+        {
+            g_Hooks.RemoveHook( Hooks::Player::ClientSay, @DeathChatClientSay );
 
-        g_Hooks.RegisterHook( Hooks::Player::ClientSay, @DeathChatClientSay );
+            g_Hooks.RegisterHook( Hooks::Player::ClientSay, @DeathChatClientSay );
+        }
     }
 
     HookReturnCode DeathChatClientSay( SayParameters@ pParams )
