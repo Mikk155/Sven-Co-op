@@ -2121,14 +2121,9 @@
     skin(integer) : "Gib Skin" : 0
 ]
 
-@PointClass base(Targetname) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = env_sound : "DSP Sound"
+@BaseClass base(Targetname) = BaseDSPSound
 [
-    spawnflags(flags) =
-    [
-        1: "USE Only" : 0
-    ]
-    radius(integer) : "Radius" : 128
-    roomtype(choices) : "Room Type" : 0 =
+    roomtype(Choices) : "Room Type" : 0 =
     [
         0 : "Normal (off)"
         1 : "Generic"
@@ -2169,7 +2164,28 @@
         27: "Weirdo - Dizzy"
         28: "Weirdo - Psychotic"
     ]
+    spawnflags(flags) =
+    [
+        1 : "USE Only" : 0
+    ]
 ]
+
+// Alternative for env_sound but using a defined zone to set em up. -Mikk
+@BaseClass base(BaseDSPSound) = BaseDSPTrigger
+[
+    // Target is the target to affect when fire the entity but not touch
+    // Leave empty for set to everyone.
+	target(target_destination) : "Dest when triggered ( empty = all )" : "!activator"
+]
+
+@PointClass base(BaseDSPSound) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = env_sound : "DSP Sound"
+[
+    radius(integer) : "Radius" : 128
+]
+
+@SolidClass base(BaseDSPTrigger, Master) = trigger_sound : "Trigger DSP Sound"[]
+@PointClass base(BaseDSPTrigger, Master, HullSetSizes) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = trigger_sound : "DSP Sound"[]
+
 
 @PointClass base(Targetname, Angles) size(-8 -8 -8, 8 8 8) color(255 220 15) = env_spark : "Spark"
 [
