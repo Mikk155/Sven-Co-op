@@ -22,7 +22,8 @@ namespace player_talk
 {
     enum player_clientsay_flags
     {
-        SF_CTH_START_OFF  = 1 << 0
+        SF_CTH_START_OFF  = 1 << 0,
+        SF_CTH_TEAM_ONLY  = 1 << 1
     }
 
     funcdef HookReturnCode ClientSay( SayParameters@ );
@@ -30,7 +31,7 @@ namespace player_talk
     class CTalkHook : ScriptBaseEntity, UTILS::MoreKeyValues
     {
         private bool IsEnabled = true;
-        private int hook_mode = 0, fire_when = 0, should_hide = 0;
+        private int hook_mode = 0, fire_when = 0, should_hide = 0, player_target = 0;
         private string sendstring_target, sendstring_keyvalue, text_contain, text_contain1, text_contain2, censure_argument;
 
         bool KeyValue( const string& in szKey, const string& in szValue ) 
@@ -45,6 +46,7 @@ namespace player_talk
             else if( szKey == "text_contain1" ) text_contain1 = szValue;
             else if( szKey == "text_contain2" ) text_contain2 = szValue;
             else if( szKey == "censure_argument" ) censure_argument = szValue;
+            else if( szKey == "player_target" ) player_target = atoi( szValue );
             else return BaseClass.KeyValue( szKey, szValue );
             return true;
         }
@@ -103,7 +105,18 @@ namespace player_talk
                 {
                     return HOOK_CONTINUE;
                 }
+
+                if( self.pev.SpawnFlagBitSet( SF_CTH_TEAM_ONLY ) && pParams.GetSayType() != CLIENTSAY_SAYTEAM )
+                {
+                    pParams.ShouldHide = true;
+                    g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "MAP: Only TEAM messages allowed.\n" );
+                }
                 
+                if( player_target > 0 && pPlayer.GetCustomKeyvalues().GetKeyvalue( "$i_player_talk_level" ).GetInteger() != player_target )
+                {
+                    return HOOK_CONTINUE;
+                }
+
                 if( !string( censure_argument ).IsEmpty() )
                 {
                     pParams.ShouldHide = true;

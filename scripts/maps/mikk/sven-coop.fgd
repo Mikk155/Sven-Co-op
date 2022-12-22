@@ -278,6 +278,45 @@
     percent_of_players(string) : "Percentage of players needed" : "0"
 ]
 
+// -Mikk Changed to a BaseClass and renamed to refeer to the file name instead.
+@BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseCdAudio
+[
+    health(choices) : "Track #" : -1 =
+    [
+        -1 : "Stop"
+        1 : "None"
+        2 : "Half-Life01"
+        3 : "Prospero01"
+        4 : "Half-Life12"
+        5 : "Half-Life07"
+        6 : "Half-Life10"
+        7 : "Suspense01"
+        8 : "Suspense03"
+        9 : "Half-Life09"
+        10 : "Half-Life02"
+        11 : "Half-Life13"
+        12 : "Half-Life04"
+        13 : "Half-Life15"
+        14 : "Half-Life14"
+        15 : "Half-Life16"
+        16 : "Suspense02"
+        17 : "Half-Life03."
+        18 : "Half-Life08"
+        19 : "Prospero02"
+        20 : "Half-Life05"
+        21 : "Prospero04"
+        22 : "Half-Life11"
+        23 : "Half-Life06"
+        24 : "Prospero03"
+        25 : "Half-Life17"
+        26 : "Prospero05"
+        27 : "Suspense05"
+        28 : "Suspense07"
+        29 : "gamestartup"
+        30 : "None"
+    ]
+]
+
 @BaseClass = FilterIn
 [
     tinfilter(string) : "Name In Filter"
@@ -655,6 +694,7 @@
     ]
 ]
 
+// -todo que xuxa de explicacion es esta
 @BaseClass = NotRevivable
 [
     //Whether the monster can be revived or not
@@ -5971,6 +6011,9 @@
     [
         // If set. requires trigger the entity to start thinking
         1: "Start off" : 0
+
+        // If set. only TEAM messages will be taken and default messages will be deleted.
+        2: "Team only" : 0
     ]
 
     // if 1 = ShouldHide is set to true. player's message will be hidden from chat.
@@ -6013,6 +6056,10 @@
 
     // if set. this argument will be censured from the chat.
     censure_argument(string) : "Censure this Argument"
+    
+    // it is a filter for players. if 0 = no filter.
+    // Set to 1 and only players with custom keyvalue "$i_player_talk_level" in a value of "1" will be taken. else will be filtred.
+    player_target(integer) : "Required level" : 0
 ]
 
 // -TODO custom keyvalues yes/no de items por defecto.
@@ -6272,43 +6319,9 @@
     function_name(string) : "Angelscript function name" //Angelscript function to call on creation of a monster. Format: void FunctionName(MonsterEntity@ pSquadmaker, Entity@ pMonster)
 ]
 
-// -TODO agregar los nombres de las canciones
-@PointClass base(Targetname) color(255 240 128) = target_cdaudio : "CD Audio Target"
+// -TODO Verificar flag comentada-.
+@PointClass base(Targetname, BaseCdAudio) color(255 240 128) = target_cdaudio : "CD Audio Target"
 [
-    health(choices) : "Track #" : -1 =
-    [
-        -1 : "Stop"
-        1 : "Track 1"
-        2 : "Track 2"
-        3 : "Track 3"
-        4 : "Track 4"
-        5 : "Track 5"
-        6 : "Track 6"
-        7 : "Track 7"
-        8 : "Track 8"
-        9 : "Track 9"
-        10 : "Track 10"
-        11 : "Track 11"
-        12 : "Track 12"
-        13 : "Track 13"
-        14 : "Track 14"
-        15 : "Track 15"
-        16 : "Track 16"
-        17 : "Track 17"
-        18 : "Track 18"
-        19 : "Track 19"
-        20 : "Track 20"
-        21 : "Track 21"
-        22 : "Track 22"
-        23 : "Track 23"
-        24 : "Track 24"
-        25 : "Track 25"
-        26 : "Track 26"
-        27 : "Track 27"
-        28 : "Track 28"
-        29 : "Track 29"
-        30 : "Track 30"
-    ]
 //    radius(string) : "Player Radius"
 ]
 
@@ -6674,93 +6687,187 @@
     mouse_digital_action_reset(string) : "Mouse Digital Action Reset Time" : "0"
 ]
 
-// -TODO agregar los nombres de los rolones mejor xd
-@SolidClass base(Targetname, ZHLTbmodel) = trigger_cdaudio : "Trigger CD Audio"
-[
-    health(choices) : "Track #" : -1 =
-    [
-        -1 : "Stop"
-        1 : "Track 1"
-        2 : "Track 2"
-        3 : "Track 3"
-        4 : "Track 4"
-        5 : "Track 5"
-        6 : "Track 6"
-        7 : "Track 7"
-        8 : "Track 8"
-        9 : "Track 9"
-        10 : "Track 10"
-        11 : "Track 11"
-        12 : "Track 12"
-        13 : "Track 13"
-        14 : "Track 14"
-        15 : "Track 15"
-        16 : "Track 16"
-        17 : "Track 17"
-        18 : "Track 18"
-        19 : "Track 19"
-        20 : "Track 20"
-        21 : "Track 21"
-        22 : "Track 22"
-        23 : "Track 23"
-        24 : "Track 24"
-        25 : "Track 25"
-        26 : "Track 26"
-        27 : "Track 27"
-        28 : "Track 28"
-        29 : "Track 29"
-        30 : "Track 30"
-    ]
-]
+@SolidClass base(Targetname, ZHLTbmodel, BaseCdAudio) = trigger_cdaudio : "Trigger CD Audio"[]
 
 @PointClass base(Targetname, Target, AttackObject) color(128 96 2) = trigger_change_class : "Trigger Change Class" []
 
 // -Mikk alternative to trigger_setcvar but you can set more than one cvar per entity and can modify its values on-the-fly
 @PointClass base(Targetname, Master) color(40 200 150) = trigger_changecvar : "Sets a CVAR"
 [
+    spawnflags(flags) =
+    [
+        1 : "Start On" : 0
+    ]
     target(target_destination) : "Target after set (USE_TYPE)"
     delay(string) : "delay before trigger"
-
-    mp_allowplayerinfo(integer) : "mp_allowplayerinfo"
-    mp_allowmonsterinfo(integer) : "mp_allowmonsterinfo"
-    mp_barnacle_paralyze(integer) : "mp_barnacle_paralyze"
+    mp_allowplayerinfo(choices) : "mp_allowplayerinfo" : 0 =
+    [
+        0 : "Hide information"
+        1 : "Show information"
+        2 : "Show only for allies"
+    ]
+    mp_allowmonsterinfo(choices) : "mp_allowmonsterinfo" : 0 =
+    [
+        0 : "Hide information"
+        1 : "Show information"
+        2 : "Show only for allies"
+    ]
+    mp_barnacle_paralyze(choices) : "mp_barnacle_paralyze" : 0 =
+    [
+        0 : "Allow weapons"
+        1 : "Disallow weapons"
+    ]
     mp_respawndelay(integer) : "mp_respawndelay"
-    mp_multiplespawn(integer) : "mp_multiplespawn"
+    mp_multiplespawn(choices) : "mp_multiplespawn" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
     mp_timelimit(integer) : "mp_timelimit"
     mp_fraglimit(integer) : "mp_fraglimit"
-    mp_flashlight(integer) : "mp_flashlight"
-    mp_suitpower(integer) : "mp_suitpower"
-    mp_falldamage(integer) : "mp_falldamage"
-    mp_weaponstay(integer) : "mp_weaponstay"
-    mp_noblastgibs(integer) : "mp_noblastgibs"
-    mp_banana(integer) : "mp_banana"
-    mp_disablegaussjump(integer) : "mp_disablegaussjump"
-    mp_grapple_mode(integer) : "mp_grapple_mode"
-    mp_disable_player_rappel(integer) : "mp_disable_player_rappel"
-    mp_disable_autoclimb(integer) : "mp_disable_autoclimb"
-    mp_disable_pcbalancing(integer) : "mp_disable_pcbalancing"
-    mp_pcbalancing_factorlist(integer) : "mp_pcbalancing_factorlist"
-    mp_disable_medkit_points(integer) : "mp_disable_medkit_points"
-    mp_no_akimbo_uzis(integer) : "mp_no_akimbo_uzis"
-    mp_dropweapons(integer) : "mp_dropweapons"
-    mp_npckill(integer) : "mp_npckill"
-    mp_forcespawn(integer) : "mp_forcespawn"
-    mp_weapon_respawndelay(integer) : "mp_weapon_respawndelay"
-    mp_ammo_respawndelay(integer) : "mp_ammo_respawndelay"
-    mp_item_respawndelay(integer) : "mp_item_respawndelay"
-    mp_weaponfadedelay(integer) : "mp_weaponfadedelay"
-    mp_weapon_droprules(integer) : "mp_weapon_droprules"
-    mp_ammo_droprules(integer) : "mp_ammo_droprules"
-    mp_observer_mode(integer) : "mp_observer_mode"
-    mp_observer_cyclic(integer) : "mp_observer_cyclic"
-    mp_hevsuit_voice(integer) : "mp_hevsuit_voice"
-    mp_survival_supported(integer) : "mp_survival_supported"
-    mp_survival_starton(integer) : "mp_survival_starton"
-    mp_survival_startdelay(integer) : "mp_survival_startdelay"
-    mp_survival_nextmap(integer) : "mp_survival_nextmap"
+    mp_flashlight(choices) : "mp_flashlight" : 1 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_suitpower(choices) : "mp_suitpower" : 1 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_falldamage(choices) : "mp_falldamage" : 1 =
+    [
+        -1 : "Disabled"
+        0 : "only take 10HP"
+        1 : "Realistic"
+    ]
+    mp_weaponstay(choices) : "mp_weaponstay" : 0 =
+    [
+        0 : "Weapons don't stay"
+        1 : "Weapons stays"
+    ]
+    mp_noblastgibs(choices) : "mp_noblastgibs" : 0 =
+    [
+        0 : "Default"
+        1 : "Don't gib monsters"
+    ]
+    mp_banana(choices) : "mp_banana" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_disablegaussjump(choices) : "mp_disablegaussjump" : 0 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_grapple_mode(choices) : "mp_grapple_mode" : 0 =
+    [
+        0 : "Don't grapple big monsters"
+        1 : "Grapple big monsters"
+    ]
+    mp_disable_player_rappel(choices) : "mp_disable_player_rappel" : 0 =
+    [
+        0 : "can grapple onto other players."
+        1 : "can not grapple onto other players."
+    ]
+    mp_disable_autoclimb(choices) : "mp_disable_autoclimb" : 0 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_disable_pcbalancing(choices) : "mp_disable_pcbalancing" : 1 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_pcbalancing_factorlist(string) : "mp_pcbalancing_factorlist" : "1.0;0.9;0.9;0.9;0.8;0.8;0.8;0.7;0.7;0.6"
+    mp_disable_medkit_points(choices) : "mp_disable_medkit_points" : 1 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_no_akimbo_uzis(choices) : "mp_no_akimbo_uzis" : 1 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_dropweapons(choices) : "mp_dropweapons" : 1 =
+    [
+        0 : "Can't drop weapons"
+        1 : "Can drop weapons"
+    ]
+    mp_npckill(choices) : "mp_npckill" : 2 =
+    [
+        0 : "Allies are Inmortal"
+        1 : "Allies take damage from anything"
+        2 : "Allies take damage from enemies"
+    ]
+    mp_forcespawn(choices) : "mp_forcespawn" : 2 =
+    [
+        0 : "Don't force"
+        1 : "Force"
+    ]
+    mp_weapon_respawndelay(float) : "mp_weapon_respawndelay"
+    mp_ammo_respawndelay(float) : "mp_ammo_respawndelay"
+    mp_item_respawndelay(float) : "mp_item_respawndelay"
+    mp_weaponfadedelay(float) : "mp_weaponfadedelay"
+    mp_weapon_droprules(choices) : "mp_weapon_droprules" : 0 =
+    [
+		0 : "Don't drop any weapons when the player dies."
+		1 : "Drop the current weapon."
+		2 : "Drop all weapons packed into a weapon box."
+    ]
+    mp_ammo_droprules(choices) : "mp_ammo_droprules" : 0 =
+    [
+		0 : "Don't drop any ammo when the player dies."
+		1 : "Drop ammo for the current weapon."
+		2 : "Drop all ammo packed into a weapon box."
+    ]
+    mp_observer_mode(choices) : "mp_observer_mode" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_observer_cyclic(choices) : "mp_observer_cyclic" : 0 =
+    [
+        0 : "Observer mode is active as long as there are no spawnpoints."
+        1 : "Observer mode is active until the map respawns players."
+    ]
+    mp_hevsuit_voice(choices) : "mp_hevsuit_voice" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_survival_supported(choices) : "mp_survival_supported" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_survival_starton(choices) : "mp_survival_starton" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_survival_startdelay(float) : "mp_survival_startdelay"
+    mp_survival_nextmap(string) : "mp_survival_nextmap"
     mp_footsteps(integer) : "mp_footsteps"
     mp_friendlyfire(integer) : "mp_friendlyfire"
-    npc_dropweapons(integer) : "npc_dropweapons"
+    npc_dropweapons(choices) : "npc_dropweapons" : 1 =
+    [
+        0 : "Can't drop weapons"
+        1 : "Can drop weapons"
+    ]
+    sv_ai_enemy_detection_mode(choices) : "sv_ai_enemy_detection_mode" : 0 =
+    [
+        0 : "Default"
+        1 : "NPCs scans for enemies"
+    ]
+    mp_modelselection(choices) : "mp_modelselection" : 0 =
+    [
+        0 : "Disable"
+        1 : "Enable"
+    ]
     sv_friction(integer) : "sv_friction"
     sv_airaccelerate(integer) : "sv_airaccelerate"
     sv_accelerate(integer) : "sv_accelerate"
@@ -6775,172 +6882,50 @@
     sv_voiceenable(integer) : "sv_voiceenable"
     voice_enable(integer) : "voice_enable"
     say(integer) : "say"
-    weaponmode_9mmhandgun(integer) : "weaponmode_9mmhandgun"
-    weaponmode_357(integer) : "weaponmode_357"
-    weaponmode_mp5(integer) : "weaponmode_mp5"
-    weaponmode_shotgun(integer) : "weaponmode_shotgun"
-    weaponmode_crossbow(integer) : "weaponmode_crossbow"
-    weaponmode_eagle(integer) : "weaponmode_eagle"
-    weaponmode_rpg(integer) : "weaponmode_rpg"
-    weaponmode_displacer(integer) : "weaponmode_displacer"
+    weaponmode_9mmhandgun(choices) : "weaponmode_9mmhandgun" : 0 =
+    [
+        0 : "Rapid-Fire"
+        1 : "Silencer"
+    ]
+    weaponmode_357(choices) : "weaponmode_357" : 1 =
+    [
+        0 : "Default"
+        1 : "No-Scope"
+    ]
+    weaponmode_eagle(choices) : "weaponmode_eagle" : 1 =
+    [
+        0 : "Default"
+        1 : "No-Laser"
+    ]
+    weaponmode_mp5(choices) : "weaponmode_mp5" : 1 =
+    [
+        0 : "Default"
+        1 : "No-Scope"
+    ]
+    weaponmode_shotgun(choices) : "weaponmode_shotgun" : 0 =
+    [
+        0 : "Default"
+        1 : "Double-Barrel"
+    ]
+    weaponmode_crossbow(choices) : "weaponmode_crossbow" : 0 =
+    [
+        0 : "Default"
+        1 : "No-Explode"
+    ]
+    weaponmode_rpg(choices) : "weaponmode_rpg" : 0 =
+    [
+        0 : "Default"
+        1 : "No-Laser"
+    ]
+    weaponmode_displacer(choices) : "weaponmode_displacer" : 0 =
+    [
+        0 : "Default"
+        1 : "Enable Tertiary fire"
+    ]
+
 // -TODO testear y quitar los que no funcan de sv_
-// This was so massive. add them by your own xD
-//    skill(integer) : "skill (unused)"
-//    sk_controller_health(float) : "sk_controller_health"
-//    sk_controller_dmgzap(float) : "sk_controller_dmgzap"
-//    sk_controller_speedball(float) : "sk_controller_speedball"
-//    sk_controller_dmgball(float) : "sk_controller_dmgball"
-//    sk_agrunt_health(float) : "sk_agrunt_health"
-//    sk_agrunt_dmg_punch(float) : "sk_agrunt_dmg_punch"
-//    sk_agrunt_melee_engage_distance(float) : "sk_agrunt_melee_engage_distance"
-//    sk_agrunt_berserker_dmg_punch(float) : "sk_agrunt_berserker_dmg_punch"
-//    sk_islave_health(float) : "sk_islave_health"
-//    sk_islave_dmg_claw(float) : "sk_islave_dmg_claw"
-//    sk_islave_dmg_clawrake(float) : "sk_islave_dmg_clawrake"
-//    sk_islave_dmg_zap(float) : "sk_islave_dmg_zap"
-//    sk_islave_speed_zap(float) : "sk_islave_speed_zap"
-//    sk_apache_health(float) : "sk_apache_health"
-//    sk_apache_enable_rockets(float) : "sk_apache_enable_rockets"
-//    sk_babygargantua_health(float) : "sk_babygargantua_health"
-//    sk_babygargantua_dmg_slash(float) : "sk_babygargantua_dmg_slash"
-//    sk_babygargantua_dmg_fire(float) : "sk_babygargantua_dmg_fire"
-//    sk_babygargantua_dmg_stomp(float) : "sk_babygargantua_dmg_stomp"
-//    sk_barnacle_health(float) : "sk_barnacle_health"
-//    sk_barnacle_bite(float) : "sk_barnacle_bite"
-//    sk_barney_health(float) : "sk_barney_health"
-//    sk_bigmomma_health_factor(float) : "sk_bigmomma_health_factor"
-//    sk_bigmomma_dmg_slash(float) : "sk_bigmomma_dmg_slash"
-//    sk_bigmomma_dmg_blast(float) : "sk_bigmomma_dmg_blast"
-//    sk_bigmomma_radius_blast(float) : "sk_bigmomma_radius_blast"
-//    sk_bullsquid_health(float) : "sk_bullsquid_health"
-//    sk_bullsquid_dmg_bite(float) : "sk_bullsquid_dmg_bite"
-//    sk_bullsquid_dmg_whip(float) : "sk_bullsquid_dmg_whip"
-//    sk_bullsquid_dmg_spit(float) : "sk_bullsquid_dmg_spit"
-//    sk_gargantua_health(float) : "sk_gargantua_health"
-//    sk_gargantua_dmg_slash(float) : "sk_gargantua_dmg_slash"
-//    sk_gargantua_dmg_fire(float) : "sk_gargantua_dmg_fire"
-//    sk_gargantua_dmg_stomp(float) : "sk_gargantua_dmg_stomp"
-//    sk_gonome_health(float) : "sk_gonome_health"
-//    sk_gonome_dmg_one_slash(float) : "sk_gonome_dmg_one_slash"
-//    sk_gonome_dmg_guts(float) : "sk_gonome_dmg_guts"
-//    sk_gonome_dmg_one_bite(float) : "sk_gonome_dmg_one_bite"
-//    sk_headcrab_health(float) : "sk_headcrab_health"
-//    sk_headcrab_dmg_bite(float) : "sk_headcrab_dmg_bite"
-//    sk_hornet_dmg(float) : "sk_hornet_dmg"
-//    sk_houndeye_health(float) : "sk_houndeye_health"
-//    sk_houndeye_dmg_blast(float) : "sk_houndeye_dmg_blast"
-//    sk_hassassin_health(float) : "sk_hassassin_health"
-//    sk_hassassin_enable_cloaking(float) : "sk_hassassin_enable_cloaking"
-//    sk_hgrunt_health(float) : "sk_hgrunt_health"
-//    sk_hgrunt_kick(float) : "sk_hgrunt_kick"
-//    sk_hgrunt_pellets(float) : "sk_hgrunt_pellets"
-//    sk_hgrunt_gspeed(float) : "sk_hgrunt_gspeed"
-//    sk_grunt_buckshot(float) : "sk_grunt_buckshot"
-//    sk_grunt_handgrenades(float) : "sk_grunt_handgrenades"
-//    sk_hwgrunt_health(float) : "sk_hwgrunt_health"
-//    sk_hwgrunt_minipellets(float) : "sk_hwgrunt_minipellets"
-//    sk_ichthyosaur_health(float) : "sk_ichthyosaur_health"
-//    sk_ichthyosaur_shake(float) : "sk_ichthyosaur_shake"
-//    sk_kingpin_health(float) : "sk_kingpin_health"
-//    sk_kingpin_lightning(float) : "sk_kingpin_lightning"
-//    sk_kingpin_tele_blast(float) : "sk_kingpin_tele_blast"
-//    sk_kingpin_plasma_blast(float) : "sk_kingpin_plasma_blast"
-//    sk_kingpin_melee(float) : "sk_kingpin_melee"
-//    sk_kingpin_telefrag(float) : "sk_kingpin_telefrag"
-//    sk_leech_health(float) : "sk_leech_health"
-//    sk_leech_dmg_bite(float) : "sk_leech_dmg_bite"
-//    sk_massassin_sniper(float) : "sk_massassin_sniper"
-//    sk_mortar(float) : "sk_mortar"
-//    sk_nihilanth_health(float) : "sk_nihilanth_health"
-//    sk_nihilanth_zap(float) : "sk_nihilanth_zap"
-//    sk_osprey(float) : "sk_osprey"
-//    sk_blkopsosprey(float) : "sk_blkopsosprey"
-//    sk_otis_health(float) : "sk_otis_health"
-//    sk_otis_bullet(float) : "sk_otis_bullet"
-//    sk_pitdrone_health(float) : "sk_pitdrone_health"
-//    sk_pitdrone_dmg_bite(float) : "sk_pitdrone_dmg_bite"
-//    sk_pitdrone_dmg_whip(float) : "sk_pitdrone_dmg_whip"
-//    sk_pitdrone_dmg_spit(float) : "sk_pitdrone_dmg_spit"
-//    sk_rgrunt_explode(float) : "sk_rgrunt_explode"
-//    sk_scientist_health(float) : "sk_scientist_health"
-//    sk_shocktrooper_health(float) : "sk_shocktrooper_health"
-//    sk_shocktrooper_kick(float) : "sk_shocktrooper_kick"
-//    sk_shocktrooper_maxcharge(float) : "sk_shocktrooper_maxcharge"
-//    sk_shocktrooper_enable_spores(float) : "sk_shocktrooper_enable_spores"
-//    sk_snark_health(float) : "sk_snark_health"
-//    sk_snark_dmg_bite(float) : "sk_snark_dmg_bite"
-//    sk_snark_dmg_pop(float) : "sk_snark_dmg_pop"
-//    sk_sqknest_health(float) : "sk_sqknest_health"
-//    sk_stukabat(float) : "sk_stukabat"
-//    sk_stukabat_dmg_bite(float) : "sk_stukabat_dmg_bite"
-//    sk_tentacle(float) : "sk_tentacle"
-//    sk_tor_health(float) : "sk_tor_health"
-//    sk_tor_punch(float) : "sk_tor_punch"
-//    sk_tor_energybeam(float) : "sk_tor_energybeam"
-//    sk_tor_sonicblast(float) : "sk_tor_sonicblast"
-//    sk_turret_health(float) : "sk_turret_health"
-//    sk_miniturret_health(float) : "sk_miniturret_health"
-//    sk_sentry_health(float) : "sk_sentry_health"
-//    sk_voltigore_health(float) : "sk_voltigore_health"
-//    sk_voltigore_dmg_punch(float) : "sk_voltigore_dmg_punch"
-//    sk_voltigore_dmg_beam(float) : "sk_voltigore_dmg_beam"
-//    sk_voltigore_dmg_explode(float) : "sk_voltigore_dmg_explode"
-//    sk_zombie_health(float) : "sk_zombie_health"
-//    sk_zombie_dmg_one_slash(float) : "sk_zombie_dmg_one_slash"
-//    sk_zombie_dmg_both_slash(float) : "sk_zombie_dmg_both_slash"
-//    sk_zombie_barney_health(float) : "sk_zombie_barney_health"
-//    sk_zombie_barney_dmg_one_slash(float) : "sk_zombie_barney_dmg_one_slash"
-//    sk_zombie_barney_dmg_both_slash(float) : "sk_zombie_barney_dmg_both_slash"
-//    sk_zombie_soldier_health(float) : "sk_zombie_soldier_health"
-//    sk_zombie_soldier_dmg_one_slash(float) : "sk_zombie_soldier_dmg_one_slash"
-//    sk_zombie_soldier_dmg_both_slash(float) : "sk_zombie_soldier_dmg_both_slash"
-//    sk_plr_crowbar(float) : "sk_plr_crowbar"
-//    sk_plr_wrench(float) : "sk_plr_wrench"
-//    sk_plr_HpMedic(float) : "sk_plr_HpMedic"
-//    sk_plr_grapple(float) : "sk_plr_grapple"
-//    sk_plr_9mm_bullet(float) : "sk_plr_9mm_bullet"
-//    sk_plr_357_bullet(float) : "sk_plr_357_bullet"
-//    sk_plr_uzi(float) : "sk_plr_uzi"
-//    sk_plr_9mmAR_bullet(float) : "sk_plr_9mmAR_bullet"
-//    sk_plr_buckshot(float) : "sk_plr_buckshot"
-//    sk_plr_xbow_bolt_monster(float) : "sk_plr_xbow_bolt_monster"
-//    sk_556_bullet(float) : "sk_556_bullet"
-//    sk_plr_9mmAR_grenade(float) : "sk_plr_9mmAR_grenade"
-//    sk_plr_rpg(float) : "sk_plr_rpg"
-//    sk_plr_gauss(float) : "sk_plr_gauss"
-//    sk_plr_secondarygauss(float) : "sk_plr_secondarygauss"
-//    sk_plr_egon_wide(float) : "sk_plr_egon_wide"
-//    sk_hornet_pdmg(float) : "sk_hornet_pdmg"
-//    sk_plr_hand_grenade(float) : "sk_plr_hand_grenade"
-//    sk_plr_satchel(float) : "sk_plr_satchel"
-//    sk_plr_tripmine(float) : "sk_plr_tripmine"
-//    sk_plr_762_bullet(float) : "sk_plr_762_bullet"
-//    sk_plr_spore(float) : "sk_plr_spore"
-//    sk_plr_displacer_other(float) : "sk_plr_displacer_other"
-//    sk_plr_displacer_radius(float) : "sk_plr_displacer_radius"
-//    sk_plr_shockrifle(float) : "sk_plr_shockrifle"
-//    sk_plr_shockrifle_beam(float) : "sk_plr_shockrifle_beam"
-//    sk_plr_shockrifle_recharge(float) : "sk_plr_shockrifle_recharge"
-//    sk_shockroach_dmg_xpl_touch(float) : "sk_shockroach_dmg_xpl_touch"
-//    sk_shockroach_dmg_xpl_splash(float) : "sk_shockroach_dmg_xpl_splash"
-//    sk_9mm_bullet(float) : "sk_9mm_bullet"
-//    sk_9mmAR_bullet(float) : "sk_9mmAR_bullet"
-//    sk_12mm_bullet(float) : "sk_12mm_bullet"
-//    sk_healthcharger(float) : "sk_healthcharger"
-//    sk_healthkit(integer) : "sk_healthkit"
-//    sk_suitcharger(integer) : "sk_suitcharger"
-//    sk_battery(integer) : "sk_battery"
-//    sk_scientist_heal(integer) : "sk_scientist_heal"
-//    sk_monster_head(float) : "sk_monster_head"
-//    sk_monster_chest(float) : "sk_monster_chest"
-//    sk_monster_stomach(float) : "sk_monster_stomach"
-//    sk_monster_arm(float) : "sk_monster_arm"
-//    sk_monster_leg(float) : "sk_monster_leg"
-//    sk_player_head(float) : "sk_player_head"
-//    sk_player_chest(float) : "sk_player_chest"
-//    sk_player_stomach(float) : "sk_player_stomach"
-//    sk_player_arm(float) : "sk_player_arm"
-//    sk_player_leg(float) : "sk_player_leg"
+
+    skill(integer) : "skills (See skills.cfg)"
 ]
 
 @SolidClass base(Targetname, BaseChangelevel) = trigger_changelevel : "Trigger Change level"[]
@@ -7473,7 +7458,8 @@
         // -Mikk if set. all players inside will trigger the target instead of just one random player.
         64: "Multi-Threaded": 0
     ]
-    wait(integer) : "Delay before reset" : 10
+    // why i can't use decimals? Changed to float.
+    wait(float) : "Delay before reset" : 10.0
 ]
 
 @PointClass base(Targetname) size(-16 -16 -16, 16 16 16) color(0 0 200) = trigger_numericdisplay : "Numeric Display"
