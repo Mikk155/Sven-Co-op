@@ -1,6 +1,8 @@
 /*
 DOWNLOAD:
 
+https://github.com/Mikk155/Sven-Co-op/releases/download/env_bloodpuddle/models.rar
+
 models/mikk/misc/bloodpuddle.mdl
 scripts/maps/mikk/env_bloodpuddle.as
 
