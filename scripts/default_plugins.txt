@@ -1,0 +1,23 @@
+"plugins"
+{
+    "plugin"
+    {
+        "name" "RenameServer"
+        "script" "../maps/mikk/plugins/RenameServer"
+    }
+    "plugin"
+    {
+        "name" "PlayerDeadChat"
+        "script" "../maps/mikk/plugins/PlayerDeadChat"
+    }
+    "plugin"
+    {
+        "name" "NoAutoPick"
+        "script" "../maps/mikk/plugins/NoAutoPick"
+    }
+    "plugin"
+    {
+        "name" "BloodPuddle"
+        "script" "../maps/mikk/plugins/BloodPuddle"
+    }
+}
