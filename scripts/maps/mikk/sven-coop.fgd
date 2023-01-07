@@ -7010,6 +7010,9 @@
         2 : "Don't use Y" : 0
         4 : "Don't use Z" : 0
 
+        // -Mikk A feature that allows mapper to change a certain weapon's keyvalue from !activator. see last keyvalue.
+        8 : "[AS] Weapon's value modifier" : 0
+
         32 : "Invert target value" : 0
         64 : "Invert source value" : 0
 
@@ -7049,6 +7052,97 @@
     ]
     m_iAppendSpaces(integer) : "Append spaces (for strings)" : 0
     message(target_destination) : "Trigger after action"
+
+// This script has been created for modifying displacer teleport target destination on-the-fly. feedback by Sparks.
+// Pass activator to trigger the entity and his weapon's keyvalue will be updated.
+// Specify here the classname of the weapon you want to update.
+
+    $s_weapon(string) : "[AS] Weapon to modify"
+
+//  Supported keys:
+
+// "$s_target" -> Target for when the weapon is picked up.
+
+// "$s_targetname" -> Targetname for the weapon.
+
+// "$s_m_iszTeleportDestination" -> Teleport destination for weapon_displacer
+
+// "$s_exclusivehold" -> Exclusive Hold 0 = No, 1 = Yes.
+    // Note: the change is added when the player select the weapon in question. it won't switch to it automatically.
+    
+// "$s_spawnflags" -> Spawnflags for weapon_displacer
+      //  64: "Random Destination"
+      //  128: "Rotate (Dest Angles)" / "TOUCH Only"
+      //  256: "Keep Angles" / "USE Only"
+      //  512: "Keep velocity" / "Can Use w/o LoS"
+      //  4096 : "Ignore delay"
+
+// "$s_renderfx" -> Render FX
+        // 0: "Normal"
+        // 1: "Slow Pulse"
+        // 2: "Fast Pulse"
+        // 3: "Slow Wide Pulse"
+        // 4: "Fast Wide Pulse"
+        // 9: "Slow Strobe"
+        // 10: "Fast Strobe"
+        // 11: "Faster Strobe"
+        // 12: "Slow Flicker"
+        // 13: "Fast Flicker"
+        // 5: "Slow Fade Away"
+        // 6: "Fast Fade Away"
+        // 7: "Slow Become Solid"
+        // 8: "Fast Become Solid"
+        // 14: "Constant Glow"
+        // 15: "Distort"
+        // 16: "Hologram (Distort + fade)"
+        // 19: "Glow Shell"
+
+// "$s_rendermode" -> Render Mode
+        // 0: "Normal"
+        // 1: "Color"
+        // 2: "Texture"
+        // 3: "Glow"
+        // 4: "Solid"
+        // 5: "Additive"
+
+// "$s_renderamt" -> FX Amount (1 - 255)
+
+// "$s_rendercolor" -> FX Color (R G B)
+
+// "$s_movetype" -> Gravity Setting
+        // -1: "Unmoveable"
+        // 0: "Fall to the ground (default)"
+        // 5: "Hover in the air"
+        // 8: "Hover in the air, ignore brush collision"
+
+// "$s_m_TertiaryMode" -> Tertiary fire mode for weapon_displacer
+      //  0 : "Default (weaponmode_displacer)"
+      //  1 : "Disable"
+      //  2 : "Enable"
+
+// "$s_m_flPortalSpeed" -> Portal Speed for weapon_displacer
+
+// "$s_m_flPortalRadius" -> Portal Radius for weapon_displacer
+
+// "$s_m_flPrimaryAmmoNeeded" -> Ammo needed/used to fire primary for weapon_displacer
+
+// "$s_m_flSecondaryAmmoNeeded" -> Ammo needed/used to fire secondary for weapon_displacer
+
+// "$s_m_flTertiaryAmmoNeeded" -> Ammo needed/used to fire tertiary for weapon_displacer
+
+// Those need precache. don't fuck up it!
+// "$s_wpn_v_model" -> Custom V_Model
+// "$s_wpn_w_model" -> Custom W_Model
+// "$s_wpn_p_model" -> Custom P_Model
+
+// Not tested since i didn't find models or other reasons:
+// "$s_skin" -> Change current skin.
+// "$s_body" -> Change current body.
+
+// Need test
+// "$s_dmg"
+// "$s_soundlist"
+// "$s_CustomSpriteDir"
 ]
 
 // Copy value of one entity to another value of another entity
@@ -7810,55 +7904,6 @@
 // ERROR: Angelscript: CScheduler::Think: execution of function trigger_votemenu::Results failed!
 ]
 
-// A custom entity that allows mapper to change !activator's weapon keyvalues. -Mikk
-// This script has been created for modifying displacer target. feedback by Sparks.
-// Pass activator to trigger the entity and his weapon's keyvalue will be updated.
-@PointClass base( Targetname, Master ) = weapon_changevalue : "Change value of weapons"
-[
-    weapon_classname(string) : "Weapon classname"
-    skin(integer) : "Skin" : 0
-    body(integer) : "Body" : 0
-    exclusivehold(choices) : "Exclusive Hold" : 0 =
-    [
-        0 : "No"
-        1 : "Yes"
-    ]
-
-    dmg(integer) : "Custom Damage"
-
-    wpn_v_model(studio) : "Custom V_Model"
-    wpn_w_model(studio) : "Custom W_Model"
-    wpn_p_model(studio) : "Custom P_Model"
-
-    soundlist(string) : "Sound Replacement File"
-
-    CustomSpriteDir(string) : "Custom sprite directory"
-
-    spawnflags(flags) =
-    [
-        64: "Random Destination" : 0
-        128: "Rotate (Dest Angles)" : 0
-        256: "Keep Angles" : 0
-        512: "Keep velocity" : 0
-        4096 : "Ignore delay" : 0
-    ]
-
-    m_TertiaryMode(choices) : "Tertiary fire mode" : 0 =
-    [
-        0 : "Default (weaponmode_displacer)"
-        1 : "Disable"
-        2 : "Enable"
-    ]
-
-    m_flPortalSpeed(string) : "Portal Speed"
-    m_flPortalRadius(string) : "Portal Radius"
-    m_iszTeleportDestination(target_destination) : "Teleport destination"
-
-    m_flPrimaryAmmoNeeded(string) : "Ammo needed/used to fire primary"
-    m_flSecondaryAmmoNeeded(string) : "Ammo needed/used to fire secondary"
-    m_flTertiaryAmmoNeeded(string) : "Ammo needed/used to fire tertiary"
-]
-
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_357.mdl") = weapon_357 : "357 Handgun" []
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_9mmAR.mdl") = weapon_9mmAR : "9mm Assault Rifle" []
@@ -7876,17 +7921,21 @@
 
 @PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_crowbar.mdl") = weapon_crowbar : "Crowbar" []
 
-@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/w_displacer.mdl") = weapon_displacer : "Displacer"
+
+@BaseClass = Displacer
 [
     spawnflags(flags) =
     [
-        64: "Random Destination" : 0
-        128: "Rotate (Dest Angles)" : 0
-        256: "Keep Angles" : 0
-        512: "Keep velocity" : 0
+        64 : "Random Destination" : 0
+        128 : "Rotate (Dest Angles)" : 0
+        256 : "Keep Angles" : 0
+        512 : "Keep velocity" : 0
         4096 : "Ignore delay" : 0
     ]
+]
 
+@PointClass base(Displacer, Weapon, Targetx, ExclusiveHold) studio("models/w_displacer.mdl") = weapon_displacer : "Displacer"
+[
     m_TertiaryMode(choices) : "Tertiary fire mode" : 0 =
     [
         0 : "Default (weaponmode_displacer)"
