@@ -1,24 +1,20 @@
-/*
-DOWNLOAD:
-
-scripts/maps/mikk/game_time.as
-scripts/maps/mikk/utils.as
-
-
-INSTALL:
-
-#include "mikk/game_time"
-
-void MapInit()
-{
-    game_time::Register();
-}
-*/
-
-#include "utils"
-
 namespace game_time
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_time::game_time", "game_time" );
+
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: game_time\n"
+            "Author: Gaftherman\n"
+            "Github: github.com/Gaftherman\n"
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Description: Allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night etc etc..\n"
+        );
+    }
+
     const string[][] Pattern = 
     {
         { "1", "Best pattern for this hour" },
@@ -52,13 +48,14 @@ namespace game_time
         SF_TIME_GETREALTIME = 1 << 1
     }
 
-    class CBaseGameTimer : ScriptBaseEntity, UTILS::MoreKeyValues
+    class game_time : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         DateTime datetime;
         private int TimerS = 0, TimerM = 0, TimerH = 0, TimerD = 0;
         private int CuantosSegundosDuraUnMinuto = 59, CuantosMinutosDuraUnaHora = 59, CuantasHorasDuraUnDia = 23;
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
+            ExtraKeyValues( szKey, szValue );
             if( szKey == "TimerM" ) TimerM = atoi( szValue );
             else if( szKey == "TimerH" ) TimerH = atoi( szValue );
             else if( szKey == "TimerD" ) TimerD = atoi( szValue );
@@ -90,7 +87,7 @@ namespace game_time
                 return;
             }
 
-            UTILS::Debug("The time is "+TimerD+" days. "+TimerH+" hours. "+TimerM+" minutes.\n");
+            g_Util.DebugMessage("The time is "+TimerD+" days. "+TimerH+" hours. "+TimerM+" minutes.\n");
 
             if( self.pev.SpawnFlagBitSet( SF_TIME_ONDEMAND ) )
             {
@@ -104,7 +101,7 @@ namespace game_time
 
                 // Trigger every minute is increased
                 g_EntityFuncs.FireTargets( "MINUTE_"+TimerM+"", self, self, USE_TOGGLE );
-                UTILS::Debug("Triggered entity 'MINUTE_"+TimerM+"'\n");
+                g_Util.DebugMessage("Triggered entity 'MINUTE_"+TimerM+"'\n");
             }
 
             // Increase one hour
@@ -114,7 +111,7 @@ namespace game_time
 
                 // Trigger every hour is increased
                 g_EntityFuncs.FireTargets( "HOUR_"+TimerH+"", self, self, USE_TOGGLE );
-                UTILS::Debug("Triggered entity 'HOUR_"+TimerH+"'\n");
+                g_Util.DebugMessage("Triggered entity 'HOUR_"+TimerH+"'\n");
 
                for( uint ui = 0; ui < Pattern.length(); ui++ )
                 {
@@ -125,7 +122,7 @@ namespace game_time
                         if( pGlobalLight is null ) return;
                         g_EntityFuncs.DispatchKeyValue( pGlobalLight.edict(), "pattern", Pattern[ui][1] );
                         g_EntityFuncs.FireTargets( "global_light", self, self, USE_ON );
-                        UTILS::Debug("Light Pattern has been updated to "+ Pattern[ui][1] +"\n");
+                        g_Util.DebugMessage("Light Pattern has been updated to "+ Pattern[ui][1] +"\n");
                         break;
                     }
                 }
@@ -138,7 +135,7 @@ namespace game_time
 
                 // Trigger every day is increased
                 g_EntityFuncs.FireTargets( "DAY_"+TimerD+"", self, self, USE_TOGGLE );
-                UTILS::Debug("Triggered entity 'DAY_"+TimerD+"'\n");
+                g_Util.DebugMessage("Triggered entity 'DAY_"+TimerD+"'\n");
             }
 
             // Increase one second
@@ -146,10 +143,5 @@ namespace game_time
 
             self.pev.nextthink = g_Engine.time + 1.0f;
         }
-    }
-
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_time::CBaseGameTimer", "game_time" );
     }
 }// end namespace
