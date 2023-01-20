@@ -1,41 +1,35 @@
-/*
-INFORMATION: game_zone_player with new features. see our FGD.
-
-DOWNLOAD:
-scripts/maps/mikk/game_zone_entity.as
-
-
-INSTALL:
-#include "mikk/game_zone_entity"
-
-void MapInit()
-{
-    game_zone_entity::Register();
-}
-*/
-
-// Set to true to see debugs.
-bool blDebug = false;
-
 namespace game_zone_entity
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_zone_entity::game_zone_entity", "game_zone_entity" );
+
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: game_zone_entity\n"
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Description: adds a entity similar to game_zone_player but now supports any entity in its volume not only players.\n"
+        );
+    }
+
     enum game_zone_entity_flags
     {
         SF_TZ_IGNORE_DEAD = 1 << 0
     }
 
-    class game_zone_entity : ScriptBaseEntity
+    class game_zone_entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hincount = null;
         EHandle houtcount = null;
 
-        private Vector minhullsize();
-        private Vector maxhullsize();
         private string intarget, outtarget, incount, outcount;
-		private int USE_IN = 2, USE_OUT = 2;
+        private int USE_IN = 2, USE_OUT = 2;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
+            ExtraKeyValues( szKey, szValue );
+
             if( szKey == "minhullsize" ) 
             {
                 g_Utility.StringToVector( minhullsize, szValue );
@@ -80,23 +74,14 @@ namespace game_zone_entity
         {
             self.pev.movetype   = MOVETYPE_NONE;
             self.pev.solid      = SOLID_TRIGGER;
-            if( !blDebug )
-                self.pev.effects   |= EF_NODRAW;
+            self.pev.effects   |= EF_NODRAW;
 
-            if( string( self.pev.model ).StartsWith( "*" ) && self.IsBSPModel() )
-            {
-                g_EntityFuncs.SetModel( self, self.pev.model );
-                g_EntityFuncs.SetSize( self.pev, self.pev.mins, self.pev.maxs );
-                g_EntityFuncs.SetOrigin( self, self.pev.origin );
-            }
-            else if( minhullsize == g_vecZero or maxhullsize == g_vecZero )
-            {
-                g_EntityFuncs.SetSize( self.pev, minhullsize, maxhullsize );
-            }
-            else
+            SetBoundaries();
+
+            if( string( self.pev.model ).IsEmpty() && minhullsize == g_vecZero )
             {
                 g_EntityFuncs.Remove( self );
-                g_Debug.Print( "WARNING! game_zone_entity doesn't have BBOX!\n" );
+                g_Util.DebugMessage( "WARNING! game_zone_entity doesn't have BBOX!\n" );
             }
 
             BaseClass.Spawn();
@@ -104,6 +89,9 @@ namespace game_zone_entity
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
+            if( master() )
+                return;
+
             if( !incount.IsEmpty() )
             {
                 CBaseEntity@ pInCount = g_EntityFuncs.FindEntityByTargetname( pInCount, incount );
@@ -151,51 +139,31 @@ namespace game_zone_entity
 
             if( !intarget.IsEmpty() and self.Intersects( pActivator ) )
             {
-                g_EntityFuncs.FireTargets( intarget, pActivator, self, USE_TOGGLE, 0.0f );
+                g_EntityFuncs.FireTargets( intarget, pActivator, self, USE_TOGGLE, delay );
 
                 if( hincount.GetEntity() !is null )
                 {
                     g_EntityFuncs.FireTargets( incount, pActivator, self, ( USE_IN == 0 ? USE_OFF : USE_IN == 1 ? USE_ON : USE_TOGGLE ), 0.0f );
 
-                    g_Debug.Print( "Fired incount '" + incount );
+                    g_Util.DebugMessage( "Fired incount '" + incount );
                 }
 
-                g_Debug.Print( "Fired intarget '" + intarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
+                g_Util.DebugMessage( "Fired intarget '" + intarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
             }
 
             if( !outtarget.IsEmpty() and !self.Intersects( pActivator ) )
             {
-                g_EntityFuncs.FireTargets( outtarget, pActivator, self, ( USE_OUT == 0 ? USE_OFF : USE_OUT == 1 ? USE_ON : USE_TOGGLE ), 0.0f );
+                g_EntityFuncs.FireTargets( outtarget, pActivator, self, ( USE_OUT == 0 ? USE_OFF : USE_OUT == 1 ? USE_ON : USE_TOGGLE ), delay );
 
                 if( houtcount.GetEntity() !is null )
                 {
                     g_EntityFuncs.FireTargets( outcount, pActivator, self, USE_TOGGLE, 0.0f );
 
-                    g_Debug.Print( "Fired outcount '" + outcount );
+                    g_Util.DebugMessage( "Fired outcount '" + outcount );
                 }
 
-                g_Debug.Print( "Fired outtarget '" + outtarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
+                g_Util.DebugMessage( "Fired outtarget '" + outtarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
             }
         }
     }
-
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_zone_entity::game_zone_entity", "game_zone_entity" );
-    }
 }
-// End of namespace.
-
-CDebug g_Debug;
-
-final class CDebug
-{
-    void Print( string Str )
-    {
-        if( blDebug )
-        {
-            g_Game.AlertMessage( at_console, Str + "\n" );
-        }
-    }
-}
-// End of final class.
