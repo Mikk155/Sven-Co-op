@@ -1,23 +1,8 @@
-/*
-DOWNLOAD:
-
-scripts/maps/mikk/trigger_random.as
-scripts/maps/mikk/utils.as
-
-
-INSTALL:
-
-#include "mikk/trigger_random"
-
-*/
-
-#include "utils"
-
 namespace trigger_random
 {
-    CScheduledFunction@ g_Random = g_Scheduler.SetTimeout( "FindGameCounters", 0.0f );
+    CScheduledFunction@ g_Random = g_Scheduler.SetTimeout( "FindTriggerRandoms", 0.0f );
 
-    void FindGameCounters()
+    void FindTriggerRandoms()
     {
         CBaseEntity@ pEntity = null;
 
@@ -38,6 +23,13 @@ namespace trigger_random
                 g_EntityFuncs.Remove( pEntity );
             }
         }
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: trigger_random\n"
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Description: Allow ttrigger_random to set a unique random value.\n"
+        );
     }
 
     void SetRandomValue( CBaseEntity@ pTriggerScript )
@@ -47,8 +39,8 @@ namespace trigger_random
 
         pTriggerScript.GetCustomKeyvalues().SetKeyvalue( "$i_math_result", MathResultI );
         pTriggerScript.GetCustomKeyvalues().SetKeyvalue( "$f_math_result", MathResultF );
-		
-		pTriggerScript.Use( null, null, USE_TOGGLE, 0.0f );
+        
+        pTriggerScript.Use( pTriggerScript, pTriggerScript, USE_TOGGLE, 0.0f );
     }
 
     string GetMath( CBaseEntity@ pEntity, const string key )
