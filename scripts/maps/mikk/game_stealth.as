@@ -1,30 +1,15 @@
-/*
-DOWNLOAD:
-
-scripts/maps/mikk/game_stealth.as
-scripts/maps/mikk/utils.as
-
-
-INSTALL:
-
-#include "mikk/game_stealth"
-
-*/
-
-#include "utils"
-
 namespace game_stealth
 {
-    CScheduledFunction@ g_Stealth = g_Scheduler.SetTimeout( "CreateMode", 0.0f );
+    CScheduledFunction@ g_Stealth = g_Scheduler.SetTimeout( "CreateStealthMode", 0.0f );
 
-    void CreateMode()
+    void CreateStealthMode()
     {
         dictionary g_keyvalues =
         {
             { "m_iszScriptFunctionName", "game_stealth::FindMonsters" },
             { "m_iMode", "2" },
             { "m_flThinkDelta", "0.1" },
-            { "targetname", "idkwhythisneedthisthisthis" }
+            { "targetname", "game_stealth" }
         };
         CBaseEntity@ pScript = g_EntityFuncs.CreateEntity( "trigger_script", g_keyvalues );
         
@@ -32,6 +17,16 @@ namespace game_stealth
         {
             pScript.Use( null, null, USE_TOGGLE, 0.0f );
         }
+
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: game_stealth\n"
+            "Author: Gaftherman\n"
+            "Github: github.com/Gaftherman\n"
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Description: Allow mappers to make use of stealth mode in Co-op.\n"
+        );
     }
 
     void FindMonsters( CBaseEntity@ pTriggerScript )
@@ -52,11 +47,11 @@ namespace game_stealth
                     {
                         if( !string( cast<CBaseMonster@>( pSpotted ).m_iszTriggerTarget ).IsEmpty() )
                         {
-                            UTILS::Trigger( string( cast<CBaseMonster@>( pSpotted ).m_iszTriggerTarget ), pSpotted, pEnemy, USE_TOGGLE, 0.0f );
+                            g_EntityFuncs.FireTargets( string( cast<CBaseMonster@>( pSpotted ).m_iszTriggerTarget ), pSpotted, pEnemy, USE_TOGGLE, 0.0f );
                         }
 
                         g_EntityFuncs.Remove( pSpotted );
-                        UTILS::Trigger( pEnemy.pev.target, pSpotted, pEnemy, USE_TOGGLE, 0.0f );
+                        g_EntityFuncs.FireTargets( pEnemy.pev.target, pSpotted, pEnemy, USE_TOGGLE, 0.0f );
                     }
 
                     if( pSpotted.IsPlayer() )
@@ -66,7 +61,7 @@ namespace game_stealth
                         if( pPlayer !is null )
                         {
                             pPlayer.GetObserver().StartObserver( pPlayer.pev.origin, pPlayer.pev.angles, false );
-                            UTILS::Trigger( pEnemy.pev.target, pSpotted, pEnemy, USE_TOGGLE, 0.0f );
+                            g_EntityFuncs.FireTargets( pEnemy.pev.target, pSpotted, pEnemy, USE_TOGGLE, 0.0f );
                         }
                     }
 
