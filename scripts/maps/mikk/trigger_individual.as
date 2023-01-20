@@ -1,21 +1,6 @@
-/*
-DOWNLOAD:
-
-scripts/maps/mikk/trigger_individual.as
-scripts/maps/mikk/utils.as
-
-
-INSTALL:
-
-#include "mikk/trigger_individual"
-
-*/
-
-#include "utils"
-
 namespace trigger_individual
 {
-    CScheduledFunction@ g_Renders = g_Scheduler.SetTimeout( "FindIndividualTriggers", 0.0f );
+    CScheduledFunction@ g_IndividualTrigger = g_Scheduler.SetTimeout( "FindIndividualTriggers", 0.0f );
 
     array<string> Entities =
     {
@@ -53,6 +38,14 @@ namespace trigger_individual
                 }
             }
         }
+
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: trigger_individual\n"
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Description: Allow Trigger-Type entities to fire its target only once per activator.\n"
+        );
     }
 
     void TriggerIndividually( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
@@ -65,7 +58,7 @@ namespace trigger_individual
         if( !pActivator.GetCustomKeyvalues().HasKeyvalue( "$i_fireonce_" + target ) )
         {
             pActivator.GetCustomKeyvalues().SetKeyvalue("$i_fireonce_" + target, 1 );
-            UTILS::Trigger( target, pActivator, pCaller, useType, 0.0f );
+            g_EntityFuncs.FireTargets( target, pActivator, pCaller, useType, 0.0f );
         }
     }
 }
