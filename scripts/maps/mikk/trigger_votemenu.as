@@ -1,25 +1,21 @@
-/*
-DOWNLOAD:
-
-scripts/maps/mikk/trigger_votemenu.as
-scripts/maps/mikk/utils.as
-
-
-INSTALL:
-    
-#include "mikk/trigger_votemenu"
-
-void MapInit()
-{
-    trigger_votemenu::Register();
-}
-*/
-
-#include "utils"
-
 namespace trigger_votemenu
 {
-    class trigger_votemenu : ScriptBaseEntity, UTILS::MoreKeyValues
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_votemenu::trigger_votemenu", "trigger_votemenu" );
+
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: trigger_votemenu\n"
+            "Author: Gaftherman\n"
+            "Github: github.com/Gaftherman\n"
+            "Author: Wootguy\n"
+            "Github: github.com/wootguy\n"
+            "Description: Allow mapper to create a buymenu-like vote for one or all players.\n"
+        );
+    }
+
+    class trigger_votemenu : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;
         dictionary dictFinalResults;
@@ -65,7 +61,7 @@ namespace trigger_votemenu
 
             dictFinalResults.deleteAll();
 
-            if( self.pev.SpawnFlagBitSet( 1 ) && pActivator !is null )
+            if( self.pev.SpawnFlagBitSet( 1 ) && pActivator !is null && pActivator.IsPlayer() )
             {
                 CTextMenu@ g_SingleVoteMenu = CTextMenu( TextMenuPlayerSlotCallback( this.MainCallback ) );
                 g_SingleVoteMenu.SetTitle( string( self.pev.netname ) );
@@ -160,14 +156,9 @@ namespace trigger_votemenu
             {
                 string value;
                 dictKeyValues.get(FindName, value); 
-                UTILS::Trigger( value, self, self, USE_TOGGLE, delay );
-                UTILS::Trigger( self.pev.target, self, self, USE_TOGGLE, delay );
+                g_Util.Trigger( value, self, self, USE_TOGGLE, delay );
+                g_Util.Trigger( self.pev.target, self, self, USE_TOGGLE, delay );
             }
         }
-    }
-
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_votemenu::trigger_votemenu", "trigger_votemenu" );
     }
 }// end namespace
