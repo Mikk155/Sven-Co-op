@@ -11,9 +11,14 @@ namespace env_fog
             "Github: github.com/Mikk155\n"
             "Description: Show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)\n"
         );
+        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
     }
 
-    enum env_fog_flags{ INVIDIDUALFOG = 2 };
+    enum env_fog_flags
+    {
+        START_OFF = 1,
+        INVIDIDUALFOG = 2
+    };
 
     CScheduledFunction@ g_Fog = g_Scheduler.SetTimeout( "FindEnvFogs", 0.0f );
 
@@ -27,12 +32,13 @@ namespace env_fog
             {
                 dictionary g_keyvalues =
                 {
+                    { "targetname", pFog.GetTargetname() },
+                    { "netname", string( pFog.pev.iuser2 ) },
+                    { "message", string( pFog.pev.iuser3 ) },
                     { "frags", string( pFog.pev.rendercolor.x ) },
                     { "health", string( pFog.pev.rendercolor.y ) },
                     { "max_health", string( pFog.pev.rendercolor.z ) },
-                    { "netname", string( pFog.pev.iuser2 ) },
-                    { "message", string( pFog.pev.iuser3 ) },
-                    { "targetname", pFog.GetTargetname()  }
+                    { "target", ( pFog.pev.SpawnFlagBitSet( START_OFF ) ) ? "off" : "on" }
                 };
 
                 CBaseEntity@ pTriggerScript = g_EntityFuncs.CreateEntity( "env_fog_individual", g_keyvalues );
@@ -73,4 +79,31 @@ namespace env_fog
             }
         }
     }
-}// end namespace
+
+    HookReturnCode Connect( CBasePlayer@ pPlayer )
+    {
+        if( pPlayer is null )
+            return HOOK_CONTINUE;
+
+        CBaseEntity@ pIndiFog = null;
+        while( ( @pIndiFog = g_EntityFuncs.FindEntityByClassname( pIndiFog, "env_fog_individual" ) ) !is null )
+        {
+            if( pIndiFog.pev.target == "on" )
+            {
+                // Give it some time for player completelly joins the server
+                g_Scheduler.SetTimeout( "EnableFog", 2.0f, EHandle(pIndiFog), EHandle(pPlayer) );
+            }
+        }
+        return HOOK_CONTINUE;
+    }
+    
+    void EnableFog( EHandle fog, EHandle player )
+    {
+        if( player.IsValid() && fog.IsValid() )
+        {
+            cast<CBaseEntity@>(fog).Use( cast<CBasePlayer@>(player.GetEntity()), null, USE_ON, 0.0f );
+            g_Util.DebugMessage( "si se activo idk");
+        }
+    }
+}
+// End of namespace
