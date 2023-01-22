@@ -1,3 +1,47 @@
+/*
+
+	bool InsideZone( CBaseEntity@ pEntityInVolume, CBaseEntity@ VolumeEntity )
+	{
+		bool blInside = true;
+		blInside = blInside && pEntityInVolume.pev.origin.x + pEntityInVolume.pev.maxs.x >= VolumeEntity.pev.origin.x + VolumeEntity.pev.mins.x;
+		blInside = blInside && pEntityInVolume.pev.origin.y + pEntityInVolume.pev.maxs.y >= VolumeEntity.pev.origin.y + VolumeEntity.pev.mins.y;
+		blInside = blInside && pEntityInVolume.pev.origin.z + pEntityInVolume.pev.maxs.z >= VolumeEntity.pev.origin.z + VolumeEntity.pev.mins.z;
+		blInside = blInside && pEntityInVolume.pev.origin.x + pEntityInVolume.pev.mins.x <= VolumeEntity.pev.origin.x + VolumeEntity.pev.maxs.x;
+		blInside = blInside && pEntityInVolume.pev.origin.y + pEntityInVolume.pev.mins.y <= VolumeEntity.pev.origin.y + VolumeEntity.pev.maxs.y;
+		blInside = blInside && pEntityInVolume.pev.origin.z + pEntityInVolume.pev.mins.z <= VolumeEntity.pev.origin.z + VolumeEntity.pev.maxs.z;
+
+		return blInside;
+	}
+
+    void ViewMode( int imode, CBasePlayer@ pPlayer )
+    {
+        NetworkMessage message( MSG_ONE, NetworkMessages::ViewMode, pPlayer.edict() );
+            message.WriteByte(imode);
+        message.End();
+    }
+#include "utils"
+namespace g_Script
+{
+
+
+    private void nvOn( CBaseEntity@ pEntity, Vector& in VecOrigin( 0, 0, 0 ), Vector& in VecColor( 110, 255, 40 ), int& in iRadius = 30, int& in iLife = 2, int& in iDecay = 1 )
+    {
+        NetworkMessage netMsg( MSG_ONE, NetworkMessages::SVC_TEMPENTITY, pEntity.edict() );
+        netMsg.WriteByte( TE_DLIGHT );
+        netMsg.WriteCoord( VecOrigin.x );
+        netMsg.WriteCoord( VecOrigin.y );
+        netMsg.WriteCoord( VecOrigin.z );
+        netMsg.WriteByte( iRadius );
+        netMsg.WriteByte( int(VecColor.x) );
+        netMsg.WriteByte( int(VecColor.y) );
+        netMsg.WriteByte( int(VecColor.z) );
+        netMsg.WriteByte( iLife );
+        netMsg.WriteByte( iDecay );
+        netMsg.End();
+    }
+}// end namespace
+*/
+
 CUtils g_Util;
 
 final class CUtils
@@ -51,7 +95,7 @@ final class CUtils
         {
             CBaseEntity@ pKillEnt = null;
 
-			// hack because USE_KILL doesn't work.
+			// hack cuz USE_KILL doesn't work.
             while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, ReadTarget ) ) !is null )
             {
                 g_EntityFuncs.Remove( pKillEnt );
@@ -71,7 +115,6 @@ final class CUtils
         g_Util.DebugMessage( "Delay '" + flDelay + "'" );
     }
 
-    // Code by Gaftherman https://github.com/Gaftherman
     string StringReplace( string_t FullSentence, dictionary@ pArgs )
     {
         string str = string(FullSentence);
@@ -85,7 +128,6 @@ final class CUtils
         return str;
     }
 
-    // Code by Giegue https://github.com/JulianR0
     void ShowMOTD( EHandle hPlayer, const string& in szTitle, const string& in szMessage )
     {
         if(!hPlayer)
@@ -168,7 +210,7 @@ final class CUtils
             return;
         }
 
-        // Can't set strings. workaround.
+        // Can't set strings or i didn't test enought. workaround.
         dictionary g_keyvalues =
         {
             { "target", "!activator" },
@@ -186,7 +228,6 @@ final class CUtils
         }
     }
 
-    // Code by Rick https://github.com/RedSprend
     bool IsStringInFile( const string& in szPath, string& in szComparator )
     {
         File@ pFile = g_FileSystem.OpenFile( szPath, OpenFile::READ );
@@ -246,7 +287,6 @@ final class CUtils
 // End of final class
 
 
-// Code by Gaftherman https://github.com/Gaftherman
 mixin class ScriptBaseLanguages
 {
     private string_t message_spanish,
@@ -432,6 +472,7 @@ mixin class ScriptBaseCustomEntity
 
 bool blClientSayHook = g_Hooks.RegisterHook( Hooks::Player::ClientSay, @UTILS::ClientSay );
 bool blClientPutHook = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @UTILS::ClientPutInServer );
+// g_Util.ScriptAuthor.insertLast( "Script: utils\nAuthors:\nGithub: github.com/Mikk155\ngithub.com/Gaftherman\ngithub.com/JulianR0\ngithub.com/RedSprend\nDescription: Lot of utility scripts.\n");
 
 namespace UTILS
 {
@@ -465,23 +506,66 @@ namespace UTILS
     
     void ShowInfo( CBasePlayer@ pPlayer )
     {
-            g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed Scripts info at your console.\n" );
-            for(uint ui = 0; ui < g_Util.ScriptAuthor.length(); ui++)
-            {
-                g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
-
-                string FullString = g_Util.ScriptAuthor[ui];
-
-                // If we reached the limit replace and send again
-                while( FullString != '' )
-                {
-                    g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  FullString.SubString( 0, 68 ) );
-
-                    if( FullString.Length() <= 68 ) FullString = '';
-                    else FullString = FullString.SubString( 68, FullString.Length() );
-                }
-            }
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed Scripts info at your console.\n" );
+        for(uint ui = 0; ui < g_Util.ScriptAuthor.length(); ui++)
+        {
             g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
+
+            string FullString = g_Util.ScriptAuthor[ui];
+
+            // If we reached the limit replace and send again
+            while( FullString != '' )
+            {
+                g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  FullString.SubString( 0, 68 ) );
+
+                if( FullString.Length() <= 68 ) FullString = '';
+                else FullString = FullString.SubString( 68, FullString.Length() );
+            }
+        }
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
+    }
+
+    void GetPlayerData( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
+    {
+        for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
+        {
+            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+
+            if( pPlayer !is null )
+            {
+                g_Util.SetCKV( pPlayer, "$i_hassuit", string( pPlayer.HasSuit() ) );
+                g_Util.SetCKV( pPlayer, "$s_steamid", string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) );
+                g_Util.SetCKV( pPlayer, "$i_adminlevel", string( g_PlayerFuncs.AdminLevel( pPlayer ) ) );
+                g_Util.SetCKV( pPlayer, "$i_hascorpse", string( pPlayer.GetObserver().HasCorpse() ) );
+                g_Util.SetCKV( pPlayer, "$i_flashlight", string( pPlayer.FlashlightIsOn() ) );
+            }
+        }
+    }
+
+    /*void MonsterAngry( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
+    {
+        if( pActivator !is null
+        and pCaller !is null
+        and pActivator.IsAlive() )
+        {
+            CBaseMonster@ pNPC = cast<CBaseMonster@>(pCaller);
+
+            pNPC.m_hEnemy = @cast<CBasePlayer@>(pActivator);
+        }
+    }*/
+
+    void PlayerChaseMode( CBaseEntity@ pTriggerScript )
+    {
+        for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
+        {
+            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+
+            if( pPlayer !is null && pPlayer.GetObserver().IsObserver() )
+            {
+                //pPlayer.GetObserver().SetMode( ( self.pev.frags == 0 ) ? OBS_CHASE_FREE : );
+                pPlayer.GetObserver().SetObserverModeControlEnabled( false );
+            }
+        }
     }
 }
 // End of namespace.
