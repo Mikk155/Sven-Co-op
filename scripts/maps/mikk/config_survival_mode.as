@@ -1,101 +1,64 @@
-/*
-INFORMATION:
-Allow Mappers to control survival mode with new features.
-
-
-DOWNLOAD:
-scripts/maps/mikk/config_survival_mode.as
-scripts/maps/mikk/utils.as
-
-
-INSTALL:
-
-#include "mikk/config_survival_mode"
-
-void MapInit()
-{
-    config_survival_mode::Register();
-}
-
-
-USAGE:
-See our FGD.
-*/
-
-#include "utils"
-
-float
- mp_respawndelay,
-  mp_survival_startdelay;
-
-int
- mp_dropweapons,
-  mp_survival_supported;
-
-bool SurvivalMode = false;
-
 namespace config_survival_mode
 {
     void Register()
     {
-        // Enable map support-
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: config_survival_mode\n"
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Description: Entity that customize survival mode and make it better.\n"
+        );
+
+        //We want survival mode to be enabled here
         g_SurvivalMode.EnableMapSupport();
-
-        // Get current server's cvars
-        mp_survival_supported = g_EngineFuncs.CVarGetFloat( "mp_survival_supported" );
-        mp_respawndelay = g_EngineFuncs.CVarGetFloat( "mp_respawndelay" );
-        mp_survival_startdelay = g_EngineFuncs.CVarGetFloat( "mp_survival_startdelay" );
-        mp_dropweapons = g_EngineFuncs.CVarGetFloat( "mp_dropweapons" );
-
-        // Tell the script what was the state of survival mode
-        SurvivalMode = ( mp_survival_supported == 1 ) ? true : false;
-
-        // Activates survival to use our own modes.
-        g_SurvivalMode.Enable();
-            g_SurvivalMode.Activate( true );
-                g_SurvivalMode.SetStartOn( true );
-                    g_SurvivalMode.SetDelayBeforeStart( 0.0f );
-                        CBaseCustomSurvivalMode::DropWeapons( 0, 0.0f );
-                            CBaseCustomSurvivalMode::DropWeapons( 1, mp_survival_startdelay );
-
-        g_Scheduler.SetInterval( "CBaseCustomSurvivalMode::Think", 1.0f, g_Scheduler.REPEAT_INFINITE_TIMES );
-
         g_CustomEntityFuncs.RegisterCustomEntity( "config_survival_mode::config_survival_mode", "config_survival_mode" );
     }
 
-    class config_survival_mode : ScriptBaseEntity, UTILS::MoreKeyValues
+    class config_survival_mode : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
-        private bool
-            survival_starton = false,
-                survival_lockdrop = false,
-                    survival_countdown = false,
-                        survival_allowroam = false,
-                            survival_suddenly = false;
+        bool SurvivalEnabled = false;
+		private string target_toggle, target_failed;
+
+        private int
+        mp_respawndelay = int( g_EngineFuncs.CVarGetFloat( "mp_respawndelay" ) ),
+        mp_survival_startdelay = int( g_EngineFuncs.CVarGetFloat( "mp_survival_startdelay" ) );
 
         bool KeyValue( const string& in szKey, const string& in szValue ) 
         {
-            ExtraKeyValues(szKey, szValue);
-            if( szKey == "survival_starton" ) survival_starton = atobool( szValue );
-            else if( szKey == "survival_lockdrop" ) survival_lockdrop = atobool( szValue );
-            else if( szKey == "survival_countdown" ) survival_countdown = atobool( szValue );
-            else if( szKey == "survival_allowroam" ) survival_allowroam = atobool( szValue );
-            else if( szKey == "survival_suddenly" ) survival_suddenly = atobool( szValue );
-            else return BaseClass.KeyValue( szKey, szValue );
+            ExtraKeyValues( szKey, szValue );
+            Languages( szKey, szValue );
+
+            if( szKey == "mp_respawndelay" )
+            {
+                mp_respawndelay = atoi( szValue );
+            }
+            else if( szKey == "mp_survival_startdelay" )
+            {
+                mp_survival_startdelay = atoi( szValue );
+            }
+            else if( szKey == "target_toggle" )
+            {
+                target_toggle = szValue;
+            }
+            else if( szKey == "target_failed" )
+            {
+                target_failed = szValue;
+            }
+            else
+			{
+				return BaseClass.KeyValue( szKey, szValue );
+			}
             return true;
         }
 
         void Spawn()
         {
-            if( survival_starton && mp_survival_supported == 1 )
-            {
-                SurvivalMode = true;
-            }
-            else
-            {
-                SurvivalMode = false;
-            }
-
-            mp_dropweapons = survival_lockdrop;
+            SetThink( ThinkFunction( this.Think ) );
+            self.pev.nextthink = g_Engine.time + 1.0f;
+            g_SurvivalMode.Enable( true );
+            g_SurvivalMode.Activate( true );
+            g_EngineFuncs.CVarSetFloat( "mp_survival_startdelay", 0 );
 
             BaseClass.Spawn();
         }
@@ -109,88 +72,197 @@ namespace config_survival_mode
 
             if( useType == USE_ON )
             {
-                SurvivalMode = true;
-            }
-            else if( useType == USE_OFF )
-            {
-                SurvivalMode = false;
-            }
-            else if( useType == USE_TOGGLE )
-            {
-                SurvivalMode = !SurvivalMode;
-            }
-
-            CBaseCustomSurvivalMode::DropWeapons( int( SurvivalMode ), 0.0f );
-        }
-    }
-
-}// end namespace
-
-namespace CBaseCustomSurvivalMode
-{
-    void DropWeapons( const int imode, const float delay )
-    {
-        if( mp_dropweapons == 1 )
-        {
-            dictionary g_keyvalues;
-            g_keyvalues [ "m_iszCVarToChange" ] = "mp_dropweapons";
-            g_keyvalues [ "message" ] = string( imode );
-            g_keyvalues [ "targetname" ] = "doweneedanamehere?";
-            g_keyvalues [ "SetType" ] = "0";
-            CBaseEntity@ pSetDrop = g_EntityFuncs.CreateEntity( "trigger_setcvar", g_keyvalues, true );
-
-            if( pSetDrop !is null )
-            {
-                pSetDrop.Use( null, null, USE_ON, delay );
-                g_EntityFuncs.Remove( pSetDrop );
-            }
-        }
-    }
-
-    void Think()
-    {
-        for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
-        {
-            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
-
-            if( pPlayer is null )
-                continue;
-
-            if( survival_allowroam )
-            {
-                pPlayer.GetObserver().SetMode( OBS_CHASE_FREE );
-                pPlayer.GetObserver().SetObserverModeControlEnabled( false );
-            }
-
-            // Survival mode is enabled.
-            if( SurvivalMode )
-            {
-            }
-            else
-            {
-                if( survival_countdown )
+                if( SurvivalEnabled )
                 {
-                    // Mostrar mensajes de startdelay
-                }
-
-                CustomKeyvalues@ ckvSpawns = pPlayer.GetCustomKeyvalues();
-                int kvSpawnIs = ckvSpawns.GetKeyvalue("$i_survivaln_t").GetInteger();
-
-                if( kvSpawnIs >= 0 )
-                {
-                    if( !pPlayer.IsAlive() && pPlayer.GetObserver().IsObserver() )
-                    {
-                        // Decrease dead player respawndelay's countdown
-                        ckvSpawns.SetKeyvalue("$i_survivaln_t", kvSpawnIs - 1 );
-                    }
+                    g_Game.AlertMessage( at_console, "enabled\n" );
+                    g_Util.Trigger( target_failed, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
                 }
                 else
                 {
-                    // Revive the player and set his next respawndelay
-                    g_PlayerFuncs.RespawnPlayer( pPlayer, false, true );
-                    ckvSpawns.SetKeyvalue("$i_survivaln_t", int( mp_respawndelay ) );
+                    SetLanguages( null, 'enabled' );
+                    SurvivalEnabled = true;
                 }
+            }
+            else if( useType == USE_OFF )
+            {
+                if( !SurvivalEnabled )
+                {
+                    g_Util.Trigger( target_failed, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                }
+                else
+                {
+                    SetLanguages( null, 'disabled' );
+                    SurvivalEnabled = false;
+                }
+            }
+            else
+            {
+                if( SurvivalEnabled )
+                {
+                    SetLanguages( null, 'disabled' );
+                    SurvivalEnabled = false;
+                }
+                else
+                {
+                    SetLanguages( null, 'enabled' );
+                    SurvivalEnabled = true;
+                }
+
+                g_Util.Trigger( target_toggle, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+            }
+            mp_survival_startdelay = 0;
+        }
+
+        void Think()
+        {
+            if( !SurvivalEnabled  )
+            {
+                if( mp_survival_startdelay >= 0 && !master() )
+                {
+                    if( mp_survival_startdelay > 0 )
+                    {
+                        SetLanguages( null, 'countdown', HUD_PRINTCENTER );
+                    }
+
+                    mp_survival_startdelay -= 1;
+
+                    if( mp_survival_startdelay == 0 )
+                    {
+                        SetLanguages( null, 'enabled' );
+                        SurvivalEnabled = true;
+                    }
+                }
+
+                for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
+                {
+                    CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+
+                    if( pPlayer !is null )
+                    {
+                        int ReSpawnTime = atoi( g_Util.GetCKV( pPlayer, "$i_csm_respawn_time" ) );
+
+                        if( ReSpawnTime > 0 )
+                        {
+                            if( !pPlayer.IsAlive() && pPlayer.GetObserver().IsObserver() )
+                            {
+                                g_Util.SetCKV( pPlayer, "$i_csm_respawn_time", string( ReSpawnTime - 1 ) );
+                                SetLanguages( pPlayer, 'respawnin', HUD_PRINTNOTIFY );
+                            }
+                        }
+                        else
+                        {
+                            g_PlayerFuncs.RespawnPlayer( pPlayer, false, true );
+                            g_Util.SetCKV( pPlayer, "$i_csm_respawn_time", string( mp_respawndelay ) );
+                        }
+                    }
+                }
+            }
+
+            self.pev.nextthink = g_Engine.time + 1.0f;
+        }
+
+        void SetLanguages( CBasePlayer@ pActivator, const string& in szMode = "respawnin", HUD szHUD = HUD_PRINTTALK )
+        {
+            if( szMode == 'respawnin' )
+            {
+                self.pev.message = 'You will resurrect in !time seconds';
+                message_spanish = 'Resucitaras en !time segundos';
+                message_spanish2 = 'Resucitaras en !time segundos';
+                message_portuguese = 'Você ressuscitará em !time segundos';
+                message_german = 'Du wirst in !time Sekunden wiederbelebt';
+                message_french = 'Vous ressusciterez dans !time secondes';
+                message_italian = 'Risusciterai in !time secondi';
+                message_esperanto = 'Vi reviviĝos post !time sekundoj';
+                message_czech = 'Budete vzkříšeni za !time sekund';
+                message_dutch = 'Je zal herrijzen in !time seconden';
+                message_indonesian = 'Anda akan dibangkitkan dalam !time detik';
+                message_romanian = 'Veți reînvia în !time secunde';
+                message_turkish = '!mp_respawdelay saniye içinde dirileceksiniz';
+                message_albanian = 'Ju do të ringjalleni në sekonda !time';
+            }
+            else if( szMode == 'enabled' )
+            {
+                self.pev.message = 'Survival mode has been enabled';
+                message_spanish = 'Se ha habilitado el modo de supervivencia';
+                message_spanish2 = 'Se ha habilitado el modo de supervivencia';
+                message_portuguese = 'O modo de sobrevivência foi ativado';
+                message_german = 'Der Überlebensmodus wurde aktiviert';
+                message_french = 'Le mode survie a été activé';
+                message_italian = 'La modalità di sopravvivenza è stata abilitata';
+                message_esperanto = 'Superviva reĝimo estis ebligita';
+                message_czech = 'Režim přežití byl aktivován';
+                message_dutch = 'De overlevingsmodus is ingeschakeld';
+                message_indonesian = 'Mode bertahan hidup telah diaktifkan';
+                message_romanian = 'Modul de supraviețuire a fost activat';
+                message_turkish = 'Hayatta kalma modu etkinleştirildi';
+                message_albanian = 'Modaliteti i mbijetesës është aktivizuar';
+            }
+            else if( szMode == 'disabled' )
+            {
+                self.pev.message = 'Survival mode has been disabled';
+                message_spanish = 'El modo de supervivencia ha sido deshabilitado';
+                message_spanish2 = 'El modo de supervivencia ha sido deshabilitado';
+                message_portuguese = 'O modo de sobrevivência foi desativado';
+                message_german = 'Der Überlebensmodus wurde deaktiviert';
+                message_french = 'Le mode survie a été désactivé';
+                message_italian = 'La modalità Sopravvivenza è stata disattivata';
+                message_esperanto = 'Superviva reĝimo estas malŝaltita';
+                message_czech = 'Režim přežití byl deaktivován';
+                message_dutch = 'De overlevingsmodus is uitgeschakeld';
+                message_indonesian = 'Mode bertahan hidup telah dinonaktifkan';
+                message_romanian = 'Modul de supraviețuire a fost dezactivat';
+                message_turkish = 'Hayatta kalma modu devre dışı bırakıldı';
+                message_albanian = 'Modaliteti i mbijetesës është çaktivizuar';
+            }
+            else if( szMode == 'countdown' )
+            {
+                self.pev.message = 'Survival will start in !time seconds';
+                message_spanish = 'La supervivencia comenzará en !time segundos';
+                message_spanish2 = 'La supervivencia comenzará en !time segundos';
+                message_portuguese = 'A sobrevivência começará em !time segundos';
+                message_german = 'Das Überleben beginnt in !time Sekunden';
+                message_french = 'La survie commencera dans !time secondes';
+                message_italian = 'La sopravvivenza inizierà tra !time secondi';
+                message_esperanto = 'Supervivo komenciĝos post !time sekundoj';
+                message_czech = 'Přežití začne za !time sekund';
+                message_dutch = 'Het overleven begint over !time seconden';
+                message_indonesian = 'Kelangsungan hidup akan dimulai dalam !time detik';
+                message_romanian = 'Supraviețuirea va începe în !time secunde';
+                message_turkish = 'Hayatta kalma !time saniye içinde başlayacak';
+                message_albanian = 'Mbijetesa do të fillojë në !time sekonda';
+            }
+
+            if( pActivator !is null )
+            {
+                g_PlayerFuncs.ClientPrint( pActivator, szHUD,
+                g_Util.StringReplace
+                (
+                    ReadLanguages( pActivator ),
+                    {
+                        { "!time", g_Util.GetCKV( pActivator, "$i_csm_respawn_time" ) }
+                    }
+                ) + "\n" );
+            }
+            else{
+            for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
+            {
+                CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+
+                if( pPlayer !is null )
+                {
+                    g_PlayerFuncs.ClientPrint( pPlayer, szHUD,
+                    g_Util.StringReplace
+                    (
+                        ReadLanguages( pPlayer ),
+                        {
+                            { "!time", string( mp_survival_startdelay ) }
+                        }
+                    ) + "\n" );
+                }
+              }
             }
         }
     }
+
 }
+// End of namespace
