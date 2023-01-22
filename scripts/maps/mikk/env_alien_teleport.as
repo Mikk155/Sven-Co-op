@@ -102,20 +102,7 @@ namespace env_alien_teleport
             else
             {
                 // All clear! Spawn here
-                CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( szClassname, null, true );
-
-                if( pEntity !is null )
-                {
-                    CBaseEntity@ pXenMaker = g_EntityFuncs.FindEntityByTargetname( pXenMaker, ( self.pev.message ) );
-                    
-                    if( pXenMaker !is null && pXenMaker.pev.ClassNameIs( 'env_xenmaker' ) )
-                    {
-                        pXenMaker.pev.origin = vecOrigin;
-                        pXenMaker.Use( self, self, USE_TOGGLE, 0.0f );
-                    }
-
-                    SpawnMonster( szClassname, vecOrigin, EHandle(pPlayer) );
-                }
+                SpawnMonster( szClassname, vecOrigin, EHandle(pPlayer) );
             }
         }
 
@@ -138,6 +125,14 @@ namespace env_alien_teleport
                 g_EntityFuncs.SetOrigin( pEntity, vecOrigin );
                 Vector vecAngles = Math.VecToAngles( pPlayer.pev.origin - pEntity.pev.origin );
                 pEntity.pev.angles.y = vecAngles.y;
+
+                CBaseEntity@ pXenMaker = g_EntityFuncs.FindEntityByTargetname( pXenMaker, ( self.pev.message ) );
+                
+                if( pXenMaker !is null && pXenMaker.pev.ClassNameIs( 'env_xenmaker' ) )
+                {
+                    pXenMaker.pev.origin = pEntity.pev.origin + Vector( 0, 40, 0 );
+                    pXenMaker.Use( self, self, USE_TOGGLE, 0.0f );
+                }
 
                 g_Util.Trigger( self.pev.target, pPlayer, pEntity, USE_TOGGLE, 0.0f );
             }
