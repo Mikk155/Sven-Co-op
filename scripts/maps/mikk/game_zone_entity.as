@@ -80,8 +80,7 @@ namespace game_zone_entity
 
             if( string( self.pev.model ).IsEmpty() && minhullsize == g_vecZero )
             {
-                g_EntityFuncs.Remove( self );
-                g_Util.DebugMessage( "WARNING! game_zone_entity doesn't have BBOX!\n" );
+                g_Util.DebugMessage( "WARNING! game_zone_entity doesn't have BBOX!\n Only OUT Target is going to work." );
             }
 
             BaseClass.Spawn();
