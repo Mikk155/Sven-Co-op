@@ -1,8 +1,12 @@
 namespace game_time
 {
-    void Register()
+    bool blDebugHour = false;
+
+    void Register( const bool& in DebugHour = false )
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "game_time::game_time", "game_time" );
+
+        blDebugHour = DebugHour;
 
         g_Util.ScriptAuthor.insertLast
         (
@@ -11,16 +15,16 @@ namespace game_time
             "Github: github.com/Gaftherman\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
-            "Description: Allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night etc etc..\n"
+            "Description: Allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc.\n"
         );
     }
 
     const string[][] Pattern = 
     {
-        { "1", "Best pattern for this hour" },
-        { "2", "Best pattern for this hour" },
-        { "3", "Best pattern for this hour" },
-        { "4", "Best pattern for this hour" },
+        { "1", "Best pattern for this current_hour" },
+        { "2", "Best pattern for this current_hour" },
+        { "3", "Best pattern for this current_hour" },
+        { "4", "Best pattern for this current_hour" },
         { "5", "Best pattern for this hour" },
         { "6", "Best pattern for this hour" },
         { "7", "Best pattern for this hour" },
@@ -44,22 +48,43 @@ namespace game_time
 
     enum game_time_flags
     {
-        SF_TIME_ONDEMAND = 1 << 0,
-        SF_TIME_GETREALTIME = 1 << 1
+        SF_TIME_GETREALTIME = 1 << 0
     }
 
     class game_time : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         DateTime datetime;
-        private int TimerS = 0, TimerM = 0, TimerH = 0, TimerD = 0;
-        private int CuantosSegundosDuraUnMinuto = 59, CuantosMinutosDuraUnaHora = 59, CuantasHorasDuraUnDia = 23;
+
+        private int
+        current_second = 0,
+        current_minute = 0,
+        current_hour = 0,
+        current_day = 0;
+
+        private int
+        CuantosSegundosDuraUnMinuto = 59,
+        CuantosMinutosDuraUnaHora = 59,
+        CuantasHorasDuraUnDia = 23;
+
+        private string
+        trigger_second,
+        trigger_minute,
+        trigger_hour,
+        trigger_day,
+        light_pattern;
+
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
             ExtraKeyValues( szKey, szValue );
-            if( szKey == "TimerM" ) TimerM = atoi( szValue );
-            else if( szKey == "TimerH" ) TimerH = atoi( szValue );
-            else if( szKey == "TimerD" ) TimerD = atoi( szValue );
-            ExtraKeyValues(szKey, szValue);
+            if( szKey == "current_second" ) current_second = atoi( szValue );
+            else if( szKey == "trigger_second" ) trigger_second = szValue;
+            else if( szKey == "current_minute" ) current_minute = atoi( szValue );
+            else if( szKey == "trigger_minute" ) trigger_minute = szValue;
+            else if( szKey == "current_hour" ) current_hour = atoi( szValue );
+            else if( szKey == "trigger_hour" ) trigger_hour = szValue;
+            else if( szKey == "current_day" ) current_day = atoi( szValue );
+            else if( szKey == "trigger_day" ) trigger_day = szValue;
+            else if( szKey == "light_pattern" ) trigger_day = szValue;
             return true;
         }
         
@@ -72,8 +97,8 @@ namespace game_time
 
             if( self.pev.SpawnFlagBitSet( SF_TIME_GETREALTIME ) )
             {
-                TimerH = int( datetime.GetHour() );
-                TimerM = int( datetime.GetMinutes() );
+                current_hour = int( datetime.GetHour() );
+                current_minute = int( datetime.GetMinutes() );
             }
 
             BaseClass.Spawn();
@@ -87,59 +112,67 @@ namespace game_time
                 return;
             }
 
-            g_Util.DebugMessage("The time is "+TimerD+" days. "+TimerH+" hours. "+TimerM+" minutes.\n");
+            if( blDebugHour )
+            {
+                g_Util.DebugMessage("The time is "+current_day+" days. "+current_hour+" hours. "+current_minute+" minutes.\n");
+            }
 
-            if( self.pev.SpawnFlagBitSet( SF_TIME_ONDEMAND ) )
+            if( CuantosSegundosDuraUnMinuto != int( self.pev.health ) )
             {
                 CuantosSegundosDuraUnMinuto = int(self.pev.health);
             }
 
-            // Increase one minute
-            if( TimerS >= CuantosSegundosDuraUnMinuto )
-            {
-                ++TimerM; TimerS = 0;
+            g_Util.Trigger( trigger_second, self, self, USE_TOGGLE, 0.0f );
 
-                // Trigger every minute is increased
-                g_EntityFuncs.FireTargets( "MINUTE_"+TimerM+"", self, self, USE_TOGGLE );
-                g_Util.DebugMessage("Triggered entity 'MINUTE_"+TimerM+"'\n");
+            if( current_second >= CuantosSegundosDuraUnMinuto )
+            {
+                ++current_minute; current_second = 0;
+
+                g_Util.Trigger( trigger_minute, self, self, USE_TOGGLE, 0.0f );
             }
 
-            // Increase one hour
-            if( TimerM >= CuantosMinutosDuraUnaHora )
+            if( current_minute >= CuantosMinutosDuraUnaHora )
             {
-                ++TimerH; TimerM = 0;
+                ++current_hour; current_minute = 0;
 
-                // Trigger every hour is increased
-                g_EntityFuncs.FireTargets( "HOUR_"+TimerH+"", self, self, USE_TOGGLE );
-                g_Util.DebugMessage("Triggered entity 'HOUR_"+TimerH+"'\n");
+                g_Util.Trigger( trigger_hour, self, self, USE_TOGGLE, 0.0f );
 
-               for( uint ui = 0; ui < Pattern.length(); ui++ )
+                if( !string( light_pattern ).IsEmpty() )
                 {
-                    // Change pattern every hour is increased
-                    if( atoi( Pattern[ui][0] ) == TimerH )
+                    for( uint ui = 0; ui < Pattern.length(); ui++ )
                     {
-                        CBaseEntity@ pGlobalLight = g_EntityFuncs.FindEntityByTargetname( pGlobalLight, "global_light" );
-                        if( pGlobalLight is null ) return;
-                        g_EntityFuncs.DispatchKeyValue( pGlobalLight.edict(), "pattern", Pattern[ui][1] );
-                        g_EntityFuncs.FireTargets( "global_light", self, self, USE_ON );
-                        g_Util.DebugMessage("Light Pattern has been updated to "+ Pattern[ui][1] +"\n");
-                        break;
+                        if( atoi( Pattern[ui][0] ) == current_hour )
+                        {
+                            if( light_pattern == "!world" )
+                            {
+                                g_EngineFuncs.LightStyle( 0, Pattern[ui][1] );
+                            }
+                            else
+                            {
+                                CBaseEntity@ pLight = null;
+
+                                while( ( @pLight = g_EntityFuncs.FindEntityByTargetname( pLight, light_pattern ) ) !is null )
+                                {
+                                    g_EntityFuncs.DispatchKeyValue( pLight.edict(), "pattern", Pattern[ui][1] );
+                                    pLight.Use( self, self, USE_TOGGLE, 0.0f );
+                                    pLight.Use( self, self, USE_TOGGLE, 0.0f );
+                                    g_Util.DebugMessage("Light Pattern has been updated to "+ Pattern[ui][1] +"\n");
+                                }
+                            }
+                            break;
+                        }
                     }
                 }
             }
 
-            // Increase one day
-            if( TimerH >= CuantasHorasDuraUnDia )
+            if( current_hour >= CuantasHorasDuraUnDia )
             {
-                TimerS = TimerM = TimerH = 0;
+                current_second = current_minute = current_hour = 0;
 
-                // Trigger every day is increased
-                g_EntityFuncs.FireTargets( "DAY_"+TimerD+"", self, self, USE_TOGGLE );
-                g_Util.DebugMessage("Triggered entity 'DAY_"+TimerD+"'\n");
+                g_Util.Trigger( trigger_day, self, self, USE_TOGGLE, 0.0f );
             }
 
-            // Increase one second
-            ++TimerS;
+            ++current_second;
 
             self.pev.nextthink = g_Engine.time + 1.0f;
         }
