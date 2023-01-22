@@ -4,18 +4,33 @@ namespace game_stealth
 
     void CreateStealthMode()
     {
-        dictionary g_keyvalues =
+        bool Enable = false;
+
+        CBaseEntity@ pMoster = null;
+
+        while( ( @pMoster = g_EntityFuncs.FindEntityByClassname( pMoster, "monster_*" ) ) !is null )
         {
-            { "m_iszScriptFunctionName", "game_stealth::FindMonsters" },
-            { "m_iMode", "2" },
-            { "m_flThinkDelta", "0.1" },
-            { "targetname", "game_stealth" }
-        };
-        CBaseEntity@ pScript = g_EntityFuncs.CreateEntity( "trigger_script", g_keyvalues );
-        
-        if( pScript !is null )
+            if( pMoster.IsMonster() && pMoster.GetCustomKeyvalues().GetKeyvalue( "$i_stealth" ).GetInteger() == 1 )
+            {
+                Enable = true;
+            }
+        }
+
+        if( Enable )
         {
-            pScript.Use( null, null, USE_TOGGLE, 0.0f );
+            dictionary g_keyvalues =
+            {
+                { "m_iszScriptFunctionName", "game_stealth::FindMonsters" },
+                { "m_iMode", "2" },
+                { "m_flThinkDelta", "0.1" },
+                { "targetname", "game_stealth" }
+            };
+            CBaseEntity@ pScript = g_EntityFuncs.CreateEntity( "trigger_script", g_keyvalues );
+            
+            if( pScript !is null )
+            {
+                pScript.Use( null, null, USE_TOGGLE, 0.0f );
+            }
         }
 
         g_Util.ScriptAuthor.insertLast
