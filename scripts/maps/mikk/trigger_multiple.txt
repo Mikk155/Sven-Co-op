@@ -1,0 +1,7 @@
+grenade
+env_sprite*
+func_train
+func_tracktrain
+item_*
+ammo_*
+weapon_*
