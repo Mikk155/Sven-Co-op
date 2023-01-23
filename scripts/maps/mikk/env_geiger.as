@@ -13,7 +13,7 @@ namespace env_geiger
         g_CustomEntityFuncs.RegisterCustomEntity( "env_geiger::env_geiger", "env_geiger" );
     }
 
-    class env_geiger : ScriptBasePlayerAmmoEntity
+    class env_geiger : ScriptBaseEntity
     {
         private bool State = true;
 
