@@ -24,7 +24,7 @@
             <Keywords name="Folders in comment, open">/*</Keywords>
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close">*/</Keywords>
-            <Keywords name="Keywords1">abstract bool const double final float get in inout int int8 int16 int32 int64 out override private protected set shared uint uint8 uint16 uint32 uint64 void case do for from namespace while switch enum class if function cast array string EHandle Vector</Keywords>
+            <Keywords name="Keywords1">abstract bool const double final float get in inout int int8 int16 int32 int64 out override private protected set shared uint uint8 uint16 uint32 uint64 void case do for from namespace while switch enum class if function cast array string string_t EHandle Vector</Keywords>
             <Keywords name="Keywords2">break return continue null false else true</Keywords>
             <Keywords name="Keywords3"></Keywords>
             <Keywords name="Keywords4"></Keywords>
