@@ -96,9 +96,13 @@ An assortment of test maps, additional information for SC stuff, Angelscript plu
 ammo_custom is an ammo item customizable that gives a specified ammout of bullets that the mapper sets.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/ammo_custom.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄ammo_custom.as     
+                └── 📄utils.as     
 ```
 
 **install:**
@@ -670,7 +674,7 @@ map 1test_numpad
 
 # Un-embed textures from a BSP
 
-A tool that eliminates imported textures in the maps (``-wadinclude``) and thus reduce considerably BSP's file.
+A tool that eliminates imported textures in the maps (``-wadinclude``) and this reduce considerably BSP's file.
 
 You'll need these tools [BSPTexR](https://github.com/Litude/BSPTexRM) and [wally](https://gamebanana.com/tools/4774) and Ripent wich is in Sven Co-op's SDK
 
@@ -720,3 +724,5 @@ Sparks
 [Outerbeast](https://github.com/Outerbeast)
 
 [Cubemath](https://github.com/CubeMath)
+
+[Rick](https://github.com/RedSprend)
