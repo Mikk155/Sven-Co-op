@@ -1,6 +1,10 @@
+#include "utils"
 namespace env_render
 {
-    enum env_render_gradual_flags{ GRADUALLY_RENDER = 32 };
+    enum spawnflags
+    {
+        GRADUALLY_RENDER = 32
+    };
 
     CScheduledFunction@ g_Renders = g_Scheduler.SetTimeout( "FindEnvRenders", 0.0f );
 
@@ -60,4 +64,5 @@ namespace env_render
             }
         }
     }
-}// end namespace
+}
+// End of namespace

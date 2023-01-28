@@ -1,3 +1,4 @@
+#include "utils"
 namespace game_stealth
 {
     CScheduledFunction@ g_Stealth = g_Scheduler.SetTimeout( "CreateStealthMode", 0.0f );
@@ -85,4 +86,5 @@ namespace game_stealth
             }
         }
     }
-}// end namespace
+}
+// End of namespace

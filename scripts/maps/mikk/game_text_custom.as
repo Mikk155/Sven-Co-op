@@ -1,32 +1,31 @@
-/*
-DOWNLOAD:
-
-scripts/maps/mikk/game_text_custom.as
-scripts/maps/mikk/utils.as
-
-
-INSTALL:
-
-#include "mikk/game_text_custom"
-
-void MapInit()
-{
-    game_text_custom::Register();
-}
-*/
-
 #include "utils"
-
 namespace game_text_custom
 {
-    enum game_text_custom_flags
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", "game_text_custom" );
+
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Script: game_text_custom\n"
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Author: Gaftherman\n"
+            "Github: github.com/Gaftherman\n"
+            "Author: Kmkz\n"
+            "Github: github.com/kmkz27\n"
+            "Description: New entity replacemet for game_text and env_message with lot of new additions\n"
+        );
+    }
+
+    enum spawnflags
     {
         SF_GTC_ALL_PLAYERS = 1 << 0,
         SF_GTC_NO_ECHO_CON = 1 << 1,
         SF_GTC_FIRE_T_ONCE = 1 << 2
     }
 
-    class CBaseGameTextCustom : ScriptBaseEntity, ScriptBaseLanguages, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseLanguages, ScriptBaseCustomEntity
     {
         EHandle EhActivator = self;
 
@@ -415,28 +414,5 @@ namespace game_text_custom
             return string( EhActivator.GetEntity().pev.classname );
         }
     }
-
-
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::CBaseGameTextCustom", "game_text_custom" );
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: game_text_custom\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Author: Gaftherman\n"
-            "Github: github.com/Gaftherman\n"
-            "Author: Kmkz\n"
-            "Github: github.com/kmkz27\n"
-            "Description: New entity replacemet for game_text and env_message with lot of new additions\n"
-        );
-    }
 }
 // End of namespace
-CGameTextCustom g_GameTextCustom;
-
-final class CGameTextCustom
-{
-}

@@ -1,3 +1,4 @@
+#include "utils"
 namespace config_survival_mode
 {
     void Register()
@@ -10,12 +11,10 @@ namespace config_survival_mode
             "Description: Entity that customize survival mode and make it better.\n"
         );
 
-        //We want survival mode to be enabled here
-        g_SurvivalMode.EnableMapSupport();
-        g_CustomEntityFuncs.RegisterCustomEntity( "config_survival_mode::config_survival_mode", "config_survival_mode" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "config_survival_mode::entity", "config_survival_mode" );
     }
 
-    class config_survival_mode : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool SurvivalEnabled = false;
 		private string target_toggle, target_failed;
@@ -54,6 +53,9 @@ namespace config_survival_mode
 
         void Spawn()
         {
+            //We want survival mode to be enabled here
+            g_SurvivalMode.EnableMapSupport();
+
             SetThink( ThinkFunction( this.Think ) );
             self.pev.nextthink = g_Engine.time + 1.0f;
             g_SurvivalMode.Enable( true );

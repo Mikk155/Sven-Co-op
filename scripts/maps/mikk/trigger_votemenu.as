@@ -1,8 +1,9 @@
+#include "utils"
 namespace trigger_votemenu
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_votemenu::trigger_votemenu", "trigger_votemenu" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_votemenu::entity", "trigger_votemenu" );
 
         g_Util.ScriptAuthor.insertLast
         (
@@ -15,7 +16,7 @@ namespace trigger_votemenu
         );
     }
 
-    class trigger_votemenu : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;
         dictionary dictFinalResults;
@@ -161,4 +162,5 @@ namespace trigger_votemenu
             }
         }
     }
-}// end namespace
+}
+// End of namespace

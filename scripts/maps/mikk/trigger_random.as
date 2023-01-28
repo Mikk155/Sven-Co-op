@@ -1,3 +1,4 @@
+#include "utils"
 namespace trigger_random
 {
     CScheduledFunction@ g_Random = g_Scheduler.SetTimeout( "FindTriggerRandoms", 0.0f );
@@ -28,7 +29,7 @@ namespace trigger_random
             "Script: trigger_random\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
-            "Description: Allow ttrigger_random to set a unique random value.\n"
+            "Description: Allow trigger_random to set a unique random value.\n"
         );
     }
 
@@ -47,4 +48,5 @@ namespace trigger_random
     {
         return string( pEntity.GetCustomKeyvalues().GetKeyvalue( "$f_math_" + key ).GetFloat() );
     }
-}// end namespace
+}
+// End of namespace

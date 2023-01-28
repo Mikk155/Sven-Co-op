@@ -1,3 +1,4 @@
+#include "utils"
 namespace env_bloodpuddle
 {
     string DefaultModel;
@@ -5,9 +6,6 @@ namespace env_bloodpuddle
 
     void Register( const bool& in blRemove = false, const string& in szModel = "models/mikk/misc/bloodpuddle.mdl" )
     {
-        RemoveBlood = blRemove;
-        DefaultModel = szModel;
-
         // If both map and server is using this. prevent one of them executing this function.
         if( g_CustomEntityFuncs.IsCustomEntity( "env_bloodpuddle" ) )
             return;
@@ -21,6 +19,9 @@ namespace env_bloodpuddle
             "Github: github.com/Mikk155\n"
             "Description: Generates a blood puddle when a monster die.\n"
         );
+
+        RemoveBlood = blRemove;
+        DefaultModel = szModel;
 
         g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
@@ -135,4 +136,5 @@ namespace env_bloodpuddle
             self.pev.nextthink = g_Engine.time + 0.1;
         }
     }
-}// end namespace
+}
+// End of namespace

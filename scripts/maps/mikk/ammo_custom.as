@@ -1,3 +1,4 @@
+#include "utils"
 namespace ammo_custom
 {
     void Register()
@@ -12,10 +13,10 @@ namespace ammo_custom
             "Description: ammo item customizable that gives a specified ammout of bullets.\n"
         );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "ammo_custom::ammo_custom", "ammo_custom" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "ammo_custom::entity", "ammo_custom" );
     }
 
-    class ammo_custom : ScriptBasePlayerAmmoEntity
+    class entity : ScriptBasePlayerAmmoEntity
     {
         private string w_model = "models/w_shotbox.mdl";
         private string p_sound = "items/9mmclip1.wav";
@@ -41,18 +42,24 @@ namespace ammo_custom
         { 
             Precache();
 
-            if( string( self.pev.targetname ).IsEmpty() ) self.pev.targetname = "ammocustom_" +self.entindex();
-
-            dictionary g_keyvalues =
+            if( self.pev.frags > 0 )
             {
-                { "spawnflags", "64" },
-                { "target", string( self.pev.targetname ) },
-                { "renderamt", "0" },
-                { "rendermode", "5" },
-                { "targetname", string( self.pev.targetname ) + "_FX" }
-            };
+                if( string( self.pev.targetname ).IsEmpty() )
+                {
+                    self.pev.targetname = "ammocustom_" + self.entindex();
+                }
 
-            g_EntityFuncs.CreateEntity( "env_render_individual", g_keyvalues );
+                dictionary g_keyvalues =
+                {
+                    { "spawnflags", "64" },
+                    { "target", string( self.pev.targetname ) },
+                    { "renderamt", "0" },
+                    { "rendermode", "5" },
+                    { "targetname", string( self.pev.targetname ) + "_FX" }
+                };
+
+                g_EntityFuncs.CreateEntity( "env_render_individual", g_keyvalues );
+            }
 
             g_EntityFuncs.SetModel( self, w_model );
             BaseClass.Spawn();
@@ -64,6 +71,7 @@ namespace ammo_custom
 
             g_Game.PrecacheModel( w_model );
             g_SoundSystem.PrecacheSound( p_sound );
+            g_Game.PrecacheGeneric( "sound/" + p_sound );
         }
         
         bool AddAmmo( CBaseEntity@ pOther ) 
@@ -92,4 +100,4 @@ namespace ammo_custom
         }
     }
 }
-// end namespace
+// End of namespace

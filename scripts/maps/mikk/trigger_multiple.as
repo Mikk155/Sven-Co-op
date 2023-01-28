@@ -1,17 +1,11 @@
+#include "utils"
 namespace trigger_multiple
 {
-    // Entities supported for flag 8 (Everything else) if flag 64 (Iterate all occupants) is enabled as well
-    // if you want to use this feature then register in map init the next function.
-    
-    // g_TriggerMultiple.LoadConfigFile( "full path to your file.txt" );
-
-    // this text file will define wich entities can make trigger_multiple fire its target.
-
     array<string> EverythingElse;
 
     CScheduledFunction@ g_IterateAllOccupants = g_Scheduler.SetTimeout( "FindTriggerMultiples", 0.0f );
 
-    enum trigger_multiple_flags
+    enum spawnflags
     {
         MONSTERS = 1,
         NOCLIENTS = 2,
@@ -73,7 +67,7 @@ namespace trigger_multiple
                 g_TriggerMultiple.Trigger( EverythingElse[ui], pCaller );
     }
 }
-// End namespace
+// End of namespace
 
 CTriggerMultiple g_TriggerMultiple;
 

@@ -1,3 +1,4 @@
+#include "utils"
 namespace trigger_individual
 {
     CScheduledFunction@ g_IndividualTrigger = g_Scheduler.SetTimeout( "FindIndividualTriggers", 0.0f );
@@ -62,3 +63,4 @@ namespace trigger_individual
         }
     }
 }
+// End of namespace

@@ -1,3 +1,4 @@
+#include "utils"
 namespace config_classic_mode
 {
     void Register()
@@ -10,17 +11,17 @@ namespace config_classic_mode
             "Description: Entity that customize classic mode for monsters, models and items that the game doesn't support.\n"
         );
 
-        //We want classic mode to be enabled here
+        // We want classic mode to be enabled here
         g_ClassicMode.EnableMapSupport();
-        g_CustomEntityFuncs.RegisterCustomEntity( "config_classic_mode::config_classic_mode", "config_classic_mode" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "config_classic_mode::entity", "config_classic_mode" );
     }
 
-    enum config_classic_mode_flags
+    enum spawnflags
     {
         SF_CCM_RESTART_NOW = 1 << 0
     }
 
-    class config_classic_mode : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string target_toggle, target_failed, target_enabled, target_disabled;
 
@@ -167,4 +168,5 @@ namespace config_classic_mode
             self.pev.nextthink = g_Engine.time + self.pev.health + 0.1f;
         }
     }
-}// end namespace
+}
+// End of namespace

@@ -1,8 +1,9 @@
+#include "utils"
 namespace item_oxygentank
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "item_oxygentank::item_oxygentank", "item_oxygentank" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "item_oxygentank::entity", "item_oxygentank" );
         g_CustomEntityFuncs.RegisterCustomEntity( "item_oxygentank::env_oxygenbubble", "env_oxygenbubble" );
         g_Game.PrecacheOther( "env_oxygenbubble" );
         g_Util.ScriptAuthor.insertLast
@@ -14,13 +15,13 @@ namespace item_oxygentank
         );
     }
 
-    enum item_oxygentank_flags
+    enum spawnflags
     {
         SF_OGT_USABLE_ONCE = 1 << 0,
         SF_OGT_USEONLY_KEY = 1 << 1
     }
 
-    class item_oxygentank : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string sprite = "sprites/bubble.spr";
         private string splashsound = "debris/bustflesh1.wav";
@@ -133,4 +134,5 @@ namespace item_oxygentank
             self.pev.nextthink = g_Engine.time + 0.01f;
         }
     }
-}// end namespace
+}
+// End of namespace

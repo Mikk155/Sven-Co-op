@@ -1,3 +1,4 @@
+#include "utils"
 namespace trigger_changevalue
 {
     array<string> WeaponsKeys =
@@ -111,4 +112,4 @@ namespace trigger_changevalue
         }
     }
 }
-// end namespace
+// End of namespace

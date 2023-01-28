@@ -1,10 +1,11 @@
+#include "utils"
 namespace game_time
 {
     bool blDebugHour = false;
 
     void Register( const bool& in DebugHour = false )
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_time::game_time", "game_time" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_time::entity", "game_time" );
 
         blDebugHour = DebugHour;
 
@@ -19,6 +20,7 @@ namespace game_time
         );
     }
 
+    // Wip cuz im kinda lazy
     const string[][] Pattern = 
     {
         { "1", "Best pattern for this current_hour" },
@@ -46,12 +48,12 @@ namespace game_time
         { "0", "Best pattern for this hour" },
     };
 
-    enum game_time_flags
+    enum spawnflags
     {
         SF_TIME_GETREALTIME = 1 << 0
     }
 
-    class game_time : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         DateTime datetime;
 
@@ -177,4 +179,5 @@ namespace game_time
             self.pev.nextthink = g_Engine.time + 1.0f;
         }
     }
-}// end namespace
+}
+// End of namespace

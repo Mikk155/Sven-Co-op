@@ -1,8 +1,9 @@
+#include "utils"
 namespace game_debug
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::game_debug", "game_debug" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::entity", "game_debug" );
 
         g_Util.ScriptAuthor.insertLast
         (
@@ -13,7 +14,7 @@ namespace game_debug
         );
     }
 
-    class game_debug : ScriptBaseEntity
+    class entity : ScriptBaseEntity
     {
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
@@ -30,3 +31,4 @@ namespace game_debug
         }
     }
 }
+// End of namespace

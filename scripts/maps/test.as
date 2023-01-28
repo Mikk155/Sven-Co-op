@@ -23,7 +23,7 @@
 
 #include "mikk/item_oxygentank"
 
-#include "mikk/monster_dmg_inflictor"
+#include "mikk/monster_damage_inflictor"
 
 #include "mikk/player_command"
 

@@ -1,9 +1,8 @@
+#include "utils"
 namespace env_fog
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_fog::env_fog", "env_fog_individual" );
-
         g_Util.ScriptAuthor.insertLast
         (
             "Script: env_fog\n"
@@ -11,10 +10,12 @@ namespace env_fog
             "Github: github.com/Mikk155\n"
             "Description: Show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)\n"
         );
+
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_fog::entity", "env_fog_individual" );
         g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
     }
 
-    enum env_fog_flags
+    enum spawnflags
     {
         START_OFF = 1,
         INVIDIDUALFOG = 2
@@ -51,7 +52,7 @@ namespace env_fog
         }
     }
 
-    class env_fog : ScriptBaseEntity
+    class entity : ScriptBaseEntity
     {
         private bool State = false;
 
@@ -64,17 +65,17 @@ namespace env_fog
                 else State = !State;
 
                 NetworkMessage msg( MSG_ONE_UNRELIABLE, NetworkMessages::Fog, cast<CBasePlayer@>( pActivator ).edict() );
-                    msg.WriteShort(0); //id
-                    msg.WriteByte( ( State ) ? 1 : 0 ); //enable state
-                    msg.WriteCoord(0); //unused
-                    msg.WriteCoord(0); //unused
-                    msg.WriteCoord(0); //unused
-                    msg.WriteShort(0); //radius
-                    msg.WriteByte( int(self.pev.frags) );
-                    msg.WriteByte( int(self.pev.health) );
-                    msg.WriteByte( int(self.pev.max_health) );
-                    msg.WriteShort( atoi(self.pev.netname) ); //start dist
-                    msg.WriteShort( atoi(self.pev.message) ); //end dist
+                    msg.WriteShort(0); // id
+                    msg.WriteByte( ( State ) ? 1 : 0 ); // enable state
+                    msg.WriteCoord(0); // unused
+                    msg.WriteCoord(0); // unused
+                    msg.WriteCoord(0); // unused
+                    msg.WriteShort(0); // radius unused
+                    msg.WriteByte( int(self.pev.frags) ); // red
+                    msg.WriteByte( int(self.pev.health) ); // green
+                    msg.WriteByte( int(self.pev.max_health) ); // blue
+                    msg.WriteShort( atoi(self.pev.netname) ); // start distance
+                    msg.WriteShort( atoi(self.pev.message) ); // end distance
                 msg.End();
             }
         }

@@ -1,24 +1,25 @@
+#include "utils"
 namespace game_zone_entity
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_zone_entity::game_zone_entity", "game_zone_entity" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_zone_entity::entity", "game_zone_entity" );
 
         g_Util.ScriptAuthor.insertLast
         (
             "Script: game_zone_entity\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
-            "Description: adds a entity similar to game_zone_player but now supports any entity in its volume not only players.\n"
+            "Description: game_zone_entity is a entity similar to game_zone_player but now supports any entity in its volume not only players.\n"
         );
     }
 
-    enum game_zone_entity_flags
+    enum spawnflags
     {
         SF_TZ_IGNORE_DEAD = 1 << 0
     }
 
-    class game_zone_entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hincount = null;
         EHandle houtcount = null;
@@ -166,3 +167,4 @@ namespace game_zone_entity
         }
     }
 }
+// End of namespace

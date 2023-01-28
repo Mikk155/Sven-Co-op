@@ -1,8 +1,9 @@
+#include "utils"
 namespace game_trigger_iterator
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_trigger_iterator::game_trigger_iterator", "game_trigger_iterator" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_trigger_iterator::entity", "game_trigger_iterator" );
 
         g_Util.ScriptAuthor.insertLast
         (
@@ -13,7 +14,7 @@ namespace game_trigger_iterator
         );
     }
 
-    class game_trigger_iterator : ScriptBaseEntity
+    class entity : ScriptBaseEntity
     {
         EHandle activator = null;
         EHandle caller = null;

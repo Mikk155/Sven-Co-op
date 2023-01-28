@@ -1,3 +1,4 @@
+#include "utils"
 namespace env_spritetrail
 {
     void Register()
@@ -10,10 +11,10 @@ namespace env_spritetrail
             "Description: Traces a sprite when the target entity moves.\n"
         );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritetrail::env_spritetrail", "env_spritetrail" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritetrail::entity", "env_spritetrail" );
     }
 
-    class env_spritetrail : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hTargetEnt = null;
 

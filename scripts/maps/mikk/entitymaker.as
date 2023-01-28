@@ -1,9 +1,8 @@
+#include "utils"
 namespace entitymaker
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "entitymaker::entitymaker", "entitymaker" );
-
         g_Util.ScriptAuthor.insertLast
         (
             "Script: entitymaker\n"
@@ -11,9 +10,11 @@ namespace entitymaker
             "Github: github.com/Mikk155\n"
             "Description: Create a entity when fire.\n"
         );
+
+        g_CustomEntityFuncs.RegisterCustomEntity( "entitymaker::entity", "entitymaker" );
     }
 
-    class entitymaker : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary g_KeyValues;
 
@@ -41,4 +42,4 @@ namespace entitymaker
         }
     }
 }
-// end namespace
+// End of namespace

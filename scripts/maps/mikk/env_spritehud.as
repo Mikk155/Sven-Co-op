@@ -1,3 +1,4 @@
+#include "utils"
 namespace env_spritehud
 {
     void Register()
@@ -10,10 +11,10 @@ namespace env_spritehud
             "Description: Shows a sprite on the player's HUD.\n"
         );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritehud::env_spritehud", "env_spritehud" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritehud::entity", "env_spritehud" );
     }
 
-    class env_spritehud : ScriptBaseEntity
+    class entity : ScriptBaseEntity
     {
         HUDSpriteParams params;
         private int color1, color2, effect;

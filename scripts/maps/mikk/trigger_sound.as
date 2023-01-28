@@ -1,8 +1,9 @@
+#include "utils"
 namespace trigger_sound
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_sound::trigger_sound", "trigger_sound" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_sound::entity", "trigger_sound" );
         g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @Disconnect );
         g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
         g_Scheduler.SetInterval( "TriggerSoundThink", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES);
@@ -16,7 +17,7 @@ namespace trigger_sound
         );
     }
 
-    class trigger_sound : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string roomtype = 0;
 
@@ -153,4 +154,5 @@ namespace trigger_sound
             }
         }
     }
-}// end namespace
+}
+// End of namespace

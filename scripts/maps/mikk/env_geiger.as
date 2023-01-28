@@ -1,3 +1,4 @@
+#include "utils"
 namespace env_geiger
 {
     void Register()
@@ -10,10 +11,10 @@ namespace env_geiger
             "Description: Entity that simulates radiation sound.\n"
         );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_geiger::env_geiger", "env_geiger" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_geiger::entity", "env_geiger" );
     }
 
-    class env_geiger : ScriptBaseEntity
+    class entity : ScriptBaseEntity
     {
         private bool State = true;
 

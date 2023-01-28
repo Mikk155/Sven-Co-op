@@ -1,3 +1,4 @@
+#include "utils"
 namespace config_map_precache
 {
     void Register()
@@ -10,10 +11,10 @@ namespace config_map_precache
             "Description: Entity that precache almost anything.\n"
         );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "config_map_precache::config_map_precache", "config_map_precache" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "config_map_precache::entity", "config_map_precache" );
     }
 
-    class config_map_precache : ScriptBaseEntity
+    class entity : ScriptBaseEntity
     {
         dictionary g_PrecacheKeys;
 
@@ -75,4 +76,5 @@ namespace config_map_precache
             g_EntityFuncs.Remove( self );
         }
     }
-}// end namespace
+}
+// End of namespace

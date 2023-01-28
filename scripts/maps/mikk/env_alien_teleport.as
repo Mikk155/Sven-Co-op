@@ -1,9 +1,8 @@
+#include "utils"
 namespace env_alien_teleport
 {
     void Register() 
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_alien_teleport::env_alien_teleport", "env_alien_teleport" );
-
         g_Util.ScriptAuthor.insertLast
         (
             "Script: env_alien_teleport\n"
@@ -11,9 +10,11 @@ namespace env_alien_teleport
             "Github: github.com/RedSprend\n"
             "Description: Randomly teleport in aliens on a random player.\n"
         );
+
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_alien_teleport::entity", "env_alien_teleport" );
     }
 
-    class env_alien_teleport : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
@@ -130,8 +131,12 @@ namespace env_alien_teleport
                 
                 if( pXenMaker !is null && pXenMaker.pev.ClassNameIs( 'env_xenmaker' ) )
                 {
+                    Vector VecOld = pXenMaker.pev.origin;
+
                     pXenMaker.pev.origin = pEntity.pev.origin + Vector( 0, 40, 0 );
                     pXenMaker.Use( self, self, USE_TOGGLE, 0.0f );
+
+                    pXenMaker.pev.origin = VecOld;
                 }
 
                 g_Util.Trigger( self.pev.target, pPlayer, pEntity, USE_TOGGLE, 0.0f );
@@ -139,3 +144,4 @@ namespace env_alien_teleport
         }
     }
 }
+// End of namespace

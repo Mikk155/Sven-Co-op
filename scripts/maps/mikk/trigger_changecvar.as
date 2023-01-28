@@ -1,8 +1,9 @@
+#include "utils"
 namespace trigger_changecvar
 {
     void Register() 
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_changecvar::trigger_changecvar", "trigger_changecvar" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_changecvar::entity", "trigger_changecvar" );
 
         g_Util.ScriptAuthor.insertLast
         (
@@ -13,12 +14,12 @@ namespace trigger_changecvar
         );
     }
 
-    enum trigger_changecvar_flags
+    enum spawnflags
     {
         SF_TCC_START_ON = 1 << 0
     }
 
-    class trigger_changecvar : ScriptBaseEntity, ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;
         dictionary dictOldCvars;
@@ -85,3 +86,4 @@ namespace trigger_changecvar
         }
     }
 }
+// End of namespace

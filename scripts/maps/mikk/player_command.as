@@ -1,8 +1,9 @@
+#include "utils"
 namespace player_command
 {
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "player_command::player_command", "player_command" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "player_command::entity", "player_command" );
 
         g_Util.ScriptAuthor.insertLast
         (
@@ -13,12 +14,12 @@ namespace player_command
         );
     }
 
-    enum player_command_flags
+    enum spawnflags
     {
         SF_CMD_ALL_PLAYERS = 1 << 0
     }
 
-    class player_command : ScriptBaseEntity
+    class entity : ScriptBaseEntity
     {
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
@@ -44,4 +45,5 @@ namespace player_command
             msg.WriteString( command );
         msg.End();
     }
-}// end namespace
+}
+// End of namespace
