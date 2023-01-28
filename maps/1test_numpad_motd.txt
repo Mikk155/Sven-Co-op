@@ -6,8 +6,7 @@ Button next to the door will open a padlock menu (trigger_camera)
 
 Laptop will tell you the current code needed.
 
-Button next to Laptop will randomize the code needed on-the-fly.
+Button next to Laptop will randomize the code needed on-demand.
 
 
-
-Mikk
+-Mikk
