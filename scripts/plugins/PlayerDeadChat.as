@@ -1,18 +1,3 @@
-/*
-DOWNLOAD:
-
-scripts/plugins/mikk/PlayerDeadChat.as
-
-
-INSTALL:
-
-    "plugin"
-    {
-        "name" "PlayerDeadChat"
-        "script" "PlayerDeadChat"
-    }
-*/
-
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor

@@ -1,87 +1,510 @@
 # Sven-Co-op Repository
 
+
+
+
+
+
+
+
+
+
 An assortment of test maps, additional information for SC stuff, Angelscript plugins / map-scripts, new entities and anything related to SC.
+
+
+
+
+
+
+
+
+
+
+Contact info [Discord](https://discord.gg/VsNnE3A7j8)
+
+
+
+
+
+
+
+
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
+
+
+
+
+
+
+
+
 
 [Tutorials](#tutorials)
 
+
+
+
+
+
+
+
+
+
 [Plugins](#plugins)
+
+
+
+
+
+
+
+
+
 
 [Scripts](#scripts)
 
+
+
+
+
+
+
+
+
+
 [Credits](#people-who-contributed-in-any-way)
+
+
+
+
+
+
+
+
+
 
 # Tutorials
 
+
+
+
+
+
+
+
+
+
 [env_global](#env_global)
 
+
+
+
+
+
+
+
+
+
 [numerical padlock](#numerical-padlock)
+
+
+
+
+
+
+
+
+
 
 [Un-embed textures from a BSP](#un-embed-textures-from-a-bsp)
 
 
+
+
+
+
+
+
+
+
 # Plugins
+
+
+
+
+
+
+
+
+
+
+[BloodPuddle](#bloodpuddle)
+
+
+
+
+
+
+
+
+
+
+[NoAutoPick](#noautopick)
+
+
+
+
+
+
+
+
+
+
+[PlayerDeadChat](#playerdeadchat)
+
+
+
+
+
+
+
+
+
+
+[RenameServer](#renameserver)
+
+
+
+
+
+
+
+
+
 
 # Scripts
 
+
+
+
+
+
+
+
+
+
 [ammo_custom](#ammo_custom)
+
+
+
+
+
+
+
+
+
 
 [config_classic_mode](#config_classic_mode)
 
+
+
+
+
+
+
+
+
+
 [config_map_precache](#config_map_precache)
+
+
+
+
+
+
+
+
+
 
 [config_survival_mode](#config_survival_mode)
 
+
+
+
+
+
+
+
+
+
 [entitymaker](#entitymaker)
+
+
+
+
+
+
+
+
+
 
 [env_alien_teleport](#env_alien_teleport)
 
+
+
+
+
+
+
+
+
+
 [env_bloodpuddle](#env_bloodpuddle)
+
+
+
+
+
+
+
+
+
 
 [env_fog](#env_fog)
 
+
+
+
+
+
+
+
+
+
 [env_geiger](#env_geiger)
+
+
+
+
+
+
+
+
+
 
 [env_render](#env_render)
 
+
+
+
+
+
+
+
+
+
 [env_spritehud](#env_spritehud)
+
+
+
+
+
+
+
+
+
 
 [env_spritetrail](#env_spritetrail)
 
+
+
+
+
+
+
+
+
+
 [game_debug](#game_debug)
+
+
+
+
+
+
+
+
+
 
 [game_stealth](#game_stealth)
 
+
+
+
+
+
+
+
+
+
 [game_text_custom](#game_text_custom)
+
+
+
+
+
+
+
+
+
 
 [game_time](#game_time)
 
+
+
+
+
+
+
+
+
+
 [game_trigger_iterator](#game_trigger_iterator)
+
+
+
+
+
+
+
+
+
 
 [game_zone_entity](#game_zone_entity)
 
+
+
+
+
+
+
+
+
+
 [item_oxygentank](#item_oxygentank)
+
+
+
+
+
+
+
+
+
 
 [monster_damage_inflictor](#monster_damage_inflictor)
 
+
+
+
+
+
+
+
+
+
 [player_command](#player_command)
+
+
+
+
+
+
+
+
+
 
 [trigger_changecvar](#trigger_changecvar)
 
+
+
+
+
+
+
+
+
+
 [trigger_changevalue](#trigger_changevalue)
+
+
+
+
+
+
+
+
+
 
 [trigger_individual](#trigger_individual)
 
+
+
+
+
+
+
+
+
+
 [trigger_multiple](#trigger_multiple)
+
+
+
+
+
+
+
+
+
 
 [trigger_random](#trigger_random)
 
+
+
+
+
+
+
+
+
+
 [trigger_sound](#trigger_sound)
+
+
+
+
+
+
+
+
+
 
 [trigger_votemenu](#trigger_votemenu)
 
+
+
+
+
+
+
+
+
+
 [Utility Various Scripts](#utils)
-
-
 
 
 
@@ -101,8 +524,8 @@ ammo_custom is an ammo item customizable that gives a specified ammout of bullet
     └── 📁scripts
         └── 📁maps
             └── 📁mikk
-                ├── 📄ammo_custom.as     
-                └── 📄utils.as     
+                ├── 📄ammo_custom.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -115,15 +538,28 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # config_classic_mode
 config_classic_mode is a entity that customize classic mode for monsters, models and items that the game doesn't support.
 
 it also allow the mapper to swap **any** model into a classic model if specified by the entity.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/config_classic_mode.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄config_classic_mode.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -136,13 +572,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # config_map_precache
 config_map_precache is a entity that precache almost anything.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/config_map_precache.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄config_map_precache.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -155,13 +604,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # config_survival_mode
 config_survival_mode is a entity that customize survival mode and make it better.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/config_survival_mode.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄config_survival_mode.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -174,15 +636,28 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # entitymaker
 entitymaker is a entity that when is fired it creates any entity on its origin and using the same keyvalues that entitymaker has.
 
 basically trigger_createentity but we aimed to add a condition for it to spawn or not the entity depending the condition set.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/entitymaker.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄entitymaker.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -195,13 +670,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # env_alien_teleport
 env_alien_teleport is a entity that randomly teleport in aliens on a random player.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/env_alien_teleport.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_alien_teleport.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -214,14 +702,31 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # env_bloodpuddle
 env_bloodpuddle Generates a blood puddle when a monster die.
 
 **Download**
-```angelscript
-"models/mikk/misc/bloodpuddle.mdl"
-"scripts/maps/mikk/env_bloodpuddle.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    ├── 📁models
+    |   └── 📁mikk
+    |       └── 📁misc
+    |           └── 📄bloodpuddle.mdl
+    |
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_bloodpuddle.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -255,13 +760,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # env_fog
 env_fog_individual is a entity that expands env_fog features to show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)
 
 **Download**
-```angelscript
-"scripts/maps/mikk/env_fog.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_fog.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -274,13 +792,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # env_geiger
 env_fog_individual is a entity that simulates radiation sound in a small radius of its origin.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/env_geiger.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_geiger.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -293,13 +824,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # env_render
 env_render Allow env_render to gradually fade its target.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/env_render.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_render.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -310,13 +854,26 @@ env_render Allow env_render to gradually fade its target.
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
+
+
+
+
+
+
+
+
+
 # env_spritehud
 env_spritehud is a entity that shows a sprite on the player's HUD.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/env_spritehud.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_spritehud.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -329,13 +886,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # env_spritetrail
 env_spritetrail is a entity that traces a sprite when the target entity moves
 
 **Download**
-```angelscript
-"scripts/maps/mikk/env_spritetrail.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_spritetrail.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -348,13 +918,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # game_debug
 game_debug is a entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/game_debug.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_debug.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -367,13 +950,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # game_stealth
 game_stealth Allow mappers to make use of stealth mode in Co-op
 
 **Download**
-```angelscript
-"scripts/maps/mikk/game_stealth.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_stealth.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -384,13 +980,26 @@ game_stealth Allow mappers to make use of stealth mode in Co-op
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
+
+
+
+
+
+
+
+
+
 # game_text_custom
 game_text_custom is a entity replacemet for game_text and env_message with lot of new additions and language support.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/game_text_custom.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_text_custom.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -403,13 +1012,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # game_time
 game_time is a entity that allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/game_time.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_time.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -422,13 +1044,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # game_trigger_iterator
 game_trigger_iterator is a entity that will fire its target with the activator and caller that it specifies.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/game_trigger_iterator.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_trigger_iterator.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -441,13 +1076,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # game_zone_entity
 game_zone_entity is a entity similar to game_zone_player but now supports any entity in its volume not only players.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/game_zone_entity.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_zone_entity.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -460,13 +1108,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # item_oxygentank
 item_oxygentank is a entity that will give oxygen to players that touch it.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/item_oxygentank.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄item_oxygentank.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -479,13 +1140,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # monster_damage_inflictor
 monster_damage_inflictor is feature for passing a monster's Attacker/damage inflictor as a !activator via npc's TriggerTarget key.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/monster_damage_inflictor.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄monster_damage_inflictor.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -496,13 +1170,26 @@ monster_damage_inflictor is feature for passing a monster's Attacker/damage infl
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
+
+
+
+
+
+
+
+
+
 # player_command
 player_command is a entity that allow mappers to force players to execute a cmd onto their consoles.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/player_command.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄player_command.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -515,13 +1202,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # trigger_changecvar
 trigger_changecvar is a entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/trigger_changecvar.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄trigger_changecvar.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -534,13 +1234,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # trigger_changevalue
 trigger_changevalue Allow trigger_changevalue to change keyvalues from a specified weapon of the player activator
 
 **Download**
-```angelscript
-"scripts/maps/mikk/trigger_changevalue.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄trigger_changevalue.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -555,9 +1268,13 @@ Simply include the script once via a trigger_script entity. no need to call. jus
 trigger_individual Allow Trigger-Type entities to fire its target only once per activator.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/trigger_individual.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄trigger_individual.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -568,13 +1285,26 @@ trigger_individual Allow Trigger-Type entities to fire its target only once per 
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
+
+
+
+
+
+
+
+
+
 # trigger_multiple
 trigger_multiple Allow trigger_multiple entity to fire its target for every one inside its volume.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/trigger_multiple.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄trigger_multiple.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -594,13 +1324,26 @@ This text file will define wich entities can make trigger_multiple fire its targ
 
 if nothing set. we'll use our default ``'scripts/maps/mikk/trigger_multiple.txt'``
 
+
+
+
+
+
+
+
+
+
 # trigger_random
 trigger_random Allow trigger_random to set a unique random value.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/trigger_random.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄trigger_random.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -611,13 +1354,26 @@ trigger_random Allow trigger_random to set a unique random value.
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
+
+
+
+
+
+
+
+
+
 # trigger_sound
 trigger_sound is a entity like env_sound but as a brush entity
 
 **Download**
-```angelscript
-"scripts/maps/mikk/trigger_sound.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄trigger_sound.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -630,13 +1386,26 @@ void MapInit()
 }
 ```
 
+
+
+
+
+
+
+
+
+
 # trigger_votemenu
 trigger_votemenu is a entity that allow mapper to create a buymenu-like vote for one or all players.
 
 **Download**
-```angelscript
-"scripts/maps/mikk/trigger_votemenu.as"
-"scripts/maps/mikk/utils.as"
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄trigger_votemenu.as
+                └── 📄utils.as
 ```
 
 **install:**
@@ -651,10 +1420,159 @@ void MapInit()
 
 # utils
 
+
+
+
+
+
+
+
+
+
+# BloodPuddle
+BloodPuddle Generates a blood puddle when a monster die.
+
+**Download**
+```
+└── 📁svencoop_addon
+    ├── 📁models
+    |   └── 📁mikk
+    |       └── 📁misc
+    |           └── 📄bloodpuddle.mdl
+    |
+    └── 📁scripts
+        ├── 📁maps
+        |   └── 📁mikk
+        |       ├── 📄env_bloodpuddle.as
+        |       └── 📄utils.as
+        └── 📁plugins
+            └── 📄BloodPuddle
+```
+
+**install:**
+```angelscript
+    "plugin"
+    {
+        "name" "BloodPuddle"
+        "script" "BloodPuddle"
+    }
+```
+in line 4
+```angelscript
+    env_bloodpuddle::Register( false );
+```
+if set to ``false``, the generated blood puddles won't disapear
+if set to ``true``, the generated blood puddles will disapear as soon as the monster who generated it disapears.
+
+
+
+
+
+
+
+
+
+
+# NoAutoPick
+NoAutoPick Make items/weapons pick-able only if pressing E-key.
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁plugins
+            └── 📄NoAutoPick
+```
+
+**install:**
+```angelscript
+    "plugin"
+    {
+        "name" "NoAutoPick"
+        "script" "NoAutoPick"
+    }
+```
+
+
+
+
+
+
+
+
+
+
+# PlayerDeadChat
+PlayerDeadChat Make dead player's messages readable for dead players only
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁plugins
+            └── 📄PlayerDeadChat
+```
+
+**install:**
+```angelscript
+    "plugin"
+    {
+        "name" "PlayerDeadChat"
+        "script" "PlayerDeadChat"
+    }
+```
+
+
+
+
+
+
+
+
+
+
+# RenameServer
+PlayerDeadChat Changes your server's hostname dynamicaly depending the map playing
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁plugins
+            └── 📄RenameServer
+```
+
+**install:**
+```angelscript
+    "plugin"
+    {
+        "name" "RenameServer"
+        "script" "RenameServer"
+    }
+```
+
+
+
+
+
+
+
+
+
+
 # env_global
 env_global entity is used to transport information between two or more maps. allowing you to do different triggers depending in what state the previus map did set the global state.
 
 map 1test_global3
+
+
+
+
+
+
+
+
+
 
 # numerical padlock
 
@@ -708,6 +1626,15 @@ bsptexrm mapname
 
 **NOTE:**
 Since BSP has been modified it will differ from older versions but it will also lower considerably it's size.
+
+
+
+
+
+
+
+
+
 
 # People who contributed in any way
 

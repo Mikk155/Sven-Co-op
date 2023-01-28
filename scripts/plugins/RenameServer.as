@@ -1,18 +1,3 @@
-/*
-DOWNLOAD:
-
-scripts/plugins/mikk/RenameServer.as
-
-
-INSTALL:
-
-    "plugin"
-    {
-        "name" "RenameServer"
-        "script" "RenameServer"
-    }
-*/
-
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor

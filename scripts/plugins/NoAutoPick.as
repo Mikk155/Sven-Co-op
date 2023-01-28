@@ -1,18 +1,3 @@
-/*
-DOWNLOAD:
-
-scripts/plugins/mikk/NoAutoPick.as
-
-
-INSTALL:
-
-    "plugin"
-    {
-        "name" "NoAutoPick"
-        "script" "NoAutoPick"
-    }
-*/
-
 void MapInit()
 {
     g_Scheduler.SetInterval( "EntityCreate", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
@@ -39,9 +24,9 @@ void EntityCreate()
     for( uint i = 0; i < Items.length(); ++i )
     {
         CBaseEntity@ pEntity = null;
-        while((@pEntity = g_EntityFuncs.FindEntityByClassname(pEntity, Items[i] ) ) !is null)
+        while( ( @pEntity = g_EntityFuncs.FindEntityByClassname(pEntity, Items[i] ) ) !is null)
         {
-            if( pEntity !is null || pEntity.pev.spawnflags == "0" )
+            if( pEntity !is null && pEntity.pev.spawnflags == "0" )
 				pEntity.pev.spawnflags = 256;
         }
     }
