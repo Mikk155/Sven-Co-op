@@ -1,79 +1,14 @@
 # Sven-Co-op Repository
 
-
-
-
-
-
-
-
-
-
 An assortment of test maps, additional information for SC stuff, Angelscript plugins / map-scripts, new entities and anything related to SC.
-
-
-
-
-
-
-
-
-
 
 Contact info [Discord](https://discord.gg/VsNnE3A7j8)
 
-
-
-
-
-
-
-
-
-
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
-
-
-
-
-
-
-
-
-
-
 [Tutorials](#tutorials)
-
-
-
-
-
-
-
-
-
 
 [Plugins](#plugins)
 
-
-
-
-
-
-
-
-
-
 [Scripts](#scripts)
-
-
-
-
-
-
-
-
-
 
 [Credits](#people-who-contributed-in-any-way)
 
@@ -88,36 +23,9 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 # Tutorials
 
-
-
-
-
-
-
-
-
-
 [env_global](#env_global)
 
-
-
-
-
-
-
-
-
-
 [numerical padlock](#numerical-padlock)
-
-
-
-
-
-
-
-
-
 
 [Un-embed textures from a BSP](#un-embed-textures-from-a-bsp)
 
@@ -132,47 +40,11 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 # Plugins
 
-
-
-
-
-
-
-
-
-
 [BloodPuddle](#bloodpuddle)
-
-
-
-
-
-
-
-
-
 
 [NoAutoPick](#noautopick)
 
-
-
-
-
-
-
-
-
-
 [PlayerDeadChat](#playerdeadchat)
-
-
-
-
-
-
-
-
-
 
 [RenameServer](#renameserver)
 
@@ -187,322 +59,61 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 # Scripts
 
-
-
-
-
-
-
-
-
-
 [ammo_custom](#ammo_custom)
-
-
-
-
-
-
-
-
-
 
 [config_classic_mode](#config_classic_mode)
 
-
-
-
-
-
-
-
-
-
 [config_map_precache](#config_map_precache)
-
-
-
-
-
-
-
-
-
 
 [config_survival_mode](#config_survival_mode)
 
-
-
-
-
-
-
-
-
-
 [entitymaker](#entitymaker)
-
-
-
-
-
-
-
-
-
 
 [env_alien_teleport](#env_alien_teleport)
 
-
-
-
-
-
-
-
-
-
 [env_bloodpuddle](#env_bloodpuddle)
-
-
-
-
-
-
-
-
-
 
 [env_fog](#env_fog)
 
-
-
-
-
-
-
-
-
-
 [env_geiger](#env_geiger)
-
-
-
-
-
-
-
-
-
 
 [env_render](#env_render)
 
-
-
-
-
-
-
-
-
-
 [env_spritehud](#env_spritehud)
-
-
-
-
-
-
-
-
-
 
 [env_spritetrail](#env_spritetrail)
 
-
-
-
-
-
-
-
-
-
 [game_debug](#game_debug)
-
-
-
-
-
-
-
-
-
 
 [game_stealth](#game_stealth)
 
-
-
-
-
-
-
-
-
-
 [game_text_custom](#game_text_custom)
-
-
-
-
-
-
-
-
-
 
 [game_time](#game_time)
 
-
-
-
-
-
-
-
-
-
 [game_trigger_iterator](#game_trigger_iterator)
-
-
-
-
-
-
-
-
-
 
 [game_zone_entity](#game_zone_entity)
 
-
-
-
-
-
-
-
-
-
 [item_oxygentank](#item_oxygentank)
-
-
-
-
-
-
-
-
-
 
 [monster_damage_inflictor](#monster_damage_inflictor)
 
-
-
-
-
-
-
-
-
-
 [player_command](#player_command)
-
-
-
-
-
-
-
-
-
 
 [trigger_changecvar](#trigger_changecvar)
 
-
-
-
-
-
-
-
-
-
 [trigger_changevalue](#trigger_changevalue)
-
-
-
-
-
-
-
-
-
 
 [trigger_individual](#trigger_individual)
 
-
-
-
-
-
-
-
-
-
 [trigger_multiple](#trigger_multiple)
-
-
-
-
-
-
-
-
-
 
 [trigger_random](#trigger_random)
 
-
-
-
-
-
-
-
-
-
 [trigger_sound](#trigger_sound)
 
-
-
-
-
-
-
-
-
-
 [trigger_votemenu](#trigger_votemenu)
-
-
-
-
-
-
-
-
-
 
 [Utility Various Scripts](#utils)
 
@@ -538,6 +149,44 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+It has all the keyvalues that any ``item`` entity supports.
+
+| key | value | description |
+|-----|-------|-------------|
+| w_model | string | defines a custom world model |
+| p_sound | string | defines a custom sound to use when the item is taken |
+| am_name | [choices](#ammo_custom_am_name) | defines the type of ammunition this item will give to players |
+| am_give | integer | number of bullets that this item should give to the players |
+| frags | integer | How many items a player can take (affect only activator) 0 = infinite |
+
+# ammo_custom_am_name
+- buckshot
+- 9mm
+- ARgrenades
+- sporeclip
+- rockets
+- uranium
+- bolts
+- 556
+- 357
+- m40a1
+- satchel
+- Trip Mine
+- Hand Grenade
+- snarks
+
+⚠️ The player must have already equiped the items that classifies as "weapons" the ammo will be added but the player won't be able to select them until collect a weapon.
+
+List:
+- satchel
+- Trip Mine
+- Hand Grenade
+- snarks
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -572,6 +221,64 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+A custom entity that allow mappers to configure Classic Mode.
+
+Trigger the entity by using USE_TYPE.
+
+- USE_OFF Will disable classic mode.
+
+- USE_ON Will enable Classic mode.
+
+- USE_TOGGLE Will toggle Classic mode.
+
+| key | value | description |
+|-----|-------|-------------|
+| spawnflags | 1 (Restart now) | if set. the current map will be restarted to apply the changes | 
+| delay | float | delay before trigger any of its targets |
+| target_toggle | target | trigger this target when the classic mode has been successfuly toggled  [Supports USE_TYPE](#utils-use-type)|
+| target_failed | target | trigger this target when the entity receive USE_ON but the classic mode is actually enabled or when the entity receive USE_OFF but the classic mode is actually disabled  [Supports USE_TYPE](#utils-use-type)|
+| target_enabled | target | trigger this target if the classic mode has been started enabled. it fires once the map starts  [Supports USE_TYPE](#utils-use-type)|
+| target_disabled | target | trigger this target if the classic mode has been started disabled. it fires once the map starts  [Supports USE_TYPE](#utils-use-type)|
+| health | float | this is the entity's think function. using higher value will consume less cpu but players may notice the HD model default is 0.1f + health |
+
+In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
+
+- The key is equal to the classname of the weapon you want to replace when classic mode is enabled.
+
+- The value is equal to the classname of the new weapon that will be set if classic mode is enabled.
+
+**SAMPLE:**
+```angelscript
+"weapon_m16" "weapon_9mmAR"
+```
+
+The same way you can replace any entity's custom model. the syntax is the same.
+
+- The key is equal to the model you want to replace when classic mode is enabled.
+
+- The value is equal to the model that will replace the previus.
+
+**SAMPLE:**
+```angelscript
+"models/hlclassic/scientist.mdl" "models/headcrab.mdl"
+```
+⚠️ Don't forget that since classic mode is enabled the model you need to replace is not "models/barney.mdl" it is "models/hlclassic/barney.mdl"
+
+- Using (on any entity) custom keyvalue ``"$i_classic_mode_ignore"`` will prevent their model being changed or item being replaced.
+
+
+**Additional and unnecesary comment:**
+
+- This works by finding any entity that contains your key as a value for "model".
+
+- so you can technically change brush models as well, Be wise. Be safe. Be aware.
+
+⚠️ Use only **one** entity per map.
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -604,6 +311,27 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+A custom entity that allow mappers to precache almost anything
+
+In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
+
+**syntax:**
+
+- key -> thing to precache.
+- value -> option to precache.
+
+**Options:**
+| value | description | sample |
+|-------|-------------|--------|
+| model | used to precache models and sprites. | "models/barney.mdl" "model" |
+| entity | used to precache monsters and any other entities including custom entities. | "monster_zombie" "entity" |
+| sound | used to precache a sound inside "sound/" folder. do not specify that folder! | "ambience/background_sex.wav" "sound" |
+| generic | used to precache anything else. up to you for testing. for skybox you have to precache all files individually | "gfx/env/mysky_bk.tga" "generic" |
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -635,6 +363,33 @@ void MapInit()
 	config_survival_mode::Register();
 }
 ```
+
+**Introduction:**
+
+A custom entity that allow mappers to configure Survival Mode.
+
+Trigger the entity by using USE_TYPE.
+
+- USE_OFF Will disable survival mode.
+
+- USE_ON Will enable survival mode.
+
+- USE_TOGGLE Will toggle survival mode.
+
+If the entity is triggered before it reach the limit of mp_survival_startdelay then it is set to 0 and survival is instantly enabled.
+
+| key | value | description |
+|-----|-------|-------------|
+| delay | float | delay before trigger any of its target |
+| target_toggle | target | trigger this target when the survival mode is toggled  [Supports USE_TYPE](#utils-use-type)|
+| target_failed | target | trigger this target when the entity receive USE_ON but survival is already ON, or when the entity receive USE_OFF but the survival is already OFF  [Supports USE_TYPE](#utils-use-type)|
+| mp_survival_startdelay | integer | delay before survival mode starts, if empty it will use the cvar mp_survival_startdelay |
+| mp_respawndelay | integer | delay before players can re spawn in survival disabled, if empty it use the cvar mp_respawndelay |
+| master | multisource | a multisource will lock the entity from being triggered n/or from start survival mode by its mp_survival_startdelay |
+
+⚠️ Use only **one** entity per map.
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -670,6 +425,8 @@ void MapInit()
 }
 ```
 
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -702,6 +459,23 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+a custom entity that watch for alive players and then spawns a monster around a random alive player.
+
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | trigger this target when an alien is spawned. the choosed player is the activator and the alien is the caller  [Supports USE_TYPE](#utils-use-type)|
+| noise | target | trigger this target when the monster can't spawn due to obstacles. the choosed player is the activator and the entity is the caller  [Supports USE_TYPE](#utils-use-type)|
+| delay | float | delay (seconds) between teleports |
+| netname | string | classname of the alien that will spawns. can use trigger_changevalue on-demand |
+| message | target | xenmaker template to use its effect when the alien spawns |
+
+⚠️ Use only **one** entity per map.
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -713,6 +487,8 @@ void MapInit()
 
 # env_bloodpuddle
 env_bloodpuddle Generates a blood puddle when a monster die.
+
+As a [Plugin](bloodpuddle)
 
 **Download**
 ```
@@ -742,12 +518,14 @@ The function ``Register`` has two optional calls there.
 ```angelscript
 const bool& in blRemove = false
 ```
-if set to false or not set, the generated blood puddles won't disapear
-if set to true, the generated blood puddles will disapear as soon as the monster who generated it disapears.
+if set to ``false`` or not set, the generated blood puddles won't disapear
+
+if set to ``true``, the generated blood puddles will disapear as soon as the monster who generated it disapears.
 ```angelscript
 const string& in szModel = "models/mikk/misc/bloodpuddle.mdl"
 ```
 if not set, this model will be used.
+
 if set a custom one, your model will be used.
 
 **SAMPLE:**
@@ -759,6 +537,8 @@ void MapInit()
 	env_bloodpuddle::Register( true, "models/mymodelfolder/blood.mdl" );
 }
 ```
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -792,6 +572,13 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+Adds to env_fog a new spawnflag that allows the fog to ve visible for activator only.
+
+spawnflags -> 2 (Activator Only)
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -824,6 +611,8 @@ void MapInit()
 }
 ```
 
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -853,6 +642,19 @@ env_render Allow env_render to gradually fade its target.
 **OR**
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
+
+**Introduction:**
+Render a entity progressivelly (fade in-out) by its renderamt until both (env_render and target entity) have the same renderamt
+
+spawnflag -> 32 (Gradually Fade in/out)
+
+health -> Think interval (default 0.045)
+
+frags -> ammount of renderamt to change every time it thinks
+
+netname -> Trigger this target when finish thinking [Supports USE_TYPE](#utils-use-type)
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -886,6 +688,12 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+-TODO seguir me colgue
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -917,6 +725,11 @@ void MapInit()
 	env_spritetrail::Register();
 }
 ```
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -950,6 +763,11 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -979,6 +797,11 @@ game_stealth Allow mappers to make use of stealth mode in Co-op
 **OR**
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1012,6 +835,11 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -1043,6 +871,11 @@ void MapInit()
 	game_time::Register();
 }
 ```
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1076,6 +909,11 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -1107,6 +945,11 @@ void MapInit()
 	game_zone_entity::Register();
 }
 ```
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1140,6 +983,11 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -1169,6 +1017,11 @@ monster_damage_inflictor is feature for passing a monster's Attacker/damage infl
 **OR**
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1202,6 +1055,11 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -1233,6 +1091,11 @@ void MapInit()
 	trigger_changecvar::Register();
 }
 ```
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1285,6 +1148,11 @@ trigger_individual Allow Trigger-Type entities to fire its target only once per 
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -1314,6 +1182,11 @@ trigger_multiple Allow trigger_multiple entity to fire its target for every one 
 **OR**
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 Create a list of entities supported for flag 8 (Everything else) if flag 64 (Iterate all occupants) is enabled as well
 if you want to use this feature then register in map init the next function.
@@ -1354,6 +1227,11 @@ trigger_random Allow trigger_random to set a unique random value.
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 
 
 
@@ -1385,6 +1263,11 @@ void MapInit()
 	trigger_sound::Register();
 }
 ```
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1418,11 +1301,22 @@ void MapInit()
 }
 ```
 
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
 # utils
+utils is a script that contains alot of useful features and code that is being shared with my other scripts so in most of the cases you have to include this script.
+
+**Introduction:**
+
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
-
+# Utils Use Type
 
 
 
@@ -1431,6 +1325,8 @@ void MapInit()
 
 # BloodPuddle
 BloodPuddle Generates a blood puddle when a monster die.
+
+As a [Map-Script](env_bloodpuddle)
 
 **Download**
 ```
@@ -1462,6 +1358,7 @@ in line 4
     env_bloodpuddle::Register( false );
 ```
 if set to ``false``, the generated blood puddles won't disapear
+
 if set to ``true``, the generated blood puddles will disapear as soon as the monster who generated it disapears.
 
 
@@ -1532,7 +1429,7 @@ PlayerDeadChat Make dead player's messages readable for dead players only
 
 
 # RenameServer
-PlayerDeadChat Changes your server's hostname dynamicaly depending the map playing
+RenameServer Changes your server's hostname dynamicaly depending the map playing
 
 **Download**
 ```
