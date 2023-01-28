@@ -8,7 +8,7 @@ An assortment of test maps, additional information for SC stuff, Angelscript plu
 
 [Scripts](scripts)
 
-[Credits](people-who-contributed-in-any-way)
+[Credits](#people-who-contributed-in-any-way)
 
 # Tutorials
 
