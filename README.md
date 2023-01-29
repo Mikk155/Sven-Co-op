@@ -590,7 +590,7 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 
 # env_geiger
-env_fog_individual is a entity that simulates radiation sound in a small radius of its origin.
+env_geiger is a entity that simulates radiation sound in a small radius of its origin.
 
 **Download**
 ```
