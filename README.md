@@ -1556,7 +1556,7 @@ utils is a script that contains alot of useful features and code that is being s
 
 
 
-## Basically FireTargets but we use this for custom entities to allow them to do use of [USE_TYPE](#utils-use-type)
+### Basically FireTargets but we use this for custom entities to allow them to do use of [USE_TYPE](#utils-use-type)
 ```angelscript
 g_Util.Trigger( string& in key, CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE& in useType = USE_TOGGLE, float& in flDelay = 0.0f )
 ```
@@ -1566,7 +1566,7 @@ g_Util.Trigger( string& in key, CBaseEntity@ pActivator, CBaseEntity@ pCaller, U
 
 
 
-## Send a string, replace the arguments sent, return the new string.
+### Send a string, replace the arguments sent, return the new string.
 ```angelscript
 g_Util.StringReplace( string_t FullSentence, dictionary@ pArgs )
 ```
@@ -1584,7 +1584,7 @@ Then it will return a string like this
 
 
 
-## Shows a motd to the given player.
+### Shows a motd to the given player.
 ```angelscript
 g_Util.ShowMOTD( EHandle hPlayer, const string& in szTitle, const string& in szMessage )
 ```
@@ -1594,7 +1594,7 @@ g_Util.ShowMOTD( EHandle hPlayer, const string& in szTitle, const string& in szM
 
 
 
-## Shows a message to client's console if the next function is set.
+### Shows a message to client's console if the next function is set.
 ```angelscript
 g_Util.DebugMessage( const string& in szMessage )
 ```
@@ -1604,7 +1604,7 @@ g_Util.DebugMessage( const string& in szMessage )
 
 
 
-## Set to true and messages will be shown.
+### Set to true and messages will be shown.
 ```angelscript
 g_Util.DebugMode( const bool& in blmode = false )
 ```
@@ -1614,7 +1614,7 @@ g_Util.DebugMode( const bool& in blmode = false )
 
 
 
-## Return as a string the value of the given custom keyvalue from the given entity.
+### Return as a string the value of the given custom keyvalue from the given entity.
 ```angelscript
 g_Util.GetCKV( CBaseEntity@ pEntity, string szKey )
 ```
@@ -1624,7 +1624,7 @@ g_Util.GetCKV( CBaseEntity@ pEntity, string szKey )
 
 
 
-## Set a custom keyvalue for the given entity.
+### Set a custom keyvalue for the given entity.
 ```angelscript
 g_Util.SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
 ```
@@ -1634,7 +1634,7 @@ g_Util.SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
 
 
 
-## Boolean that returns true the given text file contains szComparator as a line. use as a blacklist by giving g_Engine.mapname
+### Boolean that returns true the given text file contains szComparator as a line. use as a blacklist by giving g_Engine.mapname
 ```angelscript
 g_Util.IsStringInFile( const string& in szPath, string& in szComparator )
 ```
@@ -1644,7 +1644,7 @@ g_Util.IsStringInFile( const string& in szPath, string& in szComparator )
 
 
 
-## Boolean that returns true if the given plugin name is installed.
+### Boolean that returns true if the given plugin name is installed.
 ```angelscript
 g_Util.IsPluginInstalled( const string& in szPluginName )
 ```
@@ -1654,7 +1654,7 @@ g_Util.IsPluginInstalled( const string& in szPluginName )
 
 
 
-## Set information for this map/script. will be shown when a player connects or type in chat "/info"
+### Set information for this map/script. will be shown when a player connects or type in chat "/info"
 ```angelscript
 g_Util.ScriptAuthor.insertLast
     (
@@ -1674,7 +1674,7 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 
 
-## Utils Use Type
+### Utils Use Type
 Entities that supports this feature can send different Use Type depending what the value is. the same method as [multi_manager](https://sites.google.com/site/svenmanor/entguide/multi_manager) ( Triggering type On, Off, Toggle or Kill )
 
 The default use-type is 'Toggle'. For other use-types, you must add a token to the value:
@@ -1690,7 +1690,7 @@ The default use-type is 'Toggle'. For other use-types, you must add a token to t
 
 
 
-## Supported Languages
+### Supported Languages
 | key to show | value from player |
 |-------------|-------------------|
 | message | english or empty |
