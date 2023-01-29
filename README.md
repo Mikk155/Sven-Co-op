@@ -718,7 +718,7 @@ This entity is kinda confuse even for me, i've include everything that HudSprite
 | fadeinTime | float | Fade In Time |
 | fadeoutTime | float | Fade Out Time |
 
-### env_spritehud spawnflags
+## env_spritehud spawnflags
 
 | flag | bit | function |
 |-----|------|----------|
@@ -971,7 +971,7 @@ void MapInit()
 | model | brushmodel | only allowed by the plugin. used to replace a trigger_multiple's message keyvalue into a own text apart |
 | language | keyvalues |  See [Supported Languages](#supported-languages) |
 
-# game_text_custom effect
+## game_text_custom effect
 
 
 | value | name | description |
@@ -989,7 +989,7 @@ void MapInit()
 | 10 | Print scoreboard | Shows the text as the server's hostname but only apply to the score board popup |
 
 
-# game_text_custom motd
+## game_text_custom motd
 
 To set a title you must write it like this
 ```angelscript
@@ -999,14 +999,14 @@ The ``"#"`` defines when the title ends and when the message starts
 
 ⚠ JACK/Bspguy has a limit on how many chars you can set so you have to learn ripent if you will use long-size motd.
 
-# game_text_custom spawnflags
+## game_text_custom spawnflags
 | flag | bit | description |
 |------|-----|-------------|
 | All Players | 1 | shows the message to all connected players. else just activator |
 | No console echo | 2 | if set. no console message will be sent |
 | Fire per player | 4 | If set. The target will be fired for every player that sees the message. Otherwise the target is fired once every time the entity is fired. |
 
-# game_text_custom replace
+## game_text_custom replace
 
 We've added a function for replacing a string command into another string.
 
@@ -1547,20 +1547,100 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 
 # utils
+**Introduction:**
+
 utils is a script that contains alot of useful features and code that is being shared with my other scripts so in most of the cases you have to include this script.
 
-**Introduction:**
+```angelscript
+g_Util.Trigger( string& in key, CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE& in useType = USE_TOGGLE, float& in flDelay = 0.0f )
+```
+Basically FireTargets but we use this for custom entities to allow them to do use of [USE_TYPE](#utils-use-type)
+
+```angelscript
+g_Util.StringReplace( string_t FullSentence, dictionary@ pArgs )
+```
+Send a string, replace the arguments sent, return the new string.
+
+**Sample:**
+```angelscript
+g_Util.StringReplace( "this !number-st test for !activator", { { "!number", self.pev.frags }, { "!activator", pActivator.pev.netname }, } );
+```
+Then it will return a string like this
+```angelscript
+"this 1-st test for Mikk"
+```
+
+```angelscript
+g_Util.ShowMOTD( EHandle hPlayer, const string& in szTitle, const string& in szMessage )
+```
+Shows a motd to the given player.
+
+```angelscript
+g_Util.DebugMessage( const string& in szMessage )
+```
+Shows a message to client's console if the next function is set.
+
+```angelscript
+g_Util.DebugMode( const bool& in blmode = false )
+```
+Set to true and messages will be shown.
+
+```angelscript
+g_Util.GetCKV( CBaseEntity@ pEntity, string szKey )
+```
+Return as a string the value of the given custom keyvalue from the given entity.
+
+```angelscript
+g_Util.SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
+```
+Set a custom keyvalue for the given entity.
+
+```angelscript
+g_Util.IsStringInFile( const string& in szPath, string& in szComparator )
+```
+Boolean that returns true the given text file contains szComparator as a line. use as a blacklist by giving g_Engine.mapname
+
+```angelscript
+g_Util.IsPluginInstalled( const string& in szPluginName )
+```
+Return true if the given plugin name is installed.
+
+```angelscript
+g_Util.ScriptAuthor.insertLast
+    (
+        "Map: "+ string( g_Engine.mapname ) +"\n"
+        "Author: Mikk\n"
+        "Github: github.com/Mikk155\n"
+        "Description: Test almost of the scripts.\n"
+    );
+```
+Set information for this map/script. will be shown when a player connects or type in chat "/info"
+
+
 
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
-# Utils Use Type
+## Utils Use Type
+Entities that supports this feature can send different Use Type depending what the value is. the same method as [multi_manager](https://sites.google.com/site/svenmanor/entguide/multi_manager) ( Triggering type On, Off, Toggle or Kill )
+
+The default use-type is 'Toggle'. For other use-types, you must add a token to the value:
+
+- For 'Off', add ``#0``
+
+- For 'On', add ``#1``
+
+- For 'Kill', add ``#2``
 
 
 
-# Supported Languages
+
+
+
+
+## Supported Languages
 | key to show | value from player |
 |-------------|-------------------|
 | message | english or empty |
@@ -1751,6 +1831,14 @@ then every numerical plate will add a value of their owns into another entity wh
 - next to player spawn there are some entities that they're only for DEBUG purpose. delete them.
 
 map 1test_numpad
+
+
+
+
+
+
+
+
 
 # Un-embed textures from a BSP
 
