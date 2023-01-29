@@ -1551,16 +1551,25 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 utils is a script that contains alot of useful features and code that is being shared with my other scripts so in most of the cases you have to include this script.
 
+
+
+
+
+
+## Basically FireTargets but we use this for custom entities to allow them to do use of [USE_TYPE](#utils-use-type)
 ```angelscript
 g_Util.Trigger( string& in key, CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE& in useType = USE_TOGGLE, float& in flDelay = 0.0f )
 ```
-Basically FireTargets but we use this for custom entities to allow them to do use of [USE_TYPE](#utils-use-type)
 
+
+
+
+
+
+## Send a string, replace the arguments sent, return the new string.
 ```angelscript
 g_Util.StringReplace( string_t FullSentence, dictionary@ pArgs )
 ```
-Send a string, replace the arguments sent, return the new string.
-
 **Sample:**
 ```angelscript
 g_Util.StringReplace( "this !number-st test for !activator", { { "!number", self.pev.frags }, { "!activator", pActivator.pev.netname }, } );
@@ -1570,41 +1579,82 @@ Then it will return a string like this
 "this 1-st test for Mikk"
 ```
 
+
+
+
+
+
+## Shows a motd to the given player.
 ```angelscript
 g_Util.ShowMOTD( EHandle hPlayer, const string& in szTitle, const string& in szMessage )
 ```
-Shows a motd to the given player.
 
+
+
+
+
+
+## Shows a message to client's console if the next function is set.
 ```angelscript
 g_Util.DebugMessage( const string& in szMessage )
 ```
-Shows a message to client's console if the next function is set.
 
+
+
+
+
+
+## Set to true and messages will be shown.
 ```angelscript
 g_Util.DebugMode( const bool& in blmode = false )
 ```
-Set to true and messages will be shown.
 
+
+
+
+
+
+## Return as a string the value of the given custom keyvalue from the given entity.
 ```angelscript
 g_Util.GetCKV( CBaseEntity@ pEntity, string szKey )
 ```
-Return as a string the value of the given custom keyvalue from the given entity.
 
+
+
+
+
+
+## Set a custom keyvalue for the given entity.
 ```angelscript
 g_Util.SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
 ```
-Set a custom keyvalue for the given entity.
 
+
+
+
+
+
+## Boolean that returns true the given text file contains szComparator as a line. use as a blacklist by giving g_Engine.mapname
 ```angelscript
 g_Util.IsStringInFile( const string& in szPath, string& in szComparator )
 ```
-Boolean that returns true the given text file contains szComparator as a line. use as a blacklist by giving g_Engine.mapname
 
+
+
+
+
+
+## Boolean that returns true if the given plugin name is installed.
 ```angelscript
 g_Util.IsPluginInstalled( const string& in szPluginName )
 ```
-Return true if the given plugin name is installed.
 
+
+
+
+
+
+## Set information for this map/script. will be shown when a player connects or type in chat "/info"
 ```angelscript
 g_Util.ScriptAuthor.insertLast
     (
@@ -1614,7 +1664,8 @@ g_Util.ScriptAuthor.insertLast
         "Description: Test almost of the scripts.\n"
     );
 ```
-Set information for this map/script. will be shown when a player connects or type in chat "/info"
+
+
 
 
 
@@ -1639,7 +1690,6 @@ The default use-type is 'Toggle'. For other use-types, you must add a token to t
 
 
 
-
 ## Supported Languages
 | key to show | value from player |
 |-------------|-------------------|
@@ -1657,6 +1707,7 @@ The default use-type is 'Toggle'. For other use-types, you must add a token to t
 | message_romanian | romanian |
 | message_turkish | turkish |
 | message_albanian | albanian |
+
 
 
 
