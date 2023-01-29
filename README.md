@@ -718,7 +718,7 @@ This entity is kinda confuse even for me, i've include everything that HudSprite
 | fadeinTime | float | Fade In Time |
 | fadeoutTime | float | Fade Out Time |
 
-## env_spritehud spawnflags
+### env_spritehud spawnflags
 
 | flag | bit | function |
 |-----|------|----------|
