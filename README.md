@@ -157,11 +157,11 @@ It has all the keyvalues that any ``item`` entity supports.
 |-----|-------|-------------|
 | w_model | string | defines a custom world model |
 | p_sound | string | defines a custom sound to use when the item is taken |
-| am_name | [choices](#ammo_custom_am_name) | defines the type of ammunition this item will give to players |
+| am_name | [choices](#ammo_custom-am_name) | defines the type of ammunition this item will give to players |
 | am_give | integer | number of bullets that this item should give to the players |
-| frags | integer | How many items a player can take (affect only activator) 0 = infinite |
+| frags | integer | How many times player can take this item (affect only activator) 0 = infinite |
 
-# ammo_custom_am_name
+## ammo_custom am_name
 - buckshot
 - 9mm
 - ARgrenades
@@ -237,10 +237,10 @@ Trigger the entity by using USE_TYPE.
 |-----|-------|-------------|
 | spawnflags | 1 (Restart now) | if set. the current map will be restarted to apply the changes | 
 | delay | float | delay before trigger any of its targets |
-| target_toggle | target | trigger this target when the classic mode has been successfuly toggled  [Supports USE_TYPE](#utils-use-type)|
-| target_failed | target | trigger this target when the entity receive USE_ON but the classic mode is actually enabled or when the entity receive USE_OFF but the classic mode is actually disabled  [Supports USE_TYPE](#utils-use-type)|
-| target_enabled | target | trigger this target if the classic mode has been started enabled. it fires once the map starts  [Supports USE_TYPE](#utils-use-type)|
-| target_disabled | target | trigger this target if the classic mode has been started disabled. it fires once the map starts  [Supports USE_TYPE](#utils-use-type)|
+| target_toggle | target | trigger this target when the classic mode has been successfuly toggled [Supports USE_TYPE](#utils-use-type) |
+| target_failed | target | trigger this target when the entity receive USE_ON but the classic mode is actually enabled or when the entity receive USE_OFF but the classic mode is actually disabled [Supports USE_TYPE](#utils-use-type) |
+| target_enabled | target | trigger this target if the classic mode has been started enabled. it fires once the map starts [Supports USE_TYPE](#utils-use-type) |
+| target_disabled | target | trigger this target if the classic mode has been started disabled. it fires once the map starts [Supports USE_TYPE](#utils-use-type) |
 | health | float | this is the entity's think function. using higher value will consume less cpu but players may notice the HD model default is 0.1f + health |
 
 In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
@@ -381,8 +381,8 @@ If the entity is triggered before it reach the limit of mp_survival_startdelay t
 | key | value | description |
 |-----|-------|-------------|
 | delay | float | delay before trigger any of its target |
-| target_toggle | target | trigger this target when the survival mode is toggled  [Supports USE_TYPE](#utils-use-type)|
-| target_failed | target | trigger this target when the entity receive USE_ON but survival is already ON, or when the entity receive USE_OFF but the survival is already OFF  [Supports USE_TYPE](#utils-use-type)|
+| target_toggle | target | trigger this target when the survival mode is toggled [Supports USE_TYPE](#utils-use-type) |
+| target_failed | target | trigger this target when the entity receive USE_ON but survival is already ON, or when the entity receive USE_OFF but the survival is already OFF [Supports USE_TYPE](#utils-use-type) |
 | mp_survival_startdelay | integer | delay before survival mode starts, if empty it will use the cvar mp_survival_startdelay |
 | mp_respawndelay | integer | delay before players can re spawn in survival disabled, if empty it use the cvar mp_respawndelay |
 | master | multisource | a multisource will lock the entity from being triggered n/or from start survival mode by its mp_survival_startdelay |
@@ -466,8 +466,8 @@ a custom entity that watch for alive players and then spawns a monster around a 
 
 | key | value | description |
 |-----|-------|-------------|
-| target | target | trigger this target when an alien is spawned. the choosed player is the activator and the alien is the caller  [Supports USE_TYPE](#utils-use-type)|
-| noise | target | trigger this target when the monster can't spawn due to obstacles. the choosed player is the activator and the entity is the caller  [Supports USE_TYPE](#utils-use-type)|
+| target | target | trigger this target when an alien is spawned. the choosed player is the activator and the alien is the caller [Supports USE_TYPE](#utils-use-type) |
+| noise | target | trigger this target when the monster can't spawn due to obstacles. the choosed player is the activator and the entity is the caller [Supports USE_TYPE](#utils-use-type) |
 | delay | float | delay (seconds) between teleports |
 | netname | string | classname of the alien that will spawns. can use trigger_changevalue on-demand |
 | message | target | xenmaker template to use its effect when the alien spawns |
@@ -573,6 +573,7 @@ void MapInit()
 ```
 
 **Introduction:**
+
 Adds to env_fog a new spawnflag that allows the fog to ve visible for activator only.
 
 spawnflags -> 2 (Activator Only)
@@ -644,6 +645,7 @@ env_render Allow env_render to gradually fade its target.
 Simply include the script once via a trigger_script entity. no need to call. just include.
 
 **Introduction:**
+
 Render a entity progressivelly (fade in-out) by its renderamt until both (env_render and target entity) have the same renderamt
 
 spawnflag -> 32 (Gradually Fade in/out)
@@ -690,7 +692,76 @@ void MapInit()
 
 **Introduction:**
 
--TODO seguir me colgue
+Shows a sprite on the hud of one or all players
+
+This entity is kinda confuse even for me, i've include everything that HudSprite supports but no idea what all of those values does.
+
+| key | value | description |
+|-----|-------|-------------|
+| spawnflags | flags | set flags See [enum spawnflags](#env_spritehud-spawnflags) |
+| frags | 0/1 | 0 = show to activator only, 1 = show to all players |
+| sprite | string | sprite file |
+| x | string | Horizontal position on the screen. <0, 1.0> = left to right. (-1.0, 0) = right to left. -1.0 = centered |
+| y | string | Vertical position on the screen. <0, 1.0> = top to bottom. (-1.0, 0) = bottom to top. -1.0 = centered |
+| channel | 0/15 | Channel. Range: 0-15 (each module type has its own channel group). |
+| color1 | [choices](#env_spritehud-color) | Set a color |
+| color2 | [choices](#env_spritehud-color) | Set a color |
+| effect | [choices](#env_spritehud-effect) | Set a color |
+| frame | float | Show Frame number/s |
+| top | integer | Sprite top offset. Range: 0-255 |
+| left | integer | Sprite left offset. Range: 0-255 |
+| width | integer | 0 = auto, use total width of the sprite |
+| height | integer | 0 = auto, use total height of the sprite |
+| numframes | integer | Number of frames |
+| framerate | float | Speed of framerate |
+| holdTime | float | Hold Time |
+| fadeinTime | float | Fade In Time |
+| fadeoutTime | float | Fade Out Time |
+
+## env_spritehud spawnflags
+
+| flag | bit | function |
+|-----|------|----------|
+| X position in pixels | 1 | HUD_ELEM_ABSOLUTE_X |
+| Y position in pixels | 2 | HUD_ELEM_ABSOLUTE_Y |
+| X-pos relative to the center | 4 | HUD_ELEM_SCR_CENTER_X |
+| Y-pos relative to the center | 8 | HUD_ELEM_SCR_CENTER_Y |
+| Ignore client border | 16 | HUD_ELEM_NO_BORDER (hud_bordersize) |
+| Create a hidden element | 32 | HUD_ELEM_HIDDEN |
+| Play the effect only once | 64 | HUD_ELEM_EFFECT_ONCE |
+| client alpha | 128 | HUD_ELEM_DEFAULT_ALPHA (hud_defaultalpha) |
+| client alpha | 256 | HUD_ELEM_DYNAMIC_ALPHA (flash when updated) |
+| Draw opaque sprite | 65536 | HUD_SPR_OPAQUE |
+| Draw masked sprite | 131072 | HUD_SPR_MASKED |
+| Play anim only once | 262144 | HUD_SPR_PLAY_ONCE |
+| Hide when anim stops | 524288 | HUD_SPR_HIDE_WHEN_STOPPED |
+
+## env_spritehud color
+
+| value | color |
+|-------|-------|
+| 0 | White |
+| 1 | Black |
+| 2 | Red |
+| 3 | Green |
+| 4 | Blue |
+| 5 | Yellow |
+| 6 | Orange |
+| 7 | Sven Co-op |
+
+## env_spritehud effect
+
+| value | description | function |
+|-------|-------------|----------|
+| 0 | No effect | HUD_EFFECT_NONE |
+| 1 | Linear ramp up from color1 to color2 | HUD_EFFECT_RAMP_UP |
+| 2 | Linear ramp down from color2 to color1 | HUD_EFFECT_RAMP_DOWN |
+| 3 | Linear up n down from color1 to color2 to color1 | HUD_EFFECT_TRIANGLE |
+| 4 | Cosine ramp up from color1 to color2 | HUD_EFFECT_COSINE_UP |
+| 5 | Cosine ramp down from color2 to color1 | HUD_EFFECT_COSINE_DOWN |
+| 6 | Cosine up n down from color1 to color2 to color1 | HUD_EFFECT_COSINE |
+| 7 | Toggle between color1 and color2 | HUD_EFFECT_TOGGLE |
+| 8 | Sine pulse from color1 to zero to color2 | HUD_EFFECT_SINE_PULSE |
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -728,6 +799,19 @@ void MapInit()
 
 **Introduction:**
 
+Traces a trail sprite when the target entity moves.
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | entity to target for trace. Blank = this entity (trigger_setorigin). "!activator" = player/monster activator. else just target something's name
+| model | string | Sprite to show as a beam |
+| frags | float | Think time |
+| health | float | Life/fade time |
+| renderamt | integer | FX Amount (1 - 255) |
+| rendercolor | Vector | FX Color (R G B) |
+| scale | integer | Texture Scale (0-255) |
+
+⚠️ on monsters the trail is on its foots, use trigger_setorigin ( off-set ) instead.
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -764,7 +848,21 @@ void MapInit()
 ```
 
 **Introduction:**
+game_debug is a entity that when fired. it will show in players console the keyvalue ``message``
 
+You can use commands like ``!netname`` it will be replaced with whatever "netname" keyvalue has.
+
+**List**
+
+- ``!netname`` netname keyvalue (string)
+
+- ``!frags`` frags keyvalue (float)
+
+- ``!iuser1`` iuser1 keyvalue (integer)
+
+- ``!activator`` name of the entity's activator
+
+- ``!caller`` name of the entity's caller
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -800,6 +898,13 @@ Simply include the script once via a trigger_script entity. no need to call. jus
 
 **Introduction:**
 
+all npc monster entities now supports a custom keyvalue called ``$i_stealth`` that if it is in a value of ``1`` this monster will now "Remove from world" the npc/player that is seen by this entity.
+
+also another keyvalue is supported ``$i_stealthmode`` if set on a value of ``1`` this npc will ignore its enemy monsters and will only do this to players.
+
+- If a monster die by this feature and it is using TriggerTarget then its trigger target is fired.
+
+- Every time this monster sees a enemy and remove him then its own "target" keyvalue is fired.
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -837,6 +942,101 @@ void MapInit()
 
 **Introduction:**
 
+| key | value | description |
+|-----|-------|-------------|
+| target | target | trigger this target when fired [Supports USE_TYPE](#utils-use-type)|
+| killtarget | target | kill this target |
+| delay | float | delay before kill or target |
+| effect | [choices](#game_text_custom-effect) |
+| spawnflags | [flags](#game_text_custom-spawnflags) |
+| fadein | float | Fade in Time (or character scan time effect 2 ) ( effect 0/1/2 ) |
+| fadeout | float | Fade Out Time ( effect 0/1/2 ) |
+| holdtime | float | Hold Time for ( effect 0/1/2 ) |
+| fxtime | float | Scan time ( effect 2 )
+| x | float | X (0 - 1.0 = left to right) (-1 centers) ( effect 0/1/2 ) |
+| y | float | Y (0 - 1.0 = top to bottom) (-1 centers) ( effect 0/1/2 ) |
+| color | Vector | Color 1 (Add 4th number >0 for opaque) ( effect 0/1/2 ) |
+| color2 | Vector | Color 2 (Add 4th number >0 for opaque) ( effect 0/1/2 ) |
+| channel | integer | Channel to use for this message ( effect 0/1/2 ) range 0/8 |
+| messagesound | string | sound to play |
+| messagevolume | integer | volume of the sound |
+| messageattenuation | choices | 0 = "Small Radius" 1 = "Medium Radius" 2 = "Large  Radius" 3 = "Play Everywhere" 4 = "Activator only"
+| messagesentence | !sentence | Plays a sentence using this entity as a speaker |
+| key_integer | integer | See [Replacing string](#game_text_custom-replace) |
+| key_float | float | See [Replacing string](#game_text_custom-replace) |
+| key_string | string | See [Replacing string](#game_text_custom-replace) |
+| netname | string | See [Replacing string](#game_text_custom-replace) |
+| focus_entity | target | See [Replacing string](#game_text_custom-replace) |
+| key_from_entity | string | See [Replacing string](#game_text_custom-replace) |
+| model | brushmodel | only allowed by the plugin. used to replace a trigger_multiple's message keyvalue into a own text apart |
+| language | keyvalues |  See [Supported Languages](#supported-languages) |
+
+# game_text_custom effect
+
+
+| value | name | description |
+|-------|------|-------------|
+| 0 | Fade In/Out | fade in and out depending keyvalues fadein, fadeout
+| 1 | Credits | used by env_message |
+| 2 | Scan Out | scan out depending keyvalue fxtime |
+| 3 | Print HUD | The same effect that trigger_once/multiple's "message" provides. |
+| 4 | Print MOTD | Shows a MOTD pop up with the given message. See [MOTD](#game_text_custom-motd) |
+| 5 | Print Chat | Shows a message on the chat. |
+| 6 | Print Notify | Prints a notify at the top left side |
+| 7 | Print Key-Bind | Prints a keybind print, the format is "Press +use to interact" and will be shown as "Press [e] to interact" |
+| 8 | Print Console | Prints at the console ( set flag 2 or double message will be shown ) |
+| 9 | Print Center | Prints at the center of the screen |
+| 10 | Print scoreboard | Shows the text as the server's hostname but only apply to the score board popup |
+
+
+# game_text_custom motd
+
+To set a title you must write it like this
+```angelscript
+"This is the title# this is the text"
+```
+The ``"#"`` defines when the title ends and when the message starts
+
+⚠ JACK/Bspguy has a limit on how many chars you can set so you have to learn ripent if you will use long-size motd.
+
+# game_text_custom spawnflags
+| flag | bit | description |
+|------|-----|-------------|
+| All Players | 1 | shows the message to all connected players. else just activator |
+| No console echo | 2 | if set. no console message will be sent |
+| Fire per player | 4 | If set. The target will be fired for every player that sees the message. Otherwise the target is fired once every time the entity is fired. |
+
+# game_text_custom replace
+
+We've added a function for replacing a string command into another string.
+
+In this case you want the game_text_custom show a countdown with a message.
+
+``key_integer`` will do the trick.
+```angelscript
+"message" "The bomb will explode in !integer seconds"
+"key_integer" "5"
+```
+you can in any time update key_integer with trigger_copy/change/value and fire the game_text_custom after affect.
+```angelscript
+The bomb will explode in 5 seconds
+```
+``key_float`` is the same but it is a float. ``!float``
+
+``key_string`` is the same but it is a string. ``!string``
+
+``!activator`` will contain the nickname or classname of the player or monster that activated this entity.
+```angelscript
+"message" "The player !activator is trapped in sector C"
+```
+
+i've made this next keys by using it for my own purposes but probably they're useful to you as well.
+
+``focus_entity`` is a target type key. you must target a entity's classname in this. if is empty we'll use the activator.
+
+``key_from_entity`` must be a custom keyvalue that we want to find it in the target entity and get its value.
+
+then its value will replace the command ``!value``
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -874,6 +1074,25 @@ void MapInit()
 
 **Introduction:**
 
+A custom entity that allow mappers to create maps with "real time" set.
+
+meant to be used for changing map events or even light style (sun/moon)
+
+the entity will start working as soon as the map starts. if not locked by a multisource.
+
+| key | value | description |
+|-----|-------|-------------|
+| health | integer | "One minute is (IRL-seconds)" using a value of 60 mean that one minute (in-game) is equal to one minute (in real life) while using a value of 1  mean that one minute (in-game) is equal to one second (in real life)
+| current_second | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_second | target | Trigger when a second increase [Supports USE_TYPE](#utils-use-type) |
+| current_minute | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_minute | target | Trigger when a minute increase [Supports USE_TYPE](#utils-use-type) |
+| current_hour | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_hour | target | Trigger when a hour increase [Supports USE_TYPE](#utils-use-type) |
+| current_day | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_day | target | Trigger when a day increase [Supports USE_TYPE](#utils-use-type) |
+| light_pattern | target | targetname of a light_spot to change its pattern depending the time. if "!world" it'll be a global change. |
+| spawnflags | flags | 1 = Real Time, if set. the entity will start with the host's real time
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -911,6 +1130,21 @@ void MapInit()
 
 **Introduction:**
 
+A custom ntity that will fire its target with the activator and caller that you set.
+
+``"!activator"`` will pass the current activator.
+
+``"!caller"`` will pass the current caller.
+
+The current USE_TYPE is also passed through if not specified.
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | Trigger this entity when fire [Supports USE_TYPE](#utils-use-type) |
+| netname | target | Entity to set as activator |
+| message | target | Entity to set as caller |
+| frags | choices | TriggerState to send, 0 = "Current USE_TYPE" 1 = "USE_OFF" 2 = "USE_ON" 3 = "USE_TOGGLE"
+| health | float | Delay before trigger the entity |
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -1306,6 +1540,12 @@ void MapInit()
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
+
+
+
+
+
+
 # utils
 utils is a script that contains alot of useful features and code that is being shared with my other scripts so in most of the cases you have to include this script.
 
@@ -1317,6 +1557,31 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 
 # Utils Use Type
+
+
+
+# Supported Languages
+| key to show | value from player |
+|-------------|-------------------|
+| message | english or empty |
+| message_spanish | spanish |
+| message_spanish2 | spanish spain |
+| message_portuguese | portuguese |
+| message_german | german |
+| message_french | french |
+| message_italian | italian |
+| message_esperanto | esperanto |
+| message_czech | czech |
+| message_dutch | dutch |
+| message_indonesian | indonesian |
+| message_romanian | romanian |
+| message_turkish | turkish |
+| message_albanian | albanian |
+
+
+
+
+
 
 
 
@@ -1521,8 +1786,7 @@ bsptexrm mapname
 
 - 10 Go to the properties of your map and include the new .wad in the "wad" properties of "worldspawn"
 
-**NOTE:**
-Since BSP has been modified it will differ from older versions but it will also lower considerably it's size.
+⚠️ Since the BSP has been modified it will differ from older versions but it will also lower considerably it's size.
 
 
 
@@ -1537,7 +1801,7 @@ Since BSP has been modified it will differ from older versions but it will also 
 
 [Gaftherman](https://github.com/Gaftherman)
 
-Sparks
+[Sparks]()
 
 [KEZÆIV](https://www.youtube.com/channel/UCV5W8sCs-5EYsnQG4tAfoqg)
 
@@ -1550,3 +1814,7 @@ Sparks
 [Cubemath](https://github.com/CubeMath)
 
 [Rick](https://github.com/RedSprend)
+
+[Litude](https://github.com/Litude)
+
+[Wootguy](https://github.com/wootguy)
