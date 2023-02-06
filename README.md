@@ -319,16 +319,16 @@ In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
 
 **syntax:**
 
-- key -> thing to precache.
-- value -> option to precache.
+- key -> option to precache.
+- value -> thing to precache.
 
 **Options:**
-| value | description | sample |
+| key | description | sample |
 |-------|-------------|--------|
-| model | used to precache models and sprites. | "models/barney.mdl" "model" |
-| entity | used to precache monsters and any other entities including custom entities. | "monster_zombie" "entity" |
-| sound | used to precache a sound inside "sound/" folder. do not specify that folder! | "ambience/background_sex.wav" "sound" |
-| generic | used to precache anything else. up to you for testing. for skybox you have to precache all files individually | "gfx/env/mysky_bk.tga" "generic" |
+| model | used to precache models and sprites. | "model#1" "models/barney.mdl" |
+| entity | used to precache monsters and any other entities including custom entities. | "entity#4" "monster_zombie" |
+| sound | used to precache a sound inside "sound/" folder. do not specify that folder! | "sound#0" "ambience/background_sex.wav" |
+| generic | used to precache anything else. up to you for testing. for skybox you have to precache all files individually | "generic#20" "gfx/env/mysky_bk.tga" |
 
 Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
@@ -1634,7 +1634,7 @@ g_Util.SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
 
 
 
-### Boolean that returns true the given text file contains szComparator as a line. use as a blacklist by giving g_Engine.mapname
+### Boolean that returns true if the given text file contains szComparator as a line. use as a blacklist by giving g_Engine.mapname
 ```angelscript
 g_Util.IsStringInFile( const string& in szPath, string& in szComparator )
 ```
