@@ -222,6 +222,10 @@
 // By just adding the respective value at the end of the target's value.
 // I.e "target" "barney#2" will killtarget the entity named "barney"
 // See if a Trigger-Type key says "(USE_TYPE)"
+@BaseClass = TargetMMStyle
+[
+    target(target_destination) : "Target (USE_TYPE)"
+]
 
 // -Mikk Moved some things to BaseClasses.
 @BaseClass = Master
@@ -242,6 +246,92 @@
 [
     minhullsize(string) : "Minimun BBox Size (to world)"
     maxhullsize(string) : "Maximun BBox Size (to world)"
+]
+
+@BaseClass = InventoryRules
+[
+    item_name_required(string) : "Inventory: Need item(s)" : ""
+    item_group_required(string) : "Inventory: Need item(s) from group(s)" : ""
+    item_group_required_num(integer) : "Inventory: Item count in group need have (0 = all)" : 0
+    item_name_canthave(string) : "Inventory: CAN'T have item" : ""
+    item_group_canthave(string) : "Inventory: CAN'T have item from group" : ""
+    item_group_canthave_num(integer) : "Inventory: Item count in group CAN'T have (0 = all)" : 0
+
+    pass_ignore_use_triggers(choices) : "On pass: Ignore item's on use triggers?" : 0 =
+    [
+        0 : "No"
+        1 : "Yes"
+    ]
+    pass_drop_item_name(string) : "On pass: Drop item(s)" : ""
+    pass_drop_item_group(string) : "On pass: Drop item(s) from group(s)" : ""
+    pass_ignore_drop_triggers(choices) : "On pass: Ignore item's on drop triggers?" : 0 =
+    [
+        0 : "No"
+        1 : "Yes"
+    ]
+    pass_return_item_name(string) : "On pass: Return item(s)" : ""
+    pass_return_item_group(string) : "On pass: Return item(s) from group(s)" : ""
+    pass_ignore_return_triggers(choices) : "On pass: Ignore item's on return triggers?" : 0 =
+    [
+        0 : "No"
+        1 : "Yes"
+    ]
+    pass_destroy_item_name(string) : "On pass: Destroy item(s)" : ""
+    pass_destroy_item_group(string) : "On pass: Destroy item(s) from group(s)" : ""
+    pass_ignore_destroy_triggers(choices) : "On pass: Ignore item's on destroy triggers?" : 0 =
+    [
+        0 : "No"
+        1 : "Yes"
+    ]
+
+    target_on_fail(string) : "Target: Inventory rules failed" : ""
+]
+
+@BaseClass = ZHLTbmodel
+[
+    zhlt_usemodel(string) : "ZHLT Template Model Target"
+    zhlt_copylight(string) : "ZHLT Copy Lighting From Target"
+    zhlt_noclip(choices) : "ZHLT Disable Clipping" : 0 =
+    [
+        0 : "Default"
+        1 : "Always non-solid"
+    ]
+    zhlt_invisible(choices) : "ZHLT Invisible" : 0 =
+    [
+        0 : "Visible (default)"
+        1 : "Invisible"
+    ]
+    zhlt_customshadow(string) : "ZHLT Custom Shadow (when opaque)"
+    zhlt_embedlightmap(choices) : "ZHLT Embed Light Map (when translucent)" : 0 =
+    [
+        0 : "No (default)"
+        1 : "Yes"
+    ]
+    zhlt_embedlightmapresolution(integer) : "ZHLT Embed Light Map Resolution" : 4
+]
+
+@BaseClass base(ZHLTbmodel) = ZHLT
+[
+    zhlt_lightflags(choices) : "ZHLT Light flags" : 0 =
+    [
+        0 : "Default"
+        1 : "Embedded Fix"
+        2 : "Opaque (blocks light)"
+        3 : "Opaque + Embedded fix"
+        6 : "Opaque + Concave Fix"
+    ]
+    light_origin(string) : "ZHLT Light Origin Target"
+]
+
+@BaseClass = ZHLTpoint
+[
+    _fade(string) : "ZHLT Light Fade" : "1.0"
+    _falloff(choices) : "ZHLT Light Falloff" : 0 =
+    [
+        0 : "Default"
+        1 : "Inverse Linear"
+        2 : "Inverse Square"
+    ]
 ]
 
 // -Mikk Added master and a point entity cuz the game supports it
@@ -336,53 +426,6 @@
     [
         0: "Exclude"
         1: "Include"
-    ]
-]
-
-@BaseClass = ZHLTbmodel
-[
-    zhlt_usemodel(string) : "ZHLT Template Model Target"
-    zhlt_copylight(string) : "ZHLT Copy Lighting From Target"
-    zhlt_noclip(choices) : "ZHLT Disable Clipping" : 0 =
-    [
-        0 : "Default"
-        1 : "Always non-solid"
-    ]
-    zhlt_invisible(choices) : "ZHLT Invisible" : 0 =
-    [
-        0 : "Visible (default)"
-        1 : "Invisible"
-    ]
-    zhlt_customshadow(string) : "ZHLT Custom Shadow (when opaque)"
-    zhlt_embedlightmap(choices) : "ZHLT Embed Light Map (when translucent)" : 0 =
-    [
-        0 : "No (default)"
-        1 : "Yes"
-    ]
-    zhlt_embedlightmapresolution(integer) : "ZHLT Embed Light Map Resolution" : 4
-]
-
-@BaseClass base(ZHLTbmodel) = ZHLT
-[
-    zhlt_lightflags(choices) : "ZHLT Light flags" : 0 =
-    [
-        0 : "Default"
-        1 : "Embedded Fix"
-        2 : "Opaque (blocks light)"
-        3 : "Opaque + Embedded fix"
-        6 : "Opaque + Concave Fix"
-    ]
-    light_origin(string) : "ZHLT Light Origin Target"
-]
-
-@BaseClass = ZHLTpoint
-[
-    _fade(string) : "ZHLT Light Fade" : "1.0"
-    _falloff(choices) : "ZHLT Light Falloff" : 0 =
-    [
-        0 : "Default"
-        1 : "Inverse Linear"
-        2 : "Inverse Square"
     ]
 ]
 
@@ -560,49 +603,14 @@
     globalname(string) : "Global Entity Name"
 ]
 
-@BaseClass base(Target) = Targetx
+@BaseClass = Delay
 [
-    delay(string) : "Delay Before Trigger" : "0"
-    killtarget(target_destination) : "Kill Target"
+    delay(float) : "Delay Before Trigger" : 0.0
 ]
 
-@BaseClass = InventoryRules
+@BaseClass base(Target,Delay) = Targetx
 [
-    item_name_required(string) : "Inventory: Need item(s)" : ""
-    item_group_required(string) : "Inventory: Need item(s) from group(s)" : ""
-    item_group_required_num(integer) : "Inventory: Item count in group need have (0 = all)" : 0
-    item_name_canthave(string) : "Inventory: CAN'T have item" : ""
-    item_group_canthave(string) : "Inventory: CAN'T have item from group" : ""
-    item_group_canthave_num(integer) : "Inventory: Item count in group CAN'T have (0 = all)" : 0
-
-    pass_ignore_use_triggers(choices) : "On pass: Ignore item's on use triggers?" : 0 =
-    [
-        0 : "No"
-        1 : "Yes"
-    ]
-    pass_drop_item_name(string) : "On pass: Drop item(s)" : ""
-    pass_drop_item_group(string) : "On pass: Drop item(s) from group(s)" : ""
-    pass_ignore_drop_triggers(choices) : "On pass: Ignore item's on drop triggers?" : 0 =
-    [
-        0 : "No"
-        1 : "Yes"
-    ]
-    pass_return_item_name(string) : "On pass: Return item(s)" : ""
-    pass_return_item_group(string) : "On pass: Return item(s) from group(s)" : ""
-    pass_ignore_return_triggers(choices) : "On pass: Ignore item's on return triggers?" : 0 =
-    [
-        0 : "No"
-        1 : "Yes"
-    ]
-    pass_destroy_item_name(string) : "On pass: Destroy item(s)" : ""
-    pass_destroy_item_group(string) : "On pass: Destroy item(s) from group(s)" : ""
-    pass_ignore_destroy_triggers(choices) : "On pass: Ignore item's on destroy triggers?" : 0 =
-    [
-        0 : "No"
-        1 : "Yes"
-    ]
-
-    target_on_fail(string) : "Target: Inventory rules failed" : ""
+    killtarget(target_destination) : "Kill Target"
 ]
 
 @BaseClass = RenderFxChoices
@@ -1723,16 +1731,13 @@
 // USE_OFF Will disable classic mode.
 // USE_ON Will enable Classic mode.
 // USE_TOGGLE Will toggle Classic mode.
-@PointClass base(Targetname, Master) color(0 255 255) = config_classic_mode : "Map ClassicMode configuration"
+@PointClass base(Targetname, Master, Delay) color(0 255 255) = config_classic_mode : "Map ClassicMode configuration"
 [
     spawnflags(flags) =
     [
         // if set. the current map will be restarted to apply the changes.
         1 : "Restart now" : 0
     ]
-
-    // Delay before trigger anything.
-    delay(float) : "Delay before trigger"
 
     // Called when classic mode is toggled.
     target_toggle(target_destination) : "Target on change success (USE_TYPE)"
@@ -1767,21 +1772,25 @@
 
 // -Mikk A custom entity that allow mappers to precache almost anything
 // syntax:
-// key -> thing to precache.
-// value -> option to precache.
+// key -> option to precache.
+// value -> thing to precache.
 // Options:
 // "model" used to precache models and sprites.
-// SAMPLE: "models/barney.mdl" "model"
+// SAMPLE: "model#X" "models/barney.mdl"
 
 // "entity" used to precache monsters and any other entities including custom entities.
-// SAMPLE: "monster_zombie_hev" "entity"
+// SAMPLE: "entity#X" "monster_zombie_hev"
 
 // "sound" used to precache a sound inside "sound/" folder. do not specify that folder!
-// SAMPLE: "ambience/background_sex.wav" "sound"
+// SAMPLE: "sound#X" "ambience/background_sex.wav"
 
-// "generic" used to precache anything else. up to you for testing. for skybox you have to precache all files individually
-// SAMPLE: "gfx/env/mysky_bk.tga" "generic"
-@PointClass color(165 185 160) = config_map_precache : "Map precache configuration"[]
+// "generic" used to precache anything else client side as well
+// SAMPLE: "generic#X" "gfx/env/mysky_bk.tga"
+@PointClass color(165 185 160) = config_map_precache : "Map precache configuration"
+[
+    entity#1(string) : "monster_headcrab"
+    entity#2(string) : "monster_barney"
+]
 
 // -Mikk A custom entity that allow mappers to configure Survival Mode.
 // Trigger the entity by using USE_TYPE.
@@ -1790,11 +1799,8 @@
 // USE_TOGGLE Will toggle survival mode.
 // If the entity is triggered before it reach the limit of mp_survival_startdelay then it is set to 0
 // master will lock the entity from being triggered n/or from start survival mode by its mp_survival_startdelay
-@PointClass base(Targetname, Master) color(0 255 255) = config_survival_mode : "Map SurvivalMode configuration"
+@PointClass base(Targetname, Master, Delay) color(0 255 255) = config_survival_mode : "Map SurvivalMode configuration"
 [
-    // Delay before trigger anything.
-    delay(float) : "Delay before trigger"
-
     // Called when survival mode is toggled.
     target_toggle(target_destination) : "Target on change success (USE_TYPE)"
 
@@ -2047,6 +2053,187 @@
     [
         1 : "Start Off"     : 0
     ]
+]
+
+@PointClass base(Targetname, Appearflags, TargetMMStyle, Master, Delay) size(-4 -4 -4, 4 4 4) color(255 0 0) = env_effect : "Spawn Effects"
+[
+    netname(target_destination) : "Target when locked by master (USE_TYPE)"
+    spawnflags(flags) =
+    [
+        1 : "[Sprite]" : 0
+        2 : "[Tar Explosion]" : 0
+        4 : "[Teleport]" : 0
+        8 : "[Sprite Drops]" : 0
+        16 : "[Funnel]" : 0
+        32 : "[Fade Screen]" : 0
+        64 : "[Sound FX]" : 0
+        128 : "[Beam Disk]" : 0
+        256 : "[Tracer]" : 0
+		512 : "[Streak Splash]" : 0
+		1024 : "[Implosion]" : 0
+        2048 : "Not in Deathmatch" : 0
+        4096 : "[Smoke]" : 0
+        8192 : "[Beam Cylinder]" : 0
+    ]
+    sprite_indelay(float) : "[Sprite] Appear delay" : 0.0
+    sprite_framerate(float) : "[Sprite] Framerate" : 10.0
+    sprite_model(sprite) : "[Sprite] Model" : "sprites/exit1.spr"
+    sprite_scale(float) : "[Sprite] Scale" : 1.0
+    sprite_vp_type(choices) : "[Sprite] Draw Type / Orientation" : 0 =
+    [
+        0: "Default"
+        3: "Parallel"
+        1: "Parallel Upright"
+        5: "Parallel Orientated"
+        2: "Facing Upright"
+        4: "Orientated"
+    ]
+    sprite_rendercolor(color255) : "[Sprite] FX Color (R G B)" : "255 255 255"
+    sprite_renderamt(integer) : "[Sprite] FX Amount (1 - 255)" : 255
+    sprite_renderfx(choices) : "[Sprite] Render FX" : 0 =
+    [
+        0: "Normal"
+        1: "Slow Pulse"
+        2: "Fast Pulse"
+        3: "Slow Wide Pulse"
+        4: "Fast Wide Pulse"
+        9: "Slow Strobe"
+        10: "Fast Strobe"
+        11: "Faster Strobe"
+        12: "Slow Flicker"
+        13: "Fast Flicker"
+        5: "Slow Fade Away"
+        6: "Fast Fade Away"
+        7: "Slow Become Solid"
+        8: "Fast Become Solid"
+        14: "Constant Glow"
+        15: "Distort"
+        16: "Hologram (Distort + fade)"
+        17: "Dead Player (DONT USE!)"
+        18: "Explode (Garg Like)"
+        19: "Glow Shell"
+        20: "ClampMinScale (Sprites)"
+    ]
+    sprite_rendermode(choices) : "[Sprite] Render Mode" : 5 =
+    [
+        0: "Normal"
+        1: "Color"
+        2: "Texture"
+        3: "Glow"
+        4: "Solid"
+        5: "Additive"
+    ]
+    sprite_fadeout(choices) : "[Sprite] Fade out" : 0 =
+    [
+        0: "Fade out disappear"
+        1: "Just disappear"
+    ]
+    sprite_duration(float) : "[Sprite] Disappear delay" : 1.0
+
+    quaketar_delay(float) : "[Tar Explosion] Appear delay" : 0.0
+
+    teleport_delay(float) : "[Teleport] Appear delay" : 0.0
+
+    spritedrop_delay(float) : "[Sprite Drops] Appear delay" : 0.0
+    spritedrop_model(sprite) : "[Sprite Drops] Model" : "sprites/hotglow.spr"
+    spritedrop_life(integer) : "[Sprite Drops] Life" : 0 // Time before disapear after lost velocity
+    spritedrop_scale(integer) : "[Sprite Drops] Scale" : 1
+    spritedrop_count(integer) : "[Sprite Drops] Count" : 0 // Amount of sprites to create
+    spritedrop_speedNoise(integer) : "[Sprite Drops] Expand" : 8 // Velocity of expansion
+
+    funnel_delay(float) : "[Funnel] Appear delay" : 0.0
+    funnel_model(sprite) : "[Funnel] Model" : "sprites/glow01.spr"
+    funnel_flag(choices) : "[Funnel] Reverse" : 0 =
+    [
+        0: "No"
+        1: "Yes"
+    ]
+
+    fadescreen_delay(float) : "[Fade Screen] Appear delay" : 0.0
+    fadescreen_radius(integer) : "[Fade Screen] Players in radius" : 512
+    fadescreen_fadein(float) : "[Fade Screen] Fade in" : 0.2
+    fadescreen_holdtime(float) : "[Fade Screen] Hold time" : 0.2
+    fadescreen_fadeout(float) : "[Fade Screen] Fade out" : 0.5
+    fadescreen_renderamt(integer) : "[Fade Screen] Fade alpha" : 100
+    fadescreen_color(color255) : "[Fade Screen] Fade Color (R G B)" : "0 255 0"
+
+    sound_delay(float) : "[Sound FX] Appear delay" : 0.0
+    sound_message(sound) : "[Sound FX] Sound file" : "debris/alien_teleport.wav"
+    sound_volume(integer) : "[Sound FX] Volume 0-10" : 10
+    sound_attenuation(Choices) : "[Sound FX] Sound Radius" : 0 =
+    [
+        0 : "Small Radius"
+        1 : "Medium Radius"
+        2 : "Large  Radius"
+        3 : "Play Everywhere"
+    ]
+
+    beamdisk_delay(float) : "[Beam Disk] Appear delay" : 0.0
+    beamdisk_model(sprite) : "[Beam Disk] Model" : "sprites/laserbeam.spr"
+    beamdisk_radius(float) : "[Beam Disk] Radius" : 300.0
+    beamdisk_holdtime(integer) : "[Beam Disk] Life time (1=0.1*)" : 10
+    beamdisk_renderamt(integer) : "[Beam Disk] FX Amount (1 - 255)" : 255
+    beamdisk_frame(integer) : "[Beam Disk] Starting frame" : 0
+    beamdisk_color(color255) : "[Beam Disk] Color (R G B)" : "0 255 0"
+
+    tracer_delay(float) : "[Tracer] Appear delay" : 0.0
+    tracer_color(Choices) : "[Tracer] Color" : 0 =
+    [
+        0 : "White"
+        1 : "Red"
+        2 : "Green"
+        3 : "Blue"
+        4 : "Yellow"
+        5 : "Orange"
+        6 : "Cream 6"
+        7 : "Dark blue"
+        8 : "Cream 8"
+        9 : "Cream 9"
+        10 : "Brown"
+        11 : "Cream 11"
+    ]
+    tracer_velocity(string) : "[Tracer] Velocity (X Y Z)" : "0 0 180"
+    tracer_holdtime(integer) : "[Tracer] Hold time" : 32
+    tracer_length(integer) : "[Tracer] Sprite Length" : 32
+
+    splash_delay(float) : "[Streak Splash] Appear delay" : 0.0
+    splash_velocity(string) : "[Streak Splash] Velocity (X Y Z)" : "0 0 180"
+    splash_color(Choices) : "[Streak Splash] Color" : 0 =
+    [
+        0 : "White"
+        1 : "Red"
+        2 : "Green"
+        3 : "Blue"
+        4 : "Yellow"
+        5 : "Orange"
+        6 : "Cream 6"
+        7 : "Dark blue"
+        8 : "Cream 8"
+        9 : "Cream 9"
+        10 : "Brown"
+        11 : "Cream 11"
+    ]
+    splash_speed(integer) : "[Streak Splash] Speed" : 1
+    splash_speednoise(integer) : "[Streak Splash] Noise speed" : 128
+    splash_count(integer) : "[Streak Splash] Number of effects" : 120
+
+    implosion_delay(float) : "[Implosion] Appear delay" : 0.0
+    implosion_radius(integer) : "[Implosion] Radius" : 255
+    implosion_count(integer) : "[Implosion] Number of effects" : 120
+    implosion_life(integer) : "[Implosion] Speed" : 30
+
+    smoke_model(sprite) : "[Smoke] Model" : "sprites/steam1.spr"
+	smoke_framerate(integer) : "[Smoke] Framerate" : 15
+	smoke_scale(integer) : "[Smoke] Scale" : 10
+
+	cylinder_flags(Choices) : "[Beam Cylinder] Color" : 0 =
+    [
+        0 : "Flat cylinder"
+        1 : "Fat cylinder"
+    ]
+    cylinder_color(color255) : "[Beam Cylinder] Color (R G B)" : "0 255 0"
+    cylinder_renderamt(integer) : "[Beam Cylinder] FX Amount (1 - 255)" : 255
+	cylinder_radius(float) : "[Beam Cylinder] Radius" : 128
 ]
 
 @PointClass base(Targetname) size(-12 -12 -12, 12 12 12) color(255 220 15) = env_explosion : "Explosion"
@@ -3365,15 +3552,12 @@
 ]
 
 // -Mikk new entity replacemet for game_text and env_message with lot of new additions.
-@PointClass base(BaseGameText) color(192 255 0) = game_text_custom : "Custom Text Messages"
+@PointClass base(BaseGameText, Delay) color(192 255 0) = game_text_custom : "Custom Text Messages"
 [
     target(target_destination) : "Target (USE_TYPE)"
 
     // Legacy
     killtarget(target_destination) : "Kill Target"
-
-    // Legacy
-    delay(float) : "Delay before kill/target" : 0.0
 
     // Enum of supported styles of text.
     effect(Choices) : "Text Effect" : 0 =
@@ -3416,13 +3600,6 @@
 
         // Shows the text as the server's hostname but only apply to the score board popup
         10 : "Print scoreboard" 
-        
-        // Shows a sprite at the location of the entity. "message" must be the sprite file.
-        // While languages should be a frame of it. keyvalues are also the sames as env_sprite. -TODO
-        // 11 : "Sprite"
-        
-        // Shows a text pre-defined as a subtitle. set "color" and "holdtime" for coloring and time respectively. -TODO
-        // 12 : "Caption"
     ]
 
     spawnflags(flags) =
@@ -3430,6 +3607,10 @@
         // If set. the target will be fired for every player that sees the message.
         // Otherwise the target is fired once every time the entity is fired.
         4: "Fire per player" : 0
+        
+        // If set. the entity will be removed from world after being triggered once
+        // if locked by multisource the entity won't be removed
+        8: "Play once" : 0
     ]
 
     // env_message's legacy
@@ -3471,10 +3652,6 @@
     key_from_entity(string) : "!value custom keyvalue from entity"
     // string "!value" will be replaced for what that custom keyvalue from that entity contains.
 
-    // Place here a brush model "*" to add language. used by the plugin to replace CTriggers "message" keyvalue.
-    // when the trigger_once/multiple doesn't have a "target" set. you must set a "targetname" to your multi_language entity.
-    // model(string) : "model (PLUGIN USES)"
-    
     // Supported languages.
     message(string) : "English"
     message_spanish(string) : "Spanish Latam"
@@ -7827,21 +8004,22 @@
     // Default.
     // "m_iszScriptFile" "mikk/utils"
 
-    // -Mikk make a monster be angry and target for a certain player.
-    // "m_iszScriptFunctionName" "UTILS::MonsterAngry"
-    // "m_iMode" "1"
-    // use in conjunction with game_trigger_iterator. caller must be the monster and activator must be the player.
 
     // -Mikk get players information
+    // ==============================================================================================================================
+	
     // "m_iszScriptFunctionName" "UTILS::GetPlayerData"
-    // "m_iMode" "1"
-    // use trigger_condition on the player target to read its value.
+    // "m_iMode" "2"
+	// "netname" "your trigger_condition entity"
+	// your trigger_condition entity will be fired for each player connected. so verify !activator and do your things.
+	// The trigger_script is in think mode but it will think only once every time it is fired.
     // "$s_steamid" > its STEAM ID
     // "$i_adminlevel" > its AdminLevel, 0 = Not an administrator, 1 = Server administrator, 2 = Server owner (applies to a listenserver host player)
     // "$i_hassuit" > player has suit 0 = doesn't have a suit 1 = has a suit
     // "$i_hascorpse" > dead player has a dead body, 0 = doesn't have a corpse, 1 = has a corpse
     // "i_flashlight" > if player has flashlight on, 0 = is OFF, 1 = is ON
 
+    // ==============================================================================================================================
 
 
     // End of trigger_script callbacks
