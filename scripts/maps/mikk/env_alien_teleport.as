@@ -129,7 +129,7 @@ namespace env_alien_teleport
 
                 CBaseEntity@ pXenMaker = g_EntityFuncs.FindEntityByTargetname( pXenMaker, ( self.pev.message ) );
                 
-                if( pXenMaker !is null && pXenMaker.pev.ClassNameIs( 'env_xenmaker' ) )
+                if( pXenMaker !is null /*&& pXenMaker.pev.ClassNameIs( 'env_xenmaker' )*/ )
                 {
                     Vector VecOld = pXenMaker.pev.origin;
 
