@@ -141,7 +141,7 @@ final class CUtils
     }
 
     bool ShowDebugs = false;
-    void DebugMessage( const string& in szMessage ) { if( ShowDebugs ) { g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, szMessage + "\n" ); } }
+    void DebugMessage( const string& in szMessage ) { if( ShowDebugs ) { g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, szMessage + "\n" ); } else { g_Game.AlertMessage( at_console, szMessage + "\n" ); } }
     void DebugMode( const bool& in blmode = false ) { ShowDebugs = blmode; }
 
     string GetCKV( CBaseEntity@ pEntity, string szKey )
@@ -239,6 +239,120 @@ final class CUtils
         }
         return false;
     }
+
+    string RIPENTDebugger;
+
+    void RipentShowInfo( CBasePlayer@ pPlayer )
+    {
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed initialised entities info at your console.\n" );
+
+		// If we reached the limit replace and send again
+		while( RIPENTDebugger != '' )
+		{
+			g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  RIPENTDebugger.SubString( 0, 68 ) );
+
+			if( RIPENTDebugger.Length() <= 68 ) RIPENTDebugger = '';
+			else RIPENTDebugger = RIPENTDebugger.SubString( 68, RIPENTDebugger.Length() );
+		}
+
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
+    }
+
+    bool LoadEntities( const string& in EntFileLoadText = 'scripts/maps/store/sex.txt' )
+    {
+		RIPENTDebugger = "";
+
+        string line, key, value;
+        bool match = false;
+        dictionary g_KeyValues;
+
+        File@ pFile = g_FileSystem.OpenFile( EntFileLoadText, OpenFile::READ );
+
+        if( pFile is null or !pFile.IsOpen() )
+        {
+            RIPENTDebugger = RIPENTDebugger + "RIPENT: Failed to open " + EntFileLoadText + " no entities initialised!\n";
+            return false;
+        }
+
+        while( !pFile.EOFReached() )
+        {
+            pFile.ReadLine( line );
+
+            if( line.Length() < 1 )
+            {
+                continue;
+            }
+
+            if( line[0] == '/' and line[1] == '/' )
+            {
+				RIPENTDebugger = RIPENTDebugger + line + "\n";
+                continue;
+            }
+
+            if( line == '"match"' )
+            {
+                match = true;
+            }
+
+            if( line[0] == '{' or line[0] == '}' )
+            {
+                RIPENTDebugger = RIPENTDebugger + string( line[0] ) + '\n';
+
+                if( line[0] == '}' )
+                {
+                    if( match )
+                    {
+                        match = false;
+                        continue;
+                    }
+
+                    CBaseEntity@ pInitialized = g_EntityFuncs.CreateEntity( string( g_KeyValues[ "classname" ] ), g_KeyValues, true );
+
+                    if( pInitialized !is null )
+                    {
+                        RIPENTDebugger = RIPENTDebugger + "RIPENT: Entity '" + string( g_KeyValues[ "classname" ] ) + "' initialised.\n";
+                    }
+                    else
+                    {
+                        RIPENTDebugger = RIPENTDebugger + "RIPENT: A entity was not initialised.\n";
+                    }
+
+                    RIPENTDebugger = RIPENTDebugger + "RIPENT: Clearing Dictionary...\n";
+                    g_KeyValues.deleteAll();
+                }
+                continue;
+            }
+
+            key = line.SubString( 0, line.Find( '" "') );
+            key.Replace( '"', '' );
+
+            value = line.SubString( line.Find( '" "'), line.Length() );
+            value.Replace( '" "', '' );
+            value.Replace( '"', '' );
+
+            if( match )
+            {
+                CBaseEntity@ pMatch = null;
+
+                while( ( @pMatch = g_EntityFuncs.FindEntityByString( pMatch, key, value ) ) !is null )
+                {
+                    if( !pMatch.GetCustomKeyvalues().HasKeyvalue( "$i_ripent" ) )
+                    {
+                        g_EntityFuncs.Remove( pMatch );
+                        RIPENTDebugger = RIPENTDebugger + 'RIPENT: Matched and removed entity with key and value ';
+                    }
+                }
+            }
+
+            RIPENTDebugger = RIPENTDebugger + '"'+key+'" "'+value+'"\n';
+
+            g_KeyValues[ key ] = value;
+        }
+        pFile.Close();
+
+        RIPENTDebugger = RIPENTDebugger + "\nRIPENT Script Utility created by Mikk https://github.com/Mikk155\nSpecial thanks to Gaftherman https://github.com/Gaftherman\n\n";
+        return true;
+    }
 }
 // End of final class
 
@@ -317,7 +431,7 @@ mixin class ScriptBaseLanguages
 
     string_t ReadLanguages( CBasePlayer@ pPlayer )
     {
-        string StrLanguage = pPlayer.GetCustomKeyvalues().GetKeyvalue( "$s_language" ).GetString();
+        string CurrentLanguage = g_Util.GetCKV( pPlayer, "$s_language" );
 
         dictionary Languages =
         {
@@ -337,12 +451,12 @@ mixin class ScriptBaseLanguages
             { "albanian", string( message_albanian ).IsEmpty() ? self.pev.message : message_albanian }
         };
         
-        if( StrLanguage == "" || StrLanguage == String::INVALID_INDEX )
+        if( CurrentLanguage == "" || CurrentLanguage.IsEmpty() )
         {
             return string_t( self.pev.message );
         }
 
-        return string_t( Languages[ StrLanguage ] );
+        return string_t( Languages[ CurrentLanguage ] );
     }
 }
 // End of mixin class
@@ -428,10 +542,17 @@ mixin class ScriptBaseCustomEntity
 
 bool blClientSayHook = g_Hooks.RegisterHook( Hooks::Player::ClientSay, @UTILS::ClientSay );
 bool blClientPutHook = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @UTILS::ClientPutInServer );
-// g_Util.ScriptAuthor.insertLast( "Script: utils\nAuthors:\nGithub: github.com/Mikk155\ngithub.com/Gaftherman\ngithub.com/JulianR0\ngithub.com/RedSprend\nDescription: Lot of utility scripts.\n");
+bool blMapchangeHook = g_Hooks.RegisterHook( Hooks::Player::MapChange, @UTILS::MapChange );
 
 namespace UTILS
 {
+    HookReturnCode MapChange()
+    {
+		g_Util.ScriptAuthor.resize(0);
+		g_Util.MapAuthor.resize(0);
+		g_Util.ScriptAuthor.insertLast( "Script: utils\nAuthors:\nGithub: github.com/Mikk155\ngithub.com/Gaftherman\ngithub.com/JulianR0\ngithub.com/RedSprend\nDescription: Lot of utility scripts.\n");
+	}
+
     HookReturnCode ClientSay( SayParameters@ pParams )
     {
         CBasePlayer@ pPlayer = pParams.GetPlayer();
@@ -481,7 +602,7 @@ namespace UTILS
         g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
     }
 
-    void GetPlayerData( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
+    void GetPlayerData( CBaseEntity@ self )
     {
         for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
         {
@@ -494,34 +615,10 @@ namespace UTILS
                 g_Util.SetCKV( pPlayer, "$i_adminlevel", string( g_PlayerFuncs.AdminLevel( pPlayer ) ) );
                 g_Util.SetCKV( pPlayer, "$i_hascorpse", string( pPlayer.GetObserver().HasCorpse() ) );
                 g_Util.SetCKV( pPlayer, "$i_flashlight", string( pPlayer.FlashlightIsOn() ) );
+				g_Util.Trigger( self.pev.netname, pPlayer, self, USE_TOGGLE, 0.0f );
             }
         }
-    }
-
-    /*void MonsterAngry( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
-    {
-        if( pActivator !is null
-        and pCaller !is null
-        and pActivator.IsAlive() )
-        {
-            CBaseMonster@ pNPC = cast<CBaseMonster@>(pCaller);
-
-            pNPC.m_hEnemy = @cast<CBasePlayer@>(pActivator);
-        }
-    }*/
-
-    void PlayerChaseMode( CBaseEntity@ pTriggerScript )
-    {
-        for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
-        {
-            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
-
-            if( pPlayer !is null && pPlayer.GetObserver().IsObserver() )
-            {
-                //pPlayer.GetObserver().SetMode( ( self.pev.frags == 0 ) ? OBS_CHASE_FREE : );
-                pPlayer.GetObserver().SetObserverModeControlEnabled( false );
-            }
-        }
+		self.Use( null, null, USE_OFF, 0.0f );
     }
 }
 // End of namespace.
