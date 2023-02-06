@@ -36,22 +36,22 @@ namespace config_map_precache
                 string Key = string( strKeyValues[ui] );
                 string Value = string( g_PrecacheKeys[ Key ] );
 
-                if( Value == 'model' )
+                if( Key.StartsWith( 'model' ) )
                 {
-                    g_Game.PrecacheModel( Key );
+                    g_Game.PrecacheModel( Value );
                 }
-                else if( Value == 'entity' )
+                else if( Key.StartsWith( 'entity' ) )
                 {
-                    g_Game.PrecacheOther( Key );
+                    g_Game.PrecacheOther( Value );
                 }
-                else if( Value == 'sound' )
+                else if( Key.StartsWith( 'sound' ) )
                 {
-                    g_Game.PrecacheGeneric( 'sound/' + Key );
-                    g_SoundSystem.PrecacheSound( Key );
+                    g_Game.PrecacheGeneric( 'sound/' + Value );
+                    g_SoundSystem.PrecacheSound( Value );
                 }
-                else if( Value == 'generic' )
+                else if( Key.StartsWith( 'generic' ) )
                 {
-                    g_Game.PrecacheGeneric( Key );
+                    g_Game.PrecacheGeneric( Value );
                 }
             }
 
@@ -69,8 +69,7 @@ namespace config_map_precache
             g_Util.DebugMessage( "[config_map_precache] Precaching..." );
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
-                string Key = string( strKeyValues[ui] );
-                g_Util.DebugMessage( "'" + Key + "'" );
+                g_Util.DebugMessage( "'" + string( g_PrecacheKeys[ string( strKeyValues[ui] ) ] ) + "'" );
             }
             g_Util.DebugMessage( "[config_map_precache] Map precached configuration. Removing entity..." );
             g_EntityFuncs.Remove( self );
