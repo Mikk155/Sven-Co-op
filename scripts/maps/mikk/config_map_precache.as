@@ -39,6 +39,7 @@ namespace config_map_precache
                 if( Key.StartsWith( 'model' ) )
                 {
                     g_Game.PrecacheModel( Value );
+                    g_Game.PrecacheGeneric( Value );
                 }
                 else if( Key.StartsWith( 'entity' ) )
                 {
