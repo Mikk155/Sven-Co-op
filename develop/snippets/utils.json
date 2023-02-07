@@ -11,6 +11,12 @@
 		"body" : [ "g_Util.IsStringInFile( const string& in szPath, string& in szComparator )" ],
 		"description" : "Return true if 'szComparator' exist in the file 'szPath'"
 	},
+	"int g_Util.GetNumberOfEntities( const string& in szClassname )":
+	{
+		"prefix": "g_Util.GetNumberOfEntities( const string& in szClassname )",
+		"body" : [ "g_Util.GetNumberOfEntities( const string& in szClassname )" ],
+		"description" : "Return the current number of entities that exist in the world with that classname"
+	},
 	"void g_Util.SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )":
 	{
 		"prefix": "g_Util.SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )",
