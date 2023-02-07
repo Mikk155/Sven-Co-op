@@ -80,6 +80,12 @@ namespace config_classic_mode
 
         void Spawn()
         {
+			if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
+			{
+				g_Util.DebugMessage( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
+				g_EntityFuncs.Remove( self );
+			}
+
             if( g_ClassicMode.IsEnabled() )
             {
                 g_Util.DebugMessage( "[config_classic_mode]" );
