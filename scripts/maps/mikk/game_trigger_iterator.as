@@ -14,10 +14,16 @@ namespace game_trigger_iterator
         );
     }
 
-    class entity : ScriptBaseEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle activator = null;
         EHandle caller = null;
+
+        bool KeyValue( const string& in szKey, const string& in szValue )
+        {
+            ExtraKeyValues( szKey, szValue );
+            return true;
+        }
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
@@ -67,13 +73,15 @@ namespace game_trigger_iterator
 
             g_Util.Trigger
 			(
-				self.pev.target,
+				( master() ) ? self.pev.noise : self.pev.target,
 				( activator.GetEntity() is null ) ? self : activator.GetEntity(),
 				( caller.GetEntity() is null ) ? self : caller.GetEntity(),
 				( self.pev.frags == 1 ) ? USE_OFF :
 				( self.pev.frags == 2 ) ? USE_ON :
                 ( self.pev.frags == 3 ) ? USE_TOGGLE :
-                useType, self.pev.health
+                ( self.pev.frags == 4 ) ? ( useType == USE_ON
+				|| useType == USE_TOGGLE ) ? USE_OFF :
+                useType, delay
             );
         }
     }
