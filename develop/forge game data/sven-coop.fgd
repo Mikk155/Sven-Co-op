@@ -62,6 +62,13 @@
 @BaseClass = Mandatory
 [
     ondestroyfn(string) : "OnDestroy Function"
+	
+	// -Mikk Since it is game-reserved thing and will be applied to anything,
+	// i've mode it here so mappers do not accidentaly set that flag to any entities.
+    spawnflags(flags) =
+    [
+        2048 : "Not in Deathmatch(DO NOT USE)" : 0
+    ]
 ]
 
 //
@@ -1788,8 +1795,64 @@
 // SAMPLE: "generic#X" "gfx/env/mysky_bk.tga"
 @PointClass color(165 185 160) = config_map_precache : "Map precache configuration"
 [
-    entity#1(string) : "monster_headcrab"
-    entity#2(string) : "monster_barney"
+	// These are saved into a dictionary. i don't know if it has a limit but i've used a entity with +30 keys and works fine for me.
+
+	// Relative to svencoop/
+    model#0(studio): "Precache model"
+    model#1(studio): "Precache model"
+    model#2(studio): "Precache model"
+    model#3(studio): "Precache model"
+    model#4(studio): "Precache model"
+    model#5(studio): "Precache model"
+    model#6(studio): "Precache model"
+    model#7(studio): "Precache model"
+    model#8(studio): "Precache model"
+    model#9(studio): "Precache model"
+    model#10(sprite): "Precache sprites"
+    model#11(sprite): "Precache sprites"
+    model#12(sprite): "Precache sprites"
+    model#13(sprite): "Precache sprites"
+    model#14(sprite): "Precache sprites"
+    model#15(sprite): "Precache sprites"
+    model#16(sprite): "Precache sprites"
+    model#17(sprite): "Precache sprites"
+    model#18(sprite): "Precache sprites"
+    model#19(sprite): "Precache sprites"
+
+    entity#0(string) : "Precache Entities"
+    entity#1(string) : "Precache Entities"
+    entity#2(string) : "Precache Entities"
+    entity#3(string) : "Precache Entities"
+    entity#4(string) : "Precache Entities"
+    entity#5(string) : "Precache Entities"
+    entity#6(string) : "Precache Entities"
+    entity#7(string) : "Precache Entities"
+    entity#8(string) : "Precache Entities"
+    entity#9(string) : "Precache Entities"
+
+	// Relative to sound/
+    sound#0(sound) : "Precache Sounds"
+    sound#1(sound) : "Precache Sounds"
+    sound#2(sound) : "Precache Sounds"
+    sound#3(sound) : "Precache Sounds"
+    sound#4(sound) : "Precache Sounds"
+    sound#5(sound) : "Precache Sounds"
+    sound#6(sound) : "Precache Sounds"
+    sound#7(sound) : "Precache Sounds"
+    sound#8(sound) : "Precache Sounds"
+    sound#9(sound) : "Precache Sounds"
+
+	// Relative to svencoop/
+    generic#0(string) : "Precache Generic stuff"
+    generic#1(string) : "Precache Generic stuff"
+    generic#2(string) : "Precache Generic stuff"
+    generic#3(string) : "Precache Generic stuff"
+    generic#4(string) : "Precache Generic stuff"
+    generic#5(string) : "Precache Generic stuff"
+    generic#6(string) : "Precache Generic stuff"
+    generic#7(string) : "Precache Generic stuff"
+    generic#8(string) : "Precache Generic stuff"
+    generic#9(string) : "Precache Generic stuff"
 ]
 
 // -Mikk A custom entity that allow mappers to configure Survival Mode.
@@ -2071,7 +2134,6 @@
         256 : "[Tracer]" : 0
 		512 : "[Streak Splash]" : 0
 		1024 : "[Implosion]" : 0
-        2048 : "Not in Deathmatch" : 0
         4096 : "[Smoke]" : 0
         8192 : "[Beam Cylinder]" : 0
     ]
@@ -3672,25 +3734,26 @@
 // -Mikk entity that will fire its target with the activator and caller that you set.
 // "!activator" will pass the current activator.
 // "!caller" will pass the current caller.
+// Specify a entity's targetname to find it and pass it through.
 // The current USE_TYPE is also passed through if not specified.
-@PointClass base(Targetname) color(165 120 255) = game_trigger_iterator : "Iterate activator and caller"
+// If the entity is locked by its master then trigger "noise" instead. with the config you set as well.
+@PointClass base(Targetname, TargetMMStyle, Delay, Master) color(165 120 255) = game_trigger_iterator : "Iterate activator and caller"
 [
-    // Entity to trigger
-    target(target_destination) : "Target (USE_TYPE)"
+    // Entity to trigger if locked by master
+    noise(target_destination) : "Fire when locked by master (USE_TYPE)"
     // Entity to set as activator
-    netname(target_destination) : "CBaseEntity@ pActivator" : "!activator"
+    netname(target_destination) : "!activator" : "!activator"
     // Entity to set as caller
-    message(target_destination) : "CBaseEntity@ pCaller" : "!caller"
+    message(target_destination) : "!caller" : "!caller"
     // Trigger state to set
     frags(choices) : "USE_TYPE useType" : 0 =
     [
-        0 : "Current USE_TYPE"
-        1 : "USE_OFF"
-        2 : "USE_ON"
-        3 : "USE_TOGGLE"
+        0 : "Same as input"
+        1 : "Off"
+        2 : "On"
+        3 : "Toggle"
+        4 : "Opposite of input"
     ]
-    // Delay before trigger the entity
-    health(float) : "float flValue"
 ]
 
 // -Mikk A custom entity that allow mappers to create maps with "real time" set. meant to be used for changing map events or even light style (sun/moon)
@@ -4692,7 +4755,6 @@
     spawnflags(flags) =
     [
         1 : "Initially dark" : 0
-        2048 : "Not in Deathmatch" : 0
     ]
 ]
 
@@ -4733,7 +4795,6 @@
     spawnflags(flags) =
     [
         1 : "Initially dark" : 0
-        2048 : "Not in Deathmatch" : 0
     ]
 ]
 
@@ -4819,7 +4880,6 @@
     spawnflags(flags) =
     [
         1 : "Initially dark" : 0
-        2048 : "Not in Deathmatch" : 0
     ]
 ]
 
@@ -6303,63 +6363,64 @@
     loadtime(string) : "Reload delay" : "0"
 ]
 
+// Currently WiP -TODO
 // -Mikk2 ClientSayHook as a entity.
-@PointClass base(Targetname, Master) = player_talk : "Controlls client's chat"
-[
-    spawnflags(flags) =
-    [
-        // If set. requires trigger the entity to start thinking
-        1: "Start off" : 0
+// @PointClass base(Targetname, Master) = player_talk : "Controlls client's chat"
+// [
+    // spawnflags(flags) =
+    // [
+        // // If set. requires trigger the entity to start thinking
+        // 1: "Start off" : 0
 
-        // If set. only TEAM messages will be taken and default messages will be deleted.
-        2: "Team only" : 0
-    ]
+        // // If set. only TEAM messages will be taken and default messages will be deleted.
+        // 2: "Team only" : 0
+    // ]
 
-    // if 1 = ShouldHide is set to true. player's message will be hidden from chat.
-    should_hide(choices) : "Hide message" : 0 =
-    [
-        0 : "No"
-        1 : "Yes"
-    ]
+    // // if 1 = ShouldHide is set to true. player's message will be hidden from chat.
+    // should_hide(choices) : "Hide message" : 0 =
+    // [
+        // 0 : "No"
+        // 1 : "Yes"
+    // ]
 
-    // If set. it is the name of a entity to modify its value.
-    sendstring_target(target_destination) : "Target entity"
+    // // If set. it is the name of a entity to modify its value.
+    // sendstring_target(target_destination) : "Target entity"
     
-    // Paste the string of what the player said in this key value.
-    sendstring_keyvalue(string) : "Key to modify"
+    // // Paste the string of what the player said in this key value.
+    // sendstring_keyvalue(string) : "Key to modify"
     
-    // The message must contain this to activate the entity. if empty = ALL player's messages
-    text_contain(string) : "Arg0"
-    text_contain1(string) : "Arg1"
-    text_contain2(string) : "Arg2"
+    // // The message must contain this to activate the entity. if empty = ALL player's messages
+    // text_contain(string) : "Arg0"
+    // text_contain1(string) : "Arg1"
+    // text_contain2(string) : "Arg2"
 
-    fire_when(choices) : "Fire target when" : 0 =
-    [
-            // Fire if the whole sentence contains at least Arg0 anywhere.
-        0 : "Full sentence has (Arg0)"
+    // fire_when(choices) : "Fire target when" : 0 =
+    // [
+            // // Fire if the whole sentence contains at least Arg0 anywhere.
+        // 0 : "Full sentence has (Arg0)"
 
-            // Fire when the first argument is equal to Arg0
-        1 : "First argument is (Arg0)"
+            // // Fire when the first argument is equal to Arg0
+        // 1 : "First argument is (Arg0)"
 
-            // Fire when the sentence is Arg0
-        2 : "full sentence is (Arg0)"
+            // // Fire when the sentence is Arg0
+        // 2 : "full sentence is (Arg0)"
 
-            // Fire when the sentence is Arg0 and Arg1
-        3 : "full sentence is (Arg0 & Arg1)"
+            // // Fire when the sentence is Arg0 and Arg1
+        // 3 : "full sentence is (Arg0 & Arg1)"
 
-            // Fire when the sentence is Arg0 and Arg1 and Arg2
-        4 : "full sentence is (Arg0 & Arg1 & Arg2)"
-    ]
+            // // Fire when the sentence is Arg0 and Arg1 and Arg2
+        // 4 : "full sentence is (Arg0 & Arg1 & Arg2)"
+    // ]
 
-    target(target_destination) : "Target (USE_TYPE)"
+    // target(target_destination) : "Target (USE_TYPE)"
 
-    // if set. this argument will be censured from the chat.
-    censure_argument(string) : "Censure this Argument"
+    // // if set. this argument will be censured from the chat.
+    // censure_argument(string) : "Censure this Argument"
     
-    // it is a filter for players. if 0 = no filter.
-    // Set to 1 and only players with custom keyvalue "$i_player_talk_level" in a value of "1" will be taken. else will be filtred.
-    player_target(integer) : "Required level" : 0
-]
+    // // it is a filter for players. if 0 = no filter.
+    // // Set to 1 and only players with custom keyvalue "$i_player_talk_level" in a value of "1" will be taken. else will be filtred.
+    // player_target(integer) : "Required level" : 0
+// ]
 
 @PointClass base(Targetname) size(-16 -16 -16, 16 16 16) color(96 32 128) = player_weaponstrip : "Strips player's weapons"
 [
