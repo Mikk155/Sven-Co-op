@@ -353,6 +353,21 @@ final class CUtils
         RIPENTDebugger = RIPENTDebugger + "\nRIPENT Script Utility created by Mikk https://github.com/Mikk155\nSpecial thanks to Gaftherman https://github.com/Gaftherman\n\n";
         return true;
     }
+
+	int GetNumberOfEntities( const string& in szClassname )
+	{
+		int NumberOfEntities = 0;
+
+		CBaseEntity@ pEntity = null;
+
+		while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, szClassname ) ) !is null )
+		{
+			NumberOfEntities += 1;
+		}
+
+        g_Util.DebugMessage( "g_Util.GetNumberOfEntities:\nFound '" + string( NumberOfEntities ) + "' Entities" );
+		return NumberOfEntities;
+	}
 }
 // End of final class
 
@@ -542,7 +557,7 @@ mixin class ScriptBaseCustomEntity
 
 bool blClientSayHook = g_Hooks.RegisterHook( Hooks::Player::ClientSay, @UTILS::ClientSay );
 bool blClientPutHook = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @UTILS::ClientPutInServer );
-bool blMapchangeHook = g_Hooks.RegisterHook( Hooks::Player::MapChange, @UTILS::MapChange );
+bool blMapchangeHook = g_Hooks.RegisterHook( Hooks::Game::MapChange, @UTILS::MapChange );
 
 namespace UTILS
 {
@@ -551,6 +566,7 @@ namespace UTILS
 		g_Util.ScriptAuthor.resize(0);
 		g_Util.MapAuthor.resize(0);
 		g_Util.ScriptAuthor.insertLast( "Script: utils\nAuthors:\nGithub: github.com/Mikk155\ngithub.com/Gaftherman\ngithub.com/JulianR0\ngithub.com/RedSprend\nDescription: Lot of utility scripts.\n");
+        return HOOK_CONTINUE;
 	}
 
     HookReturnCode ClientSay( SayParameters@ pParams )
