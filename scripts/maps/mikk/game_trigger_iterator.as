@@ -80,7 +80,7 @@ namespace game_trigger_iterator
 				( self.pev.frags == 2 ) ? USE_ON :
                 ( self.pev.frags == 3 ) ? USE_TOGGLE :
                 ( self.pev.frags == 4 ) ? ( useType == USE_ON
-				|| useType == USE_TOGGLE ) ? USE_OFF :
+				|| useType == USE_TOGGLE ) ? USE_OFF : USE_ON :
                 useType, delay
             );
         }
