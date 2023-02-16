@@ -341,67 +341,6 @@
     ]
 ]
 
-// -Mikk Added master and a point entity cuz the game supports it
-@BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseChangelevel
-[
-    spawnflags(flags) =
-    [
-        1: "No Intermission" : 0
-        2: "USE Only" : 0
-        4: "No CVAR override" : 0
-    ]
-    map(string) : "New map name"
-    landmark(string) : "Landmark name"
-    keep_inventory(choices) : "Players take inventory to new map" : 1 =
-    [
-        0 : "No"
-        1 : "Yes"
-    ]
-    changetarget(target_destination) : "Change Target"
-    changedelay(string) : "Delay before change target" : "0"
-
-    percent_of_players(string) : "Percentage of players needed" : "0"
-]
-
-// -Mikk Changed to a BaseClass and renamed to refeer to the file name instead.
-@BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseCdAudio
-[
-    health(choices) : "Track #" : -1 =
-    [
-        -1 : "Stop"
-        1 : "None"
-        2 : "Half-Life01"
-        3 : "Prospero01"
-        4 : "Half-Life12"
-        5 : "Half-Life07"
-        6 : "Half-Life10"
-        7 : "Suspense01"
-        8 : "Suspense03"
-        9 : "Half-Life09"
-        10 : "Half-Life02"
-        11 : "Half-Life13"
-        12 : "Half-Life04"
-        13 : "Half-Life15"
-        14 : "Half-Life14"
-        15 : "Half-Life16"
-        16 : "Suspense02"
-        17 : "Half-Life03."
-        18 : "Half-Life08"
-        19 : "Prospero02"
-        20 : "Half-Life05"
-        21 : "Prospero04"
-        22 : "Half-Life11"
-        23 : "Half-Life06"
-        24 : "Prospero03"
-        25 : "Half-Life17"
-        26 : "Prospero05"
-        27 : "Suspense05"
-        28 : "Suspense07"
-        29 : "gamestartup"
-        30 : "None"
-    ]
-]
-
 @BaseClass = FilterIn
 [
     tinfilter(string) : "Name In Filter"
@@ -1608,18 +1547,12 @@
     ]
 ]
 
-// -Mikk ammo custom.
+// -Mikk https://github.com/Mikk155/Sven-Co-op#ammo_custom
 @PointClass base(Targetname, Target, Pickup) size(-16 -16 0, 16 16 32) = ammo_custom : "Custom Ammo"
 [
     angles(string) : "Pitch Yaw Roll (Y Z X)" : "0 0 0"
-
-    // Model in world
     w_model(studio) : "Custom Model" : "models/w_shotbox.mdl";
-
-    // Sound when pickup
     p_sound(sound) : "Custom Sound" : "items/9mmclip1.wav";
-
-    // Type of ammo to give
     am_name(choices) : "Ammo type" : "buckshot" =
     [
         "buckshot" : "buckshot"
@@ -1632,18 +1565,12 @@
         "556" : "556"
         "357" : "357"
         "m40a1" : "m40a1"
-        // NOTE: If player doesn't have those weapons we can't give
-        // but the ammo is stored and will be there as soon as player collect the weapon.
         "satchel" : "satchel"
         "Trip Mine" : "Trip Mine"
         "Hand Grenade" : "Hand Grenade"
         "snarks" : "snarks"
     ]
-
-    // How many bullets we should give?
     am_give(integer) : "Ammo ammout" : 8
-
-    // How many items a player can take (affect one by one)
     frags(integer) : "Item per player (0 = infinite)" : 0
 ]
 
@@ -1733,70 +1660,25 @@
     ]
 ]
 
-// -Mikk A custom entity that allow mappers to configure Classic Mode.
-// Trigger the entity by using USE_TYPE.
-// USE_OFF Will disable classic mode.
-// USE_ON Will enable Classic mode.
-// USE_TOGGLE Will toggle Classic mode.
+// -Mikk https://github.com/Mikk155/Sven-Co-op#config_classic_mode
 @PointClass base(Targetname, Master, Delay) color(0 255 255) = config_classic_mode : "Map ClassicMode configuration"
 [
     spawnflags(flags) =
     [
-        // if set. the current map will be restarted to apply the changes.
         1 : "Restart now" : 0
     ]
-
-    // Called when classic mode is toggled.
     target_toggle(target_destination) : "Target on change success (USE_TYPE)"
-
-    // Called when you call USE_ON but classic mode is already ON. the same for OFF
     target_failed(target_destination) : "Target on fail change (USE_TYPE)"
-
-    // If classic mode is enabled. called when the map starts
     target_enabled(target_destination) : "Target if is Enabled [Map start] (USE_TYPE)"
-
-    // If classic mode is disabled. called when the map starts
     target_disabled(target_destination) : "Target if is Disabled [Map start] (USE_TYPE)"
-
-    // Used for the script to change npc's models on-the-fly
     health(float) : "Think intervals (default is 0.1f)"
-
-    // In HAMMER/JACK/BSPGUY open Smart-Edit and add there the ItemRemaps.
-    // key -> stock weapon. value -> new weapon.
-    // SAMPLE:
     weapon_m16(string) : "weapon_m16" : "weapon_9mmAR"
-    // The same way you can replace any ENTITY's custom model. the syntax is the same.
-    // key -> current model (models/barney.mdl). value -> models/mybarney/barney.mdl
-    // SAMPLE:
     models/hlclassic/scientist.mdl(string) : "models/hlclassic/scientist.mdl" : "models/headcrab.mdl"
-    // Don't forget that since classic mode is enabled.
-    // the model you need to replace is not "models/barney.mdl" it is "models/hlclassic/barney.mdl"
-    // using (on any entity) custom keyvalue "$i_classic_mode_ignore" will prevent their model being changed or item being replaced.
-    // Additional and unnecesary comment:
-    // This works by finding any entity that contains your key as a value for "model".
-    // so you can technically change brush models as well, Be wise. Be safe. Be aware.
 ]
 
-// -Mikk A custom entity that allow mappers to precache almost anything
-// syntax:
-// key -> option to precache.
-// value -> thing to precache.
-// Options:
-// "model" used to precache models and sprites.
-// SAMPLE: "model#X" "models/barney.mdl"
-
-// "entity" used to precache monsters and any other entities including custom entities.
-// SAMPLE: "entity#X" "monster_zombie_hev"
-
-// "sound" used to precache a sound inside "sound/" folder. do not specify that folder!
-// SAMPLE: "sound#X" "ambience/background_sex.wav"
-
-// "generic" used to precache anything else client side as well
-// SAMPLE: "generic#X" "gfx/env/mysky_bk.tga"
+// -Mikk https://github.com/Mikk155/Sven-Co-op#config_map_precache
 @PointClass color(165 185 160) = config_map_precache : "Map precache configuration"
 [
-	// These are saved into a dictionary. i don't know if it has a limit but i've used a entity with +30 keys and works fine for me.
-
 	// Relative to svencoop/
     model#0(studio): "Precache model"
     model#1(studio): "Precache model"
@@ -1855,25 +1737,12 @@
     generic#9(string) : "Precache Generic stuff"
 ]
 
-// -Mikk A custom entity that allow mappers to configure Survival Mode.
-// Trigger the entity by using USE_TYPE.
-// USE_OFF Will disable survival mode.
-// USE_ON Will enable survival mode.
-// USE_TOGGLE Will toggle survival mode.
-// If the entity is triggered before it reach the limit of mp_survival_startdelay then it is set to 0
-// master will lock the entity from being triggered n/or from start survival mode by its mp_survival_startdelay
+// -Mikk https://github.com/Mikk155/Sven-Co-op#config_survival_mode
 @PointClass base(Targetname, Master, Delay) color(0 255 255) = config_survival_mode : "Map SurvivalMode configuration"
 [
-    // Called when survival mode is toggled.
     target_toggle(target_destination) : "Target on change success (USE_TYPE)"
-
-    // Called when you call USE_ON but survival mode is already ON. the same for OFF
     target_failed(target_destination) : "Target on fail change (USE_TYPE)"
-
-    // empty = mp_survival_startdelay cvar
     mp_survival_startdelay(integer) : "delay before survival start"
-
-    // empty = mp_respawndelay cvar
     mp_respawndelay(integer) : "delay before respawn"
 ]
 
@@ -2025,23 +1894,13 @@
     LightningEnd(target_destination) : "Ending Entity"
 ]
 
-// -Mikk a entity that watch for alive players and then spawns a monster around him. Code by Rick.
+// -Mikk https://github.com/Mikk155/Sven-Co-op#env_alien_teleport
 @PointClass base(Targetname, Master) color(80 220 110) = env_alien_teleport : "Alien RNG Teleporter"
 [
-    // Target something every time an alien spawns.
-    // the choosed player is the activator and the alien is the caller.
     target(string) : "Target when spawn (USE_TYPE)"
-    
-    // Target when the monster can't spawn due to obstacles.
-    // the choosed player is the activator and the entity is the caller.
     noise(string) : "Target when fail spawn (USE_TYPE)"
-
-    // Delay betwen spawns
     delay(float) : "delay before re spawn" : 120.0
-
-    // Classname of the spawned monster. can change on-demand trigger_changevalue
     netname(string) : "Monster Classname"
-
     message(target_destination) : "Xenmaker Template Name"
 ]
 
@@ -2118,6 +1977,7 @@
     ]
 ]
 
+// -Mikk https://github.com/Mikk155/Sven-Co-op#env_effect
 @PointClass base(Targetname, Appearflags, TargetMMStyle, Master, Delay) size(-4 -4 -4, 4 4 4) color(255 0 0) = env_effect : "Spawn Effects"
 [
     netname(target_destination) : "Target when locked by master (USE_TYPE)"
@@ -2332,9 +2192,8 @@
     [
         1: "Start Off" : 0
 
-        // -Mikk Render only for !activator only.
+		// -Mikk https://github.com/Mikk155/Sven-Co-op#env_fog_individual
         2: "[AS] Activator Only" : 0
-        // flag 1 is compatible!
     ]
     rendercolor(color255) : "Fog Color (RGB)" : "0 0 0"
     //-TODO commented key, verify what it does
@@ -2353,8 +2212,7 @@
     ]
 ]
 
-// -Mikk entity that simulates radiation sound
-// Trigger USE_OFF to disable USE_ON to enable USE_TOGGLE to toggle
+// -Mikk https://github.com/Mikk155/Sven-Co-op#env_geiger
 @PointClass base(Targetname) = env_geiger : "Radiation sound"[]
 
 @PointClass base(Targetname) color(255 255 128) color(4 32 250) = env_global : "Global State"
@@ -6673,6 +6531,45 @@
     child_targetname(string) : "Entity targetname" : "barney el dinosaurio"
 ]
 
+// -Mikk Changed to a BaseClass and renamed to refeer to the file name instead.
+@BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseCdAudio
+[
+    health(choices) : "Track #" : -1 =
+    [
+        -1 : "Stop"
+        1 : "None"
+        2 : "Half-Life01"
+        3 : "Prospero01"
+        4 : "Half-Life12"
+        5 : "Half-Life07"
+        6 : "Half-Life10"
+        7 : "Suspense01"
+        8 : "Suspense03"
+        9 : "Half-Life09"
+        10 : "Half-Life02"
+        11 : "Half-Life13"
+        12 : "Half-Life04"
+        13 : "Half-Life15"
+        14 : "Half-Life14"
+        15 : "Half-Life16"
+        16 : "Suspense02"
+        17 : "Half-Life03."
+        18 : "Half-Life08"
+        19 : "Prospero02"
+        20 : "Half-Life05"
+        21 : "Prospero04"
+        22 : "Half-Life11"
+        23 : "Half-Life06"
+        24 : "Prospero03"
+        25 : "Half-Life17"
+        26 : "Prospero05"
+        27 : "Suspense05"
+        28 : "Suspense07"
+        29 : "gamestartup"
+        30 : "None"
+    ]
+]
+
 @PointClass base(Targetname, BaseCdAudio) color(255 240 128) = target_cdaudio : "CD Audio Target"
 [
     // -Mikk Key was commented but actually works.
@@ -7282,6 +7179,28 @@
         1 : "Enable Tertiary fire"
     ]
     skill(integer) : "skills (See skills.cfg)"
+]
+
+// -Mikk Added master and a point entity cuz the game supports it
+@BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseChangelevel
+[
+    spawnflags(flags) =
+    [
+        1: "No Intermission" : 0
+        2: "USE Only" : 0
+        4: "No CVAR override" : 0
+    ]
+    map(string) : "New map name"
+    landmark(string) : "Landmark name"
+    keep_inventory(choices) : "Players take inventory to new map" : 1 =
+    [
+        0 : "No"
+        1 : "Yes"
+    ]
+    changetarget(target_destination) : "Change Target"
+    changedelay(string) : "Delay before change target" : "0"
+
+    percent_of_players(string) : "Percentage of players needed" : "0"
 ]
 
 @SolidClass base(Targetname, BaseChangelevel) = trigger_changelevel : "Trigger Change level"[]
