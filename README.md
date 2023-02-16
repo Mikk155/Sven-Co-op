@@ -122,46 +122,6 @@ An assortment of test maps, additional information for SC stuff, Angelscript plu
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # entitymaker
 entitymaker is a entity that when is fired it creates any entity on its origin and using the same keyvalues that entitymaker has.
 
@@ -195,48 +155,6 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 
 
-
-
-
-# env_alien_teleport
-env_alien_teleport is a entity that randomly teleport in aliens on a random player.
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_alien_teleport.as
-                └── 📄utils.as
-```
-
-**install:**
-```angelscript
-#include "mikk/env_alien_teleport"
-
-void MapInit()
-{
-	env_alien_teleport::Register();
-}
-```
-
-**Introduction:**
-
-a custom entity that watch for alive players and then spawns a monster around a random alive player.
-
-
-| key | value | description |
-|-----|-------|-------------|
-| target | target | trigger this target when an alien is spawned. the choosed player is the activator and the alien is the caller [Supports USE_TYPE](#utils-use-type) |
-| noise | target | trigger this target when the monster can't spawn due to obstacles. the choosed player is the activator and the entity is the caller [Supports USE_TYPE](#utils-use-type) |
-| delay | float | delay (seconds) between teleports |
-| netname | string | classname of the alien that will spawns. can use trigger_changevalue on-demand |
-| message | target | xenmaker template to use its effect when the alien spawns |
-
-⚠️ Use only **one** entity per map.
-
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -311,70 +229,12 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 
 
-# env_fog
-env_fog_individual is a entity that expands env_fog features to show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_fog.as
-                └── 📄utils.as
-```
-
-**install:**
-```angelscript
-#include "mikk/env_fog"
-
-void MapInit()
-{
-	env_fog::Register();
-}
-```
-
-**Introduction:**
-
-Adds to env_fog a new spawnflag that allows the fog to ve visible for activator only.
-
-spawnflags -> 2 (Activator Only)
-
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
 
 
 
-
-
-
-
-# env_geiger
-env_geiger is a entity that simulates radiation sound in a small radius of its origin.
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_geiger.as
-                └── 📄utils.as
-```
-
-**install:**
-```angelscript
-#include "mikk/env_geiger"
-
-void MapInit()
-{
-	env_geiger::Register();
-}
-```
-
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1867,18 +1727,170 @@ If the entity is triggered before it reach the limit of mp_survival_startdelay t
 
 
 
+# env_alien_teleport
+env_alien_teleport is a entity that randomly teleport in aliens on a random player.
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_alien_teleport.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/env_alien_teleport"
+
+void MapInit()
+{
+	env_alien_teleport::Register();
+}
+```
+
+### General information:
+
+a custom entity that watch for alive players and then spawns a monster around a random alive player.
+
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | trigger this target when an alien is spawned. the choosed player is the activator and the alien is the caller [Supports USE_TYPE](#utils-use-type) |
+| noise | target | trigger this target when the monster can't spawn due to obstacles. the choosed player is the activator and the entity is the caller [Supports USE_TYPE](#utils-use-type) |
+| delay | float | delay (seconds) between teleports |
+| netname | string | classname of the alien that will spawns. can use trigger_changevalue on-demand, don't forget to precache them first. |
+| message | target | xenmaker template to use its effect when the alien spawns. not blacklisted to a env_xenmaker classname, you can make your own effects. |
+
+### Additional information:
+
+⚠️ Use only **one** entity per map. if there is more than one, one random entity will be removed.
+
+
+- Original code by [Rick](https://github.com/RedSprend/svencoop_plugins/blob/master/svencoop/scripts/plugins/atele.as)
+
+
+# env_effect
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_effect.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/env_effect"
+
+void MapInit()
+{
+	env_effect::Register();
+}
+```
+
+### General information:
+
+### Additional information:
+
+
+# env_fog_individual
+
+env_fog_individual is a entity that expands env_fog features to show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_fog.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/env_fog"
+
+void MapInit()
+{
+	env_fog::Register();
+}
+```
+
+### General information:
+
+Adds to env_fog a new spawnflag that allows the fog to be visible for activator only.
+
+spawnflags -> 2 (Activator Only)
+
+### Additional information:
+
+- if spawnflag 1 is not set. joining players will fire this entit with USE_ON mean to disable you must pass all of them to fire the entit with USE_OFF.
+
+# env_geiger
+env_geiger is a entity that simulates radiation sound in a small radius of its origin.
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_geiger.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/env_geiger"
+
+void MapInit()
+{
+	env_geiger::Register();
+}
+```
+
+### General information:
+
+Send USE_OFF/ON/TOGGLE respectivelly.
 
 
 
+# env_global
 
+env_global entity is used to transport information between two or more maps. allowing you to do different triggers depending in what state the previus map did set the global state.
 
+### General information:
+[svenmanor](https://sites.google.com/site/svenmanor/entguide/env_global)
 
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁maps
+        ├── 📄1test_global3.bsp
+        ├── 📄1test_global3.cfg
+        ├── 📄1test_global3_motd.txt
+        ├── 📄1test_global4.bsp
+        ├── 📄1test_global4.cfg
+        └── 📄1test_global4_motd.txt
+```
+
+go to map ``1test_global3``
+
+Test map by Sparks
 
 
 
 # Entities
 
 Click the entity you want to read a proper description with examples.
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 | Entity | Description |
 |--------|-------------|
@@ -1889,21 +1901,30 @@ Click the entity you want to read a proper description with examples.
 [config_classic_mode](#config_classic_mode) | Entity that allow mapper to customize classic mode.
 [config_map_precache](#config_map_precache) | Entity that precache almost anything.
 [config_survival_mode](#config_survival_mode) | Entity that allow mapper to customize survival mode.
-
-
+[cycler](https://sites.google.com/site/svenmanor/entguide/cycler) | Entity used to display models in your map.
+[cycler_sprite](https://sites.google.com/site/svenmanor/entguide/cycler_sprite) | Entity used to display sprites in your map.
+[cycler_weapon](https://sites.google.com/site/svenmanor/entguide/cycler_weapon) | Entity that appears to be an unfinished entity originally by Valve.
+[env_alien_teleport](#env_alien_teleport) | Entity that spawns (with xen FX) a specified monster around a random player.
+[env_beam](https://sites.google.com/site/svenmanor/entguide/env_beam) | The env_beam entity is used to create a bolt between two entities.
+[env_beverage](https://sites.google.com/site/svenmanor/entguide/env_beverage) | Spawns a can. used for black mesa dispensers.
+[env_blood](https://sites.google.com/site/svenmanor/entguide/env_blood) | Entity which, when triggered, creates a blood splash at its origin, which can cause blood decals on nearby walls, ceiling and floor.
+[env_effect](#env_effect) | Entity used for showing various effects.
+[env_explosion](https://sites.google.com/site/svenmanor/entguide/env_explosion) | Entity which, when triggered, creates an explosion which damages everything damageable around it.
+[env_fade](https://sites.google.com/site/svenmanor/entguide/env_fade) | Entity that causes the players' screens to have an in- or out-fading color to be drawn over them.
+[env_fog](https://sites.google.com/site/svenmanor/entguide/env_fog) | Entity which creates a fog effect within a specific area around it.
+[env_fog_individual](#env_fog_individual) | Expands env_fog features to show fog to activator only.
+[env_funnel](https://sites.google.com/site/svenmanor/entguide/env_funnel) | Creates a large portal funnel particle effect of green particles
+[env_geiger](#env_geiger) | Entity that simulates radiation sound in a small radius of its origin.
+[env_global](#env_global) | Entity used to transport information between two or more maps.
 
 
 
 
 -HERE
 -----------------------------------------------------------------------------------------------------------------------------------------
-[env_global](#env_global)
 
 
-# env_global
-env_global entity is used to transport information between two or more maps. allowing you to do different triggers depending in what state the previus map did set the global state.
 
-map 1test_global3
 
 
 
