@@ -25,7 +25,7 @@ namespace env_bloodpuddle
 
         g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_bloodpuddle::env_bloodpuddle", "env_bloodpuddle" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_bloodpuddle::entity", "env_bloodpuddle" );
         g_Game.PrecacheOther( "env_bloodpuddle" );
     }
 
@@ -74,7 +74,7 @@ namespace env_bloodpuddle
         }
     }
 
-    class env_bloodpuddle : ScriptBaseAnimating
+    class entity : ScriptBaseAnimating
     {
         void Spawn()
         {
