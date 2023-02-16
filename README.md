@@ -27,7 +27,9 @@ An assortment of test maps, additional information for SC stuff, Angelscript plu
 
 # Tutorials
 
-[numerical padlock](#numerical-padlock)
+[transport information between two or more maps](#env_global)
+
+[numerical padlock dynamic](#numerical-padlock)
 
 [Un-embed textures from a BSP](#un-embed-textures-from-a-bsp)
 
@@ -1919,25 +1921,18 @@ Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 
 
-
--HERE
------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
 # numerical padlock
 
 Creates a full customizable code **on-the-fly** for a numerical padlock. this system works using a game_counter and a trigger_random for randomizing the code needed, feel free to make a better randomizing system of 3 digits from number 0 to 9
+
+### General information:
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁maps
+        └── 📄1test_numpad.bsp
+```
 
 once you fire the "randomizing button" 3 copyvalue will paste those random numbers into a trigger_condition.
 
@@ -1945,11 +1940,13 @@ then every numerical plate will add a value of their owns into another entity wh
 
 - If someone is using the camera then others players can't interfer
 
-- using the plate bellow "8" will delete all your previus attempts, basically restore.
+- using the plate bellow "8" will delete all your previous attempts, basically restore.
 
 - next to player spawn there are some entities that they're only for DEBUG purpose. delete them.
 
-map 1test_numpad
+go to map ``1test_numpad``
+
+Test map by Mikk
 
 
 
