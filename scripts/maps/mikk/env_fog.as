@@ -103,7 +103,6 @@ namespace env_fog
         if( player.IsValid() && fog.IsValid() )
         {
             cast<CBaseEntity@>(fog).Use( cast<CBasePlayer@>(player.GetEntity()), null, USE_ON, 0.0f );
-            g_Util.DebugMessage( "si se activo idk");
         }
     }
 }
