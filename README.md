@@ -154,57 +154,6 @@ An assortment of test maps, additional information for SC stuff, Angelscript plu
 
 
 
-# config_survival_mode
-config_survival_mode is a entity that customize survival mode and make it better.
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄config_survival_mode.as
-                └── 📄utils.as
-```
-
-**install:**
-```angelscript
-#include "mikk/config_survival_mode"
-
-void MapInit()
-{
-	config_survival_mode::Register();
-}
-```
-
-**Introduction:**
-
-A custom entity that allow mappers to configure Survival Mode.
-
-Trigger the entity by using USE_TYPE.
-
-- USE_OFF Will disable survival mode.
-
-- USE_ON Will enable survival mode.
-
-- USE_TOGGLE Will toggle survival mode.
-
-If the entity is triggered before it reach the limit of mp_survival_startdelay then it is set to 0 and survival is instantly enabled.
-
-| key | value | description |
-|-----|-------|-------------|
-| delay | float | delay before trigger any of its target |
-| target_toggle | target | trigger this target when the survival mode is toggled [Supports USE_TYPE](#utils-use-type) |
-| target_failed | target | trigger this target when the entity receive USE_ON but survival is already ON, or when the entity receive USE_OFF but the survival is already OFF [Supports USE_TYPE](#utils-use-type) |
-| mp_survival_startdelay | integer | delay before survival mode starts, if empty it will use the cvar mp_survival_startdelay |
-| mp_respawndelay | integer | delay before players can re spawn in survival disabled, if empty it use the cvar mp_respawndelay |
-| master | multisource | a multisource will lock the entity from being triggered n/or from start survival mode by its mp_survival_startdelay |
-
-⚠️ Use only **one** entity per map.
-
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
-
-
 
 
 
@@ -1846,7 +1795,7 @@ void MapInit()
 }
 ```
 
-**Introduction:**
+### General information
 
 A custom entity that allow mappers to precache almost anything
 
@@ -1865,7 +1814,56 @@ In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
 | sound | used to precache a sound inside "sound/" folder. do not specify that folder! | "sound#0" "ambience/background_sex.wav" |
 | generic | used to precache anything else. up to you for testing. for skybox you have to precache all files individually | "generic#20" "gfx/env/mysky_bk.tga" |
 
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
+# config_survival_mode
+config_survival_mode is a entity that customize survival mode and make it better.
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄config_survival_mode.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/config_survival_mode"
+
+void MapInit()
+{
+	config_survival_mode::Register();
+}
+```
+
+**Introduction:**
+
+A custom entity that allow mappers to configure Survival Mode.
+
+Trigger the entity by using USE_TYPE.
+
+- USE_OFF Will disable survival mode.
+
+- USE_ON Will enable survival mode.
+
+- USE_TOGGLE Will toggle survival mode.
+
+If the entity is triggered before it reach the limit of mp_survival_startdelay then it is set to 0 and survival is instantly enabled.
+
+| key | value | description |
+|-----|-------|-------------|
+| delay | float | delay before trigger any of its target |
+| target_toggle | target | trigger this target when the survival mode is toggled [Supports USE_TYPE](#utils-use-type) |
+| target_failed | target | trigger this target when the entity receive USE_ON but survival is already ON, or when the entity receive USE_OFF but the survival is already OFF [Supports USE_TYPE](#utils-use-type) |
+| mp_survival_startdelay | integer | delay before survival mode starts, if empty it will use the cvar mp_survival_startdelay |
+| mp_respawndelay | integer | delay before players can re spawn in survival disabled, if empty it use the cvar mp_respawndelay |
+| master | multisource | a multisource will lock the entity from being triggered n/or from start survival mode by its mp_survival_startdelay |
+
+### Additional information:
+
+⚠️ Use only **one** entity per map. if there is more than one, one random entity will be removed.
 
 
 
@@ -1890,7 +1888,7 @@ Click the entity you want to read a proper description with examples.
 [ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) | Ammunition entities.
 [config_classic_mode](#config_classic_mode) | Entity that allow mapper to customize classic mode.
 [config_map_precache](#config_map_precache) | Entity that precache almost anything.
-
+[config_survival_mode](#config_survival_mode) | Entity that allow mapper to customize survival mode.
 
 
 
