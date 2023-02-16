@@ -2,9 +2,13 @@
 
 An assortment of test maps, additional information for SC stuff, Angelscript plugins / map-scripts, new entities and anything related to SC.
 
-Contact info [Discord](https://discord.gg/VsNnE3A7j8)
+[Credits](#people-who-contributed-in-any-way)
+
+[Contact](https://discord.gg/VsNnE3A7j8)
 
 [Tutorials](#tutorials)
+
+[Entities](#entities)
 
 [Plugins](#plugins)
 
@@ -22,8 +26,6 @@ Contact info [Discord](https://discord.gg/VsNnE3A7j8)
 
 
 # Tutorials
-
-[env_global](#env_global)
 
 [numerical padlock](#numerical-padlock)
 
@@ -126,211 +128,22 @@ Contact info [Discord](https://discord.gg/VsNnE3A7j8)
 
 
 
-# ammo_custom
-ammo_custom is an ammo item customizable that gives a specified ammout of bullets that the mapper sets.
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄ammo_custom.as
-                └── 📄utils.as
-```
 
-**install:**
-```angelscript
-#include "mikk/ammo_custom"
 
-void MapInit()
-{
-	ammo_custom::Register();
-}
-```
 
-**Introduction:**
 
-It has all the keyvalues that any ``item`` entity supports.
 
-| key | value | description |
-|-----|-------|-------------|
-| w_model | string | defines a custom world model |
-| p_sound | string | defines a custom sound to use when the item is taken |
-| am_name | [choices](#ammo_custom-am_name) | defines the type of ammunition this item will give to players |
-| am_give | integer | number of bullets that this item should give to the players |
-| frags | integer | How many times player can take this item (affect only activator) 0 = infinite |
 
-## ammo_custom am_name
-- buckshot
-- 9mm
-- ARgrenades
-- sporeclip
-- rockets
-- uranium
-- bolts
-- 556
-- 357
-- m40a1
-- satchel
-- Trip Mine
-- Hand Grenade
-- snarks
 
-⚠️ The player must have already equiped the items that classifies as "weapons" the ammo will be added but the player won't be able to select them until collect a weapon.
 
-List:
-- satchel
-- Trip Mine
-- Hand Grenade
-- snarks
 
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
 
 
 
-
-
-
-
-# config_classic_mode
-config_classic_mode is a entity that customize classic mode for monsters, models and items that the game doesn't support.
-
-it also allow the mapper to swap **any** model into a classic model if specified by the entity.
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄config_classic_mode.as
-                └── 📄utils.as
-```
-
-**install:**
-```angelscript
-#include "mikk/config_classic_mode"
-
-void MapInit()
-{
-	config_classic_mode::Register();
-}
-```
-
-**Introduction:**
-
-A custom entity that allow mappers to configure Classic Mode.
-
-Trigger the entity by using USE_TYPE.
-
-- USE_OFF Will disable classic mode.
-
-- USE_ON Will enable Classic mode.
-
-- USE_TOGGLE Will toggle Classic mode.
-
-| key | value | description |
-|-----|-------|-------------|
-| spawnflags | 1 (Restart now) | if set. the current map will be restarted to apply the changes | 
-| delay | float | delay before trigger any of its targets |
-| target_toggle | target | trigger this target when the classic mode has been successfuly toggled [Supports USE_TYPE](#utils-use-type) |
-| target_failed | target | trigger this target when the entity receive USE_ON but the classic mode is actually enabled or when the entity receive USE_OFF but the classic mode is actually disabled [Supports USE_TYPE](#utils-use-type) |
-| target_enabled | target | trigger this target if the classic mode has been started enabled. it fires once the map starts [Supports USE_TYPE](#utils-use-type) |
-| target_disabled | target | trigger this target if the classic mode has been started disabled. it fires once the map starts [Supports USE_TYPE](#utils-use-type) |
-| health | float | this is the entity's think function. using higher value will consume less cpu but players may notice the HD model default is 0.1f + health |
-
-In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
-
-- The key is equal to the classname of the weapon you want to replace when classic mode is enabled.
-
-- The value is equal to the classname of the new weapon that will be set if classic mode is enabled.
-
-**SAMPLE:**
-```angelscript
-"weapon_m16" "weapon_9mmAR"
-```
-
-The same way you can replace any entity's custom model. the syntax is the same.
-
-- The key is equal to the model you want to replace when classic mode is enabled.
-
-- The value is equal to the model that will replace the previus.
-
-**SAMPLE:**
-```angelscript
-"models/hlclassic/scientist.mdl" "models/headcrab.mdl"
-```
-⚠️ Don't forget that since classic mode is enabled the model you need to replace is not "models/barney.mdl" it is "models/hlclassic/barney.mdl"
-
-- Using (on any entity) custom keyvalue ``"$i_classic_mode_ignore"`` will prevent their model being changed or item being replaced.
-
-
-**Additional and unnecesary comment:**
-
-- This works by finding any entity that contains your key as a value for "model".
-
-- so you can technically change brush models as well, Be wise. Be safe. Be aware.
-
-⚠️ Use only **one** entity per map.
-
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
-
-
-
-
-
-
-
-
-
-
-# config_map_precache
-config_map_precache is a entity that precache almost anything.
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄config_map_precache.as
-                └── 📄utils.as
-```
-
-**install:**
-```angelscript
-#include "mikk/config_map_precache"
-
-void MapInit()
-{
-	config_map_precache::Register();
-}
-```
-
-**Introduction:**
-
-A custom entity that allow mappers to precache almost anything
-
-In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
-
-**syntax:**
-
-- key -> option to precache.
-- value -> thing to precache.
-
-**Options:**
-| key | description | sample |
-|-------|-------------|--------|
-| model | used to precache models and sprites. | "model#1" "models/barney.mdl" |
-| entity | used to precache monsters and any other entities including custom entities. | "entity#4" "monster_zombie" |
-| sound | used to precache a sound inside "sound/" folder. do not specify that folder! | "sound#0" "ambience/background_sex.wav" |
-| generic | used to precache anything else. up to you for testing. for skybox you have to precache all files individually | "generic#20" "gfx/env/mysky_bk.tga" |
-
-Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
 
 
@@ -1848,9 +1661,245 @@ RenameServer Changes your server's hostname dynamicaly depending the map playing
 
 
 
+# ambient_generic
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/ambient_generic)
+
+### Additional information:
+
+- Using the spawnflag 64 ( User Only ) and the spawnflag 1 ( Play everywhere ) will make the flag 64 useless and the sound will be played for everyone and the activator will hear it twice.
 
 
 
+# ambient_music
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/ambient_music)
+
+### Additional information:
+
+- For each client. the volume of this entity depends on their configuration for MP3 Volume (Cvar ``MP3Volume`` and ``MP3FadeTime`` ) some players has this always muted. so setting ambient_generic instead would be fine but keep in mind that hearing a song always for each map-restart is annoying at some point.
+
+
+# ammo_custom
+
+### General information
+
+ammo_custom is an ammo item customizable that gives a specified ammout of bullets that the entity sets.
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄ammo_custom.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/ammo_custom"
+
+void MapInit()
+{
+	ammo_custom::Register();
+}
+```
+
+**Introduction:**
+
+Supports all [ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) keyvalues.
+
+| key | value | description |
+|-----|-------|-------------|
+| w_model | string | defines a custom world model |
+| p_sound | string | defines a custom sound to use when the item is taken |
+| am_name | [choices](#values-am_name) | defines the type of ammunition this item will give to players |
+| am_give | integer | number of bullets that this item should give to the players |
+| frags | integer | How many times player can take this item (affect only activator) 0 = infinite ( if set and player is above the count, the item is render invisible for that player and he can't pickup it anymore |
+
+## Values am_name
+- buckshot
+- 9mm
+- ARgrenades
+- sporeclip
+- rockets
+- uranium
+- bolts
+- 556
+- 357
+- m40a1
+- satchel
+- Trip Mine
+- Hand Grenade
+- snarks
+
+### Additional information:
+
+⚠️ The player must have already equiped the items that classifies as "weapons" the ammo will be added but the player won't be able to select them until collect a weapon.
+
+List:
+- satchel
+- Trip Mine
+- Hand Grenade
+- snarks
+
+
+
+# config_classic_mode
+config_classic_mode is a entity that customize classic mode for monsters, models and items that the game doesn't support.
+
+it also allow the mapper to swap **any** model into a classic model if specified by the entity.
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄config_classic_mode.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/config_classic_mode"
+
+void MapInit()
+{
+	config_classic_mode::Register();
+}
+```
+
+
+### General information
+
+Trigger the entity by using USE_TYPE.
+
+- USE_OFF Will disable classic mode.
+
+- USE_ON Will enable Classic mode.
+
+- USE_TOGGLE Will toggle Classic mode.
+
+| key | value | description |
+|-----|-------|-------------|
+| spawnflags | 1 (Restart now) | if set. the current map will be restarted to apply the changes | 
+| delay | float | delay before trigger any of its targets |
+| target_toggle | target | trigger this target when the classic mode has been successfuly toggled [Supports USE_TYPE](#utils-use-type) |
+| target_failed | target | trigger this target when the entity receive USE_ON but the classic mode is actually enabled or when the entity receive USE_OFF but the classic mode is actually disabled [Supports USE_TYPE](#utils-use-type) |
+| target_enabled | target | trigger this target if the classic mode has been started enabled. it fires once the map starts [Supports USE_TYPE](#utils-use-type) |
+| target_disabled | target | trigger this target if the classic mode has been started disabled. it fires once the map starts [Supports USE_TYPE](#utils-use-type) |
+| health | float | this is the entity's think function. using higher value will consume less cpu but players may notice the HD model changing to a classic mode. default is 0.1f + health |
+
+In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
+
+- The key is equal to the classname of the weapon you want to replace when classic mode is enabled.
+
+- The value is equal to the classname of the new weapon that will be set if classic mode is enabled.
+
+**SAMPLE:**
+```angelscript
+"weapon_m16" "weapon_9mmAR"
+```
+
+The same way you can replace any entity's custom model. the syntax is the same.
+
+- The key is equal to the model you want to replace when classic mode is enabled.
+
+- The value is equal to the model that will replace the previus.
+
+**SAMPLE:**
+```angelscript
+"models/hlclassic/scientist.mdl" "models/headcrab.mdl"
+```
+
+### Additional information:
+
+⚠️ Don't forget that since classic mode is enabled the model you need to replace is not "models/barney.mdl" it is "models/hlclassic/barney.mdl"
+
+- Using (on any entity) custom keyvalue ``"$i_classic_mode_ignore"`` will prevent their model being changed or item being replaced.
+
+⚠️ Use only **one** entity per map. if there is more than one, one random entity will be removed.
+
+
+# config_map_precache
+config_map_precache is a entity that precache almost anything.
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄config_map_precache.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/config_map_precache"
+
+void MapInit()
+{
+	config_map_precache::Register();
+}
+```
+
+**Introduction:**
+
+A custom entity that allow mappers to precache almost anything
+
+In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
+
+**syntax:**
+
+- key -> option to precache.
+- value -> thing to precache.
+
+**Options:**
+| key | description | sample |
+|-------|-------------|--------|
+| model | used to precache models and sprites. | "model#1" "models/barney.mdl" |
+| entity | used to precache monsters and any other entities including custom entities. | "entity#4" "monster_zombie" |
+| sound | used to precache a sound inside "sound/" folder. do not specify that folder! | "sound#0" "ambience/background_sex.wav" |
+| generic | used to precache anything else. up to you for testing. for skybox you have to precache all files individually | "generic#20" "gfx/env/mysky_bk.tga" |
+
+Make use of the [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
+
+
+
+
+
+
+
+
+
+
+
+
+# Entities
+
+Click the entity you want to read a proper description with examples.
+
+| Entity | Description |
+|--------|-------------|
+[ambient_generic](#ambient_generic) | Entity for reproduce a sound
+[ambient_music](#ambient_music) | Entity for reproduce a music song.
+[ammo_custom](#ammo_custom) | Entity that gives a specified ammout of bullets that the entity sets.
+[ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) | Ammunition entities.
+[config_classic_mode](#config_classic_mode) | Entity that allow mapper to customize classic mode.
+[config_map_precache](#config_map_precache) | Entity that precache almost anything.
+
+
+
+
+
+
+
+-HERE
+-----------------------------------------------------------------------------------------------------------------------------------------
+[env_global](#env_global)
 
 
 # env_global
