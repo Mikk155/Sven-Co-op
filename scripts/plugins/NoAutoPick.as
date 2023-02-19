@@ -27,7 +27,7 @@ void EntityCreate()
         while( ( @pEntity = g_EntityFuncs.FindEntityByClassname(pEntity, Items[i] ) ) !is null)
         {
             if( pEntity !is null && pEntity.pev.spawnflags == "0" )
-				pEntity.pev.spawnflags = 256;
+                pEntity.pev.spawnflags = 256;
         }
     }
 }

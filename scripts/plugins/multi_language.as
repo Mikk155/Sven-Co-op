@@ -144,10 +144,10 @@ void CreateMenu( CBasePlayer@ pPlayer )
 
     g_VoteMenu.SetTitle( Title( g_Util.GetCKV( cast<CBaseEntity@>(pPlayer), "$s_language" ) ) );
 
-	for( uint ui = 0; ui < LanguageSupport.length(); ++ui )
-	{
-		g_VoteMenu.AddItem( LanguageSupport[ui] );
-	}
+    for( uint ui = 0; ui < LanguageSupport.length(); ++ui )
+    {
+        g_VoteMenu.AddItem( LanguageSupport[ui] );
+    }
     g_VoteMenu.Register();
     g_VoteMenu.Open( 25, 0, pPlayer );
 }
@@ -158,28 +158,28 @@ void MainCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CText
     {
         string Choice = pItem.m_szName;
         g_Util.SetCKV( cast<CBaseEntity@>(pPlayer), "$s_language", Choice.ToLowercase() );
-		StoreLanguage( pPlayer, Choice.ToLowercase() );
+        StoreLanguage( pPlayer, Choice.ToLowercase() );
         g_Util.Trigger( 'mlang_credits', pPlayer, pPlayer, USE_ON, 0.0f );
     }
 }
 
 void StoreLanguage( CBaseEntity@ pPlayer, const string& in Language = 'english' )
 {
-	// verify that its steamid doesn't exist in the file and write,  otherwhise RE write
-	// Syntax:
-	// STEAMID language
+    // verify that its steamid doesn't exist in the file and write,  otherwhise RE write
+    // Syntax:
+    // STEAMID language
 }
 
 string GetLanguage( CBaseEntity@ pPlayer )
 {
-	// Verify that its steamid exist in the file and set its language as a custom keyvalue
-	// "$s_" + language in line.
-	return '';
+    // Verify that its steamid exist in the file and set its language as a custom keyvalue
+    // "$s_" + language in line.
+    return '';
 }
 
 string Title( string L )
 {
-	if( L == 'spanish' )return "Selecciona un lenguaje ";
+    if( L == 'spanish' )return "Selecciona un lenguaje ";
     else if( L == 'spanish spain' )return "Selecciona un lenguaje ";
     else if( L == 'portuguese' )return "Selecione um idioma ";
     else if( L == 'german' )return "Wahle eine Sprache ";
