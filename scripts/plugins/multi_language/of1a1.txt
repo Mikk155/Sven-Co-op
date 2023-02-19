@@ -1,0 +1,149 @@
+{
+"x" "-1"
+"y" "0.8"
+"effect" "2"
+"color" "0 250 0"
+"color2" "240 110 0"
+"fadein" "0.01"
+"fadeout" "1.5"
+"fxtime" "0.25"
+"holdtime" "3.5"
+"message" "WELCOME TO BLACK MESA"
+"targetname" "map_start_title"
+}
+{
+"classname" "trigger_relay"
+"targetname" "game_playerspawn"
+"target" "map_start_title"
+"delay" "10.0"
+"spawnflags" "64"
+}
+
+{
+"message" "Scientist: These crab creatures have a unique parasitic strategy, don't you think?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "scientist3_speak1"
+}
+
+{
+"message" "Scientist: Three, four, five...One, two..."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "scientist1_cpr1"
+}
+
+{
+"message" "Scientist: Oh, you've woken up. Corporal Shephard, is it?"
+"effect" "5"
+"spawnflags" "3"
+"target" "scientist1_cpr3_two"
+"delay" "3"
+"targetname" "scientist1_cpr3"
+}
+
+{
+"message" "Scientist: I've read the tag on your uniform."
+"effect" "5"
+"spawnflags" "3"
+"target" "scientist1_cpr3_three"
+"delay" "2"
+"targetname" "scientist1_cpr3_two"
+}
+
+{
+"message" "Scientist: I'm glad to see my life saving efforts weren't in vain. I can't say the same for him."
+"effect" "5"
+"spawnflags" "3"
+"target" "scientist1_cpr3_four"
+"delay" "5"
+"targetname" "scientist1_cpr3_three"
+}
+
+{
+"message" "Scientist: I'm afraid you have been through a serious accident. Most of your friends didn't make it."
+"effect" "5"
+"spawnflags" "3"
+"target" "scientist1_cpr3_five"
+"delay" "7"
+"targetname" "scientist1_cpr3_four"
+}
+
+{
+"message" "Scientist: I was hoping that you soldiers had come to rescue us, but now it seems we are all in the same situation."
+"effect" "5"
+"spawnflags" "3"
+"target" "scientist1_cpr3_six"
+"delay" "6"
+"targetname" "scientist1_cpr3_five"
+}
+
+{
+"message" "Scientist: I think I saw a radio near the crash site where I found you. Perhaps you can go there and radio for help?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "scientist1_cpr3_six"
+}
+
+{
+"message" "Scientist: Three, four, five..."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "scientist1_cpr2"
+}
+
+{
+"message" "Scientist: Fascinating. I never suspected such things could be."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "catscan_scientist1_walk2"
+}
+
+{
+"message" "Scientist: Have you ever seen such a magnificent species? These crabs can completely control their hosts' nervous system. Can you imagine what the next stage of mutation looks like?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "scientist2_speak1"
+}
+
+{
+"message" "Security Guard: Sorry, uh, Shephard, sir, uh. See, now I was told not to open this door for ya until you agreed to help us. Besides, you wouldn't wanna go out there without your armor vest anyway. I-I left it for you where the other soldiers are getting treated. Just, uh, you know, come on back here when you've found it."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "otis_no_vest"
+}
+
+{
+"message" "Security Guard: Good luck, sir."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "control_retinal_done"
+}
+
+{
+"message" "Security Guard: Okay, Shephard, I see you found your power vest. That should keep you safe out there. See, now I've heard rumors that you troops may not actually be here to rescue us. Just don't forget about us out there, all righty? Okay, I'll let you through now."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "otis2_vest_speak"
+}
+
+{
+"message" "VOX: Access Denied."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "retinal_blip1_denied"
+}
+
+{
+"message" "VOX: No unauthorized personnel."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "broken_airlock_denied_vox2"
+}
+
+{
+"message" "VOX: No unauthorized personnel."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "broken_airlock_denied_vox"
+}

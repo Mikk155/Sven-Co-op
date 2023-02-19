@@ -184,13 +184,12 @@
         0: "This monster"
         1: "Damage Inflictor/Attacker"
     ]
-    // -Mikk prevent a monster from generating blood puddles
+	// -Mikk https://github.com/Mikk155/Sven-Co-op#env_bloodpuddle
     $f_bloodpuddle(choices) : "[AS] Generate blood puddle when die" : 0 =
     [
         0: "Yes"
         1: "No"
     ]
-    // -Mikk blood puddle skin value for this monster. if empty = use bloodcolor from monster to set red or yellow.
     $i_bloodpuddle(integer) : "[AS] blood puddle skin"
 ]
 
@@ -3479,6 +3478,9 @@
     // Legacy
     killtarget(target_destination) : "Kill Target"
 
+	// Player must be in this radius to see the message.
+    radius(float) : "Radius" : 0.0
+
     // Enum of supported styles of text.
     effect(Choices) : "Text Effect" : 0 =
     [
@@ -3544,9 +3546,6 @@
         3 : "Play Everywhere"
         4 : "Activator only"
     ]
-
-    // Plays a sentence using this entity as a speaker
-    messagesentence(string) : "Play sentence (!SENTENCENAME)"
 
     // Replacing code:
     // We've added a function for replacing a string command into another string.

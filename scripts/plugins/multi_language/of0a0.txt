@@ -1,0 +1,294 @@
+{
+"message" "MISSION:\nClassified"
+"spawnflags" "1"
+"x" "-1"
+"y" "-1"
+"effect" "2"
+"color" "0 250 0"
+"color2" "240 110 0"
+"fadein" "0.01"
+"fadeout" "1.5"
+"fxtime" "0.25"
+"holdtime" "4"
+"targetname" "mission"
+}
+{
+"message" "CURRENT ASSIGNMENT:\nHazardous Environment Combat Unit\nSantego Military Base, Arizona"
+"spawnflags" "1"
+"x" "-1"
+"y" "-1"
+"effect" "2"
+"color" "0 250 0"
+"color2" "240 110 0"
+"fadein" "0.01"
+"fadeout" "1.5"
+"fxtime" "0.25"
+"holdtime" "4"
+"targetname" "assignment"
+}
+{
+"message" "Commanding Officer:\nSergeant Dwight T. Barnes"
+"spawnflags" "1"
+"x" "-1"
+"y" "-1"
+"effect" "2"
+"color" "0 250 0"
+"color2" "240 110 0"
+"fadein" "0.01"
+"fadeout" "1.5"
+"fxtime" "0.25"
+"holdtime" "4"
+"targetname" "officer"
+}
+{
+"message" "RANK:\nCorporal"
+"spawnflags" "1"
+"x" "-1"
+"y" "-1"
+"effect" "2"
+"color" "0 250 0"
+"color2" "240 110 0"
+"fadein" "0.01"
+"fadeout" "1.5"
+"fxtime" "0.25"
+"holdtime" "4"
+"targetname" "rank"
+}
+{
+"message" "TRAINING:\nUnited States Marine Corps,\nSpecial Forces"
+"spawnflags" "1"
+"x" "-1"
+"y" "-1"
+"effect" "2"
+"color" "0 250 0"
+"color2" "240 110 0"
+"fadein" "0.01"
+"fadeout" "1.5"
+"fxtime" "0.25"
+"holdtime" "4"
+"targetname" "training"
+}
+{
+"message" "SUBJECT:\nAdrian Shephard\nMale, age 22"
+"spawnflags" "1"
+"x" "-1"
+"y" "-1"
+"effect" "2"
+"color" "0 250 0"
+"color2" "240 110 0"
+"fadein" "0.01"
+"fadeout" "1.5"
+"fxtime" "0.25"
+"holdtime" "4"
+"targetname" "subject"
+}
+
+{
+"message" "Tower: Man, if this is another 'search and rescue' operation, I'm gonna be pissed."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line1"
+}
+
+{
+"message" "Jackson: Yeah, I'm gonna be pissed too when I gotta search and rescue your sorry ass."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg2_line1"
+}
+
+{
+"message" "Tower: Hey, Shephard! I think Jackson here's got the hots for you."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line2"
+}
+
+{
+"message" "Jackson: Screw you, Tower!"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg2_line2"
+}
+
+{
+"message" "Tower: Hey man, where the hell are we anyway?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line3"
+}
+
+{
+"message" "Jackson: Well, the pilot thought we were headin' to your mother's house, heh. So far this all looks familiar."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg2_line3"
+}
+
+{
+"message" "Tower: Yeah, that's real cute, Jackson."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line4"
+}
+
+{
+"message" "Jackson: Anytime, anywhere."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line4"
+}
+
+{
+"message" "Tower: Hey man, you smell that?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line5"
+}
+
+{
+"message" "Jackson: Smell what?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg2_line5"
+}
+
+{
+"message" "Tower: Smells like... smells like another babysittin' job to me, man."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line6"
+}
+
+{
+"message" "Jackson: Heh heh, no shit, man."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg2_line6"
+}
+
+{
+"message" "Yon: Babysittin' job my ass. This has training mission written all over it. Why else would they have kept our orders from us for so long, huh?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg3_line1"
+}
+
+{
+"message" "Tower: Yeah, what the hell is that all about? Throwin' our asses in this hunk of junk and not even tellin' us what we're goin' in for, man."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line7"
+}
+
+{
+"message" "Tower: Sir, yes, sir!"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg1_line8"
+}
+
+{
+"message" "Jackson: Well, I don't really give a damn what we're going in for. Long as I get to kill me somethin'."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg2_line7"
+}
+
+{
+"message" "Commander: Okay, listen up, people! We have an extremely hostile situation on our hand!"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "dr_line2"
+}
+
+{
+"message" "Yon: I heard that."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "fg3_line2"
+}
+
+{
+"message" "Commander: Do you have a problem, private? I will give you your orders when we've reached the LZ! You got that, soldier?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "dr_line1"
+}
+
+{
+"message" "Commander: Recon has not been able to determine the amount of opposition, so let's keep this tight. Your mission is to get- Shit! Goddamn it!"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "dr_line3"
+}
+
+{
+"message" "Johnson: Get down!"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "get_down"
+}
+
+{
+"message" "RADIO: Roger that, we copy."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_2b"
+}
+
+{
+"message" "RADIO: Watch it Goose 7, you've got something coming up on your-"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_4d"
+}
+
+{
+"message" "RADIO: What the hell is going on out there?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_4c"
+}
+
+{
+"message" "RADIO: Holy shit! Goose 3 is down! Goose 3 is down!"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_4b"
+}
+
+{
+"message" "RADIO: Negative, Goose 7. I can see some activity up there, but I can't tell what it is."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_3b"
+}
+
+{
+"message" "RADIO: Anyone out there got a good view of the LZ yet?"
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_3a"
+}
+
+{
+"message" "RADIO: Watch your vector, Goose 3. It's getting little tight in here."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_2a"
+}
+
+{
+"message" "RADIO: Copy that, HQ."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_1b"
+}
+
+{
+"message" "RADIO: Okay, Goose 7. Proceed to sector 112 LZ and rendezvous with Alpha Bravo Tango. Over."
+"effect" "5"
+"spawnflags" "3"
+"targetname" "chatter_1a"
+}

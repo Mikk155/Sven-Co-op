@@ -1,23 +1,37 @@
 #include "utils"
 namespace game_text_custom
 {
-    void Register( const string& in szClassname = "game_text_custom" )
+    void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", szClassname );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", "game_text_custom" );
 
-        string Description, Authors = "Script: " + szClassname + "\nAuthor: Mikk\nGithub: github.com/Mikk155\nAuthor: Gaftherman\nGithub: github.com/Gaftherman\nAuthor: Kmkz\nGithub: github.com/kmkz27\n";
-
-        if ( szClassname == "game_text_custom" )
-        {
-            Description = "Description: New entity replacemet for game_text and env_message with lot of new additions.\n";
-        }
-        else if( szClassname == "multi_language" )
-        {
-            Description = "Description: Plugin that allow players to individually choose the language they want to see in game if the map or script supports the feature.\n";
-        }
-
-        g_Util.ScriptAuthor.insertLast( Authors + Description );
+        g_Util.ScriptAuthor.insertLast
+		(
+			"Script: game_text_custom"
+			"\nAuthor: Mikk"
+			"\nGithub: github.com/Mikk155"
+			"\nAuthor: Gaftherman"
+			"\nGithub: github.com/Gaftherman"
+			"\nAuthor: Kmkz"
+			"\nGithub: github.com/kmkz27"
+			"\nDescription: New entity replacemet for game_text and env_message with lot of new additions.\n"
+		);
     }
+
+	void InitialiseAsPlugin()
+	{
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", "multi_language" );
+
+        g_Util.ScriptAuthor.insertLast
+		(
+			"Script: multi_language"
+			"\nAuthor: Mikk"
+			"\nGithub: github.com/Mikk155"
+			"\nAuthor: Gaftherman"
+			"\nGithub: github.com/Gaftherman"
+			"\nDescription: Plugin that allow players to individually choose the language they want to see in game if the map or script supports the feature.\n"
+		);
+	}
 
     enum spawnflags
     {
@@ -27,11 +41,9 @@ namespace game_text_custom
         SF_GTC_PLAY_ONCE = 1 << 3
     }
 
-    class entity :
-    ScriptBaseEntity,
-    ScriptBaseGameText,
-    ScriptBaseLanguages,
-    ScriptBaseCustomEntity
+    class entity : ScriptBaseEntity,
+    game_text_custom::ScriptBaseGameText,
+    ScriptBaseLanguages, ScriptBaseCustomEntity
     {
         // Call current activator at any time
         EHandle EhActivator = self;
@@ -40,15 +52,15 @@ namespace game_text_custom
         key_string,
         focus_entity,
         messagesound,
-        key_from_entity,
-        messagesentence;
+        key_from_entity;
 
         private float
         messagevolume = 10,
         messageattenuation = 0,
         key_float;
 
-        int key_integer;
+        int key_integer,
+		radius = 0;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
@@ -73,10 +85,6 @@ namespace game_text_custom
             {
                 messageattenuation = atof( szValue );
             }
-            else if( szKey == "messagesentence" )
-            {
-                messagesentence = szValue;
-            }
             else if ( szKey == "focus_entity" )
             {
                 focus_entity = szValue;
@@ -100,6 +108,11 @@ namespace game_text_custom
             else if ( szKey == "key_string" )
             {
                 key_string = szValue;
+                return true;
+            }
+            else if ( szKey == "radius" )
+            {
+                radius = atoi( szValue );
                 return true;
             }
             else
@@ -174,7 +187,7 @@ namespace game_text_custom
 
             if( pActivator !is null ) EhActivator = pActivator; else EhActivator = null;
 
-            if ( self.pev.SpawnFlagBitSet( SF_GTC_ALL_PLAYERS ) )
+            if ( self.pev.SpawnFlagBitSet( SF_GTC_ALL_PLAYERS ) || radius > 0 )
             {
                 for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
                 {
@@ -201,6 +214,9 @@ namespace game_text_custom
 
         void ShowText( CBasePlayer@ pPlayer )
         {
+			if( radius > 0 && ( self.pev.origin - pPlayer.pev.origin ).Length() > radius )
+				return;
+
             string ReadLanguage = g_Util.StringReplace( ReadLanguages( pPlayer ),
             {
                 { "!integer", string( key_integer ) },
@@ -222,7 +238,16 @@ namespace game_text_custom
             }
             else if( TextParams.effect == 5 )
             {
-                g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, string( ReadLanguage ) + "\n" );
+				string FullString = string( ReadLanguage );
+
+				// If we reached the limit replace and send again
+				while( FullString != '' )
+				{
+					g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, FullString.SubString( 0, 95 ) + ( FullString.Length() <= 95 ? '\n' : '-' ) );
+
+					if( FullString.Length() <= 95 ) FullString = '';
+					else FullString = FullString.SubString( 95, FullString.Length() );
+				}
             }
             else if( TextParams.effect == 6 )
             {
@@ -300,11 +325,6 @@ namespace game_text_custom
                 );
             }
 
-            if( !messagesentence.IsEmpty() )
-            {
-                g_SoundSystem.EmitSoundSuit( pPlayer.edict(), messagesentence );
-            }
-
             if( self.pev.SpawnFlagBitSet( SF_GTC_FIRE_PER_PLAYER ) )
             {
                 g_Util.Trigger( self.pev.target, pPlayer, self, USE_TOGGLE, delay );
@@ -359,92 +379,94 @@ namespace game_text_custom
         }
     }
     // End of class
+
+	// game_text legacy for "effect" 0,1,2
+	mixin class ScriptBaseGameText
+	{
+		private string killtarget;
+		HUDTextParams TextParams;
+		
+		private Vector color, color2;
+
+		bool GameTextKeyvalues( const string& in szKey, const string& in szValue )
+		{
+			if(szKey == "channel")
+			{
+				TextParams.channel = atoi( szValue );
+			}
+			else if(szKey == "x")
+			{
+				TextParams.x = atof( szValue );
+			}
+			else if(szKey == "y")
+			{
+				TextParams.y = atof( szValue );
+			}
+			else if(szKey == "effect")
+			{
+				TextParams.effect = atoi( szValue );
+			}
+			else if(szKey == "color")
+			{
+				string delimiter = " ";
+				array<string> splitColor = {"","",""};
+				splitColor = szValue.Split(delimiter);
+				array<uint8>result = {0,0,0};
+				result[0] = atoi(splitColor[0]);
+				result[1] = atoi(splitColor[1]);
+				result[2] = atoi(splitColor[2]);
+				if (result[0] > 255) result[0] = 255;
+				if (result[1] > 255) result[1] = 255;
+				if (result[2] > 255) result[2] = 255;
+				RGBA vcolor = RGBA(result[0],result[1],result[2]);
+				TextParams.r1 = vcolor.r;
+				TextParams.g1 = vcolor.g;
+				TextParams.b1 = vcolor.b;
+			}
+			else if(szKey == "color2")
+			{
+				string delimiter2 = " ";
+				array<string> splitColor2 = {"","",""};
+				splitColor2 = szValue.Split(delimiter2);
+				array<uint8>result2 = {0,0,0};
+				result2[0] = atoi(splitColor2[0]);
+				result2[1] = atoi(splitColor2[1]);
+				result2[2] = atoi(splitColor2[2]);
+				if (result2[0] > 255) result2[0] = 255;
+				if (result2[1] > 255) result2[1] = 255;
+				if (result2[2] > 255) result2[2] = 255;
+				RGBA vcolor2 = RGBA(result2[0],result2[1],result2[2]);
+				TextParams.r2 = vcolor2.r;
+				TextParams.g2 = vcolor2.g;
+				TextParams.b2 = vcolor2.b;
+			}
+			else if(szKey == "fadein")
+			{
+				TextParams.fadeinTime = atof( szValue );
+			}
+			else if(szKey == "fadeout")
+			{
+				TextParams.fadeoutTime = atof( szValue );
+			}
+			else if(szKey == "holdtime")
+			{
+				TextParams.holdTime = atof( szValue );
+			}
+			else if(szKey == "fxtime")
+			{
+				TextParams.fxTime = atof( szValue );
+			}
+			else if( szKey == "killtarget" )
+			{
+				killtarget = szValue;
+			}
+			else
+			{
+				return BaseClass.KeyValue( szKey, szValue );
+			}
+			return true;
+		}
+	}
+	// End of mixin class
 }
 // End of namespace
-
-// game_text legacy for "effect" 0,1,2
-mixin class ScriptBaseGameText
-{
-    private string killtarget;
-    HUDTextParams TextParams;
-
-    bool GameTextKeyvalues( const string& in szKey, const string& in szValue )
-    {
-        if(szKey == "channel")
-        {
-            TextParams.channel = atoi( szValue );
-        }
-        else if(szKey == "x")
-        {
-            TextParams.x = atof( szValue );
-        }
-        else if(szKey == "y")
-        {
-            TextParams.y = atof( szValue );
-        }
-        else if(szKey == "effect")
-        {
-            TextParams.effect = atoi( szValue );
-        }
-        else if(szKey == "color")
-        {
-            string delimiter = " ";
-            array<string> splitColor = {"","",""};
-            splitColor = szValue.Split(delimiter);
-            array<uint8>result = {0,0,0};
-            result[0] = atoi(splitColor[0]);
-            result[1] = atoi(splitColor[1]);
-            result[2] = atoi(splitColor[2]);
-            if (result[0] > 255) result[0] = 255;
-            if (result[1] > 255) result[1] = 255;
-            if (result[2] > 255) result[2] = 255;
-            RGBA vcolor = RGBA(result[0],result[1],result[2]);
-            TextParams.r1 = vcolor.r;
-            TextParams.g1 = vcolor.g;
-            TextParams.b1 = vcolor.b;
-        }
-        else if(szKey == "color2")
-        {
-            string delimiter2 = " ";
-            array<string> splitColor2 = {"","",""};
-            splitColor2 = szValue.Split(delimiter2);
-            array<uint8>result2 = {0,0,0};
-            result2[0] = atoi(splitColor2[0]);
-            result2[1] = atoi(splitColor2[1]);
-            result2[2] = atoi(splitColor2[2]);
-            if (result2[0] > 255) result2[0] = 255;
-            if (result2[1] > 255) result2[1] = 255;
-            if (result2[2] > 255) result2[2] = 255;
-            RGBA vcolor2 = RGBA(result2[0],result2[1],result2[2]);
-            TextParams.r2 = vcolor2.r;
-            TextParams.g2 = vcolor2.g;
-            TextParams.b2 = vcolor2.b;
-        }
-        else if(szKey == "fadein")
-        {
-            TextParams.fadeinTime = atof( szValue );
-        }
-        else if(szKey == "fadeout")
-        {
-            TextParams.fadeoutTime = atof( szValue );
-        }
-        else if(szKey == "holdtime")
-        {
-            TextParams.holdTime = atof( szValue );
-        }
-        else if(szKey == "fxtime")
-        {
-            TextParams.fxTime = atof( szValue );
-        }
-        else if( szKey == "killtarget" )
-        {
-            killtarget = szValue;
-        }
-        else
-        {
-            return BaseClass.KeyValue( szKey, szValue );
-        }
-        return true;
-    }
-}
-// End of mixin class
