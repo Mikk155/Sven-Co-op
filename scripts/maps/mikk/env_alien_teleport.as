@@ -24,10 +24,24 @@ namespace env_alien_teleport
 
         void Spawn()
         {
+			Precache();
+
+			if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
+			{
+				g_Util.DebugMessage( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
+				g_EntityFuncs.Remove( self );
+			}
+
             SetThink( ThinkFunction( this.TriggerThink ) );
             self.pev.nextthink = g_Engine.time + 0.1f;
 
             BaseClass.Spawn();
+        }
+
+        void Precache()
+        {
+			g_Game.PrecacheOther( string( self.pev.netname ) );
+            BaseClass.Precache();
         }
 
         int GetRandomPlayer()
