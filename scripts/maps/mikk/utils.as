@@ -258,7 +258,7 @@ final class CUtils
         g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
     }
 
-    bool LoadEntities( const string& in EntFileLoadText = 'scripts/maps/store/sex.txt' )
+    bool LoadEntities( const string& in EntFileLoadText = 'scripts/maps/store/sex.txt', const string& in szClassname = '' )
     {
 		RIPENTDebugger = "";
 
@@ -306,11 +306,16 @@ final class CUtils
                         continue;
                     }
 
-                    CBaseEntity@ pInitialized = g_EntityFuncs.CreateEntity( string( g_KeyValues[ "classname" ] ), g_KeyValues, true );
+					string Classname;
+					Classname = szClassname;
+
+					if( !string( g_KeyValues[ "classname" ] ).IsEmpty() ) Classname = string( g_KeyValues[ "classname" ] );
+
+                    CBaseEntity@ pInitialized = g_EntityFuncs.CreateEntity( Classname, g_KeyValues, true );
 
                     if( pInitialized !is null )
                     {
-                        RIPENTDebugger = RIPENTDebugger + "RIPENT: Entity '" + string( g_KeyValues[ "classname" ] ) + "' initialised.\n";
+                        RIPENTDebugger = RIPENTDebugger + "RIPENT: Entity '" + Classname + "' initialised.\n";
                     }
                     else
                     {
@@ -577,6 +582,10 @@ namespace UTILS
         if( args.Arg(0) == "info" || args.Arg(0) == "/info" )
         {
             ShowInfo( pPlayer );
+        }
+        else if( args.Arg(0) == "ripent" || args.Arg(0) == "/ripent" )
+        {
+            g_Util.RipentShowInfo( pPlayer );
         }
 
         for(uint ui = 0; ui < g_Util.MapAuthor.length(); ui++)
