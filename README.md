@@ -103,80 +103,11 @@ Username: ``Gaftherman#0231``
 <details><summary>Tutorials 🖊️</summary>
 <p>
 
-[env_global](#env_global)
-
-<details><summary>numerical padlock</summary>
-<p>
-
-Creates a full customizable code **on-the-fly** for a numerical padlock. this system works using a game_counter and a trigger_random for randomizing the code needed, feel free to make a better randomizing system of 3 digits from number 0 to 9
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁maps
-        └── 📄1test_numpad.bsp
-```
-
-once you fire the "randomizing button" 3 copyvalue will paste those random numbers into a trigger_condition.
-
-then every numerical plate will add a value of their owns into another entity while the mentioned trigger_condition will check if the numbers was touched in order and if they're correct.
-
-- If someone is using the camera then others players can't interfer
-
-- using the plate bellow "8" will delete all your previous attempts, basically restore.
-
-- next to player spawn there are some entities that they're only for DEBUG purpose. delete them.
-
-go to map ``1test_numpad``
-
-Test map by Mikk
-
----
-
-</p>
-</details>
-
-<details><summary>Un-embed textures from a BSP</summary>
-<p>
-
-A tool that eliminates imported textures in the maps (``-wadinclude``) and this reduce considerably BSP's file.
-
-You'll need these tools [BSPTexR](https://github.com/Litude/BSPTexRM) and [wally](https://gamebanana.com/tools/4774) and Ripent wich is in Sven Co-op's SDK
-
-You can extract the textures with ripent, Create a wad with wally and finally eliminate the textures imported with BSPTexR
-
-- 1 Extract the textures of your map with ripent
-```
-ripent -textureexport mapname
-```
-
-- 2 Create a folder called ``Vanilla textures``
-
-- 3 Export the textures by default (halflife, opfor, etc etc) a png, tga, jpg or any other format in the folder ``Vanilla textures``
-
-- 4 Create a folder called ``New textures``
-
-- 5 Export the textures of your map in the folder ``New textures``
-
-- 6 Copy all textures from the ``Vanilla textures`` folder and paste inside the ``New textures`` folder and hit "Replace all"
-
-- 7 Now you must press CONTROL+Z the textures in the ``Vanilla textures`` folder should be back that folder leaving ``New textures`` with only the exclusive textures of the map.
-
-- 8 Create a new wad with wally and use all the new textures.
-
-- 9 Use the tool BSPTexR to eliminate all textures of the map
-```
-bsptexrm mapname
-```
-
-- 10 Go to the properties of your map and include the new .wad in the "wad" properties of "worldspawn"
-
-⚠️ Since the BSP has been modified it will differ from older versions but it will also lower considerably it's size.
-
----
-
-</p>
-</details>
+| Tutorial |
+| :------: |
+| [transport information between two or more maps. allowing you to do different triggers depending in what state the previus map did set the global state.](#env_global) |
+| [Creates a full customizable code **on-the-fly** for a numerical padlock. this system works using a game_counter and a trigger_random for randomizing the code needed, feel free to make a better randomizing system of 3 digits from number 0 to 9](#numerical-padlock) |
+| [Un embed textures from a BSP](un-embed-textures-from-a-bsp) |
 
 </p>
 </details>
@@ -215,223 +146,21 @@ bsptexrm mapname
 <details><summary>Plugins 🗂️</summary>
 <p>
 
-<details><summary>BloodPuddle</summary>
-<p>
-
-BloodPuddle Generates a blood puddle when a monster die.
-
-<details><summary>Download</summary>
-<p>
-
-
-```
-└── 📁svencoop_addon
-    ├── 📁models
-    |   └── 📁mikk
-    |       └── 📁misc
-    |           └── 📄bloodpuddle.mdl
-    |
-    └── 📁scripts
-        ├── 📁maps
-        |   └── 📁mikk
-        |       ├── 📄env_bloodpuddle.as
-        |       └── 📄utils.as
-        └── 📁plugins
-            └── 📄BloodPuddle
-```
-
-</p>
-</details>
-
-<details><summary>Install</summary>
-<p>
-
-```angelscript
-    "plugin"
-    {
-        "name" "BloodPuddle"
-        "script" "BloodPuddle"
-    }
-```
-in line 4
-```angelscript
-    env_bloodpuddle::Register( false );
-```
-if set to ``true``, the generated blood puddles will disapear as soon as the monster who generated it disapears.
-
-if set to ``false``, the generated blood puddles won't disapear
+| Plugin |
+| :----: |
+| [BloodPuddle](#bloodpuddle) Generates a blood puddle when a monster die. |
+| [NoAutoPick](#noautopick) Make items/weapons pick-able only if pressing E-key. |
+| [PlayerDeadChat](#playerdeadchat) Make dead player's messages readable for dead players only |
+| [RenameServer](#renameserver) Changes your server's hostname dynamicaly depending the map playing |
 
 </p>
 </details>
 
 ---
 
-</p>
-</details>
 
-<details><summary>NoAutoPick</summary>
-<p>
 
-NoAutoPick Make items/weapons pick-able only if pressing E-key.
 
-<details><summary>Download</summary>
-<p>
-
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁plugins
-            └── 📄NoAutoPick
-```
-
-</p>
-</details>
-
-<details><summary>Install</summary>
-<p>
-
-```angelscript
-    "plugin"
-    {
-        "name" "NoAutoPick"
-        "script" "NoAutoPick"
-    }
-```
-
-</p>
-</details>
-
----
-
-</p>
-</details>
-
-<details><summary>PlayerDeadChat</summary>
-<p>
-
-PlayerDeadChat Make dead player's messages readable for dead players only
-
-<details><summary>Download</summary>
-<p>
-
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁plugins
-            └── 📄PlayerDeadChat
-```
-
-</p>
-</details>
-
-<details><summary>Install</summary>
-<p>
-
-```angelscript
-    "plugin"
-    {
-        "name" "PlayerDeadChat"
-        "script" "PlayerDeadChat"
-    }
-```
-
-</p>
-</details>
-
----
-
-</p>
-</details>
-
-<details><summary>RenameServer</summary>
-<p>
-
-RenameServer Changes your server's hostname dynamicaly depending the map playing
-
-<details><summary>Download</summary>
-<p>
-
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁plugins
-            └── 📄RenameServer
-```
-
-</p>
-</details>
-
-<details><summary>Install</summary>
-<p>
-
-```angelscript
-    "plugin"
-    {
-        "name" "RenameServer"
-        "script" "RenameServer"
-    }
-```
-
-</p>
-</details>
-
-<details><summary>Modify</summary>
-<p>
-
-line 18 should be your server's hostname:
-```angelscript
-// Name of your server
-const string strHostname = "[US] Limitless Potential (Hardcore + Anti-Rush)";
-```
-
-Here you must add the new arguments, the first string in the array is the first chars of the map name while the second argument is the display name
-```angelscript
-// < name of your map        |        title of your hostname >
-
-string[][] strMaps = 
-{
-    {"hl", "Half-Life"},
-
-    {"rp", "Residual Point"},
-
-    {"rl_", "Residual Life"},
-
-    {"ast_", "A Soldier's Tale"},
-
-    {"tln_", "The Long Night"},
-
-    {"accesspoint", "Access Point"},
-
-    {"bridge_the_gap", "Bridge The Gap"},
-
-    {"bm_sts", "BM: Special Tactics"},
-
-    {"ba", "Blue-Shift"},
-
-    {"hcl", "Hardcore-Life"},
-
-    {"of_utbm", "Under The Black Moon"},
-
-    {"of", "Opposing-Force"}
-};
-```
-Your server's hostname will look like this:
-```angelscript
-"[US] Limitless Potential (Hardcore + Anti-Rush) Playing Opposing-Force"
-```
-
-</p>
-</details>
-
----
-
-</p>
-</details>
-
-</p>
-</details>
-
----
 
 
 
@@ -440,19 +169,57 @@ Your server's hostname will look like this:
 
 Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
 
+<details><summary>ambient_</summary>
+<p>
+
 | Entity / Script | Description | is Angelscript | has Angelscript feature |
 |-----------------|-------------| :------------: | :---------------------: |
 [ambient_generic](#ambient_generic) | Entity for reproduce a sound | ❌ | ❌ 
 [ambient_music](#ambient_music) | Entity for reproduce a music song. | ❌ | ❌ 
+
+</p>
+</details>
+
+<details><summary>ammo_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
 [ammo_custom](#ammo_custom) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ | ✔️ 
 [ammo_](#ammo_) | Ammunition entities. | ❌ | ✔️ 
+
+</p>
+</details>
+
+<details><summary>config_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
 [config_classic_mode](#config_classic_mode) | Entity that allow mapper to customize classic mode. | ✔️ | ✔️ 
 [config_map_precache](#config_map_precache) | Entity that precache almost anything. | ✔️ | ✔️ 
 [config_survival_mode](#config_survival_mode) | Entity that allow mapper to customize survival mode. | ✔️ | ✔️ 
-[entitymaker](#entitymaker) | Entity that when is fired it creates any entity on its origin and using the same keyvalues that entitymaker has. | ✔️ | ✔️ 
+
+</p>
+</details>
+
+<details><summary>cycler_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
 [cycler](https://sites.google.com/site/svenmanor/entguide/cycler) | Entity used to display models in your map. | ❌ | ❌ 
 [cycler_sprite](https://sites.google.com/site/svenmanor/entguide/cycler_sprite) | Entity used to display sprites in your map. | ❌ | ❌ 
 [cycler_weapon](https://sites.google.com/site/svenmanor/entguide/cycler_weapon) | Entity that appears to be an unfinished entity originally by Valve. | ❌ | ❌ 
+
+</p>
+</details>
+
+<details><summary>env_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
 [env_alien_teleport](#env_alien_teleport) | Entity that spawns (with xen FX) a specified monster around a random player. | ✔️  | ✔️  
 [env_beam](https://sites.google.com/site/svenmanor/entguide/env_beam) | The env_beam entity is used to create a bolt between two entities. | ❌ | ❌ 
 [env_beverage](https://sites.google.com/site/svenmanor/entguide/env_beverage) | Spawns a can. used for black mesa dispensers. | ❌ | ❌ 
@@ -466,7 +233,135 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 [env_funnel](https://sites.google.com/site/svenmanor/entguide/env_funnel) | Creates a large portal funnel particle effect of green particles | ❌ | ❌ 
 [env_geiger](#env_geiger) | Entity that simulates radiation sound in a small radius of its origin. | ✔️ | ✔️ 
 [env_global](#env_global) | Entity used to transport information between two or more maps. | ❌ | ❌ 
+[env_glow](https://sites.google.com/site/svenmanor/entguide/env_glow) | The env_glow is a castrated env_sprite. Use that instead for more features. | ❌ | ❌ 
+[env_laser](https://sites.google.com/site/svenmanor/entguide/env_laser) | A less advanced version of env_beam. Creates a toggleable laser between itself and its target. | ❌ | ❌ 
+[env_message](https://sites.google.com/site/svenmanor/entguide/env_message) | An entity to display messages from the titles.txt file on the HUD. You probably are better off with the much more customizable [game_text_custom](#game_text_custom) entity. | ❌ | ❌ 
+[env_render](#env_render) | Point entity which allows you to change render-mode, -fx, -amount and -color of another entity. This entity supports use of !activator and !caller. | ❌ | ✔️ 
+[env_render_gradualy](#env_render_gradualy) | Allow env_render to gradually render a entity progressivelly (fade in-out) by its renderamt until both (env_render and target entity) have the same renderamt | ✔️ | ✔️ 
+[env_render_individual](https://sites.google.com/site/svenmanor/entguide/env_render_individual) | Entity that acts like env_render but applied render settings will be seen only by certain players. This allows you to make entities be seen by players differently (e.g. visible only for some players). | ❌ | ❌
+[env_sentence](https://sites.google.com/site/svenmanor/entguide/env_sentence) | The env_sentence entity allows you to make announcements; think of the announcer in Black Mesa from Half-Life's single player mode. | ❌ | ❌ 
+[env_shake](https://sites.google.com/site/svenmanor/entguide/env_shake) | Causes nearby players' screens to shake. Used for simulating earthquakes. | ❌ | ❌ 
+[env_shooter](https://sites.google.com/site/svenmanor/entguide/env_shooter) | The env_shooter entity allows to emit a model or sprite of your choice and shoot it into a certain direction, at a certain velocity. Sprites aren't specifically supported, though. | ❌ | ❌ 
+[env_sound](#env_sound) | Allows you to set up specific ambient effects for increasing the sound experience and making it consistent with the visuals of your map. | ❌ | ✔️ 
+[env_spark](https://sites.google.com/site/svenmanor/entguide/env_spark) | The env_spark entity is used for emitting the visuals and sounds of a spark, often used for implying cut electric cables, broken buttons and malfunctioning machinery. | ❌ | ❌ 
+[env_sprite](https://sites.google.com/site/svenmanor/entguide/env_sprite) | The env_sprite entity allows you to render sprites, which are common 2D-graphics which will appear aligned to face you at all times, unless specified otherwise. | ❌ | ❌ 
+[env_spritehud](#env_spritehud) | env_spritehud is a entity that shows a sprite on the player's HUD. | ✔️ | ✔️ 
+[env_spritetrail](#env_spritetrail) | env_spritetrail is a entity that traces a sprite when the target entity moves | ✔️ | ✔️ 
+[env_spritetrain](https://sites.google.com/site/svenmanor/entguide/env_spritetrain) | The env_spritetrain entity resembles an env_sprite which can move along path_corner entities as a func_train can. Ever wanted to make a flame travel along a fuse to a bomb? This entity is for you. | ❌ | ❌ 
+[env_xenmaker](https://sites.google.com/site/svenmanor/entguide/env_xenmaker) | The env_xenmaker allows to spawn monsters with teleportation and beam effects. It can be set to act as a spawn-effect-data-template for squadmakers, in case you want to pair this spawn-effect with the customizability-features of the squadmaker entity. | ❌ | ❌ 
 
+
+</p>
+</details>
+
+<details><summary>trigger_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>game_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>player_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>info_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>item_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>light</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>monster_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>path_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>scripted_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>weapon_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>xen_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+
+</p>
+</details>
+
+<details><summary>other</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+[entitymaker](#entitymaker) | Entity that when is fired it creates any entity on its origin and using the same keyvalues that entitymaker has. | ✔️ | ✔️ 
+
+</p>
+</details>
 
 </p>
 </details>
@@ -477,7 +372,7 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 ### ambient_generic
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/ambient_generic)
@@ -491,7 +386,7 @@ General information in [svenmanor](https://sites.google.com/site/svenmanor/entgu
 
 ### ambient_music
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/ambient_music)
@@ -505,13 +400,10 @@ General information in [svenmanor](https://sites.google.com/site/svenmanor/entgu
 
 ### ammo_custom
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 ammo_custom is an ammo item customizable that gives a specified ammout of bullets that the entity sets.
-
-</p>
-</details>
 
 <details><summary>Download</summary>
 <p>
@@ -598,11 +490,14 @@ List:
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### ammo_
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/ammo)
@@ -616,15 +511,12 @@ General information in [svenmanor](https://sites.google.com/site/svenmanor/entgu
 
 ### config_classic_mode
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 config_classic_mode is a entity that allow you to customize classic mode for monsters, models and items that the game doesn't support.
 
 it also allows you to swap **any** model into a classic model if specified by the entity.
-
-</p>
-</details>
 
 <details><summary>Installation</summary>
 <p>
@@ -706,6 +598,9 @@ The same way you can replace any entity's custom model. the syntax is the same.
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### config_map_precache
@@ -714,10 +609,6 @@ The same way you can replace any entity's custom model. the syntax is the same.
 <p>
 
 config_map_precache is a entity that precache almost anything.
-
-</p>
-</details>
-
 
 <details><summary>Installation</summary>
 <p>
@@ -768,6 +659,9 @@ In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### config_survival_mode
@@ -776,9 +670,6 @@ In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues.
 <p>
 
 config_survival_mode is a entity that customize survival mode and make it better.
-
-</p>
-</details>
 
 <details><summary>Installation</summary>
 <p>
@@ -842,6 +733,9 @@ If the entity is triggered before it reach the limit of mp_survival_startdelay t
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### entitymaker
@@ -852,9 +746,6 @@ If the entity is triggered before it reach the limit of mp_survival_startdelay t
 entitymaker is a entity that when is fired it creates any entity on its origin and using the same keyvalues that entitymaker has.
 
 basically trigger_createentity but we aimed to add a condition for it to spawn the entity or not, depending the condition set.
-
-</p>
-</details>
 
 <details><summary>Installation</summary>
 <p>
@@ -888,6 +779,9 @@ void MapInit()
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### env_alien_teleport
@@ -896,9 +790,6 @@ void MapInit()
 <p>
 
 env_alien_teleport is a entity that randomly teleport in aliens on a random player.
-
-</p>
-</details>
 
 <details><summary>Installation</summary>
 <p>
@@ -954,17 +845,19 @@ a custom entity that watch for alive players and then spawns a monster around a 
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### env_bloodpuddle
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 Generates a blood puddle when a monster die.
 
-</p>
-</details>
+As a [Plugin](#bloodpuddle)
 
 <details><summary>Installation</summary>
 <p>
@@ -1056,9 +949,15 @@ Add [Custom KeyValues](https://sites.google.com/site/svenmanor/entguide/custom-k
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### env_effect
+
+<details><summary>Description</summary>
+<p>
 
 <details><summary>Installation</summary>
 <p>
@@ -1100,11 +999,14 @@ void MapInit()
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### env_fog
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/env_fog)
@@ -1118,13 +1020,10 @@ General information in [svenmanor](https://sites.google.com/site/svenmanor/entgu
 
 ### env_fog_individual
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 env_fog_individual is a entity that expands env_fog features to show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)
-
-</p>
-</details>
 
 <details><summary>Installation</summary>
 <p>
@@ -1171,19 +1070,19 @@ spawnflags -> 2 (Activator Only)
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### env_geiger
 
-<details><summary>General information</summary>
+<details><summary>Description</summary>
 <p>
 
 env_geiger is a entity that simulates radiation sound in a small radius of its origin.
 
 Send USE_OFF/ON/TOGGLE respectivelly.
-
-</p>
-</details>
 
 <details><summary>Installation</summary>
 <p>
@@ -1211,11 +1110,14 @@ void MapInit()
 </p>
 </details>
 
+</p>
+</details>
+
 ---
 
 ### env_global
 
-<details><summary>Introduction</summary>
+<details><summary>Description</summary>
 <p>
 
 env_global entity is used to transport information between two or more maps. allowing you to do different triggers depending in what state the previus map did set the global state.
@@ -1242,7 +1144,363 @@ Test map by Sparks
 </p>
 </details>
 
+---
 
+### env_render
+
+<details><summary>Description</summary>
+<p>
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/env_render)
+
+- This entity supports the expansion of [env_render_gradualy](#env_render_gradualy)
+
+</p>
+</details>
+
+---
+
+### env_render_gradualy
+
+<details><summary>Description</summary>
+<p>
+
+Allow env_render to gradually render a entity progressivelly (fade in-out) by its renderamt until both (env_render and target entity) have the same renderamt
+
+<details><summary>Installation</summary>
+<p>
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_render.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/env_render"
+```
+**OR**
+
+Simply include the script once via a trigger_script entity. no need to call. just include.
+```angelscript
+"m_iszScriptFile" "mikk/env_render"
+"classname" "trigger_script"
+```
+
+</p>
+</details>
+
+<details><summary>Usage</summary>
+<p>
+
+set spawnflag -> 32 (Gradually Fade in/out) to your env_render entity.
+
+health -> Think interval (default 0.045)
+
+frags -> ammount of renderamt to change every time it thinks
+
+netname -> Trigger this target when finish thinking [Supports USE_TYPE](#utils-use-type)
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+### env_sound
+
+<details><summary>Description</summary>
+<p>
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/env_sound)
+
+- New entity [trigger_sound](#trigger_sound) as a brush and trigger-able entiy.
+
+</p>
+</details>
+
+---
+
+### env_spritehud
+
+<details><summary>Description</summary>
+<p>
+
+env_spritehud is a entity that shows a sprite on the player's HUD.
+
+
+<details><summary>Installation</summary>
+<p>
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_spritehud.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/env_spritehud"
+
+void MapInit()
+{
+	env_spritehud::Register();
+}
+```
+
+</p>
+</details>
+
+<details><summary>Introduction</summary>
+<p>
+
+Shows a sprite on the hud of one or all players
+
+This entity is kinda confuse even for me, i've include everything that HudSprite supports but no idea what all of those values does.
+
+| key | value | description |
+|-----|-------|-------------|
+| spawnflags | flags | set flags See [enum spawnflags](#env_spritehud-spawnflags) |
+| frags | 0/1 | 0 = show to activator only, 1 = show to all players |
+| sprite | string | sprite file |
+| x | string | Horizontal position on the screen. <0, 1.0> = left to right. (-1.0, 0) = right to left. -1.0 = centered |
+| y | string | Vertical position on the screen. <0, 1.0> = top to bottom. (-1.0, 0) = bottom to top. -1.0 = centered |
+| channel | 0/15 | Channel. Range: 0-15 (each module type has its own channel group). |
+| color1 | [choices](#env_spritehud-color) | Set a color |
+| color2 | [choices](#env_spritehud-color) | Set a color |
+| effect | [choices](#env_spritehud-effect) | Set a color |
+| frame | float | Show Frame number/s |
+| top | integer | Sprite top offset. Range: 0-255 |
+| left | integer | Sprite left offset. Range: 0-255 |
+| width | integer | 0 = auto, use total width of the sprite |
+| height | integer | 0 = auto, use total height of the sprite |
+| numframes | integer | Number of frames |
+| framerate | float | Speed of framerate |
+| holdTime | float | Hold Time |
+| fadeinTime | float | Fade In Time |
+| fadeoutTime | float | Fade Out Time |
+
+## env_spritehud spawnflags
+
+| flag | bit | function |
+|-----|------|----------|
+| X position in pixels | 1 | HUD_ELEM_ABSOLUTE_X |
+| Y position in pixels | 2 | HUD_ELEM_ABSOLUTE_Y |
+| X-pos relative to the center | 4 | HUD_ELEM_SCR_CENTER_X |
+| Y-pos relative to the center | 8 | HUD_ELEM_SCR_CENTER_Y |
+| Ignore client border | 16 | HUD_ELEM_NO_BORDER (hud_bordersize) |
+| Create a hidden element | 32 | HUD_ELEM_HIDDEN |
+| Play the effect only once | 64 | HUD_ELEM_EFFECT_ONCE |
+| client alpha | 128 | HUD_ELEM_DEFAULT_ALPHA (hud_defaultalpha) |
+| client alpha | 256 | HUD_ELEM_DYNAMIC_ALPHA (flash when updated) |
+| Draw opaque sprite | 65536 | HUD_SPR_OPAQUE |
+| Draw masked sprite | 131072 | HUD_SPR_MASKED |
+| Play anim only once | 262144 | HUD_SPR_PLAY_ONCE |
+| Hide when anim stops | 524288 | HUD_SPR_HIDE_WHEN_STOPPED |
+
+## env_spritehud color
+
+| value | color |
+|-------|-------|
+| 0 | White |
+| 1 | Black |
+| 2 | Red |
+| 3 | Green |
+| 4 | Blue |
+| 5 | Yellow |
+| 6 | Orange |
+| 7 | Sven Co-op |
+
+## env_spritehud effect
+
+| value | description | function |
+|-------|-------------|----------|
+| 0 | No effect | HUD_EFFECT_NONE |
+| 1 | Linear ramp up from color1 to color2 | HUD_EFFECT_RAMP_UP |
+| 2 | Linear ramp down from color2 to color1 | HUD_EFFECT_RAMP_DOWN |
+| 3 | Linear up n down from color1 to color2 to color1 | HUD_EFFECT_TRIANGLE |
+| 4 | Cosine ramp up from color1 to color2 | HUD_EFFECT_COSINE_UP |
+| 5 | Cosine ramp down from color2 to color1 | HUD_EFFECT_COSINE_DOWN |
+| 6 | Cosine up n down from color1 to color2 to color1 | HUD_EFFECT_COSINE |
+| 7 | Toggle between color1 and color2 | HUD_EFFECT_TOGGLE |
+| 8 | Sine pulse from color1 to zero to color2 | HUD_EFFECT_SINE_PULSE |
+
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+# env_spritetrail
+
+<details><summary>Description</summary>
+<p>
+
+env_spritetrail is a entity that traces a sprite when the target entity moves
+
+
+<details><summary>Installation</summary>
+<p>
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄env_spritetrail.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/env_spritetrail"
+
+void MapInit()
+{
+	env_spritetrail::Register();
+}
+```
+
+</p>
+</details>
+
+<details><summary>Introduction</summary>
+<p>
+
+Traces a trail sprite when the target entity moves.
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | entity to target for trace. Blank = this entity (trigger_setorigin). "!activator" = player/monster activator. else just target something's name
+| model | string | Sprite to show as a beam |
+| frags | float | Think time |
+| health | float | Life/fade time |
+| renderamt | integer | FX Amount (1 - 255) |
+| rendercolor | Vector | FX Color (R G B) |
+| scale | integer | Texture Scale (0-255) |
+
+⚠️ on monsters the trail is on its foots, use trigger_setorigin ( off-set ) instead.
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### numerical padlock
+
+<details><summary>Description</summary>
+<p>
+
+Creates a full customizable code **on-the-fly** for a numerical padlock. this system works using a game_counter and a trigger_random for randomizing the code needed, feel free to make a better randomizing system of 3 digits from number 0 to 9
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁maps
+        └── 📄1test_numpad.bsp
+```
+
+once you fire the "randomizing button" 3 copyvalue will paste those random numbers into a trigger_condition.
+
+then every numerical plate will add a value of their owns into another entity while the mentioned trigger_condition will check if the numbers was touched in order and if they're correct.
+
+- If someone is using the camera then others players can't interfer
+
+- using the plate bellow "8" will delete all your previous attempts, basically restore.
+
+- next to player spawn there are some entities that they're only for DEBUG purpose. delete them.
+
+go to map ``1test_numpad``
+
+Test map by Mikk
+
+---
+
+</p>
+</details>
+
+---
+
+### Un embed textures from a BSP
+
+<details><summary>Description</summary>
+<p>
+
+A tool that eliminates imported textures in the maps (``-wadinclude``) and this reduce considerably BSP's file.
+
+You'll need these tools [BSPTexR](https://github.com/Litude/BSPTexRM) and [wally](https://gamebanana.com/tools/4774) and Ripent wich is in Sven Co-op's SDK
+
+You can extract the textures with ripent, Create a wad with wally and finally eliminate the textures imported with BSPTexR
+
+- 1 Extract the textures of your map with ripent
+```
+ripent -textureexport mapname
+```
+
+- 2 Create a folder called ``Vanilla textures``
+
+- 3 Export the textures by default (halflife, opfor, etc etc) a png, tga, jpg or any other format in the folder ``Vanilla textures``
+
+- 4 Create a folder called ``New textures``
+
+- 5 Export the textures of your map in the folder ``New textures``
+
+- 6 Copy all textures from the ``Vanilla textures`` folder and paste inside the ``New textures`` folder and hit "Replace all"
+
+- 7 Now you must press CONTROL+Z the textures in the ``Vanilla textures`` folder should be back that folder leaving ``New textures`` with only the exclusive textures of the map.
+
+- 8 Create a new wad with wally and use all the new textures.
+
+- 9 Use the tool BSPTexR to eliminate all textures of the map
+```
+bsptexrm mapname
+```
+
+- 10 Go to the properties of your map and include the new .wad in the "wad" properties of "worldspawn"
+
+⚠️ Since the BSP has been modified it will differ from older versions but it will also lower considerably it's size.
+
+---
+
+</p>
+</details>
 
 
 
@@ -1282,6 +1540,255 @@ The default use-type is 'Toggle'. For other use-types, you must add a token to t
 - For 'On', add ``#1``
 
 - For 'Kill', add ``#2``
+
+</p>
+</details>
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### bloodpuddle
+
+<details><summary>Description</summary>
+<p>
+
+BloodPuddle Generates a blood puddle when a monster die.
+
+As a [Map Script](#env_bloodpuddle)
+
+<details><summary>Download</summary>
+<p>
+
+
+```
+└── 📁svencoop_addon
+    ├── 📁models
+    |   └── 📁mikk
+    |       └── 📁misc
+    |           └── 📄bloodpuddle.mdl
+    |
+    └── 📁scripts
+        ├── 📁maps
+        |   └── 📁mikk
+        |       ├── 📄env_bloodpuddle.as
+        |       └── 📄utils.as
+        └── 📁plugins
+            └── 📄BloodPuddle
+```
+
+</p>
+</details>
+
+<details><summary>Install</summary>
+<p>
+
+```angelscript
+    "plugin"
+    {
+        "name" "BloodPuddle"
+        "script" "BloodPuddle"
+    }
+```
+in line 4
+```angelscript
+    env_bloodpuddle::Register( false );
+```
+if set to ``true``, the generated blood puddles will disapear as soon as the monster who generated it disapears.
+
+if set to ``false``, the generated blood puddles won't disapear
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+### NoAutoPick
+
+<details><summary>Description</summary>
+<p>
+
+NoAutoPick Make items/weapons pick-able only if pressing E-key.
+
+<details><summary>Download</summary>
+<p>
+
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁plugins
+            └── 📄NoAutoPick
+```
+
+</p>
+</details>
+
+<details><summary>Install</summary>
+<p>
+
+```angelscript
+    "plugin"
+    {
+        "name" "NoAutoPick"
+        "script" "NoAutoPick"
+    }
+```
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+### PlayerDeadChat
+
+<details><summary>Description</summary>
+<p>
+
+PlayerDeadChat Make dead player's messages readable for dead players only
+
+<details><summary>Download</summary>
+<p>
+
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁plugins
+            └── 📄PlayerDeadChat
+```
+
+</p>
+</details>
+
+<details><summary>Install</summary>
+<p>
+
+```angelscript
+    "plugin"
+    {
+        "name" "PlayerDeadChat"
+        "script" "PlayerDeadChat"
+    }
+```
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+### RenameServer
+
+<details><summary>Description</summary>
+<p>
+
+RenameServer Changes your server's hostname dynamicaly depending the map playing
+
+<details><summary>Download</summary>
+<p>
+
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁plugins
+            └── 📄RenameServer
+```
+
+</p>
+</details>
+
+<details><summary>Install</summary>
+<p>
+
+```angelscript
+    "plugin"
+    {
+        "name" "RenameServer"
+        "script" "RenameServer"
+    }
+```
+
+</p>
+</details>
+
+<details><summary>Modify</summary>
+<p>
+
+line 18 should be your server's hostname:
+```angelscript
+// Name of your server
+const string strHostname = "[US] Limitless Potential (Hardcore + Anti-Rush)";
+```
+
+Here you must add the new arguments, the first string in the array is the first chars of the map name while the second argument is the display name
+```angelscript
+// < name of your map        |        title of your hostname >
+
+string[][] strMaps = 
+{
+    {"hl", "Half-Life"},
+
+    {"rp", "Residual Point"},
+
+    {"rl_", "Residual Life"},
+
+    {"ast_", "A Soldier's Tale"},
+
+    {"tln_", "The Long Night"},
+
+    {"accesspoint", "Access Point"},
+
+    {"bridge_the_gap", "Bridge The Gap"},
+
+    {"bm_sts", "BM: Special Tactics"},
+
+    {"ba", "Blue-Shift"},
+
+    {"hcl", "Hardcore-Life"},
+
+    {"of_utbm", "Under The Black Moon"},
+
+    {"of", "Opposing-Force"}
+};
+```
+Your server's hostname will look like this:
+```angelscript
+"[US] Limitless Potential (Hardcore + Anti-Rush) Playing Opposing-Force"
+```
+
+</p>
+</details>
 
 </p>
 </details>
