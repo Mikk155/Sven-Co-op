@@ -1,11 +1,13 @@
 #include "utils"
 namespace env_bloodpuddle
 {
-    string DefaultModel;
+    string DefaultModel = "models/mikk/misc/bloodpuddle.mdl";
     bool RemoveBlood;
 
     void Register( const bool& in blRemove = false, const string& in szModel = "models/mikk/misc/bloodpuddle.mdl" )
     {
+		g_Game.PrecacheModel( szModel );
+
         // If both map and server is using this. prevent one of them executing this function.
         if( g_CustomEntityFuncs.IsCustomEntity( "env_bloodpuddle" ) )
             return;
@@ -21,12 +23,11 @@ namespace env_bloodpuddle
         );
 
         RemoveBlood = blRemove;
-        DefaultModel = szModel;
+        if( szModel != "models/mikk/misc/bloodpuddle.mdl" ) DefaultModel = szModel;
 
         g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
         g_CustomEntityFuncs.RegisterCustomEntity( "env_bloodpuddle::entity", "env_bloodpuddle" );
-        g_Game.PrecacheOther( "env_bloodpuddle" );
     }
 
     void Think()
@@ -49,7 +50,7 @@ namespace env_bloodpuddle
                 {
                     if( pEntity.GetCustomKeyvalues().HasKeyvalue( "$i_bloodpuddle" ) )
                     {
-                            pBlood.pev.skin = pMonster.GetCustomKeyvalues().GetKeyvalue( "$i_bloodpuddle" ).GetInteger();
+						pBlood.pev.skin = pMonster.GetCustomKeyvalues().GetKeyvalue( "$i_bloodpuddle" ).GetInteger();
                     }
                     else
                     {
@@ -78,8 +79,6 @@ namespace env_bloodpuddle
     {
         void Spawn()
         {
-            Precache();
-
             self.pev.movetype = MOVETYPE_NONE;
             self.pev.solid = SOLID_NOT;
             self.pev.scale = Math.RandomFloat( 1.5, 2.5 );
@@ -90,13 +89,6 @@ namespace env_bloodpuddle
 
             SetThink( ThinkFunction( this.BloodPreSpawn ) );
             self.pev.nextthink = g_Engine.time + 0.8f;
-        }
-
-        void Precache()
-        {
-            g_Game.PrecacheModel( DefaultModel );
-
-            BaseClass.Precache();
         }
 
         void BloodPreSpawn()
