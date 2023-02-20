@@ -1,9 +1,9 @@
 #include "utils"
 namespace game_text_custom
 {
-    void Register()
+    void Register( const string& in szClassname = 'game_text_custom' )
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", "game_text_custom" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", szClassname );
 
         g_Util.ScriptAuthor.insertLast
 		(
@@ -18,28 +18,13 @@ namespace game_text_custom
 		);
     }
 
-	void InitialiseAsPlugin()
-	{
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", "multi_language" );
-
-        g_Util.ScriptAuthor.insertLast
-		(
-			"Script: multi_language"
-			"\nAuthor: Mikk"
-			"\nGithub: github.com/Mikk155"
-			"\nAuthor: Gaftherman"
-			"\nGithub: github.com/Gaftherman"
-			"\nDescription: Plugin that allow players to individually choose the language they want to see in game if the map or script supports the feature.\n"
-		);
-	}
-
     enum spawnflags
     {
-        SF_GTC_ALL_PLAYERS = 1 << 0,
-        SF_GTC_NO_ECHO_CON = 1 << 1,
-        SF_GTC_FIRE_PER_PLAYER = 1 << 2,
-        SF_GTC_PLAY_ONCE = 1 << 3
-    }
+        SF_GTC_ALL_PLAYERS = 1,
+		SF_GTC_NO_ECHO_CON = 2,
+		SF_GTC_FIRE_PER_PLAYER = 4,
+		SF_GTC_PLAY_ONCE = 8
+    };
 
     class entity : ScriptBaseEntity,
     game_text_custom::ScriptBaseGameText,
@@ -64,61 +49,29 @@ namespace game_text_custom
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
-            // Get language keyvalues from ScriptBaseLanguages
-            Languages( szKey, szValue );
-            
-            // Get extra keyvalues from ScriptBaseCustomEntity
-            ExtraKeyValues( szKey, szValue );
-            
-            // Get extra keyvalues from ScriptBaseGameText
-            GameTextKeyvalues( szKey, szValue );
-
+            Languages( szKey, szValue ); // Get language keyvalues from ScriptBaseLanguages
+            ExtraKeyValues( szKey, szValue ); // Get extra keyvalues from ScriptBaseCustomEntity
+            GameTextKeyvalues( szKey, szValue ); // Get extra keyvalues from ScriptBaseGameText
             if( szKey == "messagesound" )
-            {
                 messagesound = szValue;
-            }
             else if( szKey == "messagevolume" )
-            {
                 messagevolume = atof( szValue );
-            }
             else if( szKey == "messageattenuation" )
-            {
                 messageattenuation = atof( szValue );
-            }
             else if ( szKey == "focus_entity" )
-            {
                 focus_entity = szValue;
-                return true;
-            }
             else if ( szKey == "key_from_entity" )
-            {
                 key_from_entity = szValue;
-                return true;
-            }
             else if ( szKey == "key_integer" )
-            {
                 key_integer = atoi( szValue );
-                return true;
-            }
             else if ( szKey == "key_float" )
-            {
                 key_float = atof( szValue );
-                return true;
-            }
             else if ( szKey == "key_string" )
-            {
                 key_string = szValue;
-                return true;
-            }
             else if ( szKey == "radius" )
-            {
                 radius = atoi( szValue );
-                return true;
-            }
             else
-            {
                 return BaseClass.KeyValue( szKey, szValue );
-            }
             return true;
         }
 
@@ -129,54 +82,13 @@ namespace game_text_custom
                 g_SoundSystem.PrecacheSound( messagesound );
                 g_Game.PrecacheGeneric( "sound/" + messagesound );
             }
-
             BaseClass.Precache();
         }
 
         void Spawn()
         {
             Precache();
-
-            // Plugin feature.
-            if( self.pev.ClassNameIs( 'multi_language' ) )
-            {
-                if( string( self.pev.model ).StartsWith( "*" ) )
-                {
-                    CBaseEntity@ Triggers = g_EntityFuncs.FindEntityByString( Triggers, "model", self.pev.model );
-
-                    if( Triggers !is null )
-                    {
-                        if( Triggers.pev.ClassNameIs( "trigger_multiple" ) || Triggers.pev.ClassNameIs( "trigger_once" ) )
-                        {
-                            if( string( Triggers.pev.target ).IsEmpty() )
-                            {
-                                Triggers.pev.target = 'mlang_' + self.entindex();
-                                self.pev.targetname = 'mlang_' + self.entindex();
-                            }
-                            else
-                            {
-                                self.pev.targetname = Triggers.pev.target;
-                            }
-                            Triggers.pev.message = String::INVALID_INDEX;
-                        }
-                    }
-                }
-                else
-                {
-                    CBaseEntity@ pGameText = null;
-
-                    while( ( @pGameText = g_EntityFuncs.FindEntityByTargetname( pGameText, self.pev.targetname ) ) !is null )
-                    {
-                        if(pGameText.pev.ClassNameIs( "env_message" )
-                        or pGameText.pev.ClassNameIs( "game_text" )
-                        or pGameText.pev.ClassNameIs( "game_text_custom" ) )
-                        {
-                            g_EntityFuncs.Remove( pGameText );
-                        }
-                    }
-                }
-            }
-
+			PluginEntInit( self );
             BaseClass.Spawn();
         }
 
@@ -468,5 +380,48 @@ namespace game_text_custom
 		}
 	}
 	// End of mixin class
+	
+	// Plugin feature.
+	void PluginEntInit( CBaseEntity@ self )
+	{
+		if( self.pev.ClassNameIs( 'multi_language' ) )
+		{
+			if( string( self.pev.model ).StartsWith( "*" ) )
+			{
+				CBaseEntity@ Triggers = g_EntityFuncs.FindEntityByString( Triggers, "model", self.pev.model );
+
+				if( Triggers !is null )
+				{
+					if( Triggers.pev.ClassNameIs( "trigger_multiple" ) || Triggers.pev.ClassNameIs( "trigger_once" ) )
+					{
+						if( string( Triggers.pev.target ).IsEmpty() )
+						{
+							Triggers.pev.target = 'mlang_' + self.entindex();
+							self.pev.targetname = 'mlang_' + self.entindex();
+						}
+						else
+						{
+							self.pev.targetname = Triggers.pev.target;
+						}
+						Triggers.pev.message = String::INVALID_INDEX;
+					}
+				}
+			}
+			else
+			{
+				CBaseEntity@ pGameText = null;
+
+				while( ( @pGameText = g_EntityFuncs.FindEntityByTargetname( pGameText, self.pev.targetname ) ) !is null )
+				{
+					if(pGameText.pev.ClassNameIs( "env_message" )
+					or pGameText.pev.ClassNameIs( "game_text" )
+					or pGameText.pev.ClassNameIs( "game_text_custom" ) )
+					{
+						g_EntityFuncs.Remove( pGameText );
+					}
+				}
+			}
+		}
+	}
 }
 // End of namespace
