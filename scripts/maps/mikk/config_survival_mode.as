@@ -53,6 +53,12 @@ namespace config_survival_mode
 
         void Spawn()
         {
+			if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
+			{
+				g_Util.DebugMessage( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
+				g_EntityFuncs.Remove( self );
+			}
+
             //We want survival mode to be enabled here
             g_SurvivalMode.EnableMapSupport();
 
