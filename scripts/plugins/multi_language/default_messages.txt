@@ -6091,3 +6091,13 @@ INTRO_FG2_L3
 "spawnflags" "3"
 INTRO_FG1_L4
 }
+
+{
+"sentence" "Jackson: Anytime, anywhere."
+INTRO_FG2_L4
+}
+
+{
+"sentence" "Tower: Hey man, you smell that?"
+INTRO_FG1_L5
+}
