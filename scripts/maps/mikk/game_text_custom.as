@@ -1,9 +1,11 @@
 #include "utils"
 namespace game_text_custom
 {
-    void Register( const string& in szClassname = 'game_text_custom' )
+	string CustomSentencesFolder = 'mikk/store/default_sentences';
+
+    void Register( const bool& in IsPlugin = false )
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", szClassname );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::entity", ( g_CustomEntityFuncs.IsCustomEntity( "game_text_custom" ) ? 'game_text_custom' : 'multi_language' ) );
 
         g_Util.ScriptAuthor.insertLast
 		(
@@ -17,6 +19,11 @@ namespace game_text_custom
 			"\nDescription: New entity replacemet for game_text and env_message with lot of new additions.\n"
 		);
     }
+
+	void RegisterCustomSentences()
+	{
+		// Dummy
+	}
 
     enum spawnflags
     {
@@ -37,7 +44,8 @@ namespace game_text_custom
         key_string,
         focus_entity,
         messagesound,
-        key_from_entity;
+        key_from_entity,
+		sentence_name;
 
         private float
         messagevolume = 10,
@@ -68,6 +76,8 @@ namespace game_text_custom
                 key_float = atof( szValue );
             else if ( szKey == "key_string" )
                 key_string = szValue;
+            else if ( szKey == "sentence_name" )
+                sentence_name = szValue;
             else if ( szKey == "radius" )
                 radius = atoi( szValue );
             else
@@ -89,6 +99,7 @@ namespace game_text_custom
         {
             Precache();
 			PluginEntInit( self );
+			LoadSentences();
             BaseClass.Spawn();
         }
 
@@ -289,6 +300,138 @@ namespace game_text_custom
             }
             return string( EhActivator.GetEntity().pev.classname );
         }
+
+		void LoadSentences()
+		{
+			if( !sentence_name.IsEmpty() )
+			{
+				self.pev.message = LoadSentence( 'english' );
+				message_spanish = LoadSentence( 'spanish_latam' );
+				message_spanish2 = LoadSentence( 'spanish_spain' );
+				message_portuguese = LoadSentence( 'portuguese' );
+				message_german = LoadSentence( 'german' );
+				message_french = LoadSentence( 'french' );
+				message_italian = LoadSentence( 'italian' );
+				message_esperanto = LoadSentence( 'esperanto' );
+				message_czech = LoadSentence( 'czech' );
+				message_dutch = LoadSentence( 'dutch' );
+				message_indonesian = LoadSentence( 'indonesian' );
+				message_romanian = LoadSentence( 'romanian' );
+				message_turkish = LoadSentence( 'turkish' );
+				message_albanian = LoadSentence( 'albanian' );
+			}
+		}
+
+		string LoadSentence( const string& in Language = 'english' )
+		{
+			string SentenceFile = 'scripts/' + ( self.pev.ClassNameIs( 'multi_language' ) ? 'plugins/multi_language/default_sentences/' : 'maps/' + CustomSentencesFolder + '/' )  + Language + '.txt';
+
+			bool FoundSentence = false, FoundAndSave = false;
+
+			string line, FullString;
+
+			File@ pFile = g_FileSystem.OpenFile( SentenceFile, OpenFile::READ );
+
+			if( pFile is null or !pFile.IsOpen() )
+			{
+				g_Util.DebugMessage( "Failed to open '" + SentenceFile + "' no sentences for entity '" + string( self.pev.targetname ) + "'" );
+				return String::EMPTY_STRING;
+			}
+
+			while( !pFile.EOFReached() )
+			{
+				pFile.ReadLine( line );
+
+				if( line.Length() < 1 or line[0] == '/' and line[1] == '/' or line[0] == '#' )
+				{
+					continue;
+				}
+
+				if( line[0] == '$' )
+				{
+					string Key = line.Replace( '$', '' );
+
+					if( Key.StartsWith( 'color' ) )
+					{
+						Vector VecColor( 255, 255, 255 );
+						g_Utility.StringToVector( VecColor, line.Replace( 'color ', '' ) );
+						TextParams.r1 = int( VecColor.x );
+						TextParams.g1 = int( VecColor.y );
+						TextParams.b1 = int( VecColor.z );
+					}
+					else if( Key.StartsWith( 'color2' ) )
+					{
+						Vector VecColor( 255, 255, 255 );
+						g_Utility.StringToVector( VecColor, line.Replace( 'color2 ', '' ) );
+						TextParams.r2 = int( VecColor.x );
+						TextParams.g2 = int( VecColor.y );
+						TextParams.b2 = int( VecColor.z );
+					}
+					else if( Key.StartsWith( 'messagesound' ) )
+						messagesound = line.Replace( 'messagesound ', '' );
+					else if( Key.StartsWith( 'key_string' ) )
+						key_string = line.Replace( 'key_string ', '' );
+					else if( Key.StartsWith( 'delay' ) )
+						delay = atof( line.Replace( 'delay ', '' ) );
+					else if( Key.StartsWith( 'y' ) )
+						TextParams.y = atof( line.Replace( 'y ', '' ) );
+					else if( Key.StartsWith( 'x' ) )
+						TextParams.x = atof( line.Replace( 'x ', '' ) );
+					else if( Key.StartsWith( 'fxtime' ) )
+						TextParams.fxTime = atof( line.Replace( 'fxtime ', '' ) );
+					else if( Key.StartsWith( 'fadeout' ) )
+						TextParams.fadeoutTime = atof( line.Replace( 'fadeout ', '' ) );
+					else if( Key.StartsWith( 'key_float' ) )
+						key_float = atof( line.Replace( 'key_float ', '' ) );
+					else if( Key.StartsWith( 'fadein' ) )
+						TextParams.fadeinTime = atof( line.Replace( 'fadein ', '' ) );
+					else if( Key.StartsWith( 'holdtime' ) )
+						TextParams.holdTime = atof( line.Replace( 'holdtime ', '' ) );
+					else if( Key.StartsWith( 'messagevolume' ) )
+						messagevolume = atof( line.Replace( 'messagevolume ', '' ) );
+					else if( Key.StartsWith( 'spawnflags' ) )
+						self.pev.spawnflags = atoi( line.Replace( 'spawnflags ', '' ) );
+					else if( Key.StartsWith( 'radius' ) )
+						radius = atoi( line.Replace( 'radius ', '' ) );
+					else if( Key.StartsWith( 'effect' ) )
+						TextParams.effect = atoi( line.Replace( 'effect ', '' ) );
+					else if( Key.StartsWith( 'messageattenuation' ) )
+						messageattenuation = atoi( line.Replace( 'messageattenuation ', '' ) );
+					else if( Key.StartsWith( 'channel' ) )
+						TextParams.channel = atoi( line.Replace( 'channel ', '' ) );
+					else if( Key.StartsWith( 'key_integer' ) )
+						key_integer = atoi( line.Replace( 'key_integer ', '' ) );
+				}
+
+				if( line == sentence_name )
+				{
+					FoundSentence = true;
+					continue;
+				}
+
+				if( FoundSentence )
+				{
+					if( line[0] == '{' )
+					{
+						FoundAndSave = true;
+						continue;
+					}
+
+					if( FoundAndSave )
+					{
+						if( line[0] == '}' )
+						{
+							pFile.Close();
+							return FullString;
+						}
+						FullString = FullString + line + '\n';
+					}
+				}
+			}
+			pFile.Close();
+
+			return String::EMPTY_STRING;
+		}
     }
     // End of class
 

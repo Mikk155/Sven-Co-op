@@ -57,62 +57,22 @@ array<string> arstrHook =
 
 void MapInit()
 {
-    game_text_custom::InitialiseAsPlugin();
+    game_text_custom::Register( true );
+
+	g_Util.ScriptAuthor.insertLast
+	(
+		"Script: multi_language"
+		"\nAuthor: Mikk"
+		"\nGithub: github.com/Mikk155"
+		"\nAuthor: Gaftherman"
+		"\nGithub: github.com/Gaftherman"
+		"\nDescription: Plugin that allow players to individually choose the language they want to see in game if the map or script supports the feature.\n"
+	);
 }
 
 void MapStart()
 {
-    string line, key, value, szPath = 'scripts/plugins/multi_language/' + string( g_Engine.mapname ) + '.txt';
-
-    dictionary g_KeyValues;
-
-    File@ pFile = g_FileSystem.OpenFile( szPath, OpenFile::READ );
-
-    if( pFile is null or !pFile.IsOpen() )
-    {
-        g_Util.DebugMessage( 'Can not open ' + szPath );
-        return;
-    }
-    g_Util.DebugMessage( 'Loaded ' + szPath );
-
-    while( !pFile.EOFReached() )
-    {
-        pFile.ReadLine( line );
-
-        if( line.Length() < 1 )
-        {
-            continue;
-        }
-
-        if( line[0] == '/' and line[1] == '/' )
-        {
-            g_Util.DebugMessage( 'Comment:' + line.Replace( '//', '' ) );
-            continue;
-        }
-
-        if( line[0] == '{' or line[0] == '}' )
-        {
-            g_Util.DebugMessage( line );
-
-            if( line[0] == '}' )
-            {
-                g_EntityFuncs.CreateEntity( 'multi_language', g_KeyValues, true );
-                g_KeyValues.deleteAll();
-            }
-            continue;
-        }
-
-        key = line.SubString( 0, line.Find( '" "') );
-        key.Replace( '"', '' );
-
-        value = line.SubString( line.Find( '" "'), line.Length() );
-        value.Replace( '" "', '' );
-        value.Replace( '"', '' );
-
-        g_KeyValues[ key ] = value;
-        g_Util.DebugMessage( '"' + key + '" -> "' + value + '"' );
-    }
-    pFile.Close();
+	g_Util.LoadEntities( 'scripts/plugins/multi_language/' + string( g_Engine.mapname ) + '.txt', 'multi_language' );
 }
 
 HookReturnCode ClientSay( SayParameters@ pParams )
@@ -144,10 +104,10 @@ void CreateMenu( CBasePlayer@ pPlayer )
 
     g_VoteMenu.SetTitle( Title( g_Util.GetCKV( cast<CBaseEntity@>(pPlayer), "$s_language" ) ) );
 
-    for( uint ui = 0; ui < LanguageSupport.length(); ++ui )
-    {
-        g_VoteMenu.AddItem( LanguageSupport[ui] );
-    }
+	for( uint ui = 0; ui < LanguageSupport.length(); ++ui )
+	{
+		g_VoteMenu.AddItem( LanguageSupport[ui] );
+	}
     g_VoteMenu.Register();
     g_VoteMenu.Open( 25, 0, pPlayer );
 }
@@ -158,28 +118,28 @@ void MainCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CText
     {
         string Choice = pItem.m_szName;
         g_Util.SetCKV( cast<CBaseEntity@>(pPlayer), "$s_language", Choice.ToLowercase() );
-        StoreLanguage( pPlayer, Choice.ToLowercase() );
+		StoreLanguage( pPlayer, Choice.ToLowercase() );
         g_Util.Trigger( 'mlang_credits', pPlayer, pPlayer, USE_ON, 0.0f );
     }
 }
 
 void StoreLanguage( CBaseEntity@ pPlayer, const string& in Language = 'english' )
 {
-    // verify that its steamid doesn't exist in the file and write,  otherwhise RE write
-    // Syntax:
-    // STEAMID language
+	// verify that its steamid doesn't exist in the file and write,  otherwhise RE write
+	// Syntax:
+	// STEAMID language
 }
 
 string GetLanguage( CBaseEntity@ pPlayer )
 {
-    // Verify that its steamid exist in the file and set its language as a custom keyvalue
-    // "$s_" + language in line.
-    return '';
+	// Verify that its steamid exist in the file and set its language as a custom keyvalue
+	// "$s_" + language in line.
+	return '';
 }
 
 string Title( string L )
 {
-    if( L == 'spanish' )return "Selecciona un lenguaje ";
+	if( L == 'spanish' )return "Selecciona un lenguaje ";
     else if( L == 'spanish spain' )return "Selecciona un lenguaje ";
     else if( L == 'portuguese' )return "Selecione um idioma ";
     else if( L == 'german' )return "Wahle eine Sprache ";

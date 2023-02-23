@@ -1,13 +1,13 @@
 #include "utils"
-namespace trigger_changecvar
+namespace config_map_cvars
 {
     void Register() 
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_changecvar::entity", "trigger_changecvar" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "config_map_cvars::entity", "config_map_cvars" );
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: trigger_changecvar\n"
+            "Script: config_map_cvars\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal.\n"
@@ -43,30 +43,15 @@ namespace trigger_changecvar
                 return;
             }
 
-            g_Util.DebugMessage( "[trigger_changecvar]" );
+            g_Util.DebugMessage( "[config_map_cvars]" );
 
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
                 string Key = string( strKeyValues[ui] );
                 string Value = string( dictKeyValues[ Key ] );
-				string OldValue = string( dictOldCvars[ Key ] );
 
-                if( g_Utility.IsStringFloat( Value ) || g_Utility.IsStringInt( Value ) )
-                {
-					dictOldCvars[ Key ] = string( g_EngineFuncs.CVarGetFloat( Key ) );
-
-                    g_EngineFuncs.CVarSetFloat( Key, ( useType == USE_OFF ) ? atof( OldValue ) : atof( Value ) );
-
-                    g_Util.DebugMessage( "CVAR '" + Key + "' stored as '" + OldValue + "' and updated to '" + Value + "'" );
-                }
-                else
-                {
-					dictOldCvars[ Key ] = string( g_EngineFuncs.CVarGetString( Key ) );
-
-                    g_EngineFuncs.CVarSetString( Key, ( useType == USE_OFF ) ? atof( OldValue ) : atof( Value ) );
-
-                    g_Util.DebugMessage( "CVAR '" + Key + "' stored as '" + OldValue + "' and updated to '" + Value + "'" );
-                }
+				g_EngineFuncs.CVarSetString( Key, ( useType == USE_OFF ) ? string( dictOldCvars[ Key ] ) : Value );
+				g_Util.DebugMessage( "" + Key + ": '" + string( g_EngineFuncs.CVarGetString( Key ) ) + "'" );
             }
         }
 
@@ -74,11 +59,46 @@ namespace trigger_changecvar
         {
             if( self.pev.SpawnFlagBitSet( SF_TCC_START_ON ) )
             {
-                self.Use( null, null, USE_TOGGLE, 0.0f );
+                self.Use( null, null, USE_TOGGLE, 0.5f );
+            }
+
+            g_Util.DebugMessage( "[config_map_cvars] Stored cvars:" );
+            for(uint ui = 0; ui < strKeyValues.length(); ui++)
+            {
+                string Key = string( strKeyValues[ui] );
+
+				if( Key == 'mp_pcbalancing_factorlist' or Key == 'mp_disable_pcbalancing' )
+				{
+					if( g_EngineFuncs.CVarGetString( 'mp_pcbalancing_factorlist' ).IsEmpty() )
+					{
+						dictOldCvars[ Key ] = '0';
+						continue;
+					}
+				}
+				else if( Key == 'mp_forcespawn' && g_EngineFuncs.CVarGetString( 'mp_forcespawn' ).IsEmpty() )
+				{
+					dictOldCvars[ Key ] = '0';
+				}
+				else
+				{
+					dictOldCvars[ Key ] = g_EngineFuncs.CVarGetString( Key );
+				}
+
+				g_Util.DebugMessage( "" + Key + ": '" + string( dictOldCvars[ Key ] ) + "'" );
             }
 
             BaseClass.Spawn();
         }
     }
+
+    array<string> Entities =
+    {
+        "func_button",
+        "trigger_multiple",
+        "trigger_relay",
+        "item_*",
+        "ammo_*",
+        "weapon_*"
+    };
 }
 // End of namespace

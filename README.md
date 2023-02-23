@@ -249,12 +249,12 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 [env_spritetrail](#env_spritetrail) | env_spritetrail is a entity that traces a sprite when the target entity moves | ✔️ | ✔️ 
 [env_spritetrain](https://sites.google.com/site/svenmanor/entguide/env_spritetrain) | The env_spritetrain entity resembles an env_sprite which can move along path_corner entities as a func_train can. Ever wanted to make a flame travel along a fuse to a bomb? This entity is for you. | ❌ | ❌ 
 [env_xenmaker](https://sites.google.com/site/svenmanor/entguide/env_xenmaker) | The env_xenmaker allows to spawn monsters with teleportation and beam effects. It can be set to act as a spawn-effect-data-template for squadmakers, in case you want to pair this spawn-effect with the customizability-features of the squadmaker entity. | ❌ | ❌ 
-
+[env_bubbles](https://sites.google.com/site/svenmanor/entguide/env_bubbles) | A brush entity which creates bubbles at random positions inside it, which float up regardless of whether being in water or air and only are removed when hitting a water surface or solid wall. The bubbles' sizes and rising-speed will vary slightly randomly. | ❌ | ❌ 
 
 </p>
 </details>
 
-<details><summary>trigger_</summary>
+<details><summary>func_</summary>
 <p>
 
 | Entity / Script | Description | is Angelscript | has Angelscript feature |
@@ -264,6 +264,32 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 </details>
 
 <details><summary>game_</summary>
+<p>
+
+| Entity / Script | Description | is Angelscript | has Angelscript feature |
+|-----------------|-------------| :------------: | :---------------------: |
+[game_counter](https://sites.google.com/site/svenmanor/entguide/game_counter) | This is a logic entity which will fire its target after being triggered a specified amount of times. | ❌ | ❌ 
+[game_counter_set](https://sites.google.com/site/svenmanor/entguide/game_counter_set) | Allows you to set the value of a game_counter and have it trigger if the set value matches the game_counter's target value. | ❌ | ❌ 
+[game_end](https://sites.google.com/site/svenmanor/entguide/game_end) | Entity, which, when triggered, ends the map. The next map in the mapcycle is then loaded. As soon as it is triggered, all entities will stop operating. | ❌ | ❌ 
+[game_player_counter](https://sites.google.com/site/svenmanor/entguide/game_player_counter) | This entity keeps track of the total number of players currently on or connecting to the server. | ❌ | ❌ 
+[game_debug](#game_debug) | Entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script. | ✔️ | ✔️ 
+[game_player_equip](https://sites.google.com/site/svenmanor/entguide/game_player_equip) | The game_player_equip entity is a powerful entity for managing player weapons/items/ammo loadout. | ❌ | ❌ 
+[game_player_hurt](https://sites.google.com/site/svenmanor/entguide/game_player_hurt) | Point entity which will apply damage to its activator. For a more feature-rich version see trigger_hurt_remote. | ❌ | ❌ 
+[game_stealth](#game_stealth) | Allow mappers to make use of stealth mode in Co-op | ✔️ | ✔️ 
+[game_score](https://sites.google.com/site/svenmanor/entguide/game_score) | Gives score points to the triggering player, as can be seen on the multiplayer scoreboard. | ❌ | ❌ 
+[game_slot_counter](https://sites.google.com/site/svenmanor/entguide/game_slot_counter) | This entity counts the total number of player slots on the server on map load and triggers its target on the first server frame if the amount of slots equals a value you specify | ❌ | ❌ 
+[game_text](#game_text) | An entity to display HUD messages to the player who activated it, or all players. for a improved version with a bunch of new features see [game_text_custom](#game_text_custom) | ❌ | ❌ 
+[game_text_custom](#game_text_custom) | Entity replacemet for game_text and env_message with lot of new additions and language support. | ✔️ | ✔️
+
+[game_trigger_iterator](#game_trigger_iterator) |  | ✔️ | ✔️
+[game_time](#game_time) |  | ✔️ | ✔️
+[game_zone_player](#game_zone_entity) |  | ❌ | ❌ 
+[game_zone_entity](#game_zone_entity) |  | ✔️ | ✔️
+
+</p>
+</details>
+
+<details><summary>trigger_</summary>
 <p>
 
 | Entity / Script | Description | is Angelscript | has Angelscript feature |
@@ -1406,14 +1432,280 @@ Traces a trail sprite when the target entity moves.
 
 
 
+### game_debug
+
+<details><summary>Description</summary>
+<p>
+
+game_debug is a entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script.
 
 
+<details><summary>Installation</summary>
+<p>
+
+**Download:**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_debug.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/game_debug"
+
+void MapInit()
+{
+	g_Util.DebugMode( true );
+	game_debug::Register();
+}
+```
+
+</p>
+</details>
 
 
+<details><summary>Introduction</summary>
+<p>
+
+game_debug is a entity that when fired. it will show in players console the keyvalue ``message``
+
+You can use commands like ``!netname`` it will be replaced with whatever "netname" keyvalue has.
 
 
+<details><summary>Commands list</summary>
+<p>
+
+- ``!netname`` netname keyvalue (string)
+
+- ``!frags`` frags keyvalue (float)
+
+- ``!iuser1`` iuser1 keyvalue (integer)
+
+- ``!activator`` name of the entity's activator
+
+- ``!caller`` name of the entity's caller
+
+</p>
+</details>
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
 
 
+# game_stealth
+
+<details><summary>Description</summary>
+<p>
+
+game_stealth Allow mappers to make use of stealth mode in Co-op
+
+<details><summary>Installation</summary>
+<p>
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_stealth.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/game_stealth"
+```
+**OR**
+
+Simply include the script once via a trigger_script entity. no need to call. just include.
+
+</p>
+</details>
+
+<details><summary>Introduction</summary>
+<p>
+
+all npc monster entities now supports a custom keyvalue called ``$i_stealth`` that if it is in a value of ``1`` this monster will now "Remove from world" the npc/player that is seen by this entity.
+
+also another keyvalue is supported ``$i_stealthmode`` if set on a value of ``1`` this npc will ignore its enemy monsters and will only do this to players.
+
+- If a monster die by this feature and it is using TriggerTarget then its trigger target is fired.
+
+- Every time this monster sees a enemy and remove him then its own "target" keyvalue is fired.
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+### game_text
+
+<details><summary>Description</summary>
+<p>
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/game_text)
+
+- 
+        // -Mikk added channels up to 8 because the game supports them.
+		imagen de y/x
+
+</p>
+</details>
+
+---
+
+### game_text_custom
+
+<details><summary>Description</summary>
+<p>
+
+game_text_custom is a entity replacemet for game_text and env_message with lot of new additions and language support.
+
+<details><summary>Installation</summary>
+<p>
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄game_text_custom.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/game_text_custom"
+
+void MapInit()
+{
+	game_text_custom::Register();
+}
+```
+
+</p>
+</details>
+
+<details><summary>Introduction</summary>
+<p>
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | trigger this target when fired [Supports USE_TYPE](#utils-use-type)|
+| killtarget | target | kill this target |
+| delay | float | delay before kill or target |
+| effect | [choices](#game_text_custom-effect) |
+| spawnflags | [flags](#game_text_custom-spawnflags) |
+| fadein | float | Fade in Time (or character scan time effect 2 ) ( effect 0/1/2 ) |
+| fadeout | float | Fade Out Time ( effect 0/1/2 ) |
+| holdtime | float | Hold Time for ( effect 0/1/2 ) |
+| fxtime | float | Scan time ( effect 2 )
+| x | float | X (0 - 1.0 = left to right) (-1 centers) ( effect 0/1/2 ) |
+| y | float | Y (0 - 1.0 = top to bottom) (-1 centers) ( effect 0/1/2 ) |
+| color | Vector | Color 1 (Add 4th number >0 for opaque) ( effect 0/1/2 ) |
+| color2 | Vector | Color 2 (Add 4th number >0 for opaque) ( effect 0/1/2 ) |
+| channel | integer | Channel to use for this message ( effect 0/1/2 ) range 0/8 |
+| messagesound | string | sound to play |
+| messagevolume | integer | volume of the sound |
+| messageattenuation | choices | 0 = "Small Radius" 1 = "Medium Radius" 2 = "Large  Radius" 3 = "Play Everywhere" 4 = "Activator only"
+| messagesentence | !sentence | Plays a sentence using this entity as a speaker |
+| key_integer | integer | See [Replacing string](#game_text_custom-replace) |
+| key_float | float | See [Replacing string](#game_text_custom-replace) |
+| key_string | string | See [Replacing string](#game_text_custom-replace) |
+| netname | string | See [Replacing string](#game_text_custom-replace) |
+| focus_entity | target | See [Replacing string](#game_text_custom-replace) |
+| key_from_entity | string | See [Replacing string](#game_text_custom-replace) |
+| model | brushmodel | only allowed by the plugin. used to replace a trigger_multiple's message keyvalue into a own text apart |
+| language | keyvalues |  See [Supported Languages](#supported-languages) |
+
+### game_text_custom effect
+
+
+| value | name | description |
+|-------|------|-------------|
+| 0 | Fade In/Out | fade in and out depending keyvalues fadein, fadeout
+| 1 | Credits | used by env_message |
+| 2 | Scan Out | scan out depending keyvalue fxtime |
+| 3 | Print HUD | The same effect that trigger_once/multiple's "message" provides. |
+| 4 | Print MOTD | Shows a MOTD pop up with the given message. See [MOTD](#game_text_custom-motd) |
+| 5 | Print Chat | Shows a message on the chat. |
+| 6 | Print Notify | Prints a notify at the top left side |
+| 7 | Print Key-Bind | Prints a keybind print, the format is "Press +use to interact" and will be shown as "Press [e] to interact" |
+| 8 | Print Console | Prints at the console ( set flag 2 or double message will be shown ) |
+| 9 | Print Center | Prints at the center of the screen |
+| 10 | Print scoreboard | Shows the text as the server's hostname but only apply to the score board popup |
+
+
+### game_text_custom motd
+
+To set a title you must write it like this
+```angelscript
+"This is the title# this is the text"
+```
+The ``"#"`` defines when the title ends and when the message starts
+
+⚠ JACK/Bspguy has a limit on how many chars you can set so you have to learn ripent if you will use long-size motd.
+
+### game_text_custom spawnflags
+| flag | bit | description |
+|------|-----|-------------|
+| All Players | 1 | shows the message to all connected players. else just activator |
+| No console echo | 2 | if set. no console message will be sent |
+| Fire per player | 4 | If set. The target will be fired for every player that sees the message. Otherwise the target is fired once every time the entity is fired. |
+
+### game_text_custom replace
+
+We've added a function for replacing a string command into another string.
+
+In this case you want the game_text_custom show a countdown with a message.
+
+``key_integer`` will do the trick.
+```angelscript
+"message" "The bomb will explode in !integer seconds"
+"key_integer" "5"
+```
+you can in any time update key_integer with trigger_copy/change/value and fire the game_text_custom after affect.
+```angelscript
+The bomb will explode in 5 seconds
+```
+``key_float`` is the same but it is a float. ``!float``
+
+``key_string`` is the same but it is a string. ``!string``
+
+``!activator`` will contain the nickname or classname of the player or monster that activated this entity.
+```angelscript
+"message" "The player !activator is trapped in sector C"
+```
+
+i've made this next keys by using it for my own purposes but probably they're useful to you as well.
+
+``focus_entity`` is a target type key. you must target a entity's classname in this. if is empty we'll use the activator.
+
+``key_from_entity`` must be a custom keyvalue that we want to find it in the target entity and get its value.
+
+then its value will replace the command ``!value``
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
 
 
 

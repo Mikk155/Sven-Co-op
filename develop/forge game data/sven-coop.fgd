@@ -991,7 +991,7 @@
     ]
     noise1(sound) : "Move Sound Override"
     noise2(sound) : "Stop Sound Override"
-    wait(integer) : "delay before close, -1 stay open " : 4
+    wait(float) : "delay before close, -1 stay open " : 4
     lip(integer) : "Lip"
     dmg(integer) : "Damage inflicted when blocked" : 0
     message(string) : "Message if triggered"
@@ -1675,6 +1675,173 @@
     models/hlclassic/scientist.mdl(string) : "models/hlclassic/scientist.mdl" : "models/headcrab.mdl"
 ]
 
+// -Mikk alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal (USE_OFF)
+// NOTE: these enlisted commands are not a whitelist.
+// i don't know what the black list is so feel free to add any cvar
+// let me know if it works so i'll add them to the FGD
+@PointClass base(Targetname, Master) color(40 200 150) = config_map_cvars : "Manipulate map's cvars"
+[
+    spawnflags(flags) =
+    [
+        1 : "Start On" : 0
+    ]
+
+    mp_allowplayerinfo(choices) : "mp_allowplayerinfo" : 0 =
+    [
+        0 : "Hide information"
+        1 : "Show information"
+        2 : "Show only for allies"
+    ]
+    mp_allowmonsterinfo(choices) : "mp_allowmonsterinfo" : 0 =
+    [
+        0 : "Hide information"
+        1 : "Show information"
+        2 : "Show only for allies"
+    ]
+    mp_barnacle_paralyze(choices) : "mp_barnacle_paralyze" : 0 =
+    [
+        0 : "Allow weapons"
+        1 : "Disallow weapons"
+    ]
+    mp_respawndelay(integer) : "mp_respawndelay"
+    mp_multiplespawn(choices) : "mp_multiplespawn" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_timelimit(integer) : "mp_timelimit"
+    mp_fraglimit(integer) : "mp_fraglimit"
+    mp_flashlight(choices) : "mp_flashlight" : 1 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_suitpower(choices) : "mp_suitpower" : 1 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_falldamage(choices) : "mp_falldamage" : 1 =
+    [
+        -1 : "Disabled"
+        0 : "only take 10HP"
+        1 : "Realistic"
+    ]
+    mp_weaponstay(choices) : "mp_weaponstay" : 0 =
+    [
+        0 : "Weapons don't stay"
+        1 : "Weapons stays"
+    ]
+    mp_noblastgibs(choices) : "mp_noblastgibs" : 0 =
+    [
+        0 : "Default"
+        1 : "Don't gib monsters"
+    ]
+    mp_banana(choices) : "mp_banana" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_disablegaussjump(choices) : "mp_disablegaussjump" : 0 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_grapple_mode(choices) : "mp_grapple_mode" : 0 =
+    [
+        0 : "Don't grapple big monsters"
+        1 : "Grapple big monsters"
+    ]
+    mp_disable_player_rappel(choices) : "mp_disable_player_rappel" : 0 =
+    [
+        0 : "can grapple onto other players."
+        1 : "can not grapple onto other players."
+    ]
+    mp_disable_autoclimb(choices) : "mp_disable_autoclimb" : 0 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_disable_pcbalancing(choices) : "mp_disable_pcbalancing" : 1 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_pcbalancing_factorlist(string) : "mp_pcbalancing_factorlist" : "1.0;0.9;0.9;0.9;0.8;0.8;0.8;0.7;0.7;0.6"
+    mp_disable_medkit_points(choices) : "mp_disable_medkit_points" : 1 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_no_akimbo_uzis(choices) : "mp_no_akimbo_uzis" : 1 =
+    [
+        0 : "Enabled"
+        1 : "Disabled"
+    ]
+    mp_dropweapons(choices) : "mp_dropweapons" : 1 =
+    [
+        0 : "Can't drop weapons"
+        1 : "Can drop weapons"
+    ]
+    mp_npckill(choices) : "mp_npckill" : 2 =
+    [
+        0 : "Allies are Inmortal"
+        1 : "Allies take damage from anything"
+        2 : "Allies take damage from enemies"
+    ]
+    mp_forcespawn(choices) : "mp_forcespawn" : 2 =
+    [
+        0 : "Don't force"
+        1 : "Force"
+    ]
+    mp_weapon_respawndelay(float) : "mp_weapon_respawndelay"
+    mp_ammo_respawndelay(float) : "mp_ammo_respawndelay"
+    mp_item_respawndelay(float) : "mp_item_respawndelay"
+    mp_weaponfadedelay(float) : "mp_weaponfadedelay"
+    mp_weapon_droprules(choices) : "mp_weapon_droprules" : 0 =
+    [
+        0 : "Don't drop any weapons when the player dies."
+        1 : "Drop the current weapon."
+        2 : "Drop all weapons packed into a weapon box."
+    ]
+    mp_ammo_droprules(choices) : "mp_ammo_droprules" : 0 =
+    [
+        0 : "Don't drop any ammo when the player dies."
+        1 : "Drop ammo for the current weapon."
+        2 : "Drop all ammo packed into a weapon box."
+    ]
+    mp_hevsuit_voice(choices) : "mp_hevsuit_voice" : 0 =
+    [
+        0 : "Disabled"
+        1 : "Enabled"
+    ]
+    mp_survival_nextmap(string) : "mp_survival_nextmap"
+    npc_dropweapons(choices) : "npc_dropweapons" : 1 =
+    [
+        0 : "Can't drop weapons"
+        1 : "Can drop weapons"
+    ]
+    sv_ai_enemy_detection_mode(choices) : "sv_ai_enemy_detection_mode" : 0 =
+    [
+        0 : "Default"
+        1 : "NPCs scans for enemies"
+    ]
+    mp_modelselection(choices) : "mp_modelselection" : 0 =
+    [
+        0 : "Disable"
+        1 : "Enable"
+    ]
+    sv_friction(integer) : "sv_friction"
+    sv_airaccelerate(integer) : "sv_airaccelerate"
+    sv_accelerate(integer) : "sv_accelerate"
+    sv_gravity(integer) : "sv_gravity"
+    sv_maxspeed(integer) : "sv_maxspeed"
+    sv_maxvelocity(integer) : "sv_maxvelocity"
+    sv_wateraccelerate(integer) : "sv_wateraccelerate"
+    sv_waterfriction(integer) : "sv_waterfriction"
+    skill(integer) : "skills (See skills.cfg)"
+]
+
 // -Mikk https://github.com/Mikk155/Sven-Co-op#config_map_precache
 @PointClass color(165 185 160) = config_map_precache : "Map precache configuration"
 [
@@ -2272,7 +2439,7 @@
         2: "All Clients" : 0
     ]
     messagesound(sound) : "Sound Effect"
-    messagevolume(string) : "Volume 0-10" : "10"
+    messagevolume(float) : "Volume 0-10" : 10.0
     messageattenuation(choices) : "Sound Radius" : 0 =
     [
         0 : "Small Radius"
@@ -2295,22 +2462,13 @@
         // Automatically change rendermode, do it by searching
         16: "Auto Apply" : 0
         
-        // -Mikk Render a entity progressivelly (fade in-out) its renderamt
-        // until both env_render and target entity have the same renderamt
+		// -Mikk https://github.com/Mikk155/Sven-Co-op#env_render
         32: "[AS] Gradually Fade in/out" : 0
     ]
 
     armorvalue(string): "radius (0 disables)"
-
-    // Those only works with spawnflag 32.-
-
-    // Interval to modify renderamt.
     health(float) : "[AS] Think interval" : 0.045
-
-    // Ammout of renderamt to change per interval.
     frags(integer) : "[AS] Render per interval" : 1
-
-    // Target after finished fading in-out.
     netname(target_destination) : "[AS] Target after fade (USE_TYPE)"
 ]
 
@@ -2420,7 +2578,7 @@
     ]
 ]
 
-// -Mikk Alternative for env_sound but using a defined zone to set em up.
+// -Mikk https://github.com/Mikk155/Sven-Co-op#trigger_sound
 @BaseClass base(BaseDSPSound) = BaseDSPTrigger
 [
     // Target is the target to affect when fire the entity but not touch
@@ -2433,10 +2591,6 @@
 [
     radius(integer) : "Radius" : 128
 ]
-
-@SolidClass base(BaseDSPTrigger, Master) = trigger_sound : "Trigger DSP Sound"[]
-@PointClass base(BaseDSPTrigger, Master, HullSetSizesCustom) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = trigger_sound : "DSP Sound"[]
-
 
 @PointClass base(Targetname, Angles) size(-8 -8 -8, 8 8 8) color(255 220 15) = env_spark : "Spark"
 [
@@ -2471,7 +2625,7 @@
     ]
 ]
 
-// -Mikk Shows a sprite on the hud.
+// -Mikk https://github.com/Mikk155/Sven-Co-op#env_spritehud
 @PointClass sprite() base( Targetname ) = env_spritehud : "Show Sprite At HUD"
 [
     frags(Choices) : "Show to player" : 0 =
@@ -2482,55 +2636,23 @@
 
     spawnflags(flags) =
     [
-        // (1) HUD_ELEM_ABSOLUTE_X
         1: "X position in pixels" : 0
-        
-        // (2) HUD_ELEM_ABSOLUTE_Y
         2 : "Y position in pixels" : 0
-        
-        // (4) HUD_ELEM_SCR_CENTER_X
         4 : "X-pos relative to the center" : 1
-        
-        // (8) HUD_ELEM_SCR_CENTER_Y
         8 : "Y-pos relative to the center" : 0
-        
-        // (16) HUD_ELEM_NO_BORDER (hud_bordersize)
         16 : "Ignore client border" : 0
-        
-        // (32) HUD_ELEM_HIDDEN
         32 : "Create a hidden element" : 0
-        
-        // (64) HUD_ELEM_EFFECT_ONCE
         64 : "Play the effect only once" : 0
-        
-        // (128) HUD_ELEM_DEFAULT_ALPHA (hud_defaultalpha)
         128 : "client alpha" : 0
-
-        // (256) HUD_ELEM_DYNAMIC_ALPHA (flash when updated)
         256 : "client alpha" : 0
-        
-        // (65536) HUD_SPR_OPAQUE
         65536 : "Draw opaque sprite" : 0
-        
-        // (131072) HUD_SPR_MASKED
         131072 : "Draw masked sprite" : 0
-        
-        // (262144) HUD_SPR_PLAY_ONCE
         262144 : "Play anim only once" : 0
-        
-        // (524288) HUD_SPR_HIDE_WHEN_STOPPED
         524288 : "Hide when anim stops" : 0
     ]
-
     sprite(sprite) : "Sprite Name" : "sprites/glow01.spr"
-    
-    // Horizontal position on the screen. <0, 1.0> = left to right. (-1.0, 0) = right to left. -1.0 = centered
     x(string) : "X (0 - 1.0 = left to right) (-1 centers)" : "0"
-    
-    // Vertical position on the screen. <0, 1.0> = top to bottom. (-1.0, 0) = bottom to top. -1.0 = centered
     y(string) : "Y (0 - 1.0 = top to bottom) (-1 centers)" : "0.48"
-    
-    // Channel. Range: 0-15 (each module type has its own channel group).
     channel(Choices) : "HUD Channel" : 4 =
     [
         0 : "Channel 0"
@@ -2550,7 +2672,6 @@
         14 : "Channel 14"
         15 : "Channel 15"
     ]
-
     color1(Choices) : "HUD Color 1" : 0 =
     [
         0 : "White"
@@ -2562,7 +2683,6 @@
         6 : "Orange"
         7 : "Sven Co-op"
     ]
-
     color2(Choices) : "HUD Color 2" : 0 =
     [
         0 : "White"
@@ -2574,83 +2694,40 @@
         6 : "Orange"
         7 : "Sven Co-op"
     ]
-
     effect(Choices) : "HUD Effect" : 0 =
     [
-        //    (0) HUD_EFFECT_NONE
         0 : "No effect"
-
-        //    (1) HUD_EFFECT_RAMP_UP
         1 : "Linear ramp up from c1 to c2"
-
-        //    (2) HUD_EFFECT_RAMP_DOWN
         2 : "Linear ramp down from c2 to c1"
-
-        //    (3) HUD_EFFECT_TRIANGLE
         3 : "Linear up n down from c1 to c2 to c1"
-
-        //    (4) HUD_EFFECT_COSINE_UP
         4 : "Cosine ramp up from c1 to c2"
-
-        //    (5) HUD_EFFECT_COSINE_DOWN
         5 : "Cosine ramp down from c2 to c1"
-
-        //    (6) HUD_EFFECT_COSINE
         6 : "Cosine up n down from c1 to c2 to c1"
-
-        //    (7) HUD_EFFECT_TOGGLE
         7 : "Toggle between c1 and c2"
-
-        //    (8) HUD_EFFECT_SINE_PULSE
         8 : "Sine pulse from c1 to zero to c2"
     ]
     
     frame(string) : "Show Frame number/s"
-    
     top(string) : "Sprite top offset. Range: 0-255"
-    
     left(string) : "Sprite left offset. Range: 0-255"
-    
-    // (0: auto; use total width of the sprite)
     width(string) : "Sprite width. Range: 0-512"
-    
-    // (0: auto; use total height of the sprite)
     height(string) : "Sprite height. Range: 0-512"
-    
     numframes(string) : "Number of frames" : "1"
-    
     framerate(string) : "Speed of framerate" : "1.0"
-    
     holdTime(string) : "Hold Time" : "1.0"
-    
     fadeinTime(string) : "Fade In Time" : "0.5"
-    
     fadeoutTime(string) : "Fade Out Time" : "0.5"
 ]
 
-// -Mikk Traces a sprite when the target entity moves.
+// -Mikk https://github.com/Mikk155/Sven-Co-op#env_spritetrail
 @PointClass sprite() base(Targetname, Master) size( -10 -10 -10, 10 10 10 ) = env_spritetrail : "Trail Sprite"
 [
-    // Blank = this entity (trigger_setorigin). "!activator" = player/monster activator. else just target something's name
     target(target_destination) : "Target (blank = this)" : "!activator"
-    // NOTE: on monsters the trail is on its foots, use trigger_setorigin ( off-set ) instead.
-
-    // Sprite to show as a beam
     model(studio) : "Sprite texture" : "sprites/laserbeam.spr"
-
-    // Entity think time
     frags(float) : "Next think time" : 0.1
-
-    // Trail fade out time
     health(string) : "Fade time" : "1.0"
-
-    // Renderamt
     renderamt(integer) : "FX Amount (1 - 255)" : "255"
-
-    // Render color
     rendercolor(color255) : "FX Color (R G B)" : "0 0 0"
-
-    // Trail scale 0-255
     scale(string) : "Texture Scale (0-255)" : "10"
 ]
 
@@ -2671,44 +2748,44 @@
     scale(string) : "Sprite Scale"
 ]
 
-@SolidClass base(Targetname, RenderFields, Angles, ZHLTbmodel) = env_weather : "Weather Effect"
-[
-    spawnflags(flags) =
-    [
-        1 : "Start On" : 1
-    ]
+// @SolidClass base(Targetname, RenderFields, Angles, ZHLTbmodel) = env_weather : "Weather Effect"
+// [
+    // spawnflags(flags) =
+    // [
+        // 1 : "Start On" : 1
+    // ]
 
-    drop_model(string) : "Sprite (or Model) name"
-    drop_scale(string) : "Sprite Scale" : "1"
-    drop_vp_type(choices) : "Sprite Draw Type / Orientation" : 0 =
-    [
-        0: "Default"
-        // These reflect the VP_ types in the sprite but are +1'd, so 0 can mean default
-        3: "Parallel"
-        1: "Parallel Upright"
-        5: "Parallel Orientated"
-        2: "Facing Upright"
-        4: "Orientated"
-    ]
+    // drop_model(string) : "Sprite (or Model) name"
+    // drop_scale(string) : "Sprite Scale" : "1"
+    // drop_vp_type(choices) : "Sprite Draw Type / Orientation" : 0 =
+    // [
+        // 0: "Default"
+        // // These reflect the VP_ types in the sprite but are +1'd, so 0 can mean default
+        // 3: "Parallel"
+        // 1: "Parallel Upright"
+        // 5: "Parallel Orientated"
+        // 2: "Facing Upright"
+        // 4: "Orientated"
+    // ]
 
-    splash_model(string) : "Splash Sprite (or Model) name"
-    splash_scale(string) : "Splash Sprite Scale" : "1"
-    splash_vp_type(choices) : "Splash Sprite Draw Type / Orientation" : 0 =
-    [
-        0: "Default"
-        // These reflect the VP_ types in the sprite but are +1'd, so 0 can mean default
-        3: "Parallel"
-        1: "Parallel Upright"
-        5: "Parallel Orientated"
-        2: "Facing Upright"
-        4: "Orientated"
-    ]
+    // splash_model(string) : "Splash Sprite (or Model) name"
+    // splash_scale(string) : "Splash Sprite Scale" : "1"
+    // splash_vp_type(choices) : "Splash Sprite Draw Type / Orientation" : 0 =
+    // [
+        // 0: "Default"
+        // // These reflect the VP_ types in the sprite but are +1'd, so 0 can mean default
+        // 3: "Parallel"
+        // 1: "Parallel Upright"
+        // 5: "Parallel Orientated"
+        // 2: "Facing Upright"
+        // 4: "Orientated"
+    // ]
 
-    speed(integer) : "Speed" : 50
-    density(integer) : "Density" : 30
-    angle_variance(integer) : "Angle Variance" : 10
-    speed_variance(integer) : "Speed Variance" : 10
-]
+    // speed(integer) : "Speed" : 50
+    // density(integer) : "Density" : 30
+    // angle_variance(integer) : "Angle Variance" : 10
+    // speed_variance(integer) : "Speed Variance" : 10
+// ]
 
 @PointClass base(Targetname, Target, Angles) size(-16 -16 -16, 16 16 56) color(80 220 110) = env_xenmaker : "Xen Portal"
 [
@@ -2778,7 +2855,7 @@
         14: "Lightswitch"
     ]
     noise(sound) : "Sound Override"
-    wait(integer) : "delay before reset (-1 stay)" : 3
+    wait(float) : "delay before reset (-1 stay)" : 3
     spawnflags(flags) =
     [
         1: "Don't move" : 0
@@ -3376,16 +3453,16 @@
     ]
 ]
 
-@PointClass base(Targetname, Master ) color(100 100 145) = game_player_team : "Allows player to change teams"
-[
-    spawnflags(flags) =
-    [
-        1 : "Remove On fire" : 0
-        2 : "Kill Player" : 0
-        4 : "Gib Player" : 0
-    ]
-    target(string) : "game_team_master to use"
-]
+// @PointClass base(Targetname, Master ) color(100 100 145) = game_player_team : "Allows player to change teams"
+// [
+    // spawnflags(flags) =
+    // [
+        // 1 : "Remove On fire" : 0
+        // 2 : "Kill Player" : 0
+        // 4 : "Gib Player" : 0
+    // ]
+    // target(string) : "game_team_master to use"
+// ]
 
 @PointClass base(Targetname, Targetx, Master ) color(255 205 0) = game_score : "Award/Deduct Points"
 [
@@ -3419,13 +3496,13 @@
     teamindex(integer) : "Team Index (-1 = no team)" : -1
 ]
 
-@PointClass base(Targetname, Master, Targetx) color(100 100 110) = game_team_set : "Sets team of team_master"
-[
-    spawnflags(flags) =
-    [
-        1: "Remove On fire" : 0
-    ]
-]
+// @PointClass base(Targetname, Master, Targetx) color(100 100 110) = game_team_set : "Sets team of team_master"
+// [
+    // spawnflags(flags) =
+    // [
+        // 1: "Remove On fire" : 0
+    // ]
+// ]
 
 @BaseClass base(Targetname, Master) = BaseGameText
 [
@@ -3537,7 +3614,7 @@
 
     // env_message's legacy
     messagesound(sound) : "Sound Effect"
-    messagevolume(string) : "Volume 0-10" : "10"
+    messagevolume(float) : "Volume 0-10" : 10.0
     messageattenuation(Choices) : "Sound Radius" : 0 =
     [
         0 : "Small Radius"
@@ -4100,7 +4177,7 @@
     ]
 ]
 
-@PointClass base(Target, Angles) size(-4 -4 -4, 4 4 4) color(128 255 64) = info_intermission : "Intermission Spot" []
+// @PointClass base(Target, Angles) size(-4 -4 -4, 4 4 4) color(128 255 64) = info_intermission : "Intermission Spot" []
 
 @SolidClass = info_hullshape : "Hull shape definition"
 [
@@ -4978,7 +5055,7 @@
     ]
 ]
 
-@PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/floater.mdl") = monster_bloater : "Bloater" []
+// @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/floater.mdl") = monster_bloater : "Bloater" []
 
 @PointClass base(Monster) size(-16 -16 0, 16 16 72) studio("models/bgman.mdl") = monster_bodyguard : "Body Guard"
 [
@@ -6005,7 +6082,7 @@
     ]
     target(target_destination) : "Next stop target"
     message(target_destination) : "Fire On Arrive"
-    wait(integer) : "Wait here (secs)" : 0
+    wait(float) : "Wait here (secs)" : 0
     speed(integer) : "New Train Speed" : 0
     yaw_speed(integer) : "New Train rot. Speed" : 0
 ]
@@ -6598,7 +6675,7 @@
 
 @PointClass base(Targetx, Targetname, Angles) studio("models/vhe-models/trigger_camera.mdl") color(200 255 255) = trigger_camera : "Trigger Camera"
 [
-    wait(integer) : "Hold time" : 10
+    wait(float) : "Hold time" : 10
     moveto(string) : "Path Corner"
     spawnflags(flags) =
     [
@@ -6944,242 +7021,6 @@
 
 @PointClass base(Targetname, Target, AttackObject) color(128 96 2) = trigger_change_class : "Trigger Change Class" []
 
-// -Mikk alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal (USE_OFF)
-// NOTE: these enlisted commands are not a whitelist.
-// i don't know what the black list is so feel free to add any cvar
-// let me know if it works so i'll add them to the FGD
-@PointClass base(Targetname, Master) color(40 200 150) = trigger_changecvar : "Sets a CVAR"
-[
-    spawnflags(flags) =
-    [
-        1 : "Start On" : 0
-    ]
-
-    mp_allowplayerinfo(choices) : "mp_allowplayerinfo" : 0 =
-    [
-        0 : "Hide information"
-        1 : "Show information"
-        2 : "Show only for allies"
-    ]
-    mp_allowmonsterinfo(choices) : "mp_allowmonsterinfo" : 0 =
-    [
-        0 : "Hide information"
-        1 : "Show information"
-        2 : "Show only for allies"
-    ]
-    mp_barnacle_paralyze(choices) : "mp_barnacle_paralyze" : 0 =
-    [
-        0 : "Allow weapons"
-        1 : "Disallow weapons"
-    ]
-    mp_respawndelay(integer) : "mp_respawndelay"
-    mp_multiplespawn(choices) : "mp_multiplespawn" : 0 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_timelimit(integer) : "mp_timelimit"
-    mp_fraglimit(integer) : "mp_fraglimit"
-    mp_flashlight(choices) : "mp_flashlight" : 1 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_suitpower(choices) : "mp_suitpower" : 1 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_falldamage(choices) : "mp_falldamage" : 1 =
-    [
-        -1 : "Disabled"
-        0 : "only take 10HP"
-        1 : "Realistic"
-    ]
-    mp_weaponstay(choices) : "mp_weaponstay" : 0 =
-    [
-        0 : "Weapons don't stay"
-        1 : "Weapons stays"
-    ]
-    mp_noblastgibs(choices) : "mp_noblastgibs" : 0 =
-    [
-        0 : "Default"
-        1 : "Don't gib monsters"
-    ]
-    mp_banana(choices) : "mp_banana" : 0 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_disablegaussjump(choices) : "mp_disablegaussjump" : 0 =
-    [
-        0 : "Enabled"
-        1 : "Disabled"
-    ]
-    mp_grapple_mode(choices) : "mp_grapple_mode" : 0 =
-    [
-        0 : "Don't grapple big monsters"
-        1 : "Grapple big monsters"
-    ]
-    mp_disable_player_rappel(choices) : "mp_disable_player_rappel" : 0 =
-    [
-        0 : "can grapple onto other players."
-        1 : "can not grapple onto other players."
-    ]
-    mp_disable_autoclimb(choices) : "mp_disable_autoclimb" : 0 =
-    [
-        0 : "Enabled"
-        1 : "Disabled"
-    ]
-    mp_disable_pcbalancing(choices) : "mp_disable_pcbalancing" : 1 =
-    [
-        0 : "Enabled"
-        1 : "Disabled"
-    ]
-    mp_pcbalancing_factorlist(string) : "mp_pcbalancing_factorlist" : "1.0;0.9;0.9;0.9;0.8;0.8;0.8;0.7;0.7;0.6"
-    mp_disable_medkit_points(choices) : "mp_disable_medkit_points" : 1 =
-    [
-        0 : "Enabled"
-        1 : "Disabled"
-    ]
-    mp_no_akimbo_uzis(choices) : "mp_no_akimbo_uzis" : 1 =
-    [
-        0 : "Enabled"
-        1 : "Disabled"
-    ]
-    mp_dropweapons(choices) : "mp_dropweapons" : 1 =
-    [
-        0 : "Can't drop weapons"
-        1 : "Can drop weapons"
-    ]
-    mp_npckill(choices) : "mp_npckill" : 2 =
-    [
-        0 : "Allies are Inmortal"
-        1 : "Allies take damage from anything"
-        2 : "Allies take damage from enemies"
-    ]
-    mp_forcespawn(choices) : "mp_forcespawn" : 2 =
-    [
-        0 : "Don't force"
-        1 : "Force"
-    ]
-    mp_weapon_respawndelay(float) : "mp_weapon_respawndelay"
-    mp_ammo_respawndelay(float) : "mp_ammo_respawndelay"
-    mp_item_respawndelay(float) : "mp_item_respawndelay"
-    mp_weaponfadedelay(float) : "mp_weaponfadedelay"
-    mp_weapon_droprules(choices) : "mp_weapon_droprules" : 0 =
-    [
-        0 : "Don't drop any weapons when the player dies."
-        1 : "Drop the current weapon."
-        2 : "Drop all weapons packed into a weapon box."
-    ]
-    mp_ammo_droprules(choices) : "mp_ammo_droprules" : 0 =
-    [
-        0 : "Don't drop any ammo when the player dies."
-        1 : "Drop ammo for the current weapon."
-        2 : "Drop all ammo packed into a weapon box."
-    ]
-    mp_observer_mode(choices) : "mp_observer_mode" : 0 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_observer_cyclic(choices) : "mp_observer_cyclic" : 0 =
-    [
-        0 : "Observer mode is active as long as there are no spawnpoints."
-        1 : "Observer mode is active until the map respawns players."
-    ]
-    mp_hevsuit_voice(choices) : "mp_hevsuit_voice" : 0 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_survival_supported(choices) : "mp_survival_supported" : 0 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_survival_starton(choices) : "mp_survival_starton" : 0 =
-    [
-        0 : "Disabled"
-        1 : "Enabled"
-    ]
-    mp_survival_startdelay(float) : "mp_survival_startdelay"
-    mp_survival_nextmap(string) : "mp_survival_nextmap"
-    mp_footsteps(integer) : "mp_footsteps"
-    mp_friendlyfire(integer) : "mp_friendlyfire"
-    npc_dropweapons(choices) : "npc_dropweapons" : 1 =
-    [
-        0 : "Can't drop weapons"
-        1 : "Can drop weapons"
-    ]
-    sv_ai_enemy_detection_mode(choices) : "sv_ai_enemy_detection_mode" : 0 =
-    [
-        0 : "Default"
-        1 : "NPCs scans for enemies"
-    ]
-    mp_modelselection(choices) : "mp_modelselection" : 0 =
-    [
-        0 : "Disable"
-        1 : "Enable"
-    ]
-    sv_friction(integer) : "sv_friction"
-    sv_airaccelerate(integer) : "sv_airaccelerate"
-    sv_accelerate(integer) : "sv_accelerate"
-    sv_gravity(integer) : "sv_gravity"
-    sv_maxspeed(integer) : "sv_maxspeed"
-    sv_maxvelocity(integer) : "sv_maxvelocity"
-    sv_wateraccelerate(integer) : "sv_wateraccelerate"
-    sv_waterfriction(integer) : "sv_waterfriction"
-    sv_zmax(integer) : "sv_zmax"
-    sv_cheats(integer) : "sv_cheats"
-    sv_aim(integer) : "sv_aim"
-    sv_voiceenable(integer) : "sv_voiceenable"
-    voice_enable(integer) : "voice_enable"
-    say(integer) : "say"
-    weaponmode_9mmhandgun(choices) : "weaponmode_9mmhandgun" : 0 =
-    [
-        0 : "Rapid-Fire"
-        1 : "Silencer"
-    ]
-    weaponmode_357(choices) : "weaponmode_357" : 1 =
-    [
-        0 : "Default"
-        1 : "No-Scope"
-    ]
-    weaponmode_eagle(choices) : "weaponmode_eagle" : 1 =
-    [
-        0 : "Default"
-        1 : "No-Laser"
-    ]
-    weaponmode_mp5(choices) : "weaponmode_mp5" : 1 =
-    [
-        0 : "Default"
-        1 : "No-Scope"
-    ]
-    weaponmode_shotgun(choices) : "weaponmode_shotgun" : 0 =
-    [
-        0 : "Default"
-        1 : "Double-Barrel"
-    ]
-    weaponmode_crossbow(choices) : "weaponmode_crossbow" : 0 =
-    [
-        0 : "Default"
-        1 : "No-Explode"
-    ]
-    weaponmode_rpg(choices) : "weaponmode_rpg" : 0 =
-    [
-        0 : "Default"
-        1 : "No-Laser"
-    ]
-    weaponmode_displacer(choices) : "weaponmode_displacer" : 0 =
-    [
-        0 : "Default"
-        1 : "Enable Tertiary fire"
-    ]
-    skill(integer) : "skills (See skills.cfg)"
-]
-
 // -Mikk Added master and a point entity cuz the game supports it
 @BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseChangelevel
 [
@@ -7258,7 +7099,7 @@
 
 @PointClass base(Targetname, Targetx) color(60 155 30) = trigger_changetarget : "Trigger Change Target"
 [
-    m_iszNewTarget(string) : "New Target"
+    m_iszNewTarget(target_destination) : "New Target"
 ]
 
 @PointClass base(Targetname) color(160 192 255) = trigger_changesky : "Trigger Change Sky"
@@ -7663,14 +7504,14 @@
     effect_damage(string) : "Damage modifier (%)" : "0.0"
 ]
 
-@SolidClass base(Targetname, ZHLTbmodel) color(64 48 32) = trigger_endsection : "EndSection Trigger"
-[
-    section(string) : "Section"
-    spawnflags(flags) =
-    [
-        1: "USE Only" : 0
-    ]
-]
+// @SolidClass base(Targetname, ZHLTbmodel) color(64 48 32) = trigger_endsection : "EndSection Trigger"
+// [
+    // section(string) : "Section"
+    // spawnflags(flags) =
+    // [
+        // 1: "USE Only" : 0
+    // ]
+// ]
 
 @PointClass base(Targetname) size(-12 -12 -12, 12 12 12) color(255 255 0) = trigger_entity_iterator : "Entity Iterator"
 [
@@ -7853,6 +7694,17 @@
 ]
 
 @SolidClass base(Trigger) = trigger_once : "Trigger: Activate once" []
+
+@SolidClass base(Targetname, TargetMMStyle, Master) = trigger_once_mp : "Trigger: Activate once"
+[
+    spawnflags(flags) =
+    [
+        1 : "Don't show any text" : 0
+        2 : "Don't do any noise" : 0
+    ]
+    noise(string) : "Sound when trigger (speak = no format) " : "buttons/bell1"
+    percent(integer) : "Percent required" : 0.66
+]
 
 @SolidClass base(Trigger, Angles) = trigger_push : "Trigger push"
 [
@@ -8155,6 +8007,9 @@
     ]
 ]
 
+@SolidClass base(BaseDSPTrigger, Master) = trigger_sound : "Trigger DSP Sound"[]
+@PointClass base(BaseDSPTrigger, Master, HullSetSizesCustom) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = trigger_sound : "DSP Sound"[]
+
 @PointClass base(Targetname, Target) color(255 220 28) = trigger_track_goal : "Trigger Track Goal"
 [
     spawnflags(flags) =
@@ -8190,7 +8045,7 @@
 // value = thing to trigger if the voted passed.
 // The entity will also fire its target when the vote ends.
 // Those values also supports the same system as a multi_manager ( #0 - #1 - #2 )
-@PointClass base(Targetname,) color(40 40 40) = trigger_votemenu : "Vote Menu"
+@PointClass base(Targetname) color(40 40 40) = trigger_votemenu : "Vote Menu"
 [
     target(target_destination) : "Target (USE_TYPE)"
     health(string) : "Time to vote"
