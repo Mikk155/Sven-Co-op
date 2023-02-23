@@ -182,7 +182,16 @@ namespace game_text_custom
             }
             else if( TextParams.effect == 8 )
             {
-                g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, string( ReadLanguage ) + "\n" );
+				string FullString = string( ReadLanguage ) + '\n';
+
+				// If we reached the limit replace and send again
+				while( FullString != '' )
+				{
+					g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  FullString.SubString( 0, 68 ) );
+
+					if( FullString.Length() <= 68 ) FullString = '';
+					else FullString = FullString.SubString( 68, FullString.Length() );
+				}
             }
             else if( TextParams.effect == 9 )
             {
