@@ -6,7 +6,6 @@
 [item_oxygentank](#item_oxygentank) | Entity that will give oxygen to players that touch it.
 [monster_damage_inflictor](#monster_damage_inflictor) | Feature for passing a monster's Attacker/damage inflictor as a !activator via npc's TriggerTarget key.
 [player_command](#player_command) | Entity that allow mappers to force players to execute a cmd onto their consoles.
-[trigger_changecvar](#trigger_changecvar) | Entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
 [trigger_changevalue](#trigger_changevalue) | Allow trigger_changevalue to change keyvalues from a specified weapon of the player activator
 [trigger_individual](#trigger_individual) | Allow Trigger-Type entities to fire its target only once per activator.
 [trigger_multiple](#trigger_multiple) | Allow trigger_multiple entity to fire its target for every one inside its volume.
@@ -262,32 +261,6 @@ void MapInit()
 
 
 
-
-
-# trigger_changecvar
-trigger_changecvar is a entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
-
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄trigger_changecvar.as
-                └── 📄utils.as
-```
-
-**install:**
-```angelscript
-#include "mikk/trigger_changecvar"
-
-void MapInit()
-{
-	trigger_changecvar::Register();
-}
-```
-
-**Introduction:**
 
 
 

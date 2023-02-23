@@ -197,6 +197,7 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 | Entity / Script | Description | is Angelscript | has Angelscript feature |
 |-----------------|-------------| :------------: | :---------------------: |
 [config_classic_mode](#config_classic_mode) | Entity that allow mapper to customize classic mode. | ✔️ | ✔️ 
+[config_map_cvars](#config_map_cvars) | Entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
 [config_map_precache](#config_map_precache) | Entity that precache almost anything. | ✔️ | ✔️ 
 [config_survival_mode](#config_survival_mode) | Entity that allow mapper to customize survival mode. | ✔️ | ✔️ 
 
@@ -626,6 +627,59 @@ The same way you can replace any entity's custom model. the syntax is the same.
 
 </p>
 </details>
+
+---
+
+### config_map_cvars
+
+<details><summary>Description</summary>
+<p>
+
+trigger_changecvar is a entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
+
+
+<details><summary>Installation</summary>
+<p>
+
+**Download**
+```
+└── 📁svencoop_addon
+    └── 📁scripts
+        └── 📁maps
+            └── 📁mikk
+                ├── 📄config_map_cvars.as
+                └── 📄utils.as
+```
+
+**install:**
+```angelscript
+#include "mikk/config_map_cvars"
+
+void MapInit()
+{
+	config_map_cvars::Register();
+}
+```
+
+
+</p>
+</details>
+
+
+<details><summary>Usage</summary>
+<p>
+
+Add any cvar (supported cvars are enlisted in the FGD) and trigger the entity or alternativelly set flag 1 to automatically enable it.
+
+Trigger with USE_OFF (0#) to return the old cvars that was stored in the entity when it spawned.
+
+</p>
+</details>
+
+</p>
+</details>
+
+
 
 ---
 
