@@ -47,12 +47,31 @@ Sparks Discord: [Sparks#1475]()
 
 
 
+<details><summary>Installing content easly from windows</summary>
+<p>
+
+- Use any text editor and save as a ``.bat`` ( [Batch file](https://en.wikipedia.org/wiki/Batch_file) ) inside your ``%steam path%/Sven Co-op/svencoop_addon/install.bat``
+
+- Right click and ``edit``
+
+- in the script you have interest, press the ``Installation`` button and copy the code
+
+- Paste inside your [Batch file](https://en.wikipedia.org/wiki/Batch_file)
+
+- save and close
+
+- Double click it.
+
+- Done, all the required files for that script has been downloaded and placed in your svencoop_addon folder.
+
+</p>
+</details>
 
 
 
 
 
-
+---
 
 
 
@@ -106,7 +125,7 @@ Username: ``Gaftherman#0231``
 | Tutorial |
 | :------: |
 | [transport information between two or more maps. allowing you to do different triggers depending in what state the previus map did set the global state.](#env_global) |
-| [Creates a full customizable code **on-the-fly** for a numerical padlock. this system works using a game_counter and a trigger_random for randomizing the code needed, feel free to make a better randomizing system of 3 digits from number 0 to 9](#numerical-padlock) |
+| [Creates a full customizable code **on-the-fly** for a numerical padlock.](#numerical-padlock) |
 | [Un embed textures from a BSP](un-embed-textures-from-a-bsp) |
 
 </p>
@@ -152,6 +171,7 @@ Username: ``Gaftherman#0231``
 | [NoAutoPick](#noautopick) Make items/weapons pick-able only if pressing E-key. |
 | [PlayerDeadChat](#playerdeadchat) Make dead player's messages readable for dead players only |
 | [RenameServer](#renameserver) Changes your server's hostname dynamicaly depending the map playing |
+| [multi_language](#multi_language) Allow players to choose a language of their preference to see messages with localizations in conjunction of [game_text_custom](#game_text_custom) |
 
 </p>
 </details>
@@ -172,10 +192,10 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>ambient_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
-[ambient_generic](#ambient_generic) | Entity for reproduce a sound | ❌ | ❌ 
-[ambient_music](#ambient_music) | Entity for reproduce a music song. | ❌ | ❌ 
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[ambient_generic](#ambient_generic) | Entity for reproduce a sound | ❌ 
+[ambient_music](#ambient_music) | Entity for reproduce a music song. | ❌ 
 
 </p>
 </details>
@@ -183,10 +203,10 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>ammo_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
-[ammo_custom](#ammo_custom) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ | ✔️ 
-[ammo_](#ammo_) | Ammunition entities. | ❌ | ✔️ 
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[ammo_custom](#ammo_custom) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ 
+[ammo_](#ammo_) | Ammunition entities. | ✔️ 
 
 </p>
 </details>
@@ -194,12 +214,12 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>config_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
-[config_classic_mode](#config_classic_mode) | Entity that allow mapper to customize classic mode. | ✔️ | ✔️ 
-[config_map_cvars](#config_map_cvars) | Entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
-[config_map_precache](#config_map_precache) | Entity that precache almost anything. | ✔️ | ✔️ 
-[config_survival_mode](#config_survival_mode) | Entity that allow mapper to customize survival mode. | ✔️ | ✔️ 
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[config_classic_mode](#config_classic_mode) | Entity that allow mapper to customize classic mode. | ✔️ 
+[config_map_cvars](#config_map_cvars) | Entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF. | ✔️ 
+[config_map_precache](#config_map_precache) | Entity that precache almost anything. | ✔️ 
+[config_survival_mode](#config_survival_mode) | Entity that allow mapper to customize survival mode. | ✔️ 
 
 </p>
 </details>
@@ -207,11 +227,11 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>cycler_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
-[cycler](https://sites.google.com/site/svenmanor/entguide/cycler) | Entity used to display models in your map. | ❌ | ❌ 
-[cycler_sprite](https://sites.google.com/site/svenmanor/entguide/cycler_sprite) | Entity used to display sprites in your map. | ❌ | ❌ 
-[cycler_weapon](https://sites.google.com/site/svenmanor/entguide/cycler_weapon) | Entity that appears to be an unfinished entity originally by Valve. | ❌ | ❌ 
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[cycler](https://sites.google.com/site/svenmanor/entguide/cycler) | Entity used to display models in your map. | ❌ 
+[cycler_sprite](https://sites.google.com/site/svenmanor/entguide/cycler_sprite) | Entity used to display sprites in your map. | ❌ 
+[cycler_weapon](https://sites.google.com/site/svenmanor/entguide/cycler_weapon) | Entity that appears to be an unfinished entity originally by Valve. | ❌ 
 
 </p>
 </details>
@@ -219,38 +239,38 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>env_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
-[env_alien_teleport](#env_alien_teleport) | Entity that spawns (with xen FX) a specified monster around a random player. | ✔️  | ✔️  
-[env_beam](https://sites.google.com/site/svenmanor/entguide/env_beam) | The env_beam entity is used to create a bolt between two entities. | ❌ | ❌ 
-[env_beverage](https://sites.google.com/site/svenmanor/entguide/env_beverage) | Spawns a can. used for black mesa dispensers. | ❌ | ❌ 
-[env_blood](https://sites.google.com/site/svenmanor/entguide/env_blood) | Entity which, when triggered, creates a blood splash at its origin, which can cause blood decals on nearby walls, ceiling and floor. | ❌ | ❌ 
-[env_bloodpuddle](#env_bloodpuddle) | Generates a blood puddle when a monster die. | ✔️ | ✔️   
-[env_effect](#env_effect) | Entity used for showing various effects. | ✔️ | ✔️  
-[env_explosion](https://sites.google.com/site/svenmanor/entguide/env_explosion) | Entity which, when triggered, creates an explosion which damages everything damageable around it. | ❌ | ❌ 
-[env_fade](https://sites.google.com/site/svenmanor/entguide/env_fade) | Entity that causes the players' screens to have an in- or out-fading color to be drawn over them. | ❌ | ❌ 
-[env_fog](#env_fog) | Entity which creates a fog effect within a specific area around it. | ❌ | ✔️  
-[env_fog_individual](#env_fog_individual) | Expands env_fog features to show fog to activator only.| ✔️  | ✔️  
-[env_funnel](https://sites.google.com/site/svenmanor/entguide/env_funnel) | Creates a large portal funnel particle effect of green particles | ❌ | ❌ 
-[env_geiger](#env_geiger) | Entity that simulates radiation sound in a small radius of its origin. | ✔️ | ✔️ 
-[env_global](#env_global) | Entity used to transport information between two or more maps. | ❌ | ❌ 
-[env_glow](https://sites.google.com/site/svenmanor/entguide/env_glow) | The env_glow is a castrated env_sprite. Use that instead for more features. | ❌ | ❌ 
-[env_laser](https://sites.google.com/site/svenmanor/entguide/env_laser) | A less advanced version of env_beam. Creates a toggleable laser between itself and its target. | ❌ | ❌ 
-[env_message](https://sites.google.com/site/svenmanor/entguide/env_message) | An entity to display messages from the titles.txt file on the HUD. You probably are better off with the much more customizable [game_text_custom](#game_text_custom) entity. | ❌ | ❌ 
-[env_render](#env_render) | Point entity which allows you to change render-mode, -fx, -amount and -color of another entity. This entity supports use of !activator and !caller. | ❌ | ✔️ 
-[env_render_gradualy](#env_render_gradualy) | Allow env_render to gradually render a entity progressivelly (fade in-out) by its renderamt until both (env_render and target entity) have the same renderamt | ✔️ | ✔️ 
-[env_render_individual](https://sites.google.com/site/svenmanor/entguide/env_render_individual) | Entity that acts like env_render but applied render settings will be seen only by certain players. This allows you to make entities be seen by players differently (e.g. visible only for some players). | ❌ | ❌
-[env_sentence](https://sites.google.com/site/svenmanor/entguide/env_sentence) | The env_sentence entity allows you to make announcements; think of the announcer in Black Mesa from Half-Life's single player mode. | ❌ | ❌ 
-[env_shake](https://sites.google.com/site/svenmanor/entguide/env_shake) | Causes nearby players' screens to shake. Used for simulating earthquakes. | ❌ | ❌ 
-[env_shooter](https://sites.google.com/site/svenmanor/entguide/env_shooter) | The env_shooter entity allows to emit a model or sprite of your choice and shoot it into a certain direction, at a certain velocity. Sprites aren't specifically supported, though. | ❌ | ❌ 
-[env_sound](#env_sound) | Allows you to set up specific ambient effects for increasing the sound experience and making it consistent with the visuals of your map. | ❌ | ✔️ 
-[env_spark](https://sites.google.com/site/svenmanor/entguide/env_spark) | The env_spark entity is used for emitting the visuals and sounds of a spark, often used for implying cut electric cables, broken buttons and malfunctioning machinery. | ❌ | ❌ 
-[env_sprite](https://sites.google.com/site/svenmanor/entguide/env_sprite) | The env_sprite entity allows you to render sprites, which are common 2D-graphics which will appear aligned to face you at all times, unless specified otherwise. | ❌ | ❌ 
-[env_spritehud](#env_spritehud) | env_spritehud is a entity that shows a sprite on the player's HUD. | ✔️ | ✔️ 
-[env_spritetrail](#env_spritetrail) | env_spritetrail is a entity that traces a sprite when the target entity moves | ✔️ | ✔️ 
-[env_spritetrain](https://sites.google.com/site/svenmanor/entguide/env_spritetrain) | The env_spritetrain entity resembles an env_sprite which can move along path_corner entities as a func_train can. Ever wanted to make a flame travel along a fuse to a bomb? This entity is for you. | ❌ | ❌ 
-[env_xenmaker](https://sites.google.com/site/svenmanor/entguide/env_xenmaker) | The env_xenmaker allows to spawn monsters with teleportation and beam effects. It can be set to act as a spawn-effect-data-template for squadmakers, in case you want to pair this spawn-effect with the customizability-features of the squadmaker entity. | ❌ | ❌ 
-[env_bubbles](https://sites.google.com/site/svenmanor/entguide/env_bubbles) | A brush entity which creates bubbles at random positions inside it, which float up regardless of whether being in water or air and only are removed when hitting a water surface or solid wall. The bubbles' sizes and rising-speed will vary slightly randomly. | ❌ | ❌ 
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[env_alien_teleport](#env_alien_teleport) | Entity that spawns (with xen FX) a specified monster around a random player. | ✔️  
+[env_beam](https://sites.google.com/site/svenmanor/entguide/env_beam) | The env_beam entity is used to create a bolt between two entities. | ❌ 
+[env_beverage](https://sites.google.com/site/svenmanor/entguide/env_beverage) | Spawns a can. used for black mesa dispensers. | ❌ 
+[env_blood](https://sites.google.com/site/svenmanor/entguide/env_blood) | Entity which, when triggered, creates a blood splash at its origin, which can cause blood decals on nearby walls, ceiling and floor. | ❌ 
+[env_bloodpuddle](#env_bloodpuddle) | Generates a blood puddle when a monster die. | ✔️  
+[env_effect](#env_effect) | Entity used for showing various effects. | ✔️ 
+[env_explosion](https://sites.google.com/site/svenmanor/entguide/env_explosion) | Entity which, when triggered, creates an explosion which damages everything damageable around it. | ❌ 
+[env_fade](https://sites.google.com/site/svenmanor/entguide/env_fade) | Entity that causes the players' screens to have an in- or out-fading color to be drawn over them. | ❌ 
+[env_fog](#env_fog) | Entity which creates a fog effect within a specific area around it. | ✔️  
+[env_fog_individual](#env_fog_individual) | Expands env_fog features to show fog to activator only.| ✔️   
+[env_funnel](https://sites.google.com/site/svenmanor/entguide/env_funnel) | Creates a large portal funnel particle effect of green particles | ❌ 
+[env_geiger](#env_geiger) | Entity that simulates radiation sound in a small radius of its origin. | ✔️ 
+[env_global](#env_global) | Entity used to transport information between two or more maps. | ❌ 
+[env_glow](https://sites.google.com/site/svenmanor/entguide/env_glow) | The env_glow is a castrated env_sprite. Use that instead for more features. | ❌ 
+[env_laser](https://sites.google.com/site/svenmanor/entguide/env_laser) | A less advanced version of env_beam. Creates a toggleable laser between itself and its target. | ❌ 
+[env_message](https://sites.google.com/site/svenmanor/entguide/env_message) | An entity to display messages from the titles.txt file on the HUD. You probably are better off with the much more customizable [game_text_custom](#game_text_custom) entity. | ❌ 
+[env_render](#env_render) | Point entity which allows you to change render-mode, -fx, -amount and -color of another entity. This entity supports use of !activator and !caller. | ✔️ 
+[env_render_gradualy](#env_render_gradualy) | Allow env_render to gradually render a entity progressivelly (fade in-out) by its renderamt until both (env_render and target entity) have the same renderamt | ✔️ 
+[env_render_individual](https://sites.google.com/site/svenmanor/entguide/env_render_individual) | Entity that acts like env_render but applied render settings will be seen only by certain players. This allows you to make entities be seen by players differently (e.g. visible only for some players). | ❌ 
+[env_sentence](https://sites.google.com/site/svenmanor/entguide/env_sentence) | The env_sentence entity allows you to make announcements; think of the announcer in Black Mesa from Half-Life's single player mode. | ❌ 
+[env_shake](https://sites.google.com/site/svenmanor/entguide/env_shake) | Causes nearby players' screens to shake. Used for simulating earthquakes. | ❌ 
+[env_shooter](https://sites.google.com/site/svenmanor/entguide/env_shooter) | The env_shooter entity allows to emit a model or sprite of your choice and shoot it into a certain direction, at a certain velocity. Sprites aren't specifically supported, though. | ❌ 
+[env_sound](#env_sound) | Allows you to set up specific ambient effects for increasing the sound experience and making it consistent with the visuals of your map. | ✔️ 
+[env_spark](https://sites.google.com/site/svenmanor/entguide/env_spark) | The env_spark entity is used for emitting the visuals and sounds of a spark, often used for implying cut electric cables, broken buttons and malfunctioning machinery. | ❌ 
+[env_sprite](https://sites.google.com/site/svenmanor/entguide/env_sprite) | The env_sprite entity allows you to render sprites, which are common 2D-graphics which will appear aligned to face you at all times, unless specified otherwise. | ❌ 
+[env_spritehud](#env_spritehud) | env_spritehud is a entity that shows a sprite on the player's HUD. | ✔️ 
+[env_spritetrail](#env_spritetrail) | env_spritetrail is a entity that traces a sprite when the target entity moves | ✔️ 
+[env_spritetrain](https://sites.google.com/site/svenmanor/entguide/env_spritetrain) | The env_spritetrain entity resembles an env_sprite which can move along path_corner entities as a func_train can. Ever wanted to make a flame travel along a fuse to a bomb? This entity is for you. | ❌ 
+[env_xenmaker](https://sites.google.com/site/svenmanor/entguide/env_xenmaker) | The env_xenmaker allows to spawn monsters with teleportation and beam effects. It can be set to act as a spawn-effect-data-template for squadmakers, in case you want to pair this spawn-effect with the customizability-features of the squadmaker entity. | ❌ 
+[env_bubbles](https://sites.google.com/site/svenmanor/entguide/env_bubbles) | A brush entity which creates bubbles at random positions inside it, which float up regardless of whether being in water or air and only are removed when hitting a water surface or solid wall. The bubbles' sizes and rising-speed will vary slightly randomly. | ❌ 
 
 </p>
 </details>
@@ -258,8 +278,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>func_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -267,25 +287,25 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>game_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
-[game_counter](https://sites.google.com/site/svenmanor/entguide/game_counter) | This is a logic entity which will fire its target after being triggered a specified amount of times. | ❌ | ❌ 
-[game_counter_set](https://sites.google.com/site/svenmanor/entguide/game_counter_set) | Allows you to set the value of a game_counter and have it trigger if the set value matches the game_counter's target value. | ❌ | ❌ 
-[game_end](https://sites.google.com/site/svenmanor/entguide/game_end) | Entity, which, when triggered, ends the map. The next map in the mapcycle is then loaded. As soon as it is triggered, all entities will stop operating. | ❌ | ❌ 
-[game_player_counter](https://sites.google.com/site/svenmanor/entguide/game_player_counter) | This entity keeps track of the total number of players currently on or connecting to the server. | ❌ | ❌ 
-[game_debug](#game_debug) | Entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script. | ✔️ | ✔️ 
-[game_player_equip](https://sites.google.com/site/svenmanor/entguide/game_player_equip) | The game_player_equip entity is a powerful entity for managing player weapons/items/ammo loadout. | ❌ | ❌ 
-[game_player_hurt](https://sites.google.com/site/svenmanor/entguide/game_player_hurt) | Point entity which will apply damage to its activator. For a more feature-rich version see trigger_hurt_remote. | ❌ | ❌ 
-[game_stealth](#game_stealth) | Allow mappers to make use of stealth mode in Co-op | ✔️ | ✔️ 
-[game_score](https://sites.google.com/site/svenmanor/entguide/game_score) | Gives score points to the triggering player, as can be seen on the multiplayer scoreboard. | ❌ | ❌ 
-[game_slot_counter](https://sites.google.com/site/svenmanor/entguide/game_slot_counter) | This entity counts the total number of player slots on the server on map load and triggers its target on the first server frame if the amount of slots equals a value you specify | ❌ | ❌ 
-[game_text](#game_text) | An entity to display HUD messages to the player who activated it, or all players. for a improved version with a bunch of new features see [game_text_custom](#game_text_custom) | ❌ | ❌ 
-[game_text_custom](#game_text_custom) | Entity replacemet for game_text and env_message with lot of new additions and language support. | ✔️ | ✔️
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[game_counter](https://sites.google.com/site/svenmanor/entguide/game_counter) | This is a logic entity which will fire its target after being triggered a specified amount of times. | ❌ 
+[game_counter_set](https://sites.google.com/site/svenmanor/entguide/game_counter_set) | Allows you to set the value of a game_counter and have it trigger if the set value matches the game_counter's target value. | ❌ 
+[game_end](https://sites.google.com/site/svenmanor/entguide/game_end) | Entity, which, when triggered, ends the map. The next map in the mapcycle is then loaded. As soon as it is triggered, all entities will stop operating. | ❌ 
+[game_player_counter](https://sites.google.com/site/svenmanor/entguide/game_player_counter) | This entity keeps track of the total number of players currently on or connecting to the server. | ❌ 
+[game_debug](#game_debug) | Entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script. | ✔️ 
+[game_player_equip](https://sites.google.com/site/svenmanor/entguide/game_player_equip) | The game_player_equip entity is a powerful entity for managing player weapons/items/ammo loadout. | ❌ 
+[game_player_hurt](https://sites.google.com/site/svenmanor/entguide/game_player_hurt) | Point entity which will apply damage to its activator. For a more feature-rich version see trigger_hurt_remote. | ❌ 
+[game_stealth](#game_stealth) | Allow mappers to make use of stealth mode in Co-op | ✔️ 
+[game_score](https://sites.google.com/site/svenmanor/entguide/game_score) | Gives score points to the triggering player, as can be seen on the multiplayer scoreboard. | ❌ 
+[game_slot_counter](https://sites.google.com/site/svenmanor/entguide/game_slot_counter) | This entity counts the total number of player slots on the server on map load and triggers its target on the first server frame if the amount of slots equals a value you specify | ❌ 
+[game_text](#game_text) | An entity to display HUD messages to the player who activated it, or all players. for a improved version with a bunch of new features see [game_text_custom](#game_text_custom) | ❌ 
+[game_text_custom](#game_text_custom) | Entity replacemet for game_text and env_message with lot of new additions and language support. | ✔️ 
 
-[game_trigger_iterator](#game_trigger_iterator) |  | ✔️ | ✔️
-[game_time](#game_time) |  | ✔️ | ✔️
-[game_zone_player](#game_zone_entity) |  | ❌ | ❌ 
-[game_zone_entity](#game_zone_entity) |  | ✔️ | ✔️
+[game_trigger_iterator](#game_trigger_iterator) |  | ✔️ 
+[game_time](#game_time) |  | ✔️ 
+[game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) |  | ❌ 
+[game_zone_entity](#game_zone_entity) |  | ✔️ 
 
 </p>
 </details>
@@ -293,8 +313,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>trigger_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -302,8 +322,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>player_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -311,8 +331,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>info_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -320,8 +340,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>item_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -329,8 +349,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>light</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -338,8 +358,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>monster_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -347,8 +367,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>path_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -356,8 +376,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>scripted_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -365,8 +385,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>weapon_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -374,8 +394,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>xen_</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -383,9 +403,9 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 <details><summary>other</summary>
 <p>
 
-| Entity / Script | Description | is Angelscript | has Angelscript feature |
-|-----------------|-------------| :------------: | :---------------------: |
-[entitymaker](#entitymaker) | Entity that when is fired it creates any entity on its origin and using the same keyvalues that entitymaker has. | ✔️ | ✔️ 
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[entitymaker](#entitymaker) | Entity that when is fired it creates any entity on its origin and using the same keyvalues that entitymaker has. | ✔️ 
 
 </p>
 </details>
@@ -432,25 +452,24 @@ General information in [svenmanor](https://sites.google.com/site/svenmanor/entgu
 
 ammo_custom is an ammo item customizable that gives a specified ammout of bullets that the entity sets.
 
-<details><summary>Download</summary>
+<details><summary>Installation</summary>
 <p>
 
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils ammo_custom
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄ammo_custom.as
-                └── 📄utils.as
-```
 
-
-</p>
-</details>
-
-<details><summary>Install</summary>
-<p>
-
+In your main map_script add:
 ```angelscript
 #include "mikk/ammo_custom"
 
@@ -548,17 +567,21 @@ it also allows you to swap **any** model into a classic model if specified by th
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄config_classic_mode.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils config_classic_mode
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/config_classic_mode"
 
@@ -635,23 +658,26 @@ The same way you can replace any entity's custom model. the syntax is the same.
 <details><summary>Description</summary>
 <p>
 
-trigger_changecvar is a entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
-
+config_map_cvars is a entity alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal if fire with USE_OFF.
 
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄config_map_cvars.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils config_map_cvars
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/config_map_cvars"
 
@@ -661,10 +687,8 @@ void MapInit()
 }
 ```
 
-
 </p>
 </details>
-
 
 <details><summary>Usage</summary>
 <p>
@@ -693,17 +717,21 @@ config_map_precache is a entity that precache almost anything.
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄config_map_precache.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils config_map_precache
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/config_map_precache"
 
@@ -754,17 +782,21 @@ config_survival_mode is a entity that customize survival mode and make it better
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄config_survival_mode.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils config_survival_mode
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/config_survival_mode"
 
@@ -830,17 +862,21 @@ basically trigger_createentity but we aimed to add a condition for it to spawn t
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄entitymaker.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils entitymaker
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/entitymaker"
 
@@ -874,17 +910,21 @@ env_alien_teleport is a entity that randomly teleport in aliens on a random play
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_alien_teleport.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_alien_teleport
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_alien_teleport"
 
@@ -942,22 +982,28 @@ As a [Plugin](#bloodpuddle)
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    ├── 📁models
-    |   └── 📁mikk
-    |       └── 📁misc
-    |           └── 📄bloodpuddle.mdl
-    |
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_bloodpuddle.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_bloodpuddle
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+
+set output2=models/mikk/misc/
+curl -LJO %Main%%output2%bloodpuddle.mdl
+if not exist %output2% (
+  mkdir %output2:/=\%
+)
+move bloodpuddle.mdl %Output2%
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_bloodpuddle"
 
@@ -966,6 +1012,7 @@ void MapInit()
 	env_bloodpuddle::Register();
 }
 ```
+
 The function ``Register`` has two optional calls.
 
 <details><summary>First function</summary>
@@ -1042,17 +1089,21 @@ Add [Custom KeyValues](https://sites.google.com/site/svenmanor/entguide/custom-k
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_effect.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_effect
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_effect"
 
@@ -1108,18 +1159,21 @@ env_fog_individual is a entity that expands env_fog features to show fog to acti
 <details><summary>Installation</summary>
 <p>
 
-
-**Download**
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_fog
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_fog.as
-                └── 📄utils.as
-```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_fog"
 
@@ -1167,17 +1221,21 @@ Send USE_OFF/ON/TOGGLE respectivelly.
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_geiger.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_geiger
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_geiger"
 
@@ -1205,17 +1263,26 @@ env_global entity is used to transport information between two or more maps. all
 General information: [svenmanor](https://sites.google.com/site/svenmanor/entguide/env_global)
 
 ### Test map:
-**Download**
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=1test_global3.bsp 1test_global3.cfg 1test_global3_motd.txt 1test_global4.bsp 1test_global4.cfg 1test_global4_motd.txt
+set output=maps/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a
+  
+  move %%a %Output%
+))
 ```
-└── 📁svencoop_addon
-    └── 📁maps
-        ├── 📄1test_global3.bsp
-        ├── 📄1test_global3.cfg
-        ├── 📄1test_global3_motd.txt
-        ├── 📄1test_global4.bsp
-        ├── 📄1test_global4.cfg
-        └── 📄1test_global4_motd.txt
-```
+
+</p>
+</details>
 
 go to map ``1test_global3``
 
@@ -1250,17 +1317,21 @@ Allow env_render to gradually render a entity progressivelly (fade in-out) by it
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_render.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_render
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_render"
 ```
@@ -1301,7 +1372,7 @@ netname -> Trigger this target when finish thinking [Supports USE_TYPE](#utils-u
 
 General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/env_sound)
 
-- New entity [trigger_sound](#trigger_sound) as a brush and trigger-able entiy.
+- New entity [trigger_sound](#trigger_sound) as a brush and trigger-able entity.
 
 </p>
 </details>
@@ -1315,21 +1386,24 @@ General information in [svenmanor](https://sites.google.com/site/svenmanor/entgu
 
 env_spritehud is a entity that shows a sprite on the player's HUD.
 
-
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_spritehud.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_spritehud
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_spritehud"
 
@@ -1432,21 +1506,24 @@ This entity is kinda confuse even for me, i've include everything that HudSprite
 
 env_spritetrail is a entity that traces a sprite when the target entity moves
 
-
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄env_spritetrail.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_spritetrail
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/env_spritetrail"
 
@@ -1493,21 +1570,24 @@ Traces a trail sprite when the target entity moves.
 
 game_debug is a entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script.
 
-
 <details><summary>Installation</summary>
 <p>
 
-**Download:**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄game_debug.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils game_debug
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/game_debug"
 
@@ -1520,7 +1600,6 @@ void MapInit()
 
 </p>
 </details>
-
 
 <details><summary>Introduction</summary>
 <p>
@@ -1565,17 +1644,21 @@ game_stealth Allow mappers to make use of stealth mode in Co-op
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄game_stealth.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils game_stealth
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/game_stealth"
 ```
@@ -1612,9 +1695,7 @@ also another keyvalue is supported ``$i_stealthmode`` if set on a value of ``1``
 
 General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/game_text)
 
-- 
-        // -Mikk added channels up to 8 because the game supports them.
-		imagen de y/x
+- The FGD says there are 4 channels but it's true that this entity supports channel up to 8, but normally scripts/plugins uses them.
 
 </p>
 </details>
@@ -1631,17 +1712,21 @@ game_text_custom is a entity replacemet for game_text and env_message with lot o
 <details><summary>Installation</summary>
 <p>
 
-**Download**
-```
-└── 📁svencoop_addon
-    └── 📁scripts
-        └── 📁maps
-            └── 📁mikk
-                ├── 📄game_text_custom.as
-                └── 📄utils.as
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils game_text_custom
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
 ```
 
-**install:**
+In your main map_script add:
 ```angelscript
 #include "mikk/game_text_custom"
 
