@@ -306,10 +306,9 @@ final class CUtils
                         continue;
                     }
 
-					string Classname;
-					Classname = szClassname;
+					string Classname = string( g_KeyValues[ "classname" ] );
 
-					if( !string( g_KeyValues[ "classname" ] ).IsEmpty() ) Classname = string( g_KeyValues[ "classname" ] );
+					if( Classname.IsEmpty() || Classname.Length() < 2 ) Classname = szClassname;
 
                     CBaseEntity@ pInitialized = g_EntityFuncs.CreateEntity( Classname, g_KeyValues, true );
 
