@@ -50,18 +50,12 @@
 "sentence" "INTRO_FG1_L4"
 "targetname" "fg1_line4"
 }
-
 {
-"sentence" "Jackson: Anytime, anywhere."
-"effect" "5"
-"spawnflags" "3"
+"sentence" "INTRO_FG2_L4"
 "targetname" "fg1_line4"
 }
-
 {
-"sentence" "Tower: Hey man, you smell that?"
-"effect" "5"
-"spawnflags" "3"
+"sentence" "INTRO_FG1_L5"
 "targetname" "fg1_line5"
 }
 
