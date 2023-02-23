@@ -1,7 +1,7 @@
 #include "utils"
 namespace game_text_custom
 {
-	string CustomSentencesFolder = 'mikk/store/default_sentences';
+	string CustomSentencesFolder = 'mikk/store/default_messages.txt';
 
     void Register( const bool& in IsPlugin = false )
     {
@@ -45,7 +45,7 @@ namespace game_text_custom
         focus_entity,
         messagesound,
         key_from_entity,
-		sentence_name;
+		sentence;
 
         private float
         messagevolume = 10,
@@ -76,8 +76,8 @@ namespace game_text_custom
                 key_float = atof( szValue );
             else if ( szKey == "key_string" )
                 key_string = szValue;
-            else if ( szKey == "sentence_name" )
-                sentence_name = szValue;
+            else if ( szKey == "sentence" )
+                sentence = szValue;
             else if ( szKey == "radius" )
                 radius = atoi( szValue );
             else
@@ -273,7 +273,7 @@ namespace game_text_custom
             else
             {
                 CBaseEntity@ pTarget = g_EntityFuncs.FindEntityByTargetname( pTarget, focus_entity );
-                
+
                 if( pTarget !is null )
                 {
                     return g_Util.GetCKV( pTarget, key_from_entity );
@@ -303,134 +303,66 @@ namespace game_text_custom
 
 		void LoadSentences()
 		{
-			if( !sentence_name.IsEmpty() )
+			if( !sentence.IsEmpty() )
 			{
-				self.pev.message = LoadSentence( 'english' );
-				message_spanish = LoadSentence( 'spanish_latam' );
-				message_spanish2 = LoadSentence( 'spanish_spain' );
-				message_portuguese = LoadSentence( 'portuguese' );
-				message_german = LoadSentence( 'german' );
-				message_french = LoadSentence( 'french' );
-				message_italian = LoadSentence( 'italian' );
-				message_esperanto = LoadSentence( 'esperanto' );
-				message_czech = LoadSentence( 'czech' );
-				message_dutch = LoadSentence( 'dutch' );
-				message_indonesian = LoadSentence( 'indonesian' );
-				message_romanian = LoadSentence( 'romanian' );
-				message_turkish = LoadSentence( 'turkish' );
-				message_albanian = LoadSentence( 'albanian' );
-			}
-		}
+				string SentenceFile = 'scripts/' + ( self.pev.ClassNameIs( 'multi_language' ) ? 'plugins/multi_language/default_messages' : 'maps/' + CustomSentencesFolder  )  + '.txt';
 
-		string LoadSentence( const string& in Language = 'english' )
-		{
-			string SentenceFile = 'scripts/' + ( self.pev.ClassNameIs( 'multi_language' ) ? 'plugins/multi_language/default_sentences/' : 'maps/' + CustomSentencesFolder + '/' )  + Language + '.txt';
+				bool FoundSentence = false;
 
-			bool FoundSentence = false, FoundAndSave = false;
+				string line, key, value;
+				dictionary g_KeyValues;
 
-			string line, FullString;
+				File@ pFile = g_FileSystem.OpenFile( SentenceFile, OpenFile::READ );
 
-			File@ pFile = g_FileSystem.OpenFile( SentenceFile, OpenFile::READ );
-
-			if( pFile is null or !pFile.IsOpen() )
-			{
-				g_Util.DebugMessage( "Failed to open '" + SentenceFile + "' no sentences for entity '" + string( self.pev.targetname ) + "'" );
-				return String::EMPTY_STRING;
-			}
-
-			while( !pFile.EOFReached() )
-			{
-				pFile.ReadLine( line );
-
-				if( line.Length() < 1 or line[0] == '/' and line[1] == '/' or line[0] == '#' )
+				if( pFile is null or !pFile.IsOpen() )
 				{
-					continue;
+					g_Util.DebugMessage( "Failed to open '" + SentenceFile + "' no sentences for entity '" + string( self.pev.targetname ) + "'" );
+					return;
 				}
 
-				if( line[0] == '$' )
+				while( !pFile.EOFReached() )
 				{
-					string Key = line.Replace( '$', '' );
+					pFile.ReadLine( line );
 
-					if( Key.StartsWith( 'color' ) )
+					if( line.Length() < 1 or line[0] == '/' and line[1] == '/' or line[0] == '#' )
 					{
-						Vector VecColor( 255, 255, 255 );
-						g_Utility.StringToVector( VecColor, line.Replace( 'color ', '' ) );
-						TextParams.r1 = int( VecColor.x );
-						TextParams.g1 = int( VecColor.y );
-						TextParams.b1 = int( VecColor.z );
-					}
-					else if( Key.StartsWith( 'color2' ) )
-					{
-						Vector VecColor( 255, 255, 255 );
-						g_Utility.StringToVector( VecColor, line.Replace( 'color2 ', '' ) );
-						TextParams.r2 = int( VecColor.x );
-						TextParams.g2 = int( VecColor.y );
-						TextParams.b2 = int( VecColor.z );
-					}
-					else if( Key.StartsWith( 'messagesound' ) )
-						messagesound = line.Replace( 'messagesound ', '' );
-					else if( Key.StartsWith( 'key_string' ) )
-						key_string = line.Replace( 'key_string ', '' );
-					else if( Key.StartsWith( 'delay' ) )
-						delay = atof( line.Replace( 'delay ', '' ) );
-					else if( Key.StartsWith( 'y' ) )
-						TextParams.y = atof( line.Replace( 'y ', '' ) );
-					else if( Key.StartsWith( 'x' ) )
-						TextParams.x = atof( line.Replace( 'x ', '' ) );
-					else if( Key.StartsWith( 'fxtime' ) )
-						TextParams.fxTime = atof( line.Replace( 'fxtime ', '' ) );
-					else if( Key.StartsWith( 'fadeout' ) )
-						TextParams.fadeoutTime = atof( line.Replace( 'fadeout ', '' ) );
-					else if( Key.StartsWith( 'key_float' ) )
-						key_float = atof( line.Replace( 'key_float ', '' ) );
-					else if( Key.StartsWith( 'fadein' ) )
-						TextParams.fadeinTime = atof( line.Replace( 'fadein ', '' ) );
-					else if( Key.StartsWith( 'holdtime' ) )
-						TextParams.holdTime = atof( line.Replace( 'holdtime ', '' ) );
-					else if( Key.StartsWith( 'messagevolume' ) )
-						messagevolume = atof( line.Replace( 'messagevolume ', '' ) );
-					else if( Key.StartsWith( 'spawnflags' ) )
-						self.pev.spawnflags = atoi( line.Replace( 'spawnflags ', '' ) );
-					else if( Key.StartsWith( 'radius' ) )
-						radius = atoi( line.Replace( 'radius ', '' ) );
-					else if( Key.StartsWith( 'effect' ) )
-						TextParams.effect = atoi( line.Replace( 'effect ', '' ) );
-					else if( Key.StartsWith( 'messageattenuation' ) )
-						messageattenuation = atoi( line.Replace( 'messageattenuation ', '' ) );
-					else if( Key.StartsWith( 'channel' ) )
-						TextParams.channel = atoi( line.Replace( 'channel ', '' ) );
-					else if( Key.StartsWith( 'key_integer' ) )
-						key_integer = atoi( line.Replace( 'key_integer ', '' ) );
-				}
-
-				if( line == sentence_name )
-				{
-					FoundSentence = true;
-					continue;
-				}
-
-				if( FoundSentence )
-				{
-					if( line[0] == '{' )
-					{
-						FoundAndSave = true;
 						continue;
 					}
 
-					if( FoundAndSave )
+					if( line == sentence )
 					{
-						if( line[0] == '}' )
-						{
-							pFile.Close();
-							return FullString;
-						}
-						FullString = FullString + line + '\n';
+						FoundSentence = true;
+						continue;
 					}
-				}
-			}
-			pFile.Close();
 
-			return String::EMPTY_STRING;
+					if( line[0] == '{' or line[0] == '}' )
+					{
+						if( line[0] == '}' && FoundSentence )
+						{
+							CBaseEntity@ pInitialized = g_EntityFuncs.CreateEntity( self.GetClassname(), g_KeyValues, true );
+
+							if( pInitialized !is null )
+							{
+								pInitialized.pev.target = self.pev.target;
+								pInitialized.pev.targetname = self.pev.targetname;
+								if( pInitialized.GetTargetname() == self.GetTargetname() ) g_EntityFuncs.Remove( self );
+							}
+						}
+						g_KeyValues.deleteAll();
+						continue;
+					}
+
+					key = line.SubString( 0, line.Find( '" "') );
+					key.Replace( '"', '' );
+
+					value = line.SubString( line.Find( '" "'), line.Length() );
+					value.Replace( '" "', '' );
+					value.Replace( '"', '' );
+
+					g_KeyValues[ key ] = value;
+				}
+				pFile.Close();
+			}
 		}
     }
     // End of class
