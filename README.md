@@ -302,8 +302,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 [game_text](#game_text) | An entity to display HUD messages to the player who activated it, or all players. for a improved version with a bunch of new features see [game_text_custom](#game_text_custom) | ❌ 
 [game_text_custom](#game_text_custom) | Entity replacemet for game_text and env_message with lot of new additions and language support. | ✔️ 
 [game_trigger_iterator](#game_trigger_iterator) | Entity that will fire its target with the activator and caller that it specifies. | ✔️ 
+[game_time](#game_time) | Entity that allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc. | ✔️ 
 
-[game_time](#game_time) |  | ✔️ 
 [game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) |  | ❌ 
 [game_zone_entity](#game_zone_entity) |  | ✔️ 
 
@@ -1884,7 +1884,6 @@ void MapInit()
 </p>
 </details>
 
-
 A custom entity that will fire its target with the activator and caller that you set.
 
 ``"!activator"`` will pass the current activator.
@@ -1906,7 +1905,67 @@ The current USE_TYPE is also passed through if not specified.
 
 ---
 
+### game_time
 
+<details><summary>Description</summary>
+<p>
+
+game_time is a entity that allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils game_time
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/game_time"
+
+void MapInit()
+{
+	game_time::Register();
+}
+```
+
+</p>
+</details>
+
+A custom entity that allow mappers to create maps with "real time" set.
+
+meant to be used for changing map events or even light style (sun/moon)
+
+the entity will start working as soon as the map starts. if not locked by a multisource.
+
+| key | value | description |
+|-----|-------|-------------|
+| health | integer | "One minute is (IRL-seconds)" using a value of 60 mean that one minute (in-game) is equal to one minute (in real life) while using a value of 1  mean that one minute (in-game) is equal to one second (in real life)
+| current_second | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_second | target | Trigger when a second increase [Supports USE_TYPE](#utils-use-type) |
+| current_minute | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_minute | target | Trigger when a minute increase [Supports USE_TYPE](#utils-use-type) |
+| current_hour | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_hour | target | Trigger when a hour increase [Supports USE_TYPE](#utils-use-type) |
+| current_day | integer | Internal values that will be updated by the entity current time and can be set though changevalue. |
+| trigger_day | target | Trigger when a day increase [Supports USE_TYPE](#utils-use-type) |
+| light_pattern | target | targetname of a light_spot to change its pattern depending the time. if "!world" it'll be a global change. |
+| spawnflags | flags | 1 = Real Time, if set. the entity will start with the host's real time
+
+</p>
+</details>
+
+---
 
 
 
