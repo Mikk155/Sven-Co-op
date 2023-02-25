@@ -82,20 +82,79 @@ void ReEquipCollected(EHandle hPlayer, bool blKeepAmmo = false)
 
     for( uint i = 0; i < STR_LOADOUT_WEAPONS.length(); i++ )
     {
-        if( STR_LOADOUT_WEAPONS[i] == "" || pPlayer.HasNamedPlayerItem( STR_LOADOUT_WEAPONS[i] ) !is null )
+        if( STR_LOADOUT_WEAPONS[i] == "" )
             continue;
+            
+        if( STR_LOADOUT_WEAPONS[i] == "item_longjump" )
+        {
+            if( bool( DICT_PLAYER_LOADOUT[pPlayer.entindex()]["item_longjump"] ) && !pPlayer.m_fLongJump )
+            {
+                pPlayer.m_fLongJump = true;
+                g_EngineFuncs.GetPhysicsKeyBuffer( pPlayer.edict() ).SetValue( "slj", "1" );
+            }
+              
+            continue;
+        }
+        
+        if( STR_LOADOUT_WEAPONS[i] == "item_suit" )
+        {
+            if( bool( DICT_PLAYER_LOADOUT[pPlayer.entindex()]["item_suit"] ) && !pPlayer.HasSuit() )
+                pPlayer.SetHasSuit( true );
+              
+            continue;
+        }
 
-        pPlayer.GiveNamedItem( STR_LOADOUT_WEAPONS[i] ); // Would be nice if this returned the actual item ptr....
+        if( pPlayer.HasNamedPlayerItem( STR_LOADOUT_WEAPONS[i] ) is null )
+            pPlayer.GiveNamedItem( STR_LOADOUT_WEAPONS[i] ); // Would be nice if this returned the actual item ptr...
+
         CBasePlayerWeapon@ pEquippedWeapon = cast<CBasePlayerWeapon@>( pPlayer.HasNamedPlayerItem( STR_LOADOUT_WEAPONS[i] ) );
+        const Vector2D vec2DAmmoValues = Vector2D( DICT_PLAYER_LOADOUT[pPlayer.entindex()][STR_LOADOUT_WEAPONS[i]] );
 
         if( pEquippedWeapon is null )
             continue;
 
-        if( blKeepAmmo && !FIsNoAmmoWpn( pEquippedWeapon ) )
-            pPlayer.m_rgAmmo( pEquippedWeapon.m_iPrimaryAmmoType, int( DICT_PLAYER_LOADOUT[pPlayer.entindex()][STR_LOADOUT_WEAPONS[i]] ) );
+        if( blKeepAmmo && pEquippedWeapon.m_iPrimaryAmmoType > 0 )
+        {
+            pPlayer.m_rgAmmo( pEquippedWeapon.m_iPrimaryAmmoType, int( vec2DAmmoValues.x ) );
+
+            if( int( vec2DAmmoValues.y ) > 0 )
+                pPlayer.m_rgAmmo( pEquippedWeapon.m_iSecondaryAmmoType, int( vec2DAmmoValues.y ) );
+        }
     }
 
     DICT_PLAYER_LOADOUT[pPlayer.entindex()] = dictionary();
+}
+
+dictionary GetPlayerLoadout(EHandle hPlayer)
+{
+    if( !hPlayer )
+        return dictionary();
+        
+    CBasePlayer@ pPlayer = cast<CBasePlayer@>( hPlayer.GetEntity() );
+    
+    dictionary dictLoadout =
+    {
+        { "item_suit", pPlayer.HasSuit() },
+        { "item_longjump", pPlayer.m_fLongJump }
+    };
+    
+    for( uint i = 0; i < MAX_ITEM_TYPES; i++ )
+    {
+        CBasePlayerWeapon@ pWeapon = cast<CBasePlayerWeapon@>( pPlayer.m_rgpPlayerItems( i ) );
+
+        while( pWeapon !is null )
+        {
+            const string strWeapon = pWeapon.GetClassname() == "weapon_uzi" && pWeapon.m_fIsAkimbo ? "weapon_uziakimbo" : pWeapon.GetClassname();
+            dictLoadout[strWeapon] = pWeapon.m_iPrimaryAmmoType < 0 ? Vector2D() : 
+                                    Vector2D( pPlayer.m_rgAmmo( pWeapon.m_iPrimaryAmmoType ), pWeapon.m_iSecondaryAmmoType > 0 ? 
+                                                                                            pPlayer.m_rgAmmo( pWeapon.m_iSecondaryAmmoType ) : 
+                                                                                            0 );
+
+            @pWeapon = cast<CBasePlayerWeapon@>( pWeapon.m_hNextItem.GetEntity() );
+        }
+    }
+    
+    return dictLoadout;
 }
 // Save player loadout upon death
 HookReturnCode PlayerKilled(CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int iGib)
@@ -103,36 +162,9 @@ HookReturnCode PlayerKilled(CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int iG
     if( pPlayer is null )
         return HOOK_CONTINUE;
 
-    DICT_PLAYER_LOADOUT[pPlayer.entindex()] = dictionary();
-
-    for( uint i = 0; i < MAX_ITEM_TYPES; i++ )
-    {
-        CBasePlayerWeapon@ pWeapon = cast<CBasePlayerWeapon@>( pPlayer.m_rgpPlayerItems( i ) );
-
-        while( pWeapon !is null )
-        {
-            DICT_PLAYER_LOADOUT[pPlayer.entindex()][pWeapon.GetClassname()] = FIsNoAmmoWpn( pWeapon ) ? 0 : pPlayer.m_rgAmmo( pWeapon.m_iPrimaryAmmoType );
-            @pWeapon = cast<CBasePlayerWeapon@>( pWeapon.m_hNextItem.GetEntity() );
-        }
-    }
+    DICT_PLAYER_LOADOUT[pPlayer.entindex()] = GetPlayerLoadout( pPlayer );
 
     return HOOK_CONTINUE;
-}
-
-bool FIsNoAmmoWpn(CBasePlayerWeapon@ pWeapon)
-{
-    if( pWeapon is null )
-        return false;
-
-    const array<string> NO_AMMO_WPNS =
-    {
-        "weapon_crowbar",
-        "weapon_hlcrowbar",
-        "weapon_knife",
-        "weapon_medkit"//technically it does use ammo but lets pretend it doesn't
-    };
-
-    return( NO_AMMO_WPNS.find( pWeapon.GetClassname() ) >= 0 );
 }
 
 }
