@@ -301,8 +301,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 [game_slot_counter](https://sites.google.com/site/svenmanor/entguide/game_slot_counter) | This entity counts the total number of player slots on the server on map load and triggers its target on the first server frame if the amount of slots equals a value you specify | ❌ 
 [game_text](#game_text) | An entity to display HUD messages to the player who activated it, or all players. for a improved version with a bunch of new features see [game_text_custom](#game_text_custom) | ❌ 
 [game_text_custom](#game_text_custom) | Entity replacemet for game_text and env_message with lot of new additions and language support. | ✔️ 
+[game_trigger_iterator](#game_trigger_iterator) | Entity that will fire its target with the activator and caller that it specifies. | ✔️ 
 
-[game_trigger_iterator](#game_trigger_iterator) |  | ✔️ 
 [game_time](#game_time) |  | ✔️ 
 [game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) |  | ❌ 
 [game_zone_entity](#game_zone_entity) |  | ✔️ 
@@ -1847,6 +1847,64 @@ then its value will replace the command ``!value``
 ---
 
 
+### game_trigger_iterator
+
+<details><summary>Description</summary>
+<p>
+
+game_trigger_iterator is a entity that will fire its target with the activator and caller that it specifies.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils game_trigger_iterator
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/game_trigger_iterator"
+
+void MapInit()
+{
+	game_trigger_iterator::Register();
+}
+```
+
+</p>
+</details>
+
+
+A custom entity that will fire its target with the activator and caller that you set.
+
+``"!activator"`` will pass the current activator.
+
+``"!caller"`` will pass the current caller.
+
+The current USE_TYPE is also passed through if not specified.
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | Trigger this entity when fire [Supports USE_TYPE](#utils-use-type) |
+| netname | target | Entity to set as activator |
+| message | target | Entity to set as caller |
+| frags | choices | TriggerState to send, 0 = "Current USE_TYPE" 1 = "USE_OFF" 2 = "USE_ON" 3 = "USE_TOGGLE"
+| health | float | Delay before trigger the entity |
+
+</p>
+</details>
+
+---
 
 
 
