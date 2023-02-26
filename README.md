@@ -293,7 +293,7 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 [game_counter_set](https://sites.google.com/site/svenmanor/entguide/game_counter_set) | Allows you to set the value of a game_counter and have it trigger if the set value matches the game_counter's target value. | ❌ 
 [game_end](https://sites.google.com/site/svenmanor/entguide/game_end) | Entity, which, when triggered, ends the map. The next map in the mapcycle is then loaded. As soon as it is triggered, all entities will stop operating. | ❌ 
 [game_player_counter](https://sites.google.com/site/svenmanor/entguide/game_player_counter) | This entity keeps track of the total number of players currently on or connecting to the server. | ❌ 
-[game_debug](#game_debug) | Entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script. | ✔️ 
+[game_debug](#game_debug) | Entity that shows debug messages if using ``g_Util.DebugMode();`` function in your map script. | ✔️ 
 [game_player_equip](https://sites.google.com/site/svenmanor/entguide/game_player_equip) | The game_player_equip entity is a powerful entity for managing player weapons/items/ammo loadout. | ❌ 
 [game_player_hurt](https://sites.google.com/site/svenmanor/entguide/game_player_hurt) | Point entity which will apply damage to its activator. For a more feature-rich version see trigger_hurt_remote. | ❌ 
 [game_stealth](#game_stealth) | Allow mappers to make use of stealth mode in Co-op | ✔️ 
@@ -303,9 +303,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 [game_text_custom](#game_text_custom) | Entity replacemet for game_text and env_message with lot of new additions and language support. | ✔️ 
 [game_trigger_iterator](#game_trigger_iterator) | Entity that will fire its target with the activator and caller that it specifies. | ✔️ 
 [game_time](#game_time) | Entity that allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc. | ✔️ 
-
-[game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) |  | ❌ 
-[game_zone_entity](#game_zone_entity) |  | ✔️ 
+[game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) | When triggered, allows to trigger different entities for players, depending on whether they are inside or outside of this entity, use [game_zone_entity](#game_zone_entity) for non-players | ❌ 
+[game_zone_entity](#game_zone_entity) | Basically [game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) but for ANY entity. | ✔️ 
 
 </p>
 </details>
@@ -342,6 +341,8 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 | Entity / Script | Description | Angelscript |
 |-----------------|-------------| :---------: |
+[item_oxygentank](#item_oxygentank) | Entity that will give oxygen to players that touch it. | ✔️ 
+
 
 </p>
 </details>
@@ -1568,7 +1569,7 @@ Traces a trail sprite when the target entity moves.
 <details><summary>Description</summary>
 <p>
 
-game_debug is a entity that shows debug messages if using ``g_Util.DebugMode( true );`` function in your map script.
+game_debug is a entity that shows debug messages if using ``g_Util.DebugMode();`` function in your map script.
 
 <details><summary>Installation</summary>
 <p>
@@ -1593,8 +1594,18 @@ In your main map_script add:
 
 void MapInit()
 {
-	g_Util.DebugMode( true );
+	g_Util.DebugMode();
 	game_debug::Register();
+}
+```
+
+- The function ``g_Util.DebugMode();`` has a alternative method that if set, it will show debugs to the HOST as well, if not set it will show only to clients,
+```angelscript
+#include "mikk/game_debug"
+
+void MapInit()
+{
+	g_Util.DebugMode( true );
 }
 ```
 
@@ -1634,7 +1645,7 @@ You can use commands like ``!netname`` it will be replaced with whatever "netnam
 ---
 
 
-# game_stealth
+### game_stealth
 
 <details><summary>Description</summary>
 <p>
@@ -1662,9 +1673,15 @@ In your main map_script add:
 ```angelscript
 #include "mikk/game_stealth"
 ```
+
 **OR**
 
 Simply include the script once via a trigger_script entity. no need to call. just include.
+
+```angelscript
+"m_iszScriptFile" "mikk/game_stealth"
+"classname" "trigger_script"
+```
 
 </p>
 </details>
@@ -1967,8 +1984,91 @@ the entity will start working as soon as the map starts. if not locked by a mult
 
 ---
 
+### game_zone_entity
+
+<details><summary>Description</summary>
+<p>
+
+game_zone_entity is a entity similar to [game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) but now supports any entity in its volume not only players.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils game_zone_entity
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/game_zone_entity"
+
+void MapInit()
+{
+	game_zone_entity::Register();
+}
+```
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+### item_oxygentank
+
+<details><summary>Description</summary>
+<p>
+
+item_oxygentank is a entity that will give oxygen to players that touch it.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils item_oxygentank
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/item_oxygentank"
+
+void MapInit()
+{
+	item_oxygentank::Register();
+}
+```
+
+</p>
+</details>
+
+</p>
+</details>
 
 
+
+
+---
 
 
 ### numerical padlock
