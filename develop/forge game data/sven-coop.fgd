@@ -489,7 +489,7 @@
     m_flCustomRespawnTime(string) : "Custom respawn time"
 ]
 
-@BaseClass size(-16 -16 0, 16 16 32) color(2 64 240) base(Pickup, CustomRespawnDelay, TriggerIndividual) = Weapon
+@BaseClass size(-16 -16 0, 16 16 32) color(2 64 240) base(Pickup, CustomRespawnDelay, TriggerIndividual, ClassicModeIgnore ) = Weapon
 [
     dmg(integer) : "Custom Damage" : 0
 
@@ -1546,12 +1546,32 @@
     ]
 ]
 
+@PointClass base(Ammo, Targetx) studio("models/w_357ammobox.mdl") = ammo_357 : "357 / desert eagle round box" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_saw_clip.mdl") = ammo_556 : "5.56mm round box" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_9mmARclip.mdl") = ammo_556clip : "5.56mm M16 rifle magazine" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_m40a1clip.mdl") = ammo_762 : "7.62mm sniper rifle magazine" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_mp5_clip.mdl") = ammo_9mmAR : "9mm assault rifle magazine" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_chainammo.mdl") = ammo_9mmbox : "9mm round box (big)" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_9mmclip.mdl") = ammo_9mmclip : "9mm pistol magazine" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_argrenade.mdl") = ammo_ARgrenades : "M16's M203 grenades (x2)" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_shotbox.mdl") = ammo_buckshot : "Shotgun shell box" []
+
+@PointClass base(Ammo, Targetx) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
+
 // -Mikk https://github.com/Mikk155/Sven-Co-op#ammo_custom
-@PointClass base(Targetname, Target, Pickup) size(-16 -16 0, 16 16 32) = ammo_custom : "Custom Ammo"
+@PointClass base(Ammo, Targetx) size(-16 -16 0, 16 16 32) studio() = ammo_custom : "Custom Ammo"
 [
     angles(string) : "Pitch Yaw Roll (Y Z X)" : "0 0 0"
-    w_model(studio) : "Custom Model" : "models/w_shotbox.mdl";
-    p_sound(sound) : "Custom Sound" : "items/9mmclip1.wav";
+    model(studio) : "Custom Model" : "models/w_shotbox.mdl"
+    p_sound(sound) : "Custom Sound" : "items/9mmclip1.wav"
     am_name(choices) : "Ammo type" : "buckshot" =
     [
         "buckshot" : "buckshot"
@@ -1572,26 +1592,6 @@
     am_give(integer) : "Ammo ammout" : 8
     frags(integer) : "Item per player (0 = infinite)" : 0
 ]
-
-@PointClass base(Ammo, Targetx) studio("models/w_357ammobox.mdl") = ammo_357 : "357 / desert eagle round box" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_saw_clip.mdl") = ammo_556 : "5.56mm round box" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_9mmARclip.mdl") = ammo_556clip : "5.56mm M16 rifle magazine" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_m40a1clip.mdl") = ammo_762 : "7.62mm sniper rifle magazine" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_mp5_clip.mdl") = ammo_9mmAR : "9mm assault rifle magazine" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_chainammo.mdl") = ammo_9mmbox : "9mm round box (big)" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_9mmclip.mdl") = ammo_9mmclip : "9mm pistol magazine" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_argrenade.mdl") = ammo_ARgrenades : "M16's M203 grenades (x2)" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_shotbox.mdl") = ammo_buckshot : "Shotgun shell box" []
-
-@PointClass base(Ammo, Targetx) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
 
 @PointClass base(Ammo, Targetx) studio("models/w_gaussammo.mdl") = ammo_gaussclip : "Gauss/Gluon gun battery" []
 
@@ -1671,8 +1671,6 @@
     target_enabled(target_destination) : "Target if is Enabled [Map start] (USE_TYPE)"
     target_disabled(target_destination) : "Target if is Disabled [Map start] (USE_TYPE)"
     health(float) : "Think intervals (default is 0.1f)"
-    weapon_m16(string) : "weapon_m16" : "weapon_9mmAR"
-    models/hlclassic/scientist.mdl(string) : "models/hlclassic/scientist.mdl" : "models/headcrab.mdl"
 ]
 
 // -Mikk alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal (USE_OFF)
@@ -2144,185 +2142,186 @@
 ]
 
 // -Mikk https://github.com/Mikk155/Sven-Co-op#env_effect
-@PointClass base(Targetname, Appearflags, TargetMMStyle, Master, Delay) size(-4 -4 -4, 4 4 4) color(255 0 0) = env_effect : "Spawn Effects"
-[
-    netname(target_destination) : "Target when locked by master (USE_TYPE)"
-    spawnflags(flags) =
-    [
-        1 : "[Sprite]" : 0
-        2 : "[Tar Explosion]" : 0
-        4 : "[Teleport]" : 0
-        8 : "[Sprite Drops]" : 0
-        16 : "[Funnel]" : 0
-        32 : "[Fade Screen]" : 0
-        64 : "[Sound FX]" : 0
-        128 : "[Beam Disk]" : 0
-        256 : "[Tracer]" : 0
-		512 : "[Streak Splash]" : 0
-		1024 : "[Implosion]" : 0
-        4096 : "[Smoke]" : 0
-        8192 : "[Beam Cylinder]" : 0
-    ]
-    sprite_indelay(float) : "[Sprite] Appear delay" : 0.0
-    sprite_framerate(float) : "[Sprite] Framerate" : 10.0
-    sprite_model(sprite) : "[Sprite] Model" : "sprites/exit1.spr"
-    sprite_scale(float) : "[Sprite] Scale" : 1.0
-    sprite_vp_type(choices) : "[Sprite] Draw Type / Orientation" : 0 =
-    [
-        0: "Default"
-        3: "Parallel"
-        1: "Parallel Upright"
-        5: "Parallel Orientated"
-        2: "Facing Upright"
-        4: "Orientated"
-    ]
-    sprite_rendercolor(color255) : "[Sprite] FX Color (R G B)" : "255 255 255"
-    sprite_renderamt(integer) : "[Sprite] FX Amount (1 - 255)" : 255
-    sprite_renderfx(choices) : "[Sprite] Render FX" : 0 =
-    [
-        0: "Normal"
-        1: "Slow Pulse"
-        2: "Fast Pulse"
-        3: "Slow Wide Pulse"
-        4: "Fast Wide Pulse"
-        9: "Slow Strobe"
-        10: "Fast Strobe"
-        11: "Faster Strobe"
-        12: "Slow Flicker"
-        13: "Fast Flicker"
-        5: "Slow Fade Away"
-        6: "Fast Fade Away"
-        7: "Slow Become Solid"
-        8: "Fast Become Solid"
-        14: "Constant Glow"
-        15: "Distort"
-        16: "Hologram (Distort + fade)"
-        17: "Dead Player (DONT USE!)"
-        18: "Explode (Garg Like)"
-        19: "Glow Shell"
-        20: "ClampMinScale (Sprites)"
-    ]
-    sprite_rendermode(choices) : "[Sprite] Render Mode" : 5 =
-    [
-        0: "Normal"
-        1: "Color"
-        2: "Texture"
-        3: "Glow"
-        4: "Solid"
-        5: "Additive"
-    ]
-    sprite_fadeout(choices) : "[Sprite] Fade out" : 0 =
-    [
-        0: "Fade out disappear"
-        1: "Just disappear"
-    ]
-    sprite_duration(float) : "[Sprite] Disappear delay" : 1.0
+// @PointClass base(Targetname, Appearflags, TargetMMStyle, Master, Delay) size(-4 -4 -4, 4 4 4) color(255 0 0) = env_effect : "Spawn Effects"
+// [
+    // netname(target_destination) : "Target when locked by master (USE_TYPE)"
+    // spawnflags(flags) =
+    // [
+        // 1 : "[Sprite]" : 0
+        // 2 : "[Tar Explosion]" : 0
+        // 4 : "[Teleport]" : 0
+        // 8 : "[Sprite Drops]" : 0
+        // 16 : "[Funnel]" : 0
+        // 32 : "[Fade Screen]" : 0
+        // 64 : "[Sound FX]" : 0
+        // 128 : "[Beam Disk]" : 0
+        // 256 : "[Tracer]" : 0
+		// 512 : "[Streak Splash]" : 0
+		// 1024 : "[Implosion]" : 0
+        // 4096 : "[Smoke]" : 0
+        // 8192 : "[Beam Cylinder]" : 0
+    // ]
+    // sprite_indelay(float) : "[Sprite] Appear delay" : 0.0
+    // sprite_framerate(float) : "[Sprite] Framerate" : 10.0
+    // sprite_model(sprite) : "[Sprite] Model" : "sprites/exit1.spr"
+    // sprite_scale(float) : "[Sprite] Scale" : 1.0
+    // sprite_vp_type(choices) : "[Sprite] Draw Type / Orientation" : 0 =
+    // [
+        // 0: "Default"
+        // 3: "Parallel"
+        // 1: "Parallel Upright"
+        // 5: "Parallel Orientated"
+        // 2: "Facing Upright"
+        // 4: "Orientated"
+    // ]
+    // sprite_rendercolor(color255) : "[Sprite] FX Color (R G B)" : "255 255 255"
+    // sprite_renderamt(integer) : "[Sprite] FX Amount (1 - 255)" : 255
+    // sprite_renderfx(choices) : "[Sprite] Render FX" : 0 =
+    // [
+        // 0: "Normal"
+        // 1: "Slow Pulse"
+        // 2: "Fast Pulse"
+        // 3: "Slow Wide Pulse"
+        // 4: "Fast Wide Pulse"
+        // 9: "Slow Strobe"
+        // 10: "Fast Strobe"
+        // 11: "Faster Strobe"
+        // 12: "Slow Flicker"
+        // 13: "Fast Flicker"
+        // 5: "Slow Fade Away"
+        // 6: "Fast Fade Away"
+        // 7: "Slow Become Solid"
+        // 8: "Fast Become Solid"
+        // 14: "Constant Glow"
+        // 15: "Distort"
+        // 16: "Hologram (Distort + fade)"
+        // 17: "Dead Player (DONT USE!)"
+        // 18: "Explode (Garg Like)"
+        // 19: "Glow Shell"
+        // 20: "ClampMinScale (Sprites)"
+    // ]
+    // sprite_rendermode(choices) : "[Sprite] Render Mode" : 5 =
+    // [
+        // 0: "Normal"
+        // 1: "Color"
+        // 2: "Texture"
+        // 3: "Glow"
+        // 4: "Solid"
+        // 5: "Additive"
+    // ]
+    // sprite_fadeout(choices) : "[Sprite] Fade out" : 0 =
+    // [
+        // 0: "Fade out disappear"
+        // 1: "Just disappear"
+    // ]
+    // sprite_duration(float) : "[Sprite] Disappear delay" : 1.0
 
-    quaketar_delay(float) : "[Tar Explosion] Appear delay" : 0.0
+    // quaketar_delay(float) : "[Tar Explosion] Appear delay" : 0.0
 
-    teleport_delay(float) : "[Teleport] Appear delay" : 0.0
+    // teleport_delay(float) : "[Teleport] Appear delay" : 0.0
 
-    spritedrop_delay(float) : "[Sprite Drops] Appear delay" : 0.0
-    spritedrop_model(sprite) : "[Sprite Drops] Model" : "sprites/hotglow.spr"
-    spritedrop_life(integer) : "[Sprite Drops] Life" : 0 // Time before disapear after lost velocity
-    spritedrop_scale(integer) : "[Sprite Drops] Scale" : 1
-    spritedrop_count(integer) : "[Sprite Drops] Count" : 0 // Amount of sprites to create
-    spritedrop_speedNoise(integer) : "[Sprite Drops] Expand" : 8 // Velocity of expansion
+    // spritedrop_delay(float) : "[Sprite Drops] Appear delay" : 0.0
+    // spritedrop_model(sprite) : "[Sprite Drops] Model" : "sprites/hotglow.spr"
+    // spritedrop_life(integer) : "[Sprite Drops] Life" : 0 // Time before disapear after lost velocity
+    // spritedrop_scale(integer) : "[Sprite Drops] Scale" : 1
+    // spritedrop_count(integer) : "[Sprite Drops] Count" : 0 // Amount of sprites to create
+    // spritedrop_speedNoise(integer) : "[Sprite Drops] Expand" : 8 // Velocity of expansion
 
-    funnel_delay(float) : "[Funnel] Appear delay" : 0.0
-    funnel_model(sprite) : "[Funnel] Model" : "sprites/glow01.spr"
-    funnel_flag(choices) : "[Funnel] Reverse" : 0 =
-    [
-        0: "No"
-        1: "Yes"
-    ]
+    // funnel_delay(float) : "[Funnel] Appear delay" : 0.0
+    // funnel_model(sprite) : "[Funnel] Model" : "sprites/glow01.spr"
+    // funnel_flag(choices) : "[Funnel] Reverse" : 0 =
+    // [
+        // 0: "No"
+        // 1: "Yes"
+    // ]
 
-    fadescreen_delay(float) : "[Fade Screen] Appear delay" : 0.0
-    fadescreen_radius(integer) : "[Fade Screen] Players in radius" : 512
-    fadescreen_fadein(float) : "[Fade Screen] Fade in" : 0.2
-    fadescreen_holdtime(float) : "[Fade Screen] Hold time" : 0.2
-    fadescreen_fadeout(float) : "[Fade Screen] Fade out" : 0.5
-    fadescreen_renderamt(integer) : "[Fade Screen] Fade alpha" : 100
-    fadescreen_color(color255) : "[Fade Screen] Fade Color (R G B)" : "0 255 0"
+    // fadescreen_delay(float) : "[Fade Screen] Appear delay" : 0.0
+    // fadescreen_radius(integer) : "[Fade Screen] Players in radius" : 512
+    // fadescreen_fadein(float) : "[Fade Screen] Fade in" : 0.2
+    // fadescreen_holdtime(float) : "[Fade Screen] Hold time" : 0.2
+    // fadescreen_fadeout(float) : "[Fade Screen] Fade out" : 0.5
+    // fadescreen_renderamt(integer) : "[Fade Screen] Fade alpha" : 100
+    // fadescreen_color(color255) : "[Fade Screen] Fade Color (R G B)" : "0 255 0"
 
-    sound_delay(float) : "[Sound FX] Appear delay" : 0.0
-    sound_message(sound) : "[Sound FX] Sound file" : "debris/alien_teleport.wav"
-    sound_volume(integer) : "[Sound FX] Volume 0-10" : 10
-    sound_attenuation(Choices) : "[Sound FX] Sound Radius" : 0 =
-    [
-        0 : "Small Radius"
-        1 : "Medium Radius"
-        2 : "Large  Radius"
-        3 : "Play Everywhere"
-    ]
+    // sound_delay(float) : "[Sound FX] Appear delay" : 0.0
+    // sound_message(sound) : "[Sound FX] Sound file" : "debris/alien_teleport.wav"
+    // sound_volume(integer) : "[Sound FX] Volume 0-10" : 10
+    // sound_attenuation(Choices) : "[Sound FX] Sound Radius" : 0 =
+    // [
+        // 0 : "Small Radius"
+        // 1 : "Medium Radius"
+        // 2 : "Large  Radius"
+        // 3 : "Play Everywhere"
+    // ]
 
-    beamdisk_delay(float) : "[Beam Disk] Appear delay" : 0.0
-    beamdisk_model(sprite) : "[Beam Disk] Model" : "sprites/laserbeam.spr"
-    beamdisk_radius(float) : "[Beam Disk] Radius" : 300.0
-    beamdisk_holdtime(integer) : "[Beam Disk] Life time (1=0.1*)" : 10
-    beamdisk_renderamt(integer) : "[Beam Disk] FX Amount (1 - 255)" : 255
-    beamdisk_frame(integer) : "[Beam Disk] Starting frame" : 0
-    beamdisk_color(color255) : "[Beam Disk] Color (R G B)" : "0 255 0"
+    // beamdisk_delay(float) : "[Beam Disk] Appear delay" : 0.0
+    // beamdisk_model(sprite) : "[Beam Disk] Model" : "sprites/laserbeam.spr"
+    // beamdisk_radius(float) : "[Beam Disk] Radius" : 300.0
+    // beamdisk_holdtime(integer) : "[Beam Disk] Life time (1=0.1*)" : 10
+    // beamdisk_renderamt(integer) : "[Beam Disk] FX Amount (1 - 255)" : 255
+    // beamdisk_frame(integer) : "[Beam Disk] Starting frame" : 0
+    // beamdisk_color(color255) : "[Beam Disk] Color (R G B)" : "0 255 0"
 
-    tracer_delay(float) : "[Tracer] Appear delay" : 0.0
-    tracer_color(Choices) : "[Tracer] Color" : 0 =
-    [
-        0 : "White"
-        1 : "Red"
-        2 : "Green"
-        3 : "Blue"
-        4 : "Yellow"
-        5 : "Orange"
-        6 : "Cream 6"
-        7 : "Dark blue"
-        8 : "Cream 8"
-        9 : "Cream 9"
-        10 : "Brown"
-        11 : "Cream 11"
-    ]
-    tracer_velocity(string) : "[Tracer] Velocity (X Y Z)" : "0 0 180"
-    tracer_holdtime(integer) : "[Tracer] Hold time" : 32
-    tracer_length(integer) : "[Tracer] Sprite Length" : 32
+    // tracer_delay(float) : "[Tracer] Appear delay" : 0.0
+    // tracer_color(Choices) : "[Tracer] Color" : 0 =
+    // [
+        // 0 : "White"
+        // 1 : "Red"
+        // 2 : "Green"
+        // 3 : "Blue"
+        // 4 : "Yellow"
+        // 5 : "Orange"
+        // 6 : "Cream 6"
+        // 7 : "Dark blue"
+        // 8 : "Cream 8"
+        // 9 : "Cream 9"
+        // 10 : "Brown"
+        // 11 : "Cream 11"
+    // ]
+    // tracer_velocity(string) : "[Tracer] Velocity (X Y Z)" : "0 0 180"
+    // tracer_holdtime(integer) : "[Tracer] Hold time" : 32
+    // tracer_length(integer) : "[Tracer] Sprite Length" : 32
 
-    splash_delay(float) : "[Streak Splash] Appear delay" : 0.0
-    splash_velocity(string) : "[Streak Splash] Velocity (X Y Z)" : "0 0 180"
-    splash_color(Choices) : "[Streak Splash] Color" : 0 =
-    [
-        0 : "White"
-        1 : "Red"
-        2 : "Green"
-        3 : "Blue"
-        4 : "Yellow"
-        5 : "Orange"
-        6 : "Cream 6"
-        7 : "Dark blue"
-        8 : "Cream 8"
-        9 : "Cream 9"
-        10 : "Brown"
-        11 : "Cream 11"
-    ]
-    splash_speed(integer) : "[Streak Splash] Speed" : 1
-    splash_speednoise(integer) : "[Streak Splash] Noise speed" : 128
-    splash_count(integer) : "[Streak Splash] Number of effects" : 120
+    // splash_delay(float) : "[Streak Splash] Appear delay" : 0.0
+    // splash_velocity(string) : "[Streak Splash] Velocity (X Y Z)" : "0 0 180"
+    // splash_color(Choices) : "[Streak Splash] Color" : 0 =
+    // [
+        // 0 : "White"
+        // 1 : "Red"
+        // 2 : "Green"
+        // 3 : "Blue"
+        // 4 : "Yellow"
+        // 5 : "Orange"
+        // 6 : "Cream 6"
+        // 7 : "Dark blue"
+        // 8 : "Cream 8"
+        // 9 : "Cream 9"
+        // 10 : "Brown"
+        // 11 : "Cream 11"
+    // ]
+    // splash_speed(integer) : "[Streak Splash] Speed" : 1
+    // splash_speednoise(integer) : "[Streak Splash] Noise speed" : 128
+    // splash_count(integer) : "[Streak Splash] Number of effects" : 120
 
-    implosion_delay(float) : "[Implosion] Appear delay" : 0.0
-    implosion_radius(integer) : "[Implosion] Radius" : 255
-    implosion_count(integer) : "[Implosion] Number of effects" : 120
-    implosion_life(integer) : "[Implosion] Speed" : 30
+    // implosion_delay(float) : "[Implosion] Appear delay" : 0.0
+    // implosion_radius(integer) : "[Implosion] Radius" : 255
+    // implosion_count(integer) : "[Implosion] Number of effects" : 120
+    // implosion_life(integer) : "[Implosion] Speed" : 30
 
-    smoke_model(sprite) : "[Smoke] Model" : "sprites/steam1.spr"
-	smoke_framerate(integer) : "[Smoke] Framerate" : 15
-	smoke_scale(integer) : "[Smoke] Scale" : 10
+    // smoke_model(sprite) : "[Smoke] Model" : "sprites/steam1.spr"
+	// smoke_framerate(integer) : "[Smoke] Framerate" : 15
+	// smoke_scale(integer) : "[Smoke] Scale" : 10
 
-	cylinder_flags(Choices) : "[Beam Cylinder] Color" : 0 =
-    [
-        0 : "Flat cylinder"
-        1 : "Fat cylinder"
-    ]
-    cylinder_color(color255) : "[Beam Cylinder] Color (R G B)" : "0 255 0"
-    cylinder_renderamt(integer) : "[Beam Cylinder] FX Amount (1 - 255)" : 255
-	cylinder_radius(float) : "[Beam Cylinder] Radius" : 128
-]
+	// cylinder_flags(Choices) : "[Beam Cylinder] Color" : 0 =
+    // [
+        // 0 : "Flat cylinder"
+        // 1 : "Fat cylinder"
+    // ]
+    // cylinder_color(color255) : "[Beam Cylinder] Color (R G B)" : "0 255 0"
+    // cylinder_renderamt(integer) : "[Beam Cylinder] FX Amount (1 - 255)" : 255
+	// cylinder_radius(float) : "[Beam Cylinder] Radius" : 128
+// ]
+// -TODO
 
 @PointClass base(Targetname) size(-12 -12 -12, 12 12 12) color(255 220 15) = env_explosion : "Explosion"
 [
@@ -2380,6 +2379,11 @@
 
 // -Mikk https://github.com/Mikk155/Sven-Co-op#env_geiger
 @PointClass base(Targetname) = env_geiger : "Radiation sound"[]
+// -TODO
+// -Custom boundaries
+// -Custom radius if not bounds set
+// -Custom sounds
+// -Master
 
 @PointClass base(Targetname) color(255 255 128) color(4 32 250) = env_global : "Global State"
 [
@@ -3548,7 +3552,7 @@
 ]
 
 // -Mikk new entity replacemet for game_text and env_message with lot of new additions.
-@PointClass base(BaseGameText, Delay) color(192 255 0) = game_text_custom : "Custom Text Messages"
+@PointClass base(BaseGameText, Delay, HullSetSizes) color(192 255 0) = game_text_custom : "Custom Text Messages"
 [
     target(target_destination) : "Target (USE_TYPE)"
 
@@ -3557,6 +3561,10 @@
 
 	// Player must be in this radius to see the message.
     radius(float) : "Radius" : 0.0
+	
+	health(float) : "Think time ( 0 = disable )"
+
+	model(target_destination) : "Model to use bounds"
 
     // Enum of supported styles of text.
     effect(Choices) : "Text Effect" : 0 =
@@ -6373,6 +6381,52 @@
     ]
 ]
 
+@PointClass base(Targetname, Target, Master) size(-16 -16 -16, 16 16 16) color(96 32 128) = player_equipment : "player's inventory"
+[
+    m_iAffected(choices) : "Players to affect" : 0 =
+    [
+        0 : "Activator only (default)"
+        1 : "All players"
+        2 : "All players except activator"
+    ]
+    m_iAction(choices) : "Action to take" : 0 =
+    [
+        0 : "Give items (default)"
+        1 : "Remove items"
+    ]
+]
+
+@BaseClass base(Targetname, TargetMMStyle, Delay, Master ) = BasePlayerInButton
+[
+    netname(choices) : "Fire when Press" : 32 =
+    [
+        1 : "Primary attack"
+        2 : "Jump"
+        4 : "Duck"
+        8 : "Move forward"
+        16 : "Move backward"
+        32 : "Use"
+        64 : "Cancel"
+        128 : "Left"
+        256 : "Right"
+        512 : "Move left"
+        1024 : "Move right"
+        2048 : "Secondary attack"
+        4096 : "Run/Walk"
+        8192 : "Reload"
+        16384 : "Tertiary attack"
+        32768 : "ScoreBoard"
+    ]
+
+    spawnflags(flags) =
+    [
+        1 : "Allow Everywhere"     : 1
+    ]
+]
+
+@SolidClass base(BasePlayerInButton) = player_inbutton : "Player Zone In-Button"[]
+@PointClass base(BasePlayerInButton, HullSetSizesCustom) color(255 0 200) = player_inbutton : "Player Zone In-Button"[]
+
 @SolidClass base(Targetname, ZHLTbmodel) = player_respawn_zone : "Player Zone Respawn brush"
 [
     zonetype(choices) : "Zone Type" : 0 =
@@ -6601,11 +6655,12 @@
 // -Mikk a custom entity that generates any entity.
 // simply add the keyvalues that you want and this entity will spawn it with everything
 // Make sure to precache everything.
-@PointClass base(Targetname, Master) size(-16 -16 0, 16 16 72) color(245 128 96) = entitymaker : "Entity Maker"
-[
-    child_classname(string) : "Entity classname" : "monster_barney"
-    child_targetname(string) : "Entity targetname" : "barney el dinosaurio"
-]
+// @PointClass base(Targetname, Master) size(-16 -16 0, 16 16 72) color(245 128 96) = entitymaker : "Entity Maker"
+// [
+    // child_classname(string) : "Entity classname" : "monster_barney"
+    // child_targetname(string) : "Entity targetname" : "barney el dinosaurio"
+// ]
+// -TODO
 
 // -Mikk Changed to a BaseClass and renamed to refeer to the file name instead.
 @BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseCdAudio
@@ -7803,6 +7858,7 @@
         1 : "Respawn Target" : 0
         2 : "Respawn dead players" : 0
         4 : "Don't move living players" : 0
+        8 : "[AS] Keep Collected Items" : 0
     ]
 ]
 

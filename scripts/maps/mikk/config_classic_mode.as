@@ -5,7 +5,7 @@ namespace config_classic_mode
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: config_classic_mode\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#config_classic_mode\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Entity that customize classic mode for monsters, models and items that the game doesn't support.\n"
@@ -14,11 +14,6 @@ namespace config_classic_mode
         // We want classic mode to be enabled here
         g_ClassicMode.EnableMapSupport();
         g_CustomEntityFuncs.RegisterCustomEntity( "config_classic_mode::entity", "config_classic_mode" );
-    }
-
-    enum spawnflags
-    {
-        SF_CCM_RESTART_NOW = 1 << 0
     }
 
     class entity : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -61,7 +56,7 @@ namespace config_classic_mode
         {
             if( g_ClassicMode.IsEnabled() )
             {
-                g_Util.DebugMessage( "[config_classic_mode]" );
+                g_Util.Debug( "[config_classic_mode]" );
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string Key = string( strKeyValues[ui] );
@@ -70,7 +65,12 @@ namespace config_classic_mode
                     if( string( Key ).StartsWith( "models/" ) )
                     {
                         g_Game.PrecacheModel( Value );
-                        g_Util.DebugMessage( "Precached model '" + Value + "'" );
+                        g_Util.Debug( "Precached model '" + Value + "'" );
+                    }
+                    else
+                    {
+                        g_Game.PrecacheOther( Value );
+                        g_Util.Debug( "Precached item '" + Value + "'" );
                     }
                 }
             }
@@ -80,15 +80,15 @@ namespace config_classic_mode
 
         void Spawn()
         {
-			if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
-			{
-				g_Util.DebugMessage( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
-				g_EntityFuncs.Remove( self );
-			}
+            if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
+            {
+                g_Util.Debug( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
+                g_EntityFuncs.Remove( self );
+            }
 
             if( g_ClassicMode.IsEnabled() )
             {
-                g_Util.DebugMessage( "[config_classic_mode]" );
+                g_Util.Debug( "[config_classic_mode]" );
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string Key = string( strKeyValues[ui] );
@@ -101,7 +101,7 @@ namespace config_classic_mode
                         g_changemodel [ "model" ] = Value;
                         g_changemodel [ "targetname" ] =  "CCM_" + Key;
                         g_EntityFuncs.CreateEntity( "trigger_changemodel", g_changemodel, true );
-                        g_Util.DebugMessage( "Created trigger_changemodel replaces '" + Key + "' -> '" + Value + "'" );
+                        g_Util.Debug( "Created trigger_changemodel replaces '" + Key + "' -> '" + Value + "'" );
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace config_classic_mode
                 return;
             }
 
-            g_ClassicMode.SetShouldRestartOnChange( ( self.pev.SpawnFlagBitSet( SF_CCM_RESTART_NOW ) ) ? true : false );
+            g_ClassicMode.SetShouldRestartOnChange( spawnflag( 1 ) );
 
             g_ClassicMode.Toggle();
 
@@ -150,7 +150,7 @@ namespace config_classic_mode
                     {
                         if( pEntity !is null && g_Util.GetCKV( pEntity, "$i_classic_mode_ignore" ) != "1" )
                         {
-                            g_Util.DebugMessage( "[config_classic_mode] replaced '" + string( pEntity.pev.model ) + "' -> '" + string( Value ) + "'" );
+                            g_Util.Debug( "[config_classic_mode] replaced '" + string( pEntity.pev.model ) + "' -> '" + string( Value ) + "'" );
                             g_Util.Trigger( "CCM_" + Key, pEntity, self, USE_ON, 0.0f );
                         }
                     }
@@ -161,9 +161,9 @@ namespace config_classic_mode
                     {
                         while( ( @pWeapon = g_EntityFuncs.FindEntityByString( pWeapon, "classname", Key ) ) !is null )
                         {
-                            if( pWeapon !is null )
-                            {
-                                g_Util.DebugMessage( "[config_classic_mode] replaced '" + string( pWeapon.pev.classname ) + "' -> '" + string( Value ) + "'" );
+							if( pWeapon !is null && g_Util.GetCKV( pWeapon, "$i_classic_mode_ignore" ) != "1" )
+							{
+                                g_Util.Debug( "[config_classic_mode] replaced '" + string( pWeapon.pev.classname ) + "' -> '" + string( Value ) + "'" );
                                 g_EntityFuncs.Create( Value, pWeapon.pev.origin, pWeapon.pev.angles, false);
                                 g_EntityFuncs.Remove( pWeapon );
                             }
