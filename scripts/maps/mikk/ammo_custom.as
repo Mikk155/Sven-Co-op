@@ -5,7 +5,7 @@ namespace ammo_custom
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: ammo_custom\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#ammo_custom\n"
             "Author: Gaftherman\n"
             "Github: github.com/Gaftherman\n"
             "Author: Mikk\n"
@@ -18,7 +18,6 @@ namespace ammo_custom
 
     class entity : ScriptBasePlayerAmmoEntity
     {
-        private string w_model = "models/w_shotbox.mdl";
         private string p_sound = "items/9mmclip1.wav";
         private string am_name = "buckshot";
         private int am_give = 8;
@@ -29,8 +28,6 @@ namespace ammo_custom
                 am_name = szValue;
             else if( szKey == "p_sound" ) 
                 p_sound = szValue;
-            else if( szKey == "w_model" ) 
-                w_model = szValue;
             else if( szKey == "am_give" ) 
                 am_give = atoi( szValue );
             else
@@ -61,7 +58,7 @@ namespace ammo_custom
                 g_EntityFuncs.CreateEntity( "env_render_individual", g_keyvalues );
             }
 
-            g_EntityFuncs.SetModel( self, w_model );
+            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
             BaseClass.Spawn();
         }
         
@@ -69,7 +66,8 @@ namespace ammo_custom
         {
             BaseClass.Precache();
 
-            g_Game.PrecacheModel( w_model );
+			
+            g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
             g_SoundSystem.PrecacheSound( p_sound );
             g_Game.PrecacheGeneric( "sound/" + p_sound );
         }
@@ -89,6 +87,7 @@ namespace ammo_custom
                         if( iValue == self.pev.frags - 1 )
                         {
                             g_Util.Trigger( string( self.pev.targetname ) + "_FX", pOther, pOther, USE_ON, 0.0f );
+                            g_Util.Debug( 'ammo_custom::AddAmmo:\nPlayer "' + string( pOther.pev.netname ) + '" can not take more ammo from this item.' );
                         }
                     }
 
