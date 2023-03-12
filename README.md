@@ -338,8 +338,21 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 | Entity / Script | Description | Angelscript |
 |-----------------|-------------| :---------: |
-[trigger_manager](#trigger_manager) | Entity that will fire with a new config of your choice. | ✔️ 
+[trigger_auto](https://sites.google.com/site/svenmanor/entguide/trigger_auto) | Trigger_auto is a simple point entity which will trigger its target automatically after a delay set | ❌ 
+[trigger_camera](https://sites.google.com/site/svenmanor/entguide/trigger_camera) | When triggered, temporarily swaps the player's view with that of the camera, | ❌ 
+[trigger_change_class](https://sites.google.com/site/svenmanor/entguide/trigger_change_class) | Allows you to change the classification of an entity | ❌ 
+[trigger_changelevel](#trigger_changelevel) | Entity which causes a level-change when entered | ❌ 
+[trigger_changemaxammo](https://sites.google.com/site/svenmanor/entguide/trigger_changemaxammo) | This entity, when triggered, changes maximum ammo amount of selected ammo type, also alows to replenish ammo to maximum. | ❌ 
+[trigger_changemodel](#trigger_changemodel) | Trigger_changemodel allows you to change the model and/or skin of anything at runtime | ❌ 
+[trigger_changetarget](https://sites.google.com/site/svenmanor/entguide/trigger_changetarget) | The proper method for changing the target-keyvalue of an entity. You should prefer this to using a trigger_changevalue, if you can, because this entity takes several special cases into account. | ❌ 
+[trigger_changesky](https://sites.google.com/site/svenmanor/entguide/trigger_changesky) | Allows to change map sky and sky color at runtime | ❌ 
 [trigger_changevalue](#trigger_changevalue) | Trigger_changevalue can perform arithmetic and logic operations on base-keyvalues of entities, as well as replace their private keyvalues. See trigger_copyvalue for a variant of this with more options. Supports custom keyvalues. | ✔️ 
+[trigger_copyvalue](https://sites.google.com/site/svenmanor/entguide/trigger_copyvalue) | Provides options for performing operations on an entity's keyvalue in relation to another keyvalue of another entity. This is a beefier version of trigger_changevalue. Supports custom keyvalues. | ❌ 
+[trigger_condition](https://sites.google.com/site/svenmanor/entguide/trigger_condition) | Entity that will compare any value of any entity's key with either a specified value or the keyvalue of another entity, using a specified comparator and fire its target for the according result - true or false | ❌ 
+[trigger_createentity](https://sites.google.com/site/svenmanor/entguide/trigger_createentity) | This entity allows you to create any entity at runtime as you trigger it. | ❌ 
+[trigger_cyclicobserver](https://sites.google.com/site/svenmanor/entguide/trigger_cyclicobserver) | Changes cyclic observer mode at runtime. | ❌ 
+[trigger_effect](https://sites.google.com/site/svenmanor/entguide/trigger_effect) | Apply chosen effects or modifiers to target players or monsters | ❌ 
+[trigger_manager](#trigger_manager) | Entity that will fire with a new config of your choice. | ✔️ 
 [trigger_multiple](#trigger_multiple) | A simple brush-based trigger which triggers its target when a players enters it and whenever something enters it or is still inside of it when its delay before reset runs out. In simple words, this entity works as the trigger_once does, except this can be triggered multiple times. | ✔️ 
 [trigger_sound](#trigger_sound) | Entity like env_sound but as a brush entity | ✔️ 
 [trigger_votemenu](#trigger_votemenu) | Entity for creating custom vote menu the same as a buy menu plugins does | ✔️ 
@@ -2177,6 +2190,34 @@ void MapInit()
 
 </p>
 </details>
+
+</p>
+</details>
+
+---
+
+### trigger_changelevel
+
+<details><summary>Description</summary>
+<p>
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/trigger_changelevel)
+
+- This entity doesn't really requires bounds, you can set up it as a point entity and Trigger it to take effect.
+
+</p>
+</details>
+
+---
+
+### trigger_changemodel
+
+<details><summary>Description</summary>
+<p>
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/trigger_changemodel)
+
+- This entity is able to change the body group of a entity as well but is not in the FGD, the key is ``bodygroup``
 
 </p>
 </details>
