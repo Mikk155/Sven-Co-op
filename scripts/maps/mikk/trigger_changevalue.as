@@ -72,7 +72,7 @@ namespace trigger_changevalue
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: trigger_changevalue\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_changevalue\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Allow trigger_changevalue to change keyvalues from weapons of the player activator.\n"

@@ -5,7 +5,7 @@ namespace config_map_precache
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: config_map_precache\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#config_map_precache\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Entity that precache almost anything.\n"
@@ -61,19 +61,20 @@ namespace config_map_precache
 
         void Spawn()
         {
-            g_Scheduler.SetTimeout( this, "Debugger", 3.0f );
-            BaseClass.Spawn();
-        }
+            Precache();
 
-        void Debugger()
-        {
-            g_Util.DebugMessage( "[config_map_precache] Precaching..." );
+            g_Util.Debug( "[config_map_precache] Precaching..." );
+
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
-                g_Util.DebugMessage( "'" + string( g_PrecacheKeys[ string( strKeyValues[ui] ) ] ) + "'" );
+                g_Util.Debug( "'" + string( g_PrecacheKeys[ string( strKeyValues[ui] ) ] ) + "'" );
             }
-            g_Util.DebugMessage( "[config_map_precache] Map precached configuration. Removing entity..." );
+
+            g_Util.Debug( "[config_map_precache] Map precached configuration. Removing entity..." );
+
             g_EntityFuncs.Remove( self );
+
+            BaseClass.Spawn();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace trigger_sound
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: trigger_sound\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_sound\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: env_sound but as a brush entity.\n"

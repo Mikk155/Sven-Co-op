@@ -5,7 +5,7 @@ namespace env_fog
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: env_fog\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#env_fog\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)\n"
@@ -15,12 +15,6 @@ namespace env_fog
         g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
     }
 
-    enum spawnflags
-    {
-        START_OFF = 1,
-        INVIDIDUALFOG = 2
-    };
-
     CScheduledFunction@ g_Fog = g_Scheduler.SetTimeout( "FindEnvFogs", 0.0f );
 
     void FindEnvFogs()
@@ -29,7 +23,7 @@ namespace env_fog
 
         while( ( @pFog = g_EntityFuncs.FindEntityByClassname( pFog, "env_fog" ) ) !is null )
         {
-            if( pFog.pev.SpawnFlagBitSet( INVIDIDUALFOG ) && pFog !is null )
+            if( pFog.pev.SpawnFlagBitSet( 2 ) && pFog !is null )
             {
                 dictionary g_keyvalues =
                 {
@@ -39,7 +33,7 @@ namespace env_fog
                     { "frags", string( pFog.pev.rendercolor.x ) },
                     { "health", string( pFog.pev.rendercolor.y ) },
                     { "max_health", string( pFog.pev.rendercolor.z ) },
-                    { "target", ( pFog.pev.SpawnFlagBitSet( START_OFF ) ) ? "off" : "on" }
+                    { "target", ( pFog.pev.SpawnFlagBitSet( 1 ) ) ? "off" : "on" }
                 };
 
                 CBaseEntity@ pTriggerScript = g_EntityFuncs.CreateEntity( "env_fog_individual", g_keyvalues );

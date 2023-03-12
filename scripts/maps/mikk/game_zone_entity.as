@@ -7,10 +7,10 @@ namespace game_zone_entity
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: game_zone_entity\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: game_zone_entity is a entity similar to game_zone_player but now supports any entity in its volume not only players.\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#game_zone_entity"
+            "\nAuthor: Mikk"
+            "\nGithub: github.com/Mikk155"
+            "\nDescription: game_zone_entity is a entity similar to game_zone_player but now supports any entity in its volume not only players.\n"
         );
     }
 
@@ -31,11 +31,7 @@ namespace game_zone_entity
         {
             ExtraKeyValues( szKey, szValue );
 
-            if( szKey == "minhullsize" ) 
-            {
-                g_Utility.StringToVector( minhullsize, szValue );
-            }
-            else if( szKey == "intarget" ) 
+            if( szKey == "intarget" ) 
             {
                 intarget = szValue;
             }
@@ -59,10 +55,6 @@ namespace game_zone_entity
             {
                 outcount = szValue;
             }
-            else if( szKey == "maxhullsize" ) 
-            {
-                g_Utility.StringToVector( maxhullsize, szValue );
-            }
             else
             {
                 return BaseClass.KeyValue( szKey, szValue );
@@ -81,7 +73,7 @@ namespace game_zone_entity
 
             if( string( self.pev.model ).IsEmpty() && minhullsize == g_vecZero )
             {
-                g_Util.DebugMessage( "WARNING! game_zone_entity doesn't have BBOX!\n Only OUT Target is going to work." );
+                g_Util.Debug( "WARNING! game_zone_entity doesn't have BBOX!\n Only OUT Target is going to work." );
             }
 
             BaseClass.Spawn();
@@ -139,30 +131,30 @@ namespace game_zone_entity
 
             if( !intarget.IsEmpty() and self.Intersects( pActivator ) )
             {
-                g_EntityFuncs.FireTargets( intarget, pActivator, self, USE_TOGGLE, delay );
+                g_Util.Trigger( intarget, pActivator, self, USE_TOGGLE, delay );
 
                 if( hincount.GetEntity() !is null )
                 {
-                    g_EntityFuncs.FireTargets( incount, pActivator, self, ( USE_IN == 0 ? USE_OFF : USE_IN == 1 ? USE_ON : USE_TOGGLE ), 0.0f );
+					g_Util.Trigger( incount, pActivator, self, ( USE_IN == 0 ? USE_OFF : USE_IN == 1 ? USE_ON : USE_TOGGLE ), 0.0f );
 
-                    g_Util.DebugMessage( "Fired incount '" + incount );
+                    g_Util.Debug( "Fired incount '" + incount );
                 }
 
-                g_Util.DebugMessage( "Fired intarget '" + intarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
+                g_Util.Debug( "Fired intarget '" + intarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
             }
 
             if( !outtarget.IsEmpty() and !self.Intersects( pActivator ) )
             {
-                g_EntityFuncs.FireTargets( outtarget, pActivator, self, ( USE_OUT == 0 ? USE_OFF : USE_OUT == 1 ? USE_ON : USE_TOGGLE ), delay );
+                g_Util.Trigger( outtarget, pActivator, self, ( USE_OUT == 0 ? USE_OFF : USE_OUT == 1 ? USE_ON : USE_TOGGLE ), delay );
 
                 if( houtcount.GetEntity() !is null )
                 {
-                    g_EntityFuncs.FireTargets( outcount, pActivator, self, USE_TOGGLE, 0.0f );
+                    g_Util.Trigger( outcount, pActivator, self, USE_TOGGLE, 0.0f );
 
-                    g_Util.DebugMessage( "Fired outcount '" + outcount );
+                    g_Util.Debug( "Fired outcount '" + outcount );
                 }
 
-                g_Util.DebugMessage( "Fired outtarget '" + outtarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
+                g_Util.Debug( "Fired outtarget '" + outtarget + "' for '" + ( pActivator.IsPlayer() ? pActivator.pev.netname : pActivator.pev.classname ) );
             }
         }
     }

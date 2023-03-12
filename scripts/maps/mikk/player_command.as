@@ -7,23 +7,21 @@ namespace player_command
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: player_command\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#player_command\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Allow mappers to force players to execute a cmd onto their consoles.\n"
         );
     }
 
-    enum spawnflags
-    {
-        SF_CMD_ALL_PLAYERS = 1 << 0
-    }
-
-    class entity : ScriptBaseEntity
+    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( self.pev.SpawnFlagBitSet( SF_CMD_ALL_PLAYERS ) )
+			if( master() )
+				return;
+
+            if( spawnflag( 1 ) )
             {
                 for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
                 {
@@ -37,13 +35,15 @@ namespace player_command
                 ExecCommand( cast<CBasePlayer@>( pActivator ), self.pev.message );
             }
         }
-    }
-    
-    void ExecCommand( CBaseEntity@ pPlayer, const string command )
-    {
-        NetworkMessage msg( MSG_ONE, NetworkMessages::SVC_STUFFTEXT, pPlayer.edict() );
-            msg.WriteString( command );
-        msg.End();
+
+		void ExecCommand( CBaseEntity@ pPlayer, const string command )
+		{
+			NetworkMessage msg( MSG_ONE, NetworkMessages::SVC_STUFFTEXT, pPlayer.edict() );
+				msg.WriteString( command );
+			msg.End();
+
+			g_Util.Trigger( self.pev.target, pPlayer, self, USE_TOGGLE, delay );
+		}
     }
 }
 // End of namespace

@@ -5,7 +5,7 @@ namespace env_spritehud
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: env_spritehud\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#env_spritehud\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Shows a sprite on the player's HUD.\n"

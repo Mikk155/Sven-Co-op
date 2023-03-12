@@ -8,7 +8,7 @@ void PluginInit()
     g_Module.ScriptInfo.SetAuthor
     (
         "Mikk"
-        "\nithub: github.com/Mikk155"
+        "\nGithub: github.com/Mikk155"
         "\nDescription: Make items/weapons pick-able only if pressing E-key."
     );
     g_Module.ScriptInfo.SetContactInfo

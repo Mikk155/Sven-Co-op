@@ -1,8 +1,6 @@
 #include "utils"
 namespace trigger_multiple
 {
-    array<string> EverythingElse;
-
     CScheduledFunction@ g_IterateAllOccupants = g_Scheduler.SetTimeout( "FindTriggerMultiples", 0.0f );
 
     enum spawnflags
@@ -10,7 +8,6 @@ namespace trigger_multiple
         MONSTERS = 1,
         NOCLIENTS = 2,
         PUSHABLES = 4,
-        EVERTHINGELSE = 8,
         IterateAllOccupants = 64
     };
 
@@ -41,7 +38,7 @@ namespace trigger_multiple
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: trigger_multiple\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_multiple\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Allow trigger_multiple entity to fire its target for every one inside its volume.\n"
@@ -61,10 +58,6 @@ namespace trigger_multiple
 
         if( pCaller.pev.SpawnFlagBitSet( PUSHABLES ) )
             g_TriggerMultiple.Trigger( 'func_pushable', pCaller );
-
-        if( pCaller.pev.SpawnFlagBitSet( EVERTHINGELSE ) )
-            for( uint ui = 0; ui < EverythingElse.length(); ++ui )
-                g_TriggerMultiple.Trigger( EverythingElse[ui], pCaller );
     }
 }
 // End of namespace
@@ -94,26 +87,6 @@ final class CTriggerMultiple
                 g_EntityFuncs.FireTargets( target, pEntity, pCaller, USE_TOGGLE, 0.0 );
             }
         }
-    }
-
-    void LoadConfigFile( const string& in szPath = 'scripts/maps/mikk/trigger_multiple.txt' )
-    {
-        File@ pFile = g_FileSystem.OpenFile( szPath, OpenFile::READ );
-
-        if( pFile is null or !pFile.IsOpen() )
-        {
-            g_Util.DebugMessage( "WARNING: Failed to open " + szPath + " no config initialized for spawnflag 8 (everything else)" );
-            return;
-        }
-
-        while( !pFile.EOFReached() )
-        {
-            string line;
-            pFile.ReadLine( line );
-            if( line.Length() < 1 || line[0] == '/' && line[1] == '/' ) { continue; }
-            trigger_multiple::EverythingElse.insertLast( line );
-        }
-        pFile.Close();
     }
 }
 // End of final class

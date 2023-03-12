@@ -7,7 +7,7 @@ namespace trigger_votemenu
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: trigger_votemenu\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_votemenu\n"
             "Author: Gaftherman\n"
             "Github: github.com/Gaftherman\n"
             "Author: Wootguy\n"
@@ -101,7 +101,7 @@ namespace trigger_votemenu
                     }
                 }
             }
-            g_Scheduler.SetTimeout( @this, "Results", int(self.pev.health) + 3 );
+            g_Scheduler.SetTimeout( @this, "Results", float(self.pev.health) + 3.0f );
         }
 
         void MainCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )

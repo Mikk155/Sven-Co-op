@@ -5,7 +5,7 @@ namespace env_alien_teleport
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: env_alien_teleport\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#env_alien_teleport\n"
             "Author: Rick\n"
             "Github: github.com/RedSprend\n"
             "Description: Randomly teleport in aliens on a random player.\n"
@@ -24,13 +24,13 @@ namespace env_alien_teleport
 
         void Spawn()
         {
-			Precache();
+            Precache();
 
-			if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
-			{
-				g_Util.DebugMessage( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
-				g_EntityFuncs.Remove( self );
-			}
+            if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
+            {
+                g_Util.Debug( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
+                g_EntityFuncs.Remove( self );
+            }
 
             SetThink( ThinkFunction( this.TriggerThink ) );
             self.pev.nextthink = g_Engine.time + 0.1f;
@@ -40,7 +40,7 @@ namespace env_alien_teleport
 
         void Precache()
         {
-			g_Game.PrecacheOther( string( self.pev.netname ) );
+            g_Game.PrecacheOther( string( self.pev.netname ) );
             BaseClass.Precache();
         }
 

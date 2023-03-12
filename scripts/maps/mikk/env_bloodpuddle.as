@@ -6,7 +6,7 @@ namespace env_bloodpuddle
 
     void Register( const bool& in blRemove = false, const string& in szModel = "models/mikk/misc/bloodpuddle.mdl" )
     {
-		g_Game.PrecacheModel( szModel );
+        g_Game.PrecacheModel( szModel );
 
         // If both map and server is using this. prevent one of them executing this function.
         if( g_CustomEntityFuncs.IsCustomEntity( "env_bloodpuddle" ) )
@@ -14,7 +14,7 @@ namespace env_bloodpuddle
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: env_bloodpuddle\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#env_bloodpuddle\n"
             "Author: Gaftherman\n"
             "Github: github.com/Gaftherman\n"
             "Author: Mikk\n"
@@ -50,7 +50,7 @@ namespace env_bloodpuddle
                 {
                     if( pEntity.GetCustomKeyvalues().HasKeyvalue( "$i_bloodpuddle" ) )
                     {
-						pBlood.pev.skin = pMonster.GetCustomKeyvalues().GetKeyvalue( "$i_bloodpuddle" ).GetInteger();
+                        pBlood.pev.skin = pMonster.GetCustomKeyvalues().GetKeyvalue( "$i_bloodpuddle" ).GetInteger();
                     }
                     else
                     {

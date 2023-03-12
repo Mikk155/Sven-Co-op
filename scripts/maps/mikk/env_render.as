@@ -1,11 +1,6 @@
 #include "utils"
 namespace env_render
 {
-    enum spawnflags
-    {
-        GRADUALLY_RENDER = 32
-    };
-
     CScheduledFunction@ g_Renders = g_Scheduler.SetTimeout( "FindEnvRenders", 0.0f );
 
     void FindEnvRenders()
@@ -14,13 +9,13 @@ namespace env_render
 
         while( ( @pRender = g_EntityFuncs.FindEntityByClassname( pRender, "env_render" ) ) !is null )
         {
-            if( pRender.pev.SpawnFlagBitSet( GRADUALLY_RENDER ) && pRender !is null )
+            if( pRender.pev.SpawnFlagBitSet( 32 ) && pRender !is null )
             {
                 if( string( pRender.pev.targetname ).IsEmpty() || string( pRender.pev.target ).IsEmpty() || string( pRender.pev.renderamt ).IsEmpty() ){continue;}
 
                 dictionary g_keyvalues =
                 {
-                    { "m_iszScriptFunctionName", "env_render::RenderGraduallyFade" },
+                    { "m_iszScriptFunctionName", "env_render::Use" },
                     { "m_iMode", "2" },
                     { "target", string( pRender.pev.target ) },
                     { "netname", string( pRender.pev.netname ) },
@@ -35,14 +30,14 @@ namespace env_render
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: env_render\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#env_render\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Allow env_render to gradually fade its target.\n"
         );
     }
 
-    void RenderGraduallyFade( CBaseEntity@ pTriggerScript )
+    void Use( CBaseEntity@ pTriggerScript )
     {
         CBaseEntity@ pEntity = null;
 

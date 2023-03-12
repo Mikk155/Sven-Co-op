@@ -5,7 +5,7 @@ namespace config_survival_mode
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: config_survival_mode\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#config_survival_mode\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Entity that customize survival mode and make it better.\n"
@@ -17,7 +17,7 @@ namespace config_survival_mode
     class entity : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool SurvivalEnabled = false;
-		private string target_toggle, target_failed;
+        private string target_toggle, target_failed;
 
         private int
         mp_respawndelay = int( g_EngineFuncs.CVarGetFloat( "mp_respawndelay" ) ),
@@ -45,19 +45,19 @@ namespace config_survival_mode
                 target_failed = szValue;
             }
             else
-			{
-				return BaseClass.KeyValue( szKey, szValue );
-			}
+            {
+                return BaseClass.KeyValue( szKey, szValue );
+            }
             return true;
         }
 
         void Spawn()
         {
-			if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
-			{
-				g_Util.DebugMessage( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
-				g_EntityFuncs.Remove( self );
-			}
+            if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
+            {
+                g_Util.Debug( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
+                g_EntityFuncs.Remove( self );
+            }
 
             //We want survival mode to be enabled here
             g_SurvivalMode.EnableMapSupport();

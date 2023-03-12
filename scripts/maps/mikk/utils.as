@@ -12,7 +12,7 @@ final class CUtils
             return;
         }
 
-        g_Util.DebugMessage( "g_Util.Trigger:" );
+        g_Util.Debug( "g_Util.Trigger:" );
 
         string ReadTarget = g_Util.StringReplace
         (
@@ -27,31 +27,47 @@ final class CUtils
         CBaseEntity@ pFind = g_EntityFuncs.FindEntityByTargetname( pFind, ReadTarget );
         if( pFind is null )
         {
-            g_Util.DebugMessage( "No entity found with targetname '" + ReadTarget + "'" );
+            g_Util.Debug( "No entity found with targetname '" + ReadTarget + "'" );
             return;
         }
 
-        USE_TYPE NewUseType = useType;
+        int NewUseType;
 
-        // Those values overrides the default USE_TYPE.
+		if( useType == USE_OFF )
+		{
+			NewUseType = 0;
+		}
+		else if( useType == USE_ON )
+		{
+			NewUseType = 1;
+		}
+		else if( useType == USE_KILL )
+		{
+			NewUseType = 2;
+		}
+		else if( useType == USE_TOGGLE )
+		{
+			NewUseType = 3;
+		}
+
         if( string( key ).EndsWith( "#0" ) )
         {
-            NewUseType = USE_OFF;
+            NewUseType = 0;
         }
         if( string( key ).EndsWith( "#1" ) )
         {
-            NewUseType = USE_ON;
+            NewUseType = 1;
         }
         if( string( key ).EndsWith( "#2" ) )
         {
-            NewUseType = USE_KILL;
+            NewUseType = 2;
         }
 
-        if( NewUseType == USE_KILL )
+        if( NewUseType == 2 )
         {
             CBaseEntity@ pKillEnt = null;
 
-			// hack cuz USE_KILL doesn't work.
+            // hack cuz USE_KILL doesn't work.
             while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, ReadTarget ) ) !is null )
             {
                 g_EntityFuncs.Remove( pKillEnt );
@@ -59,17 +75,41 @@ final class CUtils
         }
         else
         {
-            g_EntityFuncs.FireTargets( ReadTarget, pActivator, pCaller, NewUseType, flDelay );
+			// hack cuz flDelay doesn't work.
+			g_Scheduler.SetTimeout( @this, "DelayedTrigger", flDelay, ReadTarget, @pActivator, @pCaller, NewUseType );
         }
 
-        string What = ( NewUseType == USE_OFF ) ? "OFF" : ( NewUseType == USE_ON ) ? "ON" : ( NewUseType == USE_KILL ) ? "KILL" : "TOGGLE";
+        string What = ( NewUseType == 0 ) ? "OFF" : ( NewUseType == 1 ) ? "ON" : ( NewUseType == 2 ) ? "KILL" : "TOGGLE";
 
-        g_Util.DebugMessage( "Fired entity '" + ReadTarget + "'" );
-        g_Util.DebugMessage( "!activator '"+ string( pActivator.pev.classname ) + "' " + string( pActivator.pev.netname ) );
-        g_Util.DebugMessage( "!caller '" + pCaller.pev.classname + "'" );
-        g_Util.DebugMessage( "USE_TYPE '" + NewUseType + "' ( " + What + " )" );
-        g_Util.DebugMessage( "Delay '" + flDelay + "'" );
+        g_Util.Debug( "Fired entity '" + ReadTarget + "'" );
+        g_Util.Debug( "!activator '"+ string( pActivator.pev.classname ) + "' " + string( pActivator.pev.netname ) );
+        g_Util.Debug( "!caller '" + pCaller.pev.classname + "'" );
+        g_Util.Debug( "USE_TYPE '" + NewUseType + "' ( " + What + " )" );
+        g_Util.Debug( "Delay '" + flDelay + "'" );
     }
+	
+	void DelayedTrigger( string ReadTarget, CBaseEntity@ pActivator, CBaseEntity@ pCaller, int useType )
+	{
+		USE_TYPE TriggerState;
+		if( useType == 0 )
+		{
+			TriggerState = USE_OFF;
+		}
+		else if( useType == 1 )
+		{
+			TriggerState = USE_ON;
+		}
+		else if( useType == 2 )
+		{
+			TriggerState = USE_KILL;
+		}
+		else if( useType == 3 )
+		{
+			TriggerState = USE_TOGGLE;
+		}
+
+        g_EntityFuncs.FireTargets( ReadTarget, pActivator, pCaller, TriggerState, 0.0f );
+	}
 
     string StringReplace( string_t FullSentence, dictionary@ pArgs )
     {
@@ -141,15 +181,31 @@ final class CUtils
     }
 
     bool ShowDebugs = false;
-    void DebugMessage( const string& in szMessage ) { if( ShowDebugs ) { g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, szMessage + "\n" ); } else { g_Game.AlertMessage( at_console, szMessage + "\n" ); } }
-    void DebugMode( const bool& in blmode = false ) { ShowDebugs = blmode; }
+    bool ShowDebugsHost = false;
+    void Debug( const string& in szMessage )
+    {
+        if( ShowDebugs )
+        {
+            g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, szMessage + "\n" );
+        }
+        if( ShowDebugsHost )
+        {
+            g_Game.AlertMessage( at_console, szMessage + "\n" );
+        }
+    }
+
+    void DebugMode( const bool& in blmode2 = false )
+    {
+        ShowDebugs = true;
+        ShowDebugsHost = blmode2;
+    }
 
     string GetCKV( CBaseEntity@ pEntity, string szKey )
     {
         if( pEntity is null or szKey.IsEmpty() )
         {
-            g_Util.DebugMessage( "g_Util.GetCKV:" );
-            g_Util.DebugMessage( "Null entity nor value!" );
+            g_Util.Debug( "g_Util.GetCKV:" );
+            g_Util.Debug( "Null entity nor value!" );
             return String::INVALID_INDEX;
         }
 
@@ -158,11 +214,11 @@ final class CUtils
 
     void SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
     {
-        g_Util.DebugMessage( "g_Util.SetCKV:" );
+        g_Util.Debug( "g_Util.SetCKV:" );
 
         if( pEntity is null or szKey.IsEmpty() or szValue.IsEmpty() )
         {
-            g_Util.DebugMessage( "Null entity nor value!" );
+            g_Util.Debug( "Null entity nor value!" );
             return;
         }
 
@@ -180,7 +236,7 @@ final class CUtils
         {
             pChangeValue.Use( pEntity, pEntity, USE_ON, 0.0f );
             g_EntityFuncs.Remove( pChangeValue );
-            g_Util.DebugMessage( "Set CustomKeyValue '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
+            g_Util.Debug( "Set CustomKeyValue '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
         }
     }
 
@@ -246,21 +302,21 @@ final class CUtils
     {
         g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed initialised entities info at your console.\n" );
 
-		// If we reached the limit replace and send again
-		while( RIPENTDebugger != '' )
-		{
-			g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  RIPENTDebugger.SubString( 0, 68 ) );
+        // If we reached the limit replace and send again
+        while( RIPENTDebugger != '' )
+        {
+            g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  RIPENTDebugger.SubString( 0, 68 ) );
 
-			if( RIPENTDebugger.Length() <= 68 ) RIPENTDebugger = '';
-			else RIPENTDebugger = RIPENTDebugger.SubString( 68, RIPENTDebugger.Length() );
-		}
+            if( RIPENTDebugger.Length() <= 68 ) RIPENTDebugger = '';
+            else RIPENTDebugger = RIPENTDebugger.SubString( 68, RIPENTDebugger.Length() );
+        }
 
         g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
     }
 
     bool LoadEntities( const string& in EntFileLoadText = 'scripts/maps/store/sex.txt', const string& in szClassname = '' )
     {
-		RIPENTDebugger = "";
+        RIPENTDebugger = "";
 
         string line, key, value;
         bool match = false;
@@ -285,7 +341,7 @@ final class CUtils
 
             if( line[0] == '/' and line[1] == '/' )
             {
-				RIPENTDebugger = RIPENTDebugger + line + "\n";
+                RIPENTDebugger = RIPENTDebugger + line + "\n";
                 continue;
             }
 
@@ -306,9 +362,8 @@ final class CUtils
                         continue;
                     }
 
-					string Classname = string( g_KeyValues[ "classname" ] );
-
-					if( Classname.IsEmpty() || Classname.Length() < 2 ) Classname = szClassname;
+                    string g_Classname = string( g_KeyValues[ "classname" ] );
+                    string Classname = ( g_Classname.IsEmpty() || g_Classname.Length() < 2 ? szClassname : g_Classname );
 
                     CBaseEntity@ pInitialized = g_EntityFuncs.CreateEntity( Classname, g_KeyValues, true );
 
@@ -358,19 +413,57 @@ final class CUtils
         return true;
     }
 
-	int GetNumberOfEntities( const string& in szClassname )
+    int NumberOfEntities;
+    int GetNumberOfEntities( const string& in szClassname )
+    {
+        NumberOfEntities = 0;
+
+        CBaseEntity@ pEntity = null;
+
+        while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, szClassname ) ) !is null )
+        {
+            ++NumberOfEntities;
+        }
+
+        g_Util.Debug( "g_Util.GetNumberOfEntities:\nFound '" + string( NumberOfEntities ) + "' Entities" );
+        return NumberOfEntities;
+    }
+
+	void WeaponList
+	(
+		const string& in szClassname = 'weapon_crowbar', /* weapon name */
+		int iAmmoType1 = -1, /* ammotype1 */
+		int iAmmoMax1 = -1, /* max ammo 1 */
+		int iAmmoType2 = -1, /* ammotype2 */
+		int iAmmoMax2 = -1, /* max ammo 2 */
+		int iSlot = 0, /* slot */
+		int iPosition = 3, /* position */
+		int iID = 22, /* ID */
+		int iflag = 128 /* flag */
+	)
 	{
-		int NumberOfEntities = 0;
+		NetworkMessage message( MSG_ALL, NetworkMessages::WeaponList );
+			message.WriteString( szClassname );
+			message.WriteByte( iAmmoType1 );
+			message.WriteLong( iAmmoMax1 );
+			message.WriteByte( iAmmoType2 );
+			message.WriteLong( iAmmoMax2 );
+			message.WriteByte( iSlot );
+			message.WriteByte( iPosition );
+			message.WriteShort( iID );
+			message.WriteByte( iflag );
+	}
 
-		CBaseEntity@ pEntity = null;
+	bool Reflection( const string& in szFunction )
+	{
+		Reflection::Function@ fNameFunction = Reflection::g_Reflection.Module.FindGlobalFunction( szFunction );
 
-		while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, szClassname ) ) !is null )
+		if( fNameFunction is null )
 		{
-			NumberOfEntities += 1;
+			return false;
 		}
-
-        g_Util.DebugMessage( "g_Util.GetNumberOfEntities:\nFound '" + string( NumberOfEntities ) + "' Entities" );
-		return NumberOfEntities;
+		fNameFunction.Call();
+		return true;
 	}
 }
 // End of final class
@@ -484,6 +577,7 @@ mixin class ScriptBaseLanguages
 mixin class ScriptBaseCustomEntity
 {
     private float delay = 0.0f;
+    private float wait = 0.0f;
     private Vector minhullsize();
     private Vector maxhullsize();
 
@@ -494,6 +588,10 @@ mixin class ScriptBaseCustomEntity
         if( szKey == "delay" )
         {
             delay = atof(szValue);
+        }
+        else if( szKey == "wait" )
+        {
+            wait = atof(szValue);
         }
         else if ( szKey == "master" )
         {
@@ -525,6 +623,19 @@ mixin class ScriptBaseCustomEntity
         return false;
     }
 
+    bool spawnflag( const int& in iFlagSet )
+    {
+        if( iFlagSet <= 0 && self.pev.spawnflags == 0 )
+        {
+            return true;
+        }
+        else if( self.pev.SpawnFlagBitSet( iFlagSet ) )
+        {
+            return true;
+        }
+        return false;
+    }
+
     void SetBoundaries()
     {
         if( string( self.pev.model ).StartsWith( "*" ) && self.IsBSPModel() )
@@ -532,48 +643,52 @@ mixin class ScriptBaseCustomEntity
             g_EntityFuncs.SetModel( self, self.pev.model );
             g_EntityFuncs.SetSize( self.pev, self.pev.mins, self.pev.maxs );
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
-            g_Util.DebugMessage( "g_Util.SetBoundaries:" );
-            g_Util.DebugMessage( "Set size of entity '" + string( self.pev.classname ) + "'" );
-            g_Util.DebugMessage( "model '"+ string( self.pev.model ) +"'" );
-            g_Util.DebugMessage( "origin '" + self.pev.origin.x + " " + self.pev.origin.y + " " + self.pev.origin.z + "'" );
+            g_Util.Debug( "g_Util.SetBoundaries:" );
+            g_Util.Debug( "Set size of entity '" + string( self.pev.classname ) + "'" );
+            g_Util.Debug( "model '"+ string( self.pev.model ) +"'" );
+            g_Util.Debug( "origin '" + self.pev.origin.x + " " + self.pev.origin.y + " " + self.pev.origin.z + "'" );
         }
         else
         {
             g_EntityFuncs.SetSize( self.pev, minhullsize, maxhullsize );
-            g_Util.DebugMessage( "g_Util.SetBoundaries:" );
-            g_Util.DebugMessage( "Set size of entity '" + string( self.pev.classname ) + "'" );
-            g_Util.DebugMessage( "Max BBox: '" + string( maxhullsize.x ) + " " + string( maxhullsize.y ) + " " + string( maxhullsize.z ) + "'" );
-            g_Util.DebugMessage( "Min BBox: '" + string( minhullsize.x ) + " " + string( minhullsize.y ) + " " + string( minhullsize.z ) + "'" );
+            g_Util.Debug( "g_Util.SetBoundaries:" );
+            g_Util.Debug( "Set size of entity '" + string( self.pev.classname ) + "'" );
+            g_Util.Debug( "Max BBox: '" + string( maxhullsize.x ) + " " + string( maxhullsize.y ) + " " + string( maxhullsize.z ) + "'" );
+            g_Util.Debug( "Min BBox: '" + string( minhullsize.x ) + " " + string( minhullsize.y ) + " " + string( minhullsize.z ) + "'" );
 
             if( self.pev.origin != g_vecZero )
             {
                 g_EntityFuncs.SetOrigin( self, self.pev.origin );
-                g_Util.DebugMessage("BBox set around entity's origin." );
+                g_Util.Debug("BBox set around entity's origin." );
             }
             else
             {
-                g_Util.DebugMessage("BBox set around worlds's origin." );
+                g_Util.Debug("BBox set around worlds's origin." );
             }
         }
     }
 }
 // End of mixin class
 
-bool blClientSayHook = g_Hooks.RegisterHook( Hooks::Player::ClientSay, @UTILS::ClientSay );
-bool blClientPutHook = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @UTILS::ClientPutInServer );
-bool blMapchangeHook = g_Hooks.RegisterHook( Hooks::Game::MapChange, @UTILS::MapChange );
-
-namespace UTILS
+namespace INFO
 {
-    HookReturnCode MapChange()
-    {
-		g_Util.ScriptAuthor.resize(0);
-		g_Util.MapAuthor.resize(0);
-		g_Util.ScriptAuthor.insertLast( "Script: utils\nAuthors:\nGithub: github.com/Mikk155\ngithub.com/Gaftherman\ngithub.com/JulianR0\ngithub.com/RedSprend\nDescription: Lot of utility scripts.\n");
-        return HOOK_CONTINUE;
-	}
+    CScheduledFunction@ g_MapStart = g_Scheduler.SetTimeout( "MapStart", 0.0f );
 
-    HookReturnCode ClientSay( SayParameters@ pParams )
+    void MapStart()
+    {
+        g_Hooks.RegisterHook( Hooks::Player::ClientSay, @INFO::TALK );
+        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @INFO::JOIN );
+        g_Hooks.RegisterHook( Hooks::Game::MapChange, @INFO::CLEAR );
+    }
+
+    HookReturnCode CLEAR()
+    {
+        g_Util.ScriptAuthor.resize(0);
+        g_Util.MapAuthor.resize(0);
+        return HOOK_CONTINUE;
+    }
+
+    HookReturnCode TALK( SayParameters@ pParams )
     {
         CBasePlayer@ pPlayer = pParams.GetPlayer();
         const CCommand@ args = pParams.GetArguments();
@@ -586,20 +701,21 @@ namespace UTILS
         {
             g_Util.RipentShowInfo( pPlayer );
         }
-
-        for(uint ui = 0; ui < g_Util.MapAuthor.length(); ui++)
+        else
         {
-            if( g_Util.MapAuthor[ui] == g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) )
+            for(uint ui = 0; ui < g_Util.MapAuthor.length(); ui++)
             {
-                g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Author] " + pPlayer.pev.netname + ": " + pParams.GetCommand() + "\n" );
-                pParams.ShouldHide = true;
+                if( g_Util.MapAuthor[ui] == g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) )
+                {
+                    g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Author] " + pPlayer.pev.netname + ": " + pParams.GetCommand() + "\n" );
+                    pParams.ShouldHide = true;
+                }
             }
         }
-
         return HOOK_CONTINUE;
     }
 
-    HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
+    HookReturnCode JOIN( CBasePlayer@ pPlayer )
     {
         ShowInfo( pPlayer );
         return HOOK_CONTINUE;
@@ -625,7 +741,11 @@ namespace UTILS
         }
         g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
     }
+}
+// End of namespace.
 
+namespace CBaseScripts
+{
     void GetPlayerData( CBaseEntity@ self )
     {
         for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
@@ -639,10 +759,10 @@ namespace UTILS
                 g_Util.SetCKV( pPlayer, "$i_adminlevel", string( g_PlayerFuncs.AdminLevel( pPlayer ) ) );
                 g_Util.SetCKV( pPlayer, "$i_hascorpse", string( pPlayer.GetObserver().HasCorpse() ) );
                 g_Util.SetCKV( pPlayer, "$i_flashlight", string( pPlayer.FlashlightIsOn() ) );
-				g_Util.Trigger( self.pev.netname, pPlayer, self, USE_TOGGLE, 0.0f );
+                g_Util.Trigger( self.pev.netname, pPlayer, self, USE_TOGGLE, 0.0f );
             }
         }
-		self.Use( null, null, USE_OFF, 0.0f );
+        self.Use( null, null, USE_OFF, 0.0f );
     }
 }
 // End of namespace.

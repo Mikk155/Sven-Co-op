@@ -206,7 +206,7 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 | Entity / Script | Description | Angelscript |
 |-----------------|-------------| :---------: |
 [ammo_custom](#ammo_custom) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ 
-[ammo_](#ammo_) | Ammunition entities. | ✔️ 
+[ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) | Ammunition entities. | ✔️ 
 
 </p>
 </details>
@@ -301,37 +301,9 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 [game_slot_counter](https://sites.google.com/site/svenmanor/entguide/game_slot_counter) | This entity counts the total number of player slots on the server on map load and triggers its target on the first server frame if the amount of slots equals a value you specify | ❌ 
 [game_text](#game_text) | An entity to display HUD messages to the player who activated it, or all players. for a improved version with a bunch of new features see [game_text_custom](#game_text_custom) | ❌ 
 [game_text_custom](#game_text_custom) | Entity replacemet for game_text and env_message with lot of new additions and language support. | ✔️ 
-[game_trigger_iterator](#game_trigger_iterator) | Entity that will fire its target with the activator and caller that it specifies. | ✔️ 
 [game_time](#game_time) | Entity that allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc. | ✔️ 
 [game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) | When triggered, allows to trigger different entities for players, depending on whether they are inside or outside of this entity, use [game_zone_entity](#game_zone_entity) for non-players | ❌ 
 [game_zone_entity](#game_zone_entity) | Basically [game_zone_player](https://sites.google.com/site/svenmanor/entguide/game_zone_player) but for ANY entity. | ✔️ 
-
-</p>
-</details>
-
-<details><summary>trigger_</summary>
-<p>
-
-| Entity / Script | Description | Angelscript |
-|-----------------|-------------| :---------: |
-
-</p>
-</details>
-
-<details><summary>player_</summary>
-<p>
-
-| Entity / Script | Description | Angelscript |
-|-----------------|-------------| :---------: |
-
-</p>
-</details>
-
-<details><summary>info_</summary>
-<p>
-
-| Entity / Script | Description | Angelscript |
-|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -343,6 +315,43 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 |-----------------|-------------| :---------: |
 [item_oxygentank](#item_oxygentank) | Entity that will give oxygen to players that touch it. | ✔️ 
 
+
+</p>
+</details>
+
+<details><summary>player_</summary>
+<p>
+
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[player_command](#player_command) | Entity that executes a command on the clients console. | ✔️ 
+[player_loadsaved](https://sites.google.com/site/svenmanor/entguide/player_loadsaved) | Player_loadsaved is used to restart map after screen fade and custom on-screen message. | ❌
+[player_weaponstrip](https://sites.google.com/site/svenmanor/entguide/player_weaponstrip) | Removes all weapons and ammo from player. It's possible to also remove HEV suit. | ❌
+[player_inbutton](#player_inbutton) | Entity that executes a command on the clients console. | ✔️ 
+[player_reequipment](#player_reequipment) | Re equips collected weapons when a player die and respawn. | ✔️ 
+
+</p>
+</details>
+
+<details><summary>trigger_</summary>
+<p>
+
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[trigger_manager](#trigger_manager) | Entity that will fire with a new config of your choice. | ✔️ 
+[trigger_changevalue](#trigger_changevalue) | Trigger_changevalue can perform arithmetic and logic operations on base-keyvalues of entities, as well as replace their private keyvalues. See trigger_copyvalue for a variant of this with more options. Supports custom keyvalues. | ✔️ 
+[trigger_multiple](#trigger_multiple) | A simple brush-based trigger which triggers its target when a players enters it and whenever something enters it or is still inside of it when its delay before reset runs out. In simple words, this entity works as the trigger_once does, except this can be triggered multiple times. | ✔️ 
+[trigger_sound](#trigger_sound) | Entity like env_sound but as a brush entity | ✔️ 
+[trigger_votemenu](#trigger_votemenu) | Entity for creating custom vote menu the same as a buy menu plugins does | ✔️ 
+
+</p>
+</details>
+
+<details><summary>info_</summary>
+<p>
+
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
 
 </p>
 </details>
@@ -490,7 +499,7 @@ Supports all [ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) keyv
 
 | key | value | description |
 |-----|-------|-------------|
-| w_model | string | defines a custom world model |
+| model | string | defines a custom world model |
 | p_sound | string | defines a custom sound to use when the item is taken |
 | am_name | [choices](#values-am_name) | defines the type of ammunition this item will give to players |
 | am_give | integer | number of bullets that this item should give to the players |
@@ -531,25 +540,13 @@ List:
 - Hand Grenade
 - snarks
 
-</p>
-</details>
+[Test map](https://github.com/Mikk155/Sven-Co-op/raw/main/maps/1test_ammo_custom.bsp)
 
 </p>
 </details>
 
 </p>
 </details>
-
----
-
-### ammo_
-
-<details><summary>Description</summary>
-<p>
-
-General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/ammo)
-
-- This entity supports the expansion of [trigger_individual](#trigger_individual)
 
 </p>
 </details>
@@ -645,6 +642,8 @@ The same way you can replace any entity's custom model. the syntax is the same.
 - Using (on any entity) custom keyvalue ``"$i_classic_mode_ignore"`` will prevent their model being changed or item being replaced.
 
 ⚠️ Use only **one** entity per map. if there is more than one, one random entity will be removed.
+
+[Test map](https://github.com/Mikk155/Sven-Co-op/raw/main/maps/1test_config_classic_mode.bsp)
 
 </p>
 </details>
@@ -1863,65 +1862,6 @@ then its value will replace the command ``!value``
 
 ---
 
-
-### game_trigger_iterator
-
-<details><summary>Description</summary>
-<p>
-
-game_trigger_iterator is a entity that will fire its target with the activator and caller that it specifies.
-
-<details><summary>Installation</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils game_trigger_iterator
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
-
-In your main map_script add:
-```angelscript
-#include "mikk/game_trigger_iterator"
-
-void MapInit()
-{
-	game_trigger_iterator::Register();
-}
-```
-
-</p>
-</details>
-
-A custom entity that will fire its target with the activator and caller that you set.
-
-``"!activator"`` will pass the current activator.
-
-``"!caller"`` will pass the current caller.
-
-The current USE_TYPE is also passed through if not specified.
-
-| key | value | description |
-|-----|-------|-------------|
-| target | target | Trigger this entity when fire [Supports USE_TYPE](#utils-use-type) |
-| netname | target | Entity to set as activator |
-| message | target | Entity to set as caller |
-| frags | choices | TriggerState to send, 0 = "Current USE_TYPE" 1 = "USE_OFF" 2 = "USE_ON" 3 = "USE_TOGGLE"
-| health | float | Delay before trigger the entity |
-
-</p>
-</details>
-
----
-
 ### game_time
 
 <details><summary>Description</summary>
@@ -2021,10 +1961,15 @@ void MapInit()
 </p>
 </details>
 
+keyvalue ``netname`` is the classname of the entities allowed, if empty we'll look for players only.
+
+you can use wildcard ``*`` to target multiple entities that starts with the same name, i.e 'monster*' for all monsters
+
 </p>
 </details>
 
 ---
+
 ### item_oxygentank
 
 <details><summary>Description</summary>
@@ -2065,8 +2010,474 @@ void MapInit()
 </p>
 </details>
 
+---
 
+### player_command
 
+<details><summary>Description</summary>
+<p>
+
+player_command is a entity that will execute a command on the clients console.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils player_command
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/player_command"
+
+void MapInit()
+{
+	player_command::Register();
+}
+```
+
+</p>
+</details>
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | Trigger this entity when fire [Supports USE_TYPE](#utils-use-type) |
+| message | target | exec this command on the player's console |
+| spawnflag | 1 All players | if set, all players will execute this command, else only activator |
+| delay | float | delay before trigger its target |
+| master | string | master |
+
+</p>
+</details>
+
+---
+
+### player_inbutton
+
+<details><summary>Description</summary>
+<p>
+
+player_inbutton Prints a keybind to the screen and if the player press it trigger its target
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils player_inbutton
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/player_inbutton"
+
+void MapInit()
+{
+	player_inbutton::Register();
+}
+```
+
+</p>
+</details>
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | Trigger this entity when fire [Supports USE_TYPE](#utils-use-type) |
+| spawnflag | 1 Everywhere | if set, all players will see its message, else only players inside its volume |
+| delay | float | delay before the player can trigger again |
+| master | string | master |
+| wait | [Choices](#player_inbutton-wait) | master |
+| netname | keybind | name of a keybind (see config.cfg) to show the button binded on screen |
+
+### player_inbutton wait
+| value | description |
+|-------|-------------|
+0 | none. if set, the target won't work but you can use its netname |
+1 | Primary attack |
+2 | Jump |
+4 | Duck |
+8 | Move forward |
+16 | Move backward |
+32 | Use |
+128 | Left |
+256 | Right |
+512 | Move left |
+1024 | Move right |
+2048 | Secondary attack |
+8192 | Reload |
+16384 | Tertiary attack |
+32768 | ScoreBoard |
+
+⚠️ if ``wait`` is not one of those, the target won't be fired. only ``netname`` bind will be shown on screen
+
+</p>
+</details>
+
+---
+
+### player_reequipment
+
+<details><summary>Description</summary>
+<p>
+
+player_reequipment is a script that re equips collected weapons when a player die and respawns.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils player_reequipment
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+
+if not exist scripts\maps\beast (mkdir scripts\maps\beast)
+curl -LJO https://github.com/Outerbeast/Entities-and-Gamemodes/blob/master/respawndead_keepweapons.as
+move respawndead_keepweapons.as scripts/maps/beast/
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/player_reequipment"
+```
+
+Alternativelly you can set it to never give ammo, and only items will be saved though
+```angelscript
+void MapInit()
+{
+    player_reequipment::KeepAmmo( false );
+}
+```
+
+</p>
+</details>
+
+</p>
+</details>
+
+---
+
+### trigger_manager
+
+<details><summary>Description</summary>
+<p>
+
+trigger_manager is a entity that will fire with a new config of your choice.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils trigger_manager
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/trigger_manager"
+
+void MapInit()
+{
+	trigger_manager::Register();
+}
+```
+
+</p>
+</details>
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | Trigger this entity when fire [Supports USE_TYPE](#utils-use-type) |
+| trigger_if_master | target | Trigger this entity when is locked by a multisource |
+| trigger_if_locked | target | Trigger this entity when is locked by its wait keyvalue |
+| activator | target | Entity to set as activator, use !activator for set the current activator, use !caller for set the current caller, use !attacker for set the activator's damage inflictor |
+| caller | target | Entity to set as caller, use !activator for set the current activator, use !caller for set the current caller, use !attacker for set the activator's damage inflictor |
+| USETYPE | choices | TriggerState to send, 0 = Off, 1 = On 2 = Kill, 3 = Toggle, 4 = Same as imput, 5 = Opposite of input.
+| delay | float | Delay before trigger |
+| wait | float | Delay before re-activation |
+| spawnflags | 1 Remove On Fire | Removes the entity after trigger |
+| spawnflags | 2 Once per activator | fire its target only once per entity, meaning everyone can fire its target once. |
+
+</p>
+</details>
+
+---
+
+### trigger_changevalue
+
+<details><summary>Description</summary>
+<p>
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/trigger_changevalue)
+
+A feature that allows mapper to change a certain weapon's keyvalue from the activator player.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils trigger_changevalue
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/trigger_changevalue"
+```
+**OR**
+
+Simply include the script once via a trigger_script entity. no need to call. just include.
+```angelscript
+"m_iszScriptFile" "mikk/trigger_changevalue"
+"classname" "trigger_script"
+```
+
+</p>
+</details>
+
+This script has been created for modifying displacer teleport target destination on-the-fly. feedback by Sparks.
+
+Pass activator to trigger the entity and his weapon's keyvalue will be updated.
+
+in the trigger_changevalue specify the classname of the weapon you want to change.
+```
+"$s_weapon" "weapon_displacer"
+```
+
+Supported keys that you can change:
+| key | description |
+|-----|-------------|
+"$s_target" | Target for when the weapon is picked up.
+"$s_targetname" | Targetname for the weapon. ( you can killtarget it and the weapon will be removed from inventory )
+"$s_m_iszTeleportDestination" | Teleport destination for weapon_displacer
+"$s_exclusivehold" | Exclusive Hold 0 = No, 1 = Yes. Note: the change is added when the player select the weapon in question. it won't switch to it automatically.
+"$s_spawnflags" | Spawnflags
+"$s_renderfx" | Render FX
+"$s_rendermode" | Render Mode
+"$s_renderamt" | FX Amount (1 - 255)
+"$s_rendercolor" | FX Color (R G B)
+"$s_movetype" | Gravity Setting
+"$s_m_TertiaryMode" | Tertiary fire mode for weapon_displacer
+"$s_m_flPortalSpeed" | Portal Speed for weapon_displacer
+"$s_m_flPortalRadius" | Portal Radius for weapon_displacer
+"$s_m_flPrimaryAmmoNeeded" | Ammo needed/used to fire primary for weapon_displacer
+"$s_m_flSecondaryAmmoNeeded" | Ammo needed/used to fire secondary for weapon_displacer
+"$s_m_flTertiaryAmmoNeeded" | Ammo needed/used to fire tertiary for weapon_displacer
+"$s_wpn_v_model" | Custom V_Model
+"$s_wpn_w_model" | Custom W_Model
+"$s_wpn_p_model" | Custom P_Model
+"$s_skin" | Change current skin.
+"$s_body" | Change current body.
+"$s_dmg" | damage
+"$s_soundlist" | sound list
+"$s_CustomSpriteDir" | sprite dir
+
+⚠️ Some of them hasn't been tested so let me know if any of them doesn't work.
+
+</p>
+</details>
+
+---
+
+### trigger_multiple
+
+<details><summary>Description</summary>
+<p>
+
+General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/trigger_multiple)
+
+A feature that allows trigger_multiple to fire its target for everyone inside its volume
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils trigger_multiple
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/trigger_multiple"
+```
+**OR**
+
+Simply include the script once via a trigger_script entity. no need to call. just include.
+```angelscript
+"m_iszScriptFile" "mikk/trigger_multiple"
+"classname" "trigger_script"
+```
+
+</p>
+</details>
+Adds a new spawnflag "Iterate all occupants" ( 64 ) if set. all players/monsters/pushables inside will trigger the target instead of just one random
+
+</p>
+</details>
+
+---
+
+### trigger_sound
+
+<details><summary>Description</summary>
+<p>
+
+trigger_sound is a entity replacement for env_sound.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils trigger_sound
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/trigger_sound"
+
+void MapInit()
+{
+	trigger_sound::Register();
+}
+```
+
+</p>
+</details>
+
+| key | value | description |
+|-----|-------|-------------|
+| target | target | entity to affect when this entity is triggered. if empty = Everyone, if !activator = activator |
+| roomtype or health | choices | the same values as env_sound |
+
+</p>
+</details>
+
+---
+
+### trigger_votemenu
+
+<details><summary>Description</summary>
+<p>
+
+trigger_sound is a entity for creating custom vote menu the same as a buy menu plugins does
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils trigger_votemenu
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/trigger_votemenu"
+
+void MapInit()
+{
+	trigger_sound::Register();
+}
+```
+
+</p>
+</details>
+
+    (string) : ""
+    netname(string) : "Title to show"
+    spawnflags(flags) =
+    [
+        // If set. the vote will be for activator only.
+        1: "Activator only" : 0
+    ]
+| key | value | description |
+|-----|-------|-------------|
+| target | target | entity to trigger when the vote ends |
+| health | float | Time to vote |
+| netname | string | Title to show |
+| spawnflags | 1 activator only | if set, only the activator will receive the vote menu | 
+
+Open smart edit and add there keyvalues.
+
+key = option to show
+
+value = thing to trigger if the voted passed.
+
+Those values also supports the same system as a multi_manager ( #0 - #1 - #2 )
+
+</p>
+</details>
 
 ---
 

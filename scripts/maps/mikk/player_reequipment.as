@@ -2,17 +2,17 @@
 #include "utils"
 namespace player_reequipment
 {
-	bool bKeepAmmo = true;
+    bool bKeepAmmo = true;
 
-    CScheduledFunction@ g_Renders = g_Scheduler.SetTimeout( "AutoRegister", 0.0f );
+    CScheduledFunction@ g_ReEquip = g_Scheduler.SetTimeout( "AutoRegister", 0.0f );
 
     void AutoRegister()
     {
-		g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @PlayerSpawn );
+        g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @player_reequipment::PlayerReEquip );
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: player_reequipment\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#player_reequipment\n"
             "Author: Outerbeast\n"
             "Github: github.com/Outerbeast\n"
             "Author: Mikk\n"
@@ -20,19 +20,19 @@ namespace player_reequipment
             "Description: Re-spawning players gets it's weapon's they had at the moment they died.\n"
         );
     }
-	
-	void KeepAmmo( bool blKeepAmmo = true )
-	{
-		bKeepAmmo = blKeepAmmo;
-	}
+    
+    void KeepAmmo( bool blKeepAmmo = true )
+    {
+        bKeepAmmo = blKeepAmmo;
+    }
 
-	HookReturnCode PlayerSpawn( CBasePlayer@ pPlayer )
-	{
-		if( pPlayer !is null )
-		{
-        	RESPAWNDEAD_KEEPWEAPONS::ReEquipCollected( pPlayer, bKeepAmmo );
-		}
-		return HOOK_CONTINUE;
-	}
+    HookReturnCode PlayerReEquip( CBasePlayer@ pPlayer )
+    {
+        if( pPlayer !is null )
+        {
+            RESPAWNDEAD_KEEPWEAPONS::ReEquipCollected( pPlayer, bKeepAmmo );
+        }
+        return HOOK_CONTINUE;
+    }
 }
 // End of namespace

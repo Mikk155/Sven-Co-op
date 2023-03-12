@@ -161,8 +161,8 @@ namespace config_classic_mode
                     {
                         while( ( @pWeapon = g_EntityFuncs.FindEntityByString( pWeapon, "classname", Key ) ) !is null )
                         {
-							if( pWeapon !is null && g_Util.GetCKV( pWeapon, "$i_classic_mode_ignore" ) != "1" )
-							{
+                            if( pWeapon !is null && g_Util.GetCKV( pWeapon, "$i_classic_mode_ignore" ) != "1" )
+                            {
                                 g_Util.Debug( "[config_classic_mode] replaced '" + string( pWeapon.pev.classname ) + "' -> '" + string( Value ) + "'" );
                                 g_EntityFuncs.Create( Value, pWeapon.pev.origin, pWeapon.pev.angles, false);
                                 g_EntityFuncs.Remove( pWeapon );

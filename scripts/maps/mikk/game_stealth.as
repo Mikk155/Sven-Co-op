@@ -36,12 +36,12 @@ namespace game_stealth
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: game_stealth\n"
-            "Author: Gaftherman\n"
-            "Github: github.com/Gaftherman\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Allow mappers to make use of stealth mode in Co-op.\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#game_stealth"
+            "\nAuthor: Gaftherman"
+            "\nGithub: github.com/Gaftherman"
+            "\nAuthor: Mikk"
+            "\nGithub: github.com/Mikk155"
+            "\nDescription: Allow mappers to make use of stealth mode in Co-op.\n"
         );
     }
 

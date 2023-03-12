@@ -5,7 +5,7 @@ namespace env_geiger
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: env_geiger\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#env_geiger\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Entity that simulates radiation sound.\n"

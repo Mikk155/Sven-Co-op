@@ -11,12 +11,12 @@ namespace game_time
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: game_time\n"
-            "Author: Gaftherman\n"
-            "Github: github.com/Gaftherman\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc.\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#game_time"
+            "\nAuthor: Gaftherman"
+            "\nGithub: github.com/Gaftherman"
+            "\nAuthor: Mikk"
+            "\nGithub: github.com/Mikk155"
+            "\nDescription: Allow mappers to make use of real time and custom time. create maps with timers n/or timelapse day/night fire entities depending the time etc.\n"
         );
     }
 
@@ -116,7 +116,7 @@ namespace game_time
 
             if( blDebugHour )
             {
-                g_Util.DebugMessage("The time is "+current_day+" days. "+current_hour+" hours. "+current_minute+" minutes.\n");
+                g_Util.Debug("The time is "+current_day+" days. "+current_hour+" hours. "+current_minute+" minutes.\n");
             }
 
             if( CuantosSegundosDuraUnMinuto != int( self.pev.health ) )
@@ -158,7 +158,7 @@ namespace game_time
                                     g_EntityFuncs.DispatchKeyValue( pLight.edict(), "pattern", Pattern[ui][1] );
                                     pLight.Use( self, self, USE_TOGGLE, 0.0f );
                                     pLight.Use( self, self, USE_TOGGLE, 0.0f );
-                                    g_Util.DebugMessage("Light Pattern has been updated to "+ Pattern[ui][1] +"\n");
+                                    g_Util.Debug("Light Pattern has been updated to "+ Pattern[ui][1] +"\n");
                                 }
                             }
                             break;

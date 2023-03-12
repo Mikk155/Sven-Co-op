@@ -66,7 +66,7 @@ namespace ammo_custom
         {
             BaseClass.Precache();
 
-			
+            
             g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
             g_SoundSystem.PrecacheSound( p_sound );
             g_Game.PrecacheGeneric( "sound/" + p_sound );
@@ -74,7 +74,7 @@ namespace ammo_custom
         
         bool AddAmmo( CBaseEntity@ pOther ) 
         {
-            int iValue = atoi( g_Util.GetCKV( pOther, "$i_custom_ammo_" + self.entindex() ) );
+            int iValue = atoi( g_Util.GetCKV( pOther, "$i_ammo_custom" + self.entindex() ) );
 
             if( iValue < self.pev.frags || self.pev.frags == 0 )
             {
@@ -82,7 +82,7 @@ namespace ammo_custom
                 {
                     if( self.pev.frags > 0 )
                     {
-                        g_Util.SetCKV( pOther, "$i_custom_ammo_" + self.entindex(), iValue + 1 );
+                        g_Util.SetCKV( pOther, "$i_ammo_custom" + self.entindex(), iValue + 1 );
                         
                         if( iValue == self.pev.frags - 1 )
                         {

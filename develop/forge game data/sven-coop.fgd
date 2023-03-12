@@ -164,18 +164,6 @@
     ]
 ]
 
-// -Mikk feature for triggering its target once per player/monster.
-// NOTE: is not compatible with trigger_multiple's new spawnflag.
-// since both works by changing its target and using a trigger_script as intermediary.
-@BaseClass = TriggerIndividual
-[
-    $i_trigger_individual(choices) : "[AS] Trigger only once per activator" : 0 =
-    [
-        0: "Disabled"
-        1: "Enabled"
-    ]
-]
-
 @BaseClass = MonsterAdditionsAS
 [
     // -Mikk feature for passing a monster's Attacker/damage inflictor as a !activator.
@@ -221,16 +209,6 @@
         1: "No"
     ]
     // NOTE: the dissapeared monster will fire its TriggerTarget keyvalue if any.
-]
-
-// -Mikk Some entities supports this feature.
-// You can use the same method as multi_manager to send USE_OFF/ON/KILL. ( #0 / #1 / #2 )
-// By just adding the respective value at the end of the target's value.
-// I.e "target" "barney#2" will killtarget the entity named "barney"
-// See if a Trigger-Type key says "(USE_TYPE)"
-@BaseClass = TargetMMStyle
-[
-    target(target_destination) : "Target (USE_TYPE)"
 ]
 
 // -Mikk Moved some things to BaseClasses.
@@ -489,7 +467,7 @@
     m_flCustomRespawnTime(string) : "Custom respawn time"
 ]
 
-@BaseClass size(-16 -16 0, 16 16 32) color(2 64 240) base(Pickup, CustomRespawnDelay, TriggerIndividual, ClassicModeIgnore ) = Weapon
+@BaseClass size(-16 -16 0, 16 16 32) color(2 64 240) base(Pickup, CustomRespawnDelay, ClassicModeIgnore ) = Weapon
 [
     dmg(integer) : "Custom Damage" : 0
 
@@ -508,12 +486,12 @@
     ]
 ]
 
-@BaseClass size(-8 -8 0, 8 8 16) color(4 128 240) base(Pickup, CustomRespawnDelay, ClassicModeIgnore, TriggerIndividual) = Ammo
+@BaseClass size(-8 -8 0, 8 8 16) color(4 128 240) base(Pickup, CustomRespawnDelay, ClassicModeIgnore) = Ammo
 [
     model(studio) : "Custom Model" : ""
 ]
 
-@BaseClass size(-8 -8 0, 8 8 16) color(0 0 200) base(Pickup, CustomRespawnDelay, TriggerIndividual, ClassicModeIgnore, HullSetSizes) = Item
+@BaseClass size(-8 -8 0, 8 8 16) color(0 0 200) base(Pickup, CustomRespawnDelay, ClassicModeIgnore, HullSetSizes) = Item
 [
     model(studio) : "Custom Model" : ""
     skin(integer) : "Skin" : 0
@@ -768,7 +746,6 @@
 
 @BaseClass base(Targetname, Targetx, Global, AttackObject, RenderFields, ZHLT) = Breakable
 [
-    //target(target_destination) : "Target on break" //Duplicate, already defined by Target
     health(integer) : "Strength" : 1
     material(choices) : "Material type" : 0 =
     [
@@ -2142,7 +2119,7 @@
 ]
 
 // -Mikk https://github.com/Mikk155/Sven-Co-op#env_effect
-// @PointClass base(Targetname, Appearflags, TargetMMStyle, Master, Delay) size(-4 -4 -4, 4 4 4) color(255 0 0) = env_effect : "Spawn Effects"
+// @PointClass base(Targetname, Appearflags, Target, Master, Delay) size(-4 -4 -4, 4 4 4) color(255 0 0) = env_effect : "Spawn Effects"
 // [
     // netname(target_destination) : "Target when locked by master (USE_TYPE)"
     // spawnflags(flags) =
@@ -2351,6 +2328,7 @@
     rendercolor(color255) : "Fade Color (R G B)" : "0 0 0"
 ]
 
+// -TODO gradually fade in/out
 @PointClass base(Targetname) color(196 195 192) = env_fog : "Fog Field"
 [
     spawnflags(flags) =
@@ -2384,6 +2362,7 @@
 // -Custom radius if not bounds set
 // -Custom sounds
 // -Master
+// -custom random timer
 
 @PointClass base(Targetname) color(255 255 128) color(4 32 250) = env_global : "Global State"
 [
@@ -2585,10 +2564,9 @@
 // -Mikk https://github.com/Mikk155/Sven-Co-op#trigger_sound
 @BaseClass base(BaseDSPSound) = BaseDSPTrigger
 [
-    // Target is the target to affect when fire the entity but not touch
-    // Leave empty for set to everyone.
+    // -TODO 1 : "USE Only" : 0
+	// master
     target(target_destination) : "Dest when triggered ( empty = all )" : "!activator"
-    // NOTE: you can set it on demand with trigger_changevalue
 ]
 
 @PointClass base(BaseDSPSound) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = env_sound : "DSP Sound"
@@ -2837,7 +2815,7 @@
     _minlight(string) : "Minimum light level"
 ]
 
-@SolidClass base(Global, Targetname, Targetx, Master , InventoryRules, AttackObject, RenderFields, Angles, ZHLT, BaseLockable, TriggerIndividual) = func_button : "Button"
+@SolidClass base(Global, Targetname, Targetx, Master , InventoryRules, AttackObject, RenderFields, Angles, ZHLT, BaseLockable) = func_button : "Button"
 [
     speed(integer) : "Speed" : 5
     health(integer) : "Health (shootable if > 0)" : 0
@@ -3673,31 +3651,6 @@
     message_albanian(string) : "Albanian"
 ]
 
-// -Mikk entity that will fire its target with the activator and caller that you set.
-// "!activator" will pass the current activator.
-// "!caller" will pass the current caller.
-// Specify a entity's targetname to find it and pass it through.
-// The current USE_TYPE is also passed through if not specified.
-// If the entity is locked by its master then trigger "noise" instead. with the config you set as well.
-@PointClass base(Targetname, TargetMMStyle, Delay, Master) color(165 120 255) = game_trigger_iterator : "Iterate activator and caller"
-[
-    // Entity to trigger if locked by master
-    noise(target_destination) : "Fire when locked by master (USE_TYPE)"
-    // Entity to set as activator
-    netname(target_destination) : "!activator" : "!activator"
-    // Entity to set as caller
-    message(target_destination) : "!caller" : "!caller"
-    // Trigger state to set
-    frags(choices) : "USE_TYPE useType" : 0 =
-    [
-        0 : "Same as input"
-        1 : "Off"
-        2 : "On"
-        3 : "Toggle"
-        4 : "Opposite of input"
-    ]
-]
-
 // -Mikk A custom entity that allow mappers to create maps with "real time" set. meant to be used for changing map events or even light style (sun/moon)
 // the entity will start working as soon as the map starts. if not locked by a multisource.
 @PointClass base(Targetname, Master) color(0 255 255) = game_time : "Map Global Time"
@@ -3743,7 +3696,7 @@
     outcount(target_destination) : "Counter for OUT players"
 ]
 
-// -Mikk game_zone_player but with the hability to be used on any entity not only players.
+// -Mikk https://github.com/Mikk155/Sven-Co-op#game_zone_entity
 @BaseClass = GZEBase
 [
     spawnflags(flags) =
@@ -3751,7 +3704,6 @@
         1 : "Ignore Dead Entities" : 0
     ]
 
-    // if empty = players. can use wildcard "*". i.e "monster_*" to find all monsters.
     netname(string) : "Entity classname (wildcard '*')" : "player"
     intarget(target_destination) : "Target for IN entities"
     USE_IN(choices) : "Trigger state for IN" : 2 =
@@ -4607,7 +4559,7 @@
 @PointClass size(-14 -14 0, 14 14 36) base(Targetx, Item) studio("models/w_longjump.mdl") = item_longjump : "Longjump module" []
 
 // -Mikk Entity that will give oxygen to players that touch it
-@PointClass base(Targetname, TargetMMStyle, Master, Angles, RenderFields, ClassicModeIgnore, HullSetSizes) size(-16 -16 -16, 16 16 16) = item_oxygentank : "Oxygen Tank"
+@PointClass base(Targetname, Target, Master, Angles, RenderFields, ClassicModeIgnore, HullSetSizes) size(-16 -16 -16, 16 16 16) = item_oxygentank : "Oxygen Tank"
 [
     // Set custom model
     model(studio) : "Custom Model" : "models/w_oxygen.mdl"
@@ -6259,13 +6211,6 @@
     restart_delay(integer)                         : "Delay before Return"        : 0 //If the NPC has stopped moving because of a stop condition (E.g. hearing a gunshot), the NPC will wait this long before continuing back to this path_waypoint.
 ]
 
-
-
-
-
-
-
-
 @PointClass base(Targetname, Angles) size(16 16 16)  color(255 148 0) = path_track : "Train Track Path"
 [
     spawnflags(flags) =
@@ -6284,8 +6229,8 @@
     speed(integer) : "New Train Speed (Legacy)" : 0
 ]
 
-// -Mikk Executes a console variable (Client-Side) on the activator or all players.
-@PointClass base(Targetname) color(192 255 0) = player_command : "Execute a console variable client-side"
+// -Mikk https://github.com/Mikk155/Sven-Co-op#player_command
+@PointClass base(Targetname, Target, Master, Delay) color(192 255 0) = player_command : "Execute a console variable client-side"
 [
     spawnflags(flags) =
     [
@@ -6381,42 +6326,32 @@
     ]
 ]
 
-@PointClass base(Targetname, Target, Master) size(-16 -16 -16, 16 16 16) color(96 32 128) = player_equipment : "player's inventory"
+// -Mikk https://github.com/Mikk155/Sven-Co-op#player_inbutton
+@BaseClass base(Targetname, Target, Delay, Master ) = BasePlayerInButton
 [
-    m_iAffected(choices) : "Players to affect" : 0 =
+    wait(choices) : "Fire when Press" : 0 =
     [
-        0 : "Activator only (default)"
-        1 : "All players"
-        2 : "All players except activator"
-    ]
-    m_iAction(choices) : "Action to take" : 0 =
-    [
-        0 : "Give items (default)"
-        1 : "Remove items"
-    ]
-]
-
-@BaseClass base(Targetname, TargetMMStyle, Delay, Master ) = BasePlayerInButton
-[
-    netname(choices) : "Fire when Press" : 32 =
-    [
+        0 : "none"
         1 : "Primary attack"
         2 : "Jump"
         4 : "Duck"
         8 : "Move forward"
         16 : "Move backward"
         32 : "Use"
-        64 : "Cancel"
+        // 64 : "Cancel"
         128 : "Left"
         256 : "Right"
         512 : "Move left"
         1024 : "Move right"
         2048 : "Secondary attack"
-        4096 : "Run/Walk"
+        // 4096 : "Run/Walk"
         8192 : "Reload"
         16384 : "Tertiary attack"
         32768 : "ScoreBoard"
     ]
+
+	// No target will be fired.
+	netname(string) : "Altenative keybind"
 
     spawnflags(flags) =
     [
@@ -6651,16 +6586,6 @@
 
     function_name(string) : "Angelscript function name" //Angelscript function to call on creation of a monster. Format: void FunctionName(MonsterEntity@ pSquadmaker, Entity@ pMonster)
 ]
-
-// -Mikk a custom entity that generates any entity.
-// simply add the keyvalues that you want and this entity will spawn it with everything
-// Make sure to precache everything.
-// @PointClass base(Targetname, Master) size(-16 -16 0, 16 16 72) color(245 128 96) = entitymaker : "Entity Maker"
-// [
-    // child_classname(string) : "Entity classname" : "monster_barney"
-    // child_targetname(string) : "Entity targetname" : "barney el dinosaurio"
-// ]
-// -TODO
 
 // -Mikk Changed to a BaseClass and renamed to refeer to the file name instead.
 @BaseClass base( Master, InventoryRules, ZHLTbmodel) = BaseCdAudio
@@ -7220,96 +7145,8 @@
     m_iAppendSpaces(integer) : "Append spaces (for strings)" : 0
     message(target_destination) : "Trigger after action"
 
-// -Mikk A feature that allows mapper to change a certain weapon's keyvalue from !activator.
-// This script has been created for modifying displacer teleport target destination on-the-fly. feedback by Sparks.
-// Pass activator to trigger the entity and his weapon's keyvalue will be updated.
-// Specify here the classname of the weapon you want to update.
+	// -Mikk https://github.com/Mikk155/Sven-Co-op#trigger_changevalue
     $s_weapon(string) : "[AS] Weapon's value modifier"
-
-//  Supported keys that you can change:
-
-// "$s_target" -> Target for when the weapon is picked up.
-
-// "$s_targetname" -> Targetname for the weapon.
-
-// "$s_m_iszTeleportDestination" -> Teleport destination for weapon_displacer
-
-// "$s_exclusivehold" -> Exclusive Hold 0 = No, 1 = Yes.
-    // Note: the change is added when the player select the weapon in question. it won't switch to it automatically.
-    
-// "$s_spawnflags" -> Spawnflags for weapon_displacer
-      //  64: "Random Destination"
-      //  128: "Rotate (Dest Angles)" / "TOUCH Only"
-      //  256: "Keep Angles" / "USE Only"
-      //  512: "Keep velocity" / "Can Use w/o LoS"
-      //  4096 : "Ignore delay"
-
-// "$s_renderfx" -> Render FX
-        // 0: "Normal"
-        // 1: "Slow Pulse"
-        // 2: "Fast Pulse"
-        // 3: "Slow Wide Pulse"
-        // 4: "Fast Wide Pulse"
-        // 9: "Slow Strobe"
-        // 10: "Fast Strobe"
-        // 11: "Faster Strobe"
-        // 12: "Slow Flicker"
-        // 13: "Fast Flicker"
-        // 5: "Slow Fade Away"
-        // 6: "Fast Fade Away"
-        // 7: "Slow Become Solid"
-        // 8: "Fast Become Solid"
-        // 14: "Constant Glow"
-        // 15: "Distort"
-        // 16: "Hologram (Distort + fade)"
-        // 19: "Glow Shell"
-
-// "$s_rendermode" -> Render Mode
-        // 0: "Normal"
-        // 1: "Color"
-        // 2: "Texture"
-        // 3: "Glow"
-        // 4: "Solid"
-        // 5: "Additive"
-
-// "$s_renderamt" -> FX Amount (1 - 255)
-
-// "$s_rendercolor" -> FX Color (R G B)
-
-// "$s_movetype" -> Gravity Setting
-        // -1: "Unmoveable"
-        // 0: "Fall to the ground (default)"
-        // 5: "Hover in the air"
-        // 8: "Hover in the air, ignore brush collision"
-
-// "$s_m_TertiaryMode" -> Tertiary fire mode for weapon_displacer
-      //  0 : "Default (weaponmode_displacer)"
-      //  1 : "Disable"
-      //  2 : "Enable"
-
-// "$s_m_flPortalSpeed" -> Portal Speed for weapon_displacer
-
-// "$s_m_flPortalRadius" -> Portal Radius for weapon_displacer
-
-// "$s_m_flPrimaryAmmoNeeded" -> Ammo needed/used to fire primary for weapon_displacer
-
-// "$s_m_flSecondaryAmmoNeeded" -> Ammo needed/used to fire secondary for weapon_displacer
-
-// "$s_m_flTertiaryAmmoNeeded" -> Ammo needed/used to fire tertiary for weapon_displacer
-
-// Those need precache. don't fuck up it!
-// "$s_wpn_v_model" -> Custom V_Model
-// "$s_wpn_w_model" -> Custom W_Model
-// "$s_wpn_p_model" -> Custom P_Model
-
-// Not tested since i didn't find models or other reasons:
-// "$s_skin" -> Change current skin.
-// "$s_body" -> Change current body.
-
-// Need test
-// "$s_dmg"
-// "$s_soundlist"
-// "$s_CustomSpriteDir"
 ]
 
 // Copy value of one entity to another value of another entity
@@ -7680,6 +7517,31 @@
     ]
 ]
 
+// -Mikk https://github.com/Mikk155/Sven-Co-op#trigger_manager
+// -TODO Using custom keyvalues on TriggerType entities will generate this entity as intermediary as it was originaly with trigger_script. for lazy people like me
+@PointClass base(Targetname, Master, Delay, Target) = trigger_manager : "Custom Load Data"
+[
+    trigger_if_master(target_destination) : "Fire when locked by master"
+    trigger_if_locked(target_destination) : "Fire when not activated"
+    activator(target_destination) : "New !activator" : "!activator"
+    caller(target_destination) : "New !caller" : "!caller"
+    USETYPE(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        4 : "Same as imput"
+        5 : "Opposite of input"
+    ]
+    spawnflags(flags) =
+    [
+        1 : "Remove On Fire" : 0
+        2 : "Once per activator" : 0
+    ]
+    wait(float) : "Delay before re-activation" : 0.0
+]
+
 @PointClass base(Targetname) = trigger_load : "Custom Load Data"
 [
     m_iszLevelName(string) : "Alternate Level Save File"
@@ -7707,29 +7569,15 @@
     height(integer) : "Jump Height" : 128
 ]
 
-@SolidClass base(Trigger, TriggerIndividual) = trigger_multiple : "Trigger: Activate multiple"
+@SolidClass base(Trigger) = trigger_multiple : "Trigger: Activate multiple"
 [
     spawnflags(flags) =
     [
-        // -Mikk if set. all players inside will trigger the target instead of just one random player/monster/pushable.
+		// -Mikk https://github.com/Mikk155/Sven-Co-op#trigger_multiple
         64: "[AS] Iterate All Occupants": 0
-        // NOTE: is not compatible with $i_trigger_individual.
-        // since both works by changing its target and using a trigger_script as intermediary.
-        // use a trigger_relay as intermediary for $i_trigger_individual if you really want to use both features.
-        
-        // NOTE: You can use flag 8 (everything else)
-        // so every thing inside will fire the entity but a player is required to touch the trigger first.
-        // When i say "everything else" it really mean "everything"
     ]
     // why i can't use decimals? Changed to float.
     wait(float) : "Delay before reset" : 10.0
-    
-    // $i_tiny_monsters(choices) : "[AS] Allow tiny monsters (insects/hornets)" : 0 =
-    // [
-    //     0 : "No"
-    //     1 : "Yes"
-    // ]
-    // -TODO + array maybe
 ]
 
 @PointClass base(Targetname) size(-16 -16 -16, 16 16 16) color(0 0 200) = trigger_numericdisplay : "Numeric Display"
@@ -7750,7 +7598,7 @@
 
 @SolidClass base(Trigger) = trigger_once : "Trigger: Activate once" []
 
-@SolidClass base(Targetname, TargetMMStyle, Master) = trigger_once_mp : "Trigger: Activate once"
+@SolidClass base(Targetname, Target, Master) = trigger_once_mp : "Trigger: Activate once"
 [
     spawnflags(flags) =
     [
@@ -7776,15 +7624,6 @@
 
 @PointClass base(Targetname) color(255 230 150) = trigger_random : "Trigger Random"
 [
-    // -Mikk Gets a random number between a minimun and a maximun value defined here.
-    // Use trigger_copyvalue trigger_condition or whatever you want
-    $f_math_min(float) : "[AS] Minimun value"
-    $f_math_max(float) : "[AS] Maximun value"
-    // Once triggered. the random value is set in this two keyvalues.
-    $i_math_result(string) : "[AS] Result (integer)" : "result written here"
-    $f_math_result(string) : "[AS] Result (float)" : "result written here"
-
-
     target_count(integer) : "Target Count" : 4
     min_delay(string) : "Minimum Delay (0 = off)" : "3.0"
     max_delay(string) : "Maximum Delay (0 = off)" : "7.0"
@@ -7815,7 +7654,7 @@
     ]
 ]
 
-@PointClass base(Targetname, Targetx, TriggerIndividual) color(165 30 165) = trigger_relay : "Trigger Relay"
+@PointClass base(Targetname, Targetx) color(165 30 165) = trigger_relay : "Trigger Relay"
 [
     spawnflags(flags) =
     [
@@ -7859,6 +7698,7 @@
         2 : "Respawn dead players" : 0
         4 : "Don't move living players" : 0
         8 : "[AS] Keep Collected Items" : 0
+        16 : "[AS] Keep Ammo from collected" : 0
     ]
 ]
 
@@ -8095,26 +7935,20 @@
     m_iszNoString(string) : "No string (optional)"
 ]
 
-// -Mikk A custom vote menu ( buy menu-Like )
-// Open smart edit and add there keyvalues.
-// key = option to show
-// value = thing to trigger if the voted passed.
-// The entity will also fire its target when the vote ends.
-// Those values also supports the same system as a multi_manager ( #0 - #1 - #2 )
+// -Mikk https://github.com/Mikk155/Sven-Co-op#trigger_sound
 @PointClass base(Targetname) color(40 40 40) = trigger_votemenu : "Vote Menu"
 [
     target(target_destination) : "Target (USE_TYPE)"
-    health(string) : "Time to vote"
+    health(float) : "Time to vote"
     netname(string) : "Title to show"
     spawnflags(flags) =
     [
-        // If set. the vote will be for activator only.
         1: "Activator only" : 0
     ]
 
 // -TODO target if nothing was voted.
 // -TODO if two or more options receive the same ammount of votes, allow a "random target" or a "fire all targets" or "no target"
-
+// -TODO pass activator for options
 // Angelscript: Not allowed: in section 'trigger_votemenu.as', at (158, 13):Angelscript:  Function Angelscript: trigger_votemenu::Results:
 // Angelscript: Message: Index out of bounds
 // ERROR: Angelscript: CASBaseCallable::Call: Execution of function 'trigger_votemenu::Results' failed!

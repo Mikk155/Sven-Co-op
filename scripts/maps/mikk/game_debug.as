@@ -7,10 +7,10 @@ namespace game_debug
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: game_debug\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Show Debug messages if it is active.\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#game_debug"
+            "\nAuthor: Mikk"
+            "\nGithub: github.com/Mikk155"
+            "\nDescription: Show Debug messages if it is active.\n"
         );
     }
 
@@ -27,7 +27,7 @@ namespace game_debug
                 { "!netname", string( self.pev.netname ) }
             } );
 
-            g_Util.DebugMessage( "[DEBUG] " + Message );
+            g_Util.Debug( "[DEBUG] " + Message );
         }
     }
 }

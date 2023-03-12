@@ -8,10 +8,10 @@ namespace item_oxygentank
         g_Game.PrecacheOther( "env_oxygenbubble" );
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: item_oxygentank\n"
-            "Author: CubeMath\n"
-            "Github: github.com/CubeMath\n"
-            "Description: Entity that will give oxygen to players that touch it.\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#item_oxygentank"
+            "\nAuthor: CubeMath"
+            "\nGithub: github.com/CubeMath"
+            "\nDescription: Entity that will give oxygen to players that touch it.\n"
         );
     }
 

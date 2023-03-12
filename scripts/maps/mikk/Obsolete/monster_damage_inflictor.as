@@ -28,7 +28,7 @@ namespace monster_damage_inflictor
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: monster_damage_inflictor\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#monster_damage_inflictor\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Feature for passing a monster's Attacker/damage inflictor as a !activator.\n"

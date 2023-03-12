@@ -5,10 +5,10 @@ namespace env_spritetrail
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: env_spritetrail\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Traces a sprite when the target entity moves.\n"
+            "Script: https://github.com/Mikk155/Sven-Co-op#env_spritetrail"
+            "\nAuthor: Gaftherman"
+            "\nGithub: github.com/Gaftherman"
+            "\nDescription: Traces a sprite when the target entity moves.\n"
         );
 
         g_CustomEntityFuncs.RegisterCustomEntity( "env_spritetrail::entity", "env_spritetrail" );
@@ -76,7 +76,7 @@ namespace env_spritetrail
 
             if( hTargetEnt.GetEntity() is null )
             {
-                g_Util.DebugMessage("NULL entity in env_spritetrail. trail set on self entity.");
+                g_Util.Debug("NULL entity in env_spritetrail. trail set on self entity.");
                 hTargetEnt = self;
                 self.pev.nextthink = g_Engine.time + 0.5f;
                 return;
