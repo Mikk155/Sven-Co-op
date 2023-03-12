@@ -206,7 +206,7 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 | Entity / Script | Description | Angelscript |
 |-----------------|-------------| :---------: |
 [ammo_custom](#ammo_custom) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ 
-[ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) | Ammunition entities. | ✔️ 
+[ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) | Ammunition entities. | ❌ 
 
 </p>
 </details>
@@ -2495,13 +2495,6 @@ void MapInit()
 </p>
 </details>
 
-    (string) : ""
-    netname(string) : "Title to show"
-    spawnflags(flags) =
-    [
-        // If set. the vote will be for activator only.
-        1: "Activator only" : 0
-    ]
 | key | value | description |
 |-----|-------|-------------|
 | target | target | entity to trigger when the vote ends |
