@@ -205,7 +205,7 @@ Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/fo
 
 | Entity / Script | Description | Angelscript |
 |-----------------|-------------| :---------: |
-[ammo_custom](develop/information/entities/ammo/ammo_custom.md) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ 
+[ammo_custom](#ammo_custom) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ 
 [ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) | Ammunition entities. | ❌ 
 
 </p>
@@ -462,6 +462,104 @@ General information in [svenmanor](https://sites.google.com/site/svenmanor/entgu
 General information in [svenmanor](https://sites.google.com/site/svenmanor/entguide/ambient_music)
 
 - For each client. the volume of this entity depends on their configuration for MP3 Volume (Cvar ``MP3Volume`` and ``MP3FadeTime`` ) some players has this always muted. so setting ambient_generic instead would be fine but keep in mind that hearing a song always for each map-restart is annoying at some point.
+
+</p>
+</details>
+
+---
+
+### ammo_custom
+
+<details><summary>Description</summary>
+<p>
+
+ammo_custom is an ammo item customizable that gives a specified ammout of bullets that the entity sets.
+
+<details><summary>Installation</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils ammo_custom
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+In your main map_script add:
+```angelscript
+#include "mikk/ammo_custom"
+
+void MapInit()
+{
+	ammo_custom::Register();
+}
+```
+
+</p>
+</details>
+
+<details><summary>Usage</summary>
+<p>
+
+Supports all [ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) keyvalues.
+
+| key | value | description |
+|-----|-------|-------------|
+| model | string | defines a custom world model |
+| p_sound | string | defines a custom sound to use when the item is taken |
+| am_name | [choices](#values-am_name) | defines the type of ammunition this item will give to players |
+| am_give | integer | number of bullets that this item should give to the players |
+| frags | integer | How many times player can take this item (affect only activator) 0 = infinite ( if set and player is above the count, the item is render invisible for that player and he can't pickup it anymore |
+
+### Values am_name
+
+<details><summary>See Values</summary>
+<p>
+
+- buckshot
+- 9mm
+- ARgrenades
+- sporeclip
+- rockets
+- uranium
+- bolts
+- 556
+- 357
+- m40a1
+- satchel
+- Trip Mine
+- Hand Grenade
+- snarks
+
+</p>
+</details>
+
+
+<details><summary>Notes</summary>
+<p>
+
+⚠️ The player must have already equiped the items that classifies as "weapons" the ammo will be added but the player won't be able to select them until collect a weapon.
+
+List:
+- satchel
+- Trip Mine
+- Hand Grenade
+- snarks
+
+[Test map](https://github.com/Mikk155/Sven-Co-op/raw/main/maps/1test_ammo_custom.bsp)
+
+</p>
+</details>
+
+</p>
+</details>
 
 </p>
 </details>
