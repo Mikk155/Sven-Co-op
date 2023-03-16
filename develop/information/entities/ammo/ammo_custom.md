@@ -47,16 +47,16 @@ void MapInit()
 </p>
 </details>
 
-### Valores
+### Values
 
-Soporta la base de [ammo](ammo.md).
+Soporta la base de [ammo](../pickup.md).
 
 | key | value | description |
 |-----|-------|-------------|
 | model | string | define un modelo |
 | p_sound | string | define un sonido personalizado para cuando el item es tomado |
-| am_name | [choices](#am_name) | define el tipo de municion que este item dará |
-| am_give | integer | cantidad de municion que este item dará |
+| am_name | [choices](#am_name) | define el tipo de munición que este item dará |
+| am_give | integer | cantidad de munición que este item dará |
 | frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podrán tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
 
 ### am_name
@@ -78,6 +78,31 @@ Soporta la base de [ammo](ammo.md).
 
 </p>
 </details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <details><summary>Español</summary>
 <p>
@@ -130,14 +155,14 @@ void MapInit()
 
 ### Valores
 
-Soporta la base de [ammo](ammo.md).
+Soporta la base de [ammo](../pickup.md).
 
 | key | value | description |
 |-----|-------|-------------|
 | model | string | define un modelo |
 | p_sound | string | define un sonido personalizado para cuando el item es tomado |
-| am_name | [choices](#am_name-es) | define el tipo de municion que este item dará |
-| am_give | integer | cantidad de municion que este item dará |
+| am_name | [choices](#am_name-es) | define el tipo de munición que este item dará |
+| am_give | integer | cantidad de munición que este item dará |
 | frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podrán tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
 
 ### am_name es
