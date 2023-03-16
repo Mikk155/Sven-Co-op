@@ -1,8 +1,6 @@
 <details><summary>English</summary>
 <p>
 
-Work in progress - Kez Deja un espacio entre lo que escribas y los </p> o se bugia ekisde
-
 ### ammo_custom
 
 ammo_custom es una entidad hecha en Angelscript que permite elegir cuanta munición darle a el jugador y no siempre la cantidad por defecto del juego que los items otorgan.
@@ -80,15 +78,6 @@ Soporta la base de [ammo](ammo.md).
 
 </p>
 </details>
-
-
-
-
-
-
-
-
-
 
 <details><summary>Español</summary>
 <p>

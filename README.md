@@ -1,98 +1,59 @@
 # Sven-Co-op Repository
 
+<details><summary>English</summary>
+<p>
+
 An assortment of test maps, additional information for SC stuff, Angelscript plugins / map-scripts, new entities and anything related to SC.
 
+</p>
+</details>
 
-
-
-
-
-
-
-
-
-<details><summary>People who contributed in any way 🛠️</summary>
+<details><summary>Español</summary>
 <p>
-	
-[Gaftherman](https://github.com/Gaftherman)
----
-Sparks Discord: [Sparks#1475]()
----
-[KEZÆIV](https://www.youtube.com/channel/UCV5W8sCs-5EYsnQG4tAfoqg)
----
-[Giegue](https://github.com/JulianR0)
----
-[Duk0](https://github.com/Duk0)
----
-[Outerbeast](https://github.com/Outerbeast)
----
-[Cubemath](https://github.com/CubeMath)
----
-[Rick](https://github.com/RedSprend)
----
-[Litude](https://github.com/Litude)
----
-[Wootguy](https://github.com/wootguy)
----
+
+Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https://store.steampowered.com/app/225840/Sven_Coop/), Plugins/Scripts en Angelscript, nuevas entidades y cualquier cosa relacionada a [Sven Co-op](https://store.steampowered.com/app/225840/Sven_Coop/).
+
+[Creditos](develop/information/credits.md)
+
+[Contactar](develop/information/contact.md)
+
+[Updated FGD (Forge Game Data)](develop/forge game data/sven-coop.fgd)
+
+
+<details><summary>Scripts & Entidades</summary>
+<p>
+
+<details><summary>ambient_</summary>
+<p>
+
+| Entidad / Script | Descripción | Angelscript |
+|-----------------|-------------| :---------: |
+[ambient_generic](#ambient_generic) | Entity for reproduce a sound | ❌ 
+[ambient_music](#ambient_music) | Entity for reproduce a music song. | ❌ 
 
 </p>
 </details>
 
 ---
 
-
-
-
-
-
-
-
-<details><summary>Installing content easly from windows</summary>
+<details><summary>ammo_</summary>
 <p>
 
-
+| Entity / Script | Description | Angelscript |
+|-----------------|-------------| :---------: |
+[ammo_ (Base)](develop/information/entities/ammo/ammo_custom.md) | Base de informacion que otras entidades soportan | ❌ 
+[ammo_custom](develop/information/entities/ammo/ammo_custom.md) | Una entidad hecha en Angelscript que permite elegir cuanta munición darle a el jugador y no siempre la cantidad por defecto del juego que los items otorgan | ✔️ 
 
 </p>
 </details>
 
-
-
-
-
 ---
-
-
-
-
-
-
-<details><summary>Contact Info 📫</summary>
-<p>
-
-Username: ``Mikk#3885``
----
-Username: ``Gaftherman#0231``
----
-[Discord server invite](https://discord.gg/VsNnE3A7j8)
----
-![server](develop/images/limitless_potential.png)
 
 </p>
 </details>
 
-![discord](develop/images/discord.png)
-
----
-
-
-
-
-
-
-
-
-
-
+</p>
+</details>
 
 
 
@@ -175,29 +136,6 @@ Username: ``Gaftherman#0231``
 <details><summary>Scripts & Entities</summary>
 <p>
 
-Make use of our [FGD](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/forge%20game%20data/sven-coop.fgd)
-
-<details><summary>ambient_</summary>
-<p>
-
-| Entity / Script | Description | Angelscript |
-|-----------------|-------------| :---------: |
-[ambient_generic](#ambient_generic) | Entity for reproduce a sound | ❌ 
-[ambient_music](#ambient_music) | Entity for reproduce a music song. | ❌ 
-
-</p>
-</details>
-
-<details><summary>ammo_</summary>
-<p>
-
-| Entity / Script | Description | Angelscript |
-|-----------------|-------------| :---------: |
-[ammo_custom](develop/information/entities/ammo/ammo_custom.md) | Entity that gives a specified ammout of bullets that the entity sets. | ✔️ 
-[ammo_](https://sites.google.com/site/svenmanor/entguide/ammo) | Ammunition entities. | ❌ 
-
-</p>
-</details>
 
 <details><summary>config_</summary>
 <p>
