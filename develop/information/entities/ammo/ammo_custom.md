@@ -59,7 +59,7 @@ Soporta la base de [ammo](ammo.md).
 | p_sound | string | define un sonido personalizado para cuando el item es tomado |
 | am_name | [choices](#am_name) | define el tipo de municion que este item dará |
 | am_give | integer | cantidad de municion que este item dará |
-| frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podran tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
+| frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podrán tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
 
 ### am_name
 
@@ -147,11 +147,11 @@ Soporta la base de [ammo](ammo.md).
 |-----|-------|-------------|
 | model | string | define un modelo |
 | p_sound | string | define un sonido personalizado para cuando el item es tomado |
-| am_name | [choices](#am_name) | define el tipo de municion que este item dará |
+| am_name | [choices](#am_name-es) | define el tipo de municion que este item dará |
 | am_give | integer | cantidad de municion que este item dará |
-| frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podran tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
+| frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podrán tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
 
-### am_name
+### am_name es
 
 - buckshot
 - 9mm
