@@ -1,8 +1,22 @@
+<details><summary>English</summary>
+<p>
+
+Work in progress - Kez Deja un espacio entre lo que escribas y los </p> o se bugia ekisde
+
 ### ammo_custom
 
-ammo_custom is an ammo item customizable that gives a specified ammout of bullets that the entity sets.
+ammo_custom es una entidad hecha en Angelscript que permite elegir cuanta munición darle a el jugador y no siempre la cantidad por defecto del juego que los items otorgan.
 
-<details><summary>Installation</summary>
+<details><summary>Instalar</summary>
+<p>
+
+Requiere:
+- [ammo_custom](../../../../scripts/maps/mikk/ammo_custom.as)
+- [utils](../../../../scripts/maps/mikk/utils.as)
+
+[Descarga con un toque](../../batch.md)
+
+<details><summary>Batch</summary>
 <p>
 
 ```bat
@@ -19,7 +33,10 @@ if not exist %output% (
 )) 
 ```
 
-In your main map_script add:
+</p>
+</details>
+
+En tu map_script Agrega:
 ```angelscript
 #include "mikk/ammo_custom"
 
@@ -32,17 +49,19 @@ void MapInit()
 </p>
 </details>
 
-Base Support [ammo](ammo.md).
+### Valores
+
+Soporta la base de [ammo](ammo.md).
 
 | key | value | description |
 |-----|-------|-------------|
-| model | string | defines a custom world model |
-| p_sound | string | defines a custom sound to use when the item is taken |
-| am_name | [choices](#values-am_name) | defines the type of ammunition this item will give to players |
-| am_give | integer | number of bullets that this item should give to the players |
-| frags | integer | How many times player can take this item (affect only activator) 0 = infinite ( if set and player is above the count, the item is render invisible for that player and he can't pickup it anymore |
+| model | string | define un modelo |
+| p_sound | string | define un sonido personalizado para cuando el item es tomado |
+| am_name | [choices](#am_name) | define el tipo de municion que este item dará |
+| am_give | integer | cantidad de municion que este item dará |
+| frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podran tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
 
-### Values am_name
+### am_name
 
 - buckshot
 - 9mm
@@ -59,12 +78,95 @@ Base Support [ammo](ammo.md).
 - Hand Grenade
 - snarks
 
-### Notes:
+</p>
+</details>
 
-⚠️ The player must have already equiped the items that classifies as "weapons" the ammo will be added but the player won't be able to select them until collect a weapon.
 
-List:
+
+
+
+
+
+
+
+
+<details><summary>Español</summary>
+<p>
+
+### ammo_custom
+
+ammo_custom es una entidad hecha en Angelscript que permite elegir cuanta munición darle a el jugador y no siempre la cantidad por defecto del juego que los items otorgan.
+
+<details><summary>Instalar</summary>
+<p>
+
+Requiere:
+- [ammo_custom](../../../../scripts/maps/mikk/ammo_custom.as)
+- [utils](../../../../scripts/maps/mikk/utils.as)
+
+[Descarga con un toque](../../batch.md)
+
+<details><summary>Batch</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils ammo_custom
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+</p>
+</details>
+
+En tu map_script Agrega:
+```angelscript
+#include "mikk/ammo_custom"
+
+void MapInit()
+{
+	ammo_custom::Register();
+}
+```
+
+</p>
+</details>
+
+### Valores
+
+Soporta la base de [ammo](ammo.md).
+
+| key | value | description |
+|-----|-------|-------------|
+| model | string | define un modelo |
+| p_sound | string | define un sonido personalizado para cuando el item es tomado |
+| am_name | [choices](#am_name) | define el tipo de municion que este item dará |
+| am_give | integer | cantidad de municion que este item dará |
+| frags | integer | cuantas veces este item puede ser tomado por cada jugador, si es 0 se puede tomar infinitamente, si es 1 todos los jugadores podran tomarlo una vez cada uno ( El objeto se hace invisible para el jugador que lo haya tomado esa cantidad de veces ) |
+
+### am_name
+
+- buckshot
+- 9mm
+- ARgrenades
+- sporeclip
+- rockets
+- uranium
+- bolts
+- 556
+- 357
+- m40a1
 - satchel
 - Trip Mine
 - Hand Grenade
 - snarks
+
+</p>
+</details>
