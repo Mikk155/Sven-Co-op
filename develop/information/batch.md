@@ -1,15 +1,31 @@
+
+<details><summary>English</summary>
+<p>
+
+
+</p>
+</details>
+
+<details><summary>Spanish</summary>
+<p>
+
 ### Batch file
 
-- Use any text editor and save as a ``.bat`` ( [Batch file](https://en.wikipedia.org/wiki/Batch_file) ) inside your ``%steam path%/Sven Co-op/svencoop_addon/install.bat``
+- Usa cualquier editor de texto crea un archivo y guardalo como ``.bat`` ( [Batch file](https://en.wikipedia.org/wiki/Batch_file) ) dentro de ``%Ruta a steam%//Sven Co-op/svencoop_addon/install.bat``
 
-- Right click and ``edit``
+- Dale click derecho y ``editar``
 
-- in the script you have interest, press the ``Installation`` button and copy the code
+- en el MD del script de tu interes, abre la categoria ``Instalar``
 
-- Paste inside your [Batch file](https://en.wikipedia.org/wiki/Batch_file)
+- Copia el codigo y pegalo en tu archivo
 
-- save and close
+![server](develop/images/batch.png)
 
-- Double click it.
+- Guardar y cerar
 
-- Done, all the required files for that script has been downloaded and placed in your svencoop_addon folder.
+- ejecuta el archivo
+
+- Listo, los archivos necesarios han sido descargados e instalados en el sitio correcto.
+
+</p>
+</details>

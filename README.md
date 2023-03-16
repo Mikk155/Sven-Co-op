@@ -75,12 +75,12 @@ Username: ``Gaftherman#0231``
 ---
 [Discord server invite](https://discord.gg/VsNnE3A7j8)
 ---
-![server](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/images/limitless_potential.png)
+![server](develop/images/limitless_potential.png)
 
 </p>
 </details>
 
-![discord](https://github.com/Mikk155/Sven-Co-op/blob/main/develop/images/discord.png)
+![discord](develop/images/discord.png)
 
 ---
 
