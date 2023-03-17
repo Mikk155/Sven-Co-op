@@ -4,7 +4,7 @@
 
 ### Batch file
 
-- Usa cualquier editor de texto crea un archivo y guardalo como ``.bat`` ( [Batch file](https://en.wikipedia.org/wiki/Batch_file) ) dentro de ``%Ruta a steam%//Sven Co-op/svencoop_addon/install.bat``
+- Use any text editor, create a file and save it as ``.bat`` ( [Batch file](https://en.wikipedia.org/wiki/Batch_file) ) inside ``%Route to steam%//Sven Co-op/svencoop_addon/install.bat``
 
 - Dale click derecho y ``editar``
 
