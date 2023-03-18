@@ -1,4 +1,4 @@
-### People who contributed in any way 🛠️ | Gente que ayudo de cualquier forma 🛠️
+### Gente que ayudo de cualquier forma 🛠️
 
 [Gaftherman](https://github.com/Gaftherman)
 ---
