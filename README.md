@@ -39,10 +39,23 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 <details><summary>ammo_</summary>
 <p>
 
-| Entity / Script | Description | Angelscript |
-|-----------------|-------------| :---------: |
-[ammo_ (Base)](develop/information/entities/ammo/ammo_custom.md) | Base de informacion que otras entidades soportan | ❌ 
-[ammo_custom](develop/information/entities/ammo/ammo_custom.md) | Una entidad hecha en Angelscript que permite elegir cuanta munición darle a el jugador y no siempre la cantidad por defecto del juego que los items otorgan | ✔️ 
+| Entity / Script | Description |
+|-----------------|-------------|
+[ammo_](develop/information/entities/ammo/ammo_.md) | Todos los tipos de munición en el juego |
+[ammo_custom](develop/information/entities/ammo/ammo_custom.md) | Una entidad hecha en Angelscript que permite elegir cuanta munición darle a el jugador y no siempre la cantidad por defecto del juego que los items otorgan |
+
+</p>
+</details>
+
+---
+
+<details><summary>weapon_</summary>
+<p>
+
+| Entity / Script | Description |
+|-----------------|-------------|
+[weapon_357](develop/information/entities/weapon/weapon_357.md) | Un revolver que puede tener recargado 6 balas a la vez |
+[weapon_9mmAR](develop/information/entities/weapon/weapon_9mmAR.md) | Una mp5 con mira optica que puede tener recargadas 30 balas a la vez |
 
 </p>
 </details>
@@ -323,15 +336,6 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 </details>
 
 <details><summary>scripted_</summary>
-<p>
-
-| Entity / Script | Description | Angelscript |
-|-----------------|-------------| :---------: |
-
-</p>
-</details>
-
-<details><summary>weapon_</summary>
 <p>
 
 | Entity / Script | Description | Angelscript |
