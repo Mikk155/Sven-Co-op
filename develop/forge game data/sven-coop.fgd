@@ -1543,7 +1543,7 @@
 
 @PointClass base(Ammo, Targetx) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
 
-// -Mikk https://github.com/Mikk155/Sven-Co-op#ammo_custom
+// -Mikk https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/ammo_english.md#ammo_custom
 @PointClass base(Ammo, Targetx) size(-16 -16 0, 16 16 32) studio() = ammo_custom : "Custom Ammo"
 [
     angles(string) : "Pitch Yaw Roll (Y Z X)" : "0 0 0"
@@ -1561,6 +1561,7 @@
         "556" : "556"
         "357" : "357"
         "m40a1" : "m40a1"
+		// -TODO si no se tiene equipado estos, equiparlos.
         "satchel" : "satchel"
         "Trip Mine" : "Trip Mine"
         "Hand Grenade" : "Hand Grenade"
