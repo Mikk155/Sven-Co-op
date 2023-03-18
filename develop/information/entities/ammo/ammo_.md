@@ -74,9 +74,9 @@ Todas soportan la base [pickup](../pickup.md).
 
 ---
 
-| ammo_gaussclip | Cantidad de munición | Capacidad maxima | weapon_egon | weapon_gauss |
-| :---: | :---: | :---: | :---: | :---: |
-| ![image](../../../images/ammo_gaussclip.png) | 20 | 100 | ![image](../../../images/weapon_egon.png) | ![image](../../../images/weapon_gauss.png) |
+| ammo_gaussclip | Cantidad de munición | Capacidad maxima | weapon_egon | weapon_gauss | weapon_displacer |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| ![image](../../../images/ammo_gaussclip.png) | 20 | 100 | ![image](../../../images/weapon_egon.png) | ![image](../../../images/weapon_gauss.png) | ![image](../../../images/weapon_displacer.png) |
 
 ---
 
@@ -206,9 +206,9 @@ Todas soportan la base [pickup](../pickup.md).
 
 ---
 
-| ammo_gaussclip | Cantidad de munición | Capacidad maxima | weapon_egon | weapon_gauss |
-| :---: | :---: | :---: | :---: | :---: |
-| ![image](../../../images/ammo_gaussclip.png) | 20 | 100 | ![image](../../../images/weapon_egon.png) | ![image](../../../images/weapon_gauss.png) |
+| ammo_gaussclip | Cantidad de munición | Capacidad maxima | weapon_egon | weapon_gauss | weapon_displacer |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| ![image](../../../images/ammo_gaussclip.png) | 20 | 100 | ![image](../../../images/weapon_egon.png) | ![image](../../../images/weapon_gauss.png) | ![image](../../../images/weapon_displacer.png) |
 
 ---
 
