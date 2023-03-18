@@ -20,7 +20,7 @@ Soporta la base [weapon_](weapon_.md)
 
 Cantidad de munición: 6
 
-Capacidad maxima: 30
+Capacidad maxima: 36
 
 ### Tipo de municion
 
