@@ -6,9 +6,9 @@ Base de valores que otras entidades comparten.
 |-----|-------|-------------|
 | model | string | Modelo de la entidad relativo a svencoop/ |
 | m_flCustomRespawnTime | float | Tiempo que tardará este objeto en reaparecer, si se deja vacio entonces se basa en los cvars mp_item/ammo/weapon_respawndelay, un valor de "-1" hace que este objeto jamas vuelva a reaparecer |
-| [movetype](movetype_spanish.md) | float | Tipo de comportamiento de desplazamiento |
-| [$i_classic_mode_ignore](config_classic_mode_spanish.md) | integer | Tipo de comportamiento dependiente de Classic Mode (Angelscript) |
-| [Render Settings](render_settings_spanish.md) | Varios | Todas las entidades visibles de el juego soportan este sistema de renderizado. |
+| [movetype](movetype_english.md) | float | Tipo de comportamiento de desplazamiento |
+| [$i_classic_mode_ignore](config_classic_mode_english.md) | integer | Tipo de comportamiento dependiente de Classic Mode (Angelscript) |
+| [Render Settings](render_settings_english.md) | Varios | Todas las entidades visibles de el juego soportan este sistema de renderizado. |
 
 ### spawnflags
 | flag | bit | descripción |
