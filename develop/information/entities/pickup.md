@@ -11,7 +11,7 @@ Base de valores que otras entidades comparten.
 | m_flCustomRespawnTime | float | Tiempo que tardará este objeto en reaparecer, si se deja vacio entonces se basa en los cvars mp_item/ammo/weapon_respawndelay, un valor de "-1" hace que este objeto jamas vuelva a reaparecer |
 | [movetype](movetype.md) | float | Tipo de comportamiento de desplazamiento |
 | [$i_classic_mode_ignore](config/config_classic_mode.md) | integer | Tipo de comportamiento dependiente de Classic Mode (Angelscript) |
-| [Render Settings](render_settings.md) | Varios | Comportamiento visual |
+| [Render Settings](render_settings.md) | Varios | Todas las entidades visibles de el juego soportan este sistema de renderizado. |
 
 ### spawnflags
 | flag | bit | descripción |
@@ -21,7 +21,7 @@ Base de valores que otras entidades comparten.
 | Can Use without line of sight | 512 | Activa, se puede tomar el objeto con la tecla USAR sin necesidad de estar observando el objeto |
 | 1024 | Disable Respawn | Activa, este objeto jamas va a reaparecer luego de ser tomado |
 
-Notas: usando la spawnflag 128 y la spawnflag 256 al mismo tiempo, el objeto no podra ser tomado.
+Notas: usando la spawnflag 128 y la spawnflag 256 al mismo tiempo, el objeto solo puede ser tomado mediante Trigger directo.
 
 </p>
 </details>
