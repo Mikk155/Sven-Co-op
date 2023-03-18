@@ -59,26 +59,26 @@ Capacidad maxima: 36
 <details><summary>Español</summary>
 <p>
 
-### weapon_357
+### weapon_eagle
 
-![image](../../../images/weapon_357.png)
+![image](../../../images/weapon_eagle.png)
 
 Soporta la base [weapon_](weapon_.md)
 
 ### CVars
 
-- weaponmode_357
-  - 0 Se puede utilizar zoom con alternative fire.
-  - 1 No se puede utilizar zoom con alternative fire.
+- weaponmode_eagle
+  - 0 Se puede utilizar laser con alternative fire.
+  - 1 No se puede utilizar laser con alternative fire.
 
 - sk_plr_357_bullet
   - Daño de el arma al disparar.
 
 ### Capacidad
 
-Cantidad de munición: 6
+Cantidad de munición: 7
 
-Capacidad maxima: 30
+Capacidad maxima: 36
 
 ### Tipo de municion
 
