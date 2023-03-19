@@ -1,6 +1,6 @@
 See in [English](README.md)
 
-# Sven-Co-op Repository
+# Sven-Co-op
 
 Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https://store.steampowered.com/app/225840/Sven_Coop/), Plugins/Scripts en Angelscript, nuevas entidades y cualquier cosa relacionada a [Sven Co-op](https://store.steampowered.com/app/225840/Sven_Coop/).
 
@@ -8,24 +8,18 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 
 [Contactar](develop/information/contact_spanish.md)
 
-[FGD](develop/forge-game-data/sven-coop.fgd) (Forge Game Data) Actualizado.
+[FGD](develop/forge%20game%20data/sven-coop.fgd) (Forge Game Data) Actualizado.
 
 
-<details><summary>Scripts & Entidades</summary>
+<details><summary>Entidades</summary>
 <p>
 
-<details><summary>ambient_</summary>
+<details><summary>A</summary>
 <p>
 
+- [aiscripted_sequence](develop/information/entities/aiscripted_sequence_spanish.md)
 - [ambient_generic](develop/information/entities/ambient_spanish.md#ambient_generic)
 - [ambient_music](develop/information/entities/ambient_spanish.md#ambient_music)
-
-</p>
-</details>
-
-<details><summary>ammo_</summary>
-<p>
-
 - [ammo_357](develop/information/entities/ammo_spanish.md#ammo_357)
 - [ammo_556](develop/information/entities/ammo_spanish.md#ammo_556)
 - [ammo_762](develop/information/entities/ammo_spanish.md#ammo_762)
@@ -45,7 +39,30 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 </p>
 </details>
 
-<details><summary>weapon_</summary>
+<details><summary>B</summary>
+<p>
+
+- [button_target](develop/information/entities/func_button_spanish.md#button_target)
+
+</p>
+</details>
+
+<details><summary>C</summary>
+<p>
+
+- [config_classic_mode](develop/information/entities/config_spanish.md#config_classic_mode)✔️Angelscript
+- [config_map_cvars](develop/information/entities/config_spanish.md#config_map_cvars)✔️Angelscript
+- [config_map_precache](develop/information/entities/config_spanish.md#config_map_precache)✔️Angelscript
+- [config_survival_mode](develop/information/entities/config_spanish.md#config_survival_mode)✔️Angelscript
+- [cycler](develop/information/entities/cycler_spanish.md#cycler)
+- [cycler_sprite](develop/information/entities/cycler_spanish.md#cycler_sprite)
+- [cycler_weapon](develop/information/entities/cycler_spanish.md#cycler_weapon)
+- [cycler_wreckage](develop/information/entities/cycler_spanish.md#cycler_wreckage)
+
+</p>
+</details>
+
+<details><summary>W</summary>
 <p>
 
 - [weapon_357](develop/information/entities/weapons_spanish.md#weapon_357)
