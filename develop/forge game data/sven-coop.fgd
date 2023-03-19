@@ -1440,7 +1440,7 @@
         26: "Planet X"
         27: "Haunted"
     ]
-    volstart(integer) : "Start Volume" : 0
+    volstart(float) : "Start Volume" : 0
     fadein(integer) : "Fade in time (0-100)" : 0
     fadeout(integer) : "Fade out time (0-100)" : 0
     pitch(integer) : "Pitch (> 100 = higher)" : 100
@@ -1546,7 +1546,6 @@
 // -Mikk https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/ammo_english.md#ammo_custom
 @PointClass base(Ammo, Targetx) size(-16 -16 0, 16 16 32) studio() = ammo_custom : "Custom Ammo"
 [
-    angles(string) : "Pitch Yaw Roll (Y Z X)" : "0 0 0"
     model(studio) : "Custom Model" : "models/w_shotbox.mdl"
     p_sound(sound) : "Custom Sound" : "items/9mmclip1.wav"
     am_name(choices) : "Ammo type" : "buckshot" =
