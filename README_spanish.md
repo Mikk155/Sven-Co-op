@@ -8,7 +8,7 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 
 [Contactar](develop/information/contact_spanish.md)
 
-[FGD](develop/forge game data/sven-coop.fgd) (Forge Game Data) Actualizado.
+[FGD](develop/forge-game-data/sven-coop.fgd) (Forge Game Data) Actualizado.
 
 
 <details><summary>Scripts & Entidades</summary>
@@ -17,59 +17,67 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 <details><summary>ambient_</summary>
 <p>
 
-| Entidad / Script | Descripción | Angelscript |
-|-----------------|-------------| :---------: |
-[ambient_generic](#ambient_generic) | Entity for reproduce a sound | ❌ 
-[ambient_music](#ambient_music) | Entity for reproduce a music song. | ❌ 
+- [ambient_generic](develop/information/entities/ambient_spanish.md#ambient_generic)
+- [ambient_music](develop/information/entities/ambient_spanish.md#ambient_music)
 
 </p>
 </details>
-
----
 
 <details><summary>ammo_</summary>
 <p>
 
-| Entity | Preview |
-|-----------------| :---: |
-| [weapon_357](weapons_spanish.md#weapon_357) | ![image](develop/images/weapon_357.png) |
-| [ammo_556](weapons_spanish.md#ammo_556) | ![image](develop/images/ammo_556.png) |
-| [ammo_762](weapons_spanish.md#ammo_762) | ![image](develop/images/ammo_762.png) |
-| [ammo_9mmAR](weapons_spanish.md#ammo_9mmAR) | ![image](develop/images/ammo_9mmAR.png) |
-| [ammo_9mmbox](weapons_spanish.md#ammo_9mmbox) | ![image](develop/images/ammo_9mmbox.png) |
-| [ammo_9mmclip](weapons_spanish.md#ammo_9mmclip) | ![image](develop/images/ammo_9mmclip.png) |
-| [ammo_ARgrenades](weapons_spanish.md#ammo_ARgrenades) | ![image](develop/images/ammo_ARgrenades.png) |
-| [ammo_buckshot](weapons_spanish.md#ammo_buckshot) | ![image](develop/images/ammo_buckshot.png) |
-| [ammo_crossbow](weapons_spanish.md#ammo_crossbow) | ![image](develop/images/ammo_crossbow.png) |
-| [ammo_custom](weapons_spanish.md#ammo_custom) | ![image](develop/images/angelscript.png) |
-| [ammo_gaussclip](weapons_spanish.md#ammo_gaussclip) | ![image](develop/images/ammo_gaussclip.png) |
-| [ammo_rpgclip](weapons_spanish.md#ammo_rpgclip) | ![image](develop/images/ammo_rpgclip.png) |
-| [ammo_spore](weapons_spanish.md#ammo_spore) | ![image](develop/images/ammo_spore.png) |
-| [ammo_sporeclip](weapons_spanish.md#ammo_sporeclip) | ![image](develop/images/ammo_sporeclip.png) |
-| [ammo_uziclip](weapons_spanish.md#ammo_uziclip) | ![image](develop/images/ammo_uziclip.png) |
+- [ammo_357](develop/information/entities/ammo_spanish.md#ammo_357)
+- [ammo_556](develop/information/entities/ammo_spanish.md#ammo_556)
+- [ammo_762](develop/information/entities/ammo_spanish.md#ammo_762)
+- [ammo_9mmAR](develop/information/entities/ammo_spanish.md#ammo_9mmAR)
+- [ammo_9mmbox](develop/information/entities/ammo_spanish.md#ammo_9mmbox)
+- [ammo_9mmclip](develop/information/entities/ammo_spanish.md#ammo_9mmclip)
+- [ammo_ARgrenades](develop/information/entities/ammo_spanish.md#ammo_ARgrenades)
+- [ammo_buckshot](develop/information/entities/ammo_spanish.md#ammo_buckshot)
+- [ammo_crossbow](develop/information/entities/ammo_spanish.md#ammo_crossbow)
+- [ammo_custom](develop/information/entities/ammo_spanish.md#ammo_custom)✔️Angelscript
+- [ammo_gaussclip](develop/information/entities/ammo_spanish.md#ammo_gaussclip)
+- [ammo_rpgclip](develop/information/entities/ammo_spanish.md#ammo_rpgclip)
+- [ammo_spore](develop/information/entities/ammo_spanish.md#ammo_spore)
+- [ammo_sporeclip](develop/information/entities/ammo_spanish.md#ammo_sporeclip)
+- [ammo_uziclip](develop/information/entities/ammo_spanish.md#ammo_uziclip)
 
 </p>
 </details>
-
----
 
 <details><summary>weapon_</summary>
 <p>
 
-| Entity / Script | Description |
-|-----------------|-------------|
-[weapon_9mmAR](develop/information/entities/weapon/weapon_9mmAR.md) | Una mp5 con mira optica que puede tener recargadas 30 balas a la vez |
-[weapon_9mmhandgun](develop/information/entities/weapon/weapon_9mmhandgun.md) | Una pistola beretta que puede tener recargadas 17 balas a la vez |
-[weapon_crossbow](develop/information/entities/weapon/weapon_crossbow.md) | Una ballesta con mira optica que puede tener recargadas 5 flechas a la vez |
-[weapon_crowbar](develop/information/entities/weapon/weapon_crowbar.md) | Una palanca utilizada como arma melee que tambien puede ser lanzada a distancia |
-[weapon_displacer](develop/information/entities/weapon/weapon_displacer.md) | Un arma tecnologica con la habilidad de teletransportar sus objetivos o a el portador a otra dimensión |
-[weapon_eagle](develop/information/entities/weapon/weapon_eagle.md) | Una Desert eagle con mira laser que puede tener recargado 7 balas a la vez |
-[weapon_egon](develop/information/entities/weapon/weapon_egon.md) | Un arma tecnologica con la habilidad de manipular los gluones de su objetivo |
+- [weapon_357](develop/information/entities/weapons_spanish.md#weapon_357)
+- [weapon_9mmAR](develop/information/entities/weapons_spanish.md#weapon_9mmar)
+- [weapon_9mmhandgun](develop/information/entities/weapons_spanish.md#weapon_9mmhandgun)
+- [weapon_crossbow](develop/information/entities/weapons_spanish.md#weapon_crossbow)
+- [weapon_crowbar](develop/information/entities/weapons_spanish.md#weapon_crowbar)
+- [weapon_displacer](develop/information/entities/weapons_spanish.md#weapon_displacer)
+- [weapon_eagle](develop/information/entities/weapons_spanish.md#weapon_eagle)
+- [weapon_egon](develop/information/entities/weapons_spanish.md#weapon_egon)
+- [weapon_gauss](develop/information/entities/weapons_spanish.md#weapon_gauss)
+- [weapon_grapple](develop/information/entities/weapons_spanish.md#weapon_grapple)
+- [weapon_handgrenade](develop/information/entities/weapons_spanish.md#weapon_handgrenade)
+- [weapon_hornetgun](develop/information/entities/weapons_spanish.md#weapon_hornetgun)
+- [weapon_m16](develop/information/entities/weapons_spanish.md#weapon_m16)
+- [weapon_m249](develop/information/entities/weapons_spanish.md#weapon_m249)
+- [weapon_medkit](develop/information/entities/weapons_spanish.md#weapon_medkit)
+- [weapon_minigun](develop/information/entities/weapons_spanish.md#weapon_minigun)
+- [weapon_pipewrench](develop/information/entities/weapons_spanish.md#weapon_pipewrench)
+- [weapon_rpg](develop/information/entities/weapons_spanish.md#weapon_rpg)
+- [weapon_satchel](develop/information/entities/weapons_spanish.md#weapon_satchel)
+- [weapon_shockrifle](develop/information/entities/weapons_spanish.md#weapon_shockrifle)
+- [weapon_shotgun](develop/information/entities/weapons_spanish.md#weapon_shotgun)
+- [weapon_snark](develop/information/entities/weapons_spanish.md#weapon_snark)
+- [weapon_sniperrifle](develop/information/entities/weapons_spanish.md#weapon_sniperrifle)
+- [weapon_sporelauncher](develop/information/entities/weapons_spanish.md#weapon_sniperrifle)
+- [weapon_tripmine](develop/information/entities/weapons_spanish.md#weapon_tripmine)
+- [weapon_uzi](develop/information/entities/weapons_spanish.md#weapon_uzi)
+- [weapon_uziakimbo](develop/information/entities/weapons_spanish.md#weapon_uziakimbo)
 
 </p>
 </details>
-
----
 
 </p>
 </details>
