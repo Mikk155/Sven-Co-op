@@ -36,3 +36,5 @@ El archivo GSR contendrá dentro lo siguiente
 "!SLV_ALERT3" "hungerslave/slv_word2.wav"
 ```
 De esta forma, los sonidos ( y sentencias ) especificados a la izquierda, serán reemplazados por los de la derecha.
+
+Lista de sonidos irremplazables: [unreplaceable_sounds](../issues/unreplaceable_sounds_spanish.md)
