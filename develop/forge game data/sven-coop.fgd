@@ -1561,8 +1561,7 @@
         "556" : "556"
         "357" : "357"
         "m40a1" : "m40a1"
-		// -TODO si no se tiene equipado estos, equiparlos.
-        "satchel" : "satchel"
+        "Satchel Charge" : "satchel"
         "Trip Mine" : "Trip Mine"
         "Hand Grenade" : "Hand Grenade"
         "snarks" : "snarks"

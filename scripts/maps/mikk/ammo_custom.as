@@ -20,6 +20,13 @@ namespace ammo_custom
     {
         private string p_sound = "items/9mmclip1.wav";
         private string am_name = "buckshot";
+		private string[][] Weapons = 
+		{
+			{"Satchel Charge", "weapon_satchel"},
+			{"Trip Mine", "weapon_tripmine"},
+			{"Hand Grenade", "weapon_handgrenade"},
+			{"snarks", "weapon_snark"}
+		};
         private int am_give = 8;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
@@ -78,6 +85,18 @@ namespace ammo_custom
 
             if( iValue < self.pev.frags || self.pev.frags == 0 )
             {
+				for(uint i = 0; i < Weapons.length(); i++)
+				{
+					if( am_name == Weapons[i][0] )
+					{
+						if( cast<CBasePlayer@>( pOther ).HasNamedPlayerItem( Weapons[i][1] ) is null )
+						{
+							cast<CBasePlayer@>( pOther ).GiveNamedItem( Weapons[i][1], 0, 0 );
+							return true;
+						}
+					}
+				}
+
                 if( pOther.GiveAmmo( am_give, am_name, 9999 ) != -1 )
                 {
                     if( self.pev.frags > 0 )
@@ -92,6 +111,7 @@ namespace ammo_custom
                     }
 
                     g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM);
+
                     return true;
                 }
             }
