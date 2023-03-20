@@ -20,14 +20,14 @@ namespace ammo_custom
     {
         private string p_sound = "items/9mmclip1.wav";
         private string am_name = "buckshot";
-		private string[][] Weapons = 
-		{
-			{"Satchel Charge", "weapon_satchel"},
-			{"Trip Mine", "weapon_tripmine"},
-			{"Hand Grenade", "weapon_handgrenade"},
-			{"snarks", "weapon_snark"}
-		};
-        private int am_give = 8;
+        private string[][] Weapons = 
+        {
+            {"Satchel Charge", "weapon_satchel"},
+            {"Trip Mine", "weapon_tripmine"},
+            {"Hand Grenade", "weapon_handgrenade"},
+            {"snarks", "weapon_snark"}
+        };
+        private int am_give = 1;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
@@ -65,7 +65,7 @@ namespace ammo_custom
                 g_EntityFuncs.CreateEntity( "env_render_individual", g_keyvalues );
             }
 
-            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
+            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ? 'models/error.mdl' : string( self.pev.model ) ) );
             BaseClass.Spawn();
         }
         
@@ -73,8 +73,7 @@ namespace ammo_custom
         {
             BaseClass.Precache();
 
-            
-            g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
+            g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? 'models/error.mdl' : string( self.pev.model ) ) );
             g_SoundSystem.PrecacheSound( p_sound );
             g_Game.PrecacheGeneric( "sound/" + p_sound );
         }
@@ -85,19 +84,23 @@ namespace ammo_custom
 
             if( iValue < self.pev.frags || self.pev.frags == 0 )
             {
-				for(uint i = 0; i < Weapons.length(); i++)
-				{
-					if( am_name == Weapons[i][0] )
-					{
-						if( cast<CBasePlayer@>( pOther ).HasNamedPlayerItem( Weapons[i][1] ) is null )
-						{
-							cast<CBasePlayer@>( pOther ).GiveNamedItem( Weapons[i][1], 0, 0 );
-							return true;
-						}
-					}
-				}
+                for(uint i = 0; i < Weapons.length(); i++)
+                {
+                    if( am_name == Weapons[i][0] )
+                    {
+                        if( cast<CBasePlayer@>( pOther ).HasNamedPlayerItem( Weapons[i][1] ) is null )
+                        {
+                            CBaseEntity@ FakeWeapon = g_EntityFuncs.Create( Weapons[i][1], pOther.pev.origin, Vector( 0, 0, 0 ), false );
 
-                if( pOther.GiveAmmo( am_give, am_name, 9999 ) != -1 )
+                            FakeWeapon.pev.spawnflags = 1024;
+                            cast<CBasePlayerWeapon@>( FakeWeapon ).m_iDefaultAmmo = am_give;
+                            g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
+                            return true;
+                        }
+                    }
+                }
+
+                if( pOther.GiveAmmo( am_give, am_name, cast<CBasePlayer@>( pOther ).GetMaxAmmo( am_name ) ) != -1 )
                 {
                     if( self.pev.frags > 0 )
                     {
@@ -109,9 +112,7 @@ namespace ammo_custom
                             g_Util.Debug( 'ammo_custom::AddAmmo:\nPlayer "' + string( pOther.pev.netname ) + '" can not take more ammo from this item.' );
                         }
                     }
-
-                    g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM);
-
+                    g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
                     return true;
                 }
             }
