@@ -45,6 +45,11 @@ namespace config_map_cvars
                 string Key = string( strKeyValues[ui] );
                 string Value = string( dictKeyValues[ Key ] );
 
+				if( spawnflag( 2 ) )
+				{
+					g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
+				}
+
                 g_EngineFuncs.CVarSetString( Key, ( useType == USE_OFF ) ? string( dictOldCvars[ Key ] ) : Value );
                 g_Util.Debug( "" + Key + ": '" + string( g_EngineFuncs.CVarGetString( Key ) ) + "'" );
             }
@@ -78,6 +83,11 @@ namespace config_map_cvars
                 {
                     dictOldCvars[ Key ] = g_EngineFuncs.CVarGetString( Key );
                 }
+
+				if( spawnflag( 2 ) )
+				{
+					g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
+				}
 
                 g_Util.Debug( "" + Key + ": '" + string( dictOldCvars[ Key ] ) + "'" );
             }
