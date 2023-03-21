@@ -9,7 +9,7 @@ La siguiente es una lista de configuraciones para cuando una entidad es activada
 La primera entidad en una cadena de triggers.
 
 - Ejemplo:
-	- un jugador activa un [func_button](func_button_spanish.md), el activator seria el jugador.
+	- un jugador activa un [func_button](func_button_english.md), el activator seria el jugador.
 	
 - Activator puede, en la mayoria de casos, ser referido como ``!activator``
 
@@ -18,7 +18,7 @@ La primera entidad en una cadena de triggers.
 La entidad anterior en una cadena de triggers.
 
 - Ejemplo:
-	- un [func_button](func_button_spanish.md) activa un [multi_manager](multi_manager_spanish.md). el caller de el multi_manager seria el func_button
+	- un [func_button](func_button_english.md) activa un [multi_manager](multi_manager_english.md). el caller de el multi_manager seria el func_button
 	
 - Caller puede, en algunos casos, ser referido como ``!caller``
 
@@ -37,7 +37,7 @@ Si el comportamiento de Use-Type fue explicitamente escrito en el codigo de el j
 	- Enciende la entidad
 
 - USE_SET
-	- Utilizado por [game_counter](game_counter_spanish.md)
+	- Utilizado por [game_counter](game_counter_english.md)
 
 - USE_TOGGLE
 	- Alterna
