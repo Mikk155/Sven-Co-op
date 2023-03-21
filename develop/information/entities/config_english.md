@@ -2,16 +2,16 @@
 
 ![image](../../images/angelscript.png)
 
-config_classic_mode es una entidad hecha en Angelscript que permite reemplazar modelos, armas e items dependiente de si classic mode esta activo o no. el foco de esta entidad es permitir al mapper poder cambiar modelos y armas que el classic mode por defecto del juego no cambia.
+config_classic_mode is an entity made in Angelscript that allows to replace models, weapons and items depending if classic mode is active or not. The focus of this entity is to allow mappers to change models and weapons that the classic mode does not change by default.
 
-<details><summary>Instalar</summary>
+<details><summary>Install</summary>
 <p>
 
-Requiere:
+Requirements:
 - [config_classic_mode](../../../scripts/maps/mikk/config_classic_mode.as)
 - [utils](../../../scripts/maps/mikk/utils.as)
 
-[Descarga con un toque](../batch_english.md)
+[Download with a clic](../batch_english.md)
 
 <details><summary>Batch</summary>
 <p>
@@ -33,7 +33,7 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/config_classic_mode"
 
@@ -46,59 +46,59 @@ void MapInit()
 </p>
 </details>
 
-Activa la entidad dandole Trigger con el [USE_TYPE](triggering_system_english.md) respectivo.
+Activate the entity giving trigger with the respective [USE_TYPE](triggering_system_english.md) .
 
 - USE_OFF
-	- Desactiva el classic mode
+	- Deactivate classic mode
 
 - USE_ON
-	- Activa el classic mode
+	- Activate classic mode
 
 - USE_TOGGLE
-	- Alterna el classic mode
+	- Toggle classic mode
 
 
 | key | Descripción |
 |-----|-------------|
-| spawnflags 1 (Restart now) | Activa, el mapa se reinciará para efectuar los cambios. |
-| delay | Tiempo antes de disparar todos sus targets |
-| target_toggle | target a disparar cuando el classic mode haya sido exitosamente alternado |
-| target_failed | target a disparar cuando el classic mode haya recibido USE_OFF pero esta actualmente desactivado o haya recibido USE_ON pero esta actualmente activado |
-| target_enabled | target a disparar cuando el classic mode haya sido activado. (Cuando el mapa inicia) |
-| target_disabled | target a disparar cuando el classic mode haya sido desactivado (Cuando el mapa inicia) |
-| health | Tiempo de pensamiento de la entidad, un valor alto consumirá menos CPU pero los jugadores podrian llegar a ver el modelo HD en classic mode por un instante. el tiempo por defecto es 0.1 frames mas esta keyvalue |
+| spawnflags 1 (Restart now) | Activate, the map will restart to apply the changes. |
+| delay | Time before triggering all the targets |
+| target_toggle | target to trigger after classic mode has been successfully alternated |
+| target_failed | target to trigger when classic mode recieves USE_OFF but it was already off, or when it recieves USE_ON but it was already on |
+| target_enabled | target to trigger when classic mode has been activated. (After map restart) |
+| target_disabled | target to trigger when classic has been deactivated. (After map restart) |
+| health | Thinking time of the entity, a high value will consume less CPU but players could see a HD model in classic mode for an instant. The time by default is 0.1 frames plus this keyvalue |
 
-En HAMMER/JACK/BSPGUY abre Smart-Edit y agrega ahi las keyvalues de tu elección.
+In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues of your selection.
 
-- La key es el classname de un arma en el mapa que reemplazar.
+- The key is the classname of a weapon in the map that is going to be replaced.
 
-- El value es el classname de el arma que reemplazará a la actual.
+- The value is the classname of the weapon that will replace the current one.
 
-Ejemplo:
+Example:
 ```angelscript
 "weapon_rpg" "weapon_rpg_classic"
 ```
 
-De la misma manera se utiliza para cambiar modelos.
+In the same way, it is used to change models.
 
-- La key es el modelo en el mapa que reemplazar.
+- The key is the model in the map to replace.
 
-- El value es el modelo nuevo que utilizar.
+- The value is the new model to use.
 
-Ejemplo:
+Example:
 ```angelscript
 "models/hlclassic/scientist.mdl" "models/headcrab.mdl"
 ```
 
-⚠️ No te olvides que desde que el classic mode esta activo, algunos modelos son reemplazados por el juego y cambiarian. por ejemplo seria ``models/hlclassic/barney.mdl`` y no ``models/barney.mdl``
+⚠️ Dont forget that since classic mode is active, some models will be replaced by the game and will change. For example ``models/hlclassic/barney.mdl`` instead of ``models/barney.mdl``
 
 ### Ignore entity
 
-- Usando (en cualquier entidad) una [Custom Key Value](custom_keyvalue_english.md) ``"$i_classic_mode_ignore"`` en un valor de **1** va a prevenir que el arma o modelo sean reemplazados.
+- Using (in any entity) a [Custom Key Value](custom_keyvalue_english.md) ``"$i_classic_mode_ignore"`` in a value of **1** will prevent replacing a weapon or model.
 
-⚠️ Usa solo una entidad por mapa
+⚠️ Use only one entity per map
 
-[Mapa de pruebas](../../../maps/1test_config_classic_mode.bsp)
+[Test map](../../../maps/1test_config_classic_mode.bsp)
 
 ---
 
@@ -106,16 +106,16 @@ Ejemplo:
 
 ![image](../../images/angelscript.png)
 
-config_map_cvars es una entidad hecha en Angelscript alternativa a [trigger_setcvar](trigger_setcvar_english.md) que permite cambiar multiples [Cvars](../game/cfg_english.md) a la vez o incluso leerlos con [trigger_condition](trigger_condition_english.md) y efectuar acciones dependiendo en ello.
+config_map_cvars is an alternative entity in Angelscript for [trigger_setcvar](trigger_setcvar_english.md) that allows to change multiple [Cvars](../game/cfg_english.md) at the same time or even read them with [trigger_condition](trigger_condition_english.md) and execute actions depending on that.
 
-<details><summary>Instalar</summary>
+<details><summary>Install</summary>
 <p>
 
-Requiere:
+Requirements:
 - [config_map_cvars](../../../scripts/maps/mikk/config_map_cvars.as)
 - [utils](../../../scripts/maps/mikk/utils.as)
 
-[Descarga con un toque](../batch_english.md)
+[Download with a clic](../batch_english.md)
 
 <details><summary>Batch</summary>
 <p>
@@ -137,7 +137,7 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/config_map_cvars"
 
@@ -150,32 +150,32 @@ void MapInit()
 </p>
 </details>
 
-Agrega cualquier Cvar (Soportados enlistados en el FGD) y activa la entidad o alternativamente activa la spawnflag 1 para automaticamente activarlos.
+Add any Cvar(Supported ones listed in the FGD) and activate the entity, alternatively use spawnflag 1 to automatically activate.
 
-Activa la entidad dandole Trigger con el [USE_TYPE](triggering_system_english.md) respectivo.
+Activate an entity with the respective trigger [USE_TYPE](triggering_system_english.md) .
 
-En HAMMER/JACK/BSPGUY abre Smart-Edit y agrega ahi los cvars de tu elección.
+In HAMMER/JACK/BSPGUY open Smart-Edit and add the desired cvars.
 
-- La key es el cvar a actualizar.
+- The key is the cvar to update.
 
-- El value es el valor a actualizar.
+- The value is the new value to update.
 
-Ejemplo:
+Example:
 ```angelscript
 "mp_allowplayerinfo" "0"
 ```
 
 - USE_OFF
-	- Retorna los cvars originales que fueron cambiados
+	- Returns the original cvars that were changed
 
 - USE_ON / USE_TOGGLE
-	- Activa los cvars especificados
+	- Update the specified cvars
 
 - spawnflags 1 (Start On)
-	- Activa, Los cvars se actualizarán automaticamente apenas empieze el mapa |
+	- Active, The cvars will update automatically on map start |
 - spawnflags 2 (Store Cvars)
-	- almacena en la entidad el valor actual de los cvars que esten en ella, los lees con [trigger_condition](trigger_condition_english.md) y efectuas tus acciones dependiendo sus valores |
-	- Estos se almacenan en formato de [Custom Key Value](custom_keyvalue_english.md), El formato es ``$s_( nombre del cvar)``
+	- Store in the entity the current values of the cvars inside of it, you read them with [trigger_condition](trigger_condition_english.md) and execute actions depending on the values |
+	- These are stores in the [Custom Key Value](custom_keyvalue_english.md) format, The format is ``$s_( nombre del cvar)``
 
 ---
 
@@ -183,16 +183,16 @@ Ejemplo:
 
 ![image](../../images/angelscript.png)
 
-config_map_precache es una entidad hecha en Angelscript alternativa a [custom_precache](custom_precache_english.md) que permite Hacer precache a modelos, sonidos, sprites, tga, monsters etc.
+config_map_precache is an alternative entity made in Angelscript for [custom_precache](custom_precache_english.md) that allows to precach models, sounds, sprites, tga, monsters etc.
 
-<details><summary>Instalar</summary>
+<details><summary>Install</summary>
 <p>
 
-Requiere:
+Requirements:
 - [config_map_precache](../../../scripts/maps/mikk/config_map_precache.as)
 - [utils](../../../scripts/maps/mikk/utils.as)
 
-[Descarga con un toque](../batch_english.md)
+[Download with a clic](../batch_english.md)
 
 <details><summary>Batch</summary>
 <p>
@@ -214,7 +214,7 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/config_map_precache"
 
@@ -227,18 +227,18 @@ void MapInit()
 </p>
 </details>
 
-En HAMMER/JACK/BSPGUY abre Smart-Edit y agrega ahi las keyvalues de tu elección.
+In HAMMER/JACK/BSPGUY open Smart-Edit and add there the desired keyvalues.
 
-- La key es el metodo para precachar.
+- The key is the method to precach.
 
-- El value es el objeto a precachar.
+- The value is the object to precach.
 
 | key | Descripción | Ejemplo |
 |-------|-----------|---------|
-| model | Utilizado para precachar modelos y sprites | "model#1" "models/barney.mdl" |
-| entity | Utilizado para precachar archivos que utilizan entidades, por ejemplo monsters | "entity#4" "monster_zombie" |
-| sound | Utilizado para precachar sonidos dentro de la carpeta "sounds/" ( No especifique esa carpeta, ya estamos en el directorio ) | "sound#0" "ambience/background_sex.wav" |
-| generic | Utilizado para precachar cualquier otra cosa, para skyboxs tienes que precachar todos manualmente | "generic#20" "gfx/env/mysky_bk.tga" |
+| model | Used to precach models and sprites | "model#1" "models/barney.mdl" |
+| entity | Used to precach files that are used by entites, for example monsters | "entity#4" "monster_zombie" |
+| sound | Used to precach sounds inside the folder "sounds/" ( Don't specify that folder, since we are inside the directory ) | "sound#0" "ambience/background_sex.wav" |
+| generic | Used to precach anything, for skyboxs you have to precach all manually | "generic#20" "gfx/env/mysky_bk.tga" |
 
 ---
 
@@ -246,16 +246,16 @@ En HAMMER/JACK/BSPGUY abre Smart-Edit y agrega ahi las keyvalues de tu elección
 
 ![image](../../images/angelscript.png)
 
-config_survival_mode es una entidad hecha en Angelscript que modifica el survival mode y lo hace mejor.
+config_survival_mode is an entity made in Angelscript that modifies survival mode and does it better.
 
-<details><summary>Instalar</summary>
+<details><summary>Install</summary>
 <p>
 
-Requiere:
+Requirements:
 - [config_survival_mode](../../../scripts/maps/mikk/config_survival_mode.as)
 - [utils](../../../scripts/maps/mikk/utils.as)
 
-[Descarga con un toque](../batch_english.md)
+[Download with a clic](../batch_english.md)
 
 <details><summary>Batch</summary>
 <p>
@@ -277,7 +277,7 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/config_survival_mode"
 
@@ -290,26 +290,26 @@ void MapInit()
 </p>
 </details>
 
-Activa la entidad dandole Trigger con el [USE_TYPE](triggering_system_english.md) respectivo.
+Activate the entity giving trigger with the respective [USE_TYPE](triggering_system_english.md) .
 
 - USE_OFF
-	- Desactiva el survival mode
+	- Desactivate survival mode
 
 - USE_ON
-	- Activa el survival mode
+	- Activate survival mode
 
 - USE_TOGGLE
-	- Alterna el survival mode
+	- Toggle survival mode
 
-- Si la entidad es activada antes de que alcance su limite en ``mp_survival_startdelay`` entonces su valor es forzado a 0 y el survival mode inicia automaticamente.
+- If the entity is activated before it reaches its limit ``mp_survival_startdelay`` then its value will be forced to 0 and survival mode starts automatically.
 
 | key | description |
 |-----|-------------|
-| delay | Tiempo, En segundos, que esta entidad tarda en activar todas sus targets |
-| target_toggle | Target a activar cuando el survival mode haya sido alternado |
-| target_failed | Target a activar cuando el survival mode haya recibido USE_ON pero actualmente esta activo, o haya recibido USE_OFF pero actualmente esta inactivo |
-| mp_survival_startdelay | Tiempo, En segundos, Que tarda el survival mode en activarse, si esta vacio se utilizará el cvar mp_survival_startdelay |
-| mp_respawndelay | Tiempo, En segundos, que los jugadores deben esperar antes de revivir, si esta vacio se utilizará el cvar mp_respawndelay |
-| master | [multisource](multisource_english.md) que bloquea esta entidad de ser activada mediante su mp_survival_startdelay o por trigger directo |
+| delay | Time, in seconds, that this entity waits before activating all of its targets |
+| target_toggle | Target to activate when survival mode has been toggled |
+| target_failed | Target to activate when survival mode recieves an USE_ON but it is already active, or when it recieves an USE_OFF but it is already inactive |
+| mp_survival_startdelay | Time, in seconds, that it takes for survival mode to activate, if it is empty, it will use the cvar mp_survival_startdelay |
+| mp_respawndelay | Time, in seconds, that players have to wait to revive, if it is empty it will use the cvar mp_respawndelay |
+| master | [multisource](multisource_english.md) that blocks this entity from being activated by its mp_survival_startdelay or by direct trigger |
 
-⚠️ Usa solo una entidad por mapa
+⚠️ Only use one of this entity per map
