@@ -54,10 +54,26 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [config_map_cvars](develop/information/entities/config_spanish.md#config_map_cvars)✔️Angelscript
 - [config_map_precache](develop/information/entities/config_spanish.md#config_map_precache)✔️Angelscript
 - [config_survival_mode](develop/information/entities/config_spanish.md#config_survival_mode)✔️Angelscript
-- [cycler](develop/information/entities/cycler_spanish.md#cycler)
-- [cycler_sprite](develop/information/entities/cycler_spanish.md#cycler_sprite)
-- [cycler_weapon](develop/information/entities/cycler_spanish.md#cycler_weapon)
-- [cycler_wreckage](develop/information/entities/cycler_spanish.md#cycler_wreckage)
+- [custom_precache](develop/information/entities/custom_precache_spanish.md)
+
+</p>
+</details>
+
+<details><summary>E</summary>
+<p>
+
+- [env_beam](develop/information/entities/env_beam_spanish.md)
+
+</p>
+</details>
+
+<details><summary>S</summary>
+<p>
+
+- [script_alien_teleport](develop/information/entities/utils_spanish.md#script_alien_teleport)
+- [script_survival_mode](develop/information/entities/utils_spanish.md#script_survival_mode)
+- [script_random_value](develop/information/entities/utils_spanish.md#script_random_value)
+- [script_player_data](develop/information/entities/utils_spanish.md#script_player_data)
 
 </p>
 </details>
