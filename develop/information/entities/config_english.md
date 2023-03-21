@@ -33,7 +33,7 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/config_classic_mode"
 
@@ -106,7 +106,7 @@ Example:
 
 ![image](../../images/angelscript.png)
 
-config_map_cvars is an alternative entity in Angelscript for [trigger_setcvar](trigger_setcvar_english.md) that allows to change multiple [Cvars](../game/cfg_english.md) at the same time or even read them with [trigger_condition](trigger_condition_english.md) and and execute actions depending on that.
+config_map_cvars is an alternative entity in Angelscript for [trigger_setcvar](trigger_setcvar_english.md) that allows to change multiple [Cvars](../game/cfg_english.md) at the same time or even read them with [trigger_condition](trigger_condition_english.md) and execute actions depending on that.
 
 <details><summary>Install</summary>
 <p>
@@ -137,7 +137,7 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/config_map_cvars"
 
@@ -214,7 +214,7 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/config_map_precache"
 
