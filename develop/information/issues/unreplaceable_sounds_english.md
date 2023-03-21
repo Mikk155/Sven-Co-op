@@ -1,14 +1,13 @@
-### Unreplaceable client-side sounds
+### Irreplaceable client-side sounds
 
-Lista de sonidos que son irremplazables porqué se ejecutan en el cliente y no en el server.
+List of irreplaceable sounds since they are client sided and not server sided.
 
-Algunos sonidos son compartidos por otras entidades que si pueden ser reemplazables. asi que esta lista contendrá los tipos que no son reemplazables.
-
-- Nota: Esto no incluye eventos de sonidos de modelos por ahora.
+Some sounds are shared with some entities that can be replaced. Soo this list is going to contain only irreplaceable ones.
+- Note: It does not include sound events made by models, for now.
 
 # Footsteps
 
-Anteriormente no se podian reemplazar los sonidos al pisar. mas Giegue hizo un script para ello. [Custom Footsteps](https://github.com/JulianR0/CFootsteps)
+Previously, stepping sounds were irreplaceable. But Giegue made a script for that: [Custom Footsteps](https://github.com/JulianR0/CFootsteps)
 
 ```angelscript
 "player/pl_duct1.wav"
@@ -42,7 +41,7 @@ Anteriormente no se podian reemplazar los sonidos al pisar. mas Giegue hizo un s
 "player/pl_tile4.wav"
 ```
 
-# Materiales
+# Materials
 
 ```angelscript
 "debris/glass1.wav"
@@ -67,7 +66,7 @@ Anteriormente no se podian reemplazar los sonidos al pisar. mas Giegue hizo un s
 "player/pl_slosh4.wav"
 ```
 
-# Armas
+# Weapons
 
 ```angelscript
 "hlclassic/weapons/pl_gun3.wav"
@@ -114,6 +113,6 @@ Anteriormente no se podian reemplazar los sonidos al pisar. mas Giegue hizo un s
 "weapons/xbow_reload1.wav"
 ```
 
-- [Fuente de información](https://github.com/R4to0/scstuff/wiki/Unreplaceable-client-side-sounds)
+- [Information source](https://github.com/R4to0/scstuff/wiki/Unreplaceable-client-side-sounds)
 
-- Creditos para [R4to0](https://github.com/R4to0)
+- Credits to [R4to0](https://github.com/R4to0)
