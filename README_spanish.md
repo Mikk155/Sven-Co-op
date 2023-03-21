@@ -117,3 +117,22 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 
 </p>
 </details>
+
+<details><summary>Tutoriales</summary>
+<p>
+
+- [Daños y vidas](develop/information/issues/skill_spanish.md)
+- [Reemplazar sonidos](develop/information/issues/gsr_spanish.md)
+- [Variables de consola](develop/information/issues/cfg_spanish.md)
+
+</p>
+</details>
+
+
+<details><summary>Problemas</summary>
+<p>
+
+- [Sonidos Irremplazables](develop/information/issues/unreplaceable_sounds_spanish.md)
+
+</p>
+</details>
