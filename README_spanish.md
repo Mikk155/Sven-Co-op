@@ -63,6 +63,8 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 <p>
 
 - [env_beam](develop/information/entities/env_beam_spanish.md)
+- [env_fog](develop/information/entities/env_fog_spanish.md)
+- [env_fog_individual](develop/information/entities/env_fog_spanish.md#env_fog_individual)✔️Angelscript
 
 </p>
 </details>
@@ -70,10 +72,10 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 <details><summary>S</summary>
 <p>
 
-- [script_alien_teleport](develop/information/entities/utils_spanish.md#script_alien_teleport)
-- [script_survival_mode](develop/information/entities/utils_spanish.md#script_survival_mode)
-- [script_random_value](develop/information/entities/utils_spanish.md#script_random_value)
-- [script_player_data](develop/information/entities/utils_spanish.md#script_player_data)
+- [script_alien_teleport](develop/information/entities/utils_spanish.md#script_alien_teleport)✔️Angelscript
+- [script_survival_mode](develop/information/entities/utils_spanish.md#script_survival_mode)✔️Angelscript
+- [script_random_value](develop/information/entities/utils_spanish.md#script_random_value)✔️Angelscript
+- [script_player_data](develop/information/entities/utils_spanish.md#script_player_data)✔️Angelscript
 
 </p>
 </details>
