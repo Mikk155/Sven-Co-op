@@ -1,6 +1,6 @@
 # Custom KeyValues
 
-Las keyvalues custom son, en medida, una mecanica desde Sven Co-op 4.6
+The custom keyvalues are, to a degree, a mechanic since Sven Co-op 4.6
 
 Utilizando Custom Keyvalues Puedes guardar toda la información que tu quieras en una entidad, con los nombres que tu quieras tambien.
 
