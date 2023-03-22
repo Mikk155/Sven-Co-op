@@ -1,40 +1,40 @@
 # env_fog
 
-env_fog es una entidad usada para crear niebla
+env_fog is an entity that is used to create fog
 
 ### Keyvalues
 
 | Key | Descripción |
 |-----|-------------|
-| rendercolor | Color de la niebla |
-| iuser2 | Distancia, En unidades, En que la niebla inicia a ser visible, Esto tiene que ser mayor a cero |
-| iuser3 | Distancia, En unidades, En que la niebla luce opaca, Esto tiene que ser mayor a iuser2 |
+| rendercolor | fog color |
+| iuser2 | Distance, in units, Where fog starts to be visible, must be higher than zero |
+| iuser3 | Distance, in units, Where fog looks opaque, must be higher than iuser2 |
 
 | Bit | Flag | Descripción |
 |-----|------|-------------|
-| 1 | Start Off | La niebla inicia desactivada y necesita ser triggereada |
+| 1 | Start Off | Fog starts off and must be triggered |
 
 ### Issues
 
-- La niebla solo funciona con OpenGL
+- Fog only works on OpenGL
 
-- Entidades con otro rendermode que no sea "normal" (incluye sprites) no se verán afectados por la niebla
+- Entities with rendermode different from "normal" (including sprites) are not going to be affected by the fog
 
 # env_fog_individual
 
 ![image](../../images/angelscript.png)
 
-env_fog_individual es un script y entidad custom que expanden la entidad de el juego
+env_fog_individual is a script and custom entity that expand the entity in the game
 
 
-<details><summary>Instalar</summary>
+<details><summary>Install</summary>
 <p>
 
-Requiere:
+Requirements:
 - [env_fog](../../../scripts/maps/mikk/env_fog.as)
 - [utils](../../../scripts/maps/mikk/utils.as)
 
-[Descarga con un toque](../batch_english.md)
+[Download with a clic](../batch_english.md)
 
 <details><summary>Batch</summary>
 <p>
@@ -56,11 +56,11 @@ if not exist %output% (
 </p>
 </details>
 
-En tu map_script Agrega:
+In your map_script add:
 ```angelscript
 #include "mikk/env_fog"
 ```
-O alternativamente llama el script mediante un trigger_script:
+Or alternatively call the script with a trigger_script:
 ```angelscript
 "m_iszScriptFile" "mikk/env_fog"
 ```
@@ -68,20 +68,19 @@ O alternativamente llama el script mediante un trigger_script:
 </p>
 </details>
 
-Añade a env_fog una nueva spawnflag llamada "Activator Only" la cual es el bit 2
+Adds to env_fog a new spawnflag called "Activator Only" wich is bit 2
 
-Si la spawnflag esta seleccionada, solamente jugadores que den trigger directamente a la entidad siendo el !activator van a poder ver la niebla.
+If the spawnflag is selected, only players who trigger directly the entity being !activators are gonig to be able to see the fog.
 
-
-Activa la entidad dandole Trigger con el [USE_TYPE](triggering_system_english.md) respectivo.
+Activate the entity giving it Trigger with the respective [USE_TYPE](triggering_system_english.md) .
 
 - USE_OFF
-	- Desactiva la niebla
+	- Desactivates the fog
 
 - USE_ON
-	- Activa la niebla
+	- Activates the fog
 
 - USE_TOGGLE
-	- Alterna la niebla
+	- Alternates the fog
 
-- Si la spawnflag 1 no esta activa, jugadores que entren al servidor van a llamar USE_ON en esta entidad, vas a tener que desactivarselas manualmente con USE_OFF
+- If the spawnflag 1 is not active, players that join the server will call USE_ON in this entity, you will have to deactivate it manually with USE_OFF
