@@ -69,7 +69,7 @@ env_beam is an entity used to create a line between two entities.
 
 - Renderfx has no use
 
-Kezaeiv's experience
+### Kezaeiv's experience
 
 - Setting low values for beam life will cause a crash (0.1 seems to be the lowest safe value)
 
