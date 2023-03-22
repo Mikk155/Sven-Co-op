@@ -67,4 +67,12 @@ env_beam is an entity used to create a line between two entities.
 
 - Flag 2 desactivated acts like if it was activated, it just cant be deactivated again
 
-- renderfx has no use
+- Renderfx has no use
+
+Kezaeiv's experience
+
+- Setting low values for beam life will cause a crash (0.1 seems to be the lowest safe value)
+
+- If you wish to use moving targets (func_trains, npcs, etc) as either LightningStart or LightningEnd, the beam must not be permanent since it only updates the location of the targets each time it creates a beam. Soo you have to set up a short timed beam with a low or 0 delay.
+	- Since beam lifetime can't be lower than 0.1, the beam updates somewhat slow, the faster the targets move, the more obvious it is
+
