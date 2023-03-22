@@ -1,68 +1,70 @@
 ### env_beam
 
-env_beam es una entidad usada para crear una linea entre dos entidades.
+env_beam is an entity used to create a line between two entities.
 
 ### Keyvalues
 
 | Key | Descripción |
 |-----|-------------|
-| LightningStart | Entidad en donde el trazo iniciará
-| LightningEnd | Entidad en donde el trazo finalizará
-| [Render Settings](render_settings_english.md) | Todas las entidades visibles de el juego soportan este sistema de renderizado
-| Radius | Maxima distancia de la entidad LightningStart o el env_beam, dependiendo como lo hayas configurado, a la destinacion de un golpe aleatorio
-| life | Tiempo, En segundos, que el trazo será visible luego de ser activado, un valor de 0 lo hace visible por siempre
-| BoltWidth | Ancho del sprite, en pulgadas 0.25
-| NoiseAmplitude | Cuánto tiembla el rayo en una escala de 0 (nada) a 255 (mucho)
-| texture | Nombre del sprite
-| TextureScroll | Velocidad de movimiento deste LightningStart hasta LightningEnd 0 (lento) a 100 (rapido)
-| framerate | Frecuencia con la que se debe actualizar la textura del trazo en diez segundos
-| framestart | Establece el numero del frame del sprite para iniciar la animación
-| StrikeTime | Tiempo, En segundos, que la entidad va a estar en espera luego de que un trazo haya terminado
-| damage | Daño, Por segundo, que el trazo hará a quien lo toque.
+| LightningStart | Entity where the trace stars 
+| LightningEnd | Entity where the trace ends
+| [Render Settings](render_settings_english.md) | All visible entities in the game support this render system
+| Radius | Maximum distance from the LightningStart entity or the env_beam, depending on how you set it up, to the destination of a random strike
+| life | Time, In seconds, where the trace will be visible after being activated, value 0 will make it permanent.
+| BoltWidth | With of the sprite, in inches 0.25 (is only visual, the damage vector will still be 1 pixel wide)
+| NoiseAmplitude | Amount of noise distortion applied to the beam in the scale from 0 (none) to 255(a lot)
+| texture | Name of the sprite
+| TextureScroll | Scrolling speed of the sprite from LightningStart to LightningEnd 0 (slow) to 100 (fast)
+| framerate | Frecuency on wich the sprite's texture update each 10 seconds
+| framestart | Frame number where the sprite animation starts
+| StrikeTime | Time, In seconds, where the entity waits after the previous trace ends before striking again
+| damage | Damage, Per second, que el trazo hará a quien lo toque.
 
 ### Spawnflags
 
 | Bit | Flag | Descripción |
 |-----|------|-------------|
-| 1 | Start on | Activa, La entidad empieza activada cuando el mapa inicia
-| 2 | Toggle | Activa, env_beam se puede alternar en lugar de causar un trazo cada vez que es activada
-| 4 | Random strike | Activa, En conjunto con la flag 2, hace que el tiempo luego de cada trazo sea un numero aleatorio entre cero y StrikeTime
-| 8 | Ring | Activa, Crea un circulo entre dos entidades, estas necesitan ser una entidad de brush con textura origin
-| 16 | Start sparks | Activa, Chispas van a ser emitidas en el inicio del trazo 
-| 32 | End sparks | Activa, Chispas van a ser emitidas en el final del trazo 
-| 64 | Decal end | Activa, un [decal](decals_english.md) va a ser creado en donde el trazo golpee una superficie 
-| 128 | Shade start | Activa, el trazo sera menos visible en su inicio
-| 256 | Shade end | Activa, el trazo sera menos visible en su final
+| 1 | Start on | Active, The entity starts on after map load
+| 2 | Toggle | Active, env_beam can toggle instear of striking each time it triggers
+| 4 | Random strike | Active, in conjuction with flag 2, makes it soo the time after each strike becomes a random number between 0 and StrikeTime
+| 8 | Ring | Active, Creates a circle between two entities, these entities must be brush entities with an origin point
+| 16 | Start sparks | Active, Spawn sparks in the start point 
+| 32 | End sparks | Active, Spawn sparks in the end point
+| 64 | Decal end | Active, leaves a [decal](decals_english.md) if the beam hits a surface
+| 128 | Shade start | Active, fades the beam near the start
+| 256 | Shade end | Active, fades the beam near the end
 
-### Notas 
+### Notes 
 
-- Si LightningStart y LightningEnd no son expecificados, env_beam va a crear trazos aleatorios golpeando una superficie solida en su radio de rango
+- IF LightningStart and LightningEnd are not specified, env_beam creats beams randomly hiting to a nearby a solid surface withing the radious range
 
-- En caso de que muchas entidades tengan el mismo nombre que LightningStart / LightningEnd, una entidad aleatoria será elegida por cada trazo creado
+- In case of many entities having the same name as LightningStart / LightningEnd, the entity will randomly choose one of each and draw the beam
 
-- Debes usar las flags 128 y 256 solo una a la vez, usando ambas va a hacer que solo funcione una
+- You must only use either flag 128 or 256 at the same time, using both will only make one work
 
-- Flag 8 no puede utilizar flags 128 y/o 256
+- Flag 8 can't use 128 and/or 256
 
-- La key NoiseAmplitude no define el area en donde el daño será aplicado, el daño en area solo depende de LightningStart, LightningEnd y BoltWidth
+- The key NoiseAmplitude doesn't define the area where damage is applied, that area only depends on LightningStart, LightningEnd and is always 1 pixel wide
 
-- Cuando apagues la entidad, sus trazos seguirán activos hasta que estos hayan terminado su life
+- You can use a combination of a wide beam without damage, and a trigger hurt ontop to simulate a wide damage area for the laser
 
-- Cuando reactivas la entidad, el siguiente trazo va a ser creado inmediatamente sin importar cuando el ultimo fue creado
+- When you turn off the entity, all of its traces will remain alive until their lifetime is over
 
-- StrikeTime en valor negativo permite lanzar otro trazo antes de que el anterior haya terminado
-	- Crear un trazo al instante de que otro es creado va a causar un numero infinito de trazos y eventualmente generar un crash
+- When you reactivate the entity, the next trace is going to be created immediately no matter what
 
-- Flag 8 en conjunto con life 0 no va a reaccionar a trigger OFF
+- StrikeTime with a negative value will strike another beam before the last one ends
+	- Creating a trace instanly after another will cause infinite traces and eventually generating a crash
 
-- Flag 8 activa, el daño solo va a ser aplicado como si el trazo fuese linear, solo aplica entre LightningStart y LightningEnd
+- Flag 8 in conjuction with life 0 will not react to a trigger OFF
 
-- Flag 8 en conjunto con life 0 ocacionalmente va a desaparecer por razones del cliente
+- Flag 8 active, Damage is stil going to be generated as a straight line between LightningStart and LightningEnd
 
-- Flag 8 Siempre aplica daño en el momento de creación
+- Flag 8 in conjuction with life 0 might occasionally disapear by client reasons
 
-- Trazos con life mayor a 0 no pueden utilizar las flags 128 y 256
+- Flag 8 Always applies damage on the moment it is created ???
 
-- Flag 2 desactivada actuan como si estuviese activada, solo que nunca pueden ser desactivados de nuevo
+- Traces with a lifetime higher than 0 can't use 128 and 256
 
-- renderfx no tiene uso alguno
+- Flag 2 desactivated acts like if it was activated, it just cant be deactivated again
+
+- renderfx has no use
