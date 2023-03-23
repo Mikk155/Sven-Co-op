@@ -1,54 +1,54 @@
-Todas las entidades visibles de el juego soportan este sistema de renderizado.
+All visible entities in the game support this rendering system.
 
-El sistema de renderizado en GoldSource es simple pero trae legacy de Quake que casi nunca es usada.
+The rendering system in GoldSource is simple but comes with legacy Quake wich is almost never used.
 
-Se pueden representar hasta 512 entidades visibles al mismo tiempo, anteriormente, 256
+512 entities can be visibly represented at the same time, previously, only 256.
 
-A continuación se explican los diferentes modos de renderizado y cómo funcionan.
+Next up is the explaining of the different rendering modes and how they work.
 
 ### rendermode
 
-| valor | Code | descripción detallada |
+| valor | Code | Detailed description |
 |-------|------|-----------------------|
 | 0 | kRenderNormal | Normal |
-| 1 | kRenderTransColor | Utilizando esta opción, la textura de la entidad será reemplazada por el color elegido en [rendercolor](#rendercolor) | 
-| 2 | kRenderTransTexture | Utilizando esta opción, la transparencia de la entidad será definida por [renderamt](#renderamt) |
-| 3 | kRenderGlow | Utilizando esta opción, la transparencia y tamaño de sprites (Solamente sprites)  se verá afectada dependiendo la distancia, [renderfx](#renderfx) en un valor de 14 (Constant Glow) cancela el efecto de transparencia y tamaño por distancia |
-| 4 | kRenderTransAlpha | Utilizando esta opción, las partes transparentes de las texturas se harán invisibles |
-| 5 | kRenderTransAdd | Utilizando esta opción, la transparencia de la entidad será definida por [renderamt](#renderamt) y por su color, los colores oscuros serán menos visibles mientras que los claros serán mas visibles |
+| 1 | kRenderTransColor | Using this option, the entity's texture gets replaced by a choosen color in [rendercolor](#rendercolor) | 
+| 2 | kRenderTransTexture | Using this option, the entity's transparensy will be defined by [renderamt](#renderamt) |
+| 3 | kRenderGlow | Using this option, the transparency and sprite size (only for sprites) will be affected depending on the distance, [renderfx](#renderfx) with a value of 14 (Constant Glow) cancels the transparency and size by distance |
+| 4 | kRenderTransAlpha | Using this option, all transparent parts of the texture will be invisible |
+| 5 | kRenderTransAdd | Using this option, the entity's transparency will be defined by [renderamt](#renderamt) and by their color, darker colors will be less visible while lighter ones will be more visible |
 
 ### renderamt
 
-FX Amount (1 - 255) Opacidad de la entidad si esta tiene un [rendermode](#rendermode) mayor a 0, mayor el numero menor la transparencia.
+FX Amount (1 - 255) Opacity of the entity if it has a [rendermode](#rendermode) higher than 0, higher number equals less transparency.
 
 ### rendercolor
 
-FX Color (R G B) Color de la entidad si [rendermode](#rendermode) esta en un valor de 1
+FX Color (R G B) Color of the entity if [rendermode](#rendermode) has a value of 1
 
 ### renderfx
 
-- renderfx solo funciona si [rendermode](#rendermode) esta por encima de 0 (normal)
+- renderfx only works if [rendermode](#rendermode) is over 0 (normal)
 
-| valor | Code | Descripción |
+| valor | Code | Description |
 |-------|------|-------------|
 | 0 | kRenderFxNone | Normal |
-| 1 | kRenderFxPulseSlow | Slow Pulse, Varia su opacidad lentamente, si renderamt es demasiado alto, este efecto no se notará |
-| 2 | kRenderFxPulseFast | Fast Pulse, Ditto, Rapidamente |
-| 3 | kRenderFxPulseSlowWide | Slow Wide Pulse, Ditto, Lentamente |
-| 4 | kRenderFxPulseFastWide | Fast Wide Pulse, Ditto, Rapidamente |
-| 5 | kRenderFxFadeSlow | Slow Fade Away, No parece tener efecto alguno, pero como su nombre indica, deberia lentanmente hacerse transparente |
-| 6 | kRenderFxFadeFast | Fast Fade Away, Ditto, Rapidamente|
-| 7 | kRenderFxSolidSlow | Slow Become Solid, Varia su opacidad lentamente hacia solido |
-| 8 | kRenderFxSolidFast | Fast Become Solid, Ditto, Rapidamente|
-| 9 | kRenderFxStrobeSlow |  Slow Strobe, Parpadea lentamente entre invisible y renderamt |
-| 10 | kRenderFxStrobeFast | Fast Strobe, Ditto, Rapidamente |
-| 11 | kRenderFxStrobeFaster | Faster Strobe, Ditto, Aun mas rapidamente |
-| 12 | kRenderFxFlickerSlow | Slow Flicker, Parpadea lentamente, Parece ser afectado por los FPS |
-| 13 | kRenderFxFlickerFast | Fast Flicker, Ditto, Rapidamente |
-| 14 | kRenderFxNoDissipation | Constant Glow, evite que [rendermode](#rendermode) en un valor de 3 (glow) sea afectado por la distancia |
-| 15 | kRenderFxDistort | Distort, Parpadea continuamente |
-| 16 | kRenderFxHologram | Hologram (Distort + fade), crea un holograma, efecto utilizado en los mapas de entrenamiento de Half-Life |
-| 17 | kRenderFxDeadPlayer | Sin efecto alguno |
-| 18 | kRenderFxExplode | Explode (Garg Like), Hace el efecto de deformacion de Gargantua (justo cuando este muere). no funciona en BSPModels o sprites |
-| 19 | kRenderFxGlowShell | Glow Shell, Cubre con un efecto de Quake, [rendercolor](#rendercolor) debe ser usado, no funciona en sprites o BSPModels |
-| 20 | kRenderFxClampMinScale | ClampMinScale (Sprites), No parece tener algun efecto en glow |
+| 1 | kRenderFxPulseSlow | Slow Pulse, Slowly varies the opacity, if renderamt is too high, this effect will be less noticable |
+| 2 | kRenderFxPulseFast | Fast Pulse, Ditto, Faster |
+| 3 | kRenderFxPulseSlowWide | Slow Wide Pulse, Ditto, Slower |
+| 4 | kRenderFxPulseFastWide | Fast Wide Pulse, Ditto, Even faster |
+| 5 | kRenderFxFadeSlow | Slow Fade Away, Doesn't seem to have any effect, but as the name indicates, it should slowly become transparent |
+| 6 | kRenderFxFadeFast | Fast Fade Away, Ditto, Faster|
+| 7 | kRenderFxSolidSlow | Slow Become Solid, Varies the opacity slowly towards solid |
+| 8 | kRenderFxSolidFast | Fast Become Solid, Ditto, Faster|
+| 9 | kRenderFxStrobeSlow |  Slow Strobe, Blinks slowly between invisible and renderamt |
+| 10 | kRenderFxStrobeFast | Fast Strobe, Ditto, Faster |
+| 11 | kRenderFxStrobeFaster | Faster Strobe, Ditto, Even faster |
+| 12 | kRenderFxFlickerSlow | Slow Flicker, Blinks slowly, seems to be affected by FPS |
+| 13 | kRenderFxFlickerFast | Fast Flicker, Ditto, Faster |
+| 14 | kRenderFxNoDissipation | Constant Glow, avoids [rendermode](#rendermode) having a value of 3 (glow) becomes affected by distance |
+| 15 | kRenderFxDistort | Distort, Blinks continuosly |
+| 16 | kRenderFxHologram | Hologram (Distort + fade), creates a hologram, effect used in training maps from Half-Life |
+| 17 | kRenderFxDeadPlayer | Without any effect |
+| 18 | kRenderFxExplode | Explode (Garg Like), Makes the gargantua's deforming effect (when he is about to die). doesn't work in BSPModels or sprites |
+| 19 | kRenderFxGlowShell | Glow Shell, Covers an effect from Quake, [rendercolor](#rendercolor) has to be used, doesn't work on sprites or BSPModels |
+| 20 | kRenderFxClampMinScale | ClampMinScale (Sprites), Doesn't seem to have any effect in glow |
