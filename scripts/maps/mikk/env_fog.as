@@ -1,23 +1,13 @@
 #include "utils"
 namespace env_fog
 {
-    void Register()
-    {
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)\n"
-        );
-
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_fog::entity", "env_fog_individual" );
-        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
-    }
-
     CScheduledFunction@ g_Fog = g_Scheduler.SetTimeout( "FindEnvFogs", 0.0f );
 
     void FindEnvFogs()
     {
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_fog::entity", "env_fog_individual" );
+        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
+
         CBaseEntity@ pFog = null;
 
         while( ( @pFog = g_EntityFuncs.FindEntityByClassname( pFog, "env_fog" ) ) !is null )
@@ -43,6 +33,13 @@ namespace env_fog
                 }
             }
         }
+
+        g_Util.ScriptAuthor.insertLast
+        (
+            "Author: Mikk\n"
+            "Github: github.com/Mikk155\n"
+            "Description: Expands env_fog functions.\n"
+        );
     }
 
     class entity : ScriptBaseEntity
