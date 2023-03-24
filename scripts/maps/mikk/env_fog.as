@@ -5,7 +5,6 @@ namespace env_fog
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: https://github.com/Mikk155/Sven-Co-op#env_fog\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Show fog to activator only. created for the use of env_fog in xen maps only (displacer teleport)\n"
