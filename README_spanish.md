@@ -83,7 +83,7 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [env_message](develop/information/entities/env_message_spanish.md)
 - [env_message_custom](develop/information/entities/env_message_spanish.md#angelscript)✔️Angelscript
 - [env_render](develop/information/entities/env_render_spanish.md)
-- [env_render_gradualy](develop/information/entities/env_render_spanish.md#angelscript)✔️Angelscript
+- [env_render_custom](develop/information/entities/env_render_spanish.md#angelscript)✔️Angelscript
 - [env_render_individual](develop/information/entities/env_render_individual_spanish.md)
 - [env_sentence](develop/information/entities/env_sentence_spanish.md)
 - [env_shake](develop/information/entities/env_shake_spanish.md)
