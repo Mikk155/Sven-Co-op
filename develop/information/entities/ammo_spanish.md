@@ -4,6 +4,12 @@ Entidades de munición y armas de Sven Co-op
 
 Todas soportan la base [pickup](pickup_spanish.md)
 
+- Comportamiento de [activación](triggering_system_english.md)
+
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Añade item a !activator | | Añade item a !activator | Añade item a !activator | !activación | USE_TOGGLE |
+
 ---
 
 ### ammo_357

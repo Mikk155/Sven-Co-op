@@ -22,6 +22,6 @@ Leave Corpse | 8 | If the action animation is a death animation, causing the mon
 
 - Comportamiento de [activación](triggering_system_english.md)
 
-| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | !activator | target |
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
-| Plays animation | Plays animation | Plays animation | Plays animation | | sends USE_TOGGLE |
+| Reproduce animación | Reproduce animación | Reproduce animación | Reproduce animación |  | USE_TOGGLE |

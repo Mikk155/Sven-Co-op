@@ -46,17 +46,11 @@ void MapInit()
 </p>
 </details>
 
-Activate the entity giving trigger with the respective [USE_TYPE](triggering_system_english.md) .
+- Behaviur of [activation](triggering_system_english.md)
 
-- USE_OFF
-	- Deactivate classic mode
-
-- USE_ON
-	- Activate classic mode
-
-- USE_TOGGLE
-	- Toggle classic mode
-
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Toggle classic mode | Deactivate classic mode | Activate classic mode | Toggle classic mode | !activator | USE_TOGGLE |
 
 | key | Descripción |
 |-----|-------------|
@@ -152,8 +146,6 @@ void MapInit()
 
 Add any Cvar(Supported ones listed in the FGD) and activate the entity, alternatively use spawnflag 1 to automatically activate.
 
-Activate an entity with the respective trigger [USE_TYPE](triggering_system_english.md) .
-
 In HAMMER/JACK/BSPGUY open Smart-Edit and add the desired cvars.
 
 - The key is the cvar to update.
@@ -165,11 +157,11 @@ Example:
 "mp_allowplayerinfo" "0"
 ```
 
-- USE_OFF
-	- Returns the original cvars that were changed
+- Behaviur of [activation](triggering_system_english.md)
 
-- USE_ON / USE_TOGGLE
-	- Update the specified cvars
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Update the specified cvars | Returns the original cvars that were changed | Update the specified cvars | Update the specified cvars | | |
 
 - spawnflags 1 (Start On)
 	- Active, The cvars will update automatically on map start |
@@ -290,16 +282,11 @@ void MapInit()
 </p>
 </details>
 
-Activate the entity giving trigger with the respective [USE_TYPE](triggering_system_english.md) .
+- Behaviur of [activation](triggering_system_english.md)
 
-- USE_OFF
-	- Desactivate survival mode
-
-- USE_ON
-	- Activate survival mode
-
-- USE_TOGGLE
-	- Toggle survival mode
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Toggle survival mode | Desactivate survival mode | Activate survival mode | Toggle survival mode | !activator | USE_TOGGLE |
 
 - If the entity is activated before it reaches its limit ``mp_survival_startdelay`` then its value will be forced to 0 and survival mode starts automatically.
 

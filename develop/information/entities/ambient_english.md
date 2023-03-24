@@ -127,3 +127,9 @@ Esta entidad se utiliza comunmente para reproducir musica, ya que es controlado 
 | Start Silent | 1 | La entidad necesita recibir Trigger para comenzar a reproducir la musica |
 | Loop | 2 | La musica se reiniciará cuando termine de sonar |
 | Activator Only | 4 | Solamente !activator podrá oirla |
+
+- Comportamiento de [activación](triggering_system_english.md)
+
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Reproduce/Para el sonido | Para el sonido | Reproduce el sonido | Si esta activado lo apaga, si esta desactivado lo enciende |  |  |

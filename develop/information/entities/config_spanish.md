@@ -46,17 +46,11 @@ void MapInit()
 </p>
 </details>
 
-Activa la entidad dandole Trigger con el [USE_TYPE](triggering_system_spanish.md) respectivo.
+- Comportamiento de [activación](triggering_system_english.md)
 
-- USE_OFF
-	- Desactiva el classic mode
-
-- USE_ON
-	- Activa el classic mode
-
-- USE_TOGGLE
-	- Alterna el classic mode
-
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Alterna classic mode | Desactiva classic mode | Activa classic mode | Alterna classic mode | !activator | USE_TOGGLE |
 
 | key | Descripción |
 |-----|-------------|
@@ -152,8 +146,6 @@ void MapInit()
 
 Agrega cualquier Cvar (Soportados enlistados en el FGD) y activa la entidad o alternativamente activa la spawnflag 1 para automaticamente activarlos.
 
-Activa la entidad dandole Trigger con el [USE_TYPE](triggering_system_spanish.md) respectivo.
-
 En HAMMER/JACK/BSPGUY abre Smart-Edit y agrega ahi los cvars de tu elección.
 
 - La key es el cvar a actualizar.
@@ -165,11 +157,11 @@ Ejemplo:
 "mp_allowplayerinfo" "0"
 ```
 
-- USE_OFF
-	- Retorna los cvars originales que fueron cambiados
+- Comportamiento de [activación](triggering_system_english.md)
 
-- USE_ON / USE_TOGGLE
-	- Activa los cvars especificados
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Activa los cvars especificados | Retorna los cvars originales que fueron cambiados | Activa los cvars especificados | Activa los cvars especificados | | |
 
 - spawnflags 1 (Start On)
 	- Activa, Los cvars se actualizarán automaticamente apenas empieze el mapa |
@@ -290,16 +282,11 @@ void MapInit()
 </p>
 </details>
 
-Activa la entidad dandole Trigger con el [USE_TYPE](triggering_system_spanish.md) respectivo.
+- Comportamiento de [activación](triggering_system_english.md)
 
-- USE_OFF
-	- Desactiva el survival mode
-
-- USE_ON
-	- Activa el survival mode
-
-- USE_TOGGLE
-	- Alterna el survival mode
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Alterna el survival mode | Desactiva el survival mode | Activa el survival mode | Alterna el survival mode | !activator | USE_TOGGLE |
 
 - Si la entidad es activada antes de que alcance su limite en ``mp_survival_startdelay`` entonces su valor es forzado a 0 y el survival mode inicia automaticamente.
 
