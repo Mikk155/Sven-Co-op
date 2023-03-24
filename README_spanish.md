@@ -55,6 +55,10 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [config_map_precache](develop/information/entities/config_spanish.md#config_map_precache)✔️Angelscript
 - [config_survival_mode](develop/information/entities/config_spanish.md#config_survival_mode)✔️Angelscript
 - [custom_precache](develop/information/entities/custom_precache_spanish.md)
+- [cycler](develop/information/entities/cycler_spanish.md#cycler)
+- [cycler_sprite](develop/information/entities/cycler_spanish.md#cycler_sprite)
+- [cycler_weapon](develop/information/entities/cycler_spanish.md#cycler_weapon)
+- [cycler_wreckage](develop/information/entities/cycler_spanish.md#cycler_wreckage)
 
 </p>
 </details>
@@ -63,8 +67,90 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 <p>
 
 - [env_beam](develop/information/entities/env_beam_spanish.md)
+- [env_beverage](develop/information/entities/env_beverage_spanish.md)
+- [env_blood](develop/information/entities/env_blood_spanish.md)
+- [env_bloodpuddle](develop/information/entities/env_bloodpuddle_spanish.md)✔️Angelscript
+- [env_bubbles](develop/information/entities/env_bubbles_spanish.md)
+- [env_explosion](develop/information/entities/env_explosion_spanish.md)
+- [env_fade](develop/information/entities/env_fade_spanish.md)
 - [env_fog](develop/information/entities/env_fog_spanish.md)
 - [env_fog_individual](develop/information/entities/env_fog_spanish.md#env_fog_individual)✔️Angelscript
+- [env_funnel](develop/information/entities/env_funnel_spanish.md)
+- [env_geiger](develop/information/entities/env_geiger_spanish.md)
+- [env_global](develop/information/entities/env_global_spanish.md)
+- [env_glow](develop/information/entities/env_sprite.md#env_glow)
+- [env_laser](develop/information/entities/env_laser_spanish.md)
+- [env_message](develop/information/entities/env_message_spanish.md)
+- [env_message_custom](develop/information/entities/env_message_spanish.md#angelscript)✔️Angelscript
+- [env_render](develop/information/entities/env_render_spanish.md)
+- [env_render_gradualy](develop/information/entities/env_render_spanish.md#angelscript)✔️Angelscript
+- [env_render_individual](develop/information/entities/env_render_individual_spanish.md)
+- [env_sentence](develop/information/entities/env_sentence_spanish.md)
+- [env_shake](develop/information/entities/env_shake_spanish.md)
+- [env_shooter](develop/information/entities/env_shooter_spanish.md)
+- [env_sound](develop/information/entities/env_sound_spanish.md)
+- [env_spark](develop/information/entities/env_spark_spanish.md)
+- [env_sprite](develop/information/entities/env_sprite_spanish.md)
+- [env_spritehud](develop/information/entities/env_spritehud_spanish.md)✔️Angelscript
+- [env_spritetrail](develop/information/entities/env_spritetrail_spanish.md)✔️Angelscript
+- [env_spritetrain](develop/information/entities/env_spritetrain_spanish.md)
+- [env_xenmaker](develop/information/entities/env_xenmaker_spanish.md)
+
+</p>
+</details>
+
+<details><summary>F</summary>
+<p>
+
+- [func_](develop/information/entities/func__spanish.md)
+
+</p>
+</details>
+
+<details><summary>G</summary>
+<p>
+
+- [game_](develop/information/entities/func__spanish.md)
+
+</p>
+</details>
+
+<details><summary>I</summary>
+<p>
+
+- [info_](develop/information/entities/func__spanish.md)
+
+</p>
+</details>
+
+<details><summary>L</summary>
+<p>
+
+- [light_](develop/information/entities/func__spanish.md)
+
+</p>
+</details>
+
+<details><summary>M</summary>
+<p>
+
+- [monster_](develop/information/entities/func__spanish.md)
+
+</p>
+</details>
+
+<details><summary>O</summary>
+<p>
+
+- [op4mortar](develop/information/entities/func__spanish.md)
+
+</p>
+</details>
+
+<details><summary>P</summary>
+<p>
+
+- [path_](develop/information/entities/func__spanish.md)
 
 </p>
 </details>
@@ -76,6 +162,14 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [script_survival_mode](develop/information/entities/utils_spanish.md#script_survival_mode)✔️Angelscript
 - [script_random_value](develop/information/entities/utils_spanish.md#script_random_value)✔️Angelscript
 - [script_player_data](develop/information/entities/utils_spanish.md#script_player_data)✔️Angelscript
+
+</p>
+</details>
+
+<details><summary>T</summary>
+<p>
+
+- [trigger_](develop/information/entities/func__spanish.md)
 
 </p>
 </details>
@@ -110,9 +204,6 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [weapon_tripmine](develop/information/entities/weapons_spanish.md#weapon_tripmine)
 - [weapon_uzi](develop/information/entities/weapons_spanish.md#weapon_uzi)
 - [weapon_uziakimbo](develop/information/entities/weapons_spanish.md#weapon_uziakimbo)
-
-</p>
-</details>
 
 </p>
 </details>
