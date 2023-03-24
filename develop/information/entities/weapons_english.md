@@ -16,6 +16,12 @@ Soportan la base [pickup](pickup_english.md).
 | IsNotAmmoItem | 0/1 | 0 = se puede volver a recoger para tomar su municion, 1 = solo se puede tomar para recibir el arma |
 | exclusivehold | 0/1 | 0 = funcion normal, 1 = al tomar el arma no puedes cambiar a otra arma a no ser que esta sea descartada (+drop) |
 
+- Comportamiento de [activación](triggering_system_english.md)
+
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| Añade item a !activator | | Añade item a !activator | Añade item a !activator | !activación | USE_TOGGLE |
+
 </p>
 </details>
 
