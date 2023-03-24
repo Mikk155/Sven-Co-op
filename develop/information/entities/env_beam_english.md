@@ -63,11 +63,17 @@ env_beam is an entity used to create a line between two entities.
 
 - Flag 8 Always applies damage on the moment it is created ???
 
-- Traces with a lifetime higher than 0 can't use 128 and 256
+- Traces with a life time higher than 0 can't use 128 and 256
 
 - Flag 2 desactivated acts like if it was activated, it just cant be deactivated again
 
 - Renderfx has no use
+
+- Behaviur of [activation](triggering_system_english.md)
+
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| toggles the beam | turns off the beam | turns on the beam | toggles the beam |  |  |
 
 ### Kezaeiv's experience
 
@@ -76,3 +82,10 @@ env_beam is an entity used to create a line between two entities.
 - If you wish to use moving targets (func_trains, npcs, etc) as either LightningStart or LightningEnd, the beam must not be permanent since it only updates the location of the targets each time it creates a beam. Soo you have to set up a short timed beam with a low or 0 delay.
 	- Since beam lifetime can't be lower than 0.1, the beam updates somewhat slow, the faster the targets move, the more obvious it is
 
+
+
+- Comportamiento de [activación](triggering_system_english.md)
+
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
+|------------|---------|--------|---------|------------|--------|
+| USE_TOGGLE | USE_OFF | USE_ON | USE_SET |  |  |
