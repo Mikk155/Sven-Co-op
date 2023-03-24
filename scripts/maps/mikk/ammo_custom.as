@@ -5,7 +5,6 @@ namespace ammo_custom
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: https://github.com/Mikk155/Sven-Co-op#ammo_custom\n"
             "Author: Gaftherman\n"
             "Github: github.com/Gaftherman\n"
             "Author: Mikk\n"

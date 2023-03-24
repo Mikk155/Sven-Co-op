@@ -14,7 +14,6 @@ namespace env_bloodpuddle
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: https://github.com/Mikk155/Sven-Co-op#env_bloodpuddle\n"
             "Author: Gaftherman\n"
             "Github: github.com/Gaftherman\n"
             "Author: Mikk\n"
@@ -38,11 +37,10 @@ namespace env_bloodpuddle
         {
             CBaseMonster@ pMonster = cast<CBaseMonster@>(pEntity);
 
-            // Add custom keyvalue "$f_bloodpuddle" "1" to monsters for prevent them from generating bloodpuddles.
             if( pMonster.IsMonster()
             && pMonster.pev.deadflag == DEAD_DEAD
             && pMonster.m_bloodColor != ( DONT_BLEED )
-            && pMonster.GetCustomKeyvalues().GetKeyvalue( "$f_bloodpuddle" ).GetFloat() <= 0.0 )
+            && atof( g_Util.GetCKV( pMonster, '$f_bloodpuddle' ) ) <= 0.0 )
             {
                 CBaseEntity@ pBlood = g_EntityFuncs.CreateEntity( "env_bloodpuddle", null, true);
                 
@@ -50,7 +48,7 @@ namespace env_bloodpuddle
                 {
                     if( pEntity.GetCustomKeyvalues().HasKeyvalue( "$i_bloodpuddle" ) )
                     {
-                        pBlood.pev.skin = pMonster.GetCustomKeyvalues().GetKeyvalue( "$i_bloodpuddle" ).GetInteger();
+                        pBlood.pev.skin = atoi( g_Util.GetCKV( pMonster, '$i_bloodpuddle' ) );
                     }
                     else
                     {
@@ -69,7 +67,7 @@ namespace env_bloodpuddle
                     pBlood.SetOrigin( cast<CBaseMonster@>(pEntity).Center() + Vector( 0, 0, 6 ) );
 
                     @pBlood.pev.owner = pMonster.edict();
-                    pMonster.GetCustomKeyvalues().SetKeyvalue( "$f_bloodpuddle", 1 );
+					g_Util.SetCKV( pMonster, '$f_bloodpuddle', '1' );
                 }
             }
         }
@@ -119,7 +117,7 @@ namespace env_bloodpuddle
             }
             else if( pOwner !is null )
             {
-                pOwner.GetCustomKeyvalues().SetKeyvalue( "$f_bloodpuddle", 0 );
+				g_Util.SetCKV( pOwner, '$f_bloodpuddle', '0' );
                 @self.pev.owner = null;
                 SetThink( null );
             }

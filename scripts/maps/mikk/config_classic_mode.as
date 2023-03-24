@@ -5,7 +5,6 @@ namespace config_classic_mode
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: https://github.com/Mikk155/Sven-Co-op#config_classic_mode\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Entity that customize classic mode for monsters, models and items that the game doesn't support.\n"

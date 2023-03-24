@@ -7,7 +7,6 @@ namespace config_map_cvars
 
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: https://github.com/Mikk155/Sven-Co-op#config_map_cvars\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal.\n"

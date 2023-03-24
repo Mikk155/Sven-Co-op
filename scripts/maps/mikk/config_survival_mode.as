@@ -5,7 +5,6 @@ namespace config_survival_mode
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: https://github.com/Mikk155/Sven-Co-op#config_survival_mode\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Entity that customize survival mode and make it better.\n"

@@ -5,7 +5,6 @@ namespace config_map_precache
     {
         g_Util.ScriptAuthor.insertLast
         (
-            "Script: https://github.com/Mikk155/Sven-Co-op#config_map_precache\n"
             "Author: Mikk\n"
             "Github: github.com/Mikk155\n"
             "Description: Entity that precache almost anything.\n"
