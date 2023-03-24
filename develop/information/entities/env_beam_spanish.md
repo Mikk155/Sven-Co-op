@@ -72,10 +72,3 @@ env_beam es una entidad usada para crear una linea entre dos entidades.
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
 | Alterna el trazo | apaga el trazo | Inicia el trazo | Alterna el trazo |  |  |
-
-
-- Comportamiento de [activación](triggering_system_english.md)
-
-| USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
-|------------|---------|--------|---------|------------|--------|
-| USE_TOGGLE | USE_OFF | USE_ON | USE_SET |  |  |
