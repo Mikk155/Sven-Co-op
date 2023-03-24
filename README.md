@@ -1,1 +1,1 @@
-Veer en [Español](README_spanish.md)
+Ver en [Español](README_spanish.md)
