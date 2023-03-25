@@ -73,6 +73,7 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [env_bubbles](develop/information/entities/env_bubbles_spanish.md)
 - [env_explosion](develop/information/entities/env_explosion_spanish.md)
 - [env_fade](develop/information/entities/env_fade_spanish.md)
+- [env_fade_custom](develop/information/entities/env_fade_spanish.md#angelscript)✔️Angelscript
 - [env_fog](develop/information/entities/env_fog_spanish.md)
 - [env_fog_individual](develop/information/entities/env_fog_spanish.md#env_fog_individual)✔️Angelscript
 - [env_funnel](develop/information/entities/env_funnel_spanish.md)

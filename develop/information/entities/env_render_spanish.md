@@ -89,3 +89,5 @@ En este caso, Cada 1.0 segundo, vamos a bajar el renderamt del objetivo en 10 ha
 | USE_OFF | Otros | target USE_TYPE |
 |---------|-------|-----------------|
 | Asigna render settings original de la entidad | Asigna render settings | USE_TOGGLE |
+
+- Radius y Auto Apply no funcionan mientras se usa las funciones de Angelscript.
