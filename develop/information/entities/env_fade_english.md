@@ -28,6 +28,48 @@ env_fade es una entidad que una vez activada, muestra en la pantalla de los juga
 
 env_fade_custom es una entidad custom que funciona igual que env_fade con la diferencia de varias adiciones.
 
+<details><summary>Instalar</summary>
+<p>
+
+Requiere:
+- [env_fade_custom](../../../scripts/maps/mikk/env_fade_custom.as)
+- [utils](../../../scripts/maps/mikk/utils.as)
+
+[Descarga con un toque](../batch_english.md)
+
+<details><summary>Batch</summary>
+<p>
+
+```bat
+set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
+set Files=utils env_fade_custom
+set output=scripts/maps/mikk/
+if not exist %output% (
+  mkdir %output:/=\%
+)
+(for %%a in (%Files%) do (
+  curl -LJO %Main%%%a.as
+  
+  move %%a.as %Output%
+)) 
+```
+
+</p>
+</details>
+
+En tu map_script Agrega:
+```angelscript
+#include "mikk/env_fade_custom"
+
+void MapInit()
+{
+	env_fade_custom::Register();
+}
+```
+
+</p>
+</details>
+
 | Key | Descripción |
 |-----|-------------|
 | m_ffadein | Tiempo, En segundos, Que el desvanecimiento inicial tendrá efecto |
