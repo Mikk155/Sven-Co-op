@@ -46,7 +46,7 @@ env_fade_custom es una entidad custom que funciona igual que env_fade con la dif
 | 0 | Activator only (Default), Solo !activator será afectado |
 | 1 | All Players, Todos los jugadores serán afectados |
 | 2 | Only players in radius, Todos los jugadores que esten dentro del rango de m_ifaderadius serán afectados|
-| 3 | Only players touching, Todos los jugadores que esten dentro de la entidad serán afectados, Puede ser mor min/maxhullsize o por modelo del mundo |
+| 3 | Only players touching, Todos los jugadores que esten dentro de la entidad serán afectados, Puede ser por min/maxhullsize o por modelo del mundo |
 
 | Bit | Flag | Descripción |
 |-----|------|-------------|
