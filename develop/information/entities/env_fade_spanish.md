@@ -22,9 +22,9 @@ env_fade es una entidad que una vez activada, muestra en la pantalla de los juga
 
 - Cualquier tipo de USE_TYPE inicia el desvanecimiento nuevamente, sobre poniendose a activos anteriores.
 
-# Angelscript
+# env_fade_custom
 
-### env_fade_custom
+![image](../../images/angelscript.png)
 
 env_fade_custom es una entidad custom que funciona igual que env_fade con la diferencia de varias adiciones.
 
