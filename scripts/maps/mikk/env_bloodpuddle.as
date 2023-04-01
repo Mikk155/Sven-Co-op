@@ -1,33 +1,26 @@
 #include "utils"
 namespace env_bloodpuddle
 {
-    string DefaultModel = "models/mikk/misc/bloodpuddle.mdl";
-    bool RemoveBlood;
+	bool Register = g_Util.CustomEntity( 'env_bloodpuddle::env_bloodpuddle','env_bloodpuddle' );
+    CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
+	string AutoPrecache = PrecacheModel();
 
-    void Register( const bool& in blRemove = false, const string& in szModel = "models/mikk/misc/bloodpuddle.mdl" )
-    {
+    string BloodModel = 'models/mikk/misc/bloodpuddle.mdl';
+	
+	void model( const string& in szModel = BloodModel )
+	{
+		BloodModel = szModel;
+		PrecacheModel();
+	}
+	
+	string PrecacheModel( const string& in szModel = BloodModel )
+	{
         g_Game.PrecacheModel( szModel );
+        g_Game.PrecacheGeneric( szModel );
+		return szModel;
+	}
 
-        // If both map and server is using this. prevent one of them executing this function.
-        if( g_CustomEntityFuncs.IsCustomEntity( "env_bloodpuddle" ) )
-            return;
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Gaftherman\n"
-            "Github: github.com/Gaftherman\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Generates a blood puddle when a monster die.\n"
-        );
-
-        RemoveBlood = blRemove;
-        if( szModel != "models/mikk/misc/bloodpuddle.mdl" ) DefaultModel = szModel;
-
-        g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
-
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_bloodpuddle::entity", "env_bloodpuddle" );
-    }
+    bool fade = false;
 
     void Think()
     {
@@ -43,7 +36,7 @@ namespace env_bloodpuddle
             && atof( g_Util.GetCKV( pMonster, '$f_bloodpuddle' ) ) <= 0.0 )
             {
                 CBaseEntity@ pBlood = g_EntityFuncs.CreateEntity( "env_bloodpuddle", null, true);
-                
+
                 if( pBlood !is null )
                 {
                     if( pEntity.GetCustomKeyvalues().HasKeyvalue( "$i_bloodpuddle" ) )
@@ -67,13 +60,13 @@ namespace env_bloodpuddle
                     pBlood.SetOrigin( cast<CBaseMonster@>(pEntity).Center() + Vector( 0, 0, 6 ) );
 
                     @pBlood.pev.owner = pMonster.edict();
-					g_Util.SetCKV( pMonster, '$f_bloodpuddle', '1' );
+                    g_Util.SetCKV( pMonster, '$f_bloodpuddle', '1' );
                 }
             }
         }
     }
 
-    class entity : ScriptBaseAnimating
+    class env_bloodpuddle : ScriptBaseAnimating
     {
         void Spawn()
         {
@@ -81,8 +74,8 @@ namespace env_bloodpuddle
             self.pev.solid = SOLID_NOT;
             self.pev.scale = Math.RandomFloat( 1.5, 2.5 );
 
-            g_EntityFuncs.SetModel(self, DefaultModel );
-            g_EntityFuncs.SetOrigin(self, self.pev.origin);
+            g_EntityFuncs.SetModel( self, BloodModel );
+            g_EntityFuncs.SetOrigin( self, self.pev.origin );
             self.pev.sequence = 2;
 
             SetThink( ThinkFunction( this.BloodPreSpawn ) );
@@ -111,13 +104,13 @@ namespace env_bloodpuddle
             {
                 self.pev.origin = pOwner.pev.origin;
             }
-            else if( RemoveBlood )
+            else if( fade )
             {
                 g_EntityFuncs.Remove( self );
             }
             else if( pOwner !is null )
             {
-				g_Util.SetCKV( pOwner, '$f_bloodpuddle', '0' );
+                g_Util.SetCKV( pOwner, '$f_bloodpuddle', '0' );
                 @self.pev.owner = null;
                 SetThink( null );
             }

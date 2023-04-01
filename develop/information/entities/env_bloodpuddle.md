@@ -10,7 +10,7 @@ env_bloodpuddle es un script automatico que crea un charco de sangre cuando un n
 
 - Descargue [map_script](../../../scripts/maps/mikk/env_bloodpuddle.as) O [plugin](../../../scripts/plugins/env_bloodpuddle.as)
 - Descargue [bloodpuddle](../../../models/mikk/misc/bloodpuddle.mdl)
-- Lease [instalar](../install_spanish.md)
+- Lease [instalar](../install.md)
 
 
 Funciones adicionales:
@@ -50,6 +50,6 @@ void MapInit()
 </p>
 </details>
 
-- Añade una [Custom Key Value](custom_keyvalue_spanish.md) en el monster que no quieras que genere un charco de sangre. ``$f_bloodpuddle`` en un valor de ``1``
+- Añade una [Custom Key Value](custom_keyvalue.md) en el monster que no quieras que genere un charco de sangre. ``$f_bloodpuddle`` en un valor de ``1``
 
-- Usar skin personalizada por cada monster, Añade una [Custom Key Value](custom_keyvalue_spanish.md) en el monster que quieras que genere sangre de otro color. ``$i_bloodpuddle`` en un valor ecual a el indice de skin en el modelo. Si no se utiliza, el tipo de sangre del npc definirá el color del modelo, 0 por rojo, 1 por otros.
+- Usar skin personalizada por cada monster, Añade una [Custom Key Value](custom_keyvalue.md) en el monster que quieras que genere sangre de otro color. ``$i_bloodpuddle`` en un valor ecual a el indice de skin en el modelo. Si no se utiliza, el tipo de sangre del npc definirá el color del modelo, 0 por rojo, 1 por otros.
