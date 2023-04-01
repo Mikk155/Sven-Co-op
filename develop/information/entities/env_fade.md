@@ -67,7 +67,7 @@ env_fade_custom es una entidad custom que funciona igual que env_fade con la dif
 | 4 | Stay Fade | El efecto se mantendra infinitamente hasta que se sobre escriba con otro env_fade/custom |
 
 
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|-------------------|-----------------|
