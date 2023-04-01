@@ -1,1 +1,0 @@
-# angelscript function

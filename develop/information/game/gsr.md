@@ -37,4 +37,4 @@ El archivo GSR contendrá dentro lo siguiente
 ```
 De esta forma, los sonidos ( y sentencias ) especificados a la izquierda, serán reemplazados por los de la derecha.
 
-Lista de sonidos irremplazables: [unreplaceable_sounds](../issues/unreplaceable_sounds_spanish.md)
+Lista de sonidos irremplazables: [unreplaceable_sounds](../issues/unreplaceable_sounds.md)
