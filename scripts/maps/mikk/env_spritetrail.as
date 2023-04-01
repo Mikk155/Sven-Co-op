@@ -1,20 +1,9 @@
 #include "utils"
 namespace env_spritetrail
 {
-    void Register()
-    {
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#env_spritetrail"
-            "\nAuthor: Gaftherman"
-            "\nGithub: github.com/Gaftherman"
-            "\nDescription: Traces a sprite when the target entity moves.\n"
-        );
+	bool Register = g_Util.CustomEntity( 'env_spritetrail::env_spritetrail','env_spritetrail' );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritetrail::entity", "env_spritetrail" );
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class env_spritetrail : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hTargetEnt = null;
 
