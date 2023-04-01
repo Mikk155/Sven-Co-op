@@ -1,21 +1,17 @@
+/*
+Github page: https://github.com/Mikk155/Sven-Co-op/
+
+Require:
+- utils.as
+
+Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/ammo_english.md#ammo_custom
+*/
 #include "utils"
 namespace ammo_custom
 {
-    void Register()
-    {
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Gaftherman\n"
-            "Github: github.com/Gaftherman\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: ammo item customizable that gives a specified ammout of bullets.\n"
-        );
+	bool Register = g_Util.CustomEntity( 'ammo_custom::ammo_custom','ammo_custom' );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "ammo_custom::entity", "ammo_custom" );
-    }
-
-    class entity : ScriptBasePlayerAmmoEntity
+    class ammo_custom : ScriptBasePlayerAmmoEntity
     {
         private string p_sound = "items/9mmclip1.wav";
         private string am_name = "buckshot";
@@ -44,7 +40,6 @@ namespace ammo_custom
         void Spawn()
         { 
             Precache();
-
             if( self.pev.frags > 0 )
             {
                 if( string( self.pev.targetname ).IsEmpty() )
@@ -64,15 +59,14 @@ namespace ammo_custom
                 g_EntityFuncs.CreateEntity( "env_render_individual", g_keyvalues );
             }
 
-            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ? 'models/error.mdl' : string( self.pev.model ) ) );
+            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
             BaseClass.Spawn();
         }
         
         void Precache()
         {
             BaseClass.Precache();
-
-            g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? 'models/error.mdl' : string( self.pev.model ) ) );
+            g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
             g_SoundSystem.PrecacheSound( p_sound );
             g_Game.PrecacheGeneric( "sound/" + p_sound );
         }

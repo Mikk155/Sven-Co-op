@@ -2,9 +2,6 @@ CUtils g_Util;
 
 final class CUtils
 {
-    array<string> ScriptAuthor;
-    array<string> MapAuthor;
-
     void Trigger( string& in key, CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE& in useType = USE_TOGGLE, float& in flDelay = 0.0f )
     {
         if( key.IsEmpty() )
@@ -180,24 +177,20 @@ final class CUtils
         restore.End();
     }
 
-    bool ShowDebugs = false;
-    bool ShowDebugsHost = false;
+    bool ShowDebugs = true;
     void Debug( const string& in szMessage )
     {
-        if( ShowDebugs )
-        {
-            g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, szMessage + "\n" );
-        }
-        if( ShowDebugsHost )
-        {
-            g_Game.AlertMessage( at_console, szMessage + "\n" );
-        }
-    }
-
-    void DebugMode( const bool& in blmode2 = false )
-    {
-        ShowDebugs = true;
-        ShowDebugsHost = blmode2;
+		if( ShowDebugs )
+		{
+			if( g_EngineFuncs.IsDedicatedServer() )
+			{
+				g_PlayerFuncs.ClientPrintAll( HUD_PRINTCONSOLE, szMessage + "\n" );
+			}
+			else
+			{
+				g_Game.AlertMessage( at_console, szMessage + "\n" );
+			}
+		}
     }
 
     string GetCKV( CBaseEntity@ pEntity, string szKey )
@@ -222,7 +215,7 @@ final class CUtils
             return;
         }
 
-        // Can't set strings or i didn't test enought. workaround.
+        // Can't set strings
         dictionary g_keyvalues =
         {
             { "target", "!activator" },
@@ -297,22 +290,6 @@ final class CUtils
     }
 
     string RIPENTDebugger;
-
-    void RipentShowInfo( CBasePlayer@ pPlayer )
-    {
-        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed initialised entities info at your console.\n" );
-
-        // If we reached the limit replace and send again
-        while( RIPENTDebugger != '' )
-        {
-            g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  RIPENTDebugger.SubString( 0, 68 ) );
-
-            if( RIPENTDebugger.Length() <= 68 ) RIPENTDebugger = '';
-            else RIPENTDebugger = RIPENTDebugger.SubString( 68, RIPENTDebugger.Length() );
-        }
-
-        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
-    }
 
     bool LoadEntities( const string& in EntFileLoadText = 'scripts/maps/store/sex.txt', const string& in szClassname = '' )
     {
@@ -409,7 +386,7 @@ final class CUtils
         }
         pFile.Close();
 
-        RIPENTDebugger = RIPENTDebugger + "\nRIPENT Script Utility created by Mikk https://github.com/Mikk155\nSpecial thanks to Gaftherman https://github.com/Gaftherman\n\n";
+        RIPENTDebugger = RIPENTDebugger + "\nRIPENT Script Utility created by Mikk github.com/Mikk155\nSpecial thanks to Gaftherman github.com/Gaftherman\n\n";
         return true;
     }
 
@@ -429,31 +406,6 @@ final class CUtils
         return NumberOfEntities;
     }
 
-	void WeaponList
-	(
-		const string& in szClassname = 'weapon_crowbar', /* weapon name */
-		int iAmmoType1 = -1, /* ammotype1 */
-		int iAmmoMax1 = -1, /* max ammo 1 */
-		int iAmmoType2 = -1, /* ammotype2 */
-		int iAmmoMax2 = -1, /* max ammo 2 */
-		int iSlot = 0, /* slot */
-		int iPosition = 3, /* position */
-		int iID = 22, /* ID */
-		int iflag = 128 /* flag */
-	)
-	{
-		NetworkMessage message( MSG_ALL, NetworkMessages::WeaponList );
-			message.WriteString( szClassname );
-			message.WriteByte( iAmmoType1 );
-			message.WriteLong( iAmmoMax1 );
-			message.WriteByte( iAmmoType2 );
-			message.WriteLong( iAmmoMax2 );
-			message.WriteByte( iSlot );
-			message.WriteByte( iPosition );
-			message.WriteShort( iID );
-			message.WriteByte( iflag );
-	}
-
 	bool Reflection( const string& in szFunction )
 	{
 		Reflection::Function@ fNameFunction = Reflection::g_Reflection.Module.FindGlobalFunction( szFunction );
@@ -465,9 +417,37 @@ final class CUtils
 		fNameFunction.Call();
 		return true;
 	}
+
+	bool CustomEntity( const string& in szClass = '', const string& in szClassname = '' )
+	{
+		if( !g_CustomEntityFuncs.IsCustomEntity( szClassname ) )
+		{
+			g_CustomEntityFuncs.RegisterCustomEntity( szClass, szClassname );
+		}
+		return g_CustomEntityFuncs.IsCustomEntity( szClassname );
+	}
 }
 // End of final class
 
+CClientCommand g_CreditsCMD( "ripent", "show ripent information", @RipentShowInfo );
+
+void RipentShowInfo( const CCommand@ pArguments )
+{
+	CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
+
+	g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed initialised entities info at your console.\n" );
+
+	// If we reached the limit replace and send again
+	while( g_Util.RIPENTDebugger != '' )
+	{
+		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  g_Util.RIPENTDebugger.SubString( 0, 68 ) );
+
+		if( g_Util.RIPENTDebugger.Length() <= 68 ) g_Util.RIPENTDebugger = '';
+		else g_Util.RIPENTDebugger = g_Util.RIPENTDebugger.SubString( 68, g_Util.RIPENTDebugger.Length() );
+	}
+
+	g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
+}
 
 mixin class ScriptBaseLanguages
 {
@@ -580,7 +560,6 @@ mixin class ScriptBaseCustomEntity
     private float wait = 0.0f;
     private Vector minhullsize();
     private Vector maxhullsize();
-
     private string m_iszMaster();
 
     bool ExtraKeyValues( const string& in szKey, const string& in szValue )
@@ -609,7 +588,6 @@ mixin class ScriptBaseCustomEntity
         {
             return BaseClass.KeyValue( szKey, szValue );
         }
-
         return true;
     }
 
@@ -636,117 +614,53 @@ mixin class ScriptBaseCustomEntity
         return false;
     }
 
-    void SetBoundaries()
+    bool SetBoundaries()
     {
+        g_Util.Debug( "ScriptBaseCustomEntity::SetBoundaries:" );
         if( string( self.pev.model ).StartsWith( "*" ) && self.IsBSPModel() )
         {
-            g_EntityFuncs.SetModel( self, self.pev.model );
+            g_EntityFuncs.SetModel( self, string( self.pev.model ) );
             g_EntityFuncs.SetSize( self.pev, self.pev.mins, self.pev.maxs );
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
-            g_Util.Debug( "g_Util.SetBoundaries:" );
             g_Util.Debug( "Set size of entity '" + string( self.pev.classname ) + "'" );
             g_Util.Debug( "model '"+ string( self.pev.model ) +"'" );
-            g_Util.Debug( "origin '" + self.pev.origin.x + " " + self.pev.origin.y + " " + self.pev.origin.z + "'" );
+            g_Util.Debug( "origin '" + self.pev.origin.ToString() + "'" );
+			return true;
         }
-        else
+        else if( minhullsize != g_vecZero && maxhullsize != g_vecZero )
         {
             g_EntityFuncs.SetSize( self.pev, minhullsize, maxhullsize );
-            g_Util.Debug( "g_Util.SetBoundaries:" );
             g_Util.Debug( "Set size of entity '" + string( self.pev.classname ) + "'" );
-            g_Util.Debug( "Max BBox: '" + string( maxhullsize.x ) + " " + string( maxhullsize.y ) + " " + string( maxhullsize.z ) + "'" );
-            g_Util.Debug( "Min BBox: '" + string( minhullsize.x ) + " " + string( minhullsize.y ) + " " + string( minhullsize.z ) + "'" );
 
             if( self.pev.origin != g_vecZero )
             {
                 g_EntityFuncs.SetOrigin( self, self.pev.origin );
-                g_Util.Debug("BBox set around entity's origin." );
+				g_Util.Debug( "Max BBox: '" + maxhullsize.ToString() + "'" );
+				g_Util.Debug( "Min BBox: '" + minhullsize.ToString() + "'" );
+				g_Util.Debug( "Origin: '" + self.pev.origin.ToString() + "'" );
             }
-            else
-            {
-                g_Util.Debug("BBox set around worlds's origin." );
-            }
+			else
+			{
+				g_Util.Debug( "Max BBox (world size): '" + maxhullsize.ToString() + "'" );
+				g_Util.Debug( "Min BBox (world size): '" + minhullsize.ToString() + "'" );
+			}
+			return true;
         }
+		g_Util.Debug( "Can not set size. not model /n/or/ hullsizes set!" );
+		g_EntityFuncs.SetOrigin( self, self.pev.origin );
+		g_Util.Debug( "Origin: '" + self.pev.origin.ToString() + "'" );
+		return false;
     }
+
+	void PostSpawn(){ self.pev.flags |= FL_CUSTOMENTITY; }
+	void PreSpawn(){ self.pev.flags |= FL_CUSTOMENTITY; }
+	void Spawn(){ self.pev.flags |= FL_CUSTOMENTITY; }
 }
 // End of mixin class
 
-namespace INFO
+namespace utils
 {
-    CScheduledFunction@ g_MapStart = g_Scheduler.SetTimeout( "MapStart", 0.0f );
-
-    void MapStart()
-    {
-        g_Hooks.RegisterHook( Hooks::Player::ClientSay, @INFO::TALK );
-        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @INFO::JOIN );
-        g_Hooks.RegisterHook( Hooks::Game::MapChange, @INFO::CLEAR );
-    }
-
-    HookReturnCode CLEAR()
-    {
-        g_Util.ScriptAuthor.resize(0);
-        g_Util.MapAuthor.resize(0);
-        return HOOK_CONTINUE;
-    }
-
-    HookReturnCode TALK( SayParameters@ pParams )
-    {
-        CBasePlayer@ pPlayer = pParams.GetPlayer();
-        const CCommand@ args = pParams.GetArguments();
-
-        if( args.Arg(0) == "info" || args.Arg(0) == "/info" )
-        {
-            ShowInfo( pPlayer );
-        }
-        else if( args.Arg(0) == "ripent" || args.Arg(0) == "/ripent" )
-        {
-            g_Util.RipentShowInfo( pPlayer );
-        }
-        else
-        {
-            for(uint ui = 0; ui < g_Util.MapAuthor.length(); ui++)
-            {
-                if( g_Util.MapAuthor[ui] == g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) )
-                {
-                    g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Author] " + pPlayer.pev.netname + ": " + pParams.GetCommand() + "\n" );
-                    pParams.ShouldHide = true;
-                }
-            }
-        }
-        return HOOK_CONTINUE;
-    }
-
-    HookReturnCode JOIN( CBasePlayer@ pPlayer )
-    {
-        ShowInfo( pPlayer );
-        return HOOK_CONTINUE;
-    }
-    
-    void ShowInfo( CBasePlayer@ pPlayer )
-    {
-        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed Scripts info at your console.\n" );
-        for(uint ui = 0; ui < g_Util.ScriptAuthor.length(); ui++)
-        {
-            g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
-
-            string FullString = g_Util.ScriptAuthor[ui];
-
-            // If we reached the limit replace and send again
-            while( FullString != '' )
-            {
-                g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  FullString.SubString( 0, 68 ) );
-
-                if( FullString.Length() <= 68 ) FullString = '';
-                else FullString = FullString.SubString( 68, FullString.Length() );
-            }
-        }
-        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
-    }
-}
-// End of namespace.
-
-namespace CBaseScripts
-{
-    void GetPlayerData( CBaseEntity@ self )
+    void script_player_data( CBaseEntity@ self )
     {
         for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
         {
@@ -764,5 +678,302 @@ namespace CBaseScripts
         }
         self.Use( null, null, USE_OFF, 0.0f );
     }
+
+    void script_random_value( CBaseEntity@ self )
+    {
+        g_Util.SetCKV( self, "$i_random", string( Math.RandomLong( int( self.pev.health ), int( self.pev.max_health ) ) ) );
+        g_Util.SetCKV( self, "$f_random", string( Math.RandomFloat( self.pev.health , self.pev.max_health ) ) );
+        self.Use( null, null, USE_OFF, 0.0f );
+    }
+
+    void script_survival_mode( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flDelay )
+    {
+		if( !g_SurvivalMode.MapSupportEnabled() ) { return; }
+		if( useType == USE_ON ) { g_SurvivalMode.Enable( true ); }
+		else if( useType == USE_OFF ) { g_SurvivalMode.Disable(); }
+		else { g_SurvivalMode.Toggle(); }
+    }
+
+	void script_alien_teleport( CBaseEntity@ self )
+	{
+		int[] iPlayer( g_Engine.maxClients + 1 );
+
+		int iPlayerCount = 0;
+
+		for( int i = 1; i <= g_Engine.maxClients; i++ )
+		{
+			CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( i );
+
+			if( pPlayer is null || !pPlayer.IsAlive() || !pPlayer.IsConnected() || (pPlayer.pev.flags & FL_FROZEN) != 0 )
+			{
+				continue;
+			}
+
+			iPlayer[iPlayerCount] = i;
+			iPlayerCount++;
+		}
+
+		int iPlayerIndex = ( iPlayerCount == 0 ) ? -1 : iPlayer[ Math.RandomLong( 0, iPlayerCount-1 ) ];
+
+		if( iPlayerIndex == -1 )
+		{
+			return;
+		}
+
+		CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayerIndex );
+		Vector vecSrc = pPlayer.pev.origin;
+		Vector vecEnd = vecSrc + Vector(Math.RandomLong(-512,512), Math.RandomLong(-512,512), 0);
+		float flDir = Math.RandomLong(-360,360);
+
+		vecEnd = vecEnd + g_Engine.v_right * flDir;
+
+		TraceResult tr;
+		g_Utility.TraceLine( vecSrc, vecEnd, dont_ignore_monsters, pPlayer.edict(), tr );
+
+		if( tr.flFraction >= 1.0 )
+		{
+			HULL_NUMBER hullCheck = human_hull;
+
+			hullCheck = head_hull;
+
+			g_Utility.TraceHull( vecEnd, vecEnd, dont_ignore_monsters, hullCheck, pPlayer.edict(), tr );
+
+			if( tr.fAllSolid == 1 || tr.fStartSolid == 1 || tr.fInOpen == 0 )
+			{
+				g_Util.Trigger( self.pev.noise, pPlayer, self, USE_TOGGLE, 0.0f );
+				return;
+			}
+			else
+			{
+			    CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( string( self.pev.netname ), null, true );
+
+				if( pEntity !is null )
+				{
+					g_EntityFuncs.SetOrigin( pEntity, vecEnd );
+					Vector vecAngles = Math.VecToAngles( pPlayer.pev.origin - pEntity.pev.origin );
+					pEntity.pev.angles.y = vecAngles.y;
+
+					CBaseEntity@ pXenMaker = g_EntityFuncs.FindEntityByTargetname( pXenMaker, ( self.pev.target ) );
+					
+					if( pXenMaker !is null )
+					{
+						Vector VecOld = pXenMaker.pev.origin;
+
+						pXenMaker.pev.origin = pEntity.pev.origin + Vector( 0, 40, 0 );
+						pXenMaker.Use( self, self, USE_TOGGLE, 0.0f );
+
+						pXenMaker.pev.origin = VecOld;
+					}
+					g_Util.Trigger( self.pev.message, pPlayer, pEntity, USE_TOGGLE, 0.0f );
+				}
+			}
+		}
+	}
 }
 // End of namespace.
+
+CEffects g_Effect;
+final class CEffects
+{
+    void toxic
+    (
+        Vector VecStart
+    ){
+		NetworkMessage message( MSG_PVS, NetworkMessages::ToxicCloud );
+		message.WriteCoord( VecStart.x );
+		message.WriteCoord( VecStart.y );
+		message.WriteCoord( VecStart.z );
+		message.End();
+    }
+
+    void disk
+    (
+        Vector VecStart,
+        string iszModel,
+        uint8 iRadius,
+        Vector VecColor,
+        int renderamt,
+        uint8 startFrame,
+        uint8 HoldTime
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte(TE_BEAMDISK);
+            Message.WriteCoord( VecStart.x);
+            Message.WriteCoord( VecStart.y);
+            Message.WriteCoord( VecStart.z);
+            Message.WriteCoord( VecStart.x);
+            Message.WriteCoord( VecStart.y);
+            Message.WriteCoord( VecStart.z + iRadius );
+            Message.WriteShort( g_EngineFuncs.ModelIndex( iszModel ) );
+            Message.WriteByte( startFrame );
+            Message.WriteByte( 16 ); // Seems to have no effect, or at least i didn't notice
+            Message.WriteByte( HoldTime );
+            Message.WriteByte(1); // "width" - has no effect
+            Message.WriteByte(0); // "noise" - has no effect
+            Message.WriteByte( atoui( VecColor.x ) ); // R
+            Message.WriteByte( atoui( VecColor.y ) ); // G
+            Message.WriteByte( atoui( VecColor.z ) ); // B
+            Message.WriteByte( renderamt ); // A
+            Message.WriteByte( 0 ); // < 10 seems to have no effect while > 10 just expands it alot
+        Message.End();
+    }
+
+    void splash
+    (
+        Vector VecStart,
+        Vector VecVelocity,
+        uint uiColor,
+        uint uiSpeed,
+        uint uiNoise,
+        uint uiCount
+
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte( TE_STREAK_SPLASH );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+            Message.WriteCoord( VecVelocity.x );
+            Message.WriteCoord( VecVelocity.y );
+            Message.WriteCoord( VecVelocity.z );
+            Message.WriteByte( uiColor );
+            Message.WriteShort( uiCount );
+            Message.WriteShort( uiSpeed );
+            Message.WriteShort( uiNoise );
+        Message.End();
+    }
+
+    void tracer
+    (
+        Vector VecStart,
+        Vector VecVelocity,
+        uint uiHoldtime,
+        uint uiLength,
+        uint uiColor
+
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte( TE_USERTRACER );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+            Message.WriteCoord( VecVelocity.x  );
+            Message.WriteCoord( VecVelocity.y  );
+            Message.WriteCoord( VecVelocity.z  );
+            Message.WriteByte( uiHoldtime );
+            Message.WriteByte( uiColor );
+            Message.WriteByte( uiLength );
+        Message.End();
+    }
+
+    void spriteshooter
+    (
+        Vector VecStart,
+        string iszModel,
+        int iCount,
+        int iLife,
+        int iScale,
+        int iNoise
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte( TE_SPRITETRAIL );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+            Message.WriteShort( g_EngineFuncs.ModelIndex( iszModel ) );
+            Message.WriteByte( iCount );
+            Message.WriteByte( iLife );
+            Message.WriteByte( iScale );
+            Message.WriteByte( iNoise );
+            Message.WriteByte( 16 );
+        Message.End();
+    }
+
+    void quake
+    (
+        Vector VecStart,
+        int iFlags
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte( ( iFlags == 0 ) ? TE_TAREXPLOSION : TE_TELEPORT  );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+        Message.End();
+    }
+
+    void implosion
+    (
+        Vector VecStart,
+        uint8 i8Radius,
+        uint8 i8Count,
+        uint8 i8Life
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte( TE_IMPLOSION );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+            Message.WriteByte( i8Radius );
+            Message.WriteByte( i8Count );
+            Message.WriteByte( i8Life );
+        Message.End();
+    }
+
+    void cylinder
+    (
+        Vector VecStart,
+        string iszModel,
+        uint8 iRadius,
+        int iFlags,
+        Vector VecColor,
+        int renderamt,
+        uint8 scrollSpeed,
+        uint8 startFrame,
+        uint8 frameRate,
+        uint8 life
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte( ( iFlags == 0 ) ? TE_BEAMCYLINDER : TE_BEAMTORUS );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z + iRadius );
+            Message.WriteShort( g_EngineFuncs.ModelIndex( iszModel ) );
+            Message.WriteByte( startFrame );
+            Message.WriteByte( frameRate );
+            Message.WriteByte( life );
+            Message.WriteByte( 8 );
+            Message.WriteByte( 0 );
+            Message.WriteByte( atoui( VecColor.x ) );
+            Message.WriteByte( atoui( VecColor.y ) );
+            Message.WriteByte( atoui( VecColor.z ) );
+            Message.WriteByte( renderamt );
+            Message.WriteByte( scrollSpeed );
+        Message.End();
+    }
+
+    void smoke
+    (
+        Vector VecStart,
+        string iszModel,
+        int iscale,
+        int iframerate
+    ){
+        NetworkMessage Message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            Message.WriteByte( TE_SMOKE );
+            Message.WriteCoord( VecStart.x );
+            Message.WriteCoord( VecStart.y );
+            Message.WriteCoord( VecStart.z );
+            Message.WriteShort( g_EngineFuncs.ModelIndex( iszModel ) );
+            Message.WriteByte( iscale );
+            Message.WriteByte( iframerate );
+        Message.End();
+    }
+}
+// End of final class
