@@ -1,19 +1,17 @@
+/*
+Github page: https://github.com/Mikk155/Sven-Co-op/
+
+Require:
+- utils.as
+
+Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/config_english.md#config_map_precache
+*/
 #include "utils"
 namespace config_map_precache
 {
-    void Register()
-    {
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Entity that precache almost anything.\n"
-        );
+	bool Register = g_Util.CustomEntity( 'config_map_precache::config_map_precache','config_map_precache' );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "config_map_precache::entity", "config_map_precache" );
-    }
-
-    class entity : ScriptBaseEntity
+    class config_map_precache : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary g_PrecacheKeys;
 
