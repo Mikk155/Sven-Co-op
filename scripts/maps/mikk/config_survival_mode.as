@@ -1,19 +1,17 @@
+/*
+Github page: https://github.com/Mikk155/Sven-Co-op/
+
+Require:
+- utils.as
+
+Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/config_english.md#config_survival_mode
+*/
 #include "utils"
 namespace config_survival_mode
 {
-    void Register()
-    {
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Entity that customize survival mode and make it better.\n"
-        );
+	bool Register = g_Util.CustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "config_survival_mode::entity", "config_survival_mode" );
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
+    class config_survival_mode : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool SurvivalEnabled = false;
         private string target_toggle, target_failed;
@@ -52,6 +50,8 @@ namespace config_survival_mode
 
         void Spawn()
         {
+			g_ClassicMode.EnableMapSupport();
+
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
             {
                 g_Util.Debug( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
