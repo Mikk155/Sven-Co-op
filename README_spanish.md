@@ -71,6 +71,9 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [env_blood](develop/information/entities/env_blood_spanish.md)
 - [env_bloodpuddle](develop/information/entities/env_bloodpuddle_spanish.md)✔️Angelscript
 - [env_bubbles](develop/information/entities/env_bubbles_spanish.md)
+- [env_effect_](develop/information/entities/env_effects.md#env_effect_)✔️Angelscript
+
+
 - [env_explosion](develop/information/entities/env_explosion_spanish.md)
 - [env_fade](develop/information/entities/env_fade_spanish.md)
 - [env_fade_custom](develop/information/entities/env_fade_spanish.md#angelscript)✔️Angelscript
@@ -79,8 +82,11 @@ Un conjunto de mapas de pruebas, informacion adicional sobre [Sven Co-op](https:
 - [env_funnel](develop/information/entities/env_funnel_spanish.md)
 - [env_geiger](develop/information/entities/env_geiger_spanish.md)
 - [env_global](develop/information/entities/env_global_spanish.md)
+- [env_global](develop/information/entities/env_global_spanish.md)
+
 - [env_glow](develop/information/entities/env_sprite.md#env_glow)
 - [env_laser](develop/information/entities/env_laser_spanish.md)
+- [env_light_dynamic](develop/information/entities/env_light_dynamic.md)✔️Angelscript
 - [env_message](develop/information/entities/env_message_spanish.md)
 - [env_message_custom](develop/information/entities/env_message_spanish.md#angelscript)✔️Angelscript
 - [env_render](develop/information/entities/env_render_spanish.md)

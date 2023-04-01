@@ -31,41 +31,11 @@ env_fade_custom es una entidad custom que funciona igual que env_fade con la dif
 <details><summary>Instalar</summary>
 <p>
 
-Requiere:
-- [env_fade_custom](../../../scripts/maps/mikk/env_fade_custom.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Leer [Instalar](../install_spanish.md)
 
-[Descarga con un toque](../batch_english.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils env_fade_custom
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
-
-</p>
-</details>
-
-En tu map_script Agrega:
-```angelscript
-#include "mikk/env_fade_custom"
-
-void MapInit()
-{
-	env_fade_custom::Register();
-}
-```
+- Requisitos
+	- scripts/maps/mikk/[env_fade_custom.as](../../../scripts/maps/mikk/env_fade_custom.as)
+	- scripts/maps/mikk/[utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
@@ -97,7 +67,7 @@ void MapInit()
 | 4 | Stay Fade | El efecto se mantendra infinitamente hasta que se sobre escriba con otro env_fade/custom |
 
 
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system_spanish.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|-------------------|-----------------|

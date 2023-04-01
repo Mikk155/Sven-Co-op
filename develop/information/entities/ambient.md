@@ -4,7 +4,7 @@ Esta entidad se utiliza para reproducir sonidos y musica tambien.
 
 | Key | Descripción |
 |-----|-------------|
-| message | Nombre del archivo de audio a reproducir. soporta formatos listados en [fmod](../game/fmod_spanish.md) |
+| message | Nombre del archivo de audio a reproducir. soporta formatos listados en [fmod](../game/fmod.md) |
 | health | Volumen de la musica, de 0 (inaudible) a 10 (normal) |
 | [playmode](#playmode) | Especifica la forma de reproducir el sonido |
 | [preset](#preset) | Permite especificar un preajuste dinámico para mejorar el sonido |
@@ -119,7 +119,7 @@ Esta entidad se utiliza comunmente para reproducir musica, ya que es controlado 
 
 | Key | Value | Descripción |
 |-----|-------|-------------|
-| message | string | Nombre del archivo de audio a reproducir. soporta formatos listados en [fmod](../game/fmod_spanish.md) |
+| message | string | Nombre del archivo de audio a reproducir. soporta formatos listados en [fmod](../game/fmod.md) |
 | volume | integer | Volumen de la musica, de 0 (inaudible) a 10 (normal) pero el volumen sera mayormente controlado por el jugador mediante ``mp3volume`` |
 
 | Flag | Bit | Descripción |
@@ -128,7 +128,7 @@ Esta entidad se utiliza comunmente para reproducir musica, ya que es controlado 
 | Loop | 2 | La musica se reiniciará cuando termine de sonar |
 | Activator Only | 4 | Solamente !activator podrá oirla |
 
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|

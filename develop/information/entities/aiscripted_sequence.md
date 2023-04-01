@@ -1,6 +1,6 @@
 # aiscripted_sequence
 
-Same as [scripted_sequence](scripted_sequence_english.md), except that this always overrides the AI and never allows any interruptions. See [scripted_sequence](scripted_sequence_english.md).
+Same as [scripted_sequence](scripted_sequence.md), except that this always overrides the AI and never allows any interruptions.
 
 | Key | Description |
 |-----|-------------|
@@ -20,8 +20,8 @@ Leave Corpse | 8 | If the action animation is a death animation, causing the mon
 - Issues
 	- If 'Move to position' is set to 'Instantaneous' and you have an action animation set, the monster may freeze up and no longer react.
 
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
-| Reproduce animación | Reproduce animación | Reproduce animación | Reproduce animación |  | USE_TOGGLE |
+| Plays animation | Plays animation | Plays animation | Plays animation | | sends USE_TOGGLE |

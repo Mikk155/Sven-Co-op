@@ -128,7 +128,7 @@ Esta entidad se utiliza comunmente para reproducir musica, ya que es controlado 
 | Loop | 2 | La musica se reiniciará cuando termine de sonar |
 | Activator Only | 4 | Solamente !activator podrá oirla |
 
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system_spanish.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|

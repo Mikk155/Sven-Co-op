@@ -7,46 +7,16 @@ config_classic_mode es una entidad hecha en Angelscript que permite reemplazar m
 <details><summary>Instalar</summary>
 <p>
 
-Requiere:
-- [config_classic_mode](../../../scripts/maps/mikk/config_classic_mode.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Leer [Instalar](../install_spanish.md)
 
-[Descarga con un toque](../batch_spanish.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_classic_mode
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
+- Requisitos
+	- scripts/maps/mikk/[config_classic_mode.as](../../../scripts/maps/mikk/config_classic_mode.as)
+	- scripts/maps/mikk/[utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
 
-En tu map_script Agrega:
-```angelscript
-#include "mikk/config_classic_mode"
-
-void MapInit()
-{
-	config_classic_mode::Register();
-}
-```
-
-</p>
-</details>
-
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system_spanish.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
@@ -105,41 +75,11 @@ config_map_cvars es una entidad hecha en Angelscript alternativa a [trigger_setc
 <details><summary>Instalar</summary>
 <p>
 
-Requiere:
-- [config_map_cvars](../../../scripts/maps/mikk/config_map_cvars.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Leer [Instalar](../install_spanish.md)
 
-[Descarga con un toque](../batch_spanish.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_map_cvars
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
-
-</p>
-</details>
-
-En tu map_script Agrega:
-```angelscript
-#include "mikk/config_map_cvars"
-
-void MapInit()
-{
-	config_map_cvars::Register();
-}
-```
+- Requisitos
+	- scripts/maps/mikk/[config_map_cvars.as](../../../scripts/maps/mikk/config_map_cvars.as)
+	- scripts/maps/mikk/[utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
@@ -157,7 +97,7 @@ Ejemplo:
 "mp_allowplayerinfo" "0"
 ```
 
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system_spanish.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
@@ -180,41 +120,11 @@ config_map_precache es una entidad hecha en Angelscript alternativa a [custom_pr
 <details><summary>Instalar</summary>
 <p>
 
-Requiere:
-- [config_map_precache](../../../scripts/maps/mikk/config_map_precache.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Leer [Instalar](../install_spanish.md)
 
-[Descarga con un toque](../batch_spanish.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_map_precache
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
-
-</p>
-</details>
-
-En tu map_script Agrega:
-```angelscript
-#include "mikk/config_map_precache"
-
-void MapInit()
-{
-	config_map_precache::Register();
-}
-```
+- Requisitos
+	- scripts/maps/mikk/[config_map_precache.as](../../../scripts/maps/mikk/config_map_precache.as)
+	- scripts/maps/mikk/[utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
@@ -243,46 +153,16 @@ config_survival_mode es una entidad hecha en Angelscript que modifica el surviva
 <details><summary>Instalar</summary>
 <p>
 
-Requiere:
-- [config_survival_mode](../../../scripts/maps/mikk/config_survival_mode.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Leer [Instalar](../install_spanish.md)
 
-[Descarga con un toque](../batch_spanish.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_survival_mode
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
+- Requisitos
+	- scripts/maps/mikk/[config_survival_mode.as](../../../scripts/maps/mikk/config_survival_mode.as)
+	- scripts/maps/mikk/[utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
 
-En tu map_script Agrega:
-```angelscript
-#include "mikk/config_survival_mode"
-
-void MapInit()
-{
-	config_survival_mode::Register();
-}
-```
-
-</p>
-</details>
-
-- Comportamiento de [activación](triggering_system_english.md)
+- Comportamiento de [activación](triggering_system_spanish.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|

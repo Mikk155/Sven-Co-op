@@ -7,46 +7,16 @@ config_classic_mode is an entity made in Angelscript that allows to replace mode
 <details><summary>Install</summary>
 <p>
 
-Requirements:
-- [config_classic_mode](../../../scripts/maps/mikk/config_classic_mode.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Read [Install](../install.md)
 
-[Download with a clic](../batch_english.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_classic_mode
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
+- Requirements
+	- scripts/maps/mikk/[config_classic_mode.as](../../../scripts/maps/mikk/config_classic_mode.as)
+	- scripts/maps/mikk/[utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
 
-In your map_script add:
-```angelscript
-#include "mikk/config_classic_mode"
-
-void MapInit()
-{
-	config_classic_mode::Register();
-}
-```
-
-</p>
-</details>
-
-- Behaviur of [activation](triggering_system_english.md)
+- Behaviur of [activation](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
@@ -88,7 +58,7 @@ Example:
 
 ### Ignore entity
 
-- Using (in any entity) a [Custom Key Value](custom_keyvalue_english.md) ``"$i_classic_mode_ignore"`` in a value of **1** will prevent replacing a weapon or model.
+- Using (in any entity) a [Custom Key Value](custom_keyvalue.md) ``"$i_classic_mode_ignore"`` in a value of **1** will prevent replacing a weapon or model.
 
 ⚠️ Use only one entity per map
 
@@ -100,46 +70,16 @@ Example:
 
 ![image](../../images/angelscript.png)
 
-config_map_cvars is an alternative entity in Angelscript for [trigger_setcvar](trigger_setcvar_english.md) that allows to change multiple [Cvars](../game/cfg_english.md) at the same time or even read them with [trigger_condition](trigger_condition_english.md) and execute actions depending on that.
+config_map_cvars is an alternative entity in Angelscript for [trigger_setcvar](trigger_setcvar.md) that allows to change multiple [Cvars](../game/cfg.md) at the same time or even read them with [trigger_condition](trigger_condition.md) and execute actions depending on that.
 
 <details><summary>Install</summary>
 <p>
 
-Requirements:
-- [config_map_cvars](../../../scripts/maps/mikk/config_map_cvars.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Read [Install](../install.md)
 
-[Download with a clic](../batch_english.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_map_cvars
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
-
-</p>
-</details>
-
-In your map_script add:
-```angelscript
-#include "mikk/config_map_cvars"
-
-void MapInit()
-{
-	config_map_cvars::Register();
-}
-```
+- Requirements
+	- [config_map_cvars.as](../../../scripts/maps/mikk/config_map_cvars.as)
+	- [utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
@@ -157,7 +97,7 @@ Example:
 "mp_allowplayerinfo" "0"
 ```
 
-- Behaviur of [activation](triggering_system_english.md)
+- Behaviur of [activation](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
@@ -166,8 +106,8 @@ Example:
 - spawnflags 1 (Start On)
 	- Active, The cvars will update automatically on map start |
 - spawnflags 2 (Store Cvars)
-	- Store in the entity the current values of the cvars inside of it, you read them with [trigger_condition](trigger_condition_english.md) and execute actions depending on the values |
-	- These are stores in the [Custom Key Value](custom_keyvalue_english.md) format, The format is ``$s_( nombre del cvar)``
+	- Store in the entity the current values of the cvars inside of it, you read them with [trigger_condition](trigger_condition.md) and execute actions depending on the values |
+	- These are stores in the [Custom Key Value](custom_keyvalue.md) format, The format is ``$s_( nombre del cvar)``
 
 ---
 
@@ -175,46 +115,16 @@ Example:
 
 ![image](../../images/angelscript.png)
 
-config_map_precache is an alternative entity made in Angelscript for [custom_precache](custom_precache_english.md) that allows to precach models, sounds, sprites, tga, monsters etc.
+config_map_precache is an alternative entity made in Angelscript for [custom_precache](custom_precache.md) that allows to precach models, sounds, sprites, tga, monsters etc.
 
 <details><summary>Install</summary>
 <p>
 
-Requirements:
-- [config_map_precache](../../../scripts/maps/mikk/config_map_precache.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Read [Install](../install.md)
 
-[Download with a clic](../batch_english.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_map_precache
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
-
-</p>
-</details>
-
-In your map_script add:
-```angelscript
-#include "mikk/config_map_precache"
-
-void MapInit()
-{
-	config_map_precache::Register();
-}
-```
+- Requirements
+	- [config_map_precache.as](../../../scripts/maps/mikk/config_map_precache.as)
+	- [utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
@@ -243,46 +153,16 @@ config_survival_mode is an entity made in Angelscript that modifies survival mod
 <details><summary>Install</summary>
 <p>
 
-Requirements:
-- [config_survival_mode](../../../scripts/maps/mikk/config_survival_mode.as)
-- [utils](../../../scripts/maps/mikk/utils.as)
+- Read [Install](../install.md)
 
-[Download with a clic](../batch_english.md)
-
-<details><summary>Batch</summary>
-<p>
-
-```bat
-set Main=https://github.com/Mikk155/Sven-Co-op/raw/main/
-set Files=utils config_survival_mode
-set output=scripts/maps/mikk/
-if not exist %output% (
-  mkdir %output:/=\%
-)
-(for %%a in (%Files%) do (
-  curl -LJO %Main%%%a.as
-  
-  move %%a.as %Output%
-)) 
-```
+- Requirements
+	- [config_survival_mode.as](../../../scripts/maps/mikk/config_survival_mode.as)
+	- [utils.as](../../../scripts/maps/mikk/utils.as)
 
 </p>
 </details>
 
-In your map_script add:
-```angelscript
-#include "mikk/config_survival_mode"
-
-void MapInit()
-{
-	config_survival_mode::Register();
-}
-```
-
-</p>
-</details>
-
-- Behaviur of [activation](triggering_system_english.md)
+- Behaviur of [activation](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|------------|--------|
@@ -297,6 +177,6 @@ void MapInit()
 | target_failed | Target to activate when survival mode recieves an USE_ON but it is already active, or when it recieves an USE_OFF but it is already inactive |
 | mp_survival_startdelay | Time, in seconds, that it takes for survival mode to activate, if it is empty, it will use the cvar mp_survival_startdelay |
 | mp_respawndelay | Time, in seconds, that players have to wait to revive, if it is empty it will use the cvar mp_respawndelay |
-| master | [multisource](multisource_english.md) that blocks this entity from being activated by its mp_survival_startdelay or by direct trigger |
+| master | [multisource](multisource.md) that blocks this entity from being activated by its mp_survival_startdelay or by direct trigger |
 
 ⚠️ Only use one of this entity per map
