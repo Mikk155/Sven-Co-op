@@ -1,19 +1,17 @@
+/*
+Github page: https://github.com/Mikk155/Sven-Co-op/
+
+Require:
+- utils.as
+
+Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/config_english.md#config_map_cvars
+*/
 #include "utils"
 namespace config_map_cvars
 {
-    void Register() 
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "config_map_cvars::entity", "config_map_cvars" );
+	bool Register = g_Util.CustomEntity( 'config_map_cvars::config_map_cvars','config_map_cvars' );
 
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Alternative to trigger_setcvar but you can set more than one cvar per entity and can return them back to normal.\n"
-        );
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class config_map_cvars : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;
         dictionary dictOldCvars;
@@ -44,10 +42,10 @@ namespace config_map_cvars
                 string Key = string( strKeyValues[ui] );
                 string Value = string( dictKeyValues[ Key ] );
 
-				if( spawnflag( 2 ) )
-				{
-					g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
-				}
+                if( spawnflag( 2 ) )
+                {
+                    g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
+                }
 
                 g_EngineFuncs.CVarSetString( Key, ( useType == USE_OFF ) ? string( dictOldCvars[ Key ] ) : Value );
                 g_Util.Debug( "" + Key + ": '" + string( g_EngineFuncs.CVarGetString( Key ) ) + "'" );
@@ -83,10 +81,10 @@ namespace config_map_cvars
                     dictOldCvars[ Key ] = g_EngineFuncs.CVarGetString( Key );
                 }
 
-				if( spawnflag( 2 ) )
-				{
-					g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
-				}
+                if( spawnflag( 2 ) )
+                {
+                    g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
+                }
 
                 g_Util.Debug( "" + Key + ": '" + string( dictOldCvars[ Key ] ) + "'" );
             }
