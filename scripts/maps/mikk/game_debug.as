@@ -1,20 +1,9 @@
 #include "utils"
 namespace game_debug
 {
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::entity", "game_debug" );
+	bool Register = g_Util.CustomEntity( 'game_debug::game_debug','game_debug' );
 
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#game_debug"
-            "\nAuthor: Mikk"
-            "\nGithub: github.com/Mikk155"
-            "\nDescription: Show Debug messages if it is active.\n"
-        );
-    }
-
-    class entity : ScriptBaseEntity
+    class game_debug : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
@@ -22,9 +11,10 @@ namespace game_debug
             {
                 { "!frags", string( self.pev.frags ) },
                 { "!iuser1", string( self.pev.iuser1 ) },
-                { "!activator", string( pActivator.pev.classname ) + " " + ( pActivator.IsPlayer() ? string( pActivator.pev.netname ) : string( pActivator.pev.targetname ) ) },
-                { "!caller", string( pCaller.pev.classname ) + " " + ( pCaller.IsPlayer() ? string( pCaller.pev.netname ) : string( pCaller.pev.targetname ) ) },
-                { "!netname", string( self.pev.netname ) }
+                { "!activator", ( pActivator is null ) ? 'null' : string( pActivator.pev.classname ) + " " + ( pActivator.IsPlayer() ? string( pActivator.pev.netname ) : string( pActivator.pev.targetname ) ) },
+                { "!caller", ( pCaller is null ) ? 'null' : string( pCaller.pev.classname ) + " name " + ( pCaller.IsPlayer() ? string( pCaller.pev.netname ) : string( pCaller.pev.targetname ) ) },
+                { "!netname", string( self.pev.netname ) },
+                { "!usetype", string( useType ) }
             } );
 
             g_Util.Debug( "[DEBUG] " + Message );
