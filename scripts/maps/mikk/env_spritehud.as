@@ -1,20 +1,9 @@
 #include "utils"
 namespace env_spritehud
 {
-    void Register()
-    {
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#env_spritehud\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Shows a sprite on the player's HUD.\n"
-        );
+	bool Register = g_Util.CustomEntity( 'env_spritehud::env_spritehud','env_spritehud' );
 
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritehud::entity", "env_spritehud" );
-    }
-
-    class entity : ScriptBaseEntity
+    class env_spritehud : ScriptBaseEntity
     {
         HUDSpriteParams params;
         private int color1, color2, effect;
