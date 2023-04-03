@@ -51,7 +51,7 @@ Hay una posibilidad de activar varias entidades a la vez con un prefijo.
 
 Agrega al final del target el prefijo ``*``
 
-Cualquier entidade que tenga por nombre inicial tu target, va a ser activada.
+Cualquier entidad que tenga por nombre inicial tu target, va a ser activada.
 
 Ejemplo:
 ```angelscript
