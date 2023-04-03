@@ -1,90 +1,90 @@
-# Introduccion
+# Introduction
 
-Las entidades pueden activarse entre ellas con diferentes configuraciones.
+The entities can be activated between them with different configurations.
 
-La siguiente es una lista de configuraciones para cuando una entidad es activada.
+The following is a list of configurations for when an entity is activated.
 
 # Activator
 
-La primera entidad en una cadena de triggers.
+The first entity in a chain of triggers.
 
-- Ejemplo:
-	- un jugador activa un [func_button](func_button.md), el activator seria el jugador.
+- Example:
+	- a player activates a [func_button](func_button.md), the activator is the player.
 	
-- Activator puede, en la mayoria de casos, ser referido como ``!activator``
+- Activator can, in the mayority of cases, be referred as ``!activator``
 
 # Caller
 
-La entidad anterior en una cadena de triggers.
+The previous entity in a chain of triggers.
 
-- Ejemplo:
-	- un [func_button](func_button.md) activa un [multi_manager](multi_manager.md). el caller de el multi_manager seria el func_button
+- Example:
+	- a [func_button](func_button.md) activates a [multi_manager](multi_manager.md). the caller for multi_manager would be the func_button
 	
-- Caller puede, en algunos casos, ser referido como ``!caller``
+- Caller can, in some cases, be referred as ``!caller``
 
 # Use-type:
 
-Le dice a la entidad activada que hacer.
+It says to the activated entity what to do.
 
-Las entidades van a reaccionar respectivamente a su Use-Type.
+The entities will react respectively to their Use-Type.
 
-Si el comportamiento de Use-Type fue explicitamente escrito en el codigo de el juego, que no es el caso de todas las entidades. lo siguiente explica la funcion de cinco Use-Types
+If the behavior of Use-Type was explicitly writen in the code, wich is not the case for all entities. the next explains the function of 5 Use-Types
 
 - USE_OFF
-	- Apaga la entidad
+	- Turn off the entity
 
 - USE_ON
-	- Enciende la entidad
+	- turn on the entity
 
 - USE_SET
-	- Utilizado por [game_counter](game_counter.md) y otras pocas entidades
+	- Used for [game_counter](game_counter.md) and other few entities
 
 - USE_TOGGLE
-	- Alterna
+	- Toggles
 
 - USE_KILL
-	- Elimina la entidad de el mundo
+	- Eliminates the entity from the world
 
 # Prefijos
 
-Hay una posibilidad de activar varias entidades a la vez con un prefijo.
+There is the posibility to activate multiple entities at the same time with a prefix.
 
-Agrega al final del target el prefijo ``*``
+Add at the end of the target the prefix ``*``
 
-Cualquier entidade que tenga por nombre inicial tu target, va a ser activada.
+Any entity whose initial name is your target will be activated.
 
-Ejemplo:
+Example:
 ```angelscript
 "target" "door_*"
 ```
-Esto va a activar todas las entidades que su nombre comiencen por "door_"
+This will activate all the entities that their names start with "door_"
 
-# Nombres especiales
+# Special names
 
-El juego reconoce unos nombres especiales, entidades nombradas de esta forma serán activadas dependiendo los eventos que ocurran.
+The game recognizes some special names, entities named like this will be activated depending on the events that occur.
 
-- !activator y !caller serán el jugador que ocacione estos eventos.
+- !activator and !caller are going to be the player that causes these events.
 
 - game_playerkill
-	- Un jugador mata a otro jugador
-		- !activator y !caller son el jugador asesino
+	- A player kills another player
+		- !activator and !caller are the killer player
 
 - game_playerdie
-	- Un jugador muere
-		- !activator y !caller son el jugador muerto
+	- A player dies
+		- !activator and !caller are the dead player
 
 - game_playerjoin
-	- Un jugador entra en el servidor
-		- !activator y !caller son el jugador nuevo
+	- A player joins the server
+		- !activator and !caller are the new player
 
 - game_playerleave
-	- Un jugador sale de el servidor
-		- !activator y !caller son el jugador que abandono
+	- A player exits the server
+		- !activator and !caller are the player that left
 
 - game_playerspawn
-	- Un jugador resucita mediante un spawnpoint
-		- !activator y !caller son el jugador que revivio
+	- A player respawns by a spawnpoint
+		- !activator and !caller are the revived player
 
-# Otras notas
+# Other notes
 
-- Las entidades no deben nunca iniciar su nombre con ``0``
+- The entities do not have to start their names with ``0``
