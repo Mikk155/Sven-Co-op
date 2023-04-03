@@ -9,7 +9,7 @@ env_render is an entity that allows to modify the rendering of other entities. S
 | Bit | Flag | Description |
 |-----|------|-------------|
 | 1 | No render-fx | Renderfx is not going to be modified |
-| 2 | No render-amt | Rrenderamt is not going to be modified |
+| 2 | No render-amt | Renderamt is not going to be modified |
 | 4 | No render-mode | Rendermode is not going to be modified |
 | 8 | No render-color | Rendercolor is not going to be modified |
 | 16 | Auto apply | Automatically applies in a radious (armorvalue) the rendering when the objective enters the range, otherwise the entity has to be activated each time |
