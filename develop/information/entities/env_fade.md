@@ -1,34 +1,34 @@
 # env_fade
 
-env_fade es una entidad que una vez activada, muestra en la pantalla de los jugadores un efecto de desvanecimiento en color RGB.
+env_fade is an entity that once activated, it shows in the player's screen a fading effect in a RGB color.
 
-| Key | Descripción |
+| Key | Description |
 |-----|-------------|
-| duration | Tiempo, En segundos, Que el desvanecimiento inicial/final tendrá efecto |
-| holdtime | Tiempo, En segundos, Que el desvanecimiento opaco tendrá efecto |
-| renderamt | Transparencia de el desvanecimiento en su pico de holdtime |
-| rendercolor | Color, RGB, De el desvanecimiento |
+| duration | Time, In seconds, That the starting/ending fade will affect |
+| holdtime | Time, In seconds, That the opaque fading will affect |
+| renderamt | Transparency of the fading in the holdtime peak |
+| rendercolor | Color, RGB, Of the fading |
 
-| Bit | Flag | Descripción |
+| Bit | Flag | Description |
 |-----|------|-------------|
-| 1 | Fade from | En lugar de iniciar duration primero y holdtime luego, esto lo revierte e inicia holdtime primero y duration luego |
-| 2 | Modulate | En lugar de mostrar el color en pantalla, esto creará una especie de filtro realmente cool en el que todo en la pantalla se verá del color especificado |
-| 4 | Activator only | Muestra el efecto solo a !activator, de otra forma se muestra en todos los jugadores |
+| 1 | Fade from | Instead of starting duration fisrt and then holdtime, this inverts the order and starts from holdtime and then duration |
+| 2 | Modulate | Instead of showing the color on screen, this will create some sort of really cool filter where the screen will look like the specified color |
+| 4 | Activator only | Only shows the effects to !activator, otherwise it is going to show it to all players |
 
 
 ### Issues
 
-- duration y holdtime tienen un limite maximo de 18 segundos.
+- Duration and holdtime have a maximum limit of 18 seconds.
 
-- Cualquier tipo de USE_TYPE inicia el desvanecimiento nuevamente, sobre poniendose a activos anteriores.
+- Any type of USE_TYPE starts the fading again, overlapping the previous active ones.
 
 # env_fade_custom
 
 ![image](../../images/angelscript.png)
 
-env_fade_custom es una entidad custom que funciona igual que env_fade con la diferencia de varias adiciones.
+env_fade_custom is a custom entity that works similarly to env_fade with various different additions.
 
-<details><summary>Instalar</summary>
+<details><summary>Install</summary>
 <p>
 
 - Read [Install](../install.md)
@@ -40,41 +40,41 @@ env_fade_custom es una entidad custom que funciona igual que env_fade con la dif
 </p>
 </details>
 
-| Key | Descripción |
+| Key | Description |
 |-----|-------------|
-| m_ffadein | Tiempo, En segundos, Que el desvanecimiento inicial tendrá efecto |
-| m_ffadeout | Tiempo, En segundos, que el desvanecimiento final tendrá efecto |
-| m_fholdtime | Tiempo, En segundos, Que el desvanecimiento opaco tendrá efecto |
-| renderamt | Transparencia de el desvanecimiento en su pico de holdtime |
-| rendercolor | Color, RGB, De el desvanecimiento |
-| m_iall_players | a quienes deberiamos asignarle este efecto? Ver [m_iall_players](#m_iall_players) |
-| m_ifaderadius | Distancia, En unidades, que el jugador debe encontrarse para poder ver este efecto, 0 = desactivado |
-| target | Target, Será disparada una vez m_ffadein, m_ffadeout y m_fholdtime hayan finalizado |
+| m_ffadein | Time, In seconds, That the initial fading will affect |
+| m_ffadeout | Time, In seconds, That the final fading will affect |
+| m_fholdtime | Time, In seconds, That the opaque fading will affect |
+| renderamt | Transparency of the fade in the holdtime's highest peak |
+| rendercolor | Color, RGB, Of the fade |
+| m_iall_players | To who we should assign the effect? See [m_iall_players](#m_iall_players) |
+| m_ifaderadius | Distance, In units, that the player have to be, to see this effect, 0 = desactivated |
+| target | Target, Will be fired after m_ffadein, m_ffadeout and m_fholdtime ends |
 
 ### m_iall_players
 
-| Value | Descripción |
+| Value | Description |
 |-------|-------------|
-| 0 | Activator only (Default), Solo !activator será afectado |
-| 1 | All Players, Todos los jugadores serán afectados |
-| 2 | Only players in radius, Todos los jugadores que esten dentro del rango de m_ifaderadius serán afectados|
-| 3 | Only players touching, Todos los jugadores que esten dentro de la entidad serán afectados, Puede ser por min/maxhullsize o por modelo del mundo |
+| 0 | Activator only (Default), Only !activator is going to be affected |
+| 1 | All Players, All players are going to be affected |
+| 2 | Only players in radius, All players inside the range of m_ifaderadius will be affected |
+| 3 | Only players touching, All players that are touching the entity will be affected, can be set by min/maxhullsize or by world model |
 
-| Bit | Flag | Descripción |
+| Bit | Flag | Description |
 |-----|------|-------------|
-| 1 | Reverse Fading | Igual a env_fade |
-| 2 | Filtering | Igual a env_fade |
-| 4 | Stay Fade | El efecto se mantendra infinitamente hasta que se sobre escriba con otro env_fade/custom |
+| 1 | Reverse Fading | Same as env_fade |
+| 2 | Filtering | Same as env_fade |
+| 4 | Stay Fade | The effect will stay infinitely until another env_fade/custom overlaps it|
 
 
-- Comportamiento de [activación](triggering_system.md)
+- Behaviour of [activation](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|-------------------|-----------------|
-| Inicia desvanecimiento | Remove repentinamente el desvanecimiento | Inicia desvanecimiento | Inicia desvanecimiento, Si el desvanecimiento anterior aun no termino, no tiene efecto sobre el actual | !activator | USE_TOGGLE |
+| Start the fade | Suddenly remove the fade | Start the fade | Start the fade, If the previous fade did not finish, this will not affect the current one | !activator | USE_TOGGLE |
 
-- Spawnflag 1 (fade from) alterna el uso de m_ffadeout haciendo que inicie solido hacia visible y luego de visible a solido para finalmente terminar el efecto instantaneamente, Podria haberlo arreglado para que funcionará igual a si la spawnflag no estuviese activa, mas decidi dejarlo como mecanica.
+- Spawnflag 1 (fade from) changes the use of m_ffadeout making it start solid to visible and then visible to solid to finally end the effect instanly, I could have fixed it soo that it worked the same as if the spawnflag was not active, but i decided to leave it as a mechanic.
 
 ### Issues
 
-- Utilizando m_ffadeout, al dar trigger USE_OFF, si aun no se alcanzo el tiempo de m_ffadein y m_fholdtime, es posible que m_ffadeout aun se pueda llegar a ejecutar.
+- Using m_ffadeout, when giving trigger USE_OFF, if it did not reached the m_ffadein and m_fholdtime time, it is possible that m_ffadeout could reach to execute.
