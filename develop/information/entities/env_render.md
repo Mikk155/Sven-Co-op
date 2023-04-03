@@ -1,20 +1,20 @@
 # env_render
 
-env_render es una entidad que permite modificar el rendering de otras entidades. Ver [Render Settings](render_settings.md)
+env_render is an entity that allows to modify the rendering of other entities. See [Render Settings](render_settings.md)
 
 - Key ``armorvalue``
-	- Asigna en radio, Unidades, que env_render va a buscar a su objetivo, Si esta fuera de este radio entonces no afectaremos su rendering.
-	- valor en 0 desactiva esta mecanica.
+	- Asigns in a radious, Units, that env_render is going to find its objective, If it is outside the radious then it will not affect the rendering.
+	- Value of 0 deactivates this mechanic.
 
-| Bit | Flag | Descripción |
+| Bit | Flag | Description |
 |-----|------|-------------|
-| 1 | No render-fx | No se modificará renderfx |
-| 2 | No render-amt | No se modificará renderamt |
-| 4 | No render-mode | No se modificará rendermode |
-| 8 | No render-color | No se modificará rendercolor |
-| 16 | Auto apply | Aplica automaticamente en radio (armorvalue) el rendering cuando el objetivo se encuentre en rango, de otra manera la entidad necesita ser activada cada vez |
+| 1 | No render-fx | Renderfx is not going to be modified |
+| 2 | No render-amt | Rrenderamt is not going to be modified |
+| 4 | No render-mode | Rendermode is not going to be modified |
+| 8 | No render-color | Rendercolor is not going to be modified |
+| 16 | Auto apply | Automatically applies in a radious (armorvalue) the rendering when the objective enters the range, otherwise the entity has to be activated each time |
 
-- Usando env_render por defecto, no importa el USE_TYPE que envies, siempre se activará.
+- Using env_render by default, will not matter wich USE_TYPE you send, it will always activate.
 
 # env_render_custom
 
@@ -32,16 +32,16 @@ env_render es una entidad que permite modificar el rendering de otras entidades.
 </p>
 </details>
 
-| Key | Descripción |
+| Key | Descripction |
 |-----|-------------|
-| $i_angelscript | Explicitamente debes elegir si usar o no las siguientes funciones, 0 = no usar, 1 = usar |
-| $s_target | Entidad a activar cuando el rendermode sea aplicado, la entidad cuyo render fue cambiado será el !activator |
-| Spawnflags 64 | Explicitamente debes elegir si usar o no las siguientes funciones, Activa = usar |
-| $f_gradual | Tiempo, Iintervalo (float) para cambiar gradualmente el renderamt de la entidad afectada |
-| $i_gradual | renderamt, cantidad de valores de renderamt que vamos a modificar por cada intervalo, Se requiere un prefijo, usar (+) para sumar, usar (-) para restar |
-| $s_gradual | renderamt, Cantidad maxima a la cual llegar, el renderamt de la entidad afectada se modificará hasta que lleguemos a este valor |
+| $i_angelscript | You have to explicitly choose if use or not the next functinos, 0 = don't use, 1 = use |
+| $s_target | Entity to activate when rendermode is applied, the entity that got their render changed will be !activator |
+| Spawnflags 64 | You have to explicitly choose if use or not the next functions, Active = use |
+| $f_gradual | Time, Interval (float) to change gradually the renderamt of the affected entity |
+| $i_gradual | renderamt, Quantity of value that renderamt will change each interval, It needs a prefix, use (+) to add, use (-) to subtract |
+| $s_gradual | renderamt, Maximum quantity to reach, the renderamt of the affected entity will change until it reaches this value |
 
-<details><summary>Ejemplo</summary>
+<details><summary>Example</summary>
 <p>
 
 ```angelscript
@@ -49,16 +49,16 @@ env_render es una entidad que permite modificar el rendering de otras entidades.
 "$i_gradual" "-10"
 "$s_gradual" "0"
 ```
-En este caso, Cada 1.0 segundo, vamos a bajar el renderamt del objetivo en 10 hasta que este llegue a 0
+In this case, each 1.0 seconds, we will subtract 10 on the objective until it reaches 0.
 </p>
 </details>
 
-- Utilizando "Render gradually" el target ($s_target) será activado cuando el objetivo alcance el rendermode deseado.
+- Using "Render gradually" the target ($s_target) will be activated when the objective reaches the desired rendermode.
 
-- Comportamiento de [activación](triggering_system.md)
+- Behavior of [activation](triggering_system.md)
 
-| USE_OFF | Otros | target USE_TYPE |
+| USE_OFF | Others | target USE_TYPE |
 |---------|-------|-----------------|
-| Asigna render settings original de la entidad | Asigna render settings | USE_TOGGLE |
+| Asigns original render settings of the entity | Asigns render settings | USE_TOGGLE |
 
-- Radius y Auto Apply no funcionan mientras se usa las funciones de Angelscript.
+- Radius and Auto Apply do not work while other functinos of Angelscript are being used.
