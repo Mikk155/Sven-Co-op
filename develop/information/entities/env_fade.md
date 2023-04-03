@@ -67,7 +67,7 @@ env_fade_custom is a custom entity that works similarly to env_fade with various
 | 4 | Stay Fade | The effect will stay infinitely until another env_fade/custom overlaps it|
 
 
-- Behaviour of [activation](triggering_system.md)
+- Behavior of [activation](triggering_system.md)
 
 | USE_TOGGLE | USE_OFF | USE_ON | USE_SET | target !activator | target USE_TYPE |
 |------------|---------|--------|---------|-------------------|-----------------|
