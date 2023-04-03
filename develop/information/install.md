@@ -1,6 +1,6 @@
 ### Installing Content
 
-To install any script from this repository you simply have to include it in your map_script or trigger_script, noramlly my entities and scripts register automatically.
+To install any script from this repository you simply have to include it in your map_script or trigger_script, normally my entities and scripts register automatically.
 
 map_script:
 ```angelscript
