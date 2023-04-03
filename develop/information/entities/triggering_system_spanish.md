@@ -1,4 +1,4 @@
-# Introduccion
+# Introducción
 
 Las entidades pueden activarse entre ellas con diferentes configuraciones.
 
