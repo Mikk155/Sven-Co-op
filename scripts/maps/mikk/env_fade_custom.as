@@ -1,8 +1,6 @@
 #include "utils"
 namespace env_fade_custom
 {
-	bool Register = g_Util.CustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom' );
-
     class env_fade_custom : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hActivator = null;
@@ -44,7 +42,13 @@ namespace env_fade_custom
         void Spawn()
         {
             SetThink( ThinkFunction( this.TriggerThink ) );
-            if( !SetBoundaries() ) { m_bis_zone = false; }
+            if( !SetBoundaries() )
+			{
+				m_bis_zone = false;
+				self.pev.solid = SOLID_TRIGGER;
+				self.pev.effects |= EF_NODRAW;
+				self.pev.movetype = MOVETYPE_NONE;
+			}
             self.pev.nextthink = g_Engine.time + 0.1f;
             self.pev.effects = EF_NODRAW;
             BaseClass.Spawn();
@@ -56,7 +60,7 @@ namespace env_fade_custom
             {
                 hActivator = ( pActivator !is null ) ? @pActivator : @self;
 
-                for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
+				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
                 {
                     CBaseEntity@ ePlayer = cast<CBaseEntity@>( g_PlayerFuncs.FindPlayerByIndex( iPlayer ) );
 
@@ -65,8 +69,10 @@ namespace env_fade_custom
 
                     if( m_iall_players == 1
                     or m_iall_players == 2 && ( self.pev.origin - ePlayer.pev.origin ).Length() <= m_ifaderadius
+                    or m_iall_players == 4 && ( self.pev.origin - ePlayer.pev.origin ).Length() <= m_ifaderadius
                     or m_iall_players == 0 && ePlayer is hActivator.GetEntity()
-                    or m_iall_players == 3 && self.Intersects( ePlayer ) )
+                    or m_iall_players == 3 && self.Intersects( ePlayer ) 
+                    or m_iall_players == 5 && self.Intersects( ePlayer ) )
                     {
                         CFade( ePlayer, useType );
                     }
@@ -110,6 +116,13 @@ namespace env_fade_custom
         float ThinkyTime;
         void TriggerThink()
         {
+			if( !master() )
+			{
+				if( m_bis_zone && m_iall_players == 5 || m_ifaderadius > 0 && m_iall_players == 4 )
+				{
+					self.Use( null, self, USE_SET, 0.0f );
+				}
+			}
             if( ThinkyTime > 0 )
             {
                 ThinkyTime -= 0.1f;
@@ -117,5 +130,5 @@ namespace env_fade_custom
             self.pev.nextthink = g_Engine.time + 0.1f;
         }
     }
+	bool Register = g_Util.CustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom' );
 }
-// End of namespace
