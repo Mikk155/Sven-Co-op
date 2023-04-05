@@ -1,8 +1,6 @@
 #include "utils"
 namespace env_spritetrail
 {
-	bool Register = g_Util.CustomEntity( 'env_spritetrail::env_spritetrail','env_spritetrail' );
-
     class env_spritetrail : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hTargetEnt = null;
@@ -71,7 +69,7 @@ namespace env_spritetrail
                 return;
             }
 
-            int iEntityIndex = g_EntityFuncs.EntIndex(hTargetEnt.GetEntity().edict());
+            int iEntityIndex = g_EntityFuncs.EntIndex( hTargetEnt.GetEntity().edict() );
             NetworkMessage message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
                 message.WriteByte( TE_BEAMFOLLOW );
                 message.WriteShort( iEntityIndex );
@@ -87,5 +85,5 @@ namespace env_spritetrail
             self.pev.nextthink = ( delay > 0.0 ) ? g_Engine.time + delay : g_Engine.time + 0.1f;
         }
     }
+	bool Register = g_Util.CustomEntity( 'env_spritetrail::env_spritetrail','env_spritetrail' );
 }
-// End of namespace
