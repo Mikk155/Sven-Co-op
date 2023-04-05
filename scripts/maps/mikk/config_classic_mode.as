@@ -1,16 +1,6 @@
-/*
-Github page: https://github.com/Mikk155/Sven-Co-op/
-
-Require:
-- utils.as
-
-Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/config_english.md#config_classic_mode
-*/
 #include "utils"
 namespace config_classic_mode
 {
-	bool Register = g_Util.CustomEntity( 'config_classic_mode::config_classic_mode','config_classic_mode' );
-
     class config_classic_mode : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string target_toggle, target_failed, target_enabled, target_disabled;
@@ -75,7 +65,6 @@ namespace config_classic_mode
 
         void Spawn()
         {
-			g_ClassicMode.EnableMapSupport();
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
             {
                 g_Util.Debug( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
@@ -170,5 +159,11 @@ namespace config_classic_mode
             self.pev.nextthink = g_Engine.time + self.pev.health + 0.1f;
         }
     }
+	bool Register = g_Util.CustomEntity( 'config_classic_mode::config_classic_mode','config_classic_mode' );
+	bool blEnableMapSupport = EnableMapSupport();
+	bool EnableMapSupport()
+	{
+		g_ClassicMode.EnableMapSupport();
+		return true;
+	}
 }
-// End of namespace
