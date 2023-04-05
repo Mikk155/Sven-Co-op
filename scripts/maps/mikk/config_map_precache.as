@@ -1,16 +1,6 @@
-/*
-Github page: https://github.com/Mikk155/Sven-Co-op/
-
-Require:
-- utils.as
-
-Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/config_english.md#config_map_precache
-*/
 #include "utils"
 namespace config_map_precache
 {
-	bool Register = g_Util.CustomEntity( 'config_map_precache::config_map_precache','config_map_precache' );
-
     class config_map_precache : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary g_PrecacheKeys;
@@ -74,5 +64,5 @@ namespace config_map_precache
             BaseClass.Spawn();
         }
     }
+	bool Register = g_Util.CustomEntity( 'config_map_precache::config_map_precache','config_map_precache' );
 }
-// End of namespace
