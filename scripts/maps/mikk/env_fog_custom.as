@@ -1,13 +1,61 @@
 #include "utils"
-namespace env_fog
+namespace env_fog_custom
 {
-    CScheduledFunction@ g_Fog = g_Scheduler.SetTimeout( "FindEnvFogs", 0.0f );
-
-    void FindEnvFogs()
+    class env_fog_custom : ScriptBaseEntity, ScriptBaseCustomEntity
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_fog::entity", "env_fog_individual" );
-        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
+        private bool State = false;
 
+        void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
+        {
+            if( pActivator !is null && pActivator.IsPlayer() )
+            {
+                if( useType == USE_ON )
+				{
+					State = true;
+				}
+                else if( useType == USE_OFF )
+				{
+					State = false;
+				}
+				else
+				{
+					State = !State;
+				}
+
+                NetworkMessage msg( MSG_ONE_UNRELIABLE, NetworkMessages::Fog, cast<CBasePlayer@>( pActivator ).edict() );
+                    msg.WriteShort(0);
+                    msg.WriteByte( ( State ) ? 1 : 0 );
+                    msg.WriteCoord(0);
+                    msg.WriteCoord(0);
+                    msg.WriteCoord(0);
+                    msg.WriteShort(0);
+                    msg.WriteByte( int( self.pev.rendercolor.x ) );
+                    msg.WriteByte( int( self.pev.rendercolor.y ) );
+                    msg.WriteByte( int( self.pev.rendercolor.z ) );
+                    msg.WriteShort( atoi(self.pev.netname) );
+                    msg.WriteShort( atoi(self.pev.message) );
+                msg.End();
+            }
+        }
+		
+		void UpdateOnRemove()
+		{
+            for( int i = 1; i <= g_Engine.maxClients; i++ )
+            {
+                CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( i );
+
+                if( pPlayer !is null )
+                {
+					self.Use( pPlayer, self, USE_OFF, 0.0f );
+                }
+
+            }
+			BaseClass.UpdateOnRemove();
+		}
+    }
+
+    void remap_fog()
+    {
         CBaseEntity@ pFog = null;
 
         while( ( @pFog = g_EntityFuncs.FindEntityByClassname( pFog, "env_fog" ) ) !is null )
@@ -19,13 +67,11 @@ namespace env_fog
                     { "targetname", pFog.GetTargetname() },
                     { "netname", string( pFog.pev.iuser2 ) },
                     { "message", string( pFog.pev.iuser3 ) },
-                    { "frags", string( pFog.pev.rendercolor.x ) },
-                    { "health", string( pFog.pev.rendercolor.y ) },
-                    { "max_health", string( pFog.pev.rendercolor.z ) },
-                    { "target", ( pFog.pev.SpawnFlagBitSet( 1 ) ) ? "off" : "on" }
+                    { "rendercolor", pFog.pev.rendercolor.ToString() },
+                    { "spawnflags", string( pFog.pev.spawnflags ) }
                 };
 
-                CBaseEntity@ pTriggerScript = g_EntityFuncs.CreateEntity( "env_fog_individual", g_keyvalues );
+                CBaseEntity@ pTriggerScript = g_EntityFuncs.CreateEntity( "env_fog_custom", g_keyvalues );
                 
                 if( pTriggerScript !is null )
                 {
@@ -33,55 +79,18 @@ namespace env_fog
                 }
             }
         }
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Expands env_fog functions.\n"
-        );
     }
 
-    class entity : ScriptBaseEntity
-    {
-        private bool State = false;
-
-        void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
-        {
-            if( pActivator !is null && pActivator.IsPlayer() )
-            {
-                if( useType == USE_ON ) State = true;
-                else if( useType == USE_OFF ) State = false;
-                else State = !State;
-
-                NetworkMessage msg( MSG_ONE_UNRELIABLE, NetworkMessages::Fog, cast<CBasePlayer@>( pActivator ).edict() );
-                    msg.WriteShort(0); // id
-                    msg.WriteByte( ( State ) ? 1 : 0 ); // enable state
-                    msg.WriteCoord(0); // unused
-                    msg.WriteCoord(0); // unused
-                    msg.WriteCoord(0); // unused
-                    msg.WriteShort(0); // radius unused
-                    msg.WriteByte( int(self.pev.frags) ); // red
-                    msg.WriteByte( int(self.pev.health) ); // green
-                    msg.WriteByte( int(self.pev.max_health) ); // blue
-                    msg.WriteShort( atoi(self.pev.netname) ); // start distance
-                    msg.WriteShort( atoi(self.pev.message) ); // end distance
-                msg.End();
-            }
-        }
-    }
-
-    HookReturnCode Connect( CBasePlayer@ pPlayer )
+    HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
     {
         if( pPlayer is null )
             return HOOK_CONTINUE;
 
         CBaseEntity@ pIndiFog = null;
-        while( ( @pIndiFog = g_EntityFuncs.FindEntityByClassname( pIndiFog, "env_fog_individual" ) ) !is null )
+        while( ( @pIndiFog = g_EntityFuncs.FindEntityByClassname( pIndiFog, "env_fog_custom" ) ) !is null )
         {
-            if( pIndiFog.pev.target == "on" )
+            if( pIndiFog.pev.SpawnFlagBitSet( 1 ) )
             {
-                // Give it some time for player completelly joins the server
                 g_Scheduler.SetTimeout( "EnableFog", 2.0f, EHandle(pIndiFog), EHandle(pPlayer) );
             }
         }
@@ -95,5 +104,7 @@ namespace env_fog
             cast<CBaseEntity@>(fog).Use( cast<CBasePlayer@>(player.GetEntity()), null, USE_ON, 0.0f );
         }
     }
+	bool Register = g_Util.CustomEntity( 'env_fog_custom::env_fog_custom','env_fog_custom' );
+	bool PlayerJoin = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @env_fog_custom::ClientPutInServer );
+    CScheduledFunction@ g_Fog = g_Scheduler.SetTimeout( "remap_fog", 0.0f );
 }
-// End of namespace
