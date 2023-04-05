@@ -620,8 +620,8 @@ mixin class ScriptBaseCustomEntity
         if( string( self.pev.model ).StartsWith( "*" ) && self.IsBSPModel() )
         {
             g_EntityFuncs.SetModel( self, string( self.pev.model ) );
-            g_EntityFuncs.SetSize( self.pev, self.pev.mins, self.pev.maxs );
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
+            g_EntityFuncs.SetSize( self.pev, self.pev.mins, self.pev.maxs );
             g_Util.Debug( "Set size of entity '" + string( self.pev.classname ) + "'" );
             g_Util.Debug( "model '"+ string( self.pev.model ) +"'" );
             g_Util.Debug( "origin '" + self.pev.origin.ToString() + "'" );
@@ -629,14 +629,10 @@ mixin class ScriptBaseCustomEntity
         }
         else if( minhullsize != g_vecZero && maxhullsize != g_vecZero )
         {
-            g_EntityFuncs.SetSize( self.pev, minhullsize, maxhullsize );
             g_Util.Debug( "Set size of entity '" + string( self.pev.classname ) + "'" );
-
             if( self.pev.origin != g_vecZero )
             {
                 g_EntityFuncs.SetOrigin( self, self.pev.origin );
-				g_Util.Debug( "Max BBox: '" + maxhullsize.ToString() + "'" );
-				g_Util.Debug( "Min BBox: '" + minhullsize.ToString() + "'" );
 				g_Util.Debug( "Origin: '" + self.pev.origin.ToString() + "'" );
             }
 			else
@@ -644,9 +640,14 @@ mixin class ScriptBaseCustomEntity
 				g_Util.Debug( "Max BBox (world size): '" + maxhullsize.ToString() + "'" );
 				g_Util.Debug( "Min BBox (world size): '" + minhullsize.ToString() + "'" );
 			}
+
+            g_EntityFuncs.SetSize( self.pev, minhullsize, maxhullsize );
+			g_Util.Debug( "Max BBox: '" + maxhullsize.ToString() + "'" );
+			g_Util.Debug( "Min BBox: '" + minhullsize.ToString() + "'" );
 			return true;
         }
 		g_Util.Debug( "Can not set size. not model /n/or/ hullsizes set!" );
+        g_Util.Debug( "For entity '" + string( self.pev.classname ) + "'" );
 		g_EntityFuncs.SetOrigin( self, self.pev.origin );
 		g_Util.Debug( "Origin: '" + self.pev.origin.ToString() + "'" );
 		return false;
@@ -660,25 +661,6 @@ mixin class ScriptBaseCustomEntity
 
 namespace utils
 {
-    void script_player_data( CBaseEntity@ self )
-    {
-        for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
-        {
-            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
-
-            if( pPlayer !is null )
-            {
-                g_Util.SetCKV( pPlayer, "$i_hassuit", string( pPlayer.HasSuit() ) );
-                g_Util.SetCKV( pPlayer, "$s_steamid", string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) );
-                g_Util.SetCKV( pPlayer, "$i_adminlevel", string( g_PlayerFuncs.AdminLevel( pPlayer ) ) );
-                g_Util.SetCKV( pPlayer, "$i_hascorpse", string( pPlayer.GetObserver().HasCorpse() ) );
-                g_Util.SetCKV( pPlayer, "$i_flashlight", string( pPlayer.FlashlightIsOn() ) );
-                g_Util.Trigger( self.pev.netname, pPlayer, self, USE_TOGGLE, 0.0f );
-            }
-        }
-        self.Use( null, null, USE_OFF, 0.0f );
-    }
-
     void script_random_value( CBaseEntity@ self )
     {
         g_Util.SetCKV( self, "$i_random", string( Math.RandomLong( int( self.pev.health ), int( self.pev.max_health ) ) ) );
@@ -775,6 +757,51 @@ namespace utils
 CEffects g_Effect;
 final class CEffects
 {
+    void spritefield(
+    Vector VecStart,
+	string iszModel,
+    uint16 radius = 128,
+    uint8 count = 128, 
+	uint8 flags = 30,
+    uint8 life = 5
+	){
+        NetworkMessage m( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            m.WriteByte( TE_FIREFIELD );
+            m.WriteCoord( VecStart.x );
+            m.WriteCoord( VecStart.y );
+            m.WriteCoord( VecStart.z );
+            m.WriteShort( radius );
+            m.WriteShort( g_EngineFuncs.ModelIndex( iszModel ) );
+            m.WriteByte( count );
+            m.WriteByte( flags );
+            m.WriteByte( life );
+        m.End();
+    }
+
+    void dlight
+	(
+		Vector VecStart,
+		Vector VecColor,
+		uint8 i8radius = 32,
+		uint8 i8life = 255, 
+		uint8 i8noise = 255
+	){
+        NetworkMessage dlight( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
+            dlight.WriteByte( TE_DLIGHT );
+
+            dlight.WriteCoord( VecStart.x );
+            dlight.WriteCoord( VecStart.y );
+            dlight.WriteCoord( VecStart.z );
+
+            dlight.WriteByte( i8radius );
+            dlight.WriteByte( int( VecColor.x ) );
+            dlight.WriteByte( int( VecColor.y ) );
+            dlight.WriteByte( int( VecColor.z ) );
+            dlight.WriteByte( i8life );
+            dlight.WriteByte( i8noise );
+        dlight.End();
+    }
+
     void toxic
     (
         Vector VecStart
