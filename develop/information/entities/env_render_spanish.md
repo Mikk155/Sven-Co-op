@@ -37,7 +37,7 @@ env_render es una entidad que permite modificar el rendering de otras entidades.
 | $i_angelscript | Explicitamente debes elegir si usar o no las siguientes funciones, 0 = no usar, 1 = usar |
 | $s_target | Entidad a activar cuando el rendermode sea aplicado, la entidad cuyo render fue cambiado será el !activator |
 | Spawnflags 64 | Explicitamente debes elegir si usar o no las siguientes funciones, Activa = usar |
-| $f_gradual | Tiempo, Iintervalo (float) para cambiar gradualmente el renderamt de la entidad afectada |
+| $f_gradual | Tiempo, intervalo (float) para cambiar gradualmente el renderamt de la entidad afectada |
 | $i_gradual | renderamt, cantidad de valores de renderamt que vamos a modificar por cada intervalo, Se requiere un prefijo, usar (+) para sumar, usar (-) para restar |
 | $s_gradual | renderamt, Cantidad maxima a la cual llegar, el renderamt de la entidad afectada se modificará hasta que lleguemos a este valor |
 

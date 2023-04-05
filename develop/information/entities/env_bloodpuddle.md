@@ -3,26 +3,26 @@
 
 ![image](../../images/angelscript.png)
 
-env_bloodpuddle es un script automatico que crea un charco de sangre cuando un npc muere
+env_bloodpuddle is an automatic script that creates a blood puddle after a npc dies.
 
-<details><summary>Instalar</summary>
+<details><summary>Install</summary>
 <p>
 
-- Descargue [map_script](../../../scripts/maps/mikk/env_bloodpuddle.as) O [plugin](../../../scripts/plugins/env_bloodpuddle.as)
-- Descargue [bloodpuddle](../../../models/mikk/misc/bloodpuddle.mdl)
-- Lease [instalar](../install.md)
+- Download [map_script](../../../scripts/maps/mikk/env_bloodpuddle.as) Or [plugin](../../../scripts/plugins/env_bloodpuddle.as)
+- Download [bloodpuddle](../../../models/mikk/misc/bloodpuddle.mdl)
+- Read [install](../install.md)
 
 
-Funciones adicionales:
+Additional functions:
 ```angelscript
 const bool& in blRemove = false
 ```
 
-- Si se envia en ``false`` o no se envia en absoluto, los charcos de sangre creados no van a desaparecer cuando el npc lo haga.
+- If a ``false`` is sent or nothing in absolute, the blood puddles will not disappear when the npc does.
 
-- Si se envia en ``true`` los charcos de sangre desaparecerán en el momento en que el cadaver del npc desaparezca.
+- If a ``true`` is sent, the blood puddles will disapear the moment the npc's corpse disappears.
 
-Ejemplo:
+Example:
 ```angelscript
 void MapInit()
 {
@@ -30,16 +30,16 @@ void MapInit()
 }
 ```
 
-Funciones adicionales:
+Additional functions:
 ```angelscript
 const string& in szModel = "models/mikk/misc/bloodpuddle.mdl"
 ```
 
-- Si no se especifica, el modelo ``models/mikk/misc/bloodpuddle.mdl`` será usado para los charcos de sangre.
+- If not especified, the model ``models/mikk/misc/bloodpuddle.mdl`` is going to be used for the blood puddles.
 
-- Si se utiliza, los charcos de sangre utilizaran tu modelo de elección.
+- If it is used, the blood puddles will use the selected model.
 
-Ejemplo:
+Example:
 ```angelscript
 void MapInit()
 {
@@ -50,6 +50,6 @@ void MapInit()
 </p>
 </details>
 
-- Añade una [Custom Key Value](custom_keyvalue.md) en el monster que no quieras que genere un charco de sangre. ``$f_bloodpuddle`` en un valor de ``1``
+- Add a [Custom Key Value](custom_keyvalue.md) in the monster that you don't want to generate a blood puddle. ``$f_bloodpuddle`` with a value of ``1``
 
-- Usar skin personalizada por cada monster, Añade una [Custom Key Value](custom_keyvalue.md) en el monster que quieras que genere sangre de otro color. ``$i_bloodpuddle`` en un valor ecual a el indice de skin en el modelo. Si no se utiliza, el tipo de sangre del npc definirá el color del modelo, 0 por rojo, 1 por otros.
+- Use a personalized skin for each monster, add a [Custom Key Value](custom_keyvalue.md) in the monster that you want him to generate a different color blood . ``$i_bloodpuddle`` in a value equal to the index. If it is not used, the blood type of the npc will define the color of the model, 0 for red, 1 for others.
