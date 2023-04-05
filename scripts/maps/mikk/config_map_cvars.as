@@ -1,16 +1,6 @@
-/*
-Github page: https://github.com/Mikk155/Sven-Co-op/
-
-Require:
-- utils.as
-
-Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/config_english.md#config_map_cvars
-*/
 #include "utils"
 namespace config_map_cvars
 {
-	bool Register = g_Util.CustomEntity( 'config_map_cvars::config_map_cvars','config_map_cvars' );
-
     class config_map_cvars : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;
@@ -92,5 +82,5 @@ namespace config_map_cvars
             BaseClass.Spawn();
         }
     }
+	bool Register = g_Util.CustomEntity( 'config_map_cvars::config_map_cvars','config_map_cvars' );
 }
-// End of namespace
