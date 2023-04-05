@@ -1,8 +1,6 @@
 #include "utils"
 namespace env_spritehud
 {
-	bool Register = g_Util.CustomEntity( 'env_spritehud::env_spritehud','env_spritehud' );
-
     class env_spritehud : ScriptBaseEntity
     {
         HUDSpriteParams params;
@@ -148,5 +146,5 @@ namespace env_spritehud
             }
         }
     }
+	bool Register = g_Util.CustomEntity( 'env_spritehud::env_spritehud','env_spritehud' );
 }
-// End of namespace
