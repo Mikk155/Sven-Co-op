@@ -1,36 +1,25 @@
 #include "utils"
 namespace env_effects
 {
-	bool Register0 = g_Util.CustomEntity( 'env_effects::env_effect_smoke','env_effect_smoke' );
-	bool Register1 = g_Util.CustomEntity( 'env_effects::env_effect_cylinder','env_effect_cylinder' );
-	bool Register2 = g_Util.CustomEntity( 'env_effects::env_effect_implosion','env_effect_implosion' );
-	bool Register3 = g_Util.CustomEntity( 'env_effects::env_effect_quake','env_effect_quake' );
-	bool Register4 = g_Util.CustomEntity( 'env_effects::env_effect_spriteshooter','env_effect_spriteshooter' );
-	bool Register5 = g_Util.CustomEntity( 'env_effects::env_effect_tracer','env_effect_tracer' );
-	bool Register6 = g_Util.CustomEntity( 'env_effects::env_effect_splash','env_effect_splash' );
-	bool Register7 = g_Util.CustomEntity( 'env_effects::env_effect_disk','env_effect_disk' );
-	bool Register8 = g_Util.CustomEntity( 'env_effects::env_effect_toxic','env_effect_toxic' );
-	bool Register9 = g_Util.CustomEntity( 'env_effects::env_effect_elight','env_effect_elight' );
-	bool Register10 = g_Util.CustomEntity( 'env_effects::env_effect_dlight','env_effect_dlight' );
-    class env_effect_smoke:ScriptBaseEntity,BaseFX{}
-    class env_effect_cylinder:ScriptBaseEntity,BaseFX{}
-    class env_effect_implosion:ScriptBaseEntity,BaseFX{}
-    class env_effect_quake:ScriptBaseEntity,BaseFX{}
-    class env_effect_spriteshooter:ScriptBaseEntity,BaseFX{}
-    class env_effect_tracer:ScriptBaseEntity,BaseFX{}
-    class env_effect_splash:ScriptBaseEntity,BaseFX{}
-    class env_effect_disk:ScriptBaseEntity,BaseFX{}
-    class env_effect_toxic:ScriptBaseEntity,BaseFX{}
-    class env_effect_elight:ScriptBaseEntity,BaseFX{}
-    class env_effect_dlight:ScriptBaseEntity,BaseFX{}
+	bool blcylinder = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_cylinder' );
+	bool bldisk = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_disk' );
+	bool bldlight = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_dlight' );
+	bool blimplosion = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_implosion' );
+	bool blquake = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_quake' );
+	bool blsmoke = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_smoke' );
+	bool blsplash = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_splash' );
+	bool blspritefield = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_spritefield' );
+	bool blspriteshooter = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_spriteshooter' );
+	bool bltoxic = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_toxic' );
+	bool bltracer = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_tracer' );
 
-    mixin class BaseFX
+	class BaseFX : ScriptBaseEntity
     {
         private string m_iszMaster();
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
-            if ( szKey == "master" )
+            if( szKey == "master" )
             {
                 this.m_iszMaster = szValue;
             }
@@ -103,6 +92,14 @@ namespace env_effects
                 {
                     g_Effect.toxic( self.pev.origin );
                 }
+                else if( self.pev.classname == "env_effect_dlight" )
+                {
+					g_Effect.dlight( self.pev.origin, self.pev.rendercolor, uint8( self.pev.renderamt ), uint8( self.pev.health ), uint8( self.pev.frags ) );
+                }
+                else if( self.pev.classname == "env_effect_spritefield" )
+                {
+					g_Effect.spritefield( self.pev.origin, string( self.pev.model ), uint16( self.pev.renderamt ), uint8( self.pev.frags ), uint8( self.pev.health), uint8( self.pev.max_health ) );
+                }
             }
             
             if( !self.pev.SpawnFlagBitSet( 1 ) )
@@ -112,4 +109,3 @@ namespace env_effects
         }
     }
 }
-// End of namespace
