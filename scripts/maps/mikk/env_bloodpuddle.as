@@ -1,85 +1,45 @@
 #include "utils"
 namespace env_bloodpuddle
 {
-	bool Register = g_Util.CustomEntity( 'env_bloodpuddle::env_bloodpuddle','env_bloodpuddle' );
-    CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
-	string AutoPrecache = PrecacheModel();
-
-    string BloodModel = 'models/mikk/misc/bloodpuddle.mdl';
-	
 	void model( const string& in szModel = BloodModel )
 	{
 		BloodModel = szModel;
 		PrecacheModel();
 	}
-	
-	string PrecacheModel( const string& in szModel = BloodModel )
-	{
-        g_Game.PrecacheModel( szModel );
-        g_Game.PrecacheGeneric( szModel );
-		return szModel;
-	}
 
     bool fade = false;
-
-    void Think()
-    {
-        CBaseEntity@ pEntity = null;
-
-        while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, "monster_*" ) ) !is null )
-        {
-            CBaseMonster@ pMonster = cast<CBaseMonster@>(pEntity);
-
-            if( pMonster.IsMonster()
-            && pMonster.pev.deadflag == DEAD_DEAD
-            && pMonster.m_bloodColor != ( DONT_BLEED )
-            && atof( g_Util.GetCKV( pMonster, '$f_bloodpuddle' ) ) <= 0.0 )
-            {
-                CBaseEntity@ pBlood = g_EntityFuncs.CreateEntity( "env_bloodpuddle", null, true);
-
-                if( pBlood !is null )
-                {
-                    if( pEntity.GetCustomKeyvalues().HasKeyvalue( "$i_bloodpuddle" ) )
-                    {
-                        pBlood.pev.skin = atoi( g_Util.GetCKV( pMonster, '$i_bloodpuddle' ) );
-                    }
-                    else
-                    {
-                        if( pMonster.m_bloodColor == ( BLOOD_COLOR_RED )  )
-                        {
-                            pBlood.pev.skin = 0;
-                        }
-                        else
-                        if( pMonster.m_bloodColor == ( BLOOD_COLOR_GREEN )
-                        or pMonster.m_bloodColor == ( BLOOD_COLOR_YELLOW ) )
-                        {
-                            pBlood.pev.skin = 1;
-                        }
-                    }
-
-                    pBlood.SetOrigin( cast<CBaseMonster@>(pEntity).Center() + Vector( 0, 0, 6 ) );
-
-                    @pBlood.pev.owner = pMonster.edict();
-                    g_Util.SetCKV( pMonster, '$f_bloodpuddle', '1' );
-                }
-            }
-        }
-    }
 
     class env_bloodpuddle : ScriptBaseAnimating
     {
         void Spawn()
         {
+			Precache();
             self.pev.movetype = MOVETYPE_NONE;
             self.pev.solid = SOLID_NOT;
             self.pev.scale = Math.RandomFloat( 1.5, 2.5 );
 
-            g_EntityFuncs.SetModel( self, BloodModel );
+			if( !string( self.pev.model ).IsEmpty() )
+			{
+				g_EntityFuncs.SetModel( self, string( self.pev.model ) );
+			}
+			else
+			{
+				g_EntityFuncs.SetModel( self, BloodModel );
+			}
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
             self.pev.sequence = 2;
 
             SetThink( ThinkFunction( this.BloodPreSpawn ) );
             self.pev.nextthink = g_Engine.time + 0.8f;
+        }
+
+        void Precache()
+        {
+			if( !string( self.pev.model ).IsEmpty() )
+			{
+				g_Game.PrecacheModel( string( self.pev.model ) );
+				g_Game.PrecacheGeneric( string( self.pev.model ) );
+			}
         }
 
         void BloodPreSpawn()
@@ -119,5 +79,62 @@ namespace env_bloodpuddle
             self.pev.nextthink = g_Engine.time + 0.1;
         }
     }
+
+    void Think()
+    {
+        CBaseEntity@ pEntity = null;
+
+        while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, "monster_*" ) ) !is null )
+        {
+            CBaseMonster@ pMonster = cast<CBaseMonster@>(pEntity);
+
+            if( pMonster.IsMonster()
+            && pMonster.pev.deadflag == DEAD_DEAD
+            && string( pMonster.GetClassname() ).Find( 'dead' ) != 1
+            && pMonster.m_bloodColor != ( DONT_BLEED )
+            && atof( g_Util.GetCKV( pMonster, '$f_bloodpuddle' ) ) <= 0.0 )
+            {
+                CBaseEntity@ pBlood = g_EntityFuncs.CreateEntity( "env_bloodpuddle", null, true);
+				g_Util.Debug( pMonster.pev.classname );
+                if( pBlood !is null )
+                {
+                    if( pEntity.GetCustomKeyvalues().HasKeyvalue( "$i_bloodpuddle" ) )
+                    {
+                        pBlood.pev.skin = atoi( g_Util.GetCKV( pMonster, '$i_bloodpuddle' ) );
+                    }
+                    else
+                    {
+                        if( pMonster.m_bloodColor == ( BLOOD_COLOR_RED )  )
+                        {
+                            pBlood.pev.skin = 0;
+                        }
+                        else
+                        if( pMonster.m_bloodColor == ( BLOOD_COLOR_GREEN )
+                        or pMonster.m_bloodColor == ( BLOOD_COLOR_YELLOW ) )
+                        {
+                            pBlood.pev.skin = 1;
+                        }
+                    }
+
+                    pBlood.SetOrigin( cast<CBaseMonster@>(pEntity).Center() + Vector( 0, 0, 6 ) );
+
+                    @pBlood.pev.owner = pMonster.edict();
+                    g_Util.SetCKV( pMonster, '$f_bloodpuddle', '1' );
+                }
+            }
+        }
+    }
+
+	bool Register = g_Util.CustomEntity( 'env_bloodpuddle::env_bloodpuddle','env_bloodpuddle' );
+    CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
+	string AutoPrecache = PrecacheModel();
+
+    string BloodModel = 'models/mikk/misc/bloodpuddle.mdl';
+
+	string PrecacheModel( const string& in szModel = BloodModel )
+	{
+        g_Game.PrecacheModel( szModel );
+        g_Game.PrecacheGeneric( szModel );
+		return szModel;
+	}
 }
-// End of namespace
