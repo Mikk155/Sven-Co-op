@@ -33,16 +33,6 @@ namespace game_stealth
                 pScript.Use( null, null, USE_TOGGLE, 0.0f );
             }
         }
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#game_stealth"
-            "\nAuthor: Gaftherman"
-            "\nGithub: github.com/Gaftherman"
-            "\nAuthor: Mikk"
-            "\nGithub: github.com/Mikk155"
-            "\nDescription: Allow mappers to make use of stealth mode in Co-op.\n"
-        );
     }
 
     void FindMonsters( CBaseEntity@ pTriggerScript )
@@ -87,4 +77,3 @@ namespace game_stealth
         }
     }
 }
-// End of namespace
