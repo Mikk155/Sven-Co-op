@@ -1,24 +1,17 @@
-/*
-Github page: https://github.com/Mikk155/Sven-Co-op/
-
-Require:
-- utils.as
-
-Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/config_english.md#config_survival_mode
-*/
 #include "utils"
 namespace config_survival_mode
 {
-	bool Register = g_Util.CustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
-
     class config_survival_mode : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool SurvivalEnabled = false;
-        private string target_toggle, target_failed;
+		
+        private string target_toggle;
 
-        private int
-        mp_respawndelay = int( g_EngineFuncs.CVarGetFloat( "mp_respawndelay" ) ),
-        mp_survival_startdelay = int( g_EngineFuncs.CVarGetFloat( "mp_survival_startdelay" ) );
+        private string target_failed;
+
+        private int mp_respawndelay = int( g_EngineFuncs.CVarGetFloat( "mp_respawndelay" ) );
+
+        private int mp_survival_startdelay = int( g_EngineFuncs.CVarGetFloat( "mp_survival_startdelay" ) );
 
         bool KeyValue( const string& in szKey, const string& in szValue ) 
         {
@@ -58,7 +51,6 @@ namespace config_survival_mode
                 g_EntityFuncs.Remove( self );
             }
 
-            //We want survival mode to be enabled here
             g_SurvivalMode.EnableMapSupport();
 
             SetThink( ThinkFunction( this.Think ) );
@@ -250,26 +242,26 @@ namespace config_survival_mode
                     }
                 ) + "\n" );
             }
-            else{
-            for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
-            {
-                CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+            else
+			{
+				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
+				{
+					CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
-                if( pPlayer !is null )
-                {
-                    g_PlayerFuncs.ClientPrint( pPlayer, szHUD,
-                    g_Util.StringReplace
-                    (
-                        ReadLanguages( pPlayer ),
-                        {
-                            { "!time", string( mp_survival_startdelay ) }
-                        }
-                    ) + "\n" );
-                }
-              }
+					if( pPlayer !is null )
+					{
+						g_PlayerFuncs.ClientPrint( pPlayer, szHUD,
+						g_Util.StringReplace
+						(
+							ReadLanguages( pPlayer ),
+							{
+								{ "!time", string( mp_survival_startdelay ) }
+							}
+						) + "\n" );
+					}
+				}
             }
         }
     }
-
+	bool Register = g_Util.CustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
 }
-// End of namespace
