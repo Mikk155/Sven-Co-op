@@ -1,20 +1,12 @@
-/*
-Github page: https://github.com/Mikk155/Sven-Co-op/
-
-Require:
-- utils.as
-
-Usage: https://github.com/Mikk155/Sven-Co-op/blob/main/develop/information/entities/ammo_english.md#ammo_custom
-*/
 #include "utils"
 namespace ammo_custom
 {
-	bool Register = g_Util.CustomEntity( 'ammo_custom::ammo_custom','ammo_custom' );
-
     class ammo_custom : ScriptBasePlayerAmmoEntity
     {
         private string p_sound = "items/9mmclip1.wav";
+
         private string am_name = "buckshot";
+
         private string[][] Weapons = 
         {
             {"Satchel Charge", "weapon_satchel"},
@@ -22,24 +14,32 @@ namespace ammo_custom
             {"Hand Grenade", "weapon_handgrenade"},
             {"snarks", "weapon_snark"}
         };
+
         private int am_give = 1;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
-            if( szKey == "am_name" ) 
+            if( szKey == "am_name" )
+			{
                 am_name = szValue;
-            else if( szKey == "p_sound" ) 
+			}
+            else if( szKey == "p_sound" )
+			{
                 p_sound = szValue;
-            else if( szKey == "am_give" ) 
+			}
+            else if( szKey == "am_give" )
+			{
                 am_give = atoi( szValue );
+			}
             else
+			{
                 return BaseClass.KeyValue( szKey, szValue );
+			}
             return true;
         }
 
         void Spawn()
         { 
-            Precache();
             if( self.pev.frags > 0 )
             {
                 if( string( self.pev.targetname ).IsEmpty() )
@@ -60,6 +60,8 @@ namespace ammo_custom
             }
 
             g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
+
+            Precache();
             BaseClass.Spawn();
         }
         
@@ -70,7 +72,7 @@ namespace ammo_custom
             g_SoundSystem.PrecacheSound( p_sound );
             g_Game.PrecacheGeneric( "sound/" + p_sound );
         }
-        
+
         bool AddAmmo( CBaseEntity@ pOther ) 
         {
             int iValue = atoi( g_Util.GetCKV( pOther, "$i_ammo_custom" + self.entindex() ) );
@@ -112,5 +114,5 @@ namespace ammo_custom
             return false;
         }
     }
+	bool Register = g_Util.CustomEntity( 'ammo_custom::ammo_custom','ammo_custom' );
 }
-// End of namespace
