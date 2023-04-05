@@ -1,11 +1,11 @@
 #include "utils"
-namespace env_render
+namespace env_render_custom
 {
     CScheduledFunction@ g_Renders = g_Scheduler.SetTimeout( "FindEnvRenders", 0.0f );
 
     void FindEnvRenders()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "env_render::entity", "env_render_custom" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_render_custom::env_render_custom", "env_render_custom" );
 
         CBaseEntity@ pRender = null;
 
@@ -35,16 +35,9 @@ namespace env_render
 				}
             }
         }
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Expands env_render functions.\n"
-        );
     }
 
-    class entity : ScriptBaseEntity
+    class env_render_custom : ScriptBaseEntity
     {
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
@@ -158,4 +151,3 @@ namespace env_render
 		}
     }
 }
-// End of namespace
