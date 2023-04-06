@@ -173,4 +173,3 @@ namespace env_message
 		}
 	}
 }
-// End of namespace
