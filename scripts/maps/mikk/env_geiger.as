@@ -1,8 +1,6 @@
 #include "utils"
 namespace env_geiger
 {
-	bool Register = g_Util.CustomEntity( 'env_geiger::env_geiger','env_geiger' );
-
     class env_geiger : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private bool State = true;
@@ -31,6 +29,7 @@ namespace env_geiger
 
         void Precache() 
         {
+			bool HasSounds = false;
             for(uint ui = 0; ui < g_Keys.length(); ui++)
             {
                 string Key = string( g_Keys[ui] );
@@ -41,8 +40,24 @@ namespace env_geiger
                     g_SoundSystem.PrecacheSound( Value );
                     g_Game.PrecacheGeneric( "sound/" + Value );
                     Sounds.insertLast( Value );
+					HasSounds = true;
                 }
             }
+			if( !HasSounds )
+			{
+				int i = 0;
+				for(uint ui = 0; ui < 6; ui++)
+				{
+					g_SoundSystem.PrecacheSound( 'player/geiger' + i + '.wav' );
+					g_Game.PrecacheGeneric( "sound/" + 'player/geiger' + i + '.wav' );
+					Sounds.insertLast( 'player/geiger' + i + '.wav' );
+					++i;
+				}
+			}
+			if( self.pev.max_health == 0.0 )
+			{
+				self.pev.max_health = 0.5;
+			}
             BaseClass.Precache();
         }
 
@@ -75,5 +90,5 @@ namespace env_geiger
             self.pev.nextthink = g_Engine.time + Math.RandomFloat( self.pev.health, self.pev.max_health );
         }
     }
+	bool Register = g_Util.CustomEntity( 'env_geiger::env_geiger','env_geiger' );
 }
-// End of namespace
