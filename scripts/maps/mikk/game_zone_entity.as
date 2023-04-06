@@ -1,25 +1,7 @@
 #include "utils"
 namespace game_zone_entity
 {
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_zone_entity::entity", "game_zone_entity" );
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#game_zone_entity"
-            "\nAuthor: Mikk"
-            "\nGithub: github.com/Mikk155"
-            "\nDescription: game_zone_entity is a entity similar to game_zone_player but now supports any entity in its volume not only players.\n"
-        );
-    }
-
-    enum spawnflags
-    {
-        SF_TZ_IGNORE_DEAD = 1 << 0
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class game_zone_entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hincount = null;
         EHandle houtcount = null;
@@ -71,11 +53,6 @@ namespace game_zone_entity
 
             SetBoundaries();
 
-            if( string( self.pev.model ).IsEmpty() && minhullsize == g_vecZero )
-            {
-                g_Util.Debug( "WARNING! game_zone_entity doesn't have BBOX!\n Only OUT Target is going to work." );
-            }
-
             BaseClass.Spawn();
         }
 
@@ -126,7 +103,7 @@ namespace game_zone_entity
 
         void CheckInVolume( CBaseEntity@ pActivator )
         {
-            if ( self.pev.SpawnFlagBitSet( SF_TZ_IGNORE_DEAD ) && !pActivator.IsAlive() )
+            if ( spawnflag( 1 ) && !pActivator.IsAlive() )
                 return;
 
             if( !intarget.IsEmpty() and self.Intersects( pActivator ) )
@@ -158,5 +135,5 @@ namespace game_zone_entity
             }
         }
     }
+	bool Register = g_Util.CustomEntity( 'game_zone_entity::game_zone_entity','game_zone_entity' );
 }
-// End of namespace
