@@ -1,10 +1,4 @@
-#include "../maps/mikk/game_text_custom"
-
-CTextMenu@ g_VoteMenu;
-
-array<string> arstrHook = {"trans","localization","lang","idioma","lenguaje","lenguage","language","lingvo","langue","sprache","linguaggio","taal","gjuhe","dil","limba","jazyk","bahasa"};
-
-string info = "Script: multi_language\nAuthor: Mikk\nGithub: github.com/Mikk155\nAuthor: Gaftherman\nGithub: github.com/Gaftherman\nDescription: Plugin that allow players to individually choose the language they want to see in game if the map or script supports the feature.\n";
+#include "../../maps/mikk/game_text_custom"
 
 array<string> LanguageSupport =
 {
@@ -24,21 +18,23 @@ array<string> LanguageSupport =
 	"Albanian"
 };
 	
+CTextMenu@ g_VoteMenu;
+
+array<string> arstrHook = {"trans","localization","lang","idioma","lenguaje","lenguage","language","lingvo","langue","sprache","linguaggio","taal","gjuhe","dil","limba","jazyk","bahasa"};
+
 void PluginInit()
 {
-    g_Module.ScriptInfo.SetAuthor( info );
+    g_Module.ScriptInfo.SetAuthor( "Mikk & Gaftherman" );
 	g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
     g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
-    g_Module.ScriptInfo.SetContactInfo( "\nDiscord: discord.gg/VsNnE3A7j8" );
+    g_Module.ScriptInfo.SetContactInfo( "discord.gg/VsNnE3A7j8" );
     g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @ClientDisconnect );
 	g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
 }
 
 void MapInit()
 {
-    game_text_custom::Register( true );
-
-	g_Util.ScriptAuthor.insertLast( info );
+    game_text_custom::MapInit();
 }
 
 void MapStart()
