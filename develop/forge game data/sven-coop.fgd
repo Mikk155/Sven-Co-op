@@ -566,20 +566,24 @@
     p_sound(sound) : "Custom Sound" : "items/9mmclip1.wav"
     am_name(choices) : "Ammo type" : "buckshot" =
     [
-        "buckshot" : "buckshot"
-        "9mm" : "9mm"
+        "buckshot" : "Buckshot"
+        "9mm" : "9mm (mp5, glock, uzi)"
         "ARgrenades" : "ARgrenades"
-        "sporeclip" : "sporeclip"
-        "rockets" : "rockets"
-        "uranium" : "uranium"
-        "bolts" : "bolts"
-        "556" : "556"
-        "357" : "357"
-        "m40a1" : "m40a1"
-        "Satchel Charge" : "satchel"
+        "sporeclip" : "Spores"
+        "rockets" : "Rockets"
+        "uranium" : "Uranium (egon, gauss, displacer)"
+        "bolts" : "Crossbow Bolts"
+        "556" : "556 (m16, saw)"
+        "357" : "357 Magnum"
+        "m40a1" : "m40a1 Sniper"
+        "Satchel Charge" : "Satchel Charge"
         "Trip Mine" : "Trip Mine"
         "Hand Grenade" : "Hand Grenade"
-        "snarks" : "snarks"
+        "snarks" : "Snarks"
+        "flashlight" : "Flashlight Battery"
+        "battery" : "HEV Battery"
+        "health" : "Medkit Ammo"
+        "healthkit" : "Health Kit"
     ]
     am_give(integer) : "Ammo ammout" : 8
     frags(integer) : "Item per player (0 = infinite)" : 0
@@ -1154,7 +1158,7 @@
         2 : "Reusable" : 0
     ]
 ]
-@BaseClass base( bTargetname, bMaster ) = bGeiger
+@PointClass base( bTargetname, bMaster ) = env_geiger : "Radiation sound"
 [
     health(float) : "Minimun delay" : 0.0
     max_health(float) : "Maximun delay" : 0.5
@@ -1166,8 +1170,6 @@
     sound#6(sound) : "Sound FX" : "player/geiger6.wav"
 	angelscript_file(string) : "Script file" : "mikk/env_geiger.as"
 ]
-@PointClass base(bGeiger, bBBox) = env_geiger : "Radiation sound"[]
-@SolidClass base(bGeiger) = env_geiger : "Radiation sound"[]
 @PointClass base(bTargetname) color(255 255 128) color(4 32 250) = env_global : "Global State"
 [
     globalstate(string) : "Global State to Set"
@@ -2958,7 +2960,6 @@
         // Monster's hud information uses this channel.
         3 : "Channel 3 (not recomend)"
         4 : "Channel 4"
-        5 : "Channel 5"
     ]
 ]
 @PointClass base(bBaseGameText) color(192 255 0) = game_text : "HUD Text Message"
@@ -2971,105 +2972,31 @@
     ]
     message(string) : "Message Text"
 ]
-// -Mikk new entity replacemet for game_text and env_message with lot of new additions.
 @PointClass base(bBaseGameText, bDelay, bBBox) color(192 255 0) = game_text_custom : "Custom Text Messages"
 [
-	// Player must be in this radius to see the message.
-    radius(float) : "Radius" : 0.0
-	
-	health(float) : "Think time ( 0 = disable )"
-
-	model(target_destination) : "Model to use bounds"
-
-    // Enum of supported styles of text.
-    effect(Choices) : "Text Effect" : 0 =
-    [
-        // Native game_text's effects
-        0 : "Fade In/Out"
-        1 : "Credits"
-        2 : "Scan Out"
-
-        // Using the next values meant you don't need the keyvalues that you would use for game_text.
-        
-        // The same effect that trigger_once/multiple's "message" provides.
-        3 : "Print HUD"
-
-        // Shows a MOTD pop up with the given message.
-        4 : "Print MOTD"
-        // To set a title you must write it like this
-        // "This is the title# this is the text"
-        // the "#" defines when the title ends and the message starts
-        // JACK/Bspguy has a limit on how many chars you can set so you have to learn ripent util...
-        // -TODO redeable file
-        // If any of the "message" key starts with "+" it'll open a .txt file located at
-        // scripts/maps/(what the key says).txt
-        // use "hl/c01_german" to refeer as "scripts/maps/hl/c01_german.txt"
-
-        // Shows a message on the chat.
-        5 : "Print Chat"
-        
-        // Prints a notify at the top left side
-        6 : "Print Notify"
-        
-        // Prints a keybind print, the format is "Press +use to interact" and will be shown as "Press [e] to interact"
-        7 : "Print Key-Bind"
-        
-        // Prints at the console ( set flag 2 or double message will be shown )
-        8 : "Print Console"
-        
-        // Prints at the center of the screen
-        9 : "Print Center"
-
-        // Shows the text as the server's hostname but only apply to the score board popup
-        10 : "Print scoreboard" 
-    ]
-
     spawnflags(flags) =
     [
-        // If set. the target will be fired for every player that sees the message.
-        // Otherwise the target is fired once every time the entity is fired.
         4: "Fire per player" : 0
-        
-        // If set. the entity will be removed from world after being triggered once
-        // if locked by multisource the entity won't be removed
-        8: "Play once" : 0
     ]
 
-    // env_message's legacy
-    messagesound(sound) : "Sound Effect"
-    messagevolume(float) : "Volume 0-10" : 10.0
-    messageattenuation(Choices) : "Sound Radius" : 0 =
+    effect(Choices) : "Text Effect" : 0 =
     [
-        0 : "Small Radius"
-        1 : "Medium Radius"
-        2 : "Large  Radius"
-        3 : "Play Everywhere"
-        4 : "Activator only"
+        0 : "[0] Fade In/Out"
+        1 : "[1] Credits"
+        2 : "[2] Scan Out"
+        3 : "[3] Print HUD"
+        4 : "[4] Print MOTD"
+        5 : "[5] Print Chat"
+        6 : "[6] Print Notify"
+        7 : "[7] Print Key-Bind"
+        8 : "[8] Print Console"
+        9 : "[9] Print Center"
+        10 : "[10] Print scoreboard" 
     ]
-
-    // Replacing code:
-    // We've added a function for replacing a string command into another string.
-    // In this case you want the game_text_custom show a countdown with a message.
-    key_integer(integer) : "!integer"
-    // "message" "The bomb will explode in !frags seconds"
-    // "frags" "25"
-    // so you can update in any time that "frags" value and when trigger the entity it will show the proper time that frags contains.
-    // The same but it is a float.
-    key_float(float) : "!float"
-    // The same but it is a string.
-    key_string(string) : "!string"
-
-    // "!activator" This command will contains the nickname or classname of the player or monster that activated this entity.
-    // "message" "The player !activator is trapped in sector C"
-    // !activator is replaced by the entity's activator netname or classname in case of non-player
-
-    // Made for myself but probably is useful to you.
-    // Sets a entity's targetname at here to target the function of the next keyvalue. empty = activator. if null = none
-    focus_entity(target_destination) : "!value target entity"
-
-    // Gets the value of the given custom-keyvalue from the previusly given entity.
-    key_from_entity(string) : "!value custom keyvalue from entity"
-    // string "!value" will be replaced for what that custom keyvalue from that entity contains.
+    $i_integer(integer) : "!integer"
+    $f_float(float) : "!float"
+    $s_string(string) : "!string"
+    $v_vector(string) : "!vector"
 
     // Supported languages.
     message(string) : "English"
@@ -3087,14 +3014,11 @@
     message_turkish(string) : "Turkish"
     message_albanian(string) : "Albanian"
 ]
-// -Mikk A custom entity that allow mappers to create maps with "real time" set. meant to be used for changing map events or even light style (sun/moon)
-// the entity will start working as soon as the map starts. if not locked by a multisource.
 @PointClass base(Targetname, Master) color(0 255 255) = game_time : "Map Global Time"
 [
     // using a value of 60 mean that one minute (in-game) is equal to one minute (in real life)
     // using a value of 1  mean that one minute (in-game) is equal to one second (in real life)
     health(string) : "One minute is (IRL-seconds)" : "60"
-    
     // Internal values that will be updated by the entity current time and can be set though changevalue.
     current_second(integer) : "Current Second" : 0
     trigger_second(target_destination) : "Trigger when a second increase (USE_TYPE)"
@@ -3118,7 +3042,6 @@
     ]
 ]
 
-// -Mikk https://github.com/Mikk155/Sven-Co-op#game_zone_entity
 @BaseClass = GZEBase
 [
     spawnflags(flags) =
