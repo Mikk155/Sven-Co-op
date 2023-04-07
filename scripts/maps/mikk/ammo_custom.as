@@ -95,24 +95,90 @@ namespace ammo_custom
                     }
                 }
 
-                if( pOther.GiveAmmo( am_give, am_name, cast<CBasePlayer@>( pOther ).GetMaxAmmo( am_name ) ) != -1 )
+
+				CBasePlayer@ pPlayer = cast<CBasePlayer@>( pOther );
+
+				if( pPlayer is null )
+				{
+					return false;
+				}
+
+				if( am_name == 'flashlight' )
+				{
+					if( pPlayer.m_iFlashBattery < 100 )
+					{
+						float flash = pPlayer.m_iFlashBattery + am_give;
+
+						if( flash >= 100 )
+						{
+							pPlayer.m_iFlashBattery = 100;
+							g_Util.SetCKV( pPlayer, '$f_pf_flashlight', 100.0 );
+						}
+						else
+						{
+							pPlayer.m_iFlashBattery = int( flash );
+							g_Util.SetCKV( pPlayer, '$f_pf_flashlight', flash );
+						}
+						Pickup();
+					}
+				}
+				else if( am_name == 'battery' )
+				{
+					if( pPlayer.pev.armorvalue < pPlayer.pev.armortype )
+					{
+						pPlayer.pev.armorvalue += am_give;
+						pPlayer.pev.armorvalue = Math.min( pPlayer.pev.armorvalue, 100 );
+
+						NetworkMessage msg( MSG_ONE, NetworkMessages::ItemPickup, pPlayer.edict() );
+							msg.WriteString( "item_battery" );
+						msg.End();
+
+						int pct;
+						pct = int( float( pPlayer.pev.armorvalue * 100.0 ) *  (1.0 / 100 ) + 0.5 );
+						pct = ( pct / 5 );
+						if ( pct > 0 )
+							pct--;
+
+						pPlayer.SetSuitUpdate( "!HEV_" + pct + "P", false, 30 );
+						Pickup();
+					}
+				}
+				else if( am_name == 'healthkit' )
+				{
+					if( pPlayer.pev.health < pPlayer.pev.max_health )
+					{
+						pPlayer.TakeHealth( am_give, DMG_GENERIC );
+
+						NetworkMessage message( MSG_ONE, NetworkMessages::ItemPickup, pPlayer.edict() );
+							message.WriteString( "item_healthkit" );
+						message.End();
+
+						Pickup();
+					}
+				}
+				else if( pPlayer.GiveAmmo( am_give, am_name, pPlayer.GetMaxAmmo( am_name ) ) != -1 )
                 {
                     if( self.pev.frags > 0 )
                     {
-                        g_Util.SetCKV( pOther, "$i_ammo_custom" + self.entindex(), iValue + 1 );
+                        g_Util.SetCKV( pPlayer, "$i_ammo_custom" + self.entindex(), iValue + 1 );
                         
                         if( iValue == self.pev.frags - 1 )
                         {
-                            g_Util.Trigger( string( self.pev.targetname ) + "_FX", pOther, pOther, USE_ON, 0.0f );
-                            g_Util.Debug( 'ammo_custom::AddAmmo:\nPlayer "' + string( pOther.pev.netname ) + '" can not take more ammo from this item.' );
+                            g_Util.Trigger( string( self.pev.targetname ) + "_FX", pPlayer, pPlayer, USE_ON, 0.0f );
+                            g_Util.Debug( 'ammo_custom::AddAmmo:\nPlayer "' + string( pPlayer.pev.netname ) + '" can not take more ammo from this item.' );
                         }
                     }
-                    g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
-                    return true;
+                    Pickup();
                 }
             }
             return false;
         }
+		
+		bool Pickup()
+		{
+			g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
+			return true;
+		}
     }
 	bool Register = g_Util.CustomEntity( 'ammo_custom::ammo_custom','ammo_custom' );
 }
