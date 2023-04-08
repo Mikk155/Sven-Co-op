@@ -3,7 +3,7 @@ namespace ammo_custom
 {
     class ammo_custom : ScriptBasePlayerAmmoEntity
     {
-        private string p_sound = "items/9mmclip1.wav";
+        private string p_sound;
 
         private string am_name = "buckshot";
 
@@ -69,8 +69,11 @@ namespace ammo_custom
         {
             BaseClass.Precache();
             g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? 'models/w_shotbox.mdl' : string( self.pev.model ) ) );
-            g_SoundSystem.PrecacheSound( p_sound );
-            g_Game.PrecacheGeneric( "sound/" + p_sound );
+			if( !p_sound.IsEmpty() )
+			{
+				g_SoundSystem.PrecacheSound( p_sound );
+				g_Game.PrecacheGeneric( "sound/" + p_sound );
+			}
         }
 
         bool AddAmmo( CBaseEntity@ pOther ) 
@@ -156,6 +159,11 @@ namespace ammo_custom
 						Pickup();
 					}
 				}
+				else if( am_name == 'air' )
+				{
+					pPlayer.pev.air_finished = g_Engine.time + am_give;
+					Pickup();
+				}
 				else if( pPlayer.GiveAmmo( am_give, am_name, pPlayer.GetMaxAmmo( am_name ) ) != -1 )
                 {
                     if( self.pev.frags > 0 )
@@ -176,7 +184,10 @@ namespace ammo_custom
 		
 		bool Pickup()
 		{
-			g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
+			if( !p_sound.IsEmpty() )
+			{
+				g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
+			}
 			return true;
 		}
     }
