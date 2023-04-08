@@ -35,14 +35,6 @@ namespace trigger_multiple
                 g_EntityFuncs.DispatchKeyValue( pTriggers.edict(), "target", "iterateoccupants_" + string( pTriggers.pev.target ) );
             }
         }
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_multiple\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Allow trigger_multiple entity to fire its target for every one inside its volume.\n"
-        );
     }
 
     void TriggerForAllOccupants( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
