@@ -1,27 +1,7 @@
 #include "utils"
 namespace item_oxygentank
 {
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "item_oxygentank::entity", "item_oxygentank" );
-        g_CustomEntityFuncs.RegisterCustomEntity( "item_oxygentank::env_oxygenbubble", "env_oxygenbubble" );
-        g_Game.PrecacheOther( "env_oxygenbubble" );
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#item_oxygentank"
-            "\nAuthor: CubeMath"
-            "\nGithub: github.com/CubeMath"
-            "\nDescription: Entity that will give oxygen to players that touch it.\n"
-        );
-    }
-
-    enum spawnflags
-    {
-        SF_OGT_USABLE_ONCE = 1 << 0,
-        SF_OGT_USEONLY_KEY = 1 << 1
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class item_oxygentank : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string sprite = "sprites/bubble.spr";
         private string splashsound = "debris/bustflesh1.wav";
@@ -45,6 +25,7 @@ namespace item_oxygentank
             g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ) ? "models/w_oxygen.mdl" : string( self.pev.model ) );
             g_Game.PrecacheGeneric( 'sound/' + splashsound );
             g_SoundSystem.PrecacheSound( splashsound );
+			g_Game.PrecacheOther( 'env_oxygenbubble' );
         }
         
         void Spawn()
@@ -77,9 +58,11 @@ namespace item_oxygentank
             or self.pev.health > 0.0 
             or pOther is null 
             or !pOther.IsPlayer() 
-            or self.pev.SpawnFlagBitSet( SF_OGT_USEONLY_KEY ) && pOther.pev.button & 32 == 0
-            or self.pev.SpawnFlagBitSet( SF_OGT_USABLE_ONCE ) && pOther.GetCustomKeyvalues().HasKeyvalue( "$i_item_oxygentank_" + self.entindex() ) )
+            or spawnflag( 2 ) && pOther.pev.button & 32 == 0
+			or spawnflag( 1 ) && g_Util.GetCKV( pOther, '$i_item_oxygentank_' + self.entindex() ) != '' )
+			{
                 return;
+			}
 
             g_SoundSystem.EmitSoundDyn( pOther.edict(), CHAN_ITEM, splashsound, 1.0, ATTN_NORM, 0, PITCH_HIGH );
             
@@ -98,7 +81,7 @@ namespace item_oxygentank
                 pEnt.pev.velocity.z = Math.RandomFloat(-z_velocity, z_velocity);
             }
             g_Util.Trigger( self.pev.target, pOther, self, USE_TOGGLE, 0.0f );
-            pOther.GetCustomKeyvalues().SetKeyvalue( "$i_item_oxygentank_" + self.entindex(), 1 );
+            g_Util.SetCKV( pOther, '$i_item_oxygentank_' + self.entindex(), 1 );
         }
     }
 
@@ -134,5 +117,6 @@ namespace item_oxygentank
             self.pev.nextthink = g_Engine.time + 0.01f;
         }
     }
+	bool Register = g_Util.CustomEntity( 'item_oxygentank::item_oxygentank','item_oxygentank' );
+	bool Register2 = g_Util.CustomEntity( 'item_oxygentank::env_oxygenbubble','env_oxygenbubble' );
 }
-// End of namespace
