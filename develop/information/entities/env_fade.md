@@ -59,6 +59,8 @@ env_fade_custom is a custom entity that works similarly to env_fade with various
 | 1 | All Players, All players are going to be affected |
 | 2 | Only players in radius, All players inside the range of m_ifaderadius will be affected |
 | 3 | Only players touching, All players that are touching the entity will be affected, can be set by min/maxhullsize or by world model |
+| 4 | Players in radius (Auto + SET), same as 2 but it automatically self-activates with USE_SET |
+| 5 | Players touching (Auto + SET), same as 3 but it automatically self-activates with USE_SET |
 
 | Bit | Flag | Description |
 |-----|------|-------------|
