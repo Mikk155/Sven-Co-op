@@ -30,17 +30,17 @@
 ]
 @BaseClass = bAngles
 [
-    bAngles(string) : "Pitch Yaw Roll (X Y Z)" : "0 0 0"
+    angles(string) : "Pitch Yaw Roll (X Y Z)" : "0 0 0"
 ]
 
 @BaseClass base(bMandatory) = bTargetname
 [
-    bTargetname(target_source) : "Name"
+    targetname(target_source) : "Name"
 ]
 
 @BaseClass = bTarget
 [
-    bTarget(target_destination) : "bTarget"
+    target(target_destination) : "target"
 ]
 
 @BaseClass = bMaster
@@ -60,7 +60,7 @@
 
 @BaseClass = bKilltarget
 [
-    killtarget(target_destination) : "Kill bTarget"
+    killtarget(target_destination) : "Kill target"
 ]
 
 @BaseClass = bBBox
@@ -195,7 +195,7 @@
         11: "See Player, Not In Combat"
 		// -TODO
     ]
-    TriggerTarget(string) : "Trigger Condition bTarget"
+    TriggerTarget(string) : "Trigger Condition target"
     body(integer) : "Body" : 0
     skin(integer) : "Skin" : 0
     is_player_ally(choices) : "Is Player Ally?" : 0 =
@@ -253,7 +253,7 @@
 ]
 @BaseClass = bExclusiveHold
 [
-    bExclusiveHold(choices) : "Exclusive Hold" : 0 =
+    exclusiveHold(choices) : "Exclusive Hold" : 0 =
     [
         0 : "No"
         1 : "Yes"
@@ -285,8 +285,8 @@
 ]
 @BaseClass = bZHLTbmodel
 [
-    zhlt_usemodel(string) : "ZHLT Template Model bTarget"
-    zhlt_copylight(string) : "ZHLT Copy Lighting From bTarget"
+    zhlt_usemodel(string) : "ZHLT Template Model target"
+    zhlt_copylight(string) : "ZHLT Copy Lighting From target"
     zhlt_noclip(choices) : "ZHLT Disable Clipping" : 0 =
     [
         0 : "Default"
@@ -316,7 +316,7 @@
         3 : "Opaque + Embedded fix"
         6 : "Opaque + Concave Fix"
     ]
-    light_origin(string) : "ZHLT Light Origin bTarget"
+    light_origin(string) : "ZHLT Light Origin target"
 ]
 
 @BaseClass = bZHLTpoint
@@ -364,7 +364,7 @@
 
 @PointClass base(bTargetname, bTarget, bKilltarget, bAngles) size(-16 -16 0, 16 16 72) color(164 0 255) = aiscripted_sequence : "AI Scripted Sequence"
 [
-    m_iszEntity(string) : "bTarget Monster"
+    m_iszEntity(string) : "target Monster"
     m_iszPlay(string) : "Action Animation" : ""
     m_flRadius(integer) : "Search Radius" : 512
     m_flRepeat(integer) : "Repeat Rate ms" : 0
@@ -586,7 +586,7 @@
         "air" : "Oxygen time"
     ]
     am_give(integer) : "Ammo ammout" : 8
-    frags(integer) : "bItem per player (0 = infinite)" : 0
+    frags(integer) : "item per player (0 = infinite)" : 0
 	angelscript_file(string) : "Script file" : "mikk/ammo_custom.as"
 ]
 @PointClass base(bPickup, bCustomModel) studio("models/w_gaussammo.mdl") = ammo_gaussclip : "Gauss/Gluon gun battery" []
@@ -603,7 +603,7 @@
 ]
 @PointClass base(bPickup, bCustomModel) studio("models/spore.mdl") = ammo_sporeclip : "Spore" []
 @PointClass base(bPickup, bCustomModel) studio("models/w_uzi_clip.mdl") = ammo_uziclip : "9mm Uzi magazine" []
-@SolidClass base(bTarget, bMaster, bRendering, bZHLT) = button_target : "bTarget Button"
+@SolidClass base(bTarget, bMaster, bRendering, bZHLT) = button_target : "target Button"
 [
     spawnflags(flags) =
     [
@@ -625,10 +625,10 @@
     [
         1 : "Restart now" : 0
     ]
-    target_toggle(target_destination) : "bTarget on change success (USE_TYPE)"
-    target_failed(target_destination) : "bTarget on fail change (USE_TYPE)"
-    target_enabled(target_destination) : "bTarget if is Enabled [Map start] (USE_TYPE)"
-    target_disabled(target_destination) : "bTarget if is Disabled [Map start] (USE_TYPE)"
+    target_toggle(target_destination) : "target on change success (USE_TYPE)"
+    target_failed(target_destination) : "target on fail change (USE_TYPE)"
+    target_enabled(target_destination) : "target if is Enabled [Map start] (USE_TYPE)"
+    target_disabled(target_destination) : "target if is Disabled [Map start] (USE_TYPE)"
     health(float) : "Think intervals (default is 0.1f)"
 	angelscript_file(string) : "Script file" : "mikk/config_classic_mode.as"
 ]
@@ -755,14 +755,14 @@
     mp_weapon_droprules(choices) : "mp_weapon_droprules" : 0 =
     [
         0 : "Don't drop any weapons when the player dies."
-        1 : "Drop the current bWeapon."
-        2 : "Drop all weapons packed into a bWeapon box."
+        1 : "Drop the current Weapon."
+        2 : "Drop all weapons packed into a Weapon box."
     ]
     mp_ammo_droprules(choices) : "mp_ammo_droprules" : 0 =
     [
         0 : "Don't drop any ammo when the player dies."
-        1 : "Drop ammo for the current bWeapon."
-        2 : "Drop all ammo packed into a bWeapon box."
+        1 : "Drop ammo for the current Weapon."
+        2 : "Drop all ammo packed into a Weapon box."
     ]
     mp_hevsuit_voice(choices) : "mp_hevsuit_voice" : 0 =
     [
@@ -813,8 +813,8 @@
 ]
 @PointClass base(bTargetname, bMaster, bDelay) color(0 255 255) = config_survival_mode : "Map SurvivalMode configuration"
 [
-    target_toggle(target_destination) : "bTarget on change success (USE_TYPE)"
-    target_failed(target_destination) : "bTarget on fail change (USE_TYPE)"
+    target_toggle(target_destination) : "target on change success (USE_TYPE)"
+    target_failed(target_destination) : "target on fail change (USE_TYPE)"
     mp_survival_startdelay(integer) : "delay before survival start"
     mp_respawndelay(integer) : "delay before respawn"
 	angelscript_file(string) : "Script file" : "mikk/config_survival_mode.as"
@@ -861,7 +861,7 @@
 	framerate(integer) : "Frames per second" : 10
 ]
 
-@PointClass base(bMonster) size(-16 -16 -16, 16 16 16) studio() color(140 120 120)  = cycler_weapon : "bWeapon Cycler"[]
+@PointClass base(bMonster) size(-16 -16 -16, 16 16 16) studio() color(140 120 120)  = cycler_weapon : "Weapon Cycler"[]
 @PointClass sprite() base(bTargetname, bAngles, bRendering) size(-4 -4 -4, 4 4 4) sprite() color(70 70 70) = cycler_wreckage : "Wreckage"
 [
 	framerate(string) : "Framerate" : "10.0"
@@ -975,7 +975,7 @@
         0 : "Flat cylinder"
         1 : "Fat cylinder"
     ]
-	bTarget(integer) : "Scroll Speed" : 0
+	target(integer) : "Scroll Speed" : 0
 	netname(integer) : "Start Frame" : 0
 	message(integer) : "Framerate" : 16
 	health(integer) : "Life Time" : 8
@@ -999,7 +999,7 @@
 [
 	netname(integer) : "Radius" : 255
 	message(integer) : "Count of effects" : 32
-	bTarget(integer) : "Life Time" : 30
+	target(integer) : "Life Time" : 30
 	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_quake : "Effect"
@@ -1020,7 +1020,7 @@
 ]
 @PointClass base(bEffects) = env_effect_splash : "Effect"
 [
-	bAngles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
+	angles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
     health(integer) : "Speed" : 1
     max_health(integer) : "Noise speed" : 128
     netname(integer) : "Number of effects" : 120
@@ -1056,7 +1056,7 @@
 	health(integer) : "Sprite count" : 4
 	max_health(integer) : "Sprites life" : 0
 	netname(integer) : "Sprite scale" : 1
-	bTarget(integer) : "Sprite noise" : 8
+	target(integer) : "Sprite noise" : 8
 	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_toxic : "Effect"
@@ -1065,7 +1065,7 @@
 ]
 @PointClass base(bEffects) = env_effect_tracer : "Effect"
 [
-	bAngles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
+	angles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
 	health(integer) : "Hold time" : 32
 	max_health(integer) : "Sprite Length" : 32
     frags(choices) : "Color" : 0 =
@@ -1203,7 +1203,7 @@
 
 @PointClass base(bTargetname, bRendering, bAngles, bRenderamt, bRendercolor) size(-8 -8 -8, 8 8 8) color(255 64 2) = env_laser : "Laser Beam Effect"
 [
-    LaserTarget(target_destination) : "bTarget of Laser"
+    LaserTarget(target_destination) : "target of Laser"
     width(integer) : "Width of beam (pixels*0.1 0-255)" : 20
     NoiseAmplitude(integer) : "Amount of noise (0-255)" : 0
     texture(sprite) : "Sprite Name" : "sprites/laserbeam.spr"
@@ -1254,7 +1254,7 @@
 ]
 @PointClass base(bTargetname, bRendering) color(110 120 0) = env_render : "Render Controls"
 [
-    bTarget(target_destination) : "Entity to affect"
+    target(target_destination) : "Entity to affect"
     spawnflags(flags) =
     [
         1: "No Renderfx" : 0
@@ -1290,7 +1290,7 @@
         64 : "Affect Activator (ignore netname)" : 1
         128 : "Use Entity to copy from" : 0
     ]
-    bTarget(target_destination) : "Entity to affect"
+    target(target_destination) : "Entity to affect"
     netname(string) : "Player to affect"
     message(string) : "Entity to copy from"
 ]
@@ -1524,7 +1524,7 @@
 ]
 @PointClass sprite() base(bTargetname, bMaster, bRendering) size( -10 -10 -10, 10 10 10 ) = env_spritetrail : "Trail Sprite"
 [
-    bTarget(target_destination) : "bTarget (blank = this)" : "!activator"
+    target(target_destination) : "target (blank = this)" : "!activator"
     model(sprite) : "Sprite texture" : "sprites/laserbeam.spr"
     frags(float) : "Next think time" : 0.1
     health(float) : "Fade time" : 1.0
@@ -1575,7 +1575,7 @@
 
 @BaseClass base(bTargetname, bGlobal, bRendering, bPlatSounds) = bBaseTrain
 [
-    bTarget(target_destination) : "First stop bTarget"
+    target(target_destination) : "First stop target"
     speed(integer) : "Speed (units per second)" : 64
     m_iObeyTriggerMode(choices) : "Obey Trigger Mode" : 1 =
     [
@@ -1628,7 +1628,7 @@
         7: "Unbreakable Glass"
         8: "Rocks"
     ]
-    bWeapon(choices) : "Instant Break bWeapon" : 1 =
+    weapon(choices) : "Instant Break Weapon" : 1 =
     [
         1: "Crowbar"
         19: "Crowbar (Electric Only)"
@@ -1669,7 +1669,7 @@
         24: "Sniperrifle"
         25: "Sniperrifle ammo"
         26: "M16 Rifle"
-        27: "M249 Squad Automatic bWeapon"
+        27: "M249 Squad Automatic Weapon"
         28: "Minigun"
         29: "556 Ammo Box"
         30: "Sporelauncher"
@@ -1705,39 +1705,39 @@
 
 @BaseClass = bInventoryRules
 [
-    item_name_required(string) : "Inventory: Need bItem(s)" : ""
-    item_group_required(string) : "Inventory: Need bItem(s) from group(s)" : ""
-    item_group_required_num(integer) : "Inventory: bItem count in group need have (0 = all)" : 0
-    item_name_canthave(string) : "Inventory: CAN'T have bItem" : ""
-    item_group_canthave(string) : "Inventory: CAN'T have bItem from group" : ""
-    item_group_canthave_num(integer) : "Inventory: bItem count in group CAN'T have (0 = all)" : 0
-    pass_ignore_use_triggers(choices) : "On pass: Ignore bItem's on use triggers?" : 0 =
+    item_name_required(string) : "Inventory: Need item(s)" : ""
+    item_group_required(string) : "Inventory: Need item(s) from group(s)" : ""
+    item_group_required_num(integer) : "Inventory: item count in group need have (0 = all)" : 0
+    item_name_canthave(string) : "Inventory: CAN'T have item" : ""
+    item_group_canthave(string) : "Inventory: CAN'T have item from group" : ""
+    item_group_canthave_num(integer) : "Inventory: item count in group CAN'T have (0 = all)" : 0
+    pass_ignore_use_triggers(choices) : "On pass: Ignore item's on use triggers?" : 0 =
     [
         0 : "No"
         1 : "Yes"
     ]
-    pass_drop_item_name(string) : "On pass: Drop bItem(s)" : ""
-    pass_drop_item_group(string) : "On pass: Drop bItem(s) from group(s)" : ""
-    pass_ignore_drop_triggers(choices) : "On pass: Ignore bItem's on drop triggers?" : 0 =
+    pass_drop_item_name(string) : "On pass: Drop item(s)" : ""
+    pass_drop_item_group(string) : "On pass: Drop item(s) from group(s)" : ""
+    pass_ignore_drop_triggers(choices) : "On pass: Ignore item's on drop triggers?" : 0 =
     [
         0 : "No"
         1 : "Yes"
     ]
-    pass_return_item_name(string) : "On pass: Return bItem(s)" : ""
-    pass_return_item_group(string) : "On pass: Return bItem(s) from group(s)" : ""
-    pass_ignore_return_triggers(choices) : "On pass: Ignore bItem's on return triggers?" : 0 =
+    pass_return_item_name(string) : "On pass: Return item(s)" : ""
+    pass_return_item_group(string) : "On pass: Return item(s) from group(s)" : ""
+    pass_ignore_return_triggers(choices) : "On pass: Ignore item's on return triggers?" : 0 =
     [
         0 : "No"
         1 : "Yes"
     ]
-    pass_destroy_item_name(string) : "On pass: Destroy bItem(s)" : ""
-    pass_destroy_item_group(string) : "On pass: Destroy bItem(s) from group(s)" : ""
-    pass_ignore_destroy_triggers(choices) : "On pass: Ignore bItem's on destroy triggers?" : 0 =
+    pass_destroy_item_name(string) : "On pass: Destroy item(s)" : ""
+    pass_destroy_item_group(string) : "On pass: Destroy item(s) from group(s)" : ""
+    pass_ignore_destroy_triggers(choices) : "On pass: Ignore item's on destroy triggers?" : 0 =
     [
         0 : "No"
         1 : "Yes"
     ]
-    target_on_fail(string) : "bTarget: Inventory rules failed" : ""
+    target_on_fail(string) : "target: Inventory rules failed" : ""
 ]
 @BaseClass = bBaseLockable
 [
@@ -2060,7 +2060,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    bWeapon(choices) : "Instant Break bWeapon" : 1 =
+    weapon(choices) : "Instant Break Weapon" : 1 =
     [
         1: "Crowbar"
         19: "Crowbar (Electric Only)"
@@ -2138,7 +2138,7 @@
         1 : "Start On" : 0
     ]
     speed(integer) : "Speed (units per second)" : 100
-    bTarget(target_source) : "First stop bTarget"
+    target(target_source) : "First stop target"
     message(target_source) : "Fire on damage"
     health(integer) : "Damage to Take" : 0
     _minlight(string) : "Minimum light level"
@@ -2318,7 +2318,7 @@
 @SolidClass base(bBaseCharger) = func_recharge: "Battery recharger"[]
 @SolidClass base(bTargetname, bTarget, bMaster, bGlobal, bInventoryRules, bRendering, bAngles, bZHLT, bBaseLockable) = func_rot_button : "RotatingButton"
 [
-    // changetarget will change the button's bTarget's bTarget field to the button's changetarget.
+    // changetarget will change the button's target's target field to the button's changetarget.
     changetarget(target_destination) : "ChangeTarget Name"
     speed(integer) : "Speed" : 50
     health(integer) : "Health (shootable if > 0)"
@@ -2428,8 +2428,8 @@
         3: "Large cone"
         4: "Extra-large cone"
     ]
-    minRange(string) : "Minmum bTarget range" : "0"
-    maxRange(string) : "Maximum bTarget range" : "0"
+    minRange(string) : "Minmum target range" : "0"
+    maxRange(string) : "Maximum target range" : "0"
     _minlight(string) : "Minimum light level"
     relation_player(choices) : "R Player" : 0 =
     [
@@ -2580,7 +2580,7 @@
 
 @SolidClass base(bZHLTbmodel, bInventoryRules) = func_tankcontrols : "Tank controls"
 [
-    bTarget(target_destination) : "Tank entity name"
+    target(target_destination) : "Tank entity name"
 ]
 @SolidClass base(bBaseTank, bZHLT) = func_tanklaser : "Brush Laser Turret"
 [
@@ -2633,7 +2633,7 @@
         8 : "Passable" : 0
         16 : "No YAW (Y-rot)" : 0
     ]
-    bTarget(target_destination) : "First stop bTarget"
+    target(target_destination) : "First stop target"
     sounds(choices) : "Sound" : 0 =
     [
         0: "None"
@@ -2660,7 +2660,7 @@
 
 @SolidClass base(bZHLTbmodel, bInventoryRules) = func_traincontrols : "Train Controls"
 [
-    bTarget(target_destination) : "Train Name"
+    target(target_destination) : "Train Name"
 ]
 
 @SolidClass base(bBaseTrain, bAttackObject, bZHLT, bStartStopable) = func_train : "Moving platform"
@@ -2746,7 +2746,7 @@
 
     CustomSpriteDir(string) : "Custom sprite directory"
 
-    IsNotAmmoItem(choices) : "Is Ammo bItem" : 0 =
+    IsNotAmmoItem(choices) : "Is Ammo item" : 0 =
     [
         0 : "Yes"
         1 : "No"
@@ -2793,7 +2793,7 @@
         8 : "Filter player bTargetname" : 0
         // Invert player bTargetname filter (can use if DOESN'T match) -- needs flag 8!
         16 : "Invert Filter" : 0
-        // Fire bTarget when player spawns here, rather than when the spawn point is toggled on/off
+        // Fire target when player spawns here, rather than when the spawn point is toggled on/off
         32 : "Trigger on spawn" : 0
     ]
     netname(string) : "New Player bTargetname"
@@ -2809,7 +2809,7 @@
 ]
 @BaseClass base(bTargetname, bTarget, bKilltarget, bMaster , bFilterIn, bFilterOut, bInventoryRules, bZHLTbmodel) = bTrigger
 [
-    netname(target_destination) : "bTarget Path"
+    netname(target_destination) : "target Path"
     sounds(choices) : "Sound style" : 0 =
     [
         0 : "No Sound"
@@ -2874,8 +2874,8 @@
 [
     frags(integer) : "Min Value" : 1
     health(integer) : "Max Value" : 32
-    bTarget(target_destination) : "Min bTarget"
-    netname(target_destination) : "Max bTarget"
+    target(target_destination) : "Min target"
+    netname(target_destination) : "Max target"
     message(string) : "Filter Player bTargetname"
 ]
 
@@ -3059,7 +3059,7 @@
     ]
 
     netname(string) : "Entity classname (wildcard '*')" : "player"
-    intarget(target_destination) : "bTarget for IN entities"
+    intarget(target_destination) : "target for IN entities"
     USE_IN(choices) : "Trigger state for IN" : 2 =
     [
         0 : "OFF"
@@ -3068,7 +3068,7 @@
     ]
     incount(target_destination) : "Counter for IN entities"
 
-    outtarget(target_destination) : "bTarget for OUT entities"
+    outtarget(target_destination) : "target for OUT entities"
     USE_OUT(choices) : "Trigger state for OUT" : 2 =
     [
         0 : "OFF"
@@ -3088,8 +3088,8 @@
         1 : "Ignore Dead Players" : 0
     ]
 
-    intarget(target_destination) : "bTarget for IN players"
-    outtarget(target_destination) : "bTarget for OUT players"
+    intarget(target_destination) : "target for IN players"
+    outtarget(target_destination) : "target for OUT players"
     incount(target_destination) : "Counter for IN players"
     outcount(target_destination) : "Counter for OUT players"
 ]
@@ -3113,7 +3113,7 @@
         1 : "Run To Node" : 0
         2 : "Wait Indefinitely" : 0
     ]
-    bTarget(target_destination) : "Next node"
+    target(target_destination) : "Next node"
     radius(string) : "Radius" : "0"
     reachdelay(string) : "Wait after approach" : "0"
     killtarget(target_destination) : "KillTarget"
@@ -3508,7 +3508,7 @@
 ]
 @SolidClass = info_hullshape : "Hull shape definition"
 [
-    bTargetname(target_source) : "Name"
+    targetname(target_source) : "Name"
     defaulthulls(choices) : "Set as default shape" : 0 =
     [
         0: "No"
@@ -3588,7 +3588,7 @@
     sequence(string) : "Action Animation" : "0"
 
     // Becomes monster's enemy when completing the path.
-    enemy(string) : "bTarget Enemy"
+    enemy(string) : "target Enemy"
 ]
 @BaseClass = bNodeBase
 [
@@ -3687,7 +3687,7 @@
 
 @PointClass base(bNodeBase) size(-32 -32 0, 32 32 64) color(225 227 0) = info_node_air : "ai air node" []
 
-@PointClass base(bTargetname) size(-4 -4 -4, 4 4 4) color(128 255 146) = info_null : "info_null (spotlight bTarget)" []
+@PointClass base(bTargetname) size(-4 -4 -4, 4 4 4) color(128 255 146) = info_null : "info_null (spotlight target)" []
 
 @PointClass size(-4 -4 -4, 4 4 4) color(255 0 0) = info_overview_point : "Disable VIS here for overview"
 [
@@ -3709,12 +3709,12 @@
 
 @PointClass size(-4 -4 -4, 4 4 4) color(255 255 0) = info_sunlight : "light_environment information that affects model brightness"
 [
-    bTarget(target_destination) : "bTarget"
-    bAngles(string) : "Pitch Yaw Roll (Y Z X)" : "0 0 0"
+    target(target_destination) : "target"
+    angles(string) : "Pitch Yaw Roll (Y Z X)" : "0 0 0"
     pitch(integer) : "Pitch" : -90
     _light(color255) : "Brightness" : "0 0 0 100"
 ]
-@PointClass base(bTargetname) size(-4 -4 -4, 4 4 4) color(200 100 50) = info_target : "Generic bTarget" []
+@PointClass base(bTargetname) size(-4 -4 -4, 4 4 4) color(200 100 50) = info_target : "Generic target" []
 
 @PointClass size(-16 -16 0, 16 16 72) base(bPlayerClass)  color(255 128 240) = info_teleport_destination : "Teleport destination"
 [
@@ -3739,7 +3739,7 @@
     health(integer) : "Charge Supplied" : 0
     healthcap(integer) : "Charge Cap" : 0
 ]
-@PointClass base(bItemWithDefaultModel, bTarget, bKilltarget) studio() = item_generic : "Generic scenery bItem" []
+@PointClass base(bItemWithDefaultModel, bTarget, bKilltarget) studio() = item_generic : "Generic scenery item" []
 
 @PointClass size(-8 -8 0, 8 8 48) base(bItem) studio("models/DY/health_charger_body.mdl") = item_healthcharger : "Health charger (wall)"
 [
@@ -3755,18 +3755,18 @@
 
 @PointClass size(-8 -8 0, 8 8 20) base(bTarget, bKilltarget, bItem) studio("models/barney_helmet.mdl") = item_helmet : "Helmet" []
 
-@PointClass base(bItemWithDefaultModel, bTarget, bKilltarget) studio() = item_inventory : "Inventory bItem"
+@PointClass base(bItemWithDefaultModel, bTarget, bKilltarget) studio() = item_inventory : "Inventory item"
 [
-    item_name(string) : "bItem name" : ""
-    item_group(string) : "bItem group name" : ""
+    item_name(string) : "item name" : ""
+    item_group(string) : "item group name" : ""
     display_name(string) : "Display name (HUD)" : ""
     description(string) : "Description (HUD)" : ""
-    item_icon(string) : "bItem icon (HUD)" : ""
+    item_icon(string) : "item icon (HUD)" : ""
     activate_limit(integer) : "Self-activation limit (0 = infinite)" : 0
     collect_limit(integer) : "Collection limit (0 = infinite)" : 0
-    weight(string) : "bItem weight (0-100)" : "1.0"
+    weight(string) : "item weight (0-100)" : "1.0"
 
-    filter_targetnames(string) : "Collect: Entity bTarget names" : ""
+    filter_targetnames(string) : "Collect: Entity target names" : ""
     filter_classnames(string) : "Collect: Entity class names" : ""
     filter_teams(string) : "Collect: Teams" : ""
     filter_npc_classifications(choices) : "Collect: NPC classifications" : 0 =
@@ -3793,16 +3793,16 @@
         18 : "Team 3"
         19 : "Team 4"
     ]
-    item_name_required(string) : "Collect: Need bItem(s)" : ""
-    item_group_required(string) : "Collect: Need bItem(s) from group(s)" : ""
-    item_group_required_num(integer) : "Collect: bItem count in group need have (0 = all)" : 0
-    item_name_moved(string) : "Collect: bItem(s) moved" : ""
-    item_name_canthave(string) : "Collect: CAN'T have bItem" : ""
-    item_group_canthave(string) : "Collect: CAN'T have bItem from group" : ""
-    item_group_canthave_num(integer) : "Collect: bItem count in group CAN'T have (0 = all)" : 0
-    item_name_not_moved(string) : "Collect: bItem(s) NOT moved" : ""
+    item_name_required(string) : "Collect: Need item(s)" : ""
+    item_group_required(string) : "Collect: Need item(s) from group(s)" : ""
+    item_group_required_num(integer) : "Collect: item count in group need have (0 = all)" : 0
+    item_name_moved(string) : "Collect: item(s) moved" : ""
+    item_name_canthave(string) : "Collect: CAN'T have item" : ""
+    item_group_canthave(string) : "Collect: CAN'T have item from group" : ""
+    item_group_canthave_num(integer) : "Collect: item count in group CAN'T have (0 = all)" : 0
+    item_name_not_moved(string) : "Collect: item(s) NOT moved" : ""
 
-    carried_hidden(choices) : "Carried: Hide bItem (3rd person)" : 1 =
+    carried_hidden(choices) : "Carried: Hide item (3rd person)" : 1 =
     [
         0 : "No"
         1 : "Yes"
@@ -3827,7 +3827,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    holder_timelimit_wait_until_activated(choices) : "Holder: Hold time limit doesn't start until bItem activated" : 1 =
+    holder_timelimit_wait_until_activated(choices) : "Holder: Hold time limit doesn't start until item activated" : 1 =
     [
         0 : "No"
         1 : "Yes"
@@ -3837,48 +3837,48 @@
         0 : "No"
         1 : "Yes"
     ]
-    holder_keep_on_death(choices) : "Holder: Keep bItem on death" : 0 =
+    holder_keep_on_death(choices) : "Holder: Keep item on death" : 0 =
     [
         0 : "No"
         1 : "Yes"
     ]
-    holder_keep_on_respawn(choices) : "Holder: Keep bItem on respawn" : 0 =
+    holder_keep_on_respawn(choices) : "Holder: Keep item on respawn" : 0 =
     [
         0 : "No"
         1 : "Yes"
     ]
 
-    target_on_collect(string)        : "bTarget: On collect (self)"            : ""
-    target_on_collect_team(string)        : "bTarget: On collect (team)"            : ""
-    target_on_collect_other(string)        : "bTarget: On collect (others)"            : ""
-    target_cant_collect(string)        : "bTarget: On can't collect (self)"        : ""
-    target_cant_collect_team(string)    : "bTarget: On can't collect (team)"        : ""
-    target_cant_collect_other(string)    : "bTarget: On can't collect (others)"        : ""
-    target_on_drop(string)            : "bTarget: On drop (self)"            : ""
-    target_on_drop_team(string)        : "bTarget: On drop (team)"            : ""
-    target_on_drop_other(string)        : "bTarget: On drop (others)"            : ""
-    target_cant_drop(string)        : "bTarget: On can't drop (self)"        : ""
-    target_cant_drop_team(string)        : "bTarget: On can't drop (team)"        : ""
-    target_cant_drop_other(string)        : "bTarget: On can't drop (others)"        : ""
-    target_on_activate(string)        : "bTarget: On self-activate (self)"        : ""
-    target_on_activate_team(string)        : "bTarget: On self-activate (team)"        : ""
-    target_on_activate_other(string)    : "bTarget: On self-activate (others)"        : ""
-    target_cant_activate(string)        : "bTarget: On can't self-activate (self)"    : ""
-    target_cant_activate_team(string)    : "bTarget: On can't self-activate (team)"    : ""
-    target_cant_activate_other(string)    : "bTarget: On can't self-activate (others)"    : ""
-    target_on_use(string)            : "bTarget: On use by trigger (self)"        : ""
-    target_on_use_team(string)        : "bTarget: On use by trigger (team)"        : ""
-    target_on_use_other(string)        : "bTarget: On use by trigger (others)"        : ""
-    target_on_wearing_out(string)        : "bTarget: On wearing out (self)"        : ""
-    target_on_wearing_out_team(string)    : "bTarget: On wearing out (team)"        : ""
-    target_on_wearing_out_other(string)    : "bTarget: On wearing out (others)"        : ""
-    target_on_return(string)        : "bTarget: On return (self)"            : ""
-    target_on_return_team(string)        : "bTarget: On return (team)"            : ""
-    target_on_return_other(string)        : "bTarget: On return (other)"            : ""
-    target_on_materialise(string)        : "bTarget: On materialise after return"        : ""
-    target_on_destroy(string)        : "bTarget: On destroy"                : ""
+    target_on_collect(string)        : "target: On collect (self)"            : ""
+    target_on_collect_team(string)        : "target: On collect (team)"            : ""
+    target_on_collect_other(string)        : "target: On collect (others)"            : ""
+    target_cant_collect(string)        : "target: On can't collect (self)"        : ""
+    target_cant_collect_team(string)    : "target: On can't collect (team)"        : ""
+    target_cant_collect_other(string)    : "target: On can't collect (others)"        : ""
+    target_on_drop(string)            : "target: On drop (self)"            : ""
+    target_on_drop_team(string)        : "target: On drop (team)"            : ""
+    target_on_drop_other(string)        : "target: On drop (others)"            : ""
+    target_cant_drop(string)        : "target: On can't drop (self)"        : ""
+    target_cant_drop_team(string)        : "target: On can't drop (team)"        : ""
+    target_cant_drop_other(string)        : "target: On can't drop (others)"        : ""
+    target_on_activate(string)        : "target: On self-activate (self)"        : ""
+    target_on_activate_team(string)        : "target: On self-activate (team)"        : ""
+    target_on_activate_other(string)    : "target: On self-activate (others)"        : ""
+    target_cant_activate(string)        : "target: On can't self-activate (self)"    : ""
+    target_cant_activate_team(string)    : "target: On can't self-activate (team)"    : ""
+    target_cant_activate_other(string)    : "target: On can't self-activate (others)"    : ""
+    target_on_use(string)            : "target: On use by trigger (self)"        : ""
+    target_on_use_team(string)        : "target: On use by trigger (team)"        : ""
+    target_on_use_other(string)        : "target: On use by trigger (others)"        : ""
+    target_on_wearing_out(string)        : "target: On wearing out (self)"        : ""
+    target_on_wearing_out_team(string)    : "target: On wearing out (team)"        : ""
+    target_on_wearing_out_other(string)    : "target: On wearing out (others)"        : ""
+    target_on_return(string)        : "target: On return (self)"            : ""
+    target_on_return_team(string)        : "target: On return (team)"            : ""
+    target_on_return_other(string)        : "target: On return (other)"            : ""
+    target_on_materialise(string)        : "target: On materialise after return"        : ""
+    target_on_destroy(string)        : "target: On destroy"                : ""
 
-    effects_wait_until_activated(choices) : "Effects: Wait until bItem is self-activated?" : 0 =
+    effects_wait_until_activated(choices) : "Effects: Wait until item is self-activated?" : 0 =
     [
         0 : "No"
         1 : "Yes"
@@ -3965,8 +3965,8 @@
 ]
 @PointClass size(-4 -4 -4, 4 4 4) color(255 255 0) = light_bounce : "Bounce light control"
 [
-    bTarget(target_destination) : "bTarget solid entity"
-    bTargetname(target_source) : "Name"
+    target(target_destination) : "target solid entity"
+    targetname(target_source) : "Name"
     style(choices) : "Appearance (no name allowed)" : 0 =
     [
         0 : "Normal"
@@ -4005,8 +4005,8 @@
 
 @PointClass color(255 255 0) = light_shadow : "Dynamic shadow control"
 [
-    bTarget(target_destination) : "bTarget solid entity"
-    bTargetname(target_source) : "Name"
+    target(target_destination) : "target solid entity"
+    targetname(target_source) : "Name"
     style(choices) : "Appearance (no name allowed)" : 0 =
     [
         0 : "Normal"
@@ -4095,7 +4095,7 @@
         "light" : "light"
         "light_spot" : "light_spot"
     ]
-    bTargetname(target_source) : "Name" : ""
+    targetname(target_source) : "Name" : ""
     style(choices) : "Appearance (no name allowed)" : "" =
     [
         "" : "Normal"
@@ -4282,7 +4282,7 @@
     ]
 	m_iszSetObserverTarget(target_destination) : "Start observing a player by index/bTargetname"
 	m_fDelayBeforeReSpawn(integer) : "Time before Re-Spawn (-1 = never)" : -1
-	bTarget(target_destination) : "Trigger when join spectator"
+	target(target_destination) : "Trigger when join spectator"
 	netname(target_destination) : "Trigger when left spectator"
 	angelscript_file(string) : "Script file" : "mikk/player_observer.as"
 ]
@@ -4339,7 +4339,7 @@
 
 @PointClass base(bTargetname, bTarget, bKilltarget, bAngles) size(-16 -16 0, 16 16 72) color(164 128 255) = scripted_sequence : "Scripted Sequence"
 [
-    m_iszEntity(string) : "bTarget Monster"
+    m_iszEntity(string) : "target Monster"
     m_iszPlay(string) : "Action Animation" : ""
     m_iszIdle(string) : "Idle Animation" : ""
     m_flRadius(integer) : "Search Radius" : 512
@@ -4386,7 +4386,7 @@
         128 : "WaitForScript" : 0
         1024 : "No Respawn (Collectible)" : 0
     ]
-    bTarget(string) : "bTarget On Release"
+    target(string) : "target On Release"
     monstertype(string) : "Monster Type"
     netname(string) : "Childrens' Name"
     // How many monsters the monstermaker can create (-1 = unlimited)
@@ -4456,7 +4456,7 @@
         66 : "Rocket Launcher + HG"
         128 : "Sniper Rifle (human_grunt only!)"
         130 : "Sniper Rifle + HG (human_grunt only!)"
-        256 : "Don't drop bWeapon (HWG etc)"
+        256 : "Don't drop Weapon (HWG etc)"
     ]
     squadname(string) : "Squad Name" : ""
     is_squad_leader(choices) : "Squad Leader" : 0 =
@@ -4526,7 +4526,7 @@
         30 : "None"
     ]
 ]
-@PointClass base(bTargetname, bBaseCdAudio) color(255 240 128) = target_cdaudio : "CD Audio bTarget"
+@PointClass base(bTargetname, bBaseCdAudio) color(255 240 128) = target_cdaudio : "CD Audio target"
 [
     // -Mikk Key was commented but actually works.
     radius(string) : "Player Radius"
@@ -4743,18 +4743,18 @@
     // keycode - identifier of a keyboard key (see https://github.com/ValveSoftware/halflife/blob/master/utils/vgui/include/VGUI_KeyCode.h)
     m_iszASKeyInputCallbackName(string) : "AS Key Input Callback Name"
 
-    // Sets a player's bTarget name when they use the camera, unsets it, when they stop using it
+    // Sets a player's target name when they use the camera, unsets it, when they stop using it
     m_iszOverridePlayerTargetname(string) : "Set Player bTargetname"
 
     // Targets to trigger when a player starts or stops using a camera
-    m_iszTargetWhenPlayerStartsUsing(string) : "bTarget when player starts using"
-    m_iszTargetWhenPlayerStopsUsing(string) : "bTarget when player stops using"
+    m_iszTargetWhenPlayerStartsUsing(string) : "target when player starts using"
+    m_iszTargetWhenPlayerStopsUsing(string) : "target when player stops using"
 
-    // bTarget to fire when the camera is turned off (either through trigger or because time ran out)
-    m_iszTurnedOffTarget(string) : "bTarget when turned off"
+    // target to fire when the camera is turned off (either through trigger or because time ran out)
+    m_iszTurnedOffTarget(string) : "target when turned off"
 
     max_player_count(integer) : "Max Players" : 1
-    max_player_target(string) : "bTarget: Player tried to use, but Max Players reached"
+    max_player_target(string) : "target: Player tried to use, but Max Players reached"
 
     hud_health(choices) : "HUD: Health and Battery" : 0 =
     [
@@ -4776,7 +4776,7 @@
 
 @SolidClass base(bTargetname, bZHLTbmodel, bBaseCdAudio) = trigger_cdaudio : "Trigger CD Audio"[]
 
-@SolidClass base(bTargetname, bZHLTbmodel) = trigger_cameratarget : "Camera bTarget"
+@SolidClass base(bTargetname, bZHLTbmodel) = trigger_cameratarget : "Camera target"
 [
     spawnflags(flags) =
     [
@@ -4800,7 +4800,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    mouse_target_0_0(string) : "Left Click bTarget"
+    mouse_target_0_0(string) : "Left Click target"
 
     mouse_action_1_0(choices) : "Right Click Action" : 0 =
     [
@@ -4818,7 +4818,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    mouse_target_1_0(string) : "Right Click bTarget"
+    mouse_target_1_0(string) : "Right Click target"
 
     mouse_action_2_0(choices) : "Third Click Action" : 0 =
     [
@@ -4836,7 +4836,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    mouse_target_2_0(string) : "Third Click bTarget"
+    mouse_target_2_0(string) : "Third Click target"
 
     mouse_action_0_1(choices) : "Left Double Click Action" : 0 =
     [
@@ -4854,7 +4854,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    mouse_target_0_1(string) : "Left Double Click bTarget"
+    mouse_target_0_1(string) : "Left Double Click target"
 
     mouse_action_1_1(choices) : "Right Double Click Action" : 0 =
     [
@@ -4872,7 +4872,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    mouse_target_1_1(string) : "Right Double Click bTarget"
+    mouse_target_1_1(string) : "Right Double Click target"
 
     mouse_action_2_1(choices) : "Third Double Click Action" : 0 =
     [
@@ -4890,7 +4890,7 @@
         0 : "No"
         1 : "Yes"
     ]
-    mouse_target_2_1(string) : "Third Double Click bTarget"
+    mouse_target_2_1(string) : "Third Double Click target"
 
     mouse_digital_action_reset(string) : "Mouse Digital Action Reset Time" : "0"
 ]
@@ -4912,8 +4912,8 @@
         0 : "No"
         1 : "Yes"
     ]
-    changetarget(target_destination) : "Change bTarget"
-    changedelay(string) : "Delay before change bTarget" : "0"
+    changetarget(target_destination) : "Change target"
+    changedelay(string) : "Delay before change target" : "0"
 
     percent_of_players(string) : "Percentage of players needed" : "0"
 ]
@@ -4921,7 +4921,7 @@
 @PointClass base(bTargetname, bBaseChangelevel) = trigger_changelevel : "Trigger Change level"[]
 @PointClass base(bTargetname) color(100 100 200) = trigger_changemaxammo : "Trigger Change Max Ammo"
 [
-    bTarget(target_destination) : "Trigger after fire"
+    target(target_destination) : "Trigger after fire"
     spawnflags(flags) =
     [
         1 : "All players" : 0
@@ -4964,9 +4964,9 @@
     skin(integer) : "Skin" : 0
     bodygroup(integer) : "Body"
 ]
-@PointClass base(bTargetname, bTarget, bKilltarget) color(60 155 30) = trigger_changetarget : "Trigger Change bTarget"
+@PointClass base(bTargetname, bTarget, bKilltarget) color(60 155 30) = trigger_changetarget : "Trigger Change target"
 [
-    m_iszNewTarget(target_destination) : "New bTarget"
+    m_iszNewTarget(target_destination) : "New target"
 ]
 @PointClass base(bTargetname) color(160 192 255) = trigger_changesky : "Trigger Change Sky"
 [
@@ -4990,11 +4990,11 @@
         2 : "Don't use Y" : 0
         4 : "Don't use Z" : 0
 
-        32 : "Invert bTarget value" : 0
+        32 : "Invert target value" : 0
         64 : "Invert source value" : 0
 
     ]
-    bTarget(target_destination) : "Destination entity"
+    target(target_destination) : "Destination entity"
     m_iszValueName(string) : "Destination key"
     m_iszNewValue(string) : "Source value"
     m_iszValueType(choices) : "Action" :  0 =
@@ -5030,7 +5030,7 @@
     m_iAppendSpaces(integer) : "Append spaces (for strings)" : 0
     message(target_destination) : "Trigger after action"
 
-    $s_weapon(string) : "[AS] bWeapon's value modifier"
+    $s_weapon(string) : "[AS] Weapon's value modifier"
 	angelscript_file(string) : "Script file" : "mikk/trigger_changevalue_weapons.as"
 ]
 // Copy value of one entity to another value of another entity
@@ -5048,13 +5048,13 @@
         // Only when "Constant" is on
         16 : "Start On" : 0
 
-        32 : "Invert bTarget value" : 0
+        32 : "Invert target value" : 0
         64 : "Invert source value" : 0
         128 : "Multiple destinations" : 0
     ]
     netname(target_destination) : "Source entity"
     m_iszSrcValueName(string) : "Source key"
-    bTarget(target_destination) : "Destination entity"
+    target(target_destination) : "Destination entity"
     m_iszDstValueName(string) : "Destination key"
     m_iszValueType(choices) : "Action" :  0 =
     [
@@ -5130,7 +5130,7 @@
 
         128 : "Ignore initial result" : 0
     ]
-    bTarget(target_destination) : "Monitored entity"
+    target(target_destination) : "Monitored entity"
     m_iszValueName(string) : "Monitored key"
     m_iszSourceName(target_destination) : "Compare-entity"
     m_iszSourceKey(string) : "Compare-key"
@@ -5159,8 +5159,8 @@
         6 : "& (Logical AND)"
     ]
 
-    netname(string) : "bTarget for 'true'-case"
-    message(string) : "bTarget for 'false'-case"
+    netname(string) : "target for 'true'-case"
+    message(string) : "target for 'false'-case"
 
     m_iCheckBehaviour(choices) : "Constant mode trigger behaviour" : 0 =
     [
@@ -5288,7 +5288,7 @@
         2 : "Only Dead Entities"
     ]
     delay_between_triggers(string) : "Delay between Entities (secs)" : "0.0"
-    bTarget(target_destination) : "Entity's Trigger bTarget"
+    target(target_destination) : "Entity's Trigger target"
     triggerstate(choices) : "Entity's Trigger State" : 0 =
     [
         0 : "Off"
@@ -5314,7 +5314,7 @@
 [
     spawnflags(flags) =
     [
-        1: "bTarget Once" : 0
+        1: "target Once" : 0
         2: "Start Off" : 0
         8: "No clients" : 0
         16: "FireClientOnly" : 0
@@ -5358,7 +5358,7 @@
         4 : "Start On" : 0
         8 : "Do Armor" : 0
     ]
-    targetclass(string) : "bTarget Class" : ""
+    targetclass(string) : "target Class" : ""
     dmg(integer) : "Damage" : 10
     armordmg(integer) : "Armor Damage" : 0
     delay(string) : "Delay (Only when Constant)" : "1"
@@ -5417,7 +5417,7 @@
 [
     m_iszLevelName(string) : "Alternate Level Save File"
     netname(string) : "Label to read from"
-    bTarget(string) : "Destination Entity"
+    target(string) : "Destination Entity"
     message(string) : "Destination Keyvalue"
     m_iszTrigger(string) : "Trigger after loading"
 ]
@@ -5429,7 +5429,7 @@
         1 : "Start On" : 0
         2 : "Set Once" : 0
     ]
-    bTarget(string) : "bTarget"
+    target(string) : "target"
     message(string) : "Entity to look at"
 ]
 
@@ -5460,7 +5460,7 @@
         8 : "Zero as leading" : 0
     ]
 
-    bTarget(target_destination) : "Entity to track"
+    target(target_destination) : "Entity to track"
     netname(string) : "Key to read"
     message(string) : "Base digit name"    //Digit names are base_digit_name%u, where %u is 1-10
     frags(string) : "Update delay" : "0.1" //Delay, in seconds, between digit updates
@@ -5481,9 +5481,9 @@
 
 @PointClass base(bTargetname, bMaster) = trigger_percent : "Trigger push"
 [
-    m_iszTriggerOnAction(target_destination) : "bTarget per player"
+    m_iszTriggerOnAction(target_destination) : "target per player"
     m_iPercentage(integer) : "Percentage needed" : 66
-    m_iszTriggerOnPercent(target_destination) : "bTarget when percentage"
+    m_iszTriggerOnPercent(target_destination) : "target when percentage"
 ]
 
 @SolidClass base(bTrigger, bAngles) = trigger_push : "Trigger push"
@@ -5501,25 +5501,25 @@
 
 @PointClass base(bTargetname) color(255 230 150) = trigger_random : "Trigger Random"
 [
-    target_count(integer) : "bTarget Count" : 4
+    target_count(integer) : "target Count" : 4
     min_delay(string) : "Minimum Delay (0 = off)" : "3.0"
     max_delay(string) : "Maximum Delay (0 = off)" : "7.0"
-    target1(target_destination) : "bTarget 1"
-    target2(target_destination) : "bTarget 2"
-    target3(target_destination) : "bTarget 3"
-    target4(target_destination) : "bTarget 4"
-    target5(target_destination) : "bTarget 5"
-    target6(target_destination) : "bTarget 6"
-    target7(target_destination) : "bTarget 7"
-    target8(target_destination) : "bTarget 8"
-    target9(target_destination) : "bTarget 9"
-    target10(target_destination) : "bTarget 10"
-    target11(target_destination) : "bTarget 11"
-    target12(target_destination) : "bTarget 12"
-    target13(target_destination) : "bTarget 13"
-    target14(target_destination) : "bTarget 14"
-    target15(target_destination) : "bTarget 15"
-    target16(target_destination) : "bTarget 16"
+    target1(target_destination) : "target 1"
+    target2(target_destination) : "target 2"
+    target3(target_destination) : "target 3"
+    target4(target_destination) : "target 4"
+    target5(target_destination) : "target 5"
+    target6(target_destination) : "target 6"
+    target7(target_destination) : "target 7"
+    target8(target_destination) : "target 8"
+    target9(target_destination) : "target 9"
+    target10(target_destination) : "target 10"
+    target11(target_destination) : "target 11"
+    target12(target_destination) : "target 12"
+    target13(target_destination) : "target 13"
+    target14(target_destination) : "target 14"
+    target15(target_destination) : "target 15"
+    target16(target_destination) : "target 16"
 
     spawnflags(flags) =
     [
@@ -5555,7 +5555,7 @@
 ]
 
 // Giving mappers the ability to set the triggering player's bTargetname
-@PointClass base(bTargetname) color(192 255 128) = trigger_renameplayer : "Trigger Player bTarget"
+@PointClass base(bTargetname) color(192 255 128) = trigger_renameplayer : "Trigger Player target"
 [
     spawnflags(flags) =
     [
@@ -5570,8 +5570,8 @@
 [
     spawnflags(flags) =
     [
-        // Respawn bTarget entity instead of all players.
-        1 : "Respawn bTarget" : 0
+        // Respawn target entity instead of all players.
+        1 : "Respawn target" : 0
         2 : "Respawn dead players" : 0
         4 : "Don't move living players" : 0
         8 : "[AS] Keep Collected Items" : 0
@@ -5582,7 +5582,7 @@
 @PointClass base(bTargetname) = trigger_save : "Custom Save Data"
 [
     netname(string) : "Label to store in"
-    bTarget(string) : "Source Entity"
+    target(string) : "Source Entity"
     message(string) : "Source Keyvalue"
     m_iszTrigger(string) : "Trigger after saving"
 ]
@@ -5667,7 +5667,7 @@
         // Trigger_setorigin entity will be removed after firing.
         4: "Set Once" : 0
 
-        // Save the offset between the bTarget entity and the Copy pointer, apply offset when updating the bTarget entity's position
+        // Save the offset between the target entity and the Copy pointer, apply offset when updating the target entity's position
         // Requires "Constant" flag
         8: "Lock Offsets" : 0
 
@@ -5755,7 +5755,7 @@
 [
     // -TODO 1 : "USE Only" : 0
 	// master
-    bTarget(target_destination) : "Dest when triggered ( empty = all )" : "!activator"
+    target(target_destination) : "Dest when triggered ( empty = all )" : "!activator"
 ]
 
 @SolidClass base(bBaseDSPTrigger, bMaster) = trigger_sound : "Trigger DSP Sound"[]
@@ -5783,9 +5783,9 @@
     message(string) : "Vote Message"
     frags(integer) : "Time To Vote (Seconds)" : 90
     health(integer) : "Percentage needed" : 50
-    bTarget(string) : "Yes bTarget"
-    netname(string) : "No bTarget"
-    noise(string) : "No Vote bTarget"
+    target(string) : "Yes target"
+    netname(string) : "No target"
+    noise(string) : "No Vote target"
     m_iszYesString(string) : "Yes string (optional)"
     m_iszNoString(string) : "No string (optional)"
 ]
@@ -5793,7 +5793,7 @@
 // -Mikk https://github.com/Mikk155/Sven-Co-op#trigger_sound
 @PointClass base(bTargetname) color(40 40 40) = trigger_votemenu : "Vote Menu"
 [
-    bTarget(target_destination) : "bTarget (USE_TYPE)"
+    target(target_destination) : "target (USE_TYPE)"
     health(float) : "Time to vote"
     netname(string) : "Title to show"
     spawnflags(flags) =
@@ -5801,8 +5801,8 @@
         1: "Activator only" : 0
     ]
 
-// -TODO bTarget if nothing was voted.
-// -TODO if two or more options receive the same ammount of votes, allow a "random bTarget" or a "fire all targets" or "no bTarget"
+// -TODO target if nothing was voted.
+// -TODO if two or more options receive the same ammount of votes, allow a "random target" or a "fire all targets" or "no target"
 // -TODO pass activator for options
 // Angelscript: Not allowed: in section 'trigger_votemenu.as', at (158, 13):Angelscript:  Function Angelscript: trigger_votemenu::Results:
 // Angelscript: Message: Index out of bounds
@@ -6126,7 +6126,7 @@
 ]
 @PointClass base(bMonster, bSquads) size(-16 -16 0, 16 16 72) studio("models/hwgrunt.mdl") = monster_hwgrunt : "Heavy Weapons Grunt"
 [
-    weapons(choices) : "Secondary bWeapon" : 1 =
+    weapons(choices) : "Secondary Weapon" : 1 =
     [
         0 : "Random Pistol"
         1 : "Glock"
@@ -6390,8 +6390,8 @@
     mortar_velocity(integer) : "Velocity" : 800
     h_min(integer) : "Horiz MIN" : -90
     h_max(integer) : "Horiz MAX" : 90
-    mindist(integer) : "Min bTarget Dist" : 256
-    maxdist(integer) : "Max bTarget Dist" : 2048
+    mindist(integer) : "Min target Dist" : 256
+    maxdist(integer) : "Max target Dist" : 2048
     firedelay(integer) : "Delay between shots (seconds)" : 5
     is_player_ally(choices) : "Is Player Ally" : 0 =
     [
@@ -6408,7 +6408,7 @@
         4: "Fire once" : 0
         8: "Random targets" : 0
     ]
-    bTarget(target_destination) : "Next stop bTarget"
+    target(target_destination) : "Next stop target"
     message(target_destination) : "Fire On Arrive"
     wait(float) : "Wait here (secs)" : 0
     speed(integer) : "New Train Speed" : 0
@@ -6470,13 +6470,13 @@
     path_start(string) : "Start Waypoint"
     waypoint_list(string) : "Path_Waypoint List"
     key_filter(string) : "NPC Keyvalue Filter"
-    npc_trigger_target(string) : "NPC Trigger bTarget"
+    npc_trigger_target(string) : "NPC Trigger target"
     npc_trigger_interval(integer) : "NPC Trigger Interval"
     m_szASConditionsName(string) : "Angelscript condition name"
 ]
 @PointClass base(bTargetname) color(125 255 255) = path_waypoint : "NPC Path Waypoint"
 [
-    bTarget(target_destination) : "Next Path_waypoint"
+    target(target_destination) : "Next Path_waypoint"
     alternate_target(target_destination) : "Alternate Next Path_waypoint"
     movementtype(choices) : "Move to Position" : 0 = 
     [
@@ -6533,7 +6533,7 @@
         4: "Branch Reverse" : 0
         8: "Disable train" : 0
     ]
-    bTarget(target_destination) : "Next stop bTarget"
+    target(target_destination) : "Next stop target"
     message(target_destination) : "Fire On Pass"
     altpath(target_destination) : "Branch Path"
     netname(target_destination) : "Fire on dead end"
@@ -6542,7 +6542,7 @@
     speed(integer) : "New Train Speed (Legacy)" : 0
 ]
 
-@PointClass base(bItem, bCustomRespawnDelay) studio("models/w_weaponbox.mdl") = weaponbox : "bWeapon/Ammo Container"
+@PointClass base(item, bCustomRespawnDelay) studio("models/w_weaponbox.mdl") = weaponbox : "Weapon/Ammo Container"
 [
     bullet9mm(integer) : "Packed 9mm rounds"
     bullet357(integer) : "Packed 357 rounds"
