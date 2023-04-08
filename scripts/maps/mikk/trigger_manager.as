@@ -1,48 +1,35 @@
 #include "utils"
 namespace trigger_manager
 {
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_manager::entity", "trigger_manager" );
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_manager"
-            "\nAuthor: Mikk"
-            "\nGithub: github.com/Mikk155"
-            "\nDescription: Entity that can be used as a intermediary for firing other entities. this include a lot of features, the original usage was the same as a trigger_relay.\n"
-        );
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class trigger_manager : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle Eactivator = null, Ecaller = null;
-		private int USETYPE = 4;
-		private string trigger_if_master, trigger_if_locked, strTarget, activator, caller;
+		private int m_iUseType = 4;
+		private string m_iszFireOnMaster, m_iszFireOnLocked, strTarget, m_iszActivator, m_iszCaller;
 		private bool Reactivated = true;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
             ExtraKeyValues( szKey, szValue );
-            if( szKey == "activator" )
+            if( szKey == "m_iszActivator" )
 			{
-				activator = szValue;
+				m_iszActivator = szValue;
 			}
-            else if( szKey == "caller" )
+            else if( szKey == "m_iszCaller" )
 			{
-				caller = szValue;
+				m_iszCaller = szValue;
 			}
-            else if( szKey == "USETYPE" )
+            else if( szKey == "m_iUseType" )
 			{
-				USETYPE = atoi( szValue );
+				m_iUseType = atoi( szValue );
 			}
-            else if( szKey == "trigger_if_master" )
+            else if( szKey == "m_iszFireOnMaster" )
 			{
-				trigger_if_master = szValue;
+				m_iszFireOnMaster = szValue;
 			}
-            else if( szKey == "trigger_if_locked" )
+            else if( szKey == "m_iszFireOnLocked" )
 			{
-				trigger_if_master = szValue;
+				m_iszFireOnLocked = szValue;
 			}
             else
 			{
@@ -55,26 +42,26 @@ namespace trigger_manager
         {
 			if( master() )
 			{
-				strTarget = trigger_if_master;
+				strTarget = m_iszFireOnMaster;
 			}
 			else if( !Reactivated )
 			{
-				strTarget = trigger_if_locked;
+				strTarget = m_iszFireOnLocked;
 			}
 			else
 			{
 				strTarget = self.pev.target;
 			}
 
-			if( activator == '!activator' or activator.IsEmpty() )
+			if( m_iszActivator == '!activator' or m_iszActivator.IsEmpty() )
 			{
 				if( pActivator !is null ) Eactivator = pActivator; else Eactivator = self;
 			}
-            else if( activator == "!caller" )
+            else if( m_iszActivator == "!caller" )
             {
 				if( pCaller !is null ) Eactivator = pCaller; else Eactivator = self;
             }
-            else if( activator == "!attacker" )
+            else if( m_iszActivator == "!attacker" )
             {
 				if( pActivator !is null )
 				{
@@ -85,19 +72,19 @@ namespace trigger_manager
             }
             else
             {
-                CBaseEntity@ pEnt = g_EntityFuncs.FindEntityByTargetname( pEnt, activator );
+                CBaseEntity@ pEnt = g_EntityFuncs.FindEntityByTargetname( pEnt, m_iszActivator );
                 if( pEnt !is null ) Eactivator = pEnt; else Eactivator = self;
             }
 
-			if( caller == '!activator' )
+			if( m_iszCaller == '!activator' )
 			{
 				if( pActivator !is null ) Ecaller = pActivator; else Ecaller = self;
 			}
-            else if( caller == "!caller" or caller.IsEmpty() )
+            else if( m_iszCaller == "!caller" or m_iszCaller.IsEmpty() )
             {
 				if( pCaller !is null ) Ecaller = pCaller; else Ecaller = self;
             }
-            else if( caller == "!attacker" )
+            else if( m_iszCaller == "!attacker" )
             {
 				if( pActivator !is null )
 				{
@@ -108,35 +95,39 @@ namespace trigger_manager
             }
             else
             {
-                CBaseEntity@ pEnt = g_EntityFuncs.FindEntityByTargetname( pEnt, caller );
+                CBaseEntity@ pEnt = g_EntityFuncs.FindEntityByTargetname( pEnt, m_iszCaller );
                 if( pEnt !is null ) Eactivator = pEnt; else Eactivator = self;
             }
 
 			USE_TYPE NewUseType;
 
-			if( USETYPE == 0 )
+			if( m_iUseType == 0 )
 			{
 				NewUseType = USE_OFF;
 			}
-			else if( USETYPE == 1 )
+			else if( m_iUseType == 1 )
 			{
 				NewUseType = USE_ON;
 			}
-			else if( USETYPE == 2 )
+			else if( m_iUseType == 2 )
 			{
 				NewUseType = USE_KILL;
 			}
-			else if( USETYPE == 3 )
+			else if( m_iUseType == 3 )
 			{
 				NewUseType = USE_TOGGLE;
 			}
-			else if( USETYPE == 4 )
+			else if( m_iUseType == 4 )
 			{
 				NewUseType = useType;
 			}
-			else if( USETYPE == 5 )
+			else if( m_iUseType == 5 )
 			{
 				NewUseType = ( useType == USE_OFF ? USE_ON : useType == USE_ON ? USE_OFF : USE_TOGGLE );
+			}
+			else if( m_iUseType == 6 )
+			{
+				NewUseType = USE_SET;
 			}
 
 			if( spawnflag( 2 ) and g_Util.GetCKV( Eactivator.GetEntity(), "$i_fireonce_" + self.entindex() ) == '1' )
@@ -168,5 +159,5 @@ namespace trigger_manager
 			Reactivated = true;
 		}
     }
+	bool Register = g_Util.CustomEntity( 'trigger_manager::trigger_manager','trigger_manager' );
 }
-// End of namespace
