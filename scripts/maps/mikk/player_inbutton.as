@@ -1,19 +1,7 @@
 #include "utils"
 namespace player_inbutton
 {
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "player_inbutton::entity", "player_inbutton" );
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#player_inbutton\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: Prints a keybind to the screen and if the player press it trigger its target.\n"
-        );
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
+    class player_inbutton : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
@@ -25,7 +13,7 @@ namespace player_inbutton
         void Spawn() 
         {
             self.pev.movetype   = MOVETYPE_NONE;
-            self.pev.solid      = SOLID_TRIGGER;
+            self.pev.solid      = SOLID_NOT;
             self.pev.effects   |= EF_NODRAW;
 
             SetBoundaries();
@@ -35,7 +23,6 @@ namespace player_inbutton
 			else if( wait == 4 ) self.pev.netname = 'duck';
 			else if( wait == 8 ) self.pev.netname = 'forward';
 			else if( wait == 16 ) self.pev.netname = 'back';
-			else if( wait == 32 ) self.pev.netname = 'use';
 			// else if( wait == 64 ) self.pev.netname = 'cancelselect';
 			else if( wait == 128 ) self.pev.netname = 'left';
 			else if( wait == 256 ) self.pev.netname = 'right';
@@ -46,6 +33,7 @@ namespace player_inbutton
 			else if( wait == 8192 ) self.pev.netname = 'reload';
 			else if( wait == 16384 ) self.pev.netname = 'alt1';
 			else if( wait == 32768 ) self.pev.netname = 'showscores';
+			else self.pev.netname = 'use';
 
             SetThink( ThinkFunction( this.CheckInVolume ) );
             self.pev.nextthink = g_Engine.time + 0.2f;
@@ -109,5 +97,5 @@ namespace player_inbutton
             }
         }
     }
+	bool Register = g_Util.CustomEntity( 'player_inbutton::player_inbutton','player_inbutton' );
 }
-// End of namespace
