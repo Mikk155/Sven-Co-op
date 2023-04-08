@@ -46,18 +46,30 @@ final class CUtils
 		{
 			NewUseType = 3;
 		}
+		else if( useType == USE_SET )
+		{
+			NewUseType = 4;
+		}
 
         if( string( key ).EndsWith( "#0" ) )
         {
             NewUseType = 0;
         }
-        if( string( key ).EndsWith( "#1" ) )
+        else if( string( key ).EndsWith( "#1" ) )
         {
             NewUseType = 1;
         }
-        if( string( key ).EndsWith( "#2" ) )
+        else if( string( key ).EndsWith( "#2" ) )
         {
             NewUseType = 2;
+        }
+        else if( string( key ).EndsWith( "#3" ) )
+        {
+            NewUseType = 3;
+        }
+        else if( string( key ).EndsWith( "#4" ) )
+        {
+            NewUseType = 4;
         }
 
         if( NewUseType == 2 )
@@ -76,7 +88,7 @@ final class CUtils
 			g_Scheduler.SetTimeout( @this, "DelayedTrigger", flDelay, ReadTarget, @pActivator, @pCaller, NewUseType );
         }
 
-        string What = ( NewUseType == 0 ) ? "OFF" : ( NewUseType == 1 ) ? "ON" : ( NewUseType == 2 ) ? "KILL" : "TOGGLE";
+        string What = ( NewUseType == 0 ) ? "OFF" : ( NewUseType == 1 ) ? "ON" : ( NewUseType == 2 ) ? "KILL" : ( NewUseType == 4 ) ? "SET" : "TOGGLE";
 
         g_Util.Debug( "Fired entity '" + ReadTarget + "'" );
         g_Util.Debug( "!activator '"+ string( pActivator.pev.classname ) + "' " + string( pActivator.pev.netname ) );
@@ -103,6 +115,10 @@ final class CUtils
 		else if( useType == 3 )
 		{
 			TriggerState = USE_TOGGLE;
+		}
+		else if( useType == 4 )
+		{
+			TriggerState = USE_SET;
 		}
 
         g_EntityFuncs.FireTargets( ReadTarget, pActivator, pCaller, TriggerState, 0.0f );
@@ -215,7 +231,7 @@ final class CUtils
             return;
         }
 
-        // Can't set strings
+        // SetKeyvalue Sets a empty string, workaround
         dictionary g_keyvalues =
         {
             { "target", "!activator" },
@@ -427,7 +443,6 @@ final class CUtils
 		return g_CustomEntityFuncs.IsCustomEntity( szClassname );
 	}
 }
-// End of final class
 
 CClientCommand g_CreditsCMD( "ripent", "show ripent information", @RipentShowInfo );
 
@@ -527,20 +542,20 @@ mixin class ScriptBaseLanguages
 
         dictionary Languages =
         {
-            { "english", self.pev.message},
-            { "spanish", string( message_spanish ).IsEmpty() ? string( message_spanish2 ).IsEmpty() ? self.pev.message : message_spanish2 : message_spanish },
-            { "spanish spain", string( message_spanish2 ).IsEmpty() ? string( message_spanish ).IsEmpty() ? self.pev.message : message_spanish : message_spanish2 },
-            { "portuguese", string( message_portuguese ).IsEmpty() ? self.pev.message : message_portuguese },
-            { "german", string( message_german ).IsEmpty() ? self.pev.message : message_german },
-            { "french", string( message_french ).IsEmpty() ? self.pev.message : message_french },
-            { "italian", string( message_italian ).IsEmpty() ? self.pev.message : message_italian },
-            { "esperanto", string( message_esperanto ).IsEmpty() ? self.pev.message : message_esperanto },
-            { "czech", string( message_czech ).IsEmpty() ? self.pev.message : message_czech },
-            { "dutch", string( message_dutch ).IsEmpty() ? self.pev.message : message_dutch },
-            { "indonesian", string( message_indonesian ).IsEmpty() ? self.pev.message : message_indonesian },
-            { "romanian", string( message_romanian ).IsEmpty() ? self.pev.message : message_romanian },
-            { "turkish", string( message_turkish ).IsEmpty() ? self.pev.message : message_turkish },
-            { "albanian", string( message_albanian ).IsEmpty() ? self.pev.message : message_albanian }
+            { "english", self.pev.message },
+            { "spanish", message_spanish == '' ?message_spanish2 == '' ? self.pev.message : message_spanish2 : message_spanish },
+            { "spanish spain", message_spanish2 == '' ? message_spanish == '' ? self.pev.message : message_spanish : message_spanish2 },
+            { "portuguese", message_portuguese == '' ? self.pev.message : message_portuguese },
+            { "german", message_german == '' ? self.pev.message : message_german },
+            { "french", message_french == '' ? self.pev.message : message_french },
+            { "italian", message_italian == '' ? self.pev.message : message_italian },
+            { "esperanto", message_esperanto == '' ? self.pev.message : message_esperanto },
+            { "czech", message_czech == '' ? self.pev.message : message_czech },
+            { "dutch", message_dutch == '' ? self.pev.message : message_dutch },
+            { "indonesian", message_indonesian == '' ? self.pev.message : message_indonesian },
+            { "romanian", message_romanian == '' ? self.pev.message : message_romanian },
+            { "turkish", message_turkish == '' ? self.pev.message : message_turkish },
+            { "albanian", message_albanian == '' ? self.pev.message : message_albanian }
         };
         
         if( CurrentLanguage == "" || CurrentLanguage.IsEmpty() )
@@ -551,8 +566,6 @@ mixin class ScriptBaseLanguages
         return string_t( Languages[ CurrentLanguage ] );
     }
 }
-// End of mixin class
-
 
 mixin class ScriptBaseCustomEntity
 {
@@ -652,12 +665,7 @@ mixin class ScriptBaseCustomEntity
 		g_Util.Debug( "Origin: '" + self.pev.origin.ToString() + "'" );
 		return false;
     }
-
-	void PostSpawn(){ self.pev.flags |= FL_CUSTOMENTITY; }
-	void PreSpawn(){ self.pev.flags |= FL_CUSTOMENTITY; }
-	void Spawn(){ self.pev.flags |= FL_CUSTOMENTITY; }
 }
-// End of mixin class
 
 namespace utils
 {
@@ -752,7 +760,6 @@ namespace utils
 		}
 	}
 }
-// End of namespace.
 
 CEffects g_Effect;
 final class CEffects
@@ -835,12 +842,12 @@ final class CEffects
             Message.WriteByte( startFrame );
             Message.WriteByte( 16 ); // Seems to have no effect, or at least i didn't notice
             Message.WriteByte( HoldTime );
-            Message.WriteByte(1); // "width" - has no effect
-            Message.WriteByte(0); // "noise" - has no effect
-            Message.WriteByte( atoui( VecColor.x ) ); // R
-            Message.WriteByte( atoui( VecColor.y ) ); // G
-            Message.WriteByte( atoui( VecColor.z ) ); // B
-            Message.WriteByte( renderamt ); // A
+            Message.WriteByte(1);
+            Message.WriteByte(0);
+            Message.WriteByte( atoui( VecColor.x ) );
+            Message.WriteByte( atoui( VecColor.y ) );
+            Message.WriteByte( atoui( VecColor.z ) );
+            Message.WriteByte( renderamt );
             Message.WriteByte( 0 ); // < 10 seems to have no effect while > 10 just expands it alot
         Message.End();
     }
@@ -1003,4 +1010,3 @@ final class CEffects
         Message.End();
     }
 }
-// End of final class
