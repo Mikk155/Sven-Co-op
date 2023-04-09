@@ -1,23 +1,7 @@
 #include "utils"
 namespace trigger_sound
 {
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_sound::entity", "trigger_sound" );
-        g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @Disconnect );
-        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Connect );
-        g_Scheduler.SetInterval( "TriggerSoundThink", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES);
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_sound\n"
-            "Author: Mikk\n"
-            "Github: github.com/Mikk155\n"
-            "Description: env_sound but as a brush entity.\n"
-        );
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class trigger_sound : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string roomtype = 0;
 
@@ -44,7 +28,7 @@ namespace trigger_sound
             }
             else
             {
-                for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
+				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
                 {
                     CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
@@ -99,7 +83,7 @@ namespace trigger_sound
         }
     }
 
-    HookReturnCode Disconnect( CBasePlayer@ pPlayer )
+    HookReturnCode ClientDisconnect( CBasePlayer@ pPlayer )
     {
         if( pPlayer is null )
         {
@@ -116,7 +100,7 @@ namespace trigger_sound
         return HOOK_CONTINUE;
     }
 
-    HookReturnCode Connect( CBasePlayer@ pPlayer )
+    HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
     {
         if( pPlayer is null )
         {
@@ -137,7 +121,9 @@ namespace trigger_sound
         return HOOK_CONTINUE;
     }
 
-    void TriggerSoundThink()
+    CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
+
+    void Think()
     {
         for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
         {
@@ -154,5 +140,7 @@ namespace trigger_sound
             }
         }
     }
+	bool Register = g_Util.CustomEntity( 'trigger_sound::trigger_sound','trigger_sound' );
+	bool Disconnect = g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @trigger_sound::ClientDisconnect );
+	bool Connect = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @trigger_sound::ClientPutInServer );
 }
-// End of namespace
