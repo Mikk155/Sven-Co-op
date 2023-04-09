@@ -2184,7 +2184,7 @@
     ]
     spawnflags(flags) =
     [
-        2 : "Use bAngles" : 0
+        2 : "Use angles" : 0
     ]
     _minlight(string) : "Minimum light level"
 ]
@@ -2697,7 +2697,7 @@
     ]
     spawnflags(flags) =
     [
-        2 : "Use bAngles" : 0
+        2 : "Use angles" : 0
     ]
 ]
 
@@ -4187,8 +4187,226 @@
 	angelscript_file(string) : "Script file" : "mikk/player_data.as"
 ]
 
-@PointClass base(bTargetname) = player_equipment : "player_weaponstrip improved"
+@PointClass base(bTargetname, bMaster, bTarget, bDelay) color(200 100 0) = player_equipment : "player_weaponstrip & game_player_equip improved"
 [
+    m_iAffected(choices) : "Players to strip" : 0 =
+    [
+        0 : "Activator only (default)"
+        1 : "All players"
+        2 : "All players except activator"
+    ]
+	item_suit(choices) : "item_suit" : 6 =
+	[
+		1 : "Strip suit"
+		4 : "Give suit"
+		6 : "Do nothing"
+	]
+	item_longjump(choices) : "item_longjump" : 6 =
+	[
+		1 : "Strip longjump"
+		4 : "Give longjump"
+		6 : "Do nothing"
+	]
+	weapon_m16(choices) : "weapon_m16" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_m249(choices) : "weapon_m249" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_shotgun(choices) : "weapon_shotgun" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_9mmhandgun(choices) : "weapon_9mmhandgun" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_9mmAR(choices) : "weapon_9mmAR" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_uzi(choices) : "weapon_uzi" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_uziakimbo(choices) : "weapon_uziakimbo" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_sporelauncher(choices) : "weapon_sporelauncher" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_rpg(choices) : "weapon_rpg" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_gauss(choices) : "weapon_gauss" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_egon(choices) : "weapon_egon" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_displacer(choices) : "weapon_displacer" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_crossbow(choices) : "weapon_crossbow" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_eagle(choices) : "weapon_eagle" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_357(choices) : "weapon_357" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_sniperrifle(choices) : "weapon_sniperrifle" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_satchel(choices) : "weapon_satchel" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_snark(choices) : "weapon_snark" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_handgrenade(choices) : "weapon_handgrenade" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
+	weapon_tripmine(choices) : "weapon_tripmine" : 6 =
+	[
+		0 : "Strip weapon and ammo"
+		1 : "Strip weapon"
+		2 : "Strip ammo"
+		3 : "Give weapon and ammo"
+		4 : "Give weapon"
+		5 : "Give ammo"
+		6 : "Do nothing"
+	]
 	angelscript_file(string) : "Script file" : "mikk/player_equipment.as"
 ]
 
@@ -4304,6 +4522,7 @@
         2 : "All players except activator"
     ]
 ]
+
 @SolidClass base(bTargetname, bZHLTbmodel) = player_respawn_zone : "Player Zone Respawn brush"
 [
     zonetype(choices) : "Zone Type" : 0 =
