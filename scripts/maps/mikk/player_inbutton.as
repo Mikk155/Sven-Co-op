@@ -64,7 +64,7 @@ namespace player_inbutton
                 return;
             }
 
-            for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
+			for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
             {
                 CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
