@@ -2,139 +2,60 @@ CUtils g_Util;
 
 final class CUtils
 {
-    void Trigger( string& in key, CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE& in useType = USE_TOGGLE, float& in flDelay = 0.0f )
+    void Trigger( string iszTarget, CBaseEntity@&in pActivator = null, CBaseEntity@&in pCaller = null, USE_TYPE& in useType = USE_TOGGLE, float&in flDelay = 0.0f )
     {
-        if( key.IsEmpty() )
-        {
-            return;
-        }
+        g_Util.Debug();
+        CBaseEntity@ pFind = g_EntityFuncs.FindEntityByTargetname( pFind, iszTarget );
 
-        g_Util.Debug( "g_Util.Trigger:" );
-
-        string ReadTarget = g_Util.StringReplace
-        (
-            key,
-            {
-                { "#0", "" },
-                { "#1", "" },
-                { "#2", "" }
-            }
-        );
-
-        CBaseEntity@ pFind = g_EntityFuncs.FindEntityByTargetname( pFind, ReadTarget );
         if( pFind is null )
         {
-            g_Util.Debug( "No entity found with targetname '" + ReadTarget + "'" );
+            g_Util.Debug( "[CUtils::Trigger] No entity found with targetname '" + iszTarget + "'" );
             return;
         }
 
-        int NewUseType;
+        string iUseType = ( useType == USE_OFF ) ? '0 [OFF]': ( useType == USE_ON ) ? '1 [ON]' : ( useType == USE_KILL ) ? '2 [KILL]' : ( useType == USE_SET ) ? '4 [SET]' : '3 [TOGGLE]';
 
-		if( useType == USE_OFF )
-		{
-			NewUseType = 0;
-		}
-		else if( useType == USE_ON )
-		{
-			NewUseType = 1;
-		}
-		else if( useType == USE_KILL )
-		{
-			NewUseType = 2;
-		}
-		else if( useType == USE_TOGGLE )
-		{
-			NewUseType = 3;
-		}
-		else if( useType == USE_SET )
-		{
-			NewUseType = 4;
-		}
+		CBaseEntity@ pKillEnt = null;
 
-        if( string( key ).EndsWith( "#0" ) )
-        {
-            NewUseType = 0;
-        }
-        else if( string( key ).EndsWith( "#1" ) )
-        {
-            NewUseType = 1;
-        }
-        else if( string( key ).EndsWith( "#2" ) )
-        {
-            NewUseType = 2;
-        }
-        else if( string( key ).EndsWith( "#3" ) )
-        {
-            NewUseType = 3;
-        }
-        else if( string( key ).EndsWith( "#4" ) )
-        {
-            NewUseType = 4;
-        }
-
-        if( NewUseType == 2 )
-        {
-            CBaseEntity@ pKillEnt = null;
-
-            // hack cuz USE_KILL doesn't work.
-            while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, ReadTarget ) ) !is null )
-            {
+        if( iUseType[0] == 2 ){
+            while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, iszTarget ) ) !is null ){
                 g_EntityFuncs.Remove( pKillEnt );
-            }
-        }
-        else
-        {
-			// hack cuz flDelay doesn't work.
-			g_Scheduler.SetTimeout( @this, "DelayedTrigger", flDelay, ReadTarget, @pActivator, @pCaller, NewUseType );
-        }
+			}
+		}
+        else{
+			g_Scheduler.SetTimeout( @this, "DelayedTrigger", flDelay, iszTarget, @pActivator, @pCaller, atoi( iUseType[0] ) );
+		}
 
-        string What = ( NewUseType == 0 ) ? "OFF" : ( NewUseType == 1 ) ? "ON" : ( NewUseType == 2 ) ? "KILL" : ( NewUseType == 4 ) ? "SET" : "TOGGLE";
-
-        g_Util.Debug( "Fired entity '" + ReadTarget + "'" );
-        g_Util.Debug( "!activator '"+ string( pActivator.pev.classname ) + "' " + string( pActivator.pev.netname ) );
-        g_Util.Debug( "!caller '" + pCaller.pev.classname + "'" );
-        g_Util.Debug( "USE_TYPE '" + NewUseType + "' ( " + What + " )" );
-        g_Util.Debug( "Delay '" + flDelay + "'" );
+        g_Util.Debug( "[CUtils::Trigger] Fired entity '" + iszTarget + "'" );
+		if( pActivator !is null ) g_Util.Debug( "[CUtils::Trigger] !activator '"+ string( pActivator.pev.classname ) + "' " + string( pActivator.pev.netname ) );
+		if( pCaller !is null ) g_Util.Debug( "[CUtils::Trigger] !caller '" + pCaller.pev.classname + "'" );
+        g_Util.Debug( "[CUtils::Trigger] USE_TYPE " + iUseType );
+        if( flDelay > 0.0 ) g_Util.Debug( "[CUtils::Trigger] Delay '" + flDelay + "'" );
+        g_Util.Debug();
     }
-	
-	void DelayedTrigger( string ReadTarget, CBaseEntity@ pActivator, CBaseEntity@ pCaller, int useType )
-	{
-		USE_TYPE TriggerState;
-		if( useType == 0 )
-		{
-			TriggerState = USE_OFF;
-		}
-		else if( useType == 1 )
-		{
-			TriggerState = USE_ON;
-		}
-		else if( useType == 2 )
-		{
-			TriggerState = USE_KILL;
-		}
-		else if( useType == 3 )
-		{
-			TriggerState = USE_TOGGLE;
-		}
-		else if( useType == 4 )
-		{
-			TriggerState = USE_SET;
-		}
 
-        g_EntityFuncs.FireTargets( ReadTarget, pActivator, pCaller, TriggerState, 0.0f );
+	void DelayedTrigger( string iszTarget, CBaseEntity@ pActivator, CBaseEntity@ pCaller, int ut )
+	{
+        g_EntityFuncs.FireTargets( iszTarget, pActivator, pCaller, ( ut == 0 ) ? USE_OFF : ( ut == 1 ) ? USE_ON : ( ut == 4 ) ? USE_SET : USE_TOGGLE, 0.0f );
 	}
 
     string StringReplace( string_t FullSentence, dictionary@ pArgs )
     {
-        string str = string(FullSentence);
-        array<string> args = pArgs.getKeys();
+        string OutString = string( FullSentence );
+        array<string> Arguments = pArgs.getKeys();
 
-        for (uint i = 0; i < args.length(); i++)
-        {
-            str.Replace( args[i], string( pArgs[ args[i] ] ) );
-        }
-
-        return str;
+		g_Util.Debug();
+		for (uint i = 0; i < Arguments.length(); i++)
+		{
+			string Value = string( pArgs[ Arguments[i] ] );
+			if( Value != '' )
+			{
+				OutString.Replace( Arguments[i], Value );
+				g_Util.Debug( "[CUtils::StringReplace] Replaced string '" + Arguments[i] + "' -> '" + Value + "'");
+			}
+		}
+		g_Util.Debug();
+        return OutString;
     }
 
     void ShowMOTD( EHandle hPlayer, const string& in szTitle, const string& in szMessage )
@@ -173,7 +94,6 @@ final class CUtils
             }
         }
 
-        // If we reached the end, send the last letters of the message
         if( iChars > 0 )
         {
             szSplitMsg.Truncate( iChars );
@@ -194,7 +114,7 @@ final class CUtils
     }
 
     bool ShowDebugs = true;
-    void Debug( const string& in szMessage )
+    void Debug( const string& in szMessage = '================================' )
     {
 		if( ShowDebugs )
 		{
@@ -213,8 +133,9 @@ final class CUtils
     {
         if( pEntity is null or szKey.IsEmpty() )
         {
-            g_Util.Debug( "g_Util.GetCKV:" );
-            g_Util.Debug( "Null entity nor value!" );
+			g_Util.Debug();
+            g_Util.Debug( "[CUtils::GetCKV] Null entity n/or key!" );
+			g_Util.Debug();
             return String::INVALID_INDEX;
         }
 
@@ -223,15 +144,15 @@ final class CUtils
 
     void SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
     {
-        g_Util.Debug( "g_Util.SetCKV:" );
+        g_Util.Debug();
 
         if( pEntity is null or szKey.IsEmpty() or szValue.IsEmpty() )
         {
-            g_Util.Debug( "Null entity nor value!" );
+            g_Util.Debug( "[CUtils::SetCKV] Null entity n/or key/value!" );
+			g_Util.Debug();
             return;
         }
 
-        // SetKeyvalue Sets a empty string, workaround
         dictionary g_keyvalues =
         {
             { "target", "!activator" },
@@ -243,18 +164,25 @@ final class CUtils
 
         if( pChangeValue !is null )
         {
-            pChangeValue.Use( pEntity, pEntity, USE_ON, 0.0f );
+            pChangeValue.Use( pEntity, null, USE_ON, 0.0f );
             g_EntityFuncs.Remove( pChangeValue );
-            g_Util.Debug( "Set CustomKeyValue '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
+            g_Util.Debug( "[CUtils::SetCKV] '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
         }
+        g_Util.Debug();
     }
 
     bool IsStringInFile( const string& in szPath, string& in szComparator )
     {
+        g_Util.Debug();
         File@ pFile = g_FileSystem.OpenFile( szPath, OpenFile::READ );
 
         if( pFile is null || !pFile.IsOpen() )
+		{
+			g_Util.Debug( "[CUtils::IsStringInFile] Can NOT open file '" + szPath + "'" );
+			g_Util.Debug();
             return false;
+		}
+		g_Util.Debug( "[CUtils::IsStringInFile] Opened file '" + szPath + "' for matching string '" + szComparator + "'" );
 
         string strMap = szComparator;
         strMap.ToLowercase();
@@ -274,6 +202,8 @@ final class CUtils
             if( strMap == line )
             {
                 pFile.Close();
+				g_Util.Debug( "[CUtils::IsStringInFile] Match '" + line + "'" );
+				g_Util.Debug();
                 return true;
             }
 
@@ -284,30 +214,39 @@ final class CUtils
                 if( strMap.Find( line ) != Math.SIZE_MAX )
                 {
                     pFile.Close();
+					g_Util.Debug( "[CUtils::IsStringInFile] Match '" + line + "' with a prefix [*]" );
+					g_Util.Debug();
                     return true;
                 }
             }
         }
 
         pFile.Close();
+		g_Util.Debug( "[CUtils::IsStringInFile] Nothing matched in the file." );
+		g_Util.Debug();
 
         return false;
     }
 
     bool IsPluginInstalled( const string& in szPluginName )
     {
+		g_Util.Debug();
         array<string> pluginList = g_PluginManager.GetPluginList();
 
         if( pluginList.find( szPluginName ) >= 0 )
         {
+			g_Util.Debug( "[CUtils::IsPluginInstalled] Plugin '" + szPluginName + "' is installed." );
+			g_Util.Debug();
             return true;
         }
+		g_Util.Debug( "[CUtils::IsPluginInstalled] Plugin '" + szPluginName + "' is NOT installed." );
+		g_Util.Debug();
         return false;
     }
 
     string RIPENTDebugger;
 
-    bool LoadEntities( const string& in EntFileLoadText = 'scripts/maps/store/sex.txt', const string& in szClassname = '' )
+    bool LoadEntities( const string& in EntFileLoadText, const string& in szClassname = '' )
     {
         RIPENTDebugger = "";
 
@@ -319,7 +258,7 @@ final class CUtils
 
         if( pFile is null or !pFile.IsOpen() )
         {
-            RIPENTDebugger = RIPENTDebugger + "RIPENT: Failed to open " + EntFileLoadText + " no entities initialised!\n";
+            RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] Failed to open " + EntFileLoadText + " no entities initialised!\n";
             return false;
         }
 
@@ -362,14 +301,14 @@ final class CUtils
 
                     if( pInitialized !is null )
                     {
-                        RIPENTDebugger = RIPENTDebugger + "RIPENT: Entity '" + Classname + "' initialised.\n";
+                        RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] Entity '" + Classname + "' initialised.\n";
                     }
                     else
                     {
-                        RIPENTDebugger = RIPENTDebugger + "RIPENT: A entity was not initialised.\n";
+                        RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] A entity was not initialised.\n";
                     }
 
-                    RIPENTDebugger = RIPENTDebugger + "RIPENT: Clearing Dictionary...\n";
+                    RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] Clearing Dictionary...\n";
                     g_KeyValues.deleteAll();
                 }
                 continue;
@@ -391,7 +330,7 @@ final class CUtils
                     if( !pMatch.GetCustomKeyvalues().HasKeyvalue( "$i_ripent" ) )
                     {
                         g_EntityFuncs.Remove( pMatch );
-                        RIPENTDebugger = RIPENTDebugger + 'RIPENT: Matched and removed entity with key and value ';
+                        RIPENTDebugger = RIPENTDebugger + '[CUtils::LoadEntities] Matched and removed entity with key and value ';
                     }
                 }
             }
@@ -402,23 +341,31 @@ final class CUtils
         }
         pFile.Close();
 
-        RIPENTDebugger = RIPENTDebugger + "\nRIPENT Script Utility created by Mikk github.com/Mikk155\nSpecial thanks to Gaftherman github.com/Gaftherman\n\n";
         return true;
     }
 
-    int NumberOfEntities;
-    int GetNumberOfEntities( const string& in szClassname )
+    int GetNumberOfEntities( const string& in szClassname, bool TargetName = false )
     {
-        NumberOfEntities = 0;
+        g_Util.Debug();
+        int NumberOfEntities = 0;
 
         CBaseEntity@ pEntity = null;
 
-        while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, szClassname ) ) !is null )
-        {
-            ++NumberOfEntities;
-        }
+		if( TargetName )
+		{
+			while( ( @pEntity = g_EntityFuncs.FindEntityByTargetname( pEntity, szClassname ) ) !is null ){
+				++NumberOfEntities;
+			}
+		}
+		else
+		{
+			while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, szClassname ) ) !is null ){
+				++NumberOfEntities;
+			}
+		}
 
-        g_Util.Debug( "g_Util.GetNumberOfEntities:\nFound '" + string( NumberOfEntities ) + "' Entities" );
+		g_Util.Debug( "[CUtils::GetNumberOfEntities] Found '" + string( NumberOfEntities ) + "' Entities" );
+        g_Util.Debug();
         return NumberOfEntities;
     }
 
@@ -442,17 +389,23 @@ final class CUtils
 		}
 		return g_CustomEntityFuncs.IsCustomEntity( szClassname );
 	}
+
+	Vector StringToVec( const string& in VectIn )
+	{
+		Vector VectOut;
+        g_Utility.StringToVector( VectOut, VectIn );
+		return VectOut;
+	}
 }
 
-CClientCommand g_CreditsCMD( "ripent", "show ripent information", @RipentShowInfo );
+CClientCommand g_LoadEntities( "ripent", "Shows information of CUtils::LoadEntities", @LoadEntitiesInformation );
 
-void RipentShowInfo( const CCommand@ pArguments )
+void LoadEntitiesInformation( const CCommand@ pArguments )
 {
 	CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
 
-	g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Printed initialised entities info at your console.\n" );
+	g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[LoadEntitiesInformation] Printed initialised entities info at your console.\n" );
 
-	// If we reached the limit replace and send again
 	while( g_Util.RIPENTDebugger != '' )
 	{
 		g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  g_Util.RIPENTDebugger.SubString( 0, 68 ) );
@@ -840,7 +793,7 @@ final class CEffects
             Message.WriteCoord( VecStart.z + iRadius );
             Message.WriteShort( g_EngineFuncs.ModelIndex( iszModel ) );
             Message.WriteByte( startFrame );
-            Message.WriteByte( 16 ); // Seems to have no effect, or at least i didn't notice
+            Message.WriteByte( 16 );
             Message.WriteByte( HoldTime );
             Message.WriteByte(1);
             Message.WriteByte(0);
@@ -848,7 +801,7 @@ final class CEffects
             Message.WriteByte( atoui( VecColor.y ) );
             Message.WriteByte( atoui( VecColor.z ) );
             Message.WriteByte( renderamt );
-            Message.WriteByte( 0 ); // < 10 seems to have no effect while > 10 just expands it alot
+            Message.WriteByte( 0 );
         Message.End();
     }
 
