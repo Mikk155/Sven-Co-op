@@ -92,8 +92,7 @@ namespace ammo_custom
 
                             FakeWeapon.pev.spawnflags = 1024;
                             cast<CBasePlayerWeapon@>( FakeWeapon ).m_iDefaultAmmo = am_give;
-                            g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
-                            return true;
+							Pickup();
                         }
                     }
                 }
