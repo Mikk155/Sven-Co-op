@@ -1,22 +1,7 @@
 #include "utils"
 namespace trigger_votemenu
 {
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_votemenu::entity", "trigger_votemenu" );
-
-        g_Util.ScriptAuthor.insertLast
-        (
-            "Script: https://github.com/Mikk155/Sven-Co-op#trigger_votemenu\n"
-            "Author: Gaftherman\n"
-            "Github: github.com/Gaftherman\n"
-            "Author: Wootguy\n"
-            "Github: github.com/wootguy\n"
-            "Description: Allow mapper to create a buymenu-like vote for one or all players.\n"
-        );
-    }
-
-    class entity : ScriptBaseEntity, ScriptBaseCustomEntity
+    class trigger_votemenu : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;
         dictionary dictFinalResults;
@@ -162,5 +147,5 @@ namespace trigger_votemenu
             }
         }
     }
+	bool Register = g_Util.CustomEntity( 'trigger_votemenu::trigger_votemenu','trigger_votemenu' );
 }
-// End of namespace
