@@ -5970,6 +5970,23 @@
     ]
 ]
 
+@SolidClass base(bTargetname, ) = trigger_teleport_relative : "Trigger Teleport"
+[
+    m_vStartPoint(string) : "This map's landmark (X Y Z)"
+    m_vEndPoint(string) : "Next map's landmark (X Y Z)"
+	m_iszTargetOnExit(target_destination) : "Target On Exit"
+    spawnflags(flags) =
+    [
+        1 : "All players (When USE)" : 0
+    ]
+    m_iAllowMonsters(choices) : "Allow monsters" : 0 =
+    [
+        0 : "Yes"
+        1 : "No, Only Players"
+    ]
+	angelscript_file(string) : "Script file" : "mikk/trigger_teleport_relative.as"
+]
+
 @BaseClass base(bBaseDSPSound) = bBaseDSPTrigger
 [
     // -TODO 1 : "USE Only" : 0
