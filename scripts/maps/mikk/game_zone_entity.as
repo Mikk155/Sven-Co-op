@@ -1,6 +1,14 @@
 #include "utils"
+
+bool game_zone_entity_register = g_Util.CustomEntity( 'game_zone_entity::game_zone_entity','game_zone_entity' );
+
 namespace game_zone_entity
 {
+    enum game_zone_entity_spawnflags
+    {
+        IGNORE_DEAD_ENTITIES = 1
+    }
+
     class game_zone_entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hincount = null;
@@ -58,7 +66,7 @@ namespace game_zone_entity
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( master() )
+            if( IsLockedByMaster() )
                 return;
 
             if( !incount.IsEmpty() )
@@ -103,7 +111,7 @@ namespace game_zone_entity
 
         void CheckInVolume( CBaseEntity@ pActivator )
         {
-            if ( spawnflag( 1 ) && !pActivator.IsAlive() )
+            if( spawnflag( IGNORE_DEAD_ENTITIES ) && !pActivator.IsAlive() )
                 return;
 
             if( !intarget.IsEmpty() and self.Intersects( pActivator ) )
@@ -112,7 +120,7 @@ namespace game_zone_entity
 
                 if( hincount.GetEntity() !is null )
                 {
-					g_Util.Trigger( incount, pActivator, self, ( USE_IN == 0 ? USE_OFF : USE_IN == 1 ? USE_ON : USE_TOGGLE ), 0.0f );
+                    g_Util.Trigger( incount, pActivator, self, ( USE_IN == 0 ? USE_OFF : USE_IN == 1 ? USE_ON : USE_TOGGLE ), 0.0f );
 
                     g_Util.Debug( "Fired incount '" + incount );
                 }
@@ -135,5 +143,4 @@ namespace game_zone_entity
             }
         }
     }
-	bool Register = g_Util.CustomEntity( 'game_zone_entity::game_zone_entity','game_zone_entity' );
 }

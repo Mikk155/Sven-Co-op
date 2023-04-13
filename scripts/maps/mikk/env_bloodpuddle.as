@@ -1,31 +1,56 @@
 #include "utils"
+
+bool env_bloodpuddle_register = g_Util.CustomEntity( 'env_bloodpuddle::env_bloodpuddle','env_bloodpuddle' );
+
 namespace env_bloodpuddle
 {
-	void model( const string& in szModel = BloodModel )
-	{
-		BloodModel = szModel;
-		PrecacheModel();
-	}
+    void model( CBaseEntity@ pTriggerScript )
+    {
+        if( !string( pTriggerScript.pev.model ).IsEmpty() )
+        {
+            BloodModel = string( pTriggerScript.pev.model );
+        }
+        pTriggerScript.Use( null, null, USE_OFF, 0.0f );
+    }
+
+    void model( const string& in szModel = BloodModel )
+    {
+        BloodModel = szModel;
+        PrecacheModel();
+    }
 
     bool fade = false;
+
+    CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "env_bloodpuddle_think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
+
+    string AutoPrecache = PrecacheModel();
+
+    string BloodModel = 'models/mikk/misc/bloodpuddle.mdl';
+
+    string PrecacheModel( const string& in szModel = BloodModel )
+    {
+        g_Game.PrecacheModel( szModel );
+        g_Game.PrecacheGeneric( szModel );
+        return szModel;
+    }
 
     class env_bloodpuddle : ScriptBaseAnimating
     {
         void Spawn()
         {
-			Precache();
+            Precache();
             self.pev.movetype = MOVETYPE_NONE;
             self.pev.solid = SOLID_NOT;
             self.pev.scale = Math.RandomFloat( 1.5, 2.5 );
 
-			if( !string( self.pev.model ).IsEmpty() )
-			{
-				g_EntityFuncs.SetModel( self, string( self.pev.model ) );
-			}
-			else
-			{
-				g_EntityFuncs.SetModel( self, BloodModel );
-			}
+            if( !string( self.pev.model ).IsEmpty() )
+            {
+                g_EntityFuncs.SetModel( self, string( self.pev.model ) );
+            }
+            else
+            {
+                g_EntityFuncs.SetModel( self, BloodModel );
+            }
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
             self.pev.sequence = 2;
 
@@ -35,11 +60,11 @@ namespace env_bloodpuddle
 
         void Precache()
         {
-			if( !string( self.pev.model ).IsEmpty() )
-			{
-				g_Game.PrecacheModel( string( self.pev.model ) );
-				g_Game.PrecacheGeneric( string( self.pev.model ) );
-			}
+            if( !string( self.pev.model ).IsEmpty() && !string( self.pev.model ).StartsWith( '*' ) )
+            {
+                g_Game.PrecacheModel( string( self.pev.model ) );
+                g_Game.PrecacheGeneric( string( self.pev.model ) );
+            }
         }
 
         void BloodPreSpawn()
@@ -80,7 +105,7 @@ namespace env_bloodpuddle
         }
     }
 
-    void Think()
+    void env_bloodpuddle_think()
     {
         CBaseEntity@ pEntity = null;
 
@@ -95,10 +120,10 @@ namespace env_bloodpuddle
             && atof( g_Util.GetCKV( pMonster, '$f_bloodpuddle' ) ) <= 0.0 )
             {
                 CBaseEntity@ pBlood = g_EntityFuncs.CreateEntity( "env_bloodpuddle", null, true);
-				g_Util.Debug( pMonster.pev.classname );
+                g_Util.Debug( pMonster.pev.classname );
                 if( pBlood !is null )
                 {
-                    if( pEntity.GetCustomKeyvalues().HasKeyvalue( "$i_bloodpuddle" ) )
+                    if( g_Util.GetCKV( pEntity, '$i_bloodpuddle' ) != '' )
                     {
                         pBlood.pev.skin = atoi( g_Util.GetCKV( pMonster, '$i_bloodpuddle' ) );
                     }
@@ -124,17 +149,4 @@ namespace env_bloodpuddle
             }
         }
     }
-
-	bool Register = g_Util.CustomEntity( 'env_bloodpuddle::env_bloodpuddle','env_bloodpuddle' );
-    CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "Think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
-	string AutoPrecache = PrecacheModel();
-
-    string BloodModel = 'models/mikk/misc/bloodpuddle.mdl';
-
-	string PrecacheModel( const string& in szModel = BloodModel )
-	{
-        g_Game.PrecacheModel( szModel );
-        g_Game.PrecacheGeneric( szModel );
-		return szModel;
-	}
 }

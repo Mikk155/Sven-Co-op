@@ -47,9 +47,19 @@ void MapInit()
 }
 ```
 
+- Alternativamente mediante trigger_script puedes cambiar el modelo tambien.
+	- 1 Primero asegurate de precachar tu modelo.
+	- 2 Pon trigger_script en think mode y dale trigger o activa la spawnflag 1 (start on)
+	- 3 en ``m_iszScriptFunctionName`` debes poner ``env_bloodpuddle::model``
+	- 4 en la key ``model`` del trigger_script debes poner la ruta de el modelo i.e ``models/scmod/blood.mdl``
+
 </p>
 </details>
 
 - Añade una [Custom Key Value](custom_keyvalue_spanish.md) en el monster que no quieras que genere un charco de sangre. ``$f_bloodpuddle`` en un valor de ``1``
 
 - Usar skin personalizada por cada monster, Añade una [Custom Key Value](custom_keyvalue_spanish.md) en el monster que quieras que genere sangre de otro color. ``$i_bloodpuddle`` en un valor ecual a el indice de skin en el modelo. Si no se utiliza, el tipo de sangre del npc definirá el color del modelo, 0 por rojo, 1 por otros.
+
+- Puedes crear un ``env_bloodpuddle`` mediante trigger_createentity, squadmaker, monstermaker o entitymaker y se empezará a expandir apenas la entidad sea creada.
+
+- La entidad de por si tambien soporta modelo personalizado.

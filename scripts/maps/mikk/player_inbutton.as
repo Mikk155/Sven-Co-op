@@ -1,6 +1,15 @@
 #include "utils"
+
+bool player_inbutton_register = g_Util.CustomEntity( 'player_inbutton::player_inbutton','player_inbutton' );
+
 namespace player_inbutton
 {
+    enum player_inbutton_spawnflags
+    {
+        PLAYERS_ANYWHERE = 1,
+        NO_KEY_INPUT_MSG = 2
+    }
+
     class player_inbutton : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool KeyValue( const string& in szKey, const string& in szValue )
@@ -18,22 +27,22 @@ namespace player_inbutton
 
             SetBoundaries();
 
-			if( wait == 1 ) self.pev.netname = 'attack';
-			else if( wait == 2 ) self.pev.netname = 'jump';
-			else if( wait == 4 ) self.pev.netname = 'duck';
-			else if( wait == 8 ) self.pev.netname = 'forward';
-			else if( wait == 16 ) self.pev.netname = 'back';
-			// else if( wait == 64 ) self.pev.netname = 'cancelselect';
-			else if( wait == 128 ) self.pev.netname = 'left';
-			else if( wait == 256 ) self.pev.netname = 'right';
-			else if( wait == 512 ) self.pev.netname = 'moveleft';
-			else if( wait == 1024 ) self.pev.netname = 'moveright';
-			else if( wait == 2048 ) self.pev.netname = 'attack2';
-			// else if( wait == 4096 ) self.pev.netname = 'speed';
-			else if( wait == 8192 ) self.pev.netname = 'reload';
-			else if( wait == 16384 ) self.pev.netname = 'alt1';
-			else if( wait == 32768 ) self.pev.netname = 'showscores';
-			else self.pev.netname = 'use';
+            if( wait == 1 ) self.pev.netname = 'attack';
+            else if( wait == 2 ) self.pev.netname = 'jump';
+            else if( wait == 4 ) self.pev.netname = 'duck';
+            else if( wait == 8 ) self.pev.netname = 'forward';
+            else if( wait == 16 ) self.pev.netname = 'back';
+            // else if( wait == 64 ) self.pev.netname = 'cancelselect';
+            else if( wait == 128 ) self.pev.netname = 'left';
+            else if( wait == 256 ) self.pev.netname = 'right';
+            else if( wait == 512 ) self.pev.netname = 'moveleft';
+            else if( wait == 1024 ) self.pev.netname = 'moveright';
+            else if( wait == 2048 ) self.pev.netname = 'attack2';
+            // else if( wait == 4096 ) self.pev.netname = 'speed';
+            else if( wait == 8192 ) self.pev.netname = 'reload';
+            else if( wait == 16384 ) self.pev.netname = 'alt1';
+            else if( wait == 32768 ) self.pev.netname = 'showscores';
+            else self.pev.netname = 'use';
 
             SetThink( ThinkFunction( this.CheckInVolume ) );
             self.pev.nextthink = g_Engine.time + 0.2f;
@@ -58,13 +67,13 @@ namespace player_inbutton
 
         void CheckInVolume()
         {
-            if( master() )
+            if( IsLockedByMaster() )
             {
                 self.pev.nextthink = g_Engine.time + 0.5f;
                 return;
             }
 
-			for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
+            for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
             {
                 CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
@@ -72,9 +81,13 @@ namespace player_inbutton
                 {
                     if( atof( g_Util.GetCKV( pPlayer, "$f_player_inbutton" ) ) <= 0.0 )
                     {
-                        if( spawnflag( 1 ) or self.Intersects( pPlayer ) )
+                        if( spawnflag( PLAYERS_ANYWHERE ) or self.Intersects( pPlayer ) )
                         {
-                            g_PlayerFuncs.PrintKeyBindingString( pPlayer, string( ReadLanguages( pPlayer ) ) + "\n"  );
+                            if( !spawnflag( NO_KEY_INPUT_MSG ) )
+                            {
+                                g_PlayerFuncs.PrintKeyBindingString( pPlayer, string( ReadLanguages( pPlayer ) ) + "\n"  );
+                            }
+
                             Verify( pPlayer );
                         }
                     }
@@ -97,5 +110,4 @@ namespace player_inbutton
             }
         }
     }
-	bool Register = g_Util.CustomEntity( 'player_inbutton::player_inbutton','player_inbutton' );
 }

@@ -1,4 +1,8 @@
-#include "utils"
+// This script is subject to change. copy in your own folder if want to use.
+#include "../mikk/utils"
+
+bool env_spritetrail_register = g_Util.CustomEntity( 'env_spritetrail::env_spritetrail','env_spritetrail' );
+
 namespace env_spritetrail
 {
     class env_spritetrail : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -13,8 +17,7 @@ namespace env_spritetrail
 
         void Precache()
         {
-            g_Game.PrecacheModel( string( self.pev.model ) );
-            g_Game.PrecacheGeneric( string( self.pev.model ) );
+            CustomModelPrecache();
             BaseClass.Precache();
         }
 
@@ -31,7 +34,6 @@ namespace env_spritetrail
             BaseClass.Spawn();
         }
 
-        // Entity to use origin at. if null = This, if "!activator" = activator
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
             if( string( self.pev.target ) == "!activator" && pActivator !is null )
@@ -55,35 +57,21 @@ namespace env_spritetrail
 
         void TriggerThink()
         {
-            if( master() )
+            if( !IsLockedByMaster() )
             {
-                self.pev.nextthink = g_Engine.time + 0.5f;
-                return;
+                if( hTargetEnt.GetEntity() is null )
+                {
+                    g_Util.Debug("[env_spritetrail] NULL entity in env_spritetrail. trail set on self entity. (" + self.GetTargetname() + ")" );
+                    hTargetEnt = self;
+                    self.pev.nextthink = g_Engine.time + 0.5f;
+                }
+                else
+                {
+                    g_Effect.beamfollow( hTargetEnt.GetEntity(), string( self.pev.model ), int( self.pev.health ), int( self.pev.scale ), self.pev.rendercolor, int( self.pev.renderamt ) );
+                }
             }
-
-            if( hTargetEnt.GetEntity() is null )
-            {
-                g_Util.Debug("NULL entity in env_spritetrail. trail set on self entity.");
-                hTargetEnt = self;
-                self.pev.nextthink = g_Engine.time + 0.5f;
-                return;
-            }
-
-            int iEntityIndex = g_EntityFuncs.EntIndex( hTargetEnt.GetEntity().edict() );
-            NetworkMessage message( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
-                message.WriteByte( TE_BEAMFOLLOW );
-                message.WriteShort( iEntityIndex );
-                message.WriteShort( int( g_Game.PrecacheModel( self.pev.model ) ) );
-                message.WriteByte( int( self.pev.health ) );
-                message.WriteByte( int( self.pev.scale ) );
-                message.WriteByte( int( self.pev.rendercolor.x ) );
-                message.WriteByte( int( self.pev.rendercolor.y ) );
-                message.WriteByte( int( self.pev.rendercolor.z ) );
-                message.WriteByte( int( self.pev.renderamt ) );
-            message.End();
 
             self.pev.nextthink = ( delay > 0.0 ) ? g_Engine.time + delay : g_Engine.time + 0.1f;
         }
     }
-	bool Register = g_Util.CustomEntity( 'env_spritetrail::env_spritetrail','env_spritetrail' );
 }

@@ -1,7 +1,10 @@
 #include "utils"
+
+bool config_map_precache_register = g_Util.CustomEntity( 'config_map_precache::config_map_precache','config_map_precache' );
+
 namespace config_map_precache
 {
-    class config_map_precache : ScriptBaseEntity, ScriptBaseCustomEntity
+    class config_map_precache : ScriptBaseEntity
     {
         dictionary g_PrecacheKeys;
 
@@ -50,11 +53,9 @@ namespace config_map_precache
         {
             Precache();
 
-            g_Util.Debug( "[config_map_precache] Precaching..." );
-
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
-                g_Util.Debug( "'" + string( g_PrecacheKeys[ string( strKeyValues[ui] ) ] ) + "'" );
+                g_Util.Debug( "[config_map_precache] '" + string( g_PrecacheKeys[ string( strKeyValues[ui] ) ] ) + "'" );
             }
 
             g_Util.Debug( "[config_map_precache] Map precached configuration. Removing entity..." );
@@ -64,5 +65,4 @@ namespace config_map_precache
             BaseClass.Spawn();
         }
     }
-	bool Register = g_Util.CustomEntity( 'config_map_precache::config_map_precache','config_map_precache' );
 }

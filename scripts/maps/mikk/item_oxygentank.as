@@ -1,4 +1,8 @@
 #include "utils"
+
+bool item_oxygentank_register = g_Util.CustomEntity( 'item_oxygentank::item_oxygentank','item_oxygentank' );
+bool env_oxygenbubble_register = g_Util.CustomEntity( 'item_oxygentank::env_oxygenbubble','env_oxygenbubble' );
+
 namespace item_oxygentank
 {
     class item_oxygentank : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -22,10 +26,10 @@ namespace item_oxygentank
         {
             BaseClass.Precache();
             g_Game.PrecacheModel( sprite );
-            g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ) ? "models/w_oxygen.mdl" : string( self.pev.model ) );
+            CustomModelPrecache('models/w_oxygen.mdl');
             g_Game.PrecacheGeneric( 'sound/' + splashsound );
             g_SoundSystem.PrecacheSound( splashsound );
-			g_Game.PrecacheOther( 'env_oxygenbubble' );
+            g_Game.PrecacheOther( 'env_oxygenbubble' );
         }
         
         void Spawn()
@@ -33,15 +37,14 @@ namespace item_oxygentank
             Precache();
             self.pev.movetype = self.pev.movetype;
             self.pev.solid = SOLID_TRIGGER;
-
-            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ) ? "models/w_oxygen.mdl" : string( self.pev.model ) );
+            CustomModelSet('models/w_oxygen.mdl');
 
             if( minhullsize == g_vecZero )
                 minhullsize = Vector(-32,-32,-32);
             if( maxhullsize == g_vecZero )
                 maxhullsize = Vector(32,32,32);
 
-            SetBoundaries();
+            if( SetBoundaries() )
 
             SetThink( ThinkFunction( this.letsRespawn ) );
         }
@@ -54,15 +57,15 @@ namespace item_oxygentank
         
         void Touch( CBaseEntity@ pOther ) 
         {
-            if( master()
+            if( IsLockedByMaster()
             or self.pev.health > 0.0 
             or pOther is null 
             or !pOther.IsPlayer() 
             or spawnflag( 2 ) && pOther.pev.button & 32 == 0
-			or spawnflag( 1 ) && g_Util.GetCKV( pOther, '$i_item_oxygentank_' + self.entindex() ) != '' )
-			{
+            or spawnflag( 1 ) && g_Util.GetCKV( pOther, '$i_item_oxygentank_' + self.entindex() ) != '' )
+            {
                 return;
-			}
+            }
 
             g_SoundSystem.EmitSoundDyn( pOther.edict(), CHAN_ITEM, splashsound, 1.0, ATTN_NORM, 0, PITCH_HIGH );
             
@@ -117,6 +120,4 @@ namespace item_oxygentank
             self.pev.nextthink = g_Engine.time + 0.01f;
         }
     }
-	bool Register = g_Util.CustomEntity( 'item_oxygentank::item_oxygentank','item_oxygentank' );
-	bool Register2 = g_Util.CustomEntity( 'item_oxygentank::env_oxygenbubble','env_oxygenbubble' );
 }

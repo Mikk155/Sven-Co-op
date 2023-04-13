@@ -47,7 +47,7 @@ namespace player_equipment
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( !master() )
+            if( !IsLockedByMaster() )
 			{
 				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
                 {

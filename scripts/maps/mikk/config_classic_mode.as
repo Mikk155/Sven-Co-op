@@ -1,9 +1,29 @@
-#include "utils"
+#include 'utils'
+
+bool config_classic_mode_register = g_Util.CustomEntity( 'config_classic_mode::config_classic_mode','config_classic_mode' );
+bool config_classic_mode_enable = config_classic_mode_support();
+bool config_classic_mode_support()
+{
+    g_ClassicMode.EnableMapSupport();
+    return true;
+}
+
 namespace config_classic_mode
 {
+    enum config_classic_mode_spawnflags
+    {
+        RESTART_NOW = 1
+    }
+
     class config_classic_mode : ScriptBaseEntity, ScriptBaseCustomEntity
     {
-        private string target_toggle, target_failed, target_enabled, target_disabled;
+        private string
+        m_iszTargetOnToggle,
+        m_iszTargetOnFail,
+        m_iszTargetOnEnable,
+        m_iszTargetOnDisable;
+
+        private float m_iThinkTime;
 
         dictionary g_ItemMapping;
 
@@ -13,21 +33,25 @@ namespace config_classic_mode
 
             g_ItemMapping[ szKey ] = szValue;
 
-            if( szKey == "target_toggle" )
+            if( szKey == 'm_iszTargetOnToggle' )
             {
-                target_toggle = szValue;
+                m_iszTargetOnToggle = szValue;
             }
-            else if( szKey == "target_failed" )
+            else if( szKey == 'm_iszTargetOnFail' )
             {
-                target_failed = szValue;
+                m_iszTargetOnFail = szValue;
             }
-            else if( szKey == "target_enabled" )
+            else if( szKey == 'm_iszTargetOnEnable' )
             {
-                target_enabled = atof( szValue );
+                m_iszTargetOnEnable = szValue;
             }
-            else if( szKey == "target_disabled" )
+            else if( szKey == 'm_iszTargetOnDisable' )
             {
-                target_disabled = atof( szValue );
+                m_iszTargetOnDisable = szValue;
+            }
+            else if( szKey == 'm_iThinkTime' )
+            {
+                m_iThinkTime = atof( szValue );
             }
             return true;
         }
@@ -41,21 +65,20 @@ namespace config_classic_mode
         {
             if( g_ClassicMode.IsEnabled() )
             {
-                g_Util.Debug( "[config_classic_mode]" );
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string Key = string( strKeyValues[ui] );
                     string Value = string( g_ItemMapping[ Key ] );
 
-                    if( string( Key ).StartsWith( "models/" ) )
+                    if( string( Key ).StartsWith( 'models/' ) )
                     {
                         g_Game.PrecacheModel( Value );
-                        g_Util.Debug( "Precached model '" + Value + "'" );
+                        g_Util.Debug( '[config_classic_mode] Precached model '' + Value + ''' );
                     }
                     else
                     {
                         g_Game.PrecacheOther( Value );
-                        g_Util.Debug( "Precached item '" + Value + "'" );
+                        g_Util.Debug( '[config_classic_mode] Precached item '' + Value + ''' );
                     }
                 }
             }
@@ -67,31 +90,30 @@ namespace config_classic_mode
         {
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
             {
-                g_Util.Debug( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
+                g_Util.Debug( self.GetClassname() + '[config_classic_mode] Can not use more than one entity per level. Removing...' );
                 g_EntityFuncs.Remove( self );
             }
 
             if( g_ClassicMode.IsEnabled() )
             {
-                g_Util.Debug( "[config_classic_mode]" );
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string Key = string( strKeyValues[ui] );
                     string Value = string( g_ItemMapping[ Key ] );
 
-                    if( string( Key ).StartsWith( "models/" ) )
+                    if( string( Key ).StartsWith( 'models/' ) )
                     {
                         dictionary g_changemodel;
-                        g_changemodel [ "target" ] = "!activator";
-                        g_changemodel [ "model" ] = Value;
-                        g_changemodel [ "targetname" ] =  "CCM_" + Key;
-                        g_EntityFuncs.CreateEntity( "trigger_changemodel", g_changemodel, true );
-                        g_Util.Debug( "Created trigger_changemodel replaces '" + Key + "' -> '" + Value + "'" );
+                        g_changemodel [ 'target' ] = '!activator';
+                        g_changemodel [ 'model' ] = Value;
+                        g_changemodel [ 'targetname' ] =  'CCM_' + Key;
+                        g_EntityFuncs.CreateEntity( 'trigger_changemodel', g_changemodel, true );
+                        g_Util.Debug( '[config_classic_mode] Created trigger_changemodel replaces "' + Key + '" -> "' + Value + '"' );
                     }
                 }
             }
 
-            g_Util.Trigger( ( g_ClassicMode.IsEnabled() ) ? target_enabled : target_disabled , self, self, USE_TOGGLE, delay );
+            g_Util.Trigger( ( g_ClassicMode.IsEnabled() ) ? m_iszTargetOnEnable : m_iszTargetOnDisable , self, self, USE_TOGGLE, delay );
 
             SetThink( ThinkFunction( this.Think ) );
             self.pev.nextthink = g_Engine.time + 0.1f;
@@ -101,22 +123,22 @@ namespace config_classic_mode
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( master() )
+            if( IsLockedByMaster() )
             {
                 return;
             }
             else
             if( g_ClassicMode.IsEnabled() && useType == USE_ON || !g_ClassicMode.IsEnabled() && useType == USE_OFF )
             {
-                g_Util.Trigger( target_failed, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
                 return;
             }
 
-            g_ClassicMode.SetShouldRestartOnChange( spawnflag( 1 ) );
+            g_ClassicMode.SetShouldRestartOnChange( spawnflag( RESTART_NOW ) );
 
             g_ClassicMode.Toggle();
 
-            g_Util.Trigger( target_toggle, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+            g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
         }
 
         void Think()
@@ -131,24 +153,24 @@ namespace config_classic_mode
                     CBaseEntity@ pEntity = null;
                     CBaseEntity@ pWeapon = null;
 
-                    while( ( @pEntity = g_EntityFuncs.FindEntityByString( pEntity, "model", Key ) ) !is null )
+                    while( ( @pEntity = g_EntityFuncs.FindEntityByString( pEntity, 'model', Key ) ) !is null )
                     {
-                        if( pEntity !is null && g_Util.GetCKV( pEntity, "$i_classic_mode_ignore" ) != "1" )
+                        if( pEntity !is null && g_Util.GetCKV( pEntity, '$i_classic_mode_ignore' ) != '1' )
                         {
-                            g_Util.Debug( "[config_classic_mode] replaced '" + string( pEntity.pev.model ) + "' -> '" + string( Value ) + "'" );
-                            g_Util.Trigger( "CCM_" + Key, pEntity, self, USE_ON, 0.0f );
+                            g_Util.Debug( '[config_classic_mode] replaced '' + string( pEntity.pev.model ) + '' -> '' + string( Value ) + ''' );
+                            g_Util.Trigger( 'CCM_' + Key, pEntity, self, USE_ON, 0.0f );
                         }
                     }
 
-                    if(string( Key ).StartsWith( 'weapon') 
+                    if(string( Key ).StartsWith( 'weapon_' )
                     or string( Key ).StartsWith( 'item_' )
                     or string( Key ).StartsWith( 'ammo_' ) )
                     {
-                        while( ( @pWeapon = g_EntityFuncs.FindEntityByString( pWeapon, "classname", Key ) ) !is null )
+                        while( ( @pWeapon = g_EntityFuncs.FindEntityByString( pWeapon, 'classname', Key ) ) !is null )
                         {
-                            if( pWeapon !is null && g_Util.GetCKV( pWeapon, "$i_classic_mode_ignore" ) != "1" )
+                            if( pWeapon !is null && g_Util.GetCKV( pWeapon, '$i_classic_mode_ignore' ) != '1' )
                             {
-                                g_Util.Debug( "[config_classic_mode] replaced '" + string( pWeapon.pev.classname ) + "' -> '" + string( Value ) + "'" );
+                                g_Util.Debug( '[config_classic_mode] replaced '' + string( pWeapon.pev.classname ) + '' -> '' + string( Value ) + ''' );
                                 g_EntityFuncs.Create( Value, pWeapon.pev.origin, pWeapon.pev.angles, false);
                                 g_EntityFuncs.Remove( pWeapon );
                             }
@@ -156,14 +178,7 @@ namespace config_classic_mode
                     }
                 }
             }
-            self.pev.nextthink = g_Engine.time + self.pev.health + 0.1f;
+            self.pev.nextthink = g_Engine.time + m_iThinkTime + 0.1f;
         }
     }
-	bool Register = g_Util.CustomEntity( 'config_classic_mode::config_classic_mode','config_classic_mode' );
-	bool blEnableMapSupport = EnableMapSupport();
-	bool EnableMapSupport()
-	{
-		g_ClassicMode.EnableMapSupport();
-		return true;
-	}
 }

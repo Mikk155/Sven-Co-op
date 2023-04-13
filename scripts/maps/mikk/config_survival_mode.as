@@ -1,13 +1,16 @@
 #include "utils"
+
+bool config_survival_mode_register = g_Util.CustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
+
 namespace config_survival_mode
 {
     class config_survival_mode : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool SurvivalEnabled = false;
-		
-        private string target_toggle;
 
-        private string target_failed;
+        private string m_iszTargetOnToggle;
+
+        private string m_iszTargetOnFail;
 
         private int mp_respawndelay = int( g_EngineFuncs.CVarGetFloat( "mp_respawndelay" ) );
 
@@ -26,13 +29,13 @@ namespace config_survival_mode
             {
                 mp_survival_startdelay = atoi( szValue );
             }
-            else if( szKey == "target_toggle" )
+            else if( szKey == "m_iszTargetOnToggle" )
             {
-                target_toggle = szValue;
+                m_iszTargetOnToggle = szValue;
             }
-            else if( szKey == "target_failed" )
+            else if( szKey == "m_iszTargetOnFail" )
             {
-                target_failed = szValue;
+                m_iszTargetOnFail = szValue;
             }
             else
             {
@@ -43,7 +46,7 @@ namespace config_survival_mode
 
         void Spawn()
         {
-			g_ClassicMode.EnableMapSupport();
+            g_ClassicMode.EnableMapSupport();
 
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
             {
@@ -64,7 +67,7 @@ namespace config_survival_mode
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( master() )
+            if( IsLockedByMaster() )
             {
                 return;
             }
@@ -74,7 +77,7 @@ namespace config_survival_mode
                 if( SurvivalEnabled )
                 {
                     g_Game.AlertMessage( at_console, "enabled\n" );
-                    g_Util.Trigger( target_failed, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                    g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
                 }
                 else
                 {
@@ -86,7 +89,7 @@ namespace config_survival_mode
             {
                 if( !SurvivalEnabled )
                 {
-                    g_Util.Trigger( target_failed, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                    g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
                 }
                 else
                 {
@@ -107,7 +110,7 @@ namespace config_survival_mode
                     SurvivalEnabled = true;
                 }
 
-                g_Util.Trigger( target_toggle, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
             }
             mp_survival_startdelay = 0;
         }
@@ -116,7 +119,7 @@ namespace config_survival_mode
         {
             if( !SurvivalEnabled  )
             {
-                if( mp_survival_startdelay >= 0 && !master() )
+                if( mp_survival_startdelay >= 0 && !IsLockedByMaster() )
                 {
                     if( mp_survival_startdelay > 0 )
                     {
@@ -243,25 +246,24 @@ namespace config_survival_mode
                 ) + "\n" );
             }
             else
-			{
-				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
-				{
-					CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+            {
+                for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; ++iPlayer )
+                {
+                    CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
-					if( pPlayer !is null )
-					{
-						g_PlayerFuncs.ClientPrint( pPlayer, szHUD,
-						g_Util.StringReplace
-						(
-							ReadLanguages( pPlayer ),
-							{
-								{ "!time", string( mp_survival_startdelay ) }
-							}
-						) + "\n" );
-					}
-				}
+                    if( pPlayer !is null )
+                    {
+                        g_PlayerFuncs.ClientPrint( pPlayer, szHUD,
+                        g_Util.StringReplace
+                        (
+                            ReadLanguages( pPlayer ),
+                            {
+                                { "!time", string( mp_survival_startdelay ) }
+                            }
+                        ) + "\n" );
+                    }
+                }
             }
         }
     }
-	bool Register = g_Util.CustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
 }

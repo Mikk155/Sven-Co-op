@@ -1,4 +1,7 @@
 #include "utils"
+
+bool env_spritehud_register = g_Util.CustomEntity( 'env_spritehud::env_spritehud','env_spritehud' );
+
 namespace env_spritehud
 {
     class env_spritehud : ScriptBaseEntity
@@ -146,5 +149,4 @@ namespace env_spritehud
             }
         }
     }
-	bool Register = g_Util.CustomEntity( 'env_spritehud::env_spritehud','env_spritehud' );
 }

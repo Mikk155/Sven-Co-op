@@ -193,7 +193,7 @@
         9 : "Hear Combat"
         10: "See Player Unconditional"
         11: "See Player, Not In Combat"
-		// -TODO
+        // -TODO
     ]
     TriggerTarget(string) : "Trigger Condition target"
     body(integer) : "Body" : 0
@@ -355,11 +355,11 @@
 // -todo custom entity used by AFKManager plugin. players that Intersects with this entity are ignored by the plugin.
 // @SolidClass base( bTargetname ) = afk_zone : "Ignore AFK players in zone"
 // [
-	// m_iszScriptFile(string) : "Script file" : "scripts/plugins/afk_manager.as"
+    // m_iszScriptFile(string) : "Script file" : "scripts/plugins/afk_manager.as"
 // ]
 // @PointClass base( bTargetname, bBBox ) = afk_zone : "Ignore AFK players in zone"
 // [
-	// m_iszScriptFile(string) : "Script file" : "scripts/plugins/afk_manager.as"
+    // m_iszScriptFile(string) : "Script file" : "scripts/plugins/afk_manager.as"
 // ]
 
 @PointClass base(bTargetname, bTarget, bKilltarget, bAngles) size(-16 -16 0, 16 16 72) color(164 0 255) = aiscripted_sequence : "AI Scripted Sequence"
@@ -405,7 +405,7 @@
         8: "8"
         9: "9"
         10: "10"
-	]
+    ]
     playmode(choices) : "Play Mode" : 0 =
     [
         0: "Default"
@@ -532,7 +532,7 @@
         8: "8"
         9: "9"
         10: "10"
-	]
+    ]
     spawnflags(flags) =
     [
         1 : "Start Silent" : 1
@@ -560,7 +560,7 @@
 @PointClass base(bPickup, bCustomModel) studio("models/w_shotbox.mdl") = ammo_buckshot : "Shotgun shell box" []
 
 @PointClass base(bPickup, bCustomModel) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
-@PointClass base(bPickup, bCustomModel) size(-16 -16 0, 16 16 32) studio("models/error.mdl") = ammo_custom : "Custom Ammo"
+@PointClass base(bPickup, bCustomModel, bMaster) studio("models/error.mdl") = ammo_custom : "Custom Ammo"
 [
     p_sound(sound) : "Custom Sound" : "items/9mmclip1.wav"
     am_name(choices) : "Ammo type" : "buckshot" =
@@ -587,7 +587,9 @@
     ]
     am_give(integer) : "Ammo ammout" : 8
     frags(integer) : "item per player (0 = infinite)" : 0
-	angelscript_file(string) : "Script file" : "mikk/ammo_custom.as"
+    
+    // Has no usage, only tells mapper if the entity is custom and requires a script
+    $s_angelscript_file(string) : "Script file" : "mikk/ammo_custom.as"
 ]
 @PointClass base(bPickup, bCustomModel) studio("models/w_gaussammo.mdl") = ammo_gaussclip : "Gauss/Gluon gun battery" []
 @PointClass base(bPickup, bCustomModel) studio("models/w_rpgammo.mdl") = ammo_rpgclip : "Rockets (x2)" []
@@ -625,13 +627,14 @@
     [
         1 : "Restart now" : 0
     ]
-    target_toggle(target_destination) : "target on change success (USE_TYPE)"
-    target_failed(target_destination) : "target on fail change (USE_TYPE)"
-    target_enabled(target_destination) : "target if is Enabled [Map start] (USE_TYPE)"
-    target_disabled(target_destination) : "target if is Disabled [Map start] (USE_TYPE)"
-    health(float) : "Think intervals (default is 0.1f)"
-	angelscript_file(string) : "Script file" : "mikk/config_classic_mode.as"
+    m_iszTargetOnToggle(target_destination) : "target on change success (USE_TYPE)"
+    m_iszTargetOnFail(target_destination) : "target on fail change (USE_TYPE)"
+    m_iszTargetOnEnable(target_destination) : "target if is Enabled [Map start] (USE_TYPE)"
+    m_iszTargetOnDisable(target_destination) : "target if is Disabled [Map start] (USE_TYPE)"
+    m_iThinkTime(float) : "Think intervals (default is 0.1f)"
+    $s_angelscript_file(string) : "Script file" : "mikk/config_classic_mode.as"
 ]
+
 @PointClass base(bTargetname, bMaster) color(40 200 150) = config_map_cvars : "Manipulate map's cvars"
 [
     spawnflags(flags) =
@@ -794,11 +797,11 @@
     sv_wateraccelerate(integer) : "sv_wateraccelerate"
     sv_waterfriction(integer) : "sv_waterfriction"
     skill(integer) : "skills (See skills.cfg)"
-	angelscript_file(string) : "Script file" : "mikk/config_map_cvars.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/config_map_cvars.as"
 ]
 @PointClass color(165 185 160) = config_map_precache : "Map precache configuration"
 [
-	// Relative to svencoop/
+    // Relative to svencoop/
     model#0(studio): "Precache model"
     model#1(studio): "Precache model"
     model#10(sprite): "Precache sprites"
@@ -809,75 +812,75 @@
     sound#4(sound) : "Precache Sounds"
     generic#0(string) : "Precache Generic stuff"
     generic#4(string) : "Precache Generic stuff"
-	angelscript_file(string) : "Script file" : "mikk/config_map_precache.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/config_map_precache.as"
 ]
 @PointClass base(bTargetname, bMaster, bDelay) color(0 255 255) = config_survival_mode : "Map SurvivalMode configuration"
 [
-    target_toggle(target_destination) : "target on change success (USE_TYPE)"
-    target_failed(target_destination) : "target on fail change (USE_TYPE)"
+    m_iszTargetOnToggle(target_destination) : "target on change success (USE_TYPE)"
+    m_iszTargetOnFail(target_destination) : "target on fail change (USE_TYPE)"
     mp_survival_startdelay(integer) : "delay before survival start"
     mp_respawndelay(integer) : "delay before respawn"
-	angelscript_file(string) : "Script file" : "mikk/config_survival_mode.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/config_survival_mode.as"
 ]
 
 @PointClass color(165 185 160) = custom_precache : "Custom Precache"
 [
-	model_1(studio): "Model 1"
-	model_2(studio): "Model 2"
-	model_3(studio): "Model 3"
-	model_4(studio): "Model 4"
-	model_5(studio): "Model 5"
-	model_6(studio): "Model 6"
-	model_7(studio): "Model 7"
-	model_8(studio): "Model 8"
-	model_9(studio): "Model 9"
+    model_1(studio): "Model 1"
+    model_2(studio): "Model 2"
+    model_3(studio): "Model 3"
+    model_4(studio): "Model 4"
+    model_5(studio): "Model 5"
+    model_6(studio): "Model 6"
+    model_7(studio): "Model 7"
+    model_8(studio): "Model 8"
+    model_9(studio): "Model 9"
 
-	sound_1(sound): "Sound 1"
-	sound_2(sound): "Sound 2"
-	sound_3(sound): "Sound 3"
-	sound_4(sound): "Sound 4"
-	sound_5(sound): "Sound 5"
-	sound_6(sound): "Sound 6"
-	sound_7(sound): "Sound 7"
-	sound_8(sound): "Sound 8"
-	sound_9(sound): "Sound 9"
+    sound_1(sound): "Sound 1"
+    sound_2(sound): "Sound 2"
+    sound_3(sound): "Sound 3"
+    sound_4(sound): "Sound 4"
+    sound_5(sound): "Sound 5"
+    sound_6(sound): "Sound 6"
+    sound_7(sound): "Sound 7"
+    sound_8(sound): "Sound 8"
+    sound_9(sound): "Sound 9"
 
-	sky_1(string): "Sky map 1"
-	sky_2(string): "Sky map 2"
-	sky_3(string): "Sky map 3"
-	sky_4(string): "Sky map 4"
-	sky_5(string): "Sky map 5"
-	sky_6(string): "Sky map 6"
-	sky_7(string): "Sky map 7"
-	sky_8(string): "Sky map 8"
-	sky_9(string): "Sky map 9"
+    sky_1(string): "Sky map 1"
+    sky_2(string): "Sky map 2"
+    sky_3(string): "Sky map 3"
+    sky_4(string): "Sky map 4"
+    sky_5(string): "Sky map 5"
+    sky_6(string): "Sky map 6"
+    sky_7(string): "Sky map 7"
+    sky_8(string): "Sky map 8"
+    sky_9(string): "Sky map 9"
 ]
 
 @PointClass base(bTargetname, bAngles, bCustomModel, bRendering) size(-16 -16 0, 16 16 72) studio() color(128 128 128) = cycler : "Monster Cycler"[]
 
 @PointClass base(bTargetname, bAngles, bRendering) sprite() color(128 128 128) = cycler_sprite : "Sprite Cycler"
 [
-	model(sprite) : "Sprite"
-	framerate(integer) : "Frames per second" : 10
+    model(sprite) : "Sprite"
+    framerate(integer) : "Frames per second" : 10
 ]
 
 @PointClass base(bMonster) size(-16 -16 -16, 16 16 16) studio() color(140 120 120)  = cycler_weapon : "Weapon Cycler"[]
 @PointClass sprite() base(bTargetname, bAngles, bRendering) size(-4 -4 -4, 4 4 4) sprite() color(70 70 70) = cycler_wreckage : "Wreckage"
 [
-	framerate(string) : "Framerate" : "10.0"
-	model(sprite) : "Sprite Name" : "sprites/fire.spr"
-	scale(string) : "Scale" : "1"
-	spawnflags(flags) =
-	[
-		32: "Toggle" : 0
-		64: "Start ON" : 0
-	]
+    framerate(string) : "Framerate" : "10.0"
+    model(sprite) : "Sprite Name" : "sprites/fire.spr"
+    scale(string) : "Scale" : "1"
+    spawnflags(flags) =
+    [
+        32: "Toggle" : 0
+        64: "Start ON" : 0
+    ]
 ]
-@PointClass base( bTargetname, bMaster ) size(-16 -16 0, 16 16 72) color(0 0 255) = entitymaker : "Makes a entity"
+@PointClass base( bTargetname ) size(-16 -16 0, 16 16 72) color(0 0 255) = entitymaker : "Makes a entity"
 [
     child_classname(string) : "New entity's ClassName"
     child_targetname(string) : "New entity's bTargetname"
-	angelscript_file(string) : "Script file" : "mikk/entitymaker.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/entitymaker.as"
 ]
 @PointClass base(bTargetname, bRendering) size(-12 -12 -12, 12 12 12) color(255 250 230) = env_beam : "Energy Beam Effect"
 [
@@ -946,7 +949,7 @@
         1 : "Yellow (Alien)"
         2 : "Other (skin index)"
     ]
-	angelscript_file(string) : "Script file" : "mikk/bloodpuddle.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/bloodpuddle.as"
 ]
 @SolidClass base(bTargetname, bZHLTbmodel) = env_bubbles : "Bubble Volume"
 [
@@ -964,63 +967,63 @@
     [
         1 : "Repeatable" : 0
     ]
-	$s_target(target_destination) : "Trigger when locked by master"
+    $s_target(target_destination) : "Trigger when locked by master"
 ]
 @PointClass base(bEffects, bRendercolor, bRenderamt) = env_effect_cylinder : "Effect"
 [
     model(sprite) : "Sprite" : "sprites/laserbeam.spr"
     frags(integer) : "Radius" : 64
-	max_health(choices) : "Large" : 0 =
+    max_health(choices) : "Large" : 0 =
     [
         0 : "Flat cylinder"
         1 : "Fat cylinder"
     ]
-	target(integer) : "Scroll Speed" : 0
-	netname(integer) : "Start Frame" : 0
-	message(integer) : "Framerate" : 16
-	health(integer) : "Life Time" : 8
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    target(integer) : "Scroll Speed" : 0
+    netname(integer) : "Start Frame" : 0
+    message(integer) : "Framerate" : 16
+    health(integer) : "Life Time" : 8
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects, bRendercolor, bRenderamt) = env_effect_disk : "Effect"
 [
     model(sprite) : "Sprite" : "sprites/laserbeam.spr"
     max_health(integer) : "Radius" : 200
-	netname(integer) : "Start frame" : 0
-	message(integer) : "Hold time" : 10
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    netname(integer) : "Start frame" : 0
+    message(integer) : "Hold time" : 10
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects, bRendercolor, bRenderamt) = env_effect_dlight : "Effect"
 [
     health(integer) : "Radius" : 32
     frags(integer) : "Life Time" : 255
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_implosion : "Effect"
 [
-	netname(integer) : "Radius" : 255
-	message(integer) : "Count of effects" : 32
-	target(integer) : "Life Time" : 30
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    netname(integer) : "Radius" : 255
+    message(integer) : "Count of effects" : 32
+    target(integer) : "Life Time" : 30
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_quake : "Effect"
 [
-	health(choices) : "Effect" : 0 =
+    health(choices) : "Effect" : 0 =
     [
         0 : "Explosion"
         1 : "Teleport"
     ]
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_smoke : "Effect"
 [
     model(sprite) : "Sprite" : "sprites/steam1.spr"
-	health(integer) : "Scale" : 10
-	max_health(integer) : "Framerate" : 10
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    health(integer) : "Scale" : 10
+    max_health(integer) : "Framerate" : 10
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_splash : "Effect"
 [
-	angles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
+    angles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
     health(integer) : "Speed" : 1
     max_health(integer) : "Noise speed" : 128
     netname(integer) : "Number of effects" : 120
@@ -1039,7 +1042,7 @@
         10 : "Brown"
         11 : "Cream 11"
     ]
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_spritefield : "Effect"
 [
@@ -1048,26 +1051,26 @@
     frags(integer) : "Sprite Count" : 128
     max_health(integer) : "Life" : 5
     health(integer) : "flags" : 30
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_spriteshooter : "Effect"
 [
     model(sprite) : "Sprite" : "sprites/hotglow.spr"
-	health(integer) : "Sprite count" : 4
-	max_health(integer) : "Sprites life" : 0
-	netname(integer) : "Sprite scale" : 1
-	target(integer) : "Sprite noise" : 8
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    health(integer) : "Sprite count" : 4
+    max_health(integer) : "Sprites life" : 0
+    netname(integer) : "Sprite scale" : 1
+    target(integer) : "Sprite noise" : 8
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_toxic : "Effect"
 [
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 @PointClass base(bEffects) = env_effect_tracer : "Effect"
 [
-	angles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
-	health(integer) : "Hold time" : 32
-	max_health(integer) : "Sprite Length" : 32
+    angles(string) : "Velocity Yaw Roll (X Y Z)" : "0 0 180"
+    health(integer) : "Hold time" : 32
+    max_health(integer) : "Sprite Length" : 32
     frags(choices) : "Color" : 0 =
     [
         0 : "White"
@@ -1083,7 +1086,7 @@
         10 : "Brown"
         11 : "Cream 11"
     ]
-	angelscript_file(string) : "Script file" : "mikk/env_effects.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_effects.as"
 ]
 
 @PointClass base(bTargetname) size(-12 -12 -12, 12 12 12) color(255 220 15) = env_explosion : "Explosion"
@@ -1131,7 +1134,7 @@
         5 : "Players touching (Auto + SET)"
     ]
     m_ifaderadius(integer) : "Radius" : 0
-	angelscript_file(string) : "Script file" : "mikk/env_fade_custom.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_fade_custom.as"
 ]
 @PointClass base( bFade, bBBox ) color(0 255 0) = env_fade_custom : "Screen Fade Custom"[]
 @SolidClass base( bFade ) = env_fade_custom : "Screen Fade Custom"[]
@@ -1146,7 +1149,7 @@
 //    iuser1(integer) : "Fog Field Radius" : 8192
     iuser2(integer) : "Start Distance" : 128
     iuser3(integer) : "End Distance" : 1024
-	angelscript_file(string) : "Script file" : "mikk/env_fog_custom.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_fog_custom.as"
 ]
 @PointClass base(bTargetname) size(-16 -16 -16, 16 16 16) color(128 255 32) = env_funnel : "Large Portal Funnel"
 [
@@ -1167,7 +1170,7 @@
     sound#4(sound) : "Sound FX" : "player/geiger4.wav"
     sound#5(sound) : "Sound FX" : "player/geiger5.wav"
     sound#6(sound) : "Sound FX" : "player/geiger6.wav"
-	angelscript_file(string) : "Script file" : "mikk/env_geiger.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_geiger.as"
 ]
 @PointClass base(bTargetname) color(255 255 128) color(4 32 250) = env_global : "Global State"
 [
@@ -1198,7 +1201,7 @@
 
 @PointClass base(bTargetname, bMaster) = env_hurtzone : "Episodic crystals"
 [
-	angelscript_file(string) : "Script file" : "mikk/env_hurtzone.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_hurtzone.as"
 ]
 
 @PointClass base(bTargetname, bRendering, bAngles, bRenderamt, bRendercolor) size(-8 -8 -8, 8 8 8) color(255 64 2) = env_laser : "Laser Beam Effect"
@@ -1242,7 +1245,7 @@
         8: "8"
         9: "9"
         10: "10"
-	]
+    ]
     messageattenuation(choices) : "Sound Radius" : 0 =
     [
         0 : "Small Radius"
@@ -1250,7 +1253,7 @@
         2 : "Large  Radius"
         3 : "Play Everywhere"
     ]
-	angelscript_file(string) : "Script file" : "mikk/env_message.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_message.as"
 ]
 @PointClass base(bTargetname, bRendering) color(110 120 0) = env_render : "Render Controls"
 [
@@ -1270,11 +1273,11 @@
         0: "No [AS] Functions"
         1: "Allow [AS] Functions"
     ]
-	$s_target(target_destination) : "[AS] Trigger After Action"
-	$f_gradual(float) : "[AS] Gradual amt Interval" 0.5
-	$i_gradual(string) : "[AS] Gradual amt modifier" "-10"
-	$s_gradual(integer) : "[AS] Gradual amt until" 0
-	angelscript_file(string) : "Script file" : "mikk/env_render_custom.as"
+    $s_target(target_destination) : "[AS] Trigger After Action"
+    $f_gradual(float) : "[AS] Gradual amt Interval" 0.5
+    $i_gradual(string) : "[AS] Gradual amt modifier" "-10"
+    $s_gradual(integer) : "[AS] Gradual amt until" 0
+    $s_angelscript_file(string) : "Script file" : "mikk/env_render_custom.as"
 ]
 @PointClass base(bTargetname, bRendering) = env_render_individual : "Per-player render settings for entities"
 [
@@ -1296,7 +1299,7 @@
 ]
 @PointClass base(bTargetname) = env_scanner : "Black-Mesa Scanner"
 [
-	angelscript_file(string) : "Script file" : "mikk/env_scanner.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_scanner.as"
 ]
 
 @PointClass base(bTarget, bTargetname) size(-16 -16 -16, 16 16 16) iconsprite("sprites/vhe-iconsprites/env_sentence.spr") color(164 128 164) = env_sentence : "Announcement Sentence"
@@ -1520,7 +1523,7 @@
     holdTime(float) : "Hold Time" : 1.0
     fadeinTime(float) : "Fade In Time" : 0.5
     fadeoutTime(float) : "Fade Out Time" : 0.5
-	angelscript_file(string) : "Script file" : "mikk/env_spritehud.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_spritehud.as"
 ]
 @PointClass sprite() base(bTargetname, bMaster, bRendering) size( -10 -10 -10, 10 10 10 ) = env_spritetrail : "Trail Sprite"
 [
@@ -1529,7 +1532,7 @@
     frags(float) : "Next think time" : 0.1
     health(float) : "Fade time" : 1.0
     scale(integer) : "Texture Scale (0-255)" : 10
-	angelscript_file(string) : "Script file" : "mikk/env_spritetrail.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/env_spritetrail.as"
 ]
 @BaseClass = bPlatSounds
 [
@@ -1962,7 +1965,7 @@
         2: "Toggle"
     ]
 ]
-@BaseClass base(bGlobal, bTargetname, bTarget, bKilltarget, bMaster, bFilterIn, bFilterOut, bInventoryRules, bAttackObject, bRendering, bAngles, bZHLT, bBaseLockable, bStartStopable, bOpenClosable) = Door
+@BaseClass base(bGlobal, bTargetname, bTarget, bKilltarget, bMaster, bFilterIn, bFilterOut, bInventoryRules, bAttackObject, bRendering, bAngles, bZHLT, bBaseLockable, bStartStopable, bOpenClosable) = bDoor
 [
     speed(integer) : "Speed" : 100
     movesnd(choices) : "Move Sound" : 0 =
@@ -3027,23 +3030,21 @@
 [
     // using a value of 60 mean that one minute (in-game) is equal to one minute (in real life)
     // using a value of 1  mean that one minute (in-game) is equal to one second (in real life)
-    health(string) : "One minute is (IRL-seconds)" : "60"
+    m_iOneSecondIsEqualTo(integer) : "One minute is (IRL-seconds)" : 60
+    m_fThinkTime(float) : "Think time ( 1.0 = one second)" : 1.0
+    m_iszTriggerPerSecond(target_destination) : "Trigger when a second increase"
+    m_iszTriggerPerMinute(target_destination) : "Trigger when a minute increase"
+    m_iszTriggerPerHour(target_destination) : "Trigger when a hour increase"
+    m_iszTriggerPerDay(target_destination) : "Trigger when a day increase"
     // Internal values that will be updated by the entity current time and can be set though changevalue.
-    current_second(integer) : "Current Second" : 0
-    trigger_second(target_destination) : "Trigger when a second increase (USE_TYPE)"
+    $i_second(integer) : "Current Second" : 0
+    $i_minute(integer) : "Current Minute" : 0
+    $i_hour(integer) : "Current Hour" : 0
+    $i_day(integer) : "Current Day" : 0
 
-    current_minute(integer) : "Current Minute" : 0
-    trigger_minute(target_destination) : "Trigger when a minute increase (USE_TYPE)"
+    // Targetname of a light_spot to change its pattern depending the time. if "!world" it'll be a global change.
+    m_iszPatternLight(target_destination) : "light to change pattern" : "!world"
 
-    current_hour(integer) : "Current Hour" : 0
-    trigger_hour(target_destination) : "Trigger when a hour increase"
-
-    current_day(integer) : "Current Day" : 0
-    trigger_day(target_destination) : "Trigger when a day increase (USE_TYPE)"
-
-    // bTargetname of a light_spot to change its pattern depending the time. if "!world" it'll be a global change.
-    light_pattern(target_destination) : "light to change pattern" : "!world"
-    
     spawnflags(Flags) =
     [
         // If set. the entity will start with the host's real time
@@ -3125,7 +3126,7 @@
 
 @PointClass base(bTargetname, bTarget, bCustomModel, bRendering) = info_commentary : "Dev commentary"
 [
-	angelscript_file(string) : "Script file" : "mikk/info_commentary.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/info_commentary.as"
 ]
 
 @PointClass color(255 231 127) = info_compile_parameters : "Map Compile Parameters"
@@ -3937,7 +3938,7 @@
         6: "Fall to the ground"
         10: "Bounce"
     ]
-	angelscript_file(string) : "Script file" : "mikk/item_oxygentank.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/item_oxygentank.as"
 ]
 
 @PointClass size(-8 -8 0, 8 8 48) base(bItem) studio("models/DY/hev.mdl") = item_recharge : "HEV charger (wall)"
@@ -4175,7 +4176,7 @@
         1: "All Players" : 0
     ]
     message(string) : "Console variable"
-	angelscript_file(string) : "Script file" : "mikk/player_command.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/player_command.as"
 ]
 
 @PointClass base(bTargetname, bTarget, bMaster, bDelay) = player_data : "Exposes data from players"
@@ -4184,7 +4185,7 @@
     [
         1: "All Players" : 0
     ]
-	angelscript_file(string) : "Script file" : "mikk/player_data.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/player_data.as"
 ]
 
 @PointClass base(bTargetname, bMaster, bTarget, bDelay) color(200 100 0) = player_equipment : "player_weaponstrip & game_player_equip improved"
@@ -4195,219 +4196,235 @@
         1 : "All players"
         2 : "All players except activator"
     ]
-	item_suit(choices) : "item_suit" : 6 =
-	[
-		1 : "Strip suit"
-		4 : "Give suit"
-		6 : "Do nothing"
-	]
-	item_longjump(choices) : "item_longjump" : 6 =
-	[
-		1 : "Strip longjump"
-		4 : "Give longjump"
-		6 : "Do nothing"
-	]
-	weapon_m16(choices) : "weapon_m16" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_m249(choices) : "weapon_m249" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_shotgun(choices) : "weapon_shotgun" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_9mmhandgun(choices) : "weapon_9mmhandgun" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_9mmAR(choices) : "weapon_9mmAR" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_uzi(choices) : "weapon_uzi" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_uziakimbo(choices) : "weapon_uziakimbo" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_sporelauncher(choices) : "weapon_sporelauncher" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_rpg(choices) : "weapon_rpg" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_gauss(choices) : "weapon_gauss" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_egon(choices) : "weapon_egon" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_displacer(choices) : "weapon_displacer" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_crossbow(choices) : "weapon_crossbow" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_eagle(choices) : "weapon_eagle" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_357(choices) : "weapon_357" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_sniperrifle(choices) : "weapon_sniperrifle" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_satchel(choices) : "weapon_satchel" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_snark(choices) : "weapon_snark" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_handgrenade(choices) : "weapon_handgrenade" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	weapon_tripmine(choices) : "weapon_tripmine" : 6 =
-	[
-		0 : "Strip weapon and ammo"
-		1 : "Strip weapon"
-		2 : "Strip ammo"
-		3 : "Give weapon and ammo"
-		4 : "Give weapon"
-		5 : "Give ammo"
-		6 : "Do nothing"
-	]
-	angelscript_file(string) : "Script file" : "mikk/player_equipment.as"
+    item_suit(choices) : "item_suit" : 6 =
+    [
+        1 : "Strip suit"
+        4 : "Give suit"
+        6 : "Do nothing"
+    ]
+    weapon_crowbar(choices) : "weapon_crowbar" : 6 =
+    [
+        1 : "Strip weapon"
+        4 : "Give weapon"
+        6 : "Do nothing"
+    ]
+    item_longjump(choices) : "item_longjump" : 6 =
+    [
+        1 : "Strip longjump"
+        4 : "Give longjump"
+        6 : "Do nothing"
+    ]
+    weapon_medkit(choices) : "weapon_medkit" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_m16(choices) : "weapon_m16" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_m249(choices) : "weapon_m249" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_shotgun(choices) : "weapon_shotgun" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_9mmhandgun(choices) : "weapon_9mmhandgun" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_9mmAR(choices) : "weapon_9mmAR" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_uzi(choices) : "weapon_uzi" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_uziakimbo(choices) : "weapon_uziakimbo" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_sporelauncher(choices) : "weapon_sporelauncher" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_rpg(choices) : "weapon_rpg" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_gauss(choices) : "weapon_gauss" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_egon(choices) : "weapon_egon" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_displacer(choices) : "weapon_displacer" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_crossbow(choices) : "weapon_crossbow" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_eagle(choices) : "weapon_eagle" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_357(choices) : "weapon_357" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_sniperrifle(choices) : "weapon_sniperrifle" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_satchel(choices) : "weapon_satchel" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_snark(choices) : "weapon_snark" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_handgrenade(choices) : "weapon_handgrenade" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    weapon_tripmine(choices) : "weapon_tripmine" : 6 =
+    [
+        0 : "Strip weapon and ammo"
+        1 : "Strip weapon"
+        2 : "Strip ammo"
+        3 : "Give weapon and ammo"
+        4 : "Give weapon"
+        5 : "Give ammo"
+        6 : "Do nothing"
+    ]
+    $s_angelscript_file(string) : "Script file" : "mikk/player_equipment.as"
 ]
 
 @BaseClass base( bTargetname, bTarget, bDelay, bMaster ) = bBasePlayerInButton
@@ -4436,7 +4453,7 @@
     [
         1 : "Allow Everywhere"     : 1
     ]
-	angelscript_file(string) : "Script file" : "mikk/player_inbutton.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/player_inbutton.as"
 ]
 
 @SolidClass base(bBasePlayerInButton) = player_inbutton : "Player Zone In-Button"[]
@@ -4498,11 +4515,11 @@
         1 : "Yes"
         2 : "Yes, In reverse"
     ]
-	m_iszSetObserverTarget(target_destination) : "Start observing a player by index/bTargetname"
-	m_fDelayBeforeReSpawn(integer) : "Time before Re-Spawn (-1 = never)" : -1
-	target(target_destination) : "Trigger when join spectator"
-	netname(target_destination) : "Trigger when left spectator"
-	angelscript_file(string) : "Script file" : "mikk/player_observer.as"
+    m_iszSetObserverTarget(target_destination) : "Start observing a player by index/bTargetname"
+    m_fDelayBeforeReSpawn(integer) : "Time before Re-Spawn (-1 = never)" : -1
+    target(target_destination) : "Trigger when join spectator"
+    netname(target_destination) : "Trigger when left spectator"
+    $s_angelscript_file(string) : "Script file" : "mikk/player_observer.as"
 ]
 
 @PointClass base(bTargetname, bMaster) = player_take_damage : "PlayerTakeDamageHook"[]
@@ -5250,7 +5267,7 @@
     message(target_destination) : "Trigger after action"
 
     $s_weapon(string) : "[AS] Weapon's value modifier"
-	angelscript_file(string) : "Script file" : "mikk/trigger_changevalue_weapons.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/trigger_changevalue_weapons.as"
 ]
 // Copy value of one entity to another value of another entity
 @PointClass base(bTargetname) color(60 90 215) = trigger_copyvalue : "Trigger Copy Value"
@@ -5627,9 +5644,10 @@
     [
         1 : "Remove On Fire" : 0
         2 : "Once per activator" : 0
+        4 : "SET restore activator" : 0
     ]
     wait(float) : "Delay before re-activation" : 0.0
-	angelscript_file(string) : "Script file" : "mikk/trigger_manager.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/trigger_manager.as"
 ]
 
 @PointClass base(bTargetname) = trigger_load : "Custom Load Data"
@@ -5666,7 +5684,7 @@
         64: "[AS] Iterate All Occupants": 0
     ]
     wait(float) : "Delay before reset" : 10.0
-	angelscript_file(string) : "Script file" : "mikk/trigger_multiple.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/trigger_multiple.as"
 ]
 
 @PointClass base(bTargetname) size(-16 -16 -16, 16 16 16) color(0 0 200) = trigger_numericdisplay : "Numeric Display"
@@ -5700,6 +5718,10 @@
 
 @PointClass base(bTargetname, bMaster) = trigger_percent : "Trigger push"
 [
+    spawnflags(flags) =
+    [
+        1 : "Reusable" : 0
+    ]
     m_iszTriggerOnAction(target_destination) : "target per player"
     m_iPercentage(integer) : "Percentage needed" : 66
     m_iszTriggerOnPercent(target_destination) : "target when percentage"
@@ -5750,7 +5772,7 @@
     ]
 ]
 
-@PointClass base(bTargetname, bTarget, bKilltarget) color(165 30 165) = trigger_relay : "Trigger Relay"
+@PointClass base(bTargetname, bTarget, bKilltarget, bDelay) color(165 30 165) = trigger_relay : "Trigger Relay"
 [
     spawnflags(flags) =
     [
@@ -5974,7 +5996,7 @@
 [
     m_vStartPoint(string) : "This map's landmark (X Y Z)"
     m_vEndPoint(string) : "Next map's landmark (X Y Z)"
-	m_iszTargetOnExit(target_destination) : "Target On Exit"
+    m_iszTargetOnExit(target_destination) : "Target On Exit"
     spawnflags(flags) =
     [
         1 : "All players (When USE)" : 0
@@ -5984,13 +6006,13 @@
         0 : "Yes"
         1 : "No, Only Players"
     ]
-	angelscript_file(string) : "Script file" : "mikk/trigger_teleport_relative.as"
+    $s_angelscript_file(string) : "Script file" : "mikk/trigger_teleport_relative.as"
 ]
 
 @BaseClass base(bBaseDSPSound) = bBaseDSPTrigger
 [
     // -TODO 1 : "USE Only" : 0
-	// master
+    // master
     target(target_destination) : "Dest when triggered ( empty = all )" : "!activator"
 ]
 

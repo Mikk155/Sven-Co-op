@@ -1,6 +1,22 @@
 #include "utils"
+
+bool game_text_custom_register = g_Util.CustomEntity( 'game_text_custom::game_text_custom','game_text_custom' );
+
 namespace game_text_custom
 {
+
+    void PluginInit()
+    {
+        g_Util.CustomEntity( 'game_text_custom::game_text_custom','multi_language' );
+    }
+
+	enum game_text_custom_spawnflags
+	{
+		ALL_PLAYERS = 1,
+		NO_CONSOLE_ECHO = 2,
+		FIRE_PER_PLAYER = 4,
+	}
+
     class game_text_custom : ScriptBaseEntity,
     game_text_custom::ScriptBaseGameText,
     ScriptBaseLanguages, ScriptBaseCustomEntity
@@ -24,14 +40,14 @@ namespace game_text_custom
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( master() )
+            if( IsLockedByMaster() )
                 return;
 
             if( pActivator !is null ) EhActivator = pActivator; else EhActivator = null;
 
-            if( spawnflag( 1 ) )
+            if( spawnflag( ALL_PLAYERS ) )
             {
-				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
+                for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
                 {
                     CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
@@ -48,7 +64,7 @@ namespace game_text_custom
 
             g_Util.Trigger( killtarget, self, pCaller, USE_KILL, delay );
 
-            if( !spawnflag( 4 ) )
+            if( !spawnflag( FIRE_PER_PLAYER ) )
             {
                 g_Util.Trigger( self.pev.target, ( pActivator is null ) ? self : pActivator, self, useType, delay );
             }
@@ -124,12 +140,12 @@ namespace game_text_custom
                 g_PlayerFuncs.HudMessage( pPlayer, TextParams, string( ReadLanguage ) + "\n" );
             }
 
-            if( !spawnflag( 2 ) )
+            if( !spawnflag( NO_CONSOLE_ECHO ) && TextParams.effect != 5 )
             {
                 g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, string( ReadLanguage ) + "\n" );
             }
 
-            if( spawnflag( 4 ) )
+            if( spawnflag( FIRE_PER_PLAYER ) )
             {
                 g_Util.Trigger( self.pev.target, pPlayer, self, USE_TOGGLE, delay );
             }
@@ -284,11 +300,4 @@ namespace game_text_custom
             }
         }
     }
-
-	void MapInit()
-	{
-		g_Util.CustomEntity( 'game_text_custom::game_text_custom','multi_language' );
-	}
-
-	bool Register = g_Util.CustomEntity( 'game_text_custom::game_text_custom','game_text_custom' );
 }

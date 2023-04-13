@@ -1,11 +1,14 @@
 #include "utils"
+
+bool info_commentary_register = g_Util.CustomEntity( 'info_commentary::info_commentary','info_commentary' );
+
 namespace info_commentary
 {
-    class info_commentary : ScriptBaseEntity
+    class info_commentary : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         void Precache()
         {
-			g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ) ? 'models/error.mdl' : string( self.pev.model ) );
+			CustomModelPrecache();
             BaseClass.Precache();
         }
 
@@ -26,7 +29,7 @@ namespace info_commentary
 				{ "targetname", 'commentary_' + self.entindex() + '_FX' }
 			};
 			g_EntityFuncs.CreateEntity( "env_render_individual", g_keyvalues );
-            g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ) ? 'models/error.mdl' : string( self.pev.model ) );
+            CustomModelSet();
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
 			self.pev.renderamt = 0;
 			self.pev.rendermode = 5;
@@ -71,6 +74,7 @@ namespace info_commentary
 		{
 			// Checkear valor de cmd on/off
 			g_Util.SetCKV( pPlayer, '$i_commentary', ( g_Util.GetCKV( pPlayer, '$i_commentary' ) == '1' ? '0' : '1' ) );
+			g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  'Toggled Developer Commentary mode.\n' );
 
 			USE_TYPE UseType = ( g_Util.GetCKV( pPlayer, '$i_commentary' ) == '1' ? USE_ON : USE_OFF );
 
@@ -86,5 +90,4 @@ namespace info_commentary
 			}
 		}
 	}
-	bool Register = g_Util.CustomEntity( 'info_commentary::info_commentary','info_commentary' );
 }

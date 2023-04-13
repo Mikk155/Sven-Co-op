@@ -1,55 +1,47 @@
 #include "utils"
+
+bool env_effect_cylinder_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_cylinder' );
+bool env_effect_disk_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_disk' );
+bool env_effect_dlight_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_dlight' );
+bool env_effect_implosion_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_implosion' );
+bool env_effect_quake_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_quake' );
+bool env_effect_smoke_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_smoke' );
+bool env_effect_splash_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_splash' );
+bool env_effect_spritefield_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_spritefield' );
+bool env_effect_spriteshooter_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_spriteshooter' );
+bool env_effect_toxic_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_toxic' );
+bool env_effect_tracer_register = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_tracer' );
+
 namespace env_effects
 {
-	bool blcylinder = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_cylinder' );
-	bool bldisk = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_disk' );
-	bool bldlight = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_dlight' );
-	bool blimplosion = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_implosion' );
-	bool blquake = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_quake' );
-	bool blsmoke = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_smoke' );
-	bool blsplash = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_splash' );
-	bool blspritefield = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_spritefield' );
-	bool blspriteshooter = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_spriteshooter' );
-	bool bltoxic = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_toxic' );
-	bool bltracer = g_Util.CustomEntity( 'env_effects::BaseFX','env_effect_tracer' );
+	enum env_effects_spawnflags
+	{
+		REUSABLE = 1
+	}
 
-	class BaseFX : ScriptBaseEntity
+    class BaseFX : ScriptBaseEntity, ScriptBaseCustomEntity
     {
-        private string m_iszMaster();
-
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
-            if( szKey == "master" )
-            {
-                this.m_iszMaster = szValue;
-            }
-            else
-            {
-                return BaseClass.KeyValue( szKey, szValue );
-            }
+            ExtraKeyValues( szKey, szValue );
             return true;
         }
 
         void Precache()
         {
-            if( !string( self.pev.model ).IsEmpty() )
-            {
-                g_Game.PrecacheModel( string( self.pev.model ) );
-                g_Game.PrecacheGeneric( string( self.pev.model ) );
-            }
+            CustomModelPrecache();
             BaseClass.Precache();
         }
 
         void Spawn()
         {
             pev.solid = SOLID_NOT;
-            self.pev.flags |= FL_CUSTOMENTITY;
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
         }
 
         void Use(CBaseEntity@ a, CBaseEntity@ c, USE_TYPE u, float d)
         {
-            if( !m_iszMaster.IsEmpty() and !g_EntityFuncs.IsMasterTriggered( m_iszMaster, self ) )
+            if( IsLockedByMaster() )
             {
                 g_Util.Trigger( g_Util.GetCKV( self, '$s_target' ), self, self, USE_TOGGLE, 0.0f );
                 return;
@@ -94,15 +86,15 @@ namespace env_effects
                 }
                 else if( self.pev.classname == "env_effect_dlight" )
                 {
-					g_Effect.dlight( self.pev.origin, self.pev.rendercolor, uint8( self.pev.renderamt ), uint8( self.pev.health ), uint8( self.pev.frags ) );
+                    g_Effect.dlight( self.pev.origin, self.pev.rendercolor, uint8( self.pev.renderamt ), uint8( self.pev.health ), uint8( self.pev.frags ) );
                 }
                 else if( self.pev.classname == "env_effect_spritefield" )
                 {
-					g_Effect.spritefield( self.pev.origin, string( self.pev.model ), uint16( self.pev.renderamt ), uint8( self.pev.frags ), uint8( self.pev.health), uint8( self.pev.max_health ) );
+                    g_Effect.spritefield( self.pev.origin, string( self.pev.model ), uint16( self.pev.renderamt ), uint8( self.pev.frags ), uint8( self.pev.health), uint8( self.pev.max_health ) );
                 }
             }
             
-            if( !self.pev.SpawnFlagBitSet( 1 ) )
+            if( !spawnflag( REUSABLE ) )
             {
                 g_EntityFuncs.Remove( self );
             }

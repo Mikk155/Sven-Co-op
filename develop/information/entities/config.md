@@ -26,11 +26,11 @@ config_classic_mode is an entity made in Angelscript that allows to replace mode
 |-----|-------------|
 | spawnflags 1 (Restart now) | Activate, the map will restart to apply the changes. |
 | delay | Time before triggering all the targets |
-| target_toggle | target to trigger after classic mode has been successfully alternated |
-| target_failed | target to trigger when classic mode recieves USE_OFF but it was already off, or when it recieves USE_ON but it was already on |
-| target_enabled | target to trigger when classic mode has been activated. (After map restart) |
-| target_disabled | target to trigger when classic has been deactivated. (After map restart) |
-| health | Thinking time of the entity, a high value will consume less CPU but players could see a HD model in classic mode for an instant. The time by default is 0.1 frames plus this keyvalue |
+| m_iszTargetOnToggle | target to trigger after classic mode has been successfully alternated |
+| m_iszTargetOnFail | target to trigger when classic mode recieves USE_OFF but it was already off, or when it recieves USE_ON but it was already on |
+| m_iszTargetOnEnable | target to trigger when classic mode has been activated. (After map restart) |
+| m_iszTargetOnDisable | target to trigger when classic has been deactivated. (After map restart) |
+| m_iThinkTime | Thinking time of the entity, a high value will consume less CPU but players could see a HD model in classic mode for an instant. The time by default is 0.1 frames plus this keyvalue |
 
 In HAMMER/JACK/BSPGUY open Smart-Edit and add there the keyvalues of your selection.
 
@@ -173,8 +173,8 @@ config_survival_mode is an entity made in Angelscript that modifies survival mod
 | key | description |
 |-----|-------------|
 | delay | Time, in seconds, that this entity waits before activating all of its targets |
-| target_toggle | Target to activate when survival mode has been toggled |
-| target_failed | Target to activate when survival mode recieves an USE_ON but it is already active, or when it recieves an USE_OFF but it is already inactive |
+| m_iszTargetOnToggle | Target to activate when survival mode has been toggled |
+| m_iszTargetOnFail | Target to activate when survival mode recieves an USE_ON but it is already active, or when it recieves an USE_OFF but it is already inactive |
 | mp_survival_startdelay | Time, in seconds, that it takes for survival mode to activate, if it is empty, it will use the cvar mp_survival_startdelay |
 | mp_respawndelay | Time, in seconds, that players have to wait to revive, if it is empty it will use the cvar mp_respawndelay |
 | master | [multisource](multisource.md) that blocks this entity from being activated by its mp_survival_startdelay or by direct trigger |

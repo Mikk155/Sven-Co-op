@@ -26,11 +26,11 @@ config_classic_mode es una entidad hecha en Angelscript que permite reemplazar m
 |-----|-------------|
 | spawnflags 1 (Restart now) | Activa, el mapa se reinciará para efectuar los cambios. |
 | delay | Tiempo antes de disparar todos sus targets |
-| target_toggle | target a disparar cuando el classic mode haya sido exitosamente alternado |
-| target_failed | target a disparar cuando el classic mode haya recibido USE_OFF pero esta actualmente desactivado o haya recibido USE_ON pero esta actualmente activado |
-| target_enabled | target a disparar cuando el classic mode haya sido activado. (Cuando el mapa inicia) |
-| target_disabled | target a disparar cuando el classic mode haya sido desactivado (Cuando el mapa inicia) |
-| health | Tiempo de pensamiento de la entidad, un valor alto consumirá menos CPU pero los jugadores podrian llegar a ver el modelo HD en classic mode por un instante. el tiempo por defecto es 0.1 frames mas esta keyvalue |
+| m_iszTargetOnToggle | target a disparar cuando el classic mode haya sido exitosamente alternado |
+| m_iszTargetOnFail | target a disparar cuando el classic mode haya recibido USE_OFF pero esta actualmente desactivado o haya recibido USE_ON pero esta actualmente activado |
+| m_iszTargetOnEnable | target a disparar cuando el classic mode haya sido activado. (Cuando el mapa inicia) |
+| m_iszTargetOnDisable | target a disparar cuando el classic mode haya sido desactivado (Cuando el mapa inicia) |
+| m_iThinkTime | Tiempo de pensamiento de la entidad, un valor alto consumirá menos CPU pero los jugadores podrian llegar a ver el modelo HD en classic mode por un instante. el tiempo por defecto es 0.1 frames mas esta keyvalue |
 
 En HAMMER/JACK/BSPGUY abre Smart-Edit y agrega ahi las keyvalues de tu elección.
 
@@ -173,8 +173,8 @@ config_survival_mode es una entidad hecha en Angelscript que modifica el surviva
 | key | description |
 |-----|-------------|
 | delay | Tiempo, En segundos, que esta entidad tarda en activar todas sus targets |
-| target_toggle | Target a activar cuando el survival mode haya sido alternado |
-| target_failed | Target a activar cuando el survival mode haya recibido USE_ON pero actualmente esta activo, o haya recibido USE_OFF pero actualmente esta inactivo |
+| m_iszTargetOnToggle | Target a activar cuando el survival mode haya sido alternado |
+| m_iszTargetOnFail | Target a activar cuando el survival mode haya recibido USE_ON pero actualmente esta activo, o haya recibido USE_OFF pero actualmente esta inactivo |
 | mp_survival_startdelay | Tiempo, En segundos, Que tarda el survival mode en activarse, si esta vacio se utilizará el cvar mp_survival_startdelay |
 | mp_respawndelay | Tiempo, En segundos, que los jugadores deben esperar antes de revivir, si esta vacio se utilizará el cvar mp_respawndelay |
 | master | [multisource](multisource_spanish.md) que bloquea esta entidad de ser activada mediante su mp_survival_startdelay o por trigger directo |

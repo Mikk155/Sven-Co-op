@@ -1,4 +1,9 @@
 #include "utils"
+
+bool trigger_sound_register = g_Util.CustomEntity( 'trigger_sound::trigger_sound','trigger_sound' );
+bool ClientDisconnect_register = g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @trigger_sound::ClientDisconnect );
+bool ClientPutInServer_register = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @trigger_sound::ClientPutInServer );
+
 namespace trigger_sound
 {
     class trigger_sound : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -28,7 +33,7 @@ namespace trigger_sound
             }
             else
             {
-				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
+                for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
                 {
                     CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
@@ -44,7 +49,7 @@ namespace trigger_sound
         {
             CBaseEntity@ pDSPSound = g_EntityFuncs.FindEntityByTargetname( pDSPSound, "DSP_SOUND_" + string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) );
 
-            if( pDSPSound !is null && !master() )
+            if( pDSPSound !is null && !IsLockedByMaster() )
             {
                 g_EntityFuncs.DispatchKeyValue( pDSPSound.edict(), "roomtype", roomtype );
                 g_EntityFuncs.FireTargets( "DSP_SOUND_" + g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ), pPlayer, pPlayer, USE_ON );
@@ -140,7 +145,4 @@ namespace trigger_sound
             }
         }
     }
-	bool Register = g_Util.CustomEntity( 'trigger_sound::trigger_sound','trigger_sound' );
-	bool Disconnect = g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @trigger_sound::ClientDisconnect );
-	bool Connect = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @trigger_sound::ClientPutInServer );
 }

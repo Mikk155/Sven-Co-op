@@ -1,18 +1,24 @@
 #include "utils"
+
+bool player_obs_register = g_Util.CustomEntity( 'player_observer::player_observer','player_observer' );
+bool ClientJoin_register = g_Hooks.RegisterHook( Hooks::Player::PlayerEnteredObserver, @player_observer::ClientJoin );
+bool ClientLeft_register = g_Hooks.RegisterHook( Hooks::Player::PlayerLeftObserver, @player_observer::ClientLeft );
+bool ClienThink_register = g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @player_observer::ClientThink );
+
 namespace player_observer
 {
     class player_observer : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string m_iszSetObserverTarget;
-		private int m_iStartObserver;
-		private int m_iStartObserverOrigin;
-		private int m_iStartObserverAngles;
-		private int m_iStartObserverBody;
-		private int m_iSetMode;
-		private int m_iSetObserverModeControlEnabled;
-		private int m_iRemoveDeadBody;
-		private int m_iFindNextPlayer;
-		private float m_fDelayBeforeReSpawn;
+        private int m_iStartObserver;
+        private int m_iStartObserverOrigin;
+        private int m_iStartObserverAngles;
+        private int m_iStartObserverBody;
+        private int m_iSetMode;
+        private int m_iSetObserverModeControlEnabled;
+        private int m_iRemoveDeadBody;
+        private int m_iFindNextPlayer;
+        private float m_fDelayBeforeReSpawn;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
@@ -67,19 +73,19 @@ namespace player_observer
 
         void Spawn() 
         {
-			g_EngineFuncs.CVarSetString( 'mp_observer_mode', '1' );
+            g_EngineFuncs.CVarSetString( 'mp_observer_mode', '1' );
             BaseClass.Spawn();
         }
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( master() )
-			{
+            if( IsLockedByMaster() )
+            {
                 return;
-			}
+            }
 
-			if( spawnflag( 1 ) )
-			{
+            if( spawnflag( 1 ) )
+            {
                 for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
                 {
                     CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
@@ -89,116 +95,111 @@ namespace player_observer
                         Observer( @pPlayer );
                     }
                 }
-			}
-			else if( pActivator !is null && pActivator.IsPlayer() )
-			{
-				Observer( @pActivator );
-			}
+            }
+            else if( pActivator !is null && pActivator.IsPlayer() )
+            {
+                Observer( @pActivator );
+            }
         }
-		
-		void Observer( EHandle hPlayer )
-		{
-			CBasePlayer@ pPlayer = cast<CBasePlayer@>( hPlayer.GetEntity() );
+        
+        void Observer( EHandle hPlayer )
+        {
+            CBasePlayer@ pPlayer = cast<CBasePlayer@>( hPlayer.GetEntity() );
 
-			if( pPlayer is null )
-				return;
+            if( pPlayer is null )
+                return;
 
-			if( m_iStartObserver == 1 && !pPlayer.GetObserver().IsObserver() )
-			{
-				Vector VecOrigin = ( m_iStartObserverOrigin == 1 ) ? pPlayer.pev.origin : self.pev.origin;
-				Vector VecAngles = ( m_iStartObserverAngles == 1 ) ? pPlayer.pev.angles : self.pev.angles;
-				bool BlBody = ( m_iStartObserverBody == 1 ) ? false : true;
-				pPlayer.GetObserver().StartObserver( VecOrigin, VecAngles, BlBody );
-			}
+            if( m_iStartObserver == 1 && !pPlayer.GetObserver().IsObserver() )
+            {
+                Vector VecOrigin = ( m_iStartObserverOrigin == 1 ) ? pPlayer.pev.origin : self.pev.origin;
+                Vector VecAngles = ( m_iStartObserverAngles == 1 ) ? pPlayer.pev.angles : self.pev.angles;
+                bool BlBody = ( m_iStartObserverBody == 1 ) ? false : true;
+                pPlayer.GetObserver().StartObserver( VecOrigin, VecAngles, BlBody );
+            }
 
-			if( pPlayer.GetObserver().IsObserver() )
-			{
-				if( m_iszSetObserverTarget != '' )
-				{
-					CBasePlayer@ pTarget = null;
+            if( pPlayer.GetObserver().IsObserver() )
+            {
+                if( m_iszSetObserverTarget != '' )
+                {
+                    CBasePlayer@ pTarget = null;
 
-					if( g_Utility.IsStringInt( m_iszSetObserverTarget ) && atoi( m_iszSetObserverTarget ) > -1 )
-					{
-						@pTarget = cast<CBasePlayer@>( g_PlayerFuncs.FindPlayerByIndex( atoi( m_iszSetObserverTarget ) ) );
-					}
-					else
-					{
-						@pTarget = cast<CBasePlayer@>( g_EntityFuncs.FindEntityByTargetname( pTarget, m_iszSetObserverTarget ) );
-					}
+                    if( g_Utility.IsStringInt( m_iszSetObserverTarget ) && atoi( m_iszSetObserverTarget ) > -1 )
+                    {
+                        @pTarget = cast<CBasePlayer@>( g_PlayerFuncs.FindPlayerByIndex( atoi( m_iszSetObserverTarget ) ) );
+                    }
+                    else
+                    {
+                        @pTarget = cast<CBasePlayer@>( g_EntityFuncs.FindEntityByTargetname( pTarget, m_iszSetObserverTarget ) );
+                    }
 
-					if( pTarget !is null )
-					{
-						pPlayer.GetObserver().SetObserverTarget( pTarget );
-					}
-				}
-				if( m_iSetMode > 0 )
-				{
-					pPlayer.GetObserver().SetMode( ( m_iSetMode == 1 ) ? OBS_CHASE_FREE : ( m_iSetMode == 3 ) ? OBS_CHASE_LOCKED : OBS_ROAMING );
-				}
-				bool BlControl = ( m_iSetObserverModeControlEnabled == 0 ) ? true : false;
-				pPlayer.GetObserver().SetObserverModeControlEnabled( BlControl );
+                    if( pTarget !is null )
+                    {
+                        pPlayer.GetObserver().SetObserverTarget( pTarget );
+                    }
+                }
+                if( m_iSetMode > 0 )
+                {
+                    pPlayer.GetObserver().SetMode( ( m_iSetMode == 1 ) ? OBS_CHASE_FREE : ( m_iSetMode == 3 ) ? OBS_CHASE_LOCKED : OBS_ROAMING );
+                }
+                bool BlControl = ( m_iSetObserverModeControlEnabled == 0 ) ? true : false;
+                pPlayer.GetObserver().SetObserverModeControlEnabled( BlControl );
 
-				if( m_iRemoveDeadBody == 1 )
-				{
-					pPlayer.GetObserver().RemoveDeadBody();
-				}
+                if( m_iRemoveDeadBody == 1 )
+                {
+                    pPlayer.GetObserver().RemoveDeadBody();
+                }
 
-				if( m_iFindNextPlayer > 0 )
-				{
-					bool fReverse = ( m_iFindNextPlayer == 2 ) ? true : false;
-					pPlayer.GetObserver().FindNextPlayer( fReverse );
-				}
+                if( m_iFindNextPlayer > 0 )
+                {
+                    bool fReverse = ( m_iFindNextPlayer == 2 ) ? true : false;
+                    pPlayer.GetObserver().FindNextPlayer( fReverse );
+                }
 
-				if( m_fDelayBeforeReSpawn >= -1 )
-				{
-					g_Util.SetCKV( pPlayer, '$i_player_observer', 1 );
-					if( m_fDelayBeforeReSpawn >= 0 )
-					{
-						g_Scheduler.SetTimeout( @this, "ReSpawns", m_fDelayBeforeReSpawn + 0.5f, @pPlayer );
-					}
-				}
-			}
-		}
-		
-		void ReSpawns( CBasePlayer@ pPlayer )
-		{
-			g_Util.SetCKV( pPlayer, '$i_player_observer', 0 );
-		}
+                if( m_fDelayBeforeReSpawn >= -1 )
+                {
+                    g_Util.SetCKV( pPlayer, '$i_player_observer', 1 );
+                    if( m_fDelayBeforeReSpawn >= 0 )
+                    {
+                        g_Scheduler.SetTimeout( @this, "ReSpawns", m_fDelayBeforeReSpawn + 0.5f, @pPlayer );
+                    }
+                }
+            }
+        }
+        
+        void ReSpawns( CBasePlayer@ pPlayer )
+        {
+            g_Util.SetCKV( pPlayer, '$i_player_observer', 0 );
+        }
     }
-	
-	void FindAndFire( CBasePlayer@ pPlayer, int iexm = 0 )
-	{
+    
+    void FindAndFire( CBasePlayer@ pPlayer, int iexm = 0 )
+    {
         if( pPlayer !is null )
-		{
-			CBaseEntity@ self;
-			while( ( @self = g_EntityFuncs.FindEntityByClassname( self, "player_observer" ) ) !is null )
-			{
-				g_Util.Trigger( ( iexm == 1 ) ? self.pev.netname : self.pev.target, pPlayer, self, USE_TOGGLE, 0.0f );
-			}
-		}
-	}
-
-	bool Register = g_Util.CustomEntity( 'player_observer::player_observer','player_observer' );
-	bool blCJoin = g_Hooks.RegisterHook( Hooks::Player::PlayerEnteredObserver, @player_observer::ClientJoin );
-	bool blCLeft = g_Hooks.RegisterHook( Hooks::Player::PlayerLeftObserver, @player_observer::ClientLeft );
-	bool blThink = g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @player_observer::ClientThink );
+        {
+            CBaseEntity@ self;
+            while( ( @self = g_EntityFuncs.FindEntityByClassname( self, "player_observer" ) ) !is null )
+            {
+                g_Util.Trigger( ( iexm == 1 ) ? self.pev.netname : self.pev.target, pPlayer, self, USE_TOGGLE, 0.0f );
+            }
+        }
+    }
 
     HookReturnCode ClientThink( CBasePlayer@ pPlayer )
     {
         if( pPlayer !is null && !pPlayer.IsAlive() && pPlayer.GetObserver().IsObserver() && atoi( g_Util.GetCKV( pPlayer, '$i_player_observer' ) ) == 1 )
-		{
-			pPlayer.pev.nextthink = g_Engine.time + 1.0f;
-		}
+        {
+            pPlayer.pev.nextthink = g_Engine.time + 1.0f;
+        }
         return HOOK_CONTINUE;
     }
     HookReturnCode ClientLeft( CBasePlayer@ pPlayer )
     {
-		FindAndFire( pPlayer, 1 );
+        FindAndFire( pPlayer, 1 );
         return HOOK_CONTINUE;
     }
     HookReturnCode ClientJoin( CBasePlayer@ pPlayer )
     {
-		FindAndFire( pPlayer );
+        FindAndFire( pPlayer );
         return HOOK_CONTINUE;
     }
 }

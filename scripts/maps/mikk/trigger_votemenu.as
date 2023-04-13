@@ -1,4 +1,7 @@
 #include "utils"
+
+bool trigger_votemenu_register = g_Util.CustomEntity( 'trigger_votemenu::trigger_votemenu','trigger_votemenu' );
+
 namespace trigger_votemenu
 {
     class trigger_votemenu : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -40,7 +43,7 @@ namespace trigger_votemenu
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( master() )
+            if( IsLockedByMaster() )
             {
                 return;
             }
@@ -147,5 +150,4 @@ namespace trigger_votemenu
             }
         }
     }
-	bool Register = g_Util.CustomEntity( 'trigger_votemenu::trigger_votemenu','trigger_votemenu' );
 }

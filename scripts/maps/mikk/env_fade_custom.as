@@ -1,6 +1,26 @@
 #include "utils"
+
+bool env_fade_custom_register = g_Util.CustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom' );
+
 namespace env_fade_custom
 {
+    enum env_fade_custom_spawnflags
+    {
+        REVERSE_FADING = 1,
+        MODULATE_FILTERING = 2,
+        STAY_FADE = 4
+    }
+
+    enum env_fade_custom_iall_players
+    {
+        ACTIVATOR_ONLY = 0,
+        ALL_PLAYERS = 1,
+        IN_RADIUS = 2,
+        TOUCHING = 3,
+        IN_RADIUS_AUTO = 4,
+        TOUCHING_AUTO = 5
+    }
+
     class env_fade_custom : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hActivator = null;
@@ -43,12 +63,12 @@ namespace env_fade_custom
         {
             SetThink( ThinkFunction( this.TriggerThink ) );
             if( !SetBoundaries() )
-			{
-				m_bis_zone = false;
-				self.pev.solid = SOLID_TRIGGER;
-				self.pev.effects |= EF_NODRAW;
-				self.pev.movetype = MOVETYPE_NONE;
-			}
+            {
+                m_bis_zone = false;
+                self.pev.solid = SOLID_TRIGGER;
+                self.pev.effects |= EF_NODRAW;
+                self.pev.movetype = MOVETYPE_NONE;
+            }
             self.pev.nextthink = g_Engine.time + 0.1f;
             self.pev.effects = EF_NODRAW;
             BaseClass.Spawn();
@@ -56,44 +76,62 @@ namespace env_fade_custom
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( !master() )
+            if( !IsLockedByMaster() )
             {
                 hActivator = ( pActivator !is null ) ? @pActivator : @self;
 
-				for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
+                for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
                 {
                     CBaseEntity@ ePlayer = cast<CBaseEntity@>( g_PlayerFuncs.FindPlayerByIndex( iPlayer ) );
 
                     if( ePlayer is null )
                         continue;
 
-                    if( m_iall_players == 1
-                    or m_iall_players == 2 && ( self.pev.origin - ePlayer.pev.origin ).Length() <= m_ifaderadius
-                    or m_iall_players == 4 && ( self.pev.origin - ePlayer.pev.origin ).Length() <= m_ifaderadius
-                    or m_iall_players == 0 && ePlayer is hActivator.GetEntity()
-                    or m_iall_players == 3 && self.Intersects( ePlayer ) 
-                    or m_iall_players == 5 && self.Intersects( ePlayer ) )
+                    if( m_iall_players == ALL_PLAYERS
+                    or m_iall_players == IN_RADIUS && ( self.pev.origin - ePlayer.pev.origin ).Length() <= m_ifaderadius
+                    or m_iall_players == ACTIVATOR_ONLY && ePlayer is hActivator.GetEntity()
+                    or m_iall_players == TOUCHING && self.Intersects( ePlayer ) )
                     {
                         CFade( ePlayer, useType );
                     }
+                    else if ( m_iall_players == IN_RADIUS_AUTO )
+                    {
+                        if( ( self.pev.origin - ePlayer.pev.origin ).Length() <= m_ifaderadius )
+                            CFadeSector( ePlayer );
+                        else
+                            SetValue( ePlayer );
+                    }
+                    else if ( m_iall_players == TOUCHING_AUTO )
+                    {
+                        if( self.Intersects( ePlayer ) )
+                            CFadeSector( ePlayer );
+                        else
+                            SetValue( ePlayer );
+                    }
                 }
             }
+        }
+        
+        void SetValue( CBaseEntity@ ePlayer )
+        {
+            if( atoi( g_Util.GetCKV( ePlayer, '$i_insidefadecustom_' + self.entindex() ) ) == 1 )
+                g_Util.SetCKV( ePlayer, '$i_insidefadecustom_' + self.entindex(), 0 );
         }
         
         void CFade( CBaseEntity@ pPlayer, USE_TYPE useType = USE_TOGGLE )
         {
             if( useType == USE_OFF )
             {
-                g_PlayerFuncs.ScreenFade( pPlayer, self.pev.rendercolor, 0.0f, 0.0f, 0, 0 );
+                bFade( pPlayer, 0.0f, 0.0f, 0 );
                 return;
             }
             else if( useType == USE_SET && ThinkyTime > 0 )
             {
                 return;
             }
-            SpawnFlagsOut = ( spawnflag( 1 ) ? self.pev.spawnflags - 1 : self.pev.spawnflags + 1 );
+            SpawnFlagsOut = ( spawnflag( REVERSE_FADING ) ? self.pev.spawnflags - 1 : self.pev.spawnflags + 1 );
 
-            g_PlayerFuncs.ScreenFade( pPlayer, self.pev.rendercolor, m_ffadein, m_fholdtime, int( self.pev.renderamt ), self.pev.spawnflags );
+            bFade( pPlayer, m_ffadein, m_fholdtime, self.pev.spawnflags );
 
             if( m_ffadeout > 0.0 )
             {
@@ -105,7 +143,7 @@ namespace env_fade_custom
         
         void CFadeOut( CBaseEntity@ pPlayer )
         {
-            g_PlayerFuncs.ScreenFade( pPlayer, self.pev.rendercolor, m_ffadeout, 0.5f, int( self.pev.renderamt ), SpawnFlagsOut );
+            bFade( pPlayer, m_ffadeout, 0.5f, SpawnFlagsOut );
         }
 
         void CFadeEnd()
@@ -116,19 +154,51 @@ namespace env_fade_custom
         float ThinkyTime;
         void TriggerThink()
         {
-			if( !master() )
-			{
-				if( m_bis_zone && m_iall_players == 5 || m_ifaderadius > 0 && m_iall_players == 4 )
-				{
-					self.Use( null, self, USE_SET, 0.0f );
-				}
-			}
+            if( !IsLockedByMaster() )
+            {
+                if( m_bis_zone && m_iall_players == TOUCHING_AUTO || m_ifaderadius > 0 && m_iall_players == IN_RADIUS_AUTO )
+                {
+                    self.Use( self, self, USE_TOGGLE, 0.0f );
+                }
+            }
             if( ThinkyTime > 0 )
             {
                 ThinkyTime -= 0.1f;
             }
             self.pev.nextthink = g_Engine.time + 0.1f;
         }
+        
+        void CFadeSector( CBaseEntity@ ePlayer )
+        {
+            if( atoi( g_Util.GetCKV( ePlayer, '$i_insidefadecustom_' + self.entindex() ) ) == 0 )
+            {
+                bFade( ePlayer, m_ffadein + 0.1f, 0.0f, ( spawnflag( MODULATE_FILTERING ) ) ? 2 + 1 : 0 + 1 );
+                g_Scheduler.SetTimeout( this, "CFadeSectorInside", m_ffadein, @ePlayer );
+                g_Util.SetCKV( ePlayer, '$i_insidefadecustom_' + self.entindex(), 1 );
+            }
+        }
+        
+        void CFadeSectorInside( CBaseEntity@ ePlayer )
+        {
+            if( atoi( g_Util.GetCKV( ePlayer, '$i_insidefadecustom_' + self.entindex() ) ) == 1 )
+            {
+                bFade( ePlayer, 0.01f, 1.5f, ( spawnflag( MODULATE_FILTERING ) ) ? 2 : 0 );
+                g_Scheduler.SetTimeout( this, "CFadeSectorInside", 1.0f, @ePlayer );
+            }
+            else
+            {
+                g_Scheduler.SetTimeout( this, "CFadeSectorOut", 0.0f, @ePlayer );
+            }
+        }
+        
+        void CFadeSectorOut( CBaseEntity@ ePlayer )
+        {
+            bFade( ePlayer, m_ffadeout, 0.0f, ( spawnflag( MODULATE_FILTERING ) ) ? 2 : 0 );
+        }
+
+        void bFade( CBaseEntity@ ePlayer, float fadein, float fadehold, int iflags )
+        {
+            g_PlayerFuncs.ScreenFade( ePlayer, self.pev.rendercolor, fadein, fadehold, int( self.pev.renderamt ), iflags );
+        }
     }
-	bool Register = g_Util.CustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom' );
 }

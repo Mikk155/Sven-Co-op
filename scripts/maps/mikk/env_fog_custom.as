@@ -1,4 +1,8 @@
 #include "utils"
+
+bool env_fog_custom_register = g_Util.CustomEntity( 'env_fog_custom::env_fog_custom','env_fog_custom' );
+bool env_fog_custom_ClientPutInServer = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @env_fog_custom::ClientPutInServer );
+
 namespace env_fog_custom
 {
     class env_fog_custom : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -10,17 +14,17 @@ namespace env_fog_custom
             if( pActivator !is null && pActivator.IsPlayer() )
             {
                 if( useType == USE_ON )
-				{
-					State = true;
-				}
+                {
+                    State = true;
+                }
                 else if( useType == USE_OFF )
-				{
-					State = false;
-				}
-				else
-				{
-					State = !State;
-				}
+                {
+                    State = false;
+                }
+                else
+                {
+                    State = !State;
+                }
 
                 NetworkMessage msg( MSG_ONE_UNRELIABLE, NetworkMessages::Fog, cast<CBasePlayer@>( pActivator ).edict() );
                     msg.WriteShort(0);
@@ -37,22 +41,24 @@ namespace env_fog_custom
                 msg.End();
             }
         }
-		
-		void UpdateOnRemove()
-		{
+        
+        void UpdateOnRemove()
+        {
             for( int i = 1; i <= g_Engine.maxClients; i++ )
             {
                 CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( i );
 
                 if( pPlayer !is null )
                 {
-					self.Use( pPlayer, self, USE_OFF, 0.0f );
+                    self.Use( pPlayer, self, USE_OFF, 0.0f );
                 }
 
             }
-			BaseClass.UpdateOnRemove();
-		}
+            BaseClass.UpdateOnRemove();
+        }
     }
+
+    CScheduledFunction@ g_Fog = g_Scheduler.SetTimeout( "remap_fog", 0.0f );
 
     void remap_fog()
     {
@@ -104,7 +110,4 @@ namespace env_fog_custom
             cast<CBaseEntity@>(fog).Use( cast<CBasePlayer@>(player.GetEntity()), null, USE_ON, 0.0f );
         }
     }
-	bool Register = g_Util.CustomEntity( 'env_fog_custom::env_fog_custom','env_fog_custom' );
-	bool PlayerJoin = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @env_fog_custom::ClientPutInServer );
-    CScheduledFunction@ g_Fog = g_Scheduler.SetTimeout( "remap_fog", 0.0f );
 }

@@ -47,9 +47,19 @@ void MapInit()
 }
 ```
 
+- Alternatively via trigger_script you can change the model too.
+ - 1 First make sure to precatch your model.
+ - 2 Put trigger_script in think mode and give trigger or activate spawnflag 1 (start on)
+ - 3 In ``m_iszScriptFunctionName`` you have to put ``env_bloodpuddle::model``
+ - 4 In the key ``model`` of trigger_script you have to put the route of the model ``i.e models/scmod/blood.mdl``
+ 
 </p>
 </details>
 
 - Add a [Custom Key Value](custom_keyvalue.md) in the monster that you don't want to generate a blood puddle. ``$f_bloodpuddle`` with a value of ``1``
 
 - Use a personalized skin for each monster, add a [Custom Key Value](custom_keyvalue.md) in the monster that you want him to generate a different color blood . ``$i_bloodpuddle`` in a value equal to the index. If it is not used, the blood type of the npc will define the color of the model, 0 for red, 1 for others.
+
+- You can create a ``env_bloodpuddle`` via trigger_createentity, squadmaker, monstermaker or entitymaker and it will start expanding as soon as it spawns.
+
+- The entity as it is also supports a custom model.

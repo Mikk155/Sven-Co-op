@@ -1,4 +1,7 @@
 #include "utils"
+
+bool env_geiger_register = g_Util.CustomEntity( 'env_geiger::env_geiger','env_geiger' );
+
 namespace env_geiger
 {
     class env_geiger : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -29,7 +32,7 @@ namespace env_geiger
 
         void Precache() 
         {
-			bool HasSounds = false;
+            bool HasSounds = false;
             for(uint ui = 0; ui < g_Keys.length(); ui++)
             {
                 string Key = string( g_Keys[ui] );
@@ -40,46 +43,46 @@ namespace env_geiger
                     g_SoundSystem.PrecacheSound( Value );
                     g_Game.PrecacheGeneric( "sound/" + Value );
                     Sounds.insertLast( Value );
-					HasSounds = true;
+                    HasSounds = true;
                 }
             }
-			if( !HasSounds )
-			{
-				int i = 0;
-				for(uint ui = 0; ui < 6; ui++)
-				{
-					g_SoundSystem.PrecacheSound( 'player/geiger' + i + '.wav' );
-					g_Game.PrecacheGeneric( "sound/" + 'player/geiger' + i + '.wav' );
-					Sounds.insertLast( 'player/geiger' + i + '.wav' );
-					++i;
-				}
-			}
-			if( self.pev.max_health == 0.0 )
-			{
-				self.pev.max_health = 0.5;
-			}
+            if( !HasSounds )
+            {
+                int i = 0;
+                for(uint ui = 0; ui < 6; ui++)
+                {
+                    g_SoundSystem.PrecacheSound( 'player/geiger' + i + '.wav' );
+                    g_Game.PrecacheGeneric( "sound/" + 'player/geiger' + i + '.wav' );
+                    Sounds.insertLast( 'player/geiger' + i + '.wav' );
+                    ++i;
+                }
+            }
+            if( self.pev.max_health == 0.0 )
+            {
+                self.pev.max_health = 0.5;
+            }
             BaseClass.Precache();
         }
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
             if( useType == USE_ON )
-			{
-				State = true;
-			}
+            {
+                State = true;
+            }
             else if( useType == USE_OFF )
-			{
-				State = false;
-			}
+            {
+                State = false;
+            }
             else
-			{
-				State = !State;
-			}
+            {
+                State = !State;
+            }
         }
 
         void Think()
         {
-            if( !State || master() )
+            if( !State || IsLockedByMaster() )
             {
                 self.pev.nextthink = g_Engine.time + 0.5f;
                 return;
@@ -90,5 +93,4 @@ namespace env_geiger
             self.pev.nextthink = g_Engine.time + Math.RandomFloat( self.pev.health, self.pev.max_health );
         }
     }
-	bool Register = g_Util.CustomEntity( 'env_geiger::env_geiger','env_geiger' );
 }

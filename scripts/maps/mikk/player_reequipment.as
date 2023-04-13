@@ -2,7 +2,7 @@
 namespace player_reequipment
 {
     bool keep_ammo = true;
-	bool Register = g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @player_reequipment::PlayerReEquip );
+    bool player_reequipment_register = g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @player_reequipment::PlayerReEquip );
 
     HookReturnCode PlayerReEquip( CBasePlayer@ pPlayer )
     {

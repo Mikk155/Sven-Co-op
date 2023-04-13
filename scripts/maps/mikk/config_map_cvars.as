@@ -1,6 +1,15 @@
 #include "utils"
+
+bool config_map_cvars_register = g_Util.CustomEntity( 'config_map_cvars::config_map_cvars','config_map_cvars' );
+
 namespace config_map_cvars
 {
+    enum config_map_cvars_spawnflags
+    {
+        START_ON = 1,
+        STORE_CVARS = 2
+    }
+
     class config_map_cvars : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;
@@ -20,67 +29,66 @@ namespace config_map_cvars
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( master() )
+            if( !IsLockedByMaster() )
             {
-                return;
-            }
-
-            g_Util.Debug( "[config_map_cvars]" );
-
-            for(uint ui = 0; ui < strKeyValues.length(); ui++)
-            {
-                string Key = string( strKeyValues[ui] );
-                string Value = string( dictKeyValues[ Key ] );
-
-                if( spawnflag( 2 ) )
+                for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
-                    g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
-                }
+                    string m_iszKey = string( strKeyValues[ui] );
+                    string m_iszValue = string( dictKeyValues[ m_iszKey ] );
 
-                g_EngineFuncs.CVarSetString( Key, ( useType == USE_OFF ) ? string( dictOldCvars[ Key ] ) : Value );
-                g_Util.Debug( "" + Key + ": '" + string( g_EngineFuncs.CVarGetString( Key ) ) + "'" );
+                    Store( m_iszKey );
+
+                    g_EngineFuncs.CVarSetString( m_iszKey, ( useType == USE_OFF ) ? string( dictOldCvars[ m_iszKey ] ) : m_iszValue );
+                    g_Util.Debug( "[config_map_cvars] " + m_iszKey + ": '" + string( g_EngineFuncs.CVarGetString( m_iszKey ) ) + "'" );
+                }
+            }
+        }
+        
+        void Store( string m_iszKey )
+        {
+            if( spawnflag( STORE_CVARS ) )
+            {
+                g_Util.SetCKV( self, '$s_' + m_iszKey, g_EngineFuncs.CVarGetString( m_iszKey ) );
+                g_Util.Debug( "[config_map_cvars] Stored " + m_iszKey + ": '" + string( g_EngineFuncs.CVarGetString( m_iszKey ) ) + "' as '$s_" + m_iszKey );
             }
         }
 
         void Spawn()
         {
-            if( spawnflag( 1 ) )
+            if( spawnflag( START_ON ) )
             {
                 self.Use( null, null, USE_TOGGLE, 0.5f );
             }
 
-            g_Util.Debug( "[config_map_cvars] Stored cvars:" );
+            // Fix for cvars with not default value
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
-                string Key = string( strKeyValues[ui] );
+                string m_iszKey = string( strKeyValues[ui] );
 
-                if( Key == 'mp_pcbalancing_factorlist' or Key == 'mp_disable_pcbalancing' )
+                if( m_iszKey == 'mp_pcbalancing_factorlist' or m_iszKey == 'mp_disable_pcbalancing' )
                 {
                     if( g_EngineFuncs.CVarGetString( 'mp_pcbalancing_factorlist' ).IsEmpty() )
                     {
-                        dictOldCvars[ Key ] = '0';
+                        dictOldCvars[ m_iszKey ] = '0';
                         continue;
                     }
                 }
-                else if( Key == 'mp_forcespawn' && g_EngineFuncs.CVarGetString( 'mp_forcespawn' ).IsEmpty() )
+                else if( m_iszKey == 'mp_forcespawn' && g_EngineFuncs.CVarGetString( 'mp_forcespawn' ).IsEmpty() )
                 {
-                    dictOldCvars[ Key ] = '0';
+                    dictOldCvars[ m_iszKey ] = '0';
                 }
                 else
                 {
-                    dictOldCvars[ Key ] = g_EngineFuncs.CVarGetString( Key );
+                    dictOldCvars[ m_iszKey ] = g_EngineFuncs.CVarGetString( m_iszKey );
                 }
 
-                if( spawnflag( 2 ) )
-                {
-                    g_Util.SetCKV( self, '$s_' + Key, g_EngineFuncs.CVarGetString( Key ) );
-                }
+                Store( m_iszKey );
 
-                g_Util.Debug( "" + Key + ": '" + string( dictOldCvars[ Key ] ) + "'" );
+
+                g_Util.Debug( "[config_map_cvars] Stored " + m_iszKey + ": '" + string( dictOldCvars[ m_iszKey ] ) + "'" );
             }
 
             BaseClass.Spawn();
         }
     }
-	bool Register = g_Util.CustomEntity( 'config_map_cvars::config_map_cvars','config_map_cvars' );
 }
