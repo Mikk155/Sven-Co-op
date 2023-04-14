@@ -2799,9 +2799,9 @@
         // Fire target when player spawns here, rather than when the spawn point is toggled on/off
         32 : "Trigger on spawn" : 0
     ]
-    netname(string) : "New Player bTargetname"
+    netname(string) : "New Player Targetname"
     // Use a semi-colon ';' to specify multiple targetnames
-    message(string) : "Filter Player bTargetname"
+    message(string) : "Filter Player Targetname"
     frags(string) : "Repel Speed"
     triggerstate(choices) : "Trigger State" : 0 =
     [
@@ -3030,7 +3030,7 @@
 [
     // using a value of 60 mean that one minute (in-game) is equal to one minute (in real life)
     // using a value of 1  mean that one minute (in-game) is equal to one second (in real life)
-    m_iOneSecondIsEqualTo(integer) : "One minute is (IRL-seconds)" : 60
+    m_iOneMinuteEquals(integer) : "One minute is (IRL-seconds)" : 60
     m_fThinkTime(float) : "Think time ( 1.0 = one second)" : 1.0
     m_iszTriggerPerSecond(target_destination) : "Trigger when a second increase"
     m_iszTriggerPerMinute(target_destination) : "Trigger when a minute increase"
@@ -3042,14 +3042,14 @@
     $i_hour(integer) : "Current Hour" : 0
     $i_day(integer) : "Current Day" : 0
 
-    // Targetname of a light_spot to change its pattern depending the time. if "!world" it'll be a global change.
-    m_iszPatternLight(target_destination) : "light to change pattern" : "!world"
-
+    m_iszPatternLight(target_destination) : "light to change pattern"
+    m_iszPatternFile(string) : "Pattern Configuration File" //: "mikk/config/game_time.mkconfig"
     spawnflags(Flags) =
     [
         // If set. the entity will start with the host's real time
-        1 : "Real Time" : 0
+        1 : "Get Real Time" : 0
     ]
+    $s_angelscript_file(string) : "Script file" : "mikk/game_time.as"
 ]
 
 @BaseClass = bGZEBase
@@ -5994,17 +5994,14 @@
 
 @SolidClass base(bTargetname, ) = trigger_teleport_relative : "Trigger Teleport"
 [
-    m_vStartPoint(string) : "This map's landmark (X Y Z)"
-    m_vEndPoint(string) : "Next map's landmark (X Y Z)"
+    m_vStartPoint(target_destination) : "This map's landmark (X Y Z)"
+    m_vEndPoint(target_destination) : "Next map's landmark (X Y Z)"
     m_iszTargetOnExit(target_destination) : "Target On Exit"
     spawnflags(flags) =
     [
-        1 : "All players (When USE)" : 0
-    ]
-    m_iAllowMonsters(choices) : "Allow monsters" : 0 =
-    [
-        0 : "Yes"
-        1 : "No, Only Players"
+        1 : "Tele All players (When USE)" : 0
+        2 : "Allow monsters" : 0
+        4 : "No clients" : 0
     ]
     $s_angelscript_file(string) : "Script file" : "mikk/trigger_teleport_relative.as"
 ]
