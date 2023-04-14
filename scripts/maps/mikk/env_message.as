@@ -5,7 +5,7 @@ namespace env_message
     CScheduledFunction@ g_CTitles = g_Scheduler.SetTimeout( "CTitles", 0.0f );
 
     // as_command titles ( path to titles relative to scripts/maps/ ).txt
-    CCVar g_Titles ( "titles", "mikk/titles.txt", "custom titles.txt file", ConCommandFlag::AdminOnly );
+    CCVar g_Titles ( "titles", "mikk/config/titles.txt", "custom titles.txt file", ConCommandFlag::AdminOnly );
 
     void CTitles()
     {

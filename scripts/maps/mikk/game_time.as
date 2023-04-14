@@ -10,30 +10,58 @@ namespace game_time
     {
         GET_REAL_TIME = 1
     }
+    
+    string IntToPattern( const int v )
+    {
+        return
+        (
+            v == -12 ? 'a' :
+            v == -11 ? 'b' :
+            v == -10 ? 'c' :
+            v == -9 ? 'd' :
+            v == -8 ? 'e' :
+            v == -7 ? 'f' :
+            v == -6 ? 'g' :
+            v == -5 ? 'h' :
+            v == -4 ? 'i' :
+            v == -3 ? 'j' :
+            v == -2 ? 'k' :
+            v == -1 ? 'l' :
+            v == 0 ? 'm' :
+            v == 1 ? 'n' :
+            v == 2 ? 'o' :
+            v == 3 ? 'p' :
+            v == 4 ? 'q' :
+            v == 5 ? 'r' :
+            v == 6 ? 's' :
+            v == 7 ? 't' :
+            v == 8 ? 'u' :
+            v == 9 ? 'v' :
+            v == 10 ? 'w' :
+            v == 11 ? 'x' :
+            v == 12 ? 'y' :
+            v == 13 ? 'z' : 'm'
+        );
+    }
 
     class game_time : ScriptBaseEntity, ScriptBaseCustomEntity
     {
-        private float m_fThinkTime = 1.0f;
-
-        private string
-        m_iszTriggerPerSecond,
-        m_iszTriggerPerMinute,
-        m_iszTriggerPerHour,
-        m_iszTriggerPerDay,
-        m_iszPatternLight;
-        
-        private int m_iOneSecondIsEqualTo = 60;
+        private array<string> pPatterns();
+        private float m_fThinkTime = 1.0f, fMaxtime, fMinTime;
+        private string m_iszTriggerPerSecond, m_iszTriggerPerMinute, m_iszTriggerPerHour, m_iszTriggerPerDay, m_iszPatternLight, m_iszPatternFile = 'mikk/config/game_time.mkconfig';
+        private int m_iOneMinuteEquals = 60, iszPattern, OldPattern;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
             ExtraKeyValues( szKey, szValue );
             if( szKey == "m_fThinkTime" ) m_fThinkTime = atof( szValue );
-            else if( szKey == "m_iOneSecondIsEqualTo" ) m_iOneSecondIsEqualTo = atoi( szValue );
+            else if( szKey == "m_iOneMinuteEquals" ) m_iOneMinuteEquals = atoi( szValue );
             else if( szKey == "m_iszTriggerPerSecond" ) m_iszTriggerPerSecond = szValue;
             else if( szKey == "m_iszTriggerPerMinute" ) m_iszTriggerPerMinute = szValue;
             else if( szKey == "m_iszTriggerPerHour" ) m_iszTriggerPerHour = szValue;
             else if( szKey == "m_iszTriggerPerDay" ) m_iszTriggerPerDay = szValue;
             else if( szKey == "m_iszPatternLight" ) m_iszPatternLight = szValue;
+            else if( szKey == "m_iszPatternFile" ) m_iszPatternFile = szValue;
             return true;
         }
 
@@ -49,42 +77,68 @@ namespace game_time
                 g_Util.SetCKV( self, '$i_hour', int( g_ServerHostTime.GetHour() ) );
             }
 
+            File@ pFile = g_FileSystem.OpenFile( 'scripts/maps/' + m_iszPatternFile, OpenFile::READ );
+
+            if( pFile !is null && pFile.IsOpen() )
+            {
+                string line;
+
+                g_Util.Debug( '[game_time] Opened "scripts/maps/' + m_iszPatternFile + '" Patterns have been set.' );
+
+                while( !pFile.EOFReached() )
+                {
+                    pFile.ReadLine( line );
+
+                    if( line.Length() < 1 or line[0] == '/' and line[1] == '/' )
+                    {
+                        continue;
+                    }
+
+                    pPatterns.insertLast( line );
+                }
+
+            }
+            else
+            {
+                g_Util.Debug( '[game_time] Can NOT open "scripts/maps/' + m_iszPatternFile + '" No pattern set' );
+            }
+
             BaseClass.Spawn();
         }
 
         void TriggerThink()
         {
+            // g_PlayerFuncs.ClientPrintAll( HUD_PRINTNOTIFY, 'Time is: ' + g_GetTime( 'day' ) + 'D ' + g_GetTime( 'hour' ) + 'H '+ g_GetTime( 'minute' ) + 'M '+ g_GetTime( 'second' ) + 'S\n' );
+
             if( !IsLockedByMaster() )
             {
                 g_IncreaseTimer( 'second' );
 
-                if( g_GetTimer( 'second' ) >= m_iOneSecondIsEqualTo )
+                if( g_GetTime( 'second' ) >= m_iOneMinuteEquals )
                 {
+                    if( !m_iszPatternLight.IsEmpty() )
+                    {
+                        g_ModifyRAD();
+                    }
+
                     g_IncreaseTimer( 'minute', 'second' );
                 }
 
-                if( g_GetTimer( 'minute' ) >= 60 )
+                if( g_GetTime( 'minute' ) >= 60 )
                 {
                     g_IncreaseTimer( 'hour', 'minute' );
                 }
 
-                if( g_GetTimer( 'hour' ) >= 24 )
+                if( g_GetTime( 'hour' ) >= 24 )
                 {
                     g_IncreaseTimer( 'day', 'hour' );
                 }
-
-                if( !m_iszPatternLight.IsEmpty() )
-                {
-                    // -TODO CReflection stuff so people do their own logics
-                    g_ModifyRad();
-                }
             }
-            
-            // g_PlayerFuncs.ClientPrintAll( HUD_PRINTNOTIFY, 'Time is: ' + g_GetTimer( 'day' ) + 'D ' + g_GetTimer( 'hour' ) + 'H '+ g_GetTimer( 'minute' ) + 'M '+ g_GetTimer( 'second' ) + 'S\n' );
+
             self.pev.nextthink = g_Engine.time + m_fThinkTime;
         }
 
-        int g_GetTimer( const string isztime )
+        int g_GetTime( const string isztime )
         {
             return atoi( g_Util.GetCKV( self, '$i_' + isztime ) );
         }
@@ -96,7 +150,7 @@ namespace game_time
                 g_Util.SetCKV( self, '$i_' + iszintime, 0 );
             }
 
-            g_Util.SetCKV( self, '$i_' + isztime, g_GetTimer( isztime ) + 1 );
+            g_Util.SetCKV( self, '$i_' + isztime, g_GetTime( isztime ) + 1 );
 
             g_Util.Trigger
             (
@@ -108,68 +162,65 @@ namespace game_time
             );
         }
 
-        void g_ModifyRad()
+        void UpdateOnRemove()
         {
-            if( Pattern() != '' )
-            {
-                // g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "Pattern is " + Pattern() + "\n" );
+            g_ModifyRAD( true );
+            BaseClass.UpdateOnRemove();
+        }
 
-                if( m_iszPatternLight == "!world" )
+        void g_ModifyRAD( bool Restore = false )
+        {
+            if( Restore )
+            {
+                CBaseEntity@ pLight = null;
+
+                while( ( @pLight = g_EntityFuncs.FindEntityByTargetname( pLight, m_iszPatternLight ) ) !is null )
                 {
-                    g_EngineFuncs.LightStyle( 0, Pattern() );
+                    g_EntityFuncs.DispatchKeyValue( pLight.edict(), "pattern", 'm' );
+
+                    g_Util.Debug();
+                    pLight.Use( self, self, USE_TOGGLE, 0.0f );
+                    g_Util.Debug( "[game_time] Killed entity, restored patterns to default. (m)" );
+                    pLight.Use( self, self, USE_TOGGLE, 0.0f );
+                    g_Util.Debug();
                 }
-                else
+                return;
+            }
+
+            string strHour = string( g_GetTime( 'hour' ) );
+            if( strHour.Length() == 1 )
+            {
+                strHour = '0' + strHour;
+            }
+
+            string strMinute = string( g_GetTime( 'minute' ) );
+
+            string CurrentTime = ( strHour.Length() == 1 ? '0' : '' ) + strHour + ':' + ( strMinute.Length() == 1 ? '0' : '' ) + strMinute;
+
+            for (uint i = 0; i < pPatterns.length(); i++)
+            {
+                string strTimex = pPatterns[i].SubString( 0, CurrentTime.Length() );
+                iszPattern = atoi( pPatterns[i].SubString( 6, pPatterns[i].Length() ) );
+
+                if( CurrentTime == strTimex && iszPattern != OldPattern )
                 {
+                    OldPattern = iszPattern;
+
                     CBaseEntity@ pLight = null;
 
                     while( ( @pLight = g_EntityFuncs.FindEntityByTargetname( pLight, m_iszPatternLight ) ) !is null )
                     {
-                        g_EntityFuncs.DispatchKeyValue( pLight.edict(), "pattern", Pattern() );
+                        g_EntityFuncs.DispatchKeyValue( pLight.edict(), "pattern", IntToPattern( iszPattern ) );
 
                         g_Util.Debug();
                         pLight.Use( self, self, USE_TOGGLE, 0.0f );
-                        g_Util.Debug( "[game_time] Light Pattern has been updated to "+ Pattern() );
+                        g_Util.Debug( "[game_time] Light Pattern has been updated to "+ string( iszPattern ) + ' [' + IntToPattern( iszPattern ) + '] at the time of "' + CurrentTime + '"' );
                         pLight.Use( self, self, USE_TOGGLE, 0.0f );
                         g_Util.Debug();
                     }
+                    break;
                 }
             }
-        }
-
-        // Probably is completelly wrong, i've tried my best :)
-        string Pattern()
-        {
-            int m = g_GetTimer( 'minute' );
-            int h = g_GetTimer( 'hour' );
-            string p;
-            
-            if( h == 5 && m == 10 || h == 22 && m == 50 ) return 'b'; else
-            if( h == 5 && m == 20 || h == 22 && m == 10 ) return 'c'; else
-            if( h == 5 && m == 30 || h == 21 && m == 50 ) return 'd'; else
-            if( h == 5 && m == 40 || h == 21 && m == 10 ) return 'e'; else
-            if( h == 5 && m == 50 || h == 20 && m == 50 ) return 'f'; else
-            if( h == 6 && m == 10 || h == 20 && m == 10 ) return 'g'; else
-            if( h == 6 && m == 20 || h == 19 && m == 50 ) return 'h'; else
-            if( h == 6 && m == 30 || h == 19 && m == 10 ) return 'i'; else
-            if( h == 6 && m == 40 || h == 18 && m == 50 ) return 'j'; else
-            if( h == 6 && m == 50 || h == 18 && m == 20 ) return 'k'; else
-            if( h == 7 && m == 10 || h == 17 && m == 50 ) return 'l'; else
-            if( h == 7 && m == 50 || h == 17 && m == 30 ) return 'm'; else
-            if( h == 8 && m == 10 || h == 17 && m == 10 ) return 'n'; else
-            if( h == 8 && m == 30 || h == 16 && m == 50 ) return 'o'; else
-            if( h == 8 && m == 50 || h == 16 && m == 30 ) return 'p'; else
-            if( h == 9 && m == 10 || h == 16 && m == 10 ) return 'q'; else
-            if( h == 9 && m == 30 || h == 15 && m == 50 ) return 'r'; else
-            if( h == 9 && m == 50 || h == 15 && m == 30 ) return 's'; else
-            if( h == 10 && m == 10 || h == 15 && m == 10 ) return 't'; else
-            if( h == 10 && m == 30 || h == 14 && m == 50 ) return 'u'; else
-            if( h == 10 && m == 50 || h == 14 && m == 30 ) return 'v'; else
-            if( h == 11 && m == 10 || h == 14 && m == 10 ) return 'w'; else
-            if( h == 11 && m == 30 || h == 13 && m == 50 ) return 'x'; else
-            if( h == 11 && m == 50 || h == 13 && m == 40 ) return 'y'; else
-            if( h == 12 && m == 10 ) return 'z'; else
-            if( h >= 23 || h <= 5 && m < 10 ) return 'a';
-            return '';
         }
     }
 }

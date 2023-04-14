@@ -1,4 +1,4 @@
-bool ShowDebugs = false;
+bool ShowDebugs = true;
 
 CUtils g_Util;
 
@@ -133,10 +133,14 @@ final class CUtils
                 g_Game.AlertMessage( at_console, szMessage + "\n" );
             }
         }
+		else
+		{
+		}
     }
 
     string GetCKV( CBaseEntity@ pEntity, string szKey )
     {
+		// -TODO Return invalid index if !has keyvalue
         if( pEntity is null or szKey.IsEmpty() )
         {
             g_Util.Debug();
@@ -150,12 +154,12 @@ final class CUtils
 
     void SetCKV( CBaseEntity@ pEntity, string szKey, string szValue )
     {
-        g_Util.Debug();
+        // g_Util.Debug();
 
         if( pEntity is null or szKey.IsEmpty() or szValue.IsEmpty() )
         {
-            g_Util.Debug( "[CUtils::SetCKV] Null entity n/or key/value!" );
-            g_Util.Debug();
+            // g_Util.Debug( "[CUtils::SetCKV] Null entity n/or key/value!" );
+            // g_Util.Debug();
             return;
         }
 
@@ -172,9 +176,9 @@ final class CUtils
         {
             pChangeValue.Use( pEntity, null, USE_ON, 0.0f );
             g_EntityFuncs.Remove( pChangeValue );
-            g_Util.Debug( "[CUtils::SetCKV] '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
+            // g_Util.Debug( "[CUtils::SetCKV] '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
         }
-        g_Util.Debug();
+        // g_Util.Debug();
     }
 
     bool IsStringInFile( const string& in szPath, string& in szComparator )
@@ -732,8 +736,8 @@ namespace utils
                     Vector vecAngles = Math.VecToAngles( pPlayer.pev.origin - pEntity.pev.origin );
                     pEntity.pev.angles.y = vecAngles.y;
 
-                    CBaseEntity@ pXenMaker = g_EntityFuncs.FindEntityByTargetname( pXenMaker, ( self.pev.target ) );
-                    
+                    CBaseEntity@ pXenMaker = g_EntityFuncs.FindEntityByTargetname( pXenMaker, string( self.pev.target ) );
+
                     if( pXenMaker !is null )
                     {
                         Vector VecOld = pXenMaker.pev.origin;
