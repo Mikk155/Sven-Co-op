@@ -1,25 +1,49 @@
 #include "utils"
-
-bool game_text_custom_register = g_Util.CustomEntity( 'game_text_custom::game_text_custom','game_text_custom' );
+#include 'utils/customentity'
+#include 'utils/languages'
 
 namespace game_text_custom
 {
-
-    void PluginInit()
+    void Register()
     {
-        g_Util.CustomEntity( 'game_text_custom::game_text_custom','multi_language' );
+        string iszScriptName;
+
+        if( !g_CustomEntityFuncs.IsCustomEntity( "game_text_custom" )
+        {
+            g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::game_text_custom", "game_text_custom" );
+            g_ScriptInfo.SetInformation
+            ( 
+                g_ScriptInfo.ScriptName( 'game_text_custom' ) +
+                g_ScriptInfo.Description( 'Expands game_text and adds languages support' ) +
+                g_ScriptInfo.Wiki( 'game_text_custom' ) +
+                g_ScriptInfo.Author( 'Mikk' ) +
+                g_ScriptInfo.GetGithub() +
+                g_ScriptInfo.Author( 'Gaftherman' ) +
+                g_ScriptInfo.GetGithub( 'Gaftherman' ) +
+                g_ScriptInfo.Author( 'Kmkz' ) +
+                g_ScriptInfo.GetGithub( 'kmkz27' ) +
+                g_ScriptInfo.GetDiscord()
+            );
+        }
+
+        if( g_Util.IsPluginInstalled( 'multi_language' ) )
+        {
+            g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::multi_language", "multi_language" );
+        }
     }
 
-	enum game_text_custom_spawnflags
-	{
-		ALL_PLAYERS = 1,
-		NO_CONSOLE_ECHO = 2,
-		FIRE_PER_PLAYER = 4,
-	}
+    enum game_text_custom_spawnflags
+    {
+        ALL_PLAYERS = 1,
+        NO_CONSOLE_ECHO = 2,
+        FIRE_PER_PLAYER = 4,
+    }
 
-    class game_text_custom : ScriptBaseEntity,
-    game_text_custom::ScriptBaseGameText,
-    ScriptBaseLanguages, ScriptBaseCustomEntity
+    class multi_language : ScriptBaseGameText
+    {
+    }
+
+    class game_text_custom : ScriptBaseEntity, ScriptBaseGameText, ScriptBaseLanguages, ScriptBaseCustomEntity
     {
         private bool IsSector = false;
         EHandle EhActivator = self;
@@ -249,10 +273,6 @@ namespace game_text_custom
             else if( szKey == "killtarget" )
             {
                 killtarget = szValue;
-            }
-            else
-            {
-                return BaseClass.KeyValue( szKey, szValue );
             }
             return true;
         }

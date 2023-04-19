@@ -1,9 +1,23 @@
 #include "utils"
-
-bool config_map_cvars_register = g_Util.CustomEntity( 'config_map_cvars::config_map_cvars','config_map_cvars' );
+#include "utils/customentity"
 
 namespace config_map_cvars
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'config_map_cvars::config_map_cvars','config_map_cvars' );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'config_map_cvars' ) +
+            g_ScriptInfo.Description( 'Allow to configurate cvars on the fly and revert them back to default. also exposes them for mappers read it and do actions depending on them' ) +
+            g_ScriptInfo.Wiki( 'config_map_cvars' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     enum config_map_cvars_spawnflags
     {
         START_ON = 1,

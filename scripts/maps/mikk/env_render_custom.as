@@ -1,13 +1,31 @@
+/*
+-TODO
+auto apply + radio /hulls / brush
+master + master trigger
+
+*/
 #include "utils"
 
 namespace env_render_custom
 {
-    CScheduledFunction@ g_Renders = g_Scheduler.SetTimeout( "FindEnvRenders", 0.0f );
-
-    void FindEnvRenders()
+    void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "env_render_custom::env_render_custom", "env_render_custom" );
+        g_Scheduler.SetTimeout( "env_render_custom_init", 0.0f );
 
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'env_render_custom' ) +
+            g_ScriptInfo.Description( 'Expands env_render entity' ) +
+            g_ScriptInfo.Wiki( 'env_render_custom' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
+    }
+
+    void env_render_custom_init()
+    {
         CBaseEntity@ pRender = null;
 
         while( ( @pRender = g_EntityFuncs.FindEntityByClassname( pRender, "env_render" ) ) !is null )

@@ -1,9 +1,35 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/game_stealth"
+
+*/
 #include "utils"
 namespace player_flashlight
 {
-    bool Register = g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @PlayerSpawn );
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: game_debug\n' +
+            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @PlayerSpawn );
+    }
+
+    // as_command flashlight flashlight amt
+    CCVar g_Flashlight ( "flashlight", "100", "custom titles.txt file", ConCommandFlag::AdminOnly );
+
     CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "Think", 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
-    int DefaultAmmo = 100;
 
     void Think()
     {
@@ -59,7 +85,7 @@ namespace player_flashlight
     {
         if( pPlayer !is null && pPlayer.HasSuit() )
         {
-            g_Util.SetCKV( pPlayer, '$f_pf_flashlight', DefaultAmmo );
+            g_Util.SetCKV( pPlayer, '$f_pf_flashlight', atof( g_Flashlight.GetString() ) );
         }
         return HOOK_CONTINUE;
     }

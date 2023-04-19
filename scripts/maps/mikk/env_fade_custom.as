@@ -1,9 +1,23 @@
 #include "utils"
-
-bool env_fade_custom_register = g_Util.CustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom' );
+#include "utils/customentity"
 
 namespace env_fade_custom
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom' );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'env_fade_custom' ) +
+            g_ScriptInfo.Description( 'Expands env_fade entity' ) +
+            g_ScriptInfo.Wiki( 'env_fade_custom' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     enum env_fade_custom_spawnflags
     {
         REVERSE_FADING = 1,
@@ -11,7 +25,7 @@ namespace env_fade_custom
         STAY_FADE = 4
     }
 
-    enum env_fade_custom_iall_players
+    enum env_fade_custom_affected
     {
         ACTIVATOR_ONLY = 0,
         ALL_PLAYERS = 1,
@@ -94,14 +108,16 @@ namespace env_fade_custom
                     {
                         CFade( ePlayer, useType );
                     }
-                    else if ( m_iall_players == IN_RADIUS_AUTO )
+
+                    if( m_iall_players == IN_RADIUS_AUTO )
                     {
                         if( ( self.pev.origin - ePlayer.pev.origin ).Length() <= m_ifaderadius )
                             CFadeSector( ePlayer );
                         else
                             SetValue( ePlayer );
                     }
-                    else if ( m_iall_players == TOUCHING_AUTO )
+
+                    if( m_iall_players == TOUCHING_AUTO )
                     {
                         if( self.Intersects( ePlayer ) )
                             CFadeSector( ePlayer );

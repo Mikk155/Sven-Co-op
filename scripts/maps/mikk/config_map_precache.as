@@ -1,9 +1,23 @@
 #include "utils"
-
-bool config_map_precache_register = g_Util.CustomEntity( 'config_map_precache::config_map_precache','config_map_precache' );
+#include "utils/customentity"
 
 namespace config_map_precache
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'config_map_precache::config_map_precache','config_map_precache' );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'config_map_precache' ) +
+            g_ScriptInfo.Description( 'Allow to precache anything' ) +
+            g_ScriptInfo.Wiki( 'config_map_precache' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     class config_map_precache : ScriptBaseEntity
     {
         dictionary g_PrecacheKeys;

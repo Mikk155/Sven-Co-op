@@ -1,9 +1,31 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/trigger_votemenu"
+
+*/
 #include "utils"
-
-bool trigger_votemenu_register = g_Util.CustomEntity( 'trigger_votemenu::trigger_votemenu','trigger_votemenu' );
-
 namespace trigger_votemenu
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: trigger_votemenu\n' +
+            'Description: Alternative to trigger_vote, the menu is the same as used by buy/vote/menu plugins.\n' +
+            'Author: Gaftherman\n' +
+            'Discord: ' + g_Information.GetDiscord( 'gaftherman' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub( 'gaftherman' )
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_votemenu::trigger_votemenu", "trigger_votemenu" );
+    }
+
     class trigger_votemenu : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         dictionary dictKeyValues;

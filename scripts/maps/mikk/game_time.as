@@ -1,9 +1,35 @@
 #include "utils"
 
-bool game_time_register = g_Util.CustomEntity( 'game_time::game_time','game_time' );
-
 namespace game_time
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: game_time\n' +
+            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'game_text_custom' ) +
+            g_ScriptInfo.Description( 'Expands game_text and adds languages support' ) +
+            g_ScriptInfo.Wiki( 'game_text_custom' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::game_time", "game_debug" );
+    }
+
     DateTime g_ServerHostTime;
 
     enum game_time_spawnflags

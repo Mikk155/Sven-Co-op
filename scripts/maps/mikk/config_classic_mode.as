@@ -1,15 +1,24 @@
-#include 'utils'
-
-bool config_classic_mode_register = g_Util.CustomEntity( 'config_classic_mode::config_classic_mode','config_classic_mode' );
-bool config_classic_mode_enable = config_classic_mode_support();
-bool config_classic_mode_support()
-{
-    g_ClassicMode.EnableMapSupport();
-    return true;
-}
+#include "utils"
+#include "utils/customentity"
 
 namespace config_classic_mode
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'config_classic_mode::config_classic_mode','config_classic_mode' );
+        g_ClassicMode.EnableMapSupport();
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'config_classic_mode' ) +
+            g_ScriptInfo.Description( 'Allow to configurate classic mode for models that the game does not support' ) +
+            g_ScriptInfo.Wiki( 'config_classic_mode' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     enum config_classic_mode_spawnflags
     {
         RESTART_NOW = 1
@@ -73,12 +82,12 @@ namespace config_classic_mode
                     if( string( Key ).StartsWith( 'models/' ) )
                     {
                         g_Game.PrecacheModel( Value );
-                        g_Util.Debug( '[config_classic_mode] Precached model '' + Value + ''' );
+                        g_Util.Debug( '[config_classic_mode] Precached model "' + Value + '"' );
                     }
                     else
                     {
                         g_Game.PrecacheOther( Value );
-                        g_Util.Debug( '[config_classic_mode] Precached item '' + Value + ''' );
+                        g_Util.Debug( '[config_classic_mode] Precached item "' + Value + '"' );
                     }
                 }
             }
@@ -90,8 +99,7 @@ namespace config_classic_mode
         {
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
             {
-                g_Util.Debug( self.GetClassname() + '[config_classic_mode] Can not use more than one entity per level. Removing...' );
-                g_EntityFuncs.Remove( self );
+                g_Util.Debug( self.GetClassname() + '[config_classic_mode] WARNING! There is more than one config_classic_mode entity in this map!.' );
             }
 
             if( g_ClassicMode.IsEnabled() )
@@ -157,7 +165,7 @@ namespace config_classic_mode
                     {
                         if( pEntity !is null && g_Util.GetCKV( pEntity, '$i_classic_mode_ignore' ) != '1' )
                         {
-                            g_Util.Debug( '[config_classic_mode] replaced '' + string( pEntity.pev.model ) + '' -> '' + string( Value ) + ''' );
+                            g_Util.Debug( '[config_classic_mode] replaced "' + string( pEntity.pev.model ) + "' -> '" + string( Value ) + '"' );
                             g_Util.Trigger( 'CCM_' + Key, pEntity, self, USE_ON, 0.0f );
                         }
                     }
@@ -170,7 +178,7 @@ namespace config_classic_mode
                         {
                             if( pWeapon !is null && g_Util.GetCKV( pWeapon, '$i_classic_mode_ignore' ) != '1' )
                             {
-                                g_Util.Debug( '[config_classic_mode] replaced '' + string( pWeapon.pev.classname ) + '' -> '' + string( Value ) + ''' );
+                                g_Util.Debug( '[config_classic_mode] replaced "' + string( pWeapon.pev.classname ) + '" -> "' + string( Value ) + '"' );
                                 g_EntityFuncs.Create( Value, pWeapon.pev.origin, pWeapon.pev.angles, false);
                                 g_EntityFuncs.Remove( pWeapon );
                             }

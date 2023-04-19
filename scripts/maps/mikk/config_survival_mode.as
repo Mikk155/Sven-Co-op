@@ -1,9 +1,26 @@
 #include "utils"
-
-bool config_survival_mode_register = g_Util.CustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
+#include "utils/customentity"
+#include 'utils/languages'
 
 namespace config_survival_mode
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
+
+        g_SurvivalMode.EnableMapSupport();
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'config_survival_mode' ) +
+            g_ScriptInfo.Description( 'Allow to configurate survival mode dynamically' ) +
+            g_ScriptInfo.Wiki( 'config_survival_mode' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     class config_survival_mode : ScriptBaseEntity, ScriptBaseCustomEntity, ScriptBaseLanguages
     {
         bool SurvivalEnabled = false;
@@ -46,15 +63,10 @@ namespace config_survival_mode
 
         void Spawn()
         {
-            g_ClassicMode.EnableMapSupport();
-
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
             {
-                g_Util.Debug( self.GetClassname() + ': Can not use more than one entity per level. Removing...' );
-                g_EntityFuncs.Remove( self );
+                g_Util.Debug( self.GetClassname() + '[config_classic_mode] WARNING! There is more than one config_survival_mode entity in this map!.' );
             }
-
-            g_SurvivalMode.EnableMapSupport();
 
             SetThink( ThinkFunction( this.Think ) );
             self.pev.nextthink = g_Engine.time + 1.0f;

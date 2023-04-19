@@ -1,9 +1,34 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/game_stealth"
+
+*/
 #include "utils"
 
 bool player_inbutton_register = g_Util.CustomEntity( 'player_inbutton::player_inbutton','player_inbutton' );
 
 namespace player_inbutton
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: game_debug\n' +
+            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
+    }
+
     enum player_inbutton_spawnflags
     {
         PLAYERS_ANYWHERE = 1,

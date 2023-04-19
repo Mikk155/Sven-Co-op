@@ -1,9 +1,23 @@
 #include 'utils'
-
-bool ammo_custom_register = g_Util.CustomEntity( 'ammo_custom::ammo_custom','ammo_custom' );
+#include 'utils/customentity'
 
 namespace ammo_custom
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'ammo_custom::ammo_custom','ammo_custom' );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'ammo_custom' ) +
+            g_ScriptInfo.Description( 'Item that will give a certain ammout of bullets. and can be set with a limited collected times per players individualy' ) +
+            g_ScriptInfo.Wiki( 'ammo_custom' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     class ammo_custom : ScriptBasePlayerAmmoEntity, ScriptBaseCustomEntity
     {
         private string p_sound;
@@ -83,7 +97,7 @@ namespace ammo_custom
 
         bool AddAmmo( CBaseEntity@ pOther ) 
         {
-            if( pOther is null || IsLockedByMaster() )
+            if( pOther is null || IsLockedByMaster( pOther ) )
             {
                 return false;
             }
@@ -124,7 +138,6 @@ namespace ammo_custom
                         if( flash >= 100 )
                         {
                             pPlayer.m_iFlashBattery = 100;
-                            // For player_flashlight.as
                             g_Util.SetCKV( pPlayer, '$f_pf_flashlight', 100.0 );
                         }
                         else

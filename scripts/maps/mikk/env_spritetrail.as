@@ -1,10 +1,27 @@
-// This script is subject to change. copy in your own folder if want to use.
-#include "../mikk/utils"
-
-bool env_spritetrail_register = g_Util.CustomEntity( 'env_spritetrail::env_spritetrail','env_spritetrail' );
+// This script is subject to change in any moment. copy in your own folder if you really want to use this right now
+#include "utils"
+#include "utils/customentity"
+#include "utils/effects"
 
 namespace env_spritetrail
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritetrail::env_spritetrail", "env_spritetrail" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'env_spritetrail' ) +
+            g_ScriptInfo.Description( 'Traces a trail sprite on the target entity' ) +
+            g_ScriptInfo.Wiki( 'env_spritetrail' ) +
+            g_ScriptInfo.Author( 'Gaftherman' ) +
+            g_ScriptInfo.GetGithub( 'Gaftherman' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
+    }
+
     class env_spritetrail : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle hTargetEnt = null;

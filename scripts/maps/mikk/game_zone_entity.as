@@ -1,9 +1,31 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/game_zone_entity"
+
+*/
 #include "utils"
-
-bool game_zone_entity_register = g_Util.CustomEntity( 'game_zone_entity::game_zone_entity','game_zone_entity' );
-
 namespace game_zone_entity
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: game_debug\n' +
+            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_zone_entity::game_zone_entity", "game_zone_entity" );
+    }
+
     enum game_zone_entity_spawnflags
     {
         IGNORE_DEAD_ENTITIES = 1

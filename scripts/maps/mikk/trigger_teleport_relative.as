@@ -1,9 +1,31 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/trigger_teleport_relative"
+
+*/
 #include "utils"
-
-bool trigger_teleport_relative_register = g_Util.CustomEntity( 'trigger_teleport_relative::trigger_teleport_relative','trigger_teleport_relative' );
-
 namespace trigger_teleport_relative
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: trigger_teleport_relative\n' +
+            'Description: \n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_teleport_relative::trigger_teleport_relative", "trigger_teleport_relative" );
+    }
+
     enum trigger_teleport_relative_spawnflags
     {
         ALL_PLAYERS = 1,
@@ -73,35 +95,35 @@ namespace trigger_teleport_relative
             {
                 if( pTeleEnt.IsPlayer() && !spawnflag( NO_CLIENTS ) || pTeleEnt.IsMonster() && spawnflag( ALLOW_MONSTERS ) )
                 {
-					Vector VecStart, VecEnd;
+                    Vector VecStart, VecEnd;
 
-					if( g_Utility.IsString3DVec( m_vStartPoint ) )
-					{
-						VecStart = g_Util.StringToVec( m_vStartPoint );
-					}
-					else
-					{
-						VecStart = LandmarkName( m_vStartPoint );
-					}
+                    if( g_Utility.IsString3DVec( m_vStartPoint ) )
+                    {
+                        VecStart = g_Util.StringToVec( m_vStartPoint );
+                    }
+                    else
+                    {
+                        VecStart = LandmarkName( m_vStartPoint );
+                    }
 
-					if( g_Utility.IsString3DVec( m_vEndPoint ) )
-					{
-						VecEnd = g_Util.StringToVec( m_vEndPoint );
-					}
-					else
-					{
-						VecEnd = LandmarkName( m_vEndPoint );
-					}
+                    if( g_Utility.IsString3DVec( m_vEndPoint ) )
+                    {
+                        VecEnd = g_Util.StringToVec( m_vEndPoint );
+                    }
+                    else
+                    {
+                        VecEnd = LandmarkName( m_vEndPoint );
+                    }
 
-					if( VecStart != g_vecZero && VecEnd != g_vecZero )
-					{
-						Vector VecDif = ( VecStart - pTeleEnt.pev.origin );
-						Vector VecRes = ( VecEnd - VecDif );
-						g_EntityFuncs.SetOrigin( pTeleEnt, VecRes );
-						g_Util.Trigger( m_iszTargetOnExit, pTeleEnt, self, USE_TOGGLE, delay );
-					}
-				}
-			}
+                    if( VecStart != g_vecZero && VecEnd != g_vecZero )
+                    {
+                        Vector VecDif = ( VecStart - pTeleEnt.pev.origin );
+                        Vector VecRes = ( VecEnd - VecDif );
+                        g_EntityFuncs.SetOrigin( pTeleEnt, VecRes );
+                        g_Util.Trigger( m_iszTargetOnExit, pTeleEnt, self, USE_TOGGLE, delay );
+                    }
+                }
+            }
         }
 
         Vector LandmarkName( const string iszLandmark )

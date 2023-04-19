@@ -1,17 +1,38 @@
 #include "utils"
-
-bool env_spritehud_register = g_Util.CustomEntity( 'env_spritehud::env_spritehud','env_spritehud' );
+#include "utils/customentity"
 
 namespace env_spritehud
 {
-    class env_spritehud : ScriptBaseEntity
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "env_spritehud::env_spritehud", "env_spritehud" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'env_spritehud' ) +
+            g_ScriptInfo.Description( 'Shows a sprite on the player\'s HUD' ) +
+            g_ScriptInfo.Wiki( 'env_spritehud' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
+    enum env_spritehud_affected
+    {
+        ACTIVATOR_ONLY = 0,
+        ALL_PLAYERS = 1
+    }
+
+    class env_spritehud : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         HUDSpriteParams params;
-        private int color1, color2, effect;
+        private uint8 color1, color2, effect;
         private string sprite = "logo.spr";
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
+            ExtraKeyValues( szKey, szValue );
             if( szKey == "sprite" )
             {
                 sprite = szValue;
@@ -22,15 +43,15 @@ namespace env_spritehud
             }
             else if( szKey == "color1" )
             {
-                color1 = atoi( szValue );
+                color1 = atoui( szValue );
             }
             else if( szKey == "color2" )
             {
-                color2 = atoi( szValue );
+                color2 = atoui( szValue );
             }
             else if( szKey == "effect" )
             {
-                effect = atoi( szValue );
+                effect = atoui( szValue );
             }
             else if( szKey == "frame" )
             {
@@ -97,54 +118,44 @@ namespace env_spritehud
             g_Game.PrecacheGeneric( sprite );
             BaseClass.Precache();
         }
-        
-        void Spawn()
-        {
-            if( color1 == 1 ) { params.color1 = RGBA_BLACK; }
-            else if( color1 == 2 ) { params.color1 = RGBA_RED; }
-            else if( color1 == 3 ) { params.color1 = RGBA_GREEN; }
-            else if( color1 == 4 ) { params.color1 = RGBA_BLUE; }
-            else if( color1 == 5 ) { params.color1 = RGBA_YELLOW; }
-            else if( color1 == 6 ) { params.color1 = RGBA_ORANGE; }
-            else if( color1 == 7 ) { params.color1 = RGBA_SVENCOOP; }
-            else { params.color1 = RGBA_WHITE; }
-            
-            if( color2 == 1 ) { params.color2 = RGBA_BLACK; }
-            else if( color2 == 2 ) { params.color2 = RGBA_RED; }
-            else if( color2 == 3 ) { params.color2 = RGBA_GREEN; }
-            else if( color2 == 4 ) { params.color2 = RGBA_BLUE; }
-            else if( color2 == 5 ) { params.color2 = RGBA_YELLOW; }
-            else if( color2 == 6 ) { params.color2 = RGBA_ORANGE; }
-            else if( color2 == 7 ) { params.color2 = RGBA_SVENCOOP; }
-            else { params.color2 = RGBA_WHITE; }
 
-            params.effect = int( effect );
-
-            params.flags = HUD_NUM(self.pev.spawnflags);
-
-            params.spritename = sprite.Replace( 'sprites/', '' );
-            BaseClass.Spawn();
-        }
-        
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( self.pev.frags == 0 )
+            array<RGBA> RGBA_COLOR =
             {
-                if( pActivator is null && !pActivator.IsPlayer() )
-                    return;
+                RGBA_WHITE,
+                RGBA_BLACK,
+                RGBA_GREEN,
+                RGBA_BLUE,
+                RGBA_YELLOW,
+                RGBA_ORANGE,
+                RGBA_SVENCOOP
+            };
 
-                g_PlayerFuncs.HudCustomSprite( cast<CBasePlayer@>(pActivator), params );
+            params.color1 = RGBA_COLOR[color1];
+            params.color2 = RGBA_COLOR[color2];
+            
+            params.effect = effect;
+            params.flags = HUD_NUM(self.pev.spawnflags);
+            params.spritename = sprite.Replace( 'sprites/', '' );
+
+            if( self.pev.frags == ACTIVATOR_ONLY )
+            {
+                if( pActivator !is null && pActivator.IsPlayer() && !IsLockedByMaster( pActivator ) )
+                {
+                    g_PlayerFuncs.HudCustomSprite( cast<CBasePlayer@>(pActivator), params );
+                }
             }
-            else if( self.pev.frags == 1 )
+            else if( self.pev.frags == ALL_PLAYERS )
             {
                 for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
                 {
                     CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
-                    if( pPlayer is null )
-                        continue;
-
-                    g_PlayerFuncs.HudCustomSprite( pPlayer, params );
+                    if( pPlayer !is null && !IsLockedByMaster( pPlayer ) )
+                    {
+                        g_PlayerFuncs.HudCustomSprite( pPlayer, params );
+                    }
                 }
             }
         }

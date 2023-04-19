@@ -1,9 +1,23 @@
 #include "utils"
-
-bool env_geiger_register = g_Util.CustomEntity( 'env_geiger::env_geiger','env_geiger' );
+#include "utils/customentity"
 
 namespace env_geiger
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'env_geiger::env_geiger','env_geiger' );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'env_geiger' ) +
+            g_ScriptInfo.Description( 'Simulates HEV Geiger alert in a small radius' ) +
+            g_ScriptInfo.Wiki( 'env_geiger' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     class env_geiger : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private bool State = true;

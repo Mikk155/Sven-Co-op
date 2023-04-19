@@ -1,47 +1,59 @@
+// -TODO
+/*
+    - splashj sounds when walk in + depend the range of the bloodpuddle
+    - alternatively use sprite
+    - start frame
+    - sequence velocity
+    hullsizes (splash sound) dependiente de el modelo + la escala
+*/
 #include "utils"
-
-bool env_bloodpuddle_register = g_Util.CustomEntity( 'env_bloodpuddle::env_bloodpuddle','env_bloodpuddle' );
 
 namespace env_bloodpuddle
 {
-    void model( CBaseEntity@ pTriggerScript )
+    bool fadeout = false;
+    string iszgmodel = "models/mikk/misc/bloodpuddle.mdl";
+    void model( string cmodel )
     {
-        if( !string( pTriggerScript.pev.model ).IsEmpty() )
+        iszgmodel = cmodel;
+
+        g_Game.PrecacheModel( cmodel );
+        g_Game.PrecacheGeneric( cmodel );
+    }
+
+    void Register()
+    {
+        g_Game.PrecacheModel( iszgmodel );
+        g_Game.PrecacheGeneric( iszgmodel );
+
+        if( !g_CustomEntityFuncs.IsCustomEntity( 'env_bloodpuddle' ) )
         {
-            BloodModel = string( pTriggerScript.pev.model );
+            g_Scheduler.SetInterval( "env_bloodpuddle_think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
         }
-        pTriggerScript.Use( null, null, USE_OFF, 0.0f );
-    }
 
-    void model( const string& in szModel = BloodModel )
-    {
-        BloodModel = szModel;
-        PrecacheModel();
-    }
+        g_CustomEntityFuncs.RegisterCustomEntity( 'env_bloodpuddle::env_bloodpuddle','env_bloodpuddle' );
 
-    bool fade = false;
-
-    CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "env_bloodpuddle_think", 0.5f, g_Scheduler.REPEAT_INFINITE_TIMES );
-
-    string AutoPrecache = PrecacheModel();
-
-    string BloodModel = 'models/mikk/misc/bloodpuddle.mdl';
-
-    string PrecacheModel( const string& in szModel = BloodModel )
-    {
-        g_Game.PrecacheModel( szModel );
-        g_Game.PrecacheGeneric( szModel );
-        return szModel;
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'env_bloodpuddle' ) +
+            g_ScriptInfo.Description( 'Blood Puddle Effect' ) +
+            g_ScriptInfo.Wiki( 'env_bloodpuddle' ) +
+            g_ScriptInfo.Author( 'Gaftherman' ) +
+            g_ScriptInfo.GetGithub('Gaftherman') +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
     }
 
     class env_bloodpuddle : ScriptBaseAnimating
     {
+        private float minscale = 1.5, maxscale = 2.5;
         void Spawn()
         {
             Precache();
-            self.pev.movetype = MOVETYPE_NONE;
             self.pev.solid = SOLID_NOT;
-            self.pev.scale = Math.RandomFloat( 1.5, 2.5 );
+            self.pev.movetype = self.pev.movetype;
+            self.pev.scale = Math.RandomFloat( minscale, maxscale );
 
             if( !string( self.pev.model ).IsEmpty() )
             {
@@ -49,7 +61,7 @@ namespace env_bloodpuddle
             }
             else
             {
-                g_EntityFuncs.SetModel( self, BloodModel );
+                g_EntityFuncs.SetModel( self, iszgmodel );
             }
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
             self.pev.sequence = 2;
@@ -89,7 +101,7 @@ namespace env_bloodpuddle
             {
                 self.pev.origin = pOwner.pev.origin;
             }
-            else if( fade )
+            else if( fadeout )
             {
                 g_EntityFuncs.Remove( self );
             }
@@ -115,12 +127,11 @@ namespace env_bloodpuddle
 
             if( pMonster.IsMonster()
             && pMonster.pev.deadflag == DEAD_DEAD
-            && string( pMonster.GetClassname() ).Find( 'dead' ) != 1
+            && string( pMonster.GetClassname() ).Find( 'dead' ) == String::INVALID_INDEX
             && pMonster.m_bloodColor != ( DONT_BLEED )
             && atof( g_Util.GetCKV( pMonster, '$f_bloodpuddle' ) ) <= 0.0 )
             {
                 CBaseEntity@ pBlood = g_EntityFuncs.CreateEntity( "env_bloodpuddle", null, true);
-                g_Util.Debug( pMonster.pev.classname );
                 if( pBlood !is null )
                 {
                     if( g_Util.GetCKV( pEntity, '$i_bloodpuddle' ) != '' )

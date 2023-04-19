@@ -1,9 +1,31 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/player_data"
+
+*/
 #include "utils"
-
-bool player_data_register = g_Util.CustomEntity( 'player_data::player_data','player_data' );
-
 namespace player_data
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: player_data\n' +
+            'Description: \n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "player_data::player_data", "player_data" );
+    }
+
     enum player_data_spawnflags
     {
         ALL_PLAYERS = 1

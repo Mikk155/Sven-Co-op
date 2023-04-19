@@ -1,9 +1,31 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/game_stealth"
+
+*/
 #include "utils"
-
-bool trigger_percent_register = g_Util.CustomEntity( 'trigger_percent::trigger_percent','trigger_percent' );
-
 namespace trigger_percent
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: game_debug\n' +
+            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_percent::trigger_percent", "trigger_percent" );
+    }
+
     enum trigger_percent_spawnflags
     {
         REUSABLE = 1

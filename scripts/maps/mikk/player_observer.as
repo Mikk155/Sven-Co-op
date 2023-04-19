@@ -1,3 +1,10 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/game_stealth"
+
+*/
 #include "utils"
 
 bool player_obs_register = g_Util.CustomEntity( 'player_observer::player_observer','player_observer' );
@@ -7,6 +14,24 @@ bool ClienThink_register = g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink,
 
 namespace player_observer
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: game_debug\n' +
+            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
+    }
+
     class player_observer : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string m_iszSetObserverTarget;

@@ -1,9 +1,22 @@
 #include "utils"
 
-bool entitymaker_register = g_Util.CustomEntity( 'entitymaker::entitymaker','entitymaker' );
-
 namespace entitymaker
 {
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( 'entitymaker::entitymaker','entitymaker' );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'entitymaker' ) +
+            g_ScriptInfo.Description( 'When fired, Creates a entity with its same keyvalues' ) +
+            g_ScriptInfo.Wiki( 'entitymaker' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
+    }
+
     class entitymaker : ScriptBaseEntity
     {
         dictionary g_KeyValues;
@@ -14,23 +27,44 @@ namespace entitymaker
             return true;
         }
 
+        const array<string> strKeyValues
+        {
+            get const { return g_KeyValues.getKeys(); }
+        }
+
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( string( g_KeyValues[ "child_classname" ] ), g_KeyValues, true );
-            
-            if( pEntity !is null )
+            if( !string( g_KeyValues[ "child_classname" ] ).IsEmpty() )
             {
-                pEntity.pev.targetname = string( g_KeyValues[ "child_targetname" ] );
-                g_EntityFuncs.SetOrigin( pEntity, self.pev.origin );
+                CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( string( g_KeyValues[ "child_classname" ] ), g_KeyValues, true );
+                
+                if( pEntity !is null )
+                {
+                    if( !string( g_KeyValues[ "child_targetname" ] ).IsEmpty() )
+                    {
+                        pEntity.pev.targetname = string( g_KeyValues[ "child_targetname" ] );
+                    }
+                    g_EntityFuncs.SetOrigin( pEntity, self.pev.origin );
+                }
             }
         }
 
         void Precache()
         {
-            if( !string( self.pev.model ).IsEmpty() && !string( self.pev.model ).StartsWith( '*' ) )
+            for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
-                g_Game.PrecacheModel( string( self.pev.model ) );
-                g_Game.PrecacheGeneric( string( self.pev.model ) );
+                string Key = string( strKeyValues[ui] );
+                string Value = string( g_KeyValues[ Key ] );
+
+                if( Value.StartsWith( 'models/' ) )
+                {
+                    g_Game.PrecacheModel( Value );
+                    g_Game.PrecacheGeneric( Value );
+                }
+                if( !string( g_KeyValues[ "child_classname" ] ).IsEmpty() )
+                {
+                    g_Game.PrecacheOther( Value );
+                }
             }
         }
     }

@@ -1,11 +1,33 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/trigger_sound"
+
+*/
 #include "utils"
-
-bool trigger_sound_register = g_Util.CustomEntity( 'trigger_sound::trigger_sound','trigger_sound' );
-bool ClientDisconnect_register = g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @trigger_sound::ClientDisconnect );
-bool ClientPutInServer_register = g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @trigger_sound::ClientPutInServer );
-
 namespace trigger_sound
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: trigger_sound\n' +
+            'Description: \n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @trigger_sound::ClientDisconnect );
+        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @trigger_sound::ClientPutInServer );
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_sound::trigger_sound", "trigger_sound" );
+    }
+
     class trigger_sound : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string roomtype = 0;

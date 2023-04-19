@@ -1,9 +1,31 @@
+/*
+
+// INSTALLATION:
+
+#include "mikk/trigger_manager"
+
+*/
 #include "utils"
-
-bool trigger_manager_register = g_Util.CustomEntity( 'trigger_manager::trigger_manager','trigger_manager' );
-
 namespace trigger_manager
 {
+    void ScriptInfo()
+    {
+        g_Information.SetInformation
+        ( 
+            'Script: trigger_manager\n' +
+            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
+            'Author: Mikk\n' +
+            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
+            'Server: ' + g_Information.GetDiscord() + '\n'
+            'Github: ' + g_Information.GetGithub()
+        );
+    }
+
+    void Register()
+    {
+        g_CustomEntityFuncs.RegisterCustomEntity( "trigger_manager::trigger_manager", "trigger_manager" );
+    }
+
     enum trigger_manager_spawnflags
     {
         REMOVE_ON_FIRE = 1,
@@ -77,8 +99,10 @@ namespace trigger_manager
             }
             else
             {
-                strTarget = self.pev.target;
+                strTarget = string( self.pev.target );
             }
+            
+            if( strTarget.IsEmpty() ) { return; }
 
             if( m_iszActivator == '!activator' or m_iszActivator.IsEmpty() )
             {
