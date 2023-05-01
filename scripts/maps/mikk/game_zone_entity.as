@@ -1,29 +1,21 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/game_zone_entity"
-
-*/
 #include "utils"
+#include "utils/customentity"
+
 namespace game_zone_entity
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "game_zone_entity::game_zone_entity", "game_zone_entity" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'game_zone_entity' ) +
+            g_ScriptInfo.Description( 'Entity that works as game_zone_player but is not limited to players only.' ) +
+            g_ScriptInfo.Wiki( 'game_zone_entity' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
     }
 
     enum game_zone_entity_spawnflags

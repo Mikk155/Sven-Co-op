@@ -26,19 +26,20 @@ namespace config_map_cvars
 
     class config_map_cvars : ScriptBaseEntity, ScriptBaseCustomEntity
     {
-        dictionary dictKeyValues;
+        private string m_iszConfigFile;
+        dictionary g_KeyValues;
         dictionary dictOldCvars;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
             ExtraKeyValues( szKey, szValue );
-            dictKeyValues[ szKey ] = szValue;
+            g_KeyValues[ szKey ] = szValue;
             return true;
         }
 
         const array<string> strKeyValues
         {
-            get const { return dictKeyValues.getKeys(); }
+            get const { return g_KeyValues.getKeys(); }
         }
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
@@ -48,7 +49,7 @@ namespace config_map_cvars
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string m_iszKey = string( strKeyValues[ui] );
-                    string m_iszValue = string( dictKeyValues[ m_iszKey ] );
+                    string m_iszValue = string( g_KeyValues[ m_iszKey ] );
 
                     Store( m_iszKey );
 
@@ -65,6 +66,16 @@ namespace config_map_cvars
                 g_Util.SetCKV( self, '$s_' + m_iszKey, g_EngineFuncs.CVarGetString( m_iszKey ) );
                 g_Util.Debug( "[config_map_cvars] Stored " + m_iszKey + ": '" + string( g_EngineFuncs.CVarGetString( m_iszKey ) ) + "' as '$s_" + m_iszKey );
             }
+        }
+
+        void PreSpawn()
+        {
+            if( !m_iszConfigFile.IsEmpty() )
+            {
+                g_KeyValues = g_Util.GetKeyAndValue( 'scripts/maps/' + m_iszConfigFile, g_KeyValues );
+            }
+
+            BaseClass.PreSpawn();
         }
 
         void Spawn()

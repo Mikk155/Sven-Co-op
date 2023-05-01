@@ -56,56 +56,161 @@ namespace env_effects
             g_EntityFuncs.SetOrigin( self, self.pev.origin );
         }
 
-        void Use(CBaseEntity@ a, CBaseEntity@ c, USE_TYPE u, float d)
+        void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE UseType, float flDelay )
         {
             if( !IsLockedByMaster() )
             {
                 string iszClass = string( self.pev.classname );
                 string iszModel = string( self.pev.model );
+                Vector VecPos;
 
-                if( iszClass == "env_effect_smoke" )
+                if( s_value( 'origin' ) == '!activator' && pActivator !is null )
                 {
-                    g_Effect.smoke( self.pev.origin, iszModel, int( self.pev.health ), int( self.pev.max_health ) );
+                    VecPos = pActivator.pev.origin;
                 }
-                else if( iszClass == "env_effect_cylinder" )
+                else if( s_value( 'origin' ) == '!caller' && pCaller !is null )
                 {
-                    g_Effect.cylinder( self.pev.origin, iszModel, int8( self.pev.frags ), int( self.pev.max_health ), self.pev.rendercolor, int( self.pev.renderamt ), atoui( self.pev.target ), atoui( self.pev.netname ), atoui( self.pev.message ), int8( self.pev.health ) );
+                    VecPos = pCaller.pev.origin;
                 }
-                else if( iszClass == "env_effect_implosion" )
+                else if( !s_value( 'origin' ).IsEmpty() )
                 {
-                    g_Effect.implosion( self.pev.origin, atoui( self.pev.netname ), atoui( self.pev.message ), atoui( self.pev.target ) );
+                    CBaseEntity@ pFind = g_EntityFuncs.FindEntityByTargetname( pFind, s_value( 'origin' ) );
+
+                    if( pFind !is null )
+                    {
+                        VecPos = pFind.pev.origin;
+                    }
+                    else
+                    {
+                        VecPos = self.pev.origin;
+                    }
                 }
-                else if( iszClass == "env_effect_quake" )
+                else
                 {
-                    g_Effect.quake( self.pev.origin, int( self.pev.health ) );
+                    VecPos = self.pev.origin;
                 }
-                else if( iszClass == "env_effect_spriteshooter" )
+
+                if( iszClass == "env_effect_cylinder" )
                 {
-                    g_Effect.spriteshooter( self.pev.origin, iszModel, int( self.pev.health ), int( self.pev.max_health ), atoi( self.pev.netname ), atoi( self.pev.target ) );
-                }
-                else if( iszClass == "env_effect_tracer" )
-                {
-                    g_Effect.tracer( self.pev.origin, self.pev.angles, uint( self.pev.health ), uint( self.pev.max_health ), uint( self.pev.frags ) );
-                }
-                else if( iszClass == "env_effect_splash" )
-                {
-                    g_Effect.splash( self.pev.origin, self.pev.angles, uint( self.pev.frags ), uint( self.pev.health ), uint( self.pev.max_health ), atoui( self.pev.netname ) );
+                    g_Effect.cylinder
+                    (
+                        VecPos,
+                        iszModel,
+                        i8_value( 'radius' ),
+                        i_value( 'flag' ),
+                        v_value( 'color' ),
+                        i8_value( 'amt' ),
+                        i8_value( 'scroll' ),
+                        i8_value( 'start' ),
+                        i8_value( 'frame' ),
+                        i8_value( 'time' )
+                    );
                 }
                 else if( iszClass == "env_effect_disk" )
                 {
-                    g_Effect.disk( self.pev.origin, iszModel, int( self.pev.max_health ), self.pev.rendercolor, int( self.pev.renderamt ), atoui( self.pev.netname ), atoui( self.pev.message ) );
-                }
-                else if( iszClass == "env_effect_toxic" )
-                {
-                    g_Effect.toxic( self.pev.origin );
+                    g_Effect.disk
+                    (
+                        VecPos,
+                        iszModel,
+                        i8_value( 'radius' ),
+                        v_value( 'color' ),
+                        i8_value( 'amt' ),
+                        i8_value( 'start' ),
+                        i8_value( 'hold' )
+                    );
                 }
                 else if( iszClass == "env_effect_dlight" )
                 {
-                    g_Effect.dlight( self.pev.origin, self.pev.rendercolor, uint8( self.pev.renderamt ), uint8( self.pev.health ), uint8( self.pev.frags ) );
+                    g_Effect.dlight
+                    (
+                        VecPos,
+                        v_value( 'color' ),
+                        i8_value( 'radius' ),
+                        i8_value( 'life' ),
+                        i8_value( 'noise' )
+                    );
+                }
+                else if( iszClass == "env_effect_implosion" )
+                {
+                    g_Effect.implosion
+                    (
+                        VecPos,
+                        i8_value( 'radius' ),
+                        i8_value( 'count' ),
+                        i8_value( 'life' )
+                    );
+                }
+                else if( iszClass == "env_effect_quake" )
+                {
+                    g_Effect.quake
+                    (
+                        VecPos,
+                        i_value( 'flag' )
+                    );
+                }
+                else if( iszClass == "env_effect_smoke" )
+                {
+                    g_Effect.smoke
+                    (
+                        VecPos,
+                        iszModel,
+                        i8_value( 'scale' ),
+                        i8_value( 'frame' )
+                    );
+                }
+                else if( iszClass == "env_effect_splash" )
+                {
+                    g_Effect.splash
+                    (
+                        VecPos,
+                        v_value( 'velocity' ),
+                        i8_value( 'color' ),
+                        i8_value( 'speed' ),
+                        i8_value( 'noise' ),
+                        i8_value( 'amt' )
+                        );
                 }
                 else if( iszClass == "env_effect_spritefield" )
                 {
-                    g_Effect.spritefield( self.pev.origin, iszModel, uint16( self.pev.renderamt ), uint8( self.pev.frags ), uint8( self.pev.health), uint8( self.pev.max_health ) );
+                    g_Effect.spritefield
+                    (
+                        VecPos,
+                        iszModel,
+                        i8_value( 'radius' ),
+                        i8_value( 'count' ),
+                        i8_value( 'life' ),
+                        i8_value( 'flags' )
+                    );
+                }
+                else if( iszClass == "env_effect_spriteshooter" )
+                {
+                    g_Effect.spriteshooter
+                    (
+                        VecPos,
+                        iszModel,
+                        i_value( 'count' ),
+                        i_value( 'life' ),
+                        i_value( 'scale' ),
+                        i_value( 'noise' )
+                    );
+                }
+                else if( iszClass == "env_effect_toxic" )
+                {
+                    g_Effect.toxic
+                    (
+                        VecPos
+                    );
+                }
+                else if( iszClass == "env_effect_tracer" )
+                {
+                    g_Effect.tracer
+                    (
+                        VecPos,
+                        v_value( 'velocity' ),
+                        i_value( 'hold' ),
+                        i_value( 'length' ),
+                        i_value( 'color' )
+                    );
                 }
 
                 if( !spawnflag( REUSABLE ) )
@@ -113,6 +218,26 @@ namespace env_effects
                     g_EntityFuncs.Remove( self );
                 }
             }
+        }
+
+        string s_value( string iszString )
+        {
+            return g_Util.GetCKV( self, '$s_fx_' + iszString );
+        }
+
+        Vector v_value( string iszString )
+        {
+            return g_Util.StringToVec( g_Util.GetCKV( self, '$s_fx_' + iszString ) );
+        }
+
+        int i_value( string iszString )
+        {
+            return atoi( s_value( iszString ) );
+        }
+
+        int i8_value( string iszString )
+        {
+            return uint8( i_value( iszString ) );
         }
     }
 }

@@ -1,29 +1,20 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/game_stealth"
-
-*/
+#include "utils/customentity"
 #include "utils"
 namespace player_equipment
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "player_equipment::player_equipment", "player_equipment" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'player_equipment' ) +
+            g_ScriptInfo.Description( 'Expands player_weaponstrip & game_player_equip' ) +
+            g_ScriptInfo.Wiki( 'player_equipment' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
     }
 
     enum AFFECTED_PLAYERS
@@ -236,5 +227,4 @@ namespace player_equipment
             }
         }
     }
-    bool Register = g_Util.CustomEntity( 'player_equipment::player_equipment','player_equipment' );
 }

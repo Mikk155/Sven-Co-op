@@ -1,33 +1,24 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/game_stealth"
-
-*/
+#include "utils/customentity"
 #include "utils"
-
-bool item_oxygentank_register = g_Util.CustomEntity( 'item_oxygentank::item_oxygentank','item_oxygentank' );
-bool env_oxygenbubble_register = g_Util.CustomEntity( 'item_oxygentank::env_oxygenbubble','env_oxygenbubble' );
 
 namespace item_oxygentank
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "item_oxygentank::item_oxygentank", "item_oxygentank" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "item_oxygentank::env_oxygenbubble", "env_oxygenbubble" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'item_oxygentank' ) +
+            g_ScriptInfo.Description( 'Give oxigen to the players' ) +
+            g_ScriptInfo.Wiki( 'item_oxygentank' ) +
+            g_ScriptInfo.Author( 'CubeMath' ) +
+            g_ScriptInfo.GetGithub( 'CubeMath' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
     }
 
     class item_oxygentank : ScriptBaseEntity, ScriptBaseCustomEntity

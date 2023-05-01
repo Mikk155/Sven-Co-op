@@ -1,32 +1,21 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/game_stealth"
-
-*/
+#include "utils/customentity"
 #include "utils"
-
-bool player_command_register = g_Util.CustomEntity( 'player_command::player_command','player_command' );
 
 namespace player_command
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "player_command::player_command", "player_command" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'player_command' ) +
+            g_ScriptInfo.Description( 'Executes a ClientCVAR on the client target' ) +
+            g_ScriptInfo.Wiki( 'player_command' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
     }
 
     class player_command : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -51,9 +40,9 @@ namespace player_command
             }
         }
 
-        void ExecCommand( CBaseEntity@ pPlayer, const string command )
+        void ExecCommand( CBasePlayer@ pPlayer, string command )
         {
-            g.Util.ExecPlayerCommand( pPlayer, command );
+            g_Util.ExecPlayerCommand( pPlayer, command );
 
             g_Util.Trigger( self.pev.target, pPlayer, self, USE_TOGGLE, delay );
         }

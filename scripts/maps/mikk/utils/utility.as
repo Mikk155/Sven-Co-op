@@ -2,7 +2,7 @@ CUtils g_Util;
 
 final class CUtils
 {
-    bool DebugEnable = false;
+    bool DebugEnable = true;
 
     void Trigger( string iszTarget, CBaseEntity@&in pActivator = null, CBaseEntity@&in pCaller = null, USE_TYPE& in useType = USE_TOGGLE, float&in flDelay = 0.0f )
     {
@@ -256,11 +256,11 @@ final class CUtils
         return false;
     }
 
-    string RIPENTDebugger;
+    string LoadEntitiesDebugger;
 
     bool LoadEntities( const string& in EntFileLoadText, const string& in szClassname = '' )
     {
-        RIPENTDebugger = "";
+        LoadEntitiesDebugger = "";
 
         string line, key, value;
         bool match = false;
@@ -270,7 +270,7 @@ final class CUtils
 
         if( pFile is null or !pFile.IsOpen() )
         {
-            RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] Failed to open " + EntFileLoadText + " no entities initialised!\n";
+            LoadEntitiesDebugger = LoadEntitiesDebugger + "[CUtils::LoadEntities] Failed to open " + EntFileLoadText + " no entities initialised!\n";
             return false;
         }
 
@@ -285,7 +285,7 @@ final class CUtils
 
             if( line[0] == '/' and line[1] == '/' )
             {
-                RIPENTDebugger = RIPENTDebugger + line + "\n";
+                LoadEntitiesDebugger = LoadEntitiesDebugger + line + "\n";
                 continue;
             }
 
@@ -296,7 +296,7 @@ final class CUtils
 
             if( line[0] == '{' or line[0] == '}' )
             {
-                RIPENTDebugger = RIPENTDebugger + string( line[0] ) + '\n';
+                LoadEntitiesDebugger = LoadEntitiesDebugger + string( line[0] ) + '\n';
 
                 if( line[0] == '}' )
                 {
@@ -313,14 +313,14 @@ final class CUtils
 
                     if( pInitialized !is null )
                     {
-                        RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] Entity '" + Classname + "' initialised.\n";
+                        LoadEntitiesDebugger = LoadEntitiesDebugger + "[CUtils::LoadEntities] Entity '" + Classname + "' initialised.\n";
                     }
                     else
                     {
-                        RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] A entity was not initialised.\n";
+                        LoadEntitiesDebugger = LoadEntitiesDebugger + "[CUtils::LoadEntities] A entity was not initialised.\n";
                     }
 
-                    RIPENTDebugger = RIPENTDebugger + "[CUtils::LoadEntities] Clearing Dictionary...\n";
+                    LoadEntitiesDebugger = LoadEntitiesDebugger + "[CUtils::LoadEntities] Clearing Dictionary...\n";
                     g_KeyValues.deleteAll();
                 }
                 continue;
@@ -342,12 +342,12 @@ final class CUtils
                     if( !pMatch.GetCustomKeyvalues().HasKeyvalue( "$i_ripent" ) )
                     {
                         g_EntityFuncs.Remove( pMatch );
-                        RIPENTDebugger = RIPENTDebugger + '[CUtils::LoadEntities] Matched and removed entity with key and value ';
+                        LoadEntitiesDebugger = LoadEntitiesDebugger + '[CUtils::LoadEntities] Matched and removed entity with key and value ';
                     }
                 }
             }
 
-            RIPENTDebugger = RIPENTDebugger + '"'+key+'" "'+value+'"\n';
+            LoadEntitiesDebugger = LoadEntitiesDebugger + '"'+key+'" "'+value+'"\n';
 
             g_KeyValues[ key ] = value;
         }
@@ -394,6 +394,47 @@ final class CUtils
             msg.WriteString( command );
         msg.End();
     }
+
+    dictionary GetKeyAndValue( const string iszFileLoad, dictionary g_KeyValues, const bool blReplaceDict = false )
+    {
+        string line, key, value;
+
+        File@ pFile = g_FileSystem.OpenFile( /* 'scripts/maps/' + */ iszFileLoad, OpenFile::READ );
+
+        if( pFile is null or !pFile.IsOpen() )
+        {
+            return g_KeyValues;
+        }
+
+        while( !pFile.EOFReached() )
+        {
+            pFile.ReadLine( line );
+
+            if( line.Length() < 1 || line[0] == '/' and line[1] == '/' )
+            {
+                continue;
+            }
+
+            key = line.SubString( 0, line.Find( '" "') );
+            key.Replace( '"', '' );
+
+            value = line.SubString( line.Find( '" "'), line.Length() );
+            value.Replace( '" "', '' );
+            value.Replace( '"', '' );
+
+            if( blReplaceDict )
+            {
+                g_KeyValues[ key ] = value;
+            }
+            else if( string( g_KeyValues[ key ] ).IsEmpty() )
+            {
+                g_KeyValues[ key ] = value;
+            }
+        }
+        pFile.Close();
+
+        return g_KeyValues;
+    }
 }
 
 CClientCommand g_LoadEntities( "entitydata", "Shows information of CUtils::LoadEntities", @LoadEntitiesInformation );
@@ -401,16 +442,26 @@ CClientCommand g_LoadEntities( "entitydata", "Shows information of CUtils::LoadE
 void LoadEntitiesInformation( const CCommand@ pArguments )
 {
     CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
+    
+    string gLoadedEnts = g_Util.LoadEntitiesDebugger;
 
-    g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[LoadEntitiesInformation] Printed initialised entities info at your console.\n" );
-
-    while( g_Util.RIPENTDebugger != '' )
+    if( gLoadedEnts != '' )
     {
-        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  g_Util.RIPENTDebugger.SubString( 0, 68 ) );
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[LoadEntitiesInformation] Printed initialised entities info at your console.\n" );
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n" );
 
-        if( g_Util.RIPENTDebugger.Length() <= 68 ) g_Util.RIPENTDebugger = '';
-        else g_Util.RIPENTDebugger = g_Util.RIPENTDebugger.SubString( 68, g_Util.RIPENTDebugger.Length() );
+        while( gLoadedEnts != '' )
+        {
+            g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE,  gLoadedEnts.SubString( 0, 68 ) );
+
+            if( gLoadedEnts.Length() <= 68 ) gLoadedEnts = '';
+            else gLoadedEnts = gLoadedEnts.SubString( 68, gLoadedEnts.Length() );
+        }
+
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
     }
-
-    g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "\n====================================\n\n" );
+    else
+    {
+        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[LoadEntitiesInformation] No entities has been loaded yet.\n" );
+    }
 }

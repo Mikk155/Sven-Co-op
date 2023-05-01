@@ -1,29 +1,20 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/trigger_teleport_relative"
-
-*/
+#include "utils/customentity"
 #include "utils"
 namespace trigger_teleport_relative
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: trigger_teleport_relative\n' +
-            'Description: \n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "trigger_teleport_relative::trigger_teleport_relative", "trigger_teleport_relative" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'trigger_teleport_relative' ) +
+            g_ScriptInfo.Description( 'Entity for relative teleport using landmarks' ) +
+            g_ScriptInfo.Wiki( 'trigger_teleport_relative' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
     }
 
     enum trigger_teleport_relative_spawnflags

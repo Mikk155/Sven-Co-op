@@ -8,22 +8,20 @@
 #include "utils"
 namespace player_flashlight
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
         g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @PlayerSpawn );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'player_flashlight' ) +
+            g_ScriptInfo.Description( 'Afraid Of Monsters style limited flashlight' ) +
+            g_ScriptInfo.Wiki( 'player_flashlight' ) +
+            g_ScriptInfo.Author( 'Zorbos' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
     }
 
     // as_command flashlight flashlight amt

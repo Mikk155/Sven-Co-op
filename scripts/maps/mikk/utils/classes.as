@@ -61,77 +61,82 @@ namespace classes
                     {
                         CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( iszClassname, g_KeyValues, true );
 
-                        if( pEntity !is null )
-                        {
-                            pEntity.pev.body = pev.body;
-                            pEntity.pev.skin = pev.skin;
-                            pEntity.pev.angles = pev.angles;
-                            pEntity.pev.origin = pev.origin;
-                            pEntity.pev.health = pev.health;
-                            pEntity.pev.target = pev.target;
-                            pEntity.pev.renderfx = pev.renderfx;
-                            pEntity.pev.renderamt = pev.renderamt;
-                            pEntity.pev.max_health = pev.max_health;
-                            pEntity.pev.targetname = pev.targetname;
-                            pEntity.pev.rendermode = pev.rendermode;
-                            pEntity.pev.rendercolor = pev.rendercolor;
-
-                            if( CDictionary( 'spawnflags' ) != '' )
-                            {
-                                pEntity.pev.spawnflags = pev.spawnflags;
-                            }
-                            if( CDictionary( 'model' ) != '' )
-                            {
-                                pEntity.pev.model = pev.model;
-                            }
-                            if( CDictionary( 'message' ) != '' )
-                            {
-                                pEntity.pev.message = pev.message;
-                            }
-                            if( CDictionary( 'netname' ) != '' )
-                            {
-                                pEntity.pev.netname = pev.netname;
-                            }
-                            if( pEntity.IsMonster() )
-                            {
-                                CBaseMonster@ pMonster = cast<CBaseMonster@>( pEntity );
-                                CBaseMonster@ pSelf = cast<CBaseMonster@>( self );
-
-                                if( pMonster !is null && pSelf !is null )
-                                {
-                                    if( CDictionary( 'displayname' ) != '' )
-                                    {
-                                        pMonster.m_FormattedName = pSelf.m_FormattedName;
-                                    }
-                                    if( CDictionary( 'TriggerTarget' ) != '' )
-                                    {
-                                        pMonster.m_iszTriggerTarget = pSelf.m_iszTriggerTarget;
-                                    }
-                                    if( CDictionary( 'TriggerCondition' ) != '' )
-                                    {
-                                        pMonster.m_iTriggerCondition = pSelf.m_iTriggerCondition;
-                                    }
-                                    if( CDictionary( 'bloodcolor' ) != '' )
-                                    {
-                                        pMonster.m_bloodColor = pSelf.m_bloodColor;
-                                    }
-                                    if( CDictionary( 'weapons' ) != '' )
-                                    {
-                                        pMonster.pev.weapons = pSelf.pev.weapons;
-                                    }
-                                }
-                            }
-                        }
+                        PassEntvars( pEntity, self, g_KeyValues );
                         g_EntityFuncs.Remove( self );
                     }
                     break;
                 }
             }
         }
+    }
 
-        string CDictionary( string&in iszkey )
+    string CDictionary( string&in iszkey, dictionary g_dictionary )
+    {
+        return string( g_dictionary[ iszkey ] );
+    }
+    
+    void PassEntvars( CBaseEntity@ pNewEnt, CBaseEntity@ pOldent, dictionary d = null )
+    {
+        if( pNewEnt !is null && pOldent !is null )
         {
-            return string( g_KeyValues[ iszkey ] );
+            pNewEnt.pev.body = pOldent.pev.body;
+            pNewEnt.pev.skin = pOldent.pev.skin;
+            pNewEnt.pev.angles = pOldent.pev.angles;
+            pNewEnt.pev.origin = pOldent.pev.origin;
+            pNewEnt.pev.health = pOldent.pev.health;
+            pNewEnt.pev.target = pOldent.pev.target;
+            pNewEnt.pev.renderfx = pOldent.pev.renderfx;
+            pNewEnt.pev.renderamt = pOldent.pev.renderamt;
+            pNewEnt.pev.max_health = pOldent.pev.max_health;
+            pNewEnt.pev.targetname = pOldent.pev.targetname;
+            pNewEnt.pev.rendermode = pOldent.pev.rendermode;
+            pNewEnt.pev.rendercolor = pOldent.pev.rendercolor;
+
+            if( CDictionary( 'spawnflags', d ) != '' )
+            {
+                pNewEnt.pev.spawnflags = pOldent.pev.spawnflags;
+            }
+            if( CDictionary( 'model', d ) != '' )
+            {
+                pNewEnt.pev.model = pOldent.pev.model;
+            }
+            if( CDictionary( 'message', d ) != '' )
+            {
+                pNewEnt.pev.message = pOldent.pev.message;
+            }
+            if( CDictionary( 'netname', d ) != '' )
+            {
+                pNewEnt.pev.netname = pOldent.pev.netname;
+            }
+            if( pNewEnt.IsMonster() )
+            {
+                CBaseMonster@ pNewMonster = cast<CBaseMonster@>( pNewEnt );
+                CBaseMonster@ pOldMonster = cast<CBaseMonster@>( pOldent );
+
+                if( pNewMonster !is null && pOldMonster !is null )
+                {
+                    if( CDictionary( 'displayname', d ) != '' )
+                    {
+                        pNewMonster.m_FormattedName = pOldMonster.m_FormattedName;
+                    }
+                    if( CDictionary( 'TriggerTarget', d ) != '' )
+                    {
+                        pNewMonster.m_iszTriggerTarget = pOldMonster.m_iszTriggerTarget;
+                    }
+                    if( CDictionary( 'TriggerCondition', d ) != '' )
+                    {
+                        pNewMonster.m_iTriggerCondition = pOldMonster.m_iTriggerCondition;
+                    }
+                    if( CDictionary( 'bloodcolor', d ) != '' )
+                    {
+                        pNewMonster.m_bloodColor = pOldMonster.m_bloodColor;
+                    }
+                    if( CDictionary( 'weapons', d ) != '' )
+                    {
+                        pNewMonster.pev.weapons = pOldMonster.pev.weapons;
+                    }
+                }
+            }
         }
     }
 }

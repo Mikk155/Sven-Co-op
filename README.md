@@ -1,62 +1,29 @@
 # Sven Co-op
 
+- [Español](#spanish)
+
+- [English](#english)
+
+## Spanish
+
+<details><summary>Leer</summary>
+<p>
+
+Un conjunto de scripts, plugins, entidades personalizadas, mapas de pruebas e información adicional sobre el juego Sven Co-op.
+
+Mira la [Wiki](https://github.com/Mikk155/Sven-Co-op/wiki)
+
+</p>
+</details>
+
+## English
+
+<details><summary>Read</summary>
+<p>
+
 An assortment of scripts, plugins, custom entities, test maps and aditional information about the game Sven Co-op.
 
-- NOTE: If a link sends you to a not existent page, mean the script is still WiP, almost of them are finished but still have to get a small issues corrections and their codes could be broken as well
+See the [Wiki](https://github.com/Mikk155/Sven-Co-op/wiki)
 
-### Map Scripts ( Gamemodes, Utilities & Custom entities )
-
-- [ammo_custom](https://github.com/Mikk155/Sven-Co-op/wiki/ammo_custom)
-- [config_classic_mode](https://github.com/Mikk155/Sven-Co-op/wiki/config_classic_mode)
-- [config_map_cvars](https://github.com/Mikk155/Sven-Co-op/wiki/config_map_cvars)
-- [config_map_precache](https://github.com/Mikk155/Sven-Co-op/wiki/config_map_precache)
-- [config_map_saveload](https://github.com/Mikk155/Sven-Co-op/wiki/config_map_saveload)
-- [config_survival_mode](https://github.com/Mikk155/Sven-Co-op/wiki/config_survival_mode)
-- [counterstrike_classes](https://github.com/Mikk155/Sven-Co-op/wiki/counterstrike_classes)
-- [entitymaker](https://github.com/Mikk155/Sven-Co-op/wiki/entitymaker)
-- [env_bloodpuddle](https://github.com/Mikk155/Sven-Co-op/wiki/env_bloodpuddle)
-- [env_effects](https://github.com/Mikk155/Sven-Co-op/wiki/env_effects)
-- [env_fade_custom](https://github.com/Mikk155/Sven-Co-op/wiki/env_fade_custom)
-- [env_fog_custom](https://github.com/Mikk155/Sven-Co-op/wiki/env_fog_custom)
-- [env_geiger](https://github.com/Mikk155/Sven-Co-op/wiki/env_geiger)
-- [env_message_custom](https://github.com/Mikk155/Sven-Co-op/wiki/env_message_custom)
-- [env_render_custom](https://github.com/Mikk155/Sven-Co-op/wiki/env_render_custom)
-- [env_spritehud](https://github.com/Mikk155/Sven-Co-op/wiki/env_spritehud)
-- [env_spritetrail](https://github.com/Mikk155/Sven-Co-op/wiki/env_spritetrail)
-- [game_debug](https://github.com/Mikk155/Sven-Co-op/wiki/game_debug)
-- [game_stealth](https://github.com/Mikk155/Sven-Co-op/wiki/game_stealth)
-- [game_text_custom](https://github.com/Mikk155/Sven-Co-op/wiki/game_text_custom)
-- [game_time](https://github.com/Mikk155/Sven-Co-op/wiki/game_time)
-- [game_zone_entity](https://github.com/Mikk155/Sven-Co-op/wiki/game_zone_entity)
-- [info_commentary](https://github.com/Mikk155/Sven-Co-op/wiki/info_commentary)
-- [item_oxygentank](https://github.com/Mikk155/Sven-Co-op/wiki/item_oxygentank)
-- [monster_dead](https://github.com/Mikk155/Sven-Co-op/wiki/monster_dead)
-- [player_command](https://github.com/Mikk155/Sven-Co-op/wiki/player_command)
-- [player_data](https://github.com/Mikk155/Sven-Co-op/wiki/player_data)
-- [player_equipment](https://github.com/Mikk155/Sven-Co-op/wiki/player_equipment)
-- [player_flashlight](https://github.com/Mikk155/Sven-Co-op/wiki/player_flashlight)
-- [player_inbutton](https://github.com/Mikk155/Sven-Co-op/wiki/player_inbutton)
-- [player_observer](https://github.com/Mikk155/Sven-Co-op/wiki/player_observer)
-- [player_reequipment](https://github.com/Mikk155/Sven-Co-op/wiki/player_reequipment)
-- [trigger_changevalue_custom](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_changevalue_custom)
-- [trigger_manager](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_manager)
-- [trigger_multiple_custom](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_multiple_custom)
-- [trigger_percent](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_percent)
-- [trigger_scripts](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_scripts)
-- [trigger_sound](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_sound)
-- [trigger_teleport_relative](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_teleport_relative)
-- [trigger_votemenu](https://github.com/Mikk155/Sven-Co-op/wiki/trigger_votemenu)
-
-## Plugins
-- [env_bloodpuddle](https://github.com/Mikk155/Sven-Co-op/wiki/env_bloodpuddle)
-- [multi_language](https://github.com/Mikk155/Sven-Co-op/wiki/multi_language)
-- [NoAutoPick](https://github.com/Mikk155/Sven-Co-op/wiki/NoAutoPick)
-- [PlayerDeadChat](https://github.com/Mikk155/Sven-Co-op/wiki/PlayerDeadChat)
-- [RenameServer](https://github.com/Mikk155/Sven-Co-op/wiki/RenameServer)
-
-## Shared code utilities
-- [customentity](https://github.com/Mikk155/Sven-Co-op/wiki/customentity)
-- [effects](https://github.com/Mikk155/Sven-Co-op/wiki/effects)
-- [languages](https://github.com/Mikk155/Sven-Co-op/wiki/languages)
-- [reflection](https://github.com/Mikk155/Sven-Co-op/wiki/reflection)
-- [utility](https://github.com/Mikk155/Sven-Co-op/wiki/utility)
+</p>
+</details>

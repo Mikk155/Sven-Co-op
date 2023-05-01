@@ -1,29 +1,19 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/game_stealth"
-
-*/
 #include "utils"
 namespace trigger_changevalue_weapons
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
+        g_Scheduler.SetTimeout( "trigger_changevalue_init", 0.0f );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'trigger_changevalue_weapons' ) +
+            g_ScriptInfo.Description( 'Allow mapper to change keyvalues from the player\'s weapons' ) +
+            g_ScriptInfo.Wiki( 'trigger_changevalue_weapons' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
     }
 
     array<string> WeaponsKeys =
@@ -65,9 +55,7 @@ namespace trigger_changevalue_weapons
         return String::EMPTY_STRING;
     }
 
-    CScheduledFunction@ g_Changevalue = g_Scheduler.SetTimeout( "FindChangeValues", 0.0f );
-
-    void FindChangeValues()
+    void trigger_changevalue_init()
     {
         dictionary g_keyvalues =
         {

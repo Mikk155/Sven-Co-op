@@ -6,6 +6,7 @@ namespace env_fade_custom
     void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom' );
+        g_CustomEntityFuncs.RegisterCustomEntity( 'env_fade_custom::env_fade_custom','env_fade_custom_solid' );
 
         g_ScriptInfo.SetInformation
         ( 

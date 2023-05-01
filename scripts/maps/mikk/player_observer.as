@@ -1,35 +1,24 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/game_stealth"
-
-*/
+#include "utils/customentity"
 #include "utils"
-
-bool player_obs_register = g_Util.CustomEntity( 'player_observer::player_observer','player_observer' );
-bool ClientJoin_register = g_Hooks.RegisterHook( Hooks::Player::PlayerEnteredObserver, @player_observer::ClientJoin );
-bool ClientLeft_register = g_Hooks.RegisterHook( Hooks::Player::PlayerLeftObserver, @player_observer::ClientLeft );
-bool ClienThink_register = g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @player_observer::ClientThink );
 
 namespace player_observer
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
+        g_CustomEntityFuncs.RegisterCustomEntity( "player_observer::player_observer", "player_observer" );
+        g_Hooks.RegisterHook( Hooks::Player::PlayerEnteredObserver, @player_observer::ClientJoin );
+        g_Hooks.RegisterHook( Hooks::Player::PlayerLeftObserver, @player_observer::ClientLeft );
+        g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @player_observer::ClientThink );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'player_observer' ) +
+            g_ScriptInfo.Description( 'Allow mapper to use Observer functions' ) +
+            g_ScriptInfo.Wiki( 'player_observer' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
     }
 
     class player_observer : ScriptBaseEntity, ScriptBaseCustomEntity

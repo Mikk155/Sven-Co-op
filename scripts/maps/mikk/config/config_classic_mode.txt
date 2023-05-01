@@ -1,0 +1,1 @@
+// This is a config dictionary for aplying classic mode to npcs that the game doesn't

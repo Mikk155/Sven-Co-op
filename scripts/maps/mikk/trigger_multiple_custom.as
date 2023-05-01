@@ -1,29 +1,19 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/trigger_multiple_custom"
-
-*/
 #include "utils"
 namespace trigger_multiple_custom
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Expands trigger_multiple entity.\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
         g_Scheduler.SetTimeout( "trigger_multiple_custom_init", 0.0f );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'trigger_multiple_custom' ) +
+            g_ScriptInfo.Description( 'Expands trigger_multiple entity' ) +
+            g_ScriptInfo.Wiki( 'trigger_multiple_custom' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
     }
 
     enum trigger_multiple_custom_spawnflags

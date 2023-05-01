@@ -20,17 +20,18 @@ namespace config_map_precache
 
     class config_map_precache : ScriptBaseEntity
     {
-        dictionary g_PrecacheKeys;
+        private string m_iszConfigFile;
+        dictionary g_KeyValues;
 
         bool KeyValue( const string& in szKey, const string& in szValue ) 
         {
-            g_PrecacheKeys[ szKey ] = szValue;
+            g_KeyValues[ szKey ] = szValue;
             return true;
         }
 
         const array<string> strKeyValues
         {
-            get const { return g_PrecacheKeys.getKeys(); }
+            get const { return g_KeyValues.getKeys(); }
         }
 
         void Precache()
@@ -38,7 +39,7 @@ namespace config_map_precache
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
                 string Key = string( strKeyValues[ui] );
-                string Value = string( g_PrecacheKeys[ Key ] );
+                string Value = string( g_KeyValues[ Key ] );
 
                 if( Key.StartsWith( 'model' ) )
                 {
@@ -63,13 +64,23 @@ namespace config_map_precache
             BaseClass.Precache();
         }
 
+        void PreSpawn()
+        {
+            if( !m_iszConfigFile.IsEmpty() )
+            {
+                g_KeyValues = g_Util.GetKeyAndValue( 'scripts/maps/' + m_iszConfigFile, g_KeyValues );
+            }
+
+            BaseClass.PreSpawn();
+        }
+
         void Spawn()
         {
             Precache();
 
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
             {
-                g_Util.Debug( "[config_map_precache] '" + string( g_PrecacheKeys[ string( strKeyValues[ui] ) ] ) + "'" );
+                g_Util.Debug( "[config_map_precache] '" + string( g_KeyValues[ string( strKeyValues[ui] ) ] ) + "'" );
             }
 
             g_Util.Debug( "[config_map_precache] Map precached configuration. Removing entity..." );

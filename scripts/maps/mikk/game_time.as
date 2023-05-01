@@ -1,33 +1,21 @@
+#include "utils/customentity"
 #include "utils"
 
 namespace game_time
 {
-    void ScriptInfo()
+    void Register()
     {
-        g_Information.SetInformation
-        ( 
-            'Script: game_time\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
+        g_CustomEntityFuncs.RegisterCustomEntity( "game_time::game_time", "game_time" );
 
         g_ScriptInfo.SetInformation
         ( 
-            g_ScriptInfo.ScriptName( 'game_text_custom' ) +
-            g_ScriptInfo.Description( 'Expands game_text and adds languages support' ) +
-            g_ScriptInfo.Wiki( 'game_text_custom' ) +
+            g_ScriptInfo.ScriptName( 'game_time' ) +
+            g_ScriptInfo.Description( 'Allows mapper to do use of the time.' ) +
+            g_ScriptInfo.Wiki( 'game_time' ) +
             g_ScriptInfo.Author( 'Mikk' ) +
             g_ScriptInfo.GetGithub() +
             g_ScriptInfo.GetDiscord()
         );
-    }
-
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::game_time", "game_debug" );
     }
 
     DateTime g_ServerHostTime;

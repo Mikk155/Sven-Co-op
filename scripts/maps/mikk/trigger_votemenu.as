@@ -1,29 +1,22 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/trigger_votemenu"
-
-*/
+#include "utils/customentity"
 #include "utils"
 namespace trigger_votemenu
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: trigger_votemenu\n' +
-            'Description: Alternative to trigger_vote, the menu is the same as used by buy/vote/menu plugins.\n' +
-            'Author: Gaftherman\n' +
-            'Discord: ' + g_Information.GetDiscord( 'gaftherman' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub( 'gaftherman' )
-        );
-    }
-
     void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "trigger_votemenu::trigger_votemenu", "trigger_votemenu" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'trigger_votemenu' ) +
+            g_ScriptInfo.Description( 'Allow mapper to do use of a votemenu as buymenu-plugins does' ) +
+            g_ScriptInfo.Wiki( 'trigger_votemenu' ) +
+            g_ScriptInfo.Author( 'Gaftherman' ) +
+            g_ScriptInfo.GetGithub( 'Gaftherman' ) +
+            g_ScriptInfo.Author( 'Wootguy' ) +
+            g_ScriptInfo.GetGithub( 'wootguy' ) +
+            g_ScriptInfo.GetDiscord()
+        );
     }
 
     class trigger_votemenu : ScriptBaseEntity, ScriptBaseCustomEntity

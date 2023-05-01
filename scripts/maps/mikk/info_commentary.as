@@ -1,29 +1,21 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/info_commentary"
-
-*/
 #include "utils"
+#include "utils/customentity"
+
 namespace info_commentary
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "info_commentary::info_commentary", "info_commentary" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'info_commentary' ) +
+            g_ScriptInfo.Description( 'Shows a developer-commentary to the client if uses the cvar "commentary" in console.' ) +
+            g_ScriptInfo.Wiki( 'info_commentary' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
+        );
     }
 
     class info_commentary : ScriptBaseEntity, ScriptBaseCustomEntity

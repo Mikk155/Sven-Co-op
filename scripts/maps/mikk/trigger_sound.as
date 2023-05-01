@@ -1,31 +1,22 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/trigger_sound"
-
-*/
+#include "utils/customentity"
 #include "utils"
 namespace trigger_sound
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: trigger_sound\n' +
-            'Description: \n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
         g_Hooks.RegisterHook( Hooks::Player::ClientDisconnect, @trigger_sound::ClientDisconnect );
         g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @trigger_sound::ClientPutInServer );
         g_CustomEntityFuncs.RegisterCustomEntity( "trigger_sound::trigger_sound", "trigger_sound" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'trigger_sound' ) +
+            g_ScriptInfo.Description( 'Expands env_sound entity.' ) +
+            g_ScriptInfo.Wiki( 'trigger_sound' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
     }
 
     class trigger_sound : ScriptBaseEntity, ScriptBaseCustomEntity

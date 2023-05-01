@@ -1,29 +1,20 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/trigger_manager"
-
-*/
+#include "utils/customentity"
 #include "utils"
 namespace trigger_manager
 {
-    void ScriptInfo()
-    {
-        g_Information.SetInformation
-        ( 
-            'Script: trigger_manager\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
-        );
-    }
-
     void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "trigger_manager::trigger_manager", "trigger_manager" );
+
+        g_ScriptInfo.SetInformation
+        ( 
+            g_ScriptInfo.ScriptName( 'trigger_manager' ) +
+            g_ScriptInfo.Description( 'Allows mapper to fully customize the Triggering-System\'s inputs' ) +
+            g_ScriptInfo.Wiki( 'trigger_manager' ) +
+            g_ScriptInfo.Author( 'Mikk' ) +
+            g_ScriptInfo.GetDiscord() +
+            g_ScriptInfo.GetGithub()
+        );
     }
 
     enum trigger_manager_spawnflags

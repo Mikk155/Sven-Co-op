@@ -30,17 +30,18 @@ namespace config_classic_mode
         m_iszTargetOnToggle,
         m_iszTargetOnFail,
         m_iszTargetOnEnable,
-        m_iszTargetOnDisable;
+        m_iszTargetOnDisable,
+        m_iszConfigFile;
 
         private float m_iThinkTime;
 
-        dictionary g_ItemMapping;
+        dictionary g_KeyValues;
 
         bool KeyValue( const string& in szKey, const string& in szValue ) 
         {
             ExtraKeyValues( szKey, szValue );
 
-            g_ItemMapping[ szKey ] = szValue;
+            g_KeyValues[ szKey ] = szValue;
 
             if( szKey == 'm_iszTargetOnToggle' )
             {
@@ -62,12 +63,16 @@ namespace config_classic_mode
             {
                 m_iThinkTime = atof( szValue );
             }
+            else if( szKey == 'm_iszConfigFile' )
+            {
+                m_iszConfigFile = szValue;
+            }
             return true;
         }
 
         const array<string> strKeyValues
         {
-            get const { return g_ItemMapping.getKeys(); }
+            get const { return g_KeyValues.getKeys(); }
         }
 
         void Precache()
@@ -77,7 +82,7 @@ namespace config_classic_mode
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string Key = string( strKeyValues[ui] );
-                    string Value = string( g_ItemMapping[ Key ] );
+                    string Value = string( g_KeyValues[ Key ] );
 
                     if( string( Key ).StartsWith( 'models/' ) )
                     {
@@ -95,6 +100,16 @@ namespace config_classic_mode
             BaseClass.Precache();
         }
 
+        void PreSpawn()
+        {
+            if( !m_iszConfigFile.IsEmpty() )
+            {
+                g_KeyValues = g_Util.GetKeyAndValue( 'scripts/maps/' + m_iszConfigFile, g_KeyValues );
+            }
+
+            BaseClass.PreSpawn();
+        }
+
         void Spawn()
         {
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
@@ -107,7 +122,7 @@ namespace config_classic_mode
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string Key = string( strKeyValues[ui] );
-                    string Value = string( g_ItemMapping[ Key ] );
+                    string Value = string( g_KeyValues[ Key ] );
 
                     if( string( Key ).StartsWith( 'models/' ) )
                     {
@@ -156,7 +171,7 @@ namespace config_classic_mode
                 for(uint ui = 0; ui < strKeyValues.length(); ui++)
                 {
                     string Key = string( strKeyValues[ui] );
-                    string Value = string( g_ItemMapping[ Key ] );
+                    string Value = string( g_KeyValues[ Key ] );
 
                     CBaseEntity@ pEntity = null;
                     CBaseEntity@ pWeapon = null;

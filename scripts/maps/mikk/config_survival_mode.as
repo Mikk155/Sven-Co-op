@@ -8,8 +8,6 @@ namespace config_survival_mode
     {
         g_CustomEntityFuncs.RegisterCustomEntity( 'config_survival_mode::config_survival_mode','config_survival_mode' );
 
-        g_SurvivalMode.EnableMapSupport();
-
         g_ScriptInfo.SetInformation
         ( 
             g_ScriptInfo.ScriptName( 'config_survival_mode' ) +
@@ -67,6 +65,8 @@ namespace config_survival_mode
             {
                 g_Util.Debug( self.GetClassname() + '[config_classic_mode] WARNING! There is more than one config_survival_mode entity in this map!.' );
             }
+
+            g_SurvivalMode.EnableMapSupport();
 
             SetThink( ThinkFunction( this.Think ) );
             self.pev.nextthink = g_Engine.time + 1.0f;

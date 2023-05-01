@@ -8,7 +8,7 @@ namespace game_text_custom
     {
         string iszScriptName;
 
-        if( !g_CustomEntityFuncs.IsCustomEntity( "game_text_custom" )
+        if( !g_CustomEntityFuncs.IsCustomEntity( "game_text_custom" ) )
         {
             g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::game_text_custom", "game_text_custom" );
             g_ScriptInfo.SetInformation

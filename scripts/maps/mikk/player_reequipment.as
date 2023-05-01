@@ -1,33 +1,22 @@
-/*
-
-// INSTALLATION:
-
-#include "mikk/game_stealth"
-
-*/
 #include "../beast/respawndead_keepweapons"
+#include "utils"
 namespace player_reequipment
 {
-    void ScriptInfo()
+    void Register()
     {
-        g_Information.SetInformation
+        g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @player_reequipment::PlayerReEquip );
+
+        g_ScriptInfo.SetInformation
         ( 
-            'Script: game_debug\n' +
-            'Description: Entity wich when fired, shows a debug message, also shows other entities being triggered..\n' +
-            'Author: Mikk\n' +
-            'Discord: ' + g_Information.GetDiscord( 'mikk' ) + '\n'
-            'Server: ' + g_Information.GetDiscord() + '\n'
-            'Github: ' + g_Information.GetGithub()
+            g_ScriptInfo.ScriptName( 'player_reequipment' ) +
+            g_ScriptInfo.Description( 'Re-Equips players inventory upon respawn' ) +
+            g_ScriptInfo.Wiki( 'player_reequipment' ) +
+            g_ScriptInfo.Author( 'Outerbeast' ) +
+            g_ScriptInfo.GetGithub( 'Outerbeast' )
         );
     }
 
-    void Register()
-    {
-        g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::CBaseDebug", "game_debug" );
-    }
-
     bool keep_ammo = true;
-    bool player_reequipment_register = g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @player_reequipment::PlayerReEquip );
 
     HookReturnCode PlayerReEquip( CBasePlayer@ pPlayer )
     {
