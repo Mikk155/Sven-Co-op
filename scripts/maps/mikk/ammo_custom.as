@@ -1,11 +1,10 @@
-#include 'utils'
 #include 'utils/customentity'
-
 namespace ammo_custom
 {
     void Register()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( 'ammo_custom::ammo_custom','ammo_custom' );
+        g_Hooks.RegisterHook( Hooks::Player::PlayerKilled, PlayerKilled );
 
         g_ScriptInfo.SetInformation
         ( 
@@ -13,16 +12,49 @@ namespace ammo_custom
             g_ScriptInfo.Description( 'Item that will give a certain ammout of bullets. and can be set with a limited collected times per players individualy' ) +
             g_ScriptInfo.Wiki( 'ammo_custom' ) +
             g_ScriptInfo.Author( 'Mikk' ) +
-            g_ScriptInfo.GetDiscord() +
-            g_ScriptInfo.GetGithub()
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
         );
+    }
+
+    enum ammo_custom_spawnflags
+    {
+        RESTORE_COUNT = 64,
+        TOUCH_ONLY = 128,
+        USE_ONLY = 256,
+        ONLY_IN_LOS = 512,
+        DISABLE_RESPAWN = 1024
+    }
+
+    HookReturnCode PlayerKilled(CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int iGib)
+    {
+        if( pPlayer !is null )
+        {
+            CBaseEntity@ ammo = null;
+            while( ( @ammo = g_EntityFuncs.FindEntityByClassname( ammo, "ammo_custom" ) ) !is null )
+            {
+                if( ammo !is null && ammo.pev.SpawnFlagBitSet( RESTORE_COUNT ) )
+                {
+                    ammo.Use( pPlayer, pPlayer, USE_OFF, 0.0f );
+                }
+            }
+        }
+        return HOOK_CONTINUE;
     }
 
     class ammo_custom : ScriptBasePlayerAmmoEntity, ScriptBaseCustomEntity
     {
-        private string p_sound;
+        private string GetName(){return string(self.pev.targetname);}
+        private string EntIndex(){return string( 'ammo_custom_' + self.entindex() );}
+        private bool PlayerAble(CBaseEntity@ p){ return (p.IsPlayer() && p !is null && p.IsAlive() ? true : false );}
 
-        private string am_name = 'buckshot';
+        private string
+        m_iszTargetOnCount,
+        m_iszPickupSound,
+        m_iszAmmoName = 'buckshot';
+
+        private int m_iAmmoCount = 1;
+        private float m_fDelayRestore;
 
         private string[][] Weapons = 
         {
@@ -32,22 +64,28 @@ namespace ammo_custom
             {'snarks', 'weapon_snark'}
         };
 
-        private int am_give = 1;
-
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
             ExtraKeyValues( szKey, szValue );
-            if( szKey == 'am_name' )
+            if( szKey == 'm_iszAmmoName' || szKey == 'am_name' )
             {
-                am_name = szValue;
+                m_iszAmmoName = szValue;
             }
-            else if( szKey == 'p_sound' )
+            else if( szKey == 'm_iszPickupSound' || szKey == 'p_sound' )
             {
-                p_sound = szValue;
+                m_iszPickupSound = szValue;
             }
-            else if( szKey == 'am_give' )
+            else if( szKey == 'm_iszTargetOnCount' )
             {
-                am_give = atoi( szValue );
+                m_iszTargetOnCount = szValue;
+            }
+            else if( szKey == 'm_iAmmoCount' || szKey == 'am_give' )
+            {
+                m_iAmmoCount = atoi( szValue );
+            }
+            else if( szKey == 'm_fDelayRestore' )
+            {
+                m_fDelayRestore = atof( szValue );
             }
             else
             {
@@ -58,28 +96,26 @@ namespace ammo_custom
 
         void Spawn()
         {
+            Precache();
             CustomModelSet();
 
-            if( self.pev.frags > 0 )
-            {
-                if( string( self.pev.targetname ).IsEmpty() )
-                {
-                    self.pev.targetname = 'ammocustom_' + self.entindex();
-                }
+            self.pev.targetname = ( GetName().IsEmpty() ? EntIndex() : GetName() );
 
-                dictionary g_keyvalues =
-                {
-                    { 'spawnflags', '64' },
-                    { 'target', string( self.pev.targetname ) },
-                    { 'renderamt', '0' },
-                    { 'rendermode', '5' },
-                    { 'targetname', string( self.pev.targetname ) + '_FX' }
-                };
+            string renderamt = g_Util.GetCKV( self, '$i_renderamt' );
+            string rendermode = g_Util.GetCKV( self, '$i_rendermode' );
+            string renderfx = g_Util.GetCKV( self, '$i_renderfx' );
+            string rendercolor = g_Util.GetCKV( self, '$s_rendercolor' );
 
-                g_EntityFuncs.CreateEntity( 'env_render_individual', g_keyvalues );
-            }
+            dictionary g_Render;
+            g_Render[ 'spawnflags' ] = '64';
+            g_Render[ 'target' ] = GetName();
+            g_Render[ 'renderamt' ] = ( renderamt.IsEmpty() ? '100' : renderamt );
+            g_Render[ 'rendermode' ] = ( rendermode.IsEmpty() ? '2' : rendermode );
+            g_Render[ 'renderfx' ] = ( renderfx.IsEmpty() ? '0' : renderfx );
+            g_Render[ 'rendercolor' ] = ( rendercolor.IsEmpty() ? '0 0 0' : rendercolor );
+            g_Render[ 'targetname' ] = GetName() + '_FX';
+            g_EntityFuncs.CreateEntity( 'env_render_individual', g_Render );
 
-            Precache();
             BaseClass.Spawn();
         }
         
@@ -87,53 +123,107 @@ namespace ammo_custom
         {
             CustomModelPrecache();
 
-            if( !p_sound.IsEmpty() )
+            if( !m_iszPickupSound.IsEmpty() )
             {
-                g_SoundSystem.PrecacheSound( p_sound );
-                g_Game.PrecacheGeneric( 'sound/' + p_sound );
+                g_SoundSystem.PrecacheSound( m_iszPickupSound );
+                g_Game.PrecacheGeneric( 'sound/' + m_iszPickupSound );
             }
             BaseClass.Precache();
         }
 
-        bool AddAmmo( CBaseEntity@ pOther ) 
+        void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float fldelay )
         {
-            if( pOther is null || IsLockedByMaster( pOther ) )
+            if( PlayerAble( pActivator ) )
+            {
+                if( useType == USE_OFF )
+                {
+                    g_Util.SetCKV( pActivator, '$i_' + EntIndex(), 0 );
+                    g_Util.Trigger( GetName() + '_FX', pActivator, pActivator, USE_OFF, 0.0f );
+                    return;
+                }
+
+                if( !spawnflag( TOUCH_ONLY ) )
+                {
+                    AddAmmo( pActivator );
+                }
+            }
+        }
+
+        void Touch( CBaseEntity@ pOther )
+        {
+            if( PlayerAble( pOther ) && !spawnflag( USE_ONLY ) )
+            {
+                AddAmmo( pOther );
+            }
+        }
+
+        void Restore( CBaseEntity@ pPlayer )
+        {
+            int iValue = atoi( g_Util.GetCKV( pPlayer, '$i_' + EntIndex() ) );
+            g_Util.SetCKV( pPlayer, '$i_' + EntIndex(), iValue - 1 );
+            g_Util.Trigger( GetName() + '_FX', pPlayer, pPlayer, USE_OFF, 0.0f );
+        }
+
+        bool CanPick( CBaseEntity@ pPlayer )
+        {
+            if( spawnflag( ONLY_IN_LOS ) && !pPlayer.FVisibleFromPos( pPlayer.pev.origin, self.Center() ) )
             {
                 return false;
             }
 
-            int iValue = atoi( g_Util.GetCKV( pOther, '$i_ammo_custom' + self.entindex() ) );
+            int iValue = atoi( g_Util.GetCKV( pPlayer, '$i_' + EntIndex() ) );
+            int iWait = int( wait - wait - wait );
 
-            if( iValue < self.pev.frags || self.pev.frags == 0 )
+            if( !m_iszMaster.IsEmpty() && g_EntityFuncs.IsMasterTriggered( m_iszMaster, self ) )
             {
-                for(uint i = 0; i < Weapons.length(); i++)
+                return true;
+            }
+            if( self.pev.frags > 0 && iValue < self.pev.frags )
+            {
+                g_Util.SetCKV( pPlayer, '$i_' + EntIndex(), iValue + 1 );
+
+                if( m_fDelayRestore > 0.0f )
                 {
-                    if( am_name == Weapons[i][0] )
+                    g_Scheduler.SetTimeout( @this, "Restore", m_fDelayRestore, @pPlayer );
+                }
+                return true;
+            }
+            return false;
+        }
+
+        bool AddAmmo( CBaseEntity@ pOther ) 
+        {
+            CBasePlayer@ pPlayer = cast<CBasePlayer@>( pOther );
+
+            if( !PlayerAble( pPlayer ) )
+            {
+                return false;
+            }
+
+            g_Util.Trigger( GetName() + '_FX', pPlayer, pPlayer, ( CanPick( pPlayer ) ? USE_OFF : USE_ON ), 0.0f );
+
+            if( CanPick( pPlayer ) )
+            {
+                for( uint i = 0; i < Weapons.length(); i++ )
+                {
+                    if( m_iszAmmoName == Weapons[i][0] )
                     {
-                        if( cast<CBasePlayer@>( pOther ).HasNamedPlayerItem( Weapons[i][1] ) is null )
+                        if( cast<CBasePlayer@>( pPlayer ).HasNamedPlayerItem( Weapons[i][1] ) is null )
                         {
-                            CBaseEntity@ FakeWeapon = g_EntityFuncs.Create( Weapons[i][1], pOther.pev.origin, Vector( 0, 0, 0 ), false );
+                            CBaseEntity@ FakeWeapon = g_EntityFuncs.Create( Weapons[i][1], pPlayer.pev.origin, Vector( 0, 0, 0 ), false );
 
                             FakeWeapon.pev.spawnflags = 1024;
-                            cast<CBasePlayerWeapon@>( FakeWeapon ).m_iDefaultAmmo = am_give;
-                            Pickup();
+                            cast<CBasePlayerWeapon@>( FakeWeapon ).m_iDefaultAmmo = m_iAmmoCount;
+                            return Pickup();
                         }
                     }
                 }
 
-
-                CBasePlayer@ pPlayer = cast<CBasePlayer@>( pOther );
-
-                if( pPlayer is null )
-                {
-                    return false;
-                }
-
-                if( am_name == 'flashlight' )
+                if( m_iszAmmoName == 'flashlight' )
                 {
                     if( pPlayer.m_iFlashBattery < 100 )
                     {
-                        float flash = pPlayer.m_iFlashBattery + am_give;
+                        float flash = pPlayer.m_iFlashBattery + m_iAmmoCount;
 
                         if( flash >= 100 )
                         {
@@ -145,78 +235,60 @@ namespace ammo_custom
                             pPlayer.m_iFlashBattery = int( flash );
                             g_Util.SetCKV( pPlayer, '$f_pf_flashlight', flash );
                         }
-                        Pickup();
+                        return Pickup( pPlayer );
                     }
                 }
-                else if( am_name == 'battery' )
+                else if( m_iszAmmoName == 'battery' && pPlayer.pev.armorvalue < pPlayer.pev.armortype )
                 {
-                    if( pPlayer.pev.armorvalue < pPlayer.pev.armortype )
-                    {
-                        pPlayer.pev.armorvalue += am_give;
-                        pPlayer.pev.armorvalue = Math.min( pPlayer.pev.armorvalue, 100 );
-
-                        if( !p_sound.IsEmpty() )
-                        {
-                            NetworkMessage msg( MSG_ONE, NetworkMessages::ItemPickup, pPlayer.edict() );
-                                msg.WriteString( 'item_battery' );
-                            msg.End();
-
-                            int pct;
-                            pct = int( float( pPlayer.pev.armorvalue * 100.0 ) *  (1.0 / 100 ) + 0.5 );
-                            pct = ( pct / 5 );
-                            if ( pct > 0 )
-                                pct--;
-
-                            pPlayer.SetSuitUpdate( '!HEV_' + pct + 'P', false, 30 );
-
-                        }
-                        Pickup();
-                    }
+                    pPlayer.pev.armorvalue += m_iAmmoCount;
+                    pPlayer.pev.armorvalue = Math.min( pPlayer.pev.armorvalue, 100 );
+                    return Pickup();
                 }
-                else if( am_name == 'healthkit' )
+                else if( m_iszAmmoName == 'healthkit' && pPlayer.pev.health < pPlayer.pev.max_health )
                 {
-                    if( pPlayer.pev.health < pPlayer.pev.max_health )
-                    {
-                        pPlayer.TakeHealth( am_give, DMG_GENERIC );
-
-                        if( !p_sound.IsEmpty() )
-                        {
-                            NetworkMessage message( MSG_ONE, NetworkMessages::ItemPickup, pPlayer.edict() );
-                                message.WriteString( 'item_healthkit' );
-                            message.End();
-                        }
-
-                        Pickup();
-                    }
+                    pPlayer.TakeHealth( m_iAmmoCount, DMG_GENERIC );
+                    return Pickup( pPlayer );
                 }
-                else if( am_name == 'air' )
+                else if( m_iszAmmoName == 'air' )
                 {
-                    pPlayer.pev.air_finished = g_Engine.time + am_give;
-                    Pickup();
+                    pPlayer.pev.air_finished = g_Engine.time + m_iAmmoCount;
+                    return Pickup();
                 }
-                else if( pPlayer.GiveAmmo( am_give, am_name, pPlayer.GetMaxAmmo( am_name ) ) != -1 )
+                else if( pPlayer.GiveAmmo( m_iAmmoCount, m_iszAmmoName, pPlayer.GetMaxAmmo( m_iszAmmoName ) ) != -1 )
                 {
-                    if( self.pev.frags > 0 )
-                    {
-                        g_Util.SetCKV( pPlayer, '$i_ammo_custom' + self.entindex(), iValue + 1 );
-                        
-                        if( iValue == self.pev.frags - 1 )
-                        {
-                            g_Util.Trigger( string( self.pev.targetname ) + '_FX', pPlayer, pPlayer, USE_ON, 0.0f );
-                            g_Util.Debug( '[ammo_custom] Player "' + string( pPlayer.pev.netname ) + '" can not take more ammo from this item.' );
-                        }
-                    }
-                    Pickup();
+                    return Pickup();
                 }
             }
+            g_Util.Trigger( m_iszTargetOnCount, pPlayer, self, USE_TOGGLE, 0.0f );
             return false;
         }
-        
-        bool Pickup()
+
+        bool Pickup( CBasePlayer@ &in pPlayer = null )
         {
-            if( !p_sound.IsEmpty() )
+            if( !m_iszPickupSound.IsEmpty() )
             {
-                g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, p_sound, 1, ATTN_NORM );
+                g_SoundSystem.EmitSound( self.edict(), CHAN_ITEM, m_iszPickupSound, 1, ATTN_NORM );
+
+                if( m_iszAmmoName == 'battery' )
+                {
+                    NetworkMessage msg( MSG_ONE, NetworkMessages::ItemPickup, pPlayer.edict() );
+                        msg.WriteString( 'item_battery' );
+                    msg.End();
+
+                    int pct;
+                    pct = int( float( pPlayer.pev.armorvalue * 100.0 ) *  (1.0 / 100 ) + 0.5 );
+                    pct = ( pct / 5 );
+                    if ( pct > 0 )
+                        pct--;
+
+                    pPlayer.SetSuitUpdate( '!HEV_' + pct + 'P', false, 30 );
+                }
+                else if( m_iszAmmoName == 'healthkit' )
+                {
+                    NetworkMessage message( MSG_ONE, NetworkMessages::ItemPickup, pPlayer.edict() );
+                        message.WriteString( 'item_healthkit' );
+                    message.End();
+                }
             }
             return true;
         }

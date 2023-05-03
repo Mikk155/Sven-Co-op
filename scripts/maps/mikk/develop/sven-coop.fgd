@@ -334,15 +334,15 @@
 [
     spawnflags(flags) =
     [
+        64 : "Restore Player when die" : 0
         128 : "TOUCH Only" : 0
         256 : "USE Only" : 0
         512 : "Only in line of sight" : 0
         1024: "Disable Respawn" : 0
     ]
-    master(string) : "Master"
     target(target_destination) : "Target"
 
-    am_name(choices) : "Ammo type" : "buckshot" =
+    m_iszAmmoName(choices) : "Ammo type" : "buckshot" =
     [
         "buckshot" : "Buckshot"
         "9mm" : "9mm (mp5, glock, uzi)"
@@ -364,18 +364,16 @@
         "healthkit" : "Health Kit"
         "air" : "Oxygen time"
     ]
-    am_give(integer) : "Ammo ammout" : 8
-    frags(integer) : "item per player (0 = infinite)" : 0
-
+    m_iAmmoCount(integer) : "Ammo Amount" : 1
+    m_iszPickupSound(sound) : "Custom Sound" : "items/9mmclip1.wav"
     m_flCustomRespawnTime(float) : "Custom respawn time"
-    sequence(integer) : "Animation Sequence (editor)" : 0
     model(studio) : "Model"
+    sequence(integer) : "Animation Sequence (editor)" : 0
     $i_classic_mode_ignore(choices) : "[AS] Classic Mode" : 0 =
     [
         0: "Replace (config_classic_mode)"
         1: "Ignore entity"
     ]
-    p_sound(sound) : "Custom Sound" : "items/9mmclip1.wav"
 	movetype(choices) : "Gravity Setting" : 0 =
 	[
 		-1: "Unmoveable"
@@ -395,6 +393,45 @@
     renderamt(integer) : "[FX] Amount (0 - 255)" : 255
     rendercolor(color255) : "[FX] Color (R G B)" : "0 0 0"
     renderfx(choices) : "[FX] Render FX" : 0 =
+    [
+        0: "Normal"
+        1: "Slow Pulse"
+        2: "Fast Pulse"
+        3: "Slow Wide Pulse"
+        4: "Fast Wide Pulse"
+        9: "Slow Strobe"
+        10: "Fast Strobe"
+        11: "Faster Strobe"
+        12: "Slow Flicker"
+        13: "Fast Flicker"
+        5: "Slow Fade Away"
+        6: "Fast Fade Away"
+        7: "Slow Become Solid"
+        8: "Fast Become Solid"
+        14: "Constant Glow"
+        15: "Distort"
+        16: "Hologram (Distort + fade)"
+        17: "Dead Player (DONT USE!)"
+        18: "Explode (Garg Like)"
+        19: "Glow Shell"
+        20: "ClampMinScale (Sprites)"
+    ]
+    master(string) : "Master"
+    frags(integer) : "[Count] item per player (0 = infinite)" : 0
+    m_fDelayRestore(float) : "[Count] Restore count time (0 don't restore)" : 0.0
+    m_iszTargetOnCount(target_destination) : "[Count] Target when locked"
+    $i_renderamt(integer) : "[Count] [FX] Amount" : 100
+    $i_rendermode(choices) : "[Count] [FX] Render Mode" : 2 =
+    [
+        0: "Normal"
+        1: "Color"
+        2: "Texture"
+        3: "Glow"
+        4: "Solid"
+        5: "Additive"
+    ]
+    $s_rendercolor(color255) : "[Count] [FX] Color (R G B)" : "0 0 0"
+    $i_renderfx(choices) : "[Count] [FX] Render FX" : 0 =
     [
         0: "Normal"
         1: "Slow Pulse"
@@ -10370,7 +10407,6 @@
     message(target_destination) : "Trigger after action"
 
     $s_weapon(string) : "[AS] Weapon's value modifier"
-    $s_angelscript_file(string) : "Script file" : "mikk/trigger_changevalue_weapons.as"
 ]
 
 // =================================================================================================================
