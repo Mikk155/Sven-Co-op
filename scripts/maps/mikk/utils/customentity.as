@@ -1,3 +1,6 @@
+#include 'information'
+#include 'reflection'
+#include 'utility'
 mixin class ScriptBaseCustomEntity
 {
     private float delay = 0.0f;
