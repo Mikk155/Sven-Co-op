@@ -1,5 +1,8 @@
-#include "utils/customentity"
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
 namespace trigger_teleport_relative
 {
     void Register()
@@ -111,7 +114,7 @@ namespace trigger_teleport_relative
                         Vector VecDif = ( VecStart - pTeleEnt.pev.origin );
                         Vector VecRes = ( VecEnd - VecDif );
                         g_EntityFuncs.SetOrigin( pTeleEnt, VecRes );
-                        g_Util.Trigger( m_iszTargetOnExit, pTeleEnt, self, USE_TOGGLE, delay );
+                        g_Util.Trigger( m_iszTargetOnExit, pTeleEnt, self, USE_TOGGLE, m_fDelay );
                     }
                 }
             }

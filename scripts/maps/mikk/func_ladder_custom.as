@@ -1,4 +1,7 @@
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace func_ladder_custom
 {
@@ -7,12 +10,17 @@ namespace func_ladder_custom
         g_Scheduler.SetTimeout( "func_ladder_custom_init", 0.0f );
     }
 
+    enum func_ladder_custom_spawnflags
+    {
+        VISIBLE = 2
+    }
+
     void func_ladder_custom_init()
     {
         CBaseEntity@ self = null;
         while( ( @self = g_EntityFuncs.FindEntityByClassname( self, "func_ladder" ) ) !is null )
         {
-            if( self !is null )
+            if( self.pev.SpawnFlagBitSet( VISIBLE ) )
             {
                 string rendermode = g_Util.GetCKV( self, '$s_rendermode' );
                 string renderamt = g_Util.GetCKV( self, '$s_renderamt' );

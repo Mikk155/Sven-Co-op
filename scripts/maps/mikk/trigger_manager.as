@@ -1,5 +1,8 @@
-#include "utils/customentity"
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
 namespace trigger_manager
 {
     void Register()
@@ -38,7 +41,7 @@ namespace trigger_manager
     class trigger_manager : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         EHandle Eactivator = null, Ecaller = null;
-        private int m_iUseType = TRIGGER_SAME;
+        private float m_iWaitUntilRefire;
         private string m_iszFireOnMaster, m_iszFireOnLocked, strTarget, m_iszActivator, m_iszCaller;
         private bool Reactivated = true;
 
@@ -53,10 +56,6 @@ namespace trigger_manager
             {
                 m_iszCaller = szValue;
             }
-            else if( szKey == "m_iUseType" )
-            {
-                m_iUseType = atoi( szValue );
-            }
             else if( szKey == "m_iszFireOnMaster" )
             {
                 m_iszFireOnMaster = szValue;
@@ -64,6 +63,10 @@ namespace trigger_manager
             else if( szKey == "m_iszFireOnLocked" )
             {
                 m_iszFireOnLocked = szValue;
+            }
+            else if( szKey == "m_iWaitUntilRefire" || szKey == "wait" )
+            {
+                m_iWaitUntilRefire = atof( szValue );
             }
             else
             {
@@ -141,43 +144,12 @@ namespace trigger_manager
                 if( pEnt !is null ) Eactivator = pEnt; else Eactivator = self;
             }
 
-            USE_TYPE NewUseType;
-
-            if( m_iUseType == TRIGGER_OFF )
-            {
-                NewUseType = USE_OFF;
-            }
-            else if( m_iUseType == TRIGGER_ON )
-            {
-                NewUseType = USE_ON;
-            }
-            else if( m_iUseType == TRIGGER_KILL )
-            {
-                NewUseType = USE_KILL;
-            }
-            else if( m_iUseType == TRIGGER_TOGGLE )
-            {
-                NewUseType = USE_TOGGLE;
-            }
-            else if( m_iUseType == TRIGGER_SAME )
-            {
-                NewUseType = useType;
-            }
-            else if( m_iUseType == TRIGGER_OPPOSITE )
-            {
-                NewUseType = ( useType == USE_OFF ? USE_ON : useType == USE_ON ? USE_OFF : USE_TOGGLE );
-            }
-            else if( m_iUseType == TRIGGER_SET )
-            {
-                NewUseType = USE_SET;
-            }
-
             if( spawnflag( ONCE_PER_PLAYER ) and atoi( g_Util.GetCKV( Eactivator.GetEntity(), "$i_fireonce_" + self.entindex() ) ) == 1 )
             {
                 return;
             }
 
-            g_Util.Trigger( strTarget, Eactivator.GetEntity(), Ecaller.GetEntity(), NewUseType, delay );
+            g_Util.Trigger( strTarget, Eactivator.GetEntity(), Ecaller.GetEntity(), GetUseType( useType ), m_fDelay );
             
             if( spawnflag( REMOVE_ON_FIRE ) )
             {
@@ -189,10 +161,10 @@ namespace trigger_manager
                 g_Util.SetCKV( Eactivator.GetEntity(), "$i_fireonce_" + self.entindex(), 1 );
             }
             
-            if( wait > 0.0 )
+            if( m_iWaitUntilRefire > 0.0 )
             {
                 Reactivated = false;
-                g_Scheduler.SetTimeout( @this, "ReActivation", wait );
+                g_Scheduler.SetTimeout( @this, "ReActivation", m_iWaitUntilRefire );
             }
         }
         

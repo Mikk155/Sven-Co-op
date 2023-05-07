@@ -1,5 +1,7 @@
-#include "utils/customentity"
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace item_oxygentank
 {
@@ -88,7 +90,7 @@ namespace item_oxygentank
             pOther.pev.air_finished = g_Engine.time + 12.0;
             self.pev.solid = SOLID_NOT;
             self.pev.renderamt = 50;
-            self.pev.nextthink = ( delay < 0.1 ) ? g_Engine.time + 1.0f : g_Engine.time + delay;
+            self.pev.nextthink = ( m_fDelay < 0.1 ) ? g_Engine.time + 1.0f : g_Engine.time + m_fDelay;
             
             for(int i = 0; i < 20; ++i)
             {

@@ -1,5 +1,8 @@
-#include "utils/customentity"
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
 namespace trigger_votemenu
 {
     void Register()
@@ -160,8 +163,8 @@ namespace trigger_votemenu
             {
                 string value;
                 dictKeyValues.get(FindName, value); 
-                g_Util.Trigger( value, self, self, USE_TOGGLE, delay );
-                g_Util.Trigger( self.pev.target, self, self, USE_TOGGLE, delay );
+                g_Util.Trigger( value, self, self, USE_TOGGLE, m_fDelay );
+                g_Util.Trigger( self.pev.target, self, self, USE_TOGGLE, m_fDelay );
             }
         }
     }

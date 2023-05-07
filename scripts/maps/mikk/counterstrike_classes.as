@@ -1,4 +1,6 @@
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
 
 namespace counterstrike_classes
 {

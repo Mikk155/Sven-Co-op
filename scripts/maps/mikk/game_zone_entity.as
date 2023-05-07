@@ -1,5 +1,7 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace game_zone_entity
 {
@@ -130,7 +132,7 @@ namespace game_zone_entity
 
             if( !intarget.IsEmpty() and self.Intersects( pActivator ) )
             {
-                g_Util.Trigger( intarget, pActivator, self, USE_TOGGLE, delay );
+                g_Util.Trigger( intarget, pActivator, self, USE_TOGGLE, m_fDelay );
 
                 if( hincount.GetEntity() !is null )
                 {
@@ -144,7 +146,7 @@ namespace game_zone_entity
 
             if( !outtarget.IsEmpty() and !self.Intersects( pActivator ) )
             {
-                g_Util.Trigger( outtarget, pActivator, self, ( USE_OUT == 0 ? USE_OFF : USE_OUT == 1 ? USE_ON : USE_TOGGLE ), delay );
+                g_Util.Trigger( outtarget, pActivator, self, ( USE_OUT == 0 ? USE_OFF : USE_OUT == 1 ? USE_ON : USE_TOGGLE ), m_fDelay );
 
                 if( houtcount.GetEntity() !is null )
                 {

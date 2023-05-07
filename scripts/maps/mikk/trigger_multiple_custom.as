@@ -1,4 +1,8 @@
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
 namespace trigger_multiple_custom
 {
     void Register()

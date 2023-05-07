@@ -54,6 +54,11 @@
     targetname(target_source) : "Name"
 ]
 
+@BaseClass base(Mandatory) = Target
+[
+    target(target_destination) : "Target"
+]
+
 @BaseClass = Angles
 [
     angles(string) : "Angles (X Y Z)"
@@ -63,9 +68,8 @@
 //
 // =================================================================================================================
 
-@PointClass base(Mandatory, Angles) size(-16 -16 0, 16 16 72) color(164 0 255) = aiscripted_sequence : "AI Scripted Sequence"
+@PointClass base(Target, Angles) size(-16 -16 0, 16 16 72) color(164 0 255) = aiscripted_sequence : "AI Scripted Sequence"
 [
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
     m_iszEntity(string) : "target Monster"
     m_iszPlay(string) : "Action Animation" : ""
@@ -256,7 +260,7 @@
 //
 // =================================================================================================================
 
-@BaseClass base(Mandatory, Angles) = Ammo
+@BaseClass base(Target, Angles) = Ammo
 [
     spawnflags(flags) =
     [
@@ -265,7 +269,6 @@
         512 : "Only in line of sight" : 0
         1024: "Disable Respawn" : 0
     ]
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
 
     m_flCustomRespawnTime(float) : "Custom respawn time"
@@ -330,7 +333,7 @@
 @PointClass base(Ammo) studio("models/w_argrenade.mdl") = ammo_ARgrenades : "M16's M203 grenades (x2)" []
 @PointClass base(Ammo) studio("models/w_shotbox.mdl") = ammo_buckshot : "Shotgun shell box" []
 @PointClass base(Ammo) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
-@BaseClass base(Mandatory, Angles) = AmmoCustom
+@BaseClass base(Target, Angles) = AmmoCustom
 [
     spawnflags(flags) =
     [
@@ -340,7 +343,6 @@
         512 : "Only in line of sight" : 0
         1024: "Disable Respawn" : 0
     ]
-    target(target_destination) : "Target"
 
     m_iszAmmoName(choices) : "Ammo type" : "buckshot" =
     [
@@ -470,7 +472,7 @@
 //
 // =================================================================================================================
 
-@SolidClass base(Mandatory, Angles) = button_target : "target Button"
+@SolidClass base(Target, Angles) = button_target : "target Button"
 [
     spawnflags(flags) =
     [
@@ -478,7 +480,6 @@
         2: "First Trigger sends OFF" : 0
     ]
     master(string) : "Master"
-    target(target_destination) : "Target"
     use_type(choices) : "Use Type" : 3 =
     [
         0: "Off"
@@ -555,11 +556,7 @@
 //
 // =================================================================================================================
 
-@BaseClass iconsprite("sprites/mikk/vhe-iconsprites/config.spr") size(-8 -8 -8, 8 8 8) color(90 90 90) = Config
-[
-]
-
-@PointClass base(Mandatory, Config)  = config_classic_mode : "Map ClassicMode configuration"
+@PointClass base(Mandatory)  = config_classic_mode : "Map ClassicMode configuration"
 [
     spawnflags(flags) =
     [
@@ -567,7 +564,17 @@
     ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    delay(float) : "Delay Before Trigger" : 0.0
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 3 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle (Default)"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
+    ]
     m_iszTargetOnToggle(target_destination) : "target on change success"
     m_iszTargetOnFail(target_destination) : "target on fail change"
     m_iszTargetOnEnable(target_destination) : "target if is Enabled [Map start]"
@@ -764,7 +771,17 @@
 [
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    delay(float) : "Delay Before Trigger" : 0.0
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 3 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle (Default)"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
+    ]
     m_iszTargetOnToggle(target_destination) : "target on change success"
     m_iszTargetOnFail(target_destination) : "target on fail change"
     mp_survival_startdelay(integer) : "delay before survival start"
@@ -1168,8 +1185,17 @@
 //
 // =================================================================================================================
 
-@SolidClass base(Mandatory) = env_fade_custom_solid : "Screen Fade Custom"
+@SolidClass base(Target) = env_fade_custom_solid : "Screen Fade Custom"
 [
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 3 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle (Default)"
+        6 : "Set"
+    ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
     renderamt(integer) : "[FX] Amount (0 - 255)" : 255
@@ -1375,9 +1401,8 @@
 //
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(255 0 255) = env_message : "HUD Text Message"
+@PointClass base(Target) color(255 0 255) = env_message : "HUD Text Message"
 [
-    target(target_destination) : "Target"
     message(string) : "Message Name"
     spawnflags(flags) =
     [
@@ -1473,10 +1498,22 @@
         1: "Allow [AS] Functions"
     ]
     $s_target(target_destination) : "[AS] Trigger After Action"
-    $f_gradual(float) : "[AS] Gradual amt Interval" 0.5
-    $i_gradual(string) : "[AS] Gradual amt modifier" "-10"
-    $s_gradual(integer) : "[AS] Gradual amt until" 0
+    $f_gradual(float) : "[AS] Gradual amt Interval" : 0.5
+    $i_gradual(string) : "[AS] Gradual amt modifier" : "-10"
+    $s_gradual(integer) : "[AS] Gradual amt until" : 0
+    $s_master(string) : "[AS] Master"
+    $s_TriggerOnMaster(target_destination) : "[AS] Target when locked by master"
+    $f_fDelay(float) : "[AS] Delay Before Trigger" : 0.0
+    $i_iUseType(choices) : "[AS] Trigger State" : 3 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle (Default)"
+        6 : "Set"
+    ]
 ]
+
 @PointClass base(Rendering) = env_render_individual : "Per-player render settings for entities"
 [
     spawnflags(flags) =
@@ -1499,9 +1536,8 @@
 //
 // =================================================================================================================
 
-@PointClass base(Mandatory) size(-16 -16 -16, 16 16 16) iconsprite("sprites/vhe-iconsprites/env_sentence.spr") color(164 128 164) = env_sentence : "Announcement Sentence"
+@PointClass base(Target) size(-16 -16 -16, 16 16 16) iconsprite("sprites/vhe-iconsprites/env_sentence.spr") color(164 128 164) = env_sentence : "Announcement Sentence"
 [
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         1 : "Activator Only" : 0
@@ -1730,11 +1766,10 @@
 //
 // =================================================================================================================
 
-@PointClass sprite() base(Mandatory) = env_spritehud : "Show Sprite At HUD"
+@PointClass sprite() base(Target) = env_spritehud : "Show Sprite At HUD"
 [
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    target(target_destination) : "Target"
     delay(float) : "Delay Before Trigger" : 0.0
     frags(choices) : "Show to player" : 0 =
     [
@@ -1831,10 +1866,9 @@
 //
 // =================================================================================================================
 
-@PointClass sprite() base(Mandatory) size( -10 -10 -10, 10 10 10 ) = env_spritetrail : "Trail Sprite"
+@PointClass sprite() base(Target) size( -10 -10 -10, 10 10 10 ) = env_spritetrail : "Trail Sprite"
 [
     master(string) : "Master"
-    target(target_destination) : "target (blank = this)" : "!activator"
     model(sprite) : "Sprite texture" : "sprites/laserbeam.spr"
     frags(float) : "Next think time" : 0.1
     health(float) : "Fade time" : 1.0
@@ -1980,9 +2014,8 @@
 //
 // =================================================================================================================
 
-@PointClass base(Mandatory, Angles) size(-16 -16 -16, 16 16 56) color(80 220 110) = env_xenmaker : "Xen Portal"
+@PointClass base(Target, Angles) size(-16 -16 -16, 16 16 56) color(80 220 110) = env_xenmaker : "Xen Portal"
 [
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         1: "Try Once" : 0
@@ -2011,14 +2044,35 @@
 
 @BaseClass = NoDecals
 [
-    $i_efnodecals(choices) : "[AS] EF_NODECALS" : 0 =
+    $i_enum_effect(choices) : "[AS] Effects" : 0 =
     [
-        0 : "Allow Decals"
-        1 : "Don't Allow Decals"
+        0 : "None"
+        // swirling cloud of particles
+        1 : "[1] EF_BRIGHTFIELD"
+        // single frame ELIGHT on entity attachment 0
+        2 : "[2] EF_MUZZLEFLASH"
+        // DLIGHT centered at entity origin
+        4 : "[4] EF_BRIGHTLIGHT"
+        // player flashlight
+        8 : "[8] EF_DIMLIGHT"
+        // get lighting from ceiling
+        16 : "[16] EF_INVLIGHT"
+        // don't interpolate the next frame
+        32 : "[32] EF_NOINTERP"
+        // rocket flare glow sprite
+        64 : "[64] EF_LIGHT"
+        // don't draw entity
+        128 : "[128] EF_NODRAW"
+        // Don't animate brush entities
+        256 : "[256] EF_NOANIMTEXTURES"
+        // Use the value in pev->frame to set the texture on a brush entity
+        512 : "[512] EF_FRAMEANIMTEXTURES"
+        // don't draw decals on this entity
+        2048 : "[2048] EF_NODECALS"
     ]
 ]
 
-@SolidClass base(NoDecals, Global, Mandatory ) = func_breakable : "Breakable Object"
+@SolidClass base(NoDecals, Global, Target) = func_breakable : "Breakable Object"
 [
     spawnflags(flags) =
     [
@@ -2031,7 +2085,6 @@
         256: "Instant Break"    : 0
         512: "Explosives Only"    : 0
     ]
-    target(target_destination) : "Target"
     displayname(string) : "HUD Info name"
     classify(choices) : "Classification" : 0 =
     [
@@ -2127,10 +2180,9 @@
 //
 // =================================================================================================================
 
-@SolidClass base(NoDecals, Global, Mandatory, Angles) = func_button : "Button" 
+@SolidClass base(NoDecals, Global, Target, Angles) = func_button : "Button" 
 [
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
     speed(integer) : "Speed" : 5
     health(integer) : "Health (shootable if > 0)" : 0
@@ -2481,10 +2533,9 @@
 //
 // =================================================================================================================
 
-@SolidClass base(NoDecals, Global, Mandatory, Angles) = func_door : "Basic door"
+@SolidClass base(NoDecals, Global, Target, Angles) = func_door : "Basic door"
 [
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
     fireonstart(string) : "Fire On Start"
     fireonstart_triggerstate(choices) : "Fire On Start Trigger State" : 2 =
@@ -2875,7 +2926,7 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(NoDecals, Global, Mandatory, Angles) = func_door_rotating : "Rotating door"
+@SolidClass base(NoDecals, Global, Target, Angles) = func_door_rotating : "Rotating door"
 [
     spawnflags(flags) =
     [
@@ -2887,7 +2938,6 @@
     distance(integer) : "Distance (deg)" : 90
 
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
     fireonstart(string) : "Fire On Start"
     fireonstart_triggerstate(choices) : "Fire On Start Trigger State" : 2 =
@@ -3371,7 +3421,7 @@
         1 : "Start On" : 0
     ]
     speed(integer) : "Speed (units per second)" : 100
-    target(target_source) : "First stop target"
+    target(target_destination) : "First stop target"
     message(target_source) : "Fire on damage"
     health(integer) : "Damage to Take" : 0
     classify(choices) : "Classification" : 0 =
@@ -3651,6 +3701,7 @@
   spawnflags(flags) =
     [
         1: "Start Off" : 0
+        2: "[AS] Visible" : 0
     ]
     $s_rendermode(choices) : "[AS] Render Mode" : 0 =
     [
@@ -3712,9 +3763,8 @@
 // 
 // =================================================================================================================
 
-@BaseClass base(Mandatory, Angles) = PortalBase
+@BaseClass base(Target, Angles) = PortalBase
 [
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         1: "Solid"            : 1
@@ -4175,9 +4225,8 @@
 // -Mikk minhullsize y maxhullsize estaban en esta class, hay que testearlo-
 // =================================================================================================================
 
-@SolidClass base(NoDecals, Global, Mandatory) = func_pushable : "Pushable object"
+@SolidClass base(NoDecals, Global, Target) = func_pushable : "Pushable object"
 [
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         8: "Repairable"            : 0
@@ -4437,10 +4486,9 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(NoDecals, Global, Mandatory, Angles) = func_rot_button : "RotatingButton"
+@SolidClass base(NoDecals, Global, Target, Angles) = func_rot_button : "RotatingButton"
 [
     master(string) : "Master"
-    target(target_destination) : "Target"
     // changetarget will change the button's target's target field to the button's changetarget.
     changetarget(target_destination) : "ChangeTarget Name"
     speed(integer) : "Speed" : 50
@@ -4738,9 +4786,8 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(NoDecals, Global, Mandatory, Angles) = func_tank : "Brush Gun Turret"
+@SolidClass base(NoDecals, Global, Target, Angles) = func_tank : "Brush Gun Turret"
 [
-    target(target_destination) : "Target"
     bullet(choices) : "Bullets" : 0 =
     [
         0: "None"
@@ -5049,10 +5096,9 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Global, Mandatory, Angles) = func_tanklaser : "Brush Laser Turret"
+@SolidClass base(Global, Target, Angles) = func_tanklaser : "Brush Laser Turret"
 [
     laserentity(target_source) : "env_laser Entity"
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         1 : "Active" : 0
@@ -5293,9 +5339,8 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Global, Mandatory, Angles) = func_tankrocket : "Brush Rocket Turret"
+@SolidClass base(Global, Target, Angles) = func_tankrocket : "Brush Rocket Turret"
 [
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         1 : "Active" : 0
@@ -5536,10 +5581,9 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Global, Mandatory, Angles) = func_tankmortar : "Brush Mortar Turret"
+@SolidClass base(Global, Target, Angles) = func_tankmortar : "Brush Mortar Turret"
 [
     iMagnitude(Integer) : "Explosion Magnitude" : 100
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         1 : "Active" : 0
@@ -6485,7 +6529,7 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Global, Mandatory, Angles) = func_water : "Liquid"
+@SolidClass base(Global, Target, Angles) = func_water : "Liquid"
 [
     spawnflags(flags) =
     [
@@ -6509,7 +6553,6 @@
     ]
     WaveHeight(string) : "Wave Height" : "3.2"
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
     fireonstart(string) : "Fire On Start"
     fireonstart_triggerstate(choices) : "Fire On Start Trigger State" : 2 =
@@ -6912,7 +6955,7 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(238 240 238) = game_counter : "Fires when it hits limit"
+@PointClass base(Target) color(238 240 238) = game_counter : "Fires when it hits limit"
 [
     spawnflags(flags) =
     [
@@ -6923,7 +6966,6 @@
     frags(integer) : "Initial Value" : 0
     health(integer) : "Limit Value" : 10
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
 ]
 
@@ -6931,7 +6973,7 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(238 240 200) = game_counter_set : "Sets a game_counter"
+@PointClass base(Target) color(238 240 200) = game_counter_set : "Sets a game_counter"
 [
     spawnflags(flags) =
     [
@@ -6939,7 +6981,6 @@
     ]
     frags(integer) : "New Value" : 10
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
 ]
 
@@ -6987,7 +7028,7 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(200 100 0) = game_player_equip : "Initial player equipment"
+@PointClass base(Target) color(200 100 0) = game_player_equip : "Initial player equipment"
 [
     spawnflags(flags) =
     [
@@ -7011,7 +7052,6 @@
         5: "Limit items"
     ]
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
 ]
 
@@ -7019,7 +7059,7 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(255 2 0) = game_player_hurt : "Hurts player who fires"
+@PointClass base(Target) color(255 2 0) = game_player_hurt : "Hurts player who fires"
 [
     dmg(string) : "Damage To Apply" : "65535"
     spawnflags(flags) =
@@ -7027,7 +7067,6 @@
         1: "Remove On fire" : 0
     ]
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
 ]
 
@@ -7035,7 +7074,7 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(255 205 0) = game_score : "Award/Deduct Points"
+@PointClass base(Target) color(255 205 0) = game_score : "Award/Deduct Points"
 [
     spawnflags(flags) =
     [
@@ -7044,7 +7083,6 @@
     ]
     points(integer) : "Points to add (+/-)" : 1
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
 ]
 
@@ -7063,7 +7101,7 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(100 100 170) = game_team_master : "Team based master/relay"
+@PointClass base(Target) color(100 100 170) = game_team_master : "Team based master/relay"
 [
     spawnflags(flags) =
     [
@@ -7077,7 +7115,6 @@
     ]
     teamindex(integer) : "Team Index (-1 = no team)" : -1
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
 ]
 
@@ -7123,12 +7160,21 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(192 255 0) = game_text_custom : "Custom Text Messages"
+@PointClass base(Target) color(192 255 0) = game_text_custom : "Custom Text Messages"
 [
-    delay(float) : "Delay Before Trigger" : 0.0
+    $f_fDelay(float) : "[AS] Delay Before Trigger" : 0.0
+    $i_iUseType(choices) : "[AS] Trigger State" : 3 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle (Default)"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
+    ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
     spawnflags(flags) =
     [
@@ -7306,10 +7352,9 @@
 // 
 // =================================================================================================================
 
-@PointClass iconsprite("sprites/vhe-iconsprites/global_light_control.spr") base(Mandatory) size(-24 -24 -24, 24 24 24) color(96 96 32) = global_light_control : "Global Light Pattern"
+@PointClass iconsprite("sprites/vhe-iconsprites/global_light_control.spr") base(Target) size(-24 -24 -24, 24 24 24) color(96 96 32) = global_light_control : "Global Light Pattern"
 [
     pattern(string) : "Custom Appearance"
-    target(target_destination) : "Target"
 ]
 
 // =================================================================================================================
@@ -7346,9 +7391,8 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) = info_commentary : "Dev commentary"
+@PointClass base(Target) = info_commentary : "Dev commentary"
 [
-    target(target_destination) : "Target"
     $f_framerate(float) : "Framerate" : 10.0
     model(sprite) : "Sprite Name" : "sprites/mikk/misc/commentary.spr"
     scale(float) : "Scale" : 1.0
@@ -7806,9 +7850,8 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) color(230 230 232) = info_monster_goal : "Monster goal entity"
+@PointClass base(Target) color(230 230 232) = info_monster_goal : "Monster goal entity"
 [
-    target(target_destination) : "Target"
     spawnflags(flags) =
     [
         8  : "Start Off" : 0
@@ -7949,9 +7992,8 @@
 // 
 // =================================================================================================================
 
-@PointClass size(-16 -16 -36, 16 16 36) color(0 255 0) base(Mandatory, Angles) studio("models/player.mdl") = info_player_start : "Single player start (and multi-player initial viewpoint)"
+@PointClass size(-16 -16 -36, 16 16 36) color(0 255 0) base(Target, Angles) studio("models/player.mdl") = info_player_start : "Single player start (and multi-player initial viewpoint)"
 [
-    target(target_destination) : "Target"
 ]
 
 @PointClass base(info_player_start) studio("models/player.mdl") = info_player_deathmatch : "Player deathmatch start"
@@ -8030,7 +8072,7 @@
     health(integer) : "Charge Supplied" : 0
     healthcap(integer) : "Charge Cap" : 0
 ]
-@PointClass base(Item) studio() = item_generic : "Generic scenery item"
+@PointClass studio() = item_generic : "Generic scenery item"
 [
     solid(choices) : "Solid Setting" : 0 =
     [
@@ -8043,6 +8085,54 @@
     [
         0: "Replace (config_classic_mode)"
         1: "Ignore entity"
+    ]
+    skin(integer) : "Skin" : 0
+    body(integer) : "Body" : 0
+    sequencename(string) : "Sequence Name" : "idle"
+    sequence(integer) : "Sequence Number (overrides name)" : 0
+    scale(string) : "Scale Model" : "1"
+
+	movetype(choices) : "Gravity Setting" : 0 =
+	[
+		-1: "Unmoveable"
+		0: "Fall to the ground (default)"
+		5: "Hover in the air"
+		8: "Hover in the air, ignore brush collision"
+	]
+    rendermode(choices) : "[FX] Render Mode" : 0 =
+    [
+        0: "Normal"
+        1: "Color"
+        2: "Texture"
+        3: "Glow"
+        4: "Solid"
+        5: "Additive"
+    ]
+    renderamt(integer) : "[FX] Amount (0 - 255)" : 255
+    rendercolor(color255) : "[FX] Color (R G B)" : "0 0 0"
+    renderfx(choices) : "[FX] Render FX" : 0 =
+    [
+        0: "Normal"
+        1: "Slow Pulse"
+        2: "Fast Pulse"
+        3: "Slow Wide Pulse"
+        4: "Fast Wide Pulse"
+        9: "Slow Strobe"
+        10: "Fast Strobe"
+        11: "Faster Strobe"
+        12: "Slow Flicker"
+        13: "Fast Flicker"
+        5: "Slow Fade Away"
+        6: "Fast Fade Away"
+        7: "Slow Become Solid"
+        8: "Fast Become Solid"
+        14: "Constant Glow"
+        15: "Distort"
+        16: "Hologram (Distort + fade)"
+        17: "Dead Player (DONT USE!)"
+        18: "Explode (Garg Like)"
+        19: "Glow Shell"
+        20: "ClampMinScale (Sprites)"
     ]
     minhullsize(string) : "Minimun BBox Size"
     maxhullsize(string) : "Maximun BBox Size"
@@ -8225,11 +8315,10 @@
 
 @PointClass size(-14 -14 0, 14 14 36) base(Item) studio("models/w_longjump.mdl") = item_longjump : "Longjump module" []
 
-@PointClass base(Mandatory, Angles) studio() = item_oxygentank : "Oxygen Tank"
+@PointClass base(Target, Angles) studio() = item_oxygentank : "Oxygen Tank"
 [
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    target(target_destination) : "Target"
 
     model(studio) : "Model" : "models/w_oxygen.mdl"
     $i_classic_mode_ignore(choices) : "[AS] Classic Mode" : 0 =
@@ -8523,14 +8612,13 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Global, Mandatory, Angles) = momentary_door : "Momentary/Continuous door"
+@SolidClass base(Global, Target, Angles) = momentary_door : "Momentary/Continuous door"
 [
     spawnflags(flags) =
     [
         1 : "Starts Open" : 0
     ]
     master(string) : "Master"
-    target(target_destination) : "Target"
     killtarget(target_destination) : "Kill target"
     fireonstart(string) : "Fire On Start"
     fireonstart_triggerstate(choices) : "Fire On Start Trigger State" : 2 =
@@ -8921,10 +9009,9 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Mandatory, Angles, , , , , bZHLT) = momentary_rot_button : "Direct wheel control"
+@SolidClass base(Target, Angles) = momentary_rot_button : "Direct wheel control"
 [
     master(string) : "Master"
-    target(target_destination) : "Target"
     speed(integer) : "Speed" : 50
     sounds(choices) : "Sounds" : 0 =
     [
@@ -9088,12 +9175,11 @@
 // =================================================================================================================
 
 
-@PointClass base(Mandatory) color(200 100 0) = player_equipment : "player_weaponstrip & game_player_equip improved"
+@PointClass base(Target) color(200 100 0) = player_equipment : "player_weaponstrip & game_player_equip improved"
 [
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
     delay(float) : "Delay Before Trigger" : 0.0
-    target(target_destination) : "Target"
     m_iAffected(choices) : "Players to strip" : 0 =
     [
         0 : "Activator only (default)"
@@ -9337,8 +9423,8 @@
 @SolidClass base(Mandatory) = player_inbutton_solid : "Player Zone In-Button"
 [
     master(string) : "Master"
-    delay(float) : "Delay Before Trigger" : 0.0
-    wait(choices) : "Key input" : 32 =
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    frags(choices) : "Key input" : 32 =
     [
         1 : "Primary attack"
         2 : "Jump"
@@ -10881,9 +10967,9 @@
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
     target(target_destination) : "Target"
-    delay(float) : "Delay Before Trigger" : 0.0
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
     m_iszFireOnLocked(target_destination) : "Fire when not activated"
-    wait(float) : "Delay before re-activation" : 0.0
+    m_iWaitUntilRefire(float) : "Delay before re-activation" : 0.0
     m_iszActivator(target_destination) : "New !activator" : "!activator"
     m_iszCaller(target_destination) : "New !caller" : "!caller"
     m_iUseType(choices) : "Trigger State" : 4 =
@@ -11948,7 +12034,7 @@
     ]
 ]
 
-@BaseClass base( monster_stealth ) = MonsterStealth
+@BaseClass base( StealthConfig ) = MonsterStealth
 [
     $i_stealth(choices) : "[AS] Stealth Watcher" : 0 =
     [
@@ -12469,11 +12555,17 @@
         1024: "No Shockroach" : 0
     ]
 ]
-@PointClass base(Mandatory) = monster_stealth : "Stealth"
+
+@BaseClass base(Mandatory) color(255 0 0) = StealthConfig
 [
     $s_stealth_target(target_destination) : "[AS] Stealth Target" 
     $f_stealth_delay(float) : "[AS] Stealth Target delay" 0.0
 ]
+
+@PointClass base(StealthConfig) = monster_stealth : "Stealth"
+[
+]
+
 @PointClass base(Monster, BloodPuddle, env_bloodpuddle, MonsterStealth) size(-16 -16 0, 16 16 36) studio("models/w_squeak.mdl") = monster_snark : "Armed Snark" []
 @PointClass base(Monster, BloodPuddle, env_bloodpuddle, MonsterStealth) size(-16 -16 0, 16 16 36) studio("models/w_sqknest.mdl") = monster_sqknest : "Snark Nest" []
 @PointClass base(Monster, BloodPuddle, env_bloodpuddle, MonsterStealth) size(-24 -24 0, 24 24 24) studio("models/stukabat.mdl") = monster_stukabat : "Stukabat"  []
@@ -12880,10 +12972,6 @@
         19 : "Team 4"
     ]
 ]
-
-@PointClass base(xen_tree) size(-90 -90 0, 90 90 220 ) studio("models/fungus(large).mdl") = xen_spore_large : "Xen Spore (large)"[]
-@PointClass base(xen_tree) size(-40 -40 0, 40 40 120 ) studio("models/fungus.mdl") = xen_spore_medium : "Xen Spore (medium)"[]
-@PointClass base(xen_tree) size(-16 -16 0, 16 16 64 ) studio("models/fungus(small).mdl") = xen_spore_small : "Xen Spore (small)"[]
 @PointClass base(Mandatory, Angles) size(-24 -24 0, 24 24 188 ) studio("models/tree.mdl") = xen_tree : "Xen Tree"
 [
     spawnflags(flags) =
@@ -12928,3 +13016,7 @@
         20: "ClampMinScale (Sprites)"
     ]
 ]
+
+@PointClass base(xen_tree) size(-90 -90 0, 90 90 220 ) studio("models/fungus(large).mdl") = xen_spore_large : "Xen Spore (large)"[]
+@PointClass base(xen_tree) size(-40 -40 0, 40 40 120 ) studio("models/fungus.mdl") = xen_spore_medium : "Xen Spore (medium)"[]
+@PointClass base(xen_tree) size(-16 -16 0, 16 16 64 ) studio("models/fungus(small).mdl") = xen_spore_small : "Xen Spore (small)"[]

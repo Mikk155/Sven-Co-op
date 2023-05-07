@@ -1,5 +1,7 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace config_map_precache
 {

@@ -1,11 +1,13 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace game_debug
 {
     void Register()
     {
-        g_Util.DebugEnable = true;
+        g_Util.Debugs = true;
         g_CustomEntityFuncs.RegisterCustomEntity( "game_debug::game_debug", "game_debug" );
         g_Scheduler.SetTimeout( "InitDebuggers", 1.0f );
 
@@ -68,7 +70,11 @@ namespace game_debug
         {
             TriggerDebugger = TriggerDebugger + ' Activator "' + pActivator.GetClassname() + '"\n';
 
-            if( pActivator.GetTargetname() != '' )
+            if( pActivator.IsPlayer() )
+            {
+                TriggerDebugger = TriggerDebugger + ' name "' + string( pActivator.pev.netname ) + '"\n';
+            }
+            else if( pActivator.GetTargetname() != '' )
             {
                 TriggerDebugger = TriggerDebugger + ' name "' + pActivator.GetTargetname() + '"\n';
             }

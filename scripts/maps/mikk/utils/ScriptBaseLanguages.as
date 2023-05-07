@@ -77,7 +77,7 @@ mixin class ScriptBaseLanguages
         dictionary Languages =
         {
             { "english", self.pev.message },
-            { "spanish", message_spanish == '' ?message_spanish2 == '' ? self.pev.message : message_spanish2 : message_spanish },
+            { "spanish", message_spanish == '' ? message_spanish2 == '' ? self.pev.message : message_spanish2 : message_spanish },
             { "spanish spain", message_spanish2 == '' ? message_spanish == '' ? self.pev.message : message_spanish : message_spanish2 },
             { "portuguese", message_portuguese == '' ? self.pev.message : message_portuguese },
             { "german", message_german == '' ? self.pev.message : message_german },

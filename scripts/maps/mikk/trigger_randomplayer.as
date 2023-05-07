@@ -1,5 +1,7 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace trigger_randomplayer
 {
@@ -18,8 +20,14 @@ namespace trigger_randomplayer
         );
     }
 
-    class trigger_randomplayer : ScriptBaseEntity
+    class trigger_randomplayer : ScriptBaseEntity, ScriptBaseCustomEntity
     {
+        bool KeyValue( const string& in szKey, const string& in szValue )
+        {
+            ExtraKeyValues( szKey, szValue );
+            return true;
+        }
+
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
             int eidx = Math.RandomLong( 0, g_PlayerFuncs.GetNumPlayers() );
@@ -28,7 +36,7 @@ namespace trigger_randomplayer
 
             if( pPlayer !is null )
             {
-                g_Util.Trigger( self.pev.target, pPlayer, self, USE_TOGGLE, 0.0f );
+                g_Util.Trigger( self.pev.target, pPlayer, self, GetUseType( useType ), m_fDelay );
             }
         }
     }

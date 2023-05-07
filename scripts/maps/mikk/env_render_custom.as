@@ -1,10 +1,7 @@
-/*
--TODO
-auto apply + radio /hulls / brush
-master + master trigger
-
-*/
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace env_render_custom
 {
@@ -30,7 +27,7 @@ namespace env_render_custom
 
         while( ( @pRender = g_EntityFuncs.FindEntityByClassname( pRender, "env_render" ) ) !is null )
         {
-            if( pRender !is null && atoi( g_Util.GetCKV( pRender, '$i_angelscript' ) ) != 0 )
+            if( atoi( g_Util.GetCKV( pRender, '$i_angelscript' ) ) != 0 )
             {
                 dictionary g_Dictionary;
                 g_Dictionary [ "targetname" ] = string( pRender.pev.targetname );
@@ -45,6 +42,10 @@ namespace env_render_custom
                 g_Dictionary [ "$f_gradual" ] = g_Util.GetCKV( pRender, '$f_gradual' );
                 g_Dictionary [ "$i_gradual" ] = g_Util.GetCKV( pRender, '$i_gradual' );
                 g_Dictionary [ "$s_gradual" ] = g_Util.GetCKV( pRender, '$s_gradual' );
+                g_Dictionary [ "master" ] = g_Util.GetCKV( pRender, '$s_master' );
+                g_Dictionary [ "$s_TriggerOnMaster" ] = g_Util.GetCKV( pRender, '$s_TriggerOnMaster' );
+                g_Dictionary [ "m_fDelay" ] = g_Util.GetCKV( pRender, '$f_fDelay' );
+                g_Dictionary [ "m_iUseType" ] = g_Util.GetCKV( pRender, '$i_iUseType' );
 
                 CBaseEntity@ pNewRender = g_EntityFuncs.CreateEntity( "env_render_custom", g_Dictionary );
 
@@ -55,29 +56,48 @@ namespace env_render_custom
             }
         }
     }
-
-    class env_render_custom : ScriptBaseEntity
+    
+    enum env_render_custom_spawnflags
     {
+        NO_RENDERFX = 1,
+        NO_RENDERAMT = 2,
+        NO_RENDERMODE = 4,
+        NO_RENDERCOLOR = 8,
+        AUTO_APPLY = 16,
+        RENDER_GRADUAL = 64
+    }
+
+    class env_render_custom : ScriptBaseEntity, ScriptBaseCustomEntity
+    {
+        bool KeyValue( const string& in szKey, const string& in szValue )
+        {
+            ExtraKeyValues( szKey, szValue );
+            return true;
+        }
+
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            if( string( self.pev.target ) == '!activator' || string( self.pev.target ).IsEmpty() )
+            if( !IsLockedByMaster() )
             {
-                if( pActivator !is null )
+                if( string( self.pev.target ) == '!activator' || string( self.pev.target ).IsEmpty() )
                 {
-                    CRender( pActivator, useType );
+                    if( pActivator !is null )
+                    {
+                        CRender( pActivator, useType );
+                    }
                 }
-            }
-            else if( string( self.pev.target ) == '!caller' && pCaller !is null )
-            {
-                CRender( pCaller, useType );
-            }
-            else
-            {
-                CBaseEntity@ pEntity = null;
-
-                while( ( @pEntity = g_EntityFuncs.FindEntityByTargetname( pEntity, string( self.pev.target ) ) ) !is null )
+                else if( string( self.pev.target ) == '!caller' && pCaller !is null )
                 {
-                    CRender( pEntity, useType );
+                    CRender( pCaller, useType );
+                }
+                else
+                {
+                    CBaseEntity@ pEntity = null;
+
+                    while( ( @pEntity = g_EntityFuncs.FindEntityByTargetname( pEntity, string( self.pev.target ) ) ) !is null )
+                    {
+                        CRender( pEntity, useType );
+                    }
                 }
             }
         }
@@ -86,30 +106,30 @@ namespace env_render_custom
         {
             CStore( pTarget );
             
-            if( Flag( 8 ) )
+            if( Flag( NO_RENDERCOLOR ) )
             {
                 Vector VecColor;
                 g_Utility.StringToVector( VecColor, g_Util.GetCKV( pTarget, '$v_rendercolor' ) );
                 pTarget.pev.rendercolor = ( useType == USE_OFF ) ? VecColor : self.pev.rendercolor;
             }
-            if( Flag( 4 ) )
+            if( Flag( NO_RENDERMODE ) )
             {
                 pTarget.pev.rendermode = ( useType == USE_OFF ) ? atoi( g_Util.GetCKV( pTarget, '$i_rendermode' ) ) : self.pev.rendermode;
             }
-            if( Flag( 1 ) )
+            if( Flag( NO_RENDERFX ) )
             {
                 pTarget.pev.renderfx = ( useType == USE_OFF ) ? atoi( g_Util.GetCKV( pTarget, '$i_renderfx' ) ) : self.pev.renderfx;
             }
-            if( Flag( 2 ) )
+            if( Flag( NO_RENDERAMT ) )
             {
-                if( Flag( 64 ) && useType != USE_OFF )
+                if( Flag( RENDER_GRADUAL ) && useType != USE_OFF )
                 {
                     CGradual( pTarget );
                     return;
                 }
                 pTarget.pev.renderamt = ( useType == USE_OFF ) ? atof( g_Util.GetCKV( pTarget, '$i_renderamt' ) ) : self.pev.renderamt;
             }
-            g_EntityFuncs.FireTargets( g_Util.GetCKV( self, '$s_target' ), pTarget, self, USE_TOGGLE, 0.0f );
+            g_Util.Trigger( g_Util.GetCKV( self, '$s_target' ), pTarget, self, GetUseType(), m_fDelay );
         }
         
         bool Flag( int iFlagSet )
@@ -161,7 +181,7 @@ namespace env_render_custom
             if( Accion < 0 && pTarget.pev.renderamt <= atoi( g_Util.GetCKV( self, '$s_gradual' ) )
             or Accion > 0 && pTarget.pev.renderamt >= atoi( g_Util.GetCKV( self, '$s_gradual' ) ) )
             {
-                g_EntityFuncs.FireTargets( g_Util.GetCKV( self, '$s_target' ), pTarget, self, USE_TOGGLE, 0.0f );
+                g_Util.Trigger( g_Util.GetCKV( self, '$s_target' ), pTarget, self, GetUseType(), m_fDelay );
             }
             else
             {

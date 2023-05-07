@@ -1,5 +1,9 @@
-#include "utils"
-namespace trigger_changevalue_weapons
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
+namespace trigger_changevalue_custom
 {
     void Register()
     {
@@ -7,9 +11,9 @@ namespace trigger_changevalue_weapons
 
         g_ScriptInfo.SetInformation
         ( 
-            g_ScriptInfo.ScriptName( 'trigger_changevalue_weapons' ) +
+            g_ScriptInfo.ScriptName( 'trigger_changevalue_custom' ) +
             g_ScriptInfo.Description( 'Allow mapper to change keyvalues from the player\'s weapons' ) +
-            g_ScriptInfo.Wiki( 'trigger_changevalue_weapons' ) +
+            g_ScriptInfo.Wiki( 'trigger_changevalue_custom' ) +
             g_ScriptInfo.Author( 'Mikk' ) +
             g_ScriptInfo.GetGithub() +
             g_ScriptInfo.GetDiscord()

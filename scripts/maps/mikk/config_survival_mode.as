@@ -1,6 +1,8 @@
-#include "utils"
-#include "utils/customentity"
-#include 'utils/languages'
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+#include "utils/ScriptBaseLanguages"
 
 namespace config_survival_mode
 {
@@ -89,7 +91,7 @@ namespace config_survival_mode
                 if( SurvivalEnabled )
                 {
                     g_Game.AlertMessage( at_console, "enabled\n" );
-                    g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                    g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, GetUseType( useType ), m_fDelay );
                 }
                 else
                 {
@@ -101,7 +103,7 @@ namespace config_survival_mode
             {
                 if( !SurvivalEnabled )
                 {
-                    g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                    g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, GetUseType( useType ), m_fDelay );
                 }
                 else
                 {
@@ -122,7 +124,7 @@ namespace config_survival_mode
                     SurvivalEnabled = true;
                 }
 
-                g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, GetUseType( useType ), m_fDelay );
             }
             mp_survival_startdelay = 0;
         }

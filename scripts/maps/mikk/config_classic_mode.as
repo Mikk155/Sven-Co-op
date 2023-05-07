@@ -1,5 +1,7 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace config_classic_mode
 {
@@ -21,7 +23,8 @@ namespace config_classic_mode
 
     enum config_classic_mode_spawnflags
     {
-        RESTART_NOW = 1
+        RESTART_NOW = 1,
+        FORCE_REMAP = 2
     }
 
     class config_classic_mode : ScriptBaseEntity, ScriptBaseCustomEntity
@@ -36,6 +39,8 @@ namespace config_classic_mode
         private float m_iThinkTime;
 
         dictionary g_KeyValues;
+
+        array<ItemMapping@> g_ItemMappings;
 
         bool KeyValue( const string& in szKey, const string& in szValue ) 
         {
@@ -84,15 +89,10 @@ namespace config_classic_mode
                     string Key = string( strKeyValues[ui] );
                     string Value = string( g_KeyValues[ Key ] );
 
-                    if( string( Key ).StartsWith( 'models/' ) )
+                    if( Key.StartsWith( 'models/' ) )
                     {
                         g_Game.PrecacheModel( Value );
                         g_Util.Debug( '[config_classic_mode] Precached model "' + Value + '"' );
-                    }
-                    else
-                    {
-                        g_Game.PrecacheOther( Value );
-                        g_Util.Debug( '[config_classic_mode] Precached item "' + Value + '"' );
                     }
                 }
             }
@@ -110,6 +110,11 @@ namespace config_classic_mode
             BaseClass.PreSpawn();
         }
 
+        void InsertItemMapping( const string iszOldWeapon, const string iszNewWeapon )
+        {
+            g_ItemMappings.insertLast( ItemMapping( iszOldWeapon, iszNewWeapon ) );
+        }
+
         void Spawn()
         {
             if( g_Util.GetNumberOfEntities( self.GetClassname() ) > 1 )
@@ -117,14 +122,16 @@ namespace config_classic_mode
                 g_Util.Debug( self.GetClassname() + '[config_classic_mode] WARNING! There is more than one config_classic_mode entity in this map!.' );
             }
 
-            if( g_ClassicMode.IsEnabled() )
-            {
-                for(uint ui = 0; ui < strKeyValues.length(); ui++)
-                {
-                    string Key = string( strKeyValues[ui] );
-                    string Value = string( g_KeyValues[ Key ] );
+            g_ClassicMode.ForceItemRemap( spawnflag( FORCE_REMAP ) );
 
-                    if( string( Key ).StartsWith( 'models/' ) )
+            for(uint ui = 0; ui < strKeyValues.length(); ui++)
+            {
+                string Key = string( strKeyValues[ui] );
+                string Value = string( g_KeyValues[ Key ] );
+
+                if( g_ClassicMode.IsEnabled() )
+                {
+                    if( Key.StartsWith( 'models/' ) )
                     {
                         dictionary g_changemodel;
                         g_changemodel [ 'target' ] = '!activator';
@@ -134,9 +141,15 @@ namespace config_classic_mode
                         g_Util.Debug( '[config_classic_mode] Created trigger_changemodel replaces "' + Key + '" -> "' + Value + '"' );
                     }
                 }
+                if( Key.StartsWith( 'weapon_' ) )
+                {
+                    InsertItemMapping( Key, Value );
+                    g_Util.Debug( '[config_classic_mode] Remapped "' + Key + '" -> "' + Value + '"' );
+                }
             }
+            g_ClassicMode.SetItemMappings( @g_ItemMappings );
 
-            g_Util.Trigger( ( g_ClassicMode.IsEnabled() ) ? m_iszTargetOnEnable : m_iszTargetOnDisable , self, self, USE_TOGGLE, delay );
+            g_Util.Trigger( ( g_ClassicMode.IsEnabled() ) ? m_iszTargetOnEnable : m_iszTargetOnDisable , self, self, GetUseType(), m_fDelay );
 
             SetThink( ThinkFunction( this.Think ) );
             self.pev.nextthink = g_Engine.time + 0.1f;
@@ -153,7 +166,7 @@ namespace config_classic_mode
             else
             if( g_ClassicMode.IsEnabled() && useType == USE_ON || !g_ClassicMode.IsEnabled() && useType == USE_OFF )
             {
-                g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+                g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, GetUseType( useType ), m_fDelay );
                 return;
             }
 
@@ -161,7 +174,7 @@ namespace config_classic_mode
 
             g_ClassicMode.Toggle();
 
-            g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, useType, delay );
+            g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, GetUseType( useType ), m_fDelay );
         }
 
         void Think()
@@ -182,21 +195,6 @@ namespace config_classic_mode
                         {
                             g_Util.Debug( '[config_classic_mode] replaced "' + string( pEntity.pev.model ) + "' -> '" + string( Value ) + '"' );
                             g_Util.Trigger( 'CCM_' + Key, pEntity, self, USE_ON, 0.0f );
-                        }
-                    }
-
-                    if(string( Key ).StartsWith( 'weapon_' )
-                    or string( Key ).StartsWith( 'item_' )
-                    or string( Key ).StartsWith( 'ammo_' ) )
-                    {
-                        while( ( @pWeapon = g_EntityFuncs.FindEntityByString( pWeapon, 'classname', Key ) ) !is null )
-                        {
-                            if( pWeapon !is null && g_Util.GetCKV( pWeapon, '$i_classic_mode_ignore' ) != '1' )
-                            {
-                                g_Util.Debug( '[config_classic_mode] replaced "' + string( pWeapon.pev.classname ) + '" -> "' + string( Value ) + '"' );
-                                g_EntityFuncs.Create( Value, pWeapon.pev.origin, pWeapon.pev.angles, false);
-                                g_EntityFuncs.Remove( pWeapon );
-                            }
                         }
                     }
                 }

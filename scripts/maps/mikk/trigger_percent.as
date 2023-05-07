@@ -1,5 +1,8 @@
-#include "utils/customentity"
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
 namespace trigger_percent
 {
     void Register()

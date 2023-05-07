@@ -1,6 +1,8 @@
-#include "utils"
-#include 'utils/customentity'
-#include 'utils/effects'
+#include 'utils/CEffects'
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace env_effects
 {

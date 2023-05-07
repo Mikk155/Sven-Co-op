@@ -1,26 +1,20 @@
-#include 'information'
-#include 'reflection'
-#include 'utility'
 mixin class ScriptBaseCustomEntity
 {
-    private float delay = 0.0f;
-    private float wait = 0.0f;
+    private float m_fDelay = 0.0f;
+    private int m_iUseType = 3;
     private Vector minhullsize();
     private Vector maxhullsize();
     private string m_iszMaster();
-    private int m_integer;
-    private float m_float;
-    private string m_string;
 
     bool ExtraKeyValues( const string& in szKey, const string& in szValue )
     {
-        if( szKey == "delay" )
+        if( szKey == "m_fDelay" || szKey == "delay" )
         {
-            delay = atof(szValue);
+            m_fDelay = atof( szValue );
         }
-        else if( szKey == "wait" )
+        else if( szKey == "m_iUseType" )
         {
-            wait = atof(szValue);
+            m_iUseType = atoi( szValue );
         }
         else if ( szKey == "master" )
         {
@@ -34,18 +28,6 @@ mixin class ScriptBaseCustomEntity
         {
             g_Utility.StringToVector( maxhullsize, szValue );
         }
-        else if( szKey == "m_integer" ) 
-        {
-            m_integer = atoi(szValue);
-        }
-        else if( szKey == "m_float" ) 
-        {
-            m_float = atof(szValue);
-        }
-        else if( szKey == "m_string" ) 
-        {
-            m_string = szValue;
-        }
         else
         {
             return BaseClass.KeyValue( szKey, szValue );
@@ -53,52 +35,76 @@ mixin class ScriptBaseCustomEntity
         return true;
     }
 
-    bool IsLockedByMaster( CBaseEntity@ &in pActivator = null )
+    USE_TYPE GetUseType( USE_TYPE & in UseType = USE_TOGGLE )
     {
-        if( !m_iszMaster.IsEmpty()
-        and !g_EntityFuncs.IsMasterTriggered( m_iszMaster, self ) )
+        USE_TYPE NewUseType;
+        if( m_iUseType == 0 ) { return USE_OFF; }
+        else if( m_iUseType == 1 ) { return USE_ON; }
+        else if( m_iUseType == 2 ) { return USE_KILL; }
+        else if( m_iUseType == 3 ) { return USE_TOGGLE; }
+        else if( m_iUseType == 4 ) { return UseType; }
+        else if( m_iUseType == 5 ) { return ( UseType == USE_OFF ? USE_ON : UseType == USE_ON ? USE_OFF : USE_TOGGLE ); }
+        else if( m_iUseType == 6 ) { return USE_SET; }
+        return USE_TOGGLE;
+    }
+
+    CBaseEntity@ GetMasterEntity()
+    {
+        if( IsLockedByMaster() )
+        {
+            CBaseEntity@ multisource = g_EntityFuncs.FindEntityByTargetname( multisource, m_iszMaster );
+
+            if( multisource !is null && multisource.pev.ClassNameIs( 'multisource' ) )
+            {
+                return multisource;
+            }
+        }
+        return null;
+    }
+
+    bool IsLockedByMaster()
+    {
+        if( !m_iszMaster.IsEmpty() && !g_EntityFuncs.IsMasterTriggered( m_iszMaster, self ) )
         {
             string iszTarget = g_Util.GetCKV( self, '$s_TriggerOnMaster' );
+
             if( iszTarget != '' )
             {
-                if( pActivator is null )
-                {
-                    CBaseEntity@ multisource = g_EntityFuncs.FindEntityByTargetname( multisource, m_iszMaster );
-                    
-                    if( multisource !is null && multisource.pev.classname == 'multisource' )
-                    {
-                        @pActivator = multisource;
-                    }
-                }
-                g_Util.Trigger( iszTarget, ( pActivator !is null ) ? pActivator : null, self, USE_TOGGLE, 0.0f );
+                g_Util.Trigger( iszTarget, GetMasterEntity(), self, USE_TOGGLE, 0.0f );
             }
             return true;
         }
         return false;
     }
 
-    bool spawnflag( const int& in iFlagSet )
+    bool spawnflag( const int iflag )
     {
-        if( iFlagSet <= 0 && self.pev.spawnflags == 0 )
+        if( iflag <= 0 && self.pev.spawnflags == 0 )
         {
             return true;
         }
-        else if( self.pev.SpawnFlagBitSet( iFlagSet ) )
-        {
-            return true;
-        }
-        return false;
+        return self.pev.SpawnFlagBitSet( iflag );
     }
-    
+
     void CustomModelSet( const string&in iszmodel = 'models/error.mdl' )
     {
-        g_EntityFuncs.SetModel( self, ( string( self.pev.model ).IsEmpty() ? iszmodel : string( self.pev.model ) ) );
+        string newmodel = ( string( self.pev.model ).IsEmpty() ? iszmodel : string( self.pev.model ) );
+        g_EntityFuncs.SetModel( self, newmodel );
+        g_Util.Debug();
+        g_Util.Debug( "ScriptBaseCustomEntity::CustomModelSet:" );
+        g_Util.Debug( "Precached model '" +newmodel+ "'" );
+        g_Util.Debug();
     }
-    
+
     void CustomModelPrecache( const string&in iszmodel = 'models/error.mdl' )
     {
-        g_Game.PrecacheModel( ( string( self.pev.model ).IsEmpty() ? iszmodel : string( self.pev.model ) ) );
-        g_Game.PrecacheGeneric( ( string( self.pev.model ).IsEmpty() ? iszmodel : string( self.pev.model ) ) );
+        string newmodel = ( string( self.pev.model ).IsEmpty() ? iszmodel : string( self.pev.model ) );
+        g_Game.PrecacheModel( newmodel );
+        g_Game.PrecacheGeneric( newmodel );
+        g_Util.Debug();
+        g_Util.Debug( "ScriptBaseCustomEntity::CustomModelSet:" );
+        g_Util.Debug( "Precached model '" +newmodel+ "'" );
+        g_Util.Debug();
     }
 
     bool SetBoundaries()

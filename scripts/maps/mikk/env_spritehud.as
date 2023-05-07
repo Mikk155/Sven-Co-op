@@ -1,5 +1,7 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace env_spritehud
 {
@@ -141,7 +143,7 @@ namespace env_spritehud
 
             if( self.pev.frags == ACTIVATOR_ONLY )
             {
-                if( pActivator !is null && pActivator.IsPlayer() && !IsLockedByMaster( pActivator ) )
+                if( pActivator !is null && pActivator.IsPlayer() && !IsLockedByMaster() )
                 {
                     g_PlayerFuncs.HudCustomSprite( cast<CBasePlayer@>(pActivator), params );
                 }
@@ -152,7 +154,7 @@ namespace env_spritehud
                 {
                     CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
-                    if( pPlayer !is null && !IsLockedByMaster( pPlayer ) )
+                    if( pPlayer !is null && !IsLockedByMaster() )
                     {
                         g_PlayerFuncs.HudCustomSprite( pPlayer, params );
                     }

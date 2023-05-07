@@ -1,4 +1,4 @@
-// Call "Register" your MapInit function and it'll be called as it normaly was MapInit.
+// Rename to "Register" your "MapInit" function and it'll be called as it normaly was MapInit.
 void MapInit()
 {
     g_Reflection.TriggerFunction( 'Register' );
@@ -8,6 +8,7 @@ bool reflection_blregister = reflection_register();
 bool reflection_register()
 {
     Reflection reflect(); @g_Reflection = @reflect;
+    g_Reflection.TriggerFunction( 'MapPreInit' );
     return true;
 }
 

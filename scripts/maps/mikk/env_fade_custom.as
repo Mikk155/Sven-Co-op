@@ -1,5 +1,7 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace env_fade_custom
 {
@@ -80,7 +82,6 @@ namespace env_fade_custom
             if( !SetBoundaries() )
             {
                 m_bis_zone = false;
-                self.pev.solid = SOLID_TRIGGER;
                 self.pev.effects |= EF_NODRAW;
                 self.pev.movetype = MOVETYPE_NONE;
             }
@@ -165,7 +166,7 @@ namespace env_fade_custom
 
         void CFadeEnd()
         {
-            g_Util.Trigger( string( self.pev.target ), hActivator.GetEntity(), self, USE_TOGGLE, 0.0f );
+            g_Util.Trigger( self.pev.target, hActivator.GetEntity(), self, GetUseType(), m_fDelay );
         }
 
         float ThinkyTime;

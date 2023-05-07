@@ -1,5 +1,8 @@
-#include "utils/customentity"
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
 namespace player_equipment
 {
     void Register()
@@ -223,7 +226,7 @@ namespace player_equipment
                     }
                 }
 
-                if( bf ) g_Util.Trigger( string( self.pev.target ), pPlayer, self, USE_TOGGLE, delay );
+                if( bf ) g_Util.Trigger( string( self.pev.target ), pPlayer, self, USE_TOGGLE, m_fDelay );
             }
         }
     }

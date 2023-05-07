@@ -1,6 +1,8 @@
-#include "utils"
-#include "utils/effects"
-#include "utils/customentity"
+#include 'utils/CEffects'
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace env_fog_custom
 {
@@ -106,7 +108,7 @@ namespace env_fog_custom
                 {
                     if( spawnflag( FADEIN_COLOR ) or spawnflag( FADEIN_MINDIS ) or spawnflag( FADEIN_MAXDIS ) )
                     {
-                        ExecFade( pPlayer, State );
+                        ExecFog( pPlayer, State );
                     }
                     else
                     {
@@ -124,7 +126,7 @@ namespace env_fog_custom
                     {
                         if( spawnflag( FADEIN_COLOR ) or spawnflag( FADEIN_MINDIS ) or spawnflag( FADEIN_MAXDIS ) )
                         {
-                            ExecFade( ePlayer, State );
+                            ExecFog( ePlayer, State );
                         }
                         else
                         {
@@ -135,7 +137,7 @@ namespace env_fog_custom
             }
         }
         
-        void ExecFade( CBasePlayer@ pPlayer, bool State, USE_TYPE UseType = USE_TOGGLE )
+        void ExecFog( CBasePlayer@ pPlayer, bool State, USE_TYPE UseType = USE_TOGGLE )
         {
             if( UseType == USE_SET )
             {
@@ -153,21 +155,21 @@ namespace env_fog_custom
             if( HasKey( '$v_fog_rendercolor' ) && spawnflag( FADEIN_COLOR ) )
             {
                 g_Util.SetCKV( pPlayer, '$v_fog_rendercolor', ( State ) ? g_Util.GetCKV( self, '$v_fog_rendercolor' ) : self.pev.rendercolor.ToString() );
-                g_Scheduler.SetTimeout( @this, "CFade", 0.0f, @pPlayer, 4, State );
+                g_Scheduler.SetTimeout( @this, "CFog", 0.0f, @pPlayer, 4, State );
             }
             if( HasKey( '$i_fog_iuser2' ) && spawnflag( FADEIN_MINDIS ) )
             {
                 g_Util.SetCKV( pPlayer, '$i_fog_iuser2', g_Util.GetCKV( self, '$i_fog_iuser2' ) );
-                g_Scheduler.SetTimeout( @this, "CFade", 0.0f, @pPlayer, 8, State );
+                g_Scheduler.SetTimeout( @this, "CFog", 0.0f, @pPlayer, 8, State );
             }
             if( HasKey( '$i_fog_iuser3' ) && spawnflag( FADEIN_MAXDIS ) )
             {
                 g_Util.SetCKV( pPlayer, '$i_fog_iuser3', g_Util.GetCKV( self, '$i_fog_iuser3' ) );
-                g_Scheduler.SetTimeout( @this, "CFade", 0.0f, @pPlayer, 16, State );
+                g_Scheduler.SetTimeout( @this, "CFog", 0.0f, @pPlayer, 16, State );
             }
         }
 
-        void CFade( CBasePlayer@ pPlayer, int Mode, bool Statex )
+        void CFog( CBasePlayer@ pPlayer, int Mode, bool Statex )
         {
             if( atoi( g_Util.GetCKV( pPlayer, '$i_fog_state' ) ) == 2 )
             {
@@ -201,21 +203,21 @@ namespace env_fog_custom
                 if(pG>G)pG--;else if(pG<G)pG++;else bl=false;G=pG;
                 if(pB>B)pB--;else if(pB<B)pB++;else bl=false;B=pB;
                 g_Util.SetCKV( pPlayer, '$v_fog_rendercolor', Vector( R, G, B ).ToString() );
-                if(bl)g_Scheduler.SetTimeout( @this, "CFade", ( HasKey( '$f_fog_rendercolor_time' ) ) ? atof( g_Util.GetCKV( self, '$f_fog_rendercolor_time' ) ) : 0.1f, @pPlayer, 4, Statex );
+                if(bl)g_Scheduler.SetTimeout( @this, "CFog", ( HasKey( '$f_fog_rendercolor_time' ) ) ? atof( g_Util.GetCKV( self, '$f_fog_rendercolor_time' ) ) : 0.1f, @pPlayer, 4, Statex );
             }
             else if( Mode == FADEIN_MINDIS )
             {
                 int pIuser2 = atoi( g_Util.GetCKV( pPlayer, '$i_fog_iuser2' ) );
                 if(pIuser2>Iuser2)pIuser2--;else if(pIuser2<Iuser2)pIuser2++;else bl=false;Iuser2=pIuser2;
                 g_Util.SetCKV( pPlayer, '$i_fog_iuser2', Iuser2 );
-                if(bl)g_Scheduler.SetTimeout( @this, "CFade", ( HasKey( '$f_fog_iuser2_time' ) ) ? atof( g_Util.GetCKV( self, '$f_fog_iuser2_time' ) ) : 0.1f, @pPlayer, 8, Statex );
+                if(bl)g_Scheduler.SetTimeout( @this, "CFog", ( HasKey( '$f_fog_iuser2_time' ) ) ? atof( g_Util.GetCKV( self, '$f_fog_iuser2_time' ) ) : 0.1f, @pPlayer, 8, Statex );
             }
             else if( Mode == FADEIN_MAXDIS )
             {
                 int pIuser3 = atoi( g_Util.GetCKV( pPlayer, '$i_fog_iuser3' ) );
                 if(pIuser3>Iuser3)pIuser3--;else if(pIuser3<Iuser3)pIuser3++;else bl=false;Iuser3=pIuser3;
                 g_Util.SetCKV( pPlayer, '$i_fog_iuser3', Iuser3 );
-                if(bl)g_Scheduler.SetTimeout( @this, "CFade", ( HasKey( '$f_fog_iuser3_time' ) ) ? atof( g_Util.GetCKV( self, '$f_fog_iuser3_time' ) ) : 0.1f, @pPlayer, 16, Statex );
+                if(bl)g_Scheduler.SetTimeout( @this, "CFog", ( HasKey( '$f_fog_iuser3_time' ) ) ? atof( g_Util.GetCKV( self, '$f_fog_iuser3_time' ) ) : 0.1f, @pPlayer, 16, Statex );
             }
 
             g_Effect.fog( pPlayer, 1, R, G, B, Iuser2, Iuser3 );

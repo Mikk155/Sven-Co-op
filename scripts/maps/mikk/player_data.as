@@ -1,5 +1,7 @@
-#include "utils"
-#include "utils/customentity"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace player_data
 {
@@ -78,47 +80,31 @@ namespace player_data
 
                 array<bool> Conditions = 
                 {
-                    // (0) No usage
-                    pPlayer !is null,
-                    // (1) 
-                    pPlayer.HasSuit(),
-                    // (2) 
-                    string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) == m_iszComparator,
-                    // (3) 
-                    pPlayer.m_fLongJump,
-                    // (4) 
-                    g_PlayerFuncs.AdminLevel( pPlayer ) == 1,
-                    // (5) 
-                    g_PlayerFuncs.AdminLevel( pPlayer ) == 2,
-                    // (6) 
-                    g_PlayerFuncs.AdminLevel( pPlayer ) > 0,
-                    // (7) 
-                    pPlayer.IsAlive(),
-                    // (8) 
-                    pPlayer.IsOnLadder(),
-                    // (9) 
-                    ( ( self.pev.origin - pPlayer.pev.origin ).Length() <= atoi( m_iszComparator ) ),
-                    // (10) 
-                    pPlayer.FlashlightIsOn(),
-                    // (11) 
-                    pPlayer.GetObserver().IsObserver(),
-                    // (12) 
-                    pPlayer.GetObserver().IsObserver() && pPlayer.GetObserver().HasCorpse(),
-                    // (13) 
-                    pPlayer.IsMoving(),
-                    // (14) 
-                    pHasItem !is null,
-                    // (15) 
-                    pIntersects !is null && pIntersects.Intersects( pPlayer ),
+                    pPlayer !is null, /* 0 No usage */
+                    pPlayer.HasSuit(), /* 1 */
+                    string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) == m_iszComparator, /* 2 */
+                    pPlayer.m_fLongJump, /* 3 */
+                    g_PlayerFuncs.AdminLevel( pPlayer ) == 1, /* 4 */
+                    g_PlayerFuncs.AdminLevel( pPlayer ) == 2, /* 5 */
+                    g_PlayerFuncs.AdminLevel( pPlayer ) > 0, /* 6 */
+                    pPlayer.IsAlive(), /* 7 */
+                    pPlayer.IsOnLadder(), /* 8 */
+                    ( ( self.pev.origin - pPlayer.pev.origin ).Length() <= atoi( m_iszComparator ) ), /* 9 */
+                    pPlayer.FlashlightIsOn(), /* 10 */
+                    pPlayer.GetObserver().IsObserver(), /* 11 */
+                    pPlayer.GetObserver().IsObserver() && pPlayer.GetObserver().HasCorpse(), /* 12 */
+                    pPlayer.IsMoving(), /* 13 */
+                    pHasItem !is null, /* 14 */
+                    pIntersects !is null && pIntersects.Intersects( pPlayer ), /* 15 */
                 };
 
                 if( Conditions[ m_iCondition ] )
                 {
-                    g_Util.Trigger( m_iszTrueCase, pPlayer, self, USE_TOGGLE, delay );
+                    g_Util.Trigger( m_iszTrueCase, pPlayer, self, USE_TOGGLE, m_fDelay );
                 }
                 else
                 {
-                    g_Util.Trigger( m_iszFalseCase, pPlayer, self, USE_TOGGLE, delay );
+                    g_Util.Trigger( m_iszFalseCase, pPlayer, self, USE_TOGGLE, m_fDelay );
                 }
             }
         }

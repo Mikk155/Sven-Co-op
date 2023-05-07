@@ -1,5 +1,11 @@
+// https://github.com/Outerbeast/Entities-and-Gamemodes/blob/master/respawndead_keepweapons.as
 #include "../beast/respawndead_keepweapons"
-#include "utils"
+
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+
 namespace player_reequipment
 {
     void Register()

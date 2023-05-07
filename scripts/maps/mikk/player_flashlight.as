@@ -1,11 +1,7 @@
-/*
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
 
-// INSTALLATION:
-
-#include "mikk/game_stealth"
-
-*/
-#include "utils"
 namespace player_flashlight
 {
     void Register()
@@ -25,12 +21,17 @@ namespace player_flashlight
     }
 
     // as_command flashlight flashlight amt
-    CCVar g_Flashlight ( "flashlight", "100", "custom titles.txt file", ConCommandFlag::AdminOnly );
+    CCVar g_Flashlight ( "flashlight", "100", "custom max flashlight", ConCommandFlag::AdminOnly );
 
     CScheduledFunction@ g_Think = g_Scheduler.SetInterval( "Think", 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
     void Think()
     {
+        if( atoi( g_Flashlight.GetString() ) == -1 )
+        {
+            return;
+        }
+
         HUDTextParams pParams;
         pParams.x = 0.975;
         pParams.y = -0.93;

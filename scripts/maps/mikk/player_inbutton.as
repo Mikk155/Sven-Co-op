@@ -1,6 +1,8 @@
-#include "utils/customentity"
-#include 'utils/languages'
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
+#include "utils/ScriptBaseLanguages"
 
 namespace player_inbutton
 {
@@ -42,21 +44,21 @@ namespace player_inbutton
 
             SetBoundaries();
 
-            if( wait == 1 ) self.pev.netname = 'attack';
-            else if( wait == 2 ) self.pev.netname = 'jump';
-            else if( wait == 4 ) self.pev.netname = 'duck';
-            else if( wait == 8 ) self.pev.netname = 'forward';
-            else if( wait == 16 ) self.pev.netname = 'back';
-            // else if( wait == 64 ) self.pev.netname = 'cancelselect';
-            else if( wait == 128 ) self.pev.netname = 'left';
-            else if( wait == 256 ) self.pev.netname = 'right';
-            else if( wait == 512 ) self.pev.netname = 'moveleft';
-            else if( wait == 1024 ) self.pev.netname = 'moveright';
-            else if( wait == 2048 ) self.pev.netname = 'attack2';
-            // else if( wait == 4096 ) self.pev.netname = 'speed';
-            else if( wait == 8192 ) self.pev.netname = 'reload';
-            else if( wait == 16384 ) self.pev.netname = 'alt1';
-            else if( wait == 32768 ) self.pev.netname = 'showscores';
+            if( int( self.pev.frags ) == 1 ) self.pev.netname = 'attack';
+            else if( int( self.pev.frags ) == 2 ) self.pev.netname = 'jump';
+            else if( int( self.pev.frags ) == 4 ) self.pev.netname = 'duck';
+            else if( int( self.pev.frags ) == 8 ) self.pev.netname = 'forward';
+            else if( int( self.pev.frags ) == 16 ) self.pev.netname = 'back';
+            // else if( int( self.pev.frags ) == 64 ) self.pev.netname = 'cancelselect';
+            else if( int( self.pev.frags ) == 128 ) self.pev.netname = 'left';
+            else if( int( self.pev.frags ) == 256 ) self.pev.netname = 'right';
+            else if( int( self.pev.frags ) == 512 ) self.pev.netname = 'moveleft';
+            else if( int( self.pev.frags ) == 1024 ) self.pev.netname = 'moveright';
+            else if( int( self.pev.frags ) == 2048 ) self.pev.netname = 'attack2';
+            // else if( int( self.pev.frags ) == 4096 ) self.pev.netname = 'speed';
+            else if( int( self.pev.frags ) == 8192 ) self.pev.netname = 'reload';
+            else if( int( self.pev.frags ) == 16384 ) self.pev.netname = 'alt1';
+            else if( int( self.pev.frags ) == 32768 ) self.pev.netname = 'showscores';
             else self.pev.netname = 'use';
 
             SetThink( ThinkFunction( this.CheckInVolume ) );
@@ -118,10 +120,10 @@ namespace player_inbutton
 
         void Verify( CBasePlayer@ pPlayer )
         {
-            if( pPlayer.pev.button & int( wait ) != 0 )
+            if( pPlayer.pev.button & int( int( self.pev.frags ) ) != 0 )
             {
                 g_Util.Trigger( self.pev.target, pPlayer, self, USE_ON, 0.0f );
-                g_Util.SetCKV( pPlayer, "$f_player_inbutton", string( delay ) );
+                g_Util.SetCKV( pPlayer, "$f_player_inbutton", string( m_fDelay ) );
             }
         }
     }

@@ -2,7 +2,7 @@ CUtils g_Util;
 
 final class CUtils
 {
-    bool DebugEnable = true;
+    bool Debugs = true;
 
     void Trigger( string iszTarget, CBaseEntity@&in pActivator = null, CBaseEntity@&in pCaller = null, USE_TYPE& in useType = USE_TOGGLE, float&in flDelay = 0.0f )
     {
@@ -122,7 +122,7 @@ final class CUtils
 
     void Debug( const string& in szMessage = '================================' )
     {
-        if( DebugEnable )
+        if( Debugs )
         {
             if( g_EngineFuncs.IsDedicatedServer() )
             {
@@ -179,7 +179,7 @@ final class CUtils
         {
             pChangeValue.Use( pEntity, null, USE_ON, 0.0f );
             g_EntityFuncs.Remove( pChangeValue );
-            // g_Util.Debug( "[CUtils::SetCKV] '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
+            g_Util.Debug( "[CUtils::SetCKV] '" + szKey + "' -> '" + szValue + "' for " + ( pEntity.IsPlayer() ? pEntity.pev.netname : pEntity.pev.classname ) );
         }
     }
 

@@ -1,5 +1,7 @@
-#include "utils/customentity"
-#include "utils"
+#include 'utils/CUtils'
+#include 'utils/CGetInformation'
+#include 'utils/Reflection'
+#include "utils/ScriptBaseCustomEntity"
 
 namespace player_command
 {
@@ -44,7 +46,7 @@ namespace player_command
         {
             g_Util.ExecPlayerCommand( pPlayer, command );
 
-            g_Util.Trigger( self.pev.target, pPlayer, self, USE_TOGGLE, delay );
+            g_Util.Trigger( self.pev.target, pPlayer, self, USE_TOGGLE, m_fDelay );
         }
     }
 }
