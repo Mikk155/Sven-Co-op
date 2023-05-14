@@ -52,6 +52,12 @@
         2048 : "Not in-game [ Don't use ]" : 0
     ]
     targetname(target_source) : "Name"
+    $i_appearflags_classicmode(choices) : "[AS] Appearflag (Classic-Mode)" : 0 =
+    [
+        0 : "Default"
+        1 : "Not in Classic Mode"
+        2 : "Only in Classic Mode"
+    ]
 ]
 
 @BaseClass base(Mandatory) = Target
@@ -333,7 +339,7 @@
 @PointClass base(Ammo) studio("models/w_argrenade.mdl") = ammo_ARgrenades : "M16's M203 grenades (x2)" []
 @PointClass base(Ammo) studio("models/w_shotbox.mdl") = ammo_buckshot : "Shotgun shell box" []
 @PointClass base(Ammo) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
-@BaseClass base(Target, Angles) = AmmoCustom
+@BaseClass studio() base(Target, Angles) = AmmoCustom
 [
     spawnflags(flags) =
     [
@@ -369,7 +375,7 @@
     m_iAmmoCount(integer) : "Ammo Amount" : 1
     m_iszPickupSound(sound) : "Custom Sound" : "items/9mmclip1.wav"
     m_flCustomRespawnTime(float) : "Custom respawn time"
-    model(studio) : "Model"
+    model(studio) : "Model" : "models/error.mdl"
     sequence(integer) : "Animation Sequence (editor)" : 0
     $i_classic_mode_ignore(choices) : "[AS] Classic Mode" : 0 =
     [
@@ -458,7 +464,7 @@
         20: "ClampMinScale (Sprites)"
     ]
 ]
-@PointClass base(AmmoCustom) studio("models/error.mdl") = ammo_custom : "Custom Ammo"
+@PointClass base(AmmoCustom) = ammo_custom : "Custom Ammo"
 [
     wiki(string) : "Wiki" : "github.com/Mikk155/Sven-Co-op/wiki/ammo_custom"
 ]
@@ -9909,6 +9915,29 @@
         0 : "Off"
         1 : "On"
         2 : "Toggle"
+    ]
+]
+
+// =================================================================================================================
+// 
+// =================================================================================================================
+
+@SolidClass base(Mandatory) = trigger_autosave_custom : "Auto Save Trigger"
+[
+    m_iszMessage(target_destination) : "Display Message (Target game_text too)"
+    m_iszTargetOnSave(target_destination) : "Target after save"
+    spawnflags(flags) =
+    [
+        1 : "All Players"
+    ]
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
     ]
 ]
 
