@@ -122,6 +122,7 @@ namespace config_classic_mode
                 g_Util.Debug( self.GetClassname() + '[config_classic_mode] WARNING! There is more than one config_classic_mode entity in this map!.' );
             }
 
+            // Sadly this doesn't change the world's weapons, idk why but it only changes Player's inventory given from CFG x[
             g_ClassicMode.ForceItemRemap( spawnflag( FORCE_REMAP ) );
 
             for(uint ui = 0; ui < strKeyValues.length(); ui++)
