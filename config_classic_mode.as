@@ -17,8 +17,8 @@ namespace config_classic_mode
             g_ScriptInfo.Description( 'Allow to configurate classic mode for models that the game does not support' ) +
             g_ScriptInfo.Wiki( 'config_classic_mode' ) +
             g_ScriptInfo.Author( 'Mikk' ) +
-            g_ScriptInfo.GetDiscord() +
-            g_ScriptInfo.GetGithub()
+            g_ScriptInfo.GetGithub() +
+            g_ScriptInfo.GetDiscord()
         );
     }
 
@@ -151,7 +151,7 @@ namespace config_classic_mode
             }
             g_ClassicMode.SetItemMappings( @g_ItemMappings );
 
-            g_Util.Trigger( ( g_ClassicMode.IsEnabled() ) ? m_iszTargetOnEnable : m_iszTargetOnDisable , self, self, g_Util.itout( m_iUseType ), m_fDelay );
+            g_Util.Trigger( ( g_ClassicMode.IsEnabled() ) ? m_iszTargetOnEnable : m_iszTargetOnDisable , self, self, g_Util.itout( m_iUseType, m_UTLatest ), m_fDelay );
 
             SetThink( ThinkFunction( this.Think ) );
             self.pev.nextthink = g_Engine.time + 0.1f;
@@ -161,13 +161,14 @@ namespace config_classic_mode
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
+            m_UTLatest = useType;
             if( IsLockedByMaster() )
             {
                 return;
             }
             else if( g_ClassicMode.IsEnabled() && useType == USE_ON || !g_ClassicMode.IsEnabled() && useType == USE_OFF )
             {
-                g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, g_Util.itout( m_iUseType, useType ), m_fDelay );
+                g_Util.Trigger( m_iszTargetOnFail, ( pActivator !is null ) ? pActivator : self, self, g_Util.itout( m_iUseType, m_UTLatest ), m_fDelay );
                 return;
             }
 
@@ -175,7 +176,7 @@ namespace config_classic_mode
 
             g_ClassicMode.Toggle();
 
-            g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, g_Util.itout( m_iUseType, useType ), m_fDelay );
+            g_Util.Trigger( m_iszTargetOnToggle, ( pActivator !is null ) ? pActivator : self, self, g_Util.itout( m_iUseType, m_UTLatest ), m_fDelay );
         }
 
         void Think()
