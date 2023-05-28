@@ -339,7 +339,8 @@
 @PointClass base(Ammo) studio("models/w_argrenade.mdl") = ammo_ARgrenades : "M16's M203 grenades (x2)" []
 @PointClass base(Ammo) studio("models/w_shotbox.mdl") = ammo_buckshot : "Shotgun shell box" []
 @PointClass base(Ammo) studio("models/w_crossbow_clip.mdl") = ammo_crossbow : "Crossbow bolt magazine" []
-@BaseClass studio() base(Target, Angles) = AmmoCustom
+
+@PointClass base(Target, Angles) = ammo_custom : "Custom Ammo"
 [
     spawnflags(flags) =
     [
@@ -350,6 +351,16 @@
         1024: "Disable Respawn" : 0
     ]
 
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
+    ]
     m_iszAmmoName(choices) : "Ammo type" : "buckshot" =
     [
         "buckshot" : "Buckshot"
@@ -463,11 +474,9 @@
         19: "Glow Shell"
         20: "ClampMinScale (Sprites)"
     ]
-]
-@PointClass base(AmmoCustom) = ammo_custom : "Custom Ammo"
-[
     wiki(string) : "Wiki" : "github.com/Mikk155/Sven-Co-op/wiki/ammo_custom"
 ]
+
 @PointClass base(Ammo) studio("models/w_gaussammo.mdl") = ammo_gaussclip : "Gauss/Gluon gun battery" []
 @PointClass base(Ammo) studio("models/w_rpgammo.mdl") = ammo_rpgclip : "Rockets (x2)" []
 @PointClass base(Ammo) size(-16 -16 -16, 16 16 16) studio("models/vhe-models/spore_ammo_hammer.mdl") = ammo_spore : "Spore plant"[]
@@ -585,6 +594,16 @@
     m_iszTargetOnFail(target_destination) : "target on fail change"
     m_iszTargetOnEnable(target_destination) : "target if is Enabled [Map start]"
     m_iszTargetOnDisable(target_destination) : "target if is Disabled [Map start]"
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
+    ]
     m_iThinkTime(float) : "Think intervals (default is 0.1f)"
     m_iszConfigFile(string) : "Configuration text file"
     wiki(string) : "Wiki" : "github.com/Mikk155/Sven-Co-op/wiki/config_classic_mode"
@@ -772,27 +791,6 @@
     generic#0(string) : "Precache Generic stuff"
     generic#4(string) : "Precache Generic stuff"
     wiki(string) : "Wiki" : "github.com/Mikk155/Sven-Co-op/wiki/config_map_precache"
-]
-@PointClass base(Mandatory, Config) color(0 255 255) = config_survival_mode : "Map SurvivalMode configuration"
-[
-    master(string) : "Master"
-    $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    m_fDelay(float) : "Delay Before Trigger" : 0.0
-    m_iUseType(choices) : "Trigger State" : 3 =
-    [
-        0 : "Off"
-        1 : "On"
-        2 : "Kill"
-        3 : "Toggle (Default)"
-        6 : "Set"
-        4 : "Same as input"
-        5 : "Opposite of input"
-    ]
-    m_iszTargetOnToggle(target_destination) : "target on change success"
-    m_iszTargetOnFail(target_destination) : "target on fail change"
-    mp_survival_startdelay(integer) : "delay before survival start"
-    mp_respawndelay(integer) : "delay before respawn"
-    wiki(string) : "Wiki" : "github.com/Mikk155/Sven-Co-op/wiki/config_survival_mode"
 ]
 
 // =================================================================================================================
@@ -1191,16 +1189,18 @@
 //
 // =================================================================================================================
 
-@SolidClass base(Target) = env_fade_custom_solid : "Screen Fade Custom"
+@PointClass base(Target) color(0 255 0) = env_fade_custom : "Screen Fade Custom"
 [
     m_fDelay(float) : "Delay Before Trigger" : 0.0
-    m_iUseType(choices) : "Trigger State" : 3 =
+    m_iUseType(choices) : "Trigger State" : 4 =
     [
         0 : "Off"
         1 : "On"
         2 : "Kill"
-        3 : "Toggle (Default)"
+        3 : "Toggle"
         6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
@@ -1225,11 +1225,8 @@
         5 : "Players touching (Auto + SET)"
     ]
     m_ifaderadius(integer) : "Radius" : 0
-]
-@PointClass base(env_fade_custom_solid) color(0 255 0) = env_fade_custom : "Screen Fade Custom"
-[
-    minhullsize(string) : "Minimun BBox Size"
-    maxhullsize(string) : "Maximun BBox Size"
+    minhullsize(string) : "[Point] Minimun BBox Size"
+    maxhullsize(string) : "[Point] Maximun BBox Size"
 ]
 
 // =================================================================================================================
@@ -1515,8 +1512,10 @@
         0 : "Off"
         1 : "On"
         2 : "Kill"
-        3 : "Toggle (Default)"
+        3 : "Toggle"
         6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
 ]
 
@@ -7169,12 +7168,12 @@
 @PointClass base(Target) color(192 255 0) = game_text_custom : "Custom Text Messages"
 [
     $f_fDelay(float) : "[AS] Delay Before Trigger" : 0.0
-    $i_iUseType(choices) : "[AS] Trigger State" : 3 =
+    m_iUseType(choices) : "Trigger State" : 4 =
     [
         0 : "Off"
         1 : "On"
         2 : "Kill"
-        3 : "Toggle (Default)"
+        3 : "Toggle"
         6 : "Set"
         4 : "Same as input"
         5 : "Opposite of input"
@@ -7276,7 +7275,7 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Mandatory) = game_zone_entity_solid: "Entity Zone brush"
+@PointClass base(Mandatory) color(255 0 0) = game_zone_entity : "Entity Zone brush"
 [
     spawnflags(flags) =
     [
@@ -7287,26 +7286,27 @@
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
     netname(string) : "Entity classname (wildcard '*')" : "player"
     intarget(target_destination) : "target for IN entities"
-    USE_IN(choices) : "Trigger state for IN" : 2 =
+    USE_IN(choices) : "Trigger state for IN" : 3 =
     [
-        0 : "OFF"
-        1 : "ON"
-        2 : "TOGGLE"
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
-    incount(target_destination) : "Counter for IN entities"
-
     outtarget(target_destination) : "target for OUT entities"
-    USE_OUT(choices) : "Trigger state for OUT" : 2 =
+    USE_OUT(choices) : "Trigger state for OUT" : 3 =
     [
-        0 : "OFF"
-        1 : "ON"
-        2 : "TOGGLE"
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
-    outcount(target_destination) : "Counter for OUT entities"
-]
-
-@PointClass base(game_zone_entity_solid) color(255 0 0) = game_zone_entity : "Screen Fade Custom"
-[
     minhullsize(string) : "Minimun BBox Size"
     maxhullsize(string) : "Maximun BBox Size"
 ]
