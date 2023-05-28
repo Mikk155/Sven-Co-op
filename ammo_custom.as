@@ -14,7 +14,7 @@ namespace ammo_custom
         g_ScriptInfo.SetInformation
         ( 
             g_ScriptInfo.ScriptName( 'ammo_custom' ) +
-            g_ScriptInfo.Description( 'Item that will give a certain ammout of bullets. and can be set with a limited collected times per players individualy' ) +
+            g_ScriptInfo.Description( 'Ammo item customizable with a lot of features' ) +
             g_ScriptInfo.Wiki( 'ammo_custom' ) +
             g_ScriptInfo.Author( 'Mikk' ) +
             g_ScriptInfo.GetGithub() +
@@ -138,6 +138,7 @@ namespace ammo_custom
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float fldelay )
         {
+            m_UTLatest = useType;
             if( PlayerAble( pActivator ) )
             {
                 if( useType == USE_OFF )
@@ -264,7 +265,7 @@ namespace ammo_custom
                     return Pickup();
                 }
             }
-            g_Util.Trigger( m_iszTargetOnCount, pPlayer, self, USE_TOGGLE, 0.0f );
+            g_Util.Trigger( m_iszTargetOnCount, pPlayer, self, g_Util.itout( m_iUseType, m_UTLatest ), 0.0f );
             return false;
         }
 
