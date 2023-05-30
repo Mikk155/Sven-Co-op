@@ -31,10 +31,12 @@ namespace env_effects
         g_ScriptInfo.SetInformation
         ( 
             g_ScriptInfo.ScriptName( 'env_effects' ) +
-            g_ScriptInfo.Description( 'Exposes temporary effects for mappers usage' ) +
-            g_ScriptInfo.Wiki( 'env_effects' ) +
+            g_ScriptInfo.Description( 'Exposes Temporary Entities as a Custom Entities' ) +
+            g_ScriptInfo.Wiki( 'CEffects' ) +
             g_ScriptInfo.Author( 'wootguy' ) +
             g_ScriptInfo.GetGithub('wootguy') +
+            g_ScriptInfo.Author( 'GeckonCZ' ) +
+            g_ScriptInfo.GetGithub('baso88') +
             g_ScriptInfo.Author( 'Mikk' ) +
             g_ScriptInfo.GetGithub() +
             g_ScriptInfo.GetDiscord()
