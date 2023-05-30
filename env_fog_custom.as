@@ -43,6 +43,8 @@ namespace env_fog_custom
                         { "message", string( pFog.pev.iuser3 ) },
                         { "rendercolor", pFog.pev.rendercolor.ToString() },
                         { "spawnflags", string( pFog.pev.spawnflags ) },
+                        { "$s_master", g_Util.CKV( pFog, '$s_master' ) },
+                        { "$s_TriggerOnMaster", g_Util.CKV( pFog, '$s_TriggerOnMaster' ) },
                         { "$v_fog_rendercolor", g_Util.CKV( pFog, '$v_fog_rendercolor' ) },
                         { "$f_fog_rendercolor_time", g_Util.CKV( pFog, '$f_fog_rendercolor_time' ) },
                         { "$i_fog_iuser2", g_Util.CKV( pFog, '$i_fog_iuser2' ) },
