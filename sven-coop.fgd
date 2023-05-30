@@ -1243,7 +1243,7 @@
         8: "[AS] Fade in start dist" : 0
         16: "[AS] Fade in End dist" : 0
     ]
-    master(string) : "[AS] Master"
+    $s_master(string) : "[AS] Master"
     $s_TriggerOnMaster(target_destination) : "[AS] Target when locked by master"
     rendercolor(color255) : "Fog Color (R G B)" : "255 255 255"
     $v_fog_rendercolor(color255) : "[AS] Fade Fog Color from" : "0 0 0"
@@ -1775,11 +1775,18 @@
 [
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    delay(float) : "Delay Before Trigger" : 0.0
     frags(choices) : "Show to player" : 0 =
     [
         0 : "Activator only"
         1 : "All players"
+    ]
+    m_iszAffectedPlayer(choices) : "Affect Player" : 0 =
+    [
+        0 : "Activator only (Default)"
+        1 : "All Players"
+        2 : "All Players But Activator"
+        3 : "All Alive Players"
+        4 : "All Dead Players"
     ]
 
     spawnflags(flags) =
@@ -1799,8 +1806,13 @@
         524288 : "Hide when anim stops" : 0
     ]
     sprite(sprite) : "Sprite Name" : "sprites/glow01.spr"
-    x(float) : "X (0 - 1.0 = left to right) (-1 centers)" : 0
-    y(float) : "Y (0 - 1.0 = top to bottom) (-1 centers)" : 0.48
+    renderamt(integer) : "[Color 1] Amount (0 - 255)"
+    rendercolor(color255) : "[Color 1] Color (R G B)"
+    iuser1(integer) : "[Color 2] Amount (0 - 255)"
+    vuser1(color255) : "[Color 2] Color (R G B)"
+    x(float) : "X (0 - 1.0 = left to right) (0.5 centers)"
+    y(float) : "Y (0 - 1.0 = top to bottom) (0.5 centers)"
+    // x/Y Note that the TOP-LEFT of the sprite is the sprite center, So it won't be visualy centered.
     channel(choices) : "HUD Channel" : 4 =
     [
         0 : "Channel 0"
@@ -1865,54 +1877,6 @@
     holdTime(float) : "Hold Time" : 1.0
     fadeinTime(float) : "Fade In Time" : 0.5
     fadeoutTime(float) : "Fade Out Time" : 0.5
-]
-
-// =================================================================================================================
-//
-// =================================================================================================================
-
-@PointClass sprite() base(Target) size( -10 -10 -10, 10 10 10 ) = env_spritetrail : "Trail Sprite"
-[
-    master(string) : "Master"
-    model(sprite) : "Sprite texture" : "sprites/laserbeam.spr"
-    frags(float) : "Next think time" : 0.1
-    health(float) : "Fade time" : 1.0
-    scale(integer) : "Texture Scale (0-255)" : 10
-    rendermode(choices) : "[FX] Render Mode" : 0 =
-    [
-        0: "Normal"
-        1: "Color"
-        2: "Texture"
-        3: "Glow"
-        4: "Solid"
-        5: "Additive"
-    ]
-    renderamt(integer) : "[FX] Amount (0 - 255)" : 255
-    rendercolor(color255) : "[FX] Color (R G B)" : "0 0 0"
-    renderfx(choices) : "[FX] Render FX" : 0 =
-    [
-        0: "Normal"
-        1: "Slow Pulse"
-        2: "Fast Pulse"
-        3: "Slow Wide Pulse"
-        4: "Fast Wide Pulse"
-        9: "Slow Strobe"
-        10: "Fast Strobe"
-        11: "Faster Strobe"
-        12: "Slow Flicker"
-        13: "Fast Flicker"
-        5: "Slow Fade Away"
-        6: "Fast Fade Away"
-        7: "Slow Become Solid"
-        8: "Fast Become Solid"
-        14: "Constant Glow"
-        15: "Distort"
-        16: "Hologram (Distort + fade)"
-        17: "Dead Player (DONT USE!)"
-        18: "Explode (Garg Like)"
-        19: "Glow Shell"
-        20: "ClampMinScale (Sprites)"
-    ]
 ]
 
 // =================================================================================================================
