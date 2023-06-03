@@ -58,6 +58,12 @@
         1 : "Not in Classic Mode"
         2 : "Only in Classic Mode"
     ]
+    $i_appearflags_survivalmode(choices) : "[AS] Appearflag (Survival-Mode)" : 0 =
+    [
+        0 : "Default"
+        1 : "Not in Survival Mode"
+        2 : "Only in Survival Mode"
+    ]
 ]
 
 @BaseClass base(Mandatory) = Target
@@ -393,6 +399,9 @@
         0: "Replace (config_classic_mode)"
         1: "Ignore entity"
     ]
+    skin(integer) : "Skin" : 0
+    body(integer) : "Body" : 0
+    scale(float) : "Scale Model" 1.0
 	movetype(choices) : "Gravity Setting" : 0 =
 	[
 		-1: "Unmoveable"
@@ -571,6 +580,7 @@
 //
 // =================================================================================================================
 
+// -TODO A way for replacing weapons (placed in the map as a prefab)
 @PointClass base(Mandatory)  = config_classic_mode : "Map ClassicMode configuration"
 [
     spawnflags(flags) =
@@ -579,21 +589,11 @@
     ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    m_fDelay(float) : "Delay Before Trigger" : 0.0
-    m_iUseType(choices) : "Trigger State" : 3 =
-    [
-        0 : "Off"
-        1 : "On"
-        2 : "Kill"
-        3 : "Toggle (Default)"
-        6 : "Set"
-        4 : "Same as input"
-        5 : "Opposite of input"
-    ]
     m_iszTargetOnToggle(target_destination) : "target on change success"
     m_iszTargetOnFail(target_destination) : "target on fail change"
     m_iszTargetOnEnable(target_destination) : "target if is Enabled [Map start]"
     m_iszTargetOnDisable(target_destination) : "target if is Disabled [Map start]"
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
     m_iUseType(choices) : "Trigger State" : 4 =
     [
         0 : "Off"
@@ -1004,7 +1004,7 @@
     ]
 ]
 
-@BaseClass base(Mandatory, Repeatable) iconsprite("sprites/mikk/vhe-iconsprites/fx.spr") size(-4 -4 -4, 4 4 4) color(255 0 0) = Effects
+@BaseClass base(Mandatory, Repeatable) studio() size(-4 -4 -4, 4 4 4) color(255 0 0) = Effects
 [
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
@@ -1775,12 +1775,7 @@
 [
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    frags(choices) : "Show to player" : 0 =
-    [
-        0 : "Activator only"
-        1 : "All players"
-    ]
-    m_iszAffectedPlayer(choices) : "Affect Player" : 0 =
+    m_iAffectedPlayer(choices) : "Affect Player" : 0 =
     [
         0 : "Activator only (Default)"
         1 : "All Players"
@@ -1831,28 +1826,6 @@
         13 : "Channel 13"
         14 : "Channel 14"
         15 : "Channel 15"
-    ]
-    color1(choices) : "HUD Color 1" : 0 =
-    [
-        0 : "White"
-        1 : "Black"
-        2 : "Red"
-        3 : "Green"
-        4 : "Blue"
-        5 : "Yellow"
-        6 : "Orange"
-        7 : "Sven Co-op"
-    ]
-    color2(choices) : "HUD Color 2" : 0 =
-    [
-        0 : "White"
-        1 : "Black"
-        2 : "Red"
-        3 : "Green"
-        4 : "Blue"
-        5 : "Yellow"
-        6 : "Orange"
-        7 : "Sven Co-op"
     ]
     effect(choices) : "HUD Effect" : 0 =
     [
