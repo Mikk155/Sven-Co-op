@@ -72,7 +72,7 @@ mixin class ScriptBaseLanguages
 
     string_t ReadLanguages( CBasePlayer@ pPlayer )
     {
-        string CurrentLanguage = g_Util.GetCKV( pPlayer, "$s_language" );
+        string CurrentLanguage = g_Util.CKV( pPlayer, "$s_language" );
 
         dictionary Languages =
         {
@@ -99,16 +99,21 @@ mixin class ScriptBaseLanguages
 
         return string_t( Languages[ CurrentLanguage ] );
     }
+}
 
-    string_t GetLanguage( CBasePlayer@ pPlayer, dictionary@ g_Languages )
+CLanguages g_Language;
+
+final class CLanguages
+{
+    string GetLanguage( CBasePlayer@ pPlayer, dictionary@ g_Languages )
     {
-        string CurrentLanguage = g_Util.GetCKV( pPlayer, "$s_language" );
+        string CurrentLanguage = g_Util.CKV( pPlayer, "$s_language" );
 
         if( CurrentLanguage == "" || CurrentLanguage.IsEmpty() || string( g_Languages[ CurrentLanguage ] ).IsEmpty() )
         {
-            return string_t( g_Languages[ 'english' ] );
+            return string( g_Languages[ 'english' ] );
         }
 
-        return string_t( Languages[ CurrentLanguage ] );
+        return string( g_Languages[ CurrentLanguage ] );
     }
 }
