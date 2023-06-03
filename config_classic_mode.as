@@ -143,7 +143,8 @@ namespace config_classic_mode
                         g_Util.Debug( '[config_classic_mode] Created trigger_changemodel replaces "' + Key + '" -> "' + Value + '"' );
                     }
                 }
-                if( Key.StartsWith( 'weapon_' ) )
+
+                if( Key.StartsWith( 'weapon_' ) && Value.StartsWith( 'weapon_' ) )
                 {
                     InsertItemMapping( Key, Value );
                     g_Util.Debug( '[config_classic_mode] Remapped "' + Key + '" -> "' + Value + '"' );
