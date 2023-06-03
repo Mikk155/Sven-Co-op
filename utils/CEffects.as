@@ -1,5 +1,3 @@
-#include 'utils/CGetInformation'
-
 CEffects g_Effect;
 
 final class CEffects
