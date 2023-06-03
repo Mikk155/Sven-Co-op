@@ -2,9 +2,12 @@ mixin class ScriptBaseCustomEntity
 {
     private float m_fDelay = 0.0f;
     private int m_iUseType = 3;
+    private int m_iAffectedPlayer = 0;
+    private string m_iszMaster();
+    private string m_iszTargetnameFilter;
     private Vector minhullsize();
     private Vector maxhullsize();
-    private string m_iszMaster();
+    private USE_TYPE m_UTLatest = USE_TOGGLE;
 
     bool ExtraKeyValues( const string& in szKey, const string& in szValue )
     {
@@ -12,11 +15,15 @@ mixin class ScriptBaseCustomEntity
         {
             m_fDelay = atof( szValue );
         }
+        else if( szKey == "m_iAffectedPlayer" )
+        {
+            m_iAffectedPlayer = atoi( szValue );
+        }
         else if( szKey == "m_iUseType" )
         {
             m_iUseType = atoi( szValue );
         }
-        else if ( szKey == "master" )
+        else if( szKey == "master" )
         {
             this.m_iszMaster = szValue;
         }
@@ -27,6 +34,10 @@ mixin class ScriptBaseCustomEntity
         else if( szKey == "maxhullsize" ) 
         {
             g_Utility.StringToVector( maxhullsize, szValue );
+        }
+        else if( szKey == "m_iszTargetnameFilter" ) 
+        {
+            m_iszTargetnameFilter = szValue;
         }
         else
         {
@@ -49,6 +60,14 @@ mixin class ScriptBaseCustomEntity
         return null;
     }
 
+    bool FilteredTargetname( CBaseEntity@ pEntity )
+    {
+        if( !m_iszTargetnameFilter.IsEmpty() && pEntity.GetTargetname() == m_iszTargetnameFilter )
+        {
+            return !m_iszTargetnameFilter.IsEmpty() && pEntity.GetTargetname() == m_iszTargetnameFilter;
+        }
+        return false;
+    }
     bool IsLockedByMaster()
     {
         if( !m_iszMaster.IsEmpty() && !g_EntityFuncs.IsMasterTriggered( m_iszMaster, self ) )
