@@ -20,21 +20,33 @@ namespace env_spritehud
         );
     }
 
-    enum env_spritehud_affected
+    enum HUD_FLAGS
     {
-        ACTIVATOR_ONLY = 0,
-        ALL_PLAYERS = 1
+        SPRITEHUD_ELEM = 1,
+        SPRITEHUD_ELEM_ABSOLUTE_Y = 2,
+        SPRITEHUD_ELEM_SCR_CENTER_X = 4,
+        SPRITEHUD_ELEM_SCR_CENTER_Y = 8,
+        SPRITEHUD_ELEM_NO_BORDER = 16,
+        SPRITEHUD_ELEM_HIDDEN = 32,
+        SPRITEHUD_ELEM_EFFECT_ONCE = 64,
+        SPRITEHUD_ELEM_DEFAULT_ALPHA = 128,
+        SPRITEHUD_ELEM_DYNAMIC_ALPHA = 256,
+        SPRITEHUD_SPR_OPAQUE = 65536,
+        SPRITEHUD_SPR_MASKED = 131072,
+        SPRITEHUD_SPR_PLAY_ONCE = 262144,
+        SPRITEHUD_SPR_HIDE_WHEN_STOPPED = 524288
     }
 
     class env_spritehud : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         HUDSpriteParams params;
-        private uint8 color1, color2, effect;
+        private uint8 effect;
         private string sprite = "logo.spr";
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
             ExtraKeyValues( szKey, szValue );
+
             if( szKey == "sprite" )
             {
                 sprite = szValue;
@@ -42,14 +54,6 @@ namespace env_spritehud
             else if( szKey == "channel" )
             {
                 params.channel = atoi( szValue);
-            }
-            else if( szKey == "color1" )
-            {
-                color1 = atoui( szValue );
-            }
-            else if( szKey == "color2" )
-            {
-                color2 = atoui( szValue );
             }
             else if( szKey == "effect" )
             {
@@ -77,19 +81,19 @@ namespace env_spritehud
             }
             else if( szKey == "top" )
             {
-                params.top = atoi( szValue);
+                params.top = uint8( atoui( szValue) );
             }
             else if( szKey == "left" )
             {
-                params.left = atoi( szValue);
+                params.left = uint8( atoui( szValue) );
             }
             else if( szKey == "width" )
             {
-                params.width = atoi( szValue);
+                params.width = uint8( atoui( szValue) );
             }
             else if( szKey == "height" )
             {
-                params.height = atoi( szValue);
+                params.height = uint8( atoui( szValue) );
             }
             else if( szKey == "fadeinTime" )
             {
@@ -123,41 +127,25 @@ namespace env_spritehud
 
         void Use( CBaseEntity@ pActivator, CBaseEntity@ pCaller, USE_TYPE useType, float flValue )
         {
-            array<RGBA> RGBA_COLOR =
+            if( IsLockedByMaster() )
             {
-                RGBA_WHITE,
-                RGBA_BLACK,
-                RGBA_GREEN,
-                RGBA_BLUE,
-                RGBA_YELLOW,
-                RGBA_ORANGE,
-                RGBA_SVENCOOP
-            };
-
-            params.color1 = RGBA_COLOR[color1];
-            params.color2 = RGBA_COLOR[color2];
+                return;
+            }
             
+            params.color1 = g_Util.atoc( self.pev.rendercolor.ToString() + ' ' + string( self.pev.renderamt ) );
+            params.color2 = g_Util.atoc( self.pev.vuser1.ToString() + ' ' + string( uint8( self.pev.iuser1 ) ) );
             params.effect = effect;
-            params.flags = HUD_NUM(self.pev.spawnflags);
+            params.flags = HUD_FLAGS( self.pev.spawnflags );
+
             params.spritename = sprite.Replace( 'sprites/', '' );
 
-            if( self.pev.frags == ACTIVATOR_ONLY )
+            for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
             {
-                if( pActivator !is null && pActivator.IsPlayer() && !IsLockedByMaster() )
-                {
-                    g_PlayerFuncs.HudCustomSprite( cast<CBasePlayer@>(pActivator), params );
-                }
-            }
-            else if( self.pev.frags == ALL_PLAYERS )
-            {
-                for( int iPlayer = 1; iPlayer <= g_PlayerFuncs.GetNumPlayers(); ++iPlayer )
-                {
-                    CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+                CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
-                    if( pPlayer !is null && !IsLockedByMaster() )
-                    {
-                        g_PlayerFuncs.HudCustomSprite( pPlayer, params );
-                    }
+                if( g_Util.WhoAffected( pPlayer, m_iAffectedPlayer, pActivator ) )
+                {
+                    g_PlayerFuncs.HudCustomSprite( pPlayer, params );
                 }
             }
         }
