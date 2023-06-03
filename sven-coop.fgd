@@ -1805,9 +1805,9 @@
     rendercolor(color255) : "[Color 1] Color (R G B)"
     iuser1(integer) : "[Color 2] Amount (0 - 255)"
     vuser1(color255) : "[Color 2] Color (R G B)"
+    fxtime(float) : "Scan time (scan effect only)" : 0.0
     x(float) : "X (0 - 1.0 = left to right) (0.5 centers)"
     y(float) : "Y (0 - 1.0 = top to bottom) (0.5 centers)"
-    // x/Y Note that the TOP-LEFT of the sprite is the sprite center, So it won't be visualy centered.
     channel(choices) : "HUD Channel" : 4 =
     [
         0 : "Channel 0"
