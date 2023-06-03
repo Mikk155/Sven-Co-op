@@ -1,5 +1,14 @@
 CUtils g_Util;
 
+enum WhoAffected_enum
+{
+    AP_ACTIVATOR_ONLY = 0,
+    AP_ALL_PLAYERS = 1,
+    AP_ALL_BUT_ACTIVATOR = 2,
+    AP_ALL_ALIVE_PLAYER = 3,
+    AP_ALL_DEAD_PLAYER = 4
+}
+
 final class CUtils
 {
     bool Debugs = true;
@@ -82,7 +91,7 @@ final class CUtils
 
         g_Util.Debug();
 
-        CBaseEntity@ pFind = g_EntityFuncs.FindEntityByTargetname( pFind, iszTarget );
+        CBaseEntity@ pFind = g_EntityFuncs.FindEntityByTargetname( g_EntityFuncs.Instance( 0 ), iszTarget );
 
         if( pFind is null )
         {
@@ -94,7 +103,7 @@ final class CUtils
 
         if( UseTypex == USE_KILL )
         {
-            while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( pKillEnt, iszTarget ) ) !is null )
+            while( ( @pKillEnt = g_EntityFuncs.FindEntityByTargetname( g_EntityFuncs.Instance( 0 ), iszTarget ) ) !is null )
             {
                 g_EntityFuncs.Remove( pKillEnt );
             }
@@ -326,7 +335,7 @@ final class CUtils
         return pEntity;
     }
 
-    bool LoadEntities( const string iszFileLoad )
+    bool LoadEntities( const string iszFileLoad, string &in iszClassname = String::INVALID_INDEX )
     {
         string line, key, value;
         dictionary g_Keyvalues;
@@ -352,6 +361,11 @@ final class CUtils
 
             if( line[0] == '}' )
             {
+                if( iszClassname != String::INVALID_INDEX )
+                {
+                    g_Keyvalues[ 'classname' ] = iszClassname;
+                }
+
                 g_Util.CreateEntity( g_Keyvalues );
                 g_Keyvalues.deleteAll();
                 continue;
@@ -380,13 +394,13 @@ final class CUtils
 
         if( TargetName )
         {
-            while( ( @pEntity = g_EntityFuncs.FindEntityByTargetname( pEntity, szMatch ) ) !is null ){
+            while( ( @pEntity = g_EntityFuncs.FindEntityByTargetname( g_EntityFuncs.Instance( 0 ), szMatch ) ) !is null ){
                 ++NumberOfEntities;
             }
         }
         else
         {
-            while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, szMatch ) ) !is null ){
+            while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( g_EntityFuncs.Instance( 0 ), szMatch ) ) !is null ){
                 ++NumberOfEntities;
             }
         }
@@ -442,5 +456,66 @@ final class CUtils
         pFile.Close();
 
         return g_KeyValues;
+    }
+
+    // Wiki para abajo
+    bool WhoAffected( CBasePlayer@ pPlayer, int &in m_iszAffectedPlayer = AP_ACTIVATOR_ONLY, CBaseEntity@ &in pActivator = null )
+    {
+        if( m_iszAffectedPlayer == AP_ACTIVATOR_ONLY && pPlayer == pActivator
+        or m_iszAffectedPlayer == AP_ALL_PLAYERS
+        or m_iszAffectedPlayer == AP_ALL_BUT_ACTIVATOR && pPlayer != pActivator
+        or m_iszAffectedPlayer == AP_ALL_ALIVE_PLAYER && pPlayer.IsAlive()
+        or m_iszAffectedPlayer == AP_ALL_DEAD_PLAYER && !pPlayer.IsAlive() )
+        {
+            if( pPlayer !is null )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    CBaseEntity@ GetRandomEntity( string iszTargetname )
+    {
+        array<CBaseEntity@>EntityArray;
+
+        CBaseEntity@ FindEnt = null;
+
+        while( ( @FindEnt = g_EntityFuncs.FindEntityByTargetname( g_EntityFuncs.Instance( 0 ), iszTargetname ) ) !is null )
+        {
+            EntityArray.insertLast( @FindEnt );
+        }
+        return EntityArray[ Math.RandomLong( 0, EntityArray.length() -1 ) ];
+    }
+
+    CBaseEntity@ GetRandomEntity( string_t iszClassname )
+    {
+        array<CBaseEntity@>EntityArray;
+
+        CBaseEntity@ FindEnt = null;
+
+        while( ( @FindEnt = g_EntityFuncs.FindEntityByClassname( g_EntityFuncs.Instance( 0 ), string( iszClassname ) ) ) !is null )
+        {
+            EntityArray.insertLast( @FindEnt );
+        }
+        return EntityArray[ Math.RandomLong( 0, EntityArray.length() -1 ) ];
+    }
+
+    CBaseEntity@ GetRandomEntity( string iszKey, string iszValue )
+    {
+        array<CBaseEntity@>EntityArray;
+
+        CBaseEntity@ FindEnt = null;
+
+        while( ( @FindEnt = g_EntityFuncs.FindEntityByString( g_EntityFuncs.Instance( 0 ), iszKey, iszValue ) ) !is null )
+        {
+            EntityArray.insertLast( @FindEnt );
+        }
+        return EntityArray[ Math.RandomLong( 0, EntityArray.length() -1 ) ];
+    }
+
+    CBaseEntity@ GetRandomEntity( array<CBaseEntity@>EntityArray )
+    {
+        return EntityArray[ Math.RandomLong( 0, EntityArray.length() -1 ) ];
     }
 }
