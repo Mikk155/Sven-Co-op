@@ -9099,16 +9099,8 @@
 
 @PointClass base(Mandatory) = player_data : "Exposes data from players"
 [
-    spawnflags(flags) =
-    [
-        1: "All Players" : 0
-    ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    delay(float) : "Delay Before Trigger" : 0.0
-    m_iszTrueCase(target_destination) : "target for 'true'-case"
-    m_iszFalseCase(target_destination) : "target for 'false'-case"
-    target(target_destination) : "Trigger after action"
     m_iCondition(choices) : "Condition" : 0 =
     [
         0 : "None"
@@ -9129,6 +9121,26 @@
         15 : "Intersects with (Comparator)"
     ]
     m_iszComparator(string) : "Comparator" : ""
+    m_iszTrueCase(target_destination) : "target for 'true'-case"
+    m_iszFalseCase(target_destination) : "target for 'false'-case"
+    m_iAffectedPlayer(choices) : "Affect Player" : 0 =
+    [
+        0 : "Activator only (Default)"
+        1 : "All Players"
+        2 : "All Players But Activator"
+        3 : "All Alive Players"
+        4 : "All Dead Players"
+    ]
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+    ]
+    target(target_destination) : "Trigger after action"
 ]
 
 // =================================================================================================================
