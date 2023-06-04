@@ -8279,9 +8279,7 @@
     ]
     message(sound) : "Splash Sound" : "debris/bustflesh1.wav"
     sprite(sprite) : "Custom sprite" : "sprites/bubble.spr"
-    x_velocity(float) : "Bubble's angle velocity (X)" : 128.0
-    y_velocity(float) : "Bubble's angle velocity (y)" : 128.0
-    z_velocity(float) : "Bubble's angle velocity (z)" : 128.0
+    m_vVelocity(string) : "Bubble's angle velocity (X Y Z)" "128.0 128.0 128.0"
     scale(float) : "Bubble's scale" : 0.5
     delay(float) : "Delay before reset" : 1.0
     spawnflags(flags) =
@@ -9072,15 +9070,27 @@
 
 @PointClass base(Mandatory) color(192 255 0) = player_command : "Execute a console variable client-side"
 [
-    spawnflags(flags) =
-    [
-        1: "All Players" : 0
-    ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
+    m_iAffectedPlayer(choices) : "Affect Player" : 0 =
+    [
+        0 : "Activator only (Default)"
+        1 : "All Players"
+        2 : "All Players But Activator"
+        3 : "All Alive Players"
+        4 : "All Dead Players"
+    ]
     message(string) : "Console variable"
-    delay(float) : "Delay Before Trigger" : 0.0
     target(target_destination) : "Target After Exec"
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+    ]
 ]
 
 // =================================================================================================================
