@@ -26,39 +26,6 @@ namespace game_time
     {
         GET_REAL_TIME = 1
     }
-    
-    string IntToPattern( const int v )
-    {
-        return
-        (
-            v == -12 ? 'a' :
-            v == -11 ? 'b' :
-            v == -10 ? 'c' :
-            v == -9 ? 'd' :
-            v == -8 ? 'e' :
-            v == -7 ? 'f' :
-            v == -6 ? 'g' :
-            v == -5 ? 'h' :
-            v == -4 ? 'i' :
-            v == -3 ? 'j' :
-            v == -2 ? 'k' :
-            v == -1 ? 'l' :
-            v == 0 ? 'm' :
-            v == 1 ? 'n' :
-            v == 2 ? 'o' :
-            v == 3 ? 'p' :
-            v == 4 ? 'q' :
-            v == 5 ? 'r' :
-            v == 6 ? 's' :
-            v == 7 ? 't' :
-            v == 8 ? 'u' :
-            v == 9 ? 'v' :
-            v == 10 ? 'w' :
-            v == 11 ? 'x' :
-            v == 12 ? 'y' :
-            v == 13 ? 'z' : 'm'
-        );
-    }
 
     class game_time : ScriptBaseEntity, ScriptBaseCustomEntity
     {
@@ -226,11 +193,15 @@ namespace game_time
 
                     while( ( @pLight = g_EntityFuncs.FindEntityByTargetname( pLight, m_iszPatternLight ) ) !is null )
                     {
-                        g_EntityFuncs.DispatchKeyValue( pLight.edict(), "pattern", IntToPattern( iszPattern ) );
+                        string OutPattern;
+
+                        g_Util.GetPattern( OutPattern, iszPattern );
+
+                        g_EntityFuncs.DispatchKeyValue( pLight.edict(), "pattern", OutPattern );
 
                         g_Util.Debug();
                         pLight.Use( self, self, USE_TOGGLE, 0.0f );
-                        g_Util.Debug( "[game_time] Light Pattern has been updated to "+ string( iszPattern ) + ' [' + IntToPattern( iszPattern ) + '] at the time of "' + CurrentTime + '"' );
+                        g_Util.Debug( "[game_time] Light Pattern has been updated to "+ string( iszPattern ) + ' [' + OutPattern + '] at the time of "' + CurrentTime + '"' );
                         pLight.Use( self, self, USE_TOGGLE, 0.0f );
                         g_Util.Debug();
                     }
