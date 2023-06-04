@@ -7102,9 +7102,9 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Target) color(192 255 0) = game_text_custom : "Custom Text Messages"
+@PointClass base(Mandatory, Target) color(192 255 0) = game_text_custom : "Custom Text Messages"
 [
-    $f_fDelay(float) : "[AS] Delay Before Trigger" : 0.0
+    m_fDelay(float) : "[AS] Delay Before Trigger" : 0.0
     m_iUseType(choices) : "Trigger State" : 4 =
     [
         0 : "Off"
@@ -7120,9 +7120,17 @@
     killtarget(target_destination) : "Kill target"
     spawnflags(flags) =
     [
-        1: "All Players" : 0
+        1: "All Players (Override Affect Player)" : 0
         2: "No console echo" : 0
         4: "Fire per player" : 0
+    ]
+    m_iAffectedPlayer(choices) : "Affect Player" : 0 =
+    [
+        0 : "Activator only (Obey spawnflag 1)"
+        1 : "All Players"
+        2 : "All Players But Activator"
+        3 : "All Alive Players"
+        4 : "All Dead Players"
     ]
     fadein(float) : "Fade in Time (or character scan time)" : 0.0
     fadeout(float) : "Fade Out Time" : 2.0
