@@ -55,7 +55,7 @@ namespace player_data
         {
             m_UTLatest = useType;
 
-            if( IsLockedByMaster() )
+            if( !IsLockedByMaster() )
             {
                 for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
                 {
