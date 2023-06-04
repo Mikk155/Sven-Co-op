@@ -28,7 +28,7 @@ namespace game_zone_entity
     class game_zone_entity : ScriptBaseEntity, ScriptBaseCustomEntity
     {
         private string intarget, outtarget;
-        private int USE_IN = 2, USE_OUT = 2;
+        private int USE_IN = 3, USE_OUT = 3;
 
         bool KeyValue( const string& in szKey, const string& in szValue )
         {
@@ -98,12 +98,12 @@ namespace game_zone_entity
 
         void CheckInVolume( CBaseEntity@ pActivator )
         {
-            if( spawnflag( IGNORE_DEAD_ENTITIES ) && !pActivator.IsAlive() )
+            if( spawnflag( IGNORE_DEAD_ENTITIES ) && !pActivator.IsAlive() || pActivator is null )
                 return;
 
             if( !intarget.IsEmpty() and self.Intersects( pActivator ) )
             {
-                g_Util.Trigger( intarget, pActivator, self, USE_TOGGLE, m_fDelay );
+                g_Util.Trigger( intarget, pActivator, self, g_Util.itout( USE_IN, m_UTLatest ), m_fDelay );
             }
 
             if( !outtarget.IsEmpty() and !self.Intersects( pActivator ) )
