@@ -410,10 +410,10 @@ final class CUtils
         return NumberOfEntities;
     }
 
-    void ExecPlayerCommand( CBasePlayer@ pPlayer, const string command )
+    void ExecPlayerCommand( CBasePlayer@ pPlayer, const string_t iszCommand )
     {
         NetworkMessage msg( MSG_ONE, NetworkMessages::SVC_STUFFTEXT, pPlayer.edict() );
-            msg.WriteString( command );
+            msg.WriteString( iszCommand );
         msg.End();
     }
 
