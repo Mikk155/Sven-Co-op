@@ -9150,14 +9150,26 @@
 
 @PointClass base(Target) color(200 100 0) = player_equipment : "player_weaponstrip & game_player_equip improved"
 [
+    m_fDelay(float) : "[AS] Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
+    ]
     master(string) : "Master"
     $s_TriggerOnMaster(target_destination) : "Target when locked by master"
-    delay(float) : "Delay Before Trigger" : 0.0
-    m_iAffected(choices) : "Players to strip" : 0 =
+    m_iAffectedPlayer(choices) : "Affect Player" : 0 =
     [
-        0 : "Activator only (default)"
-        1 : "All players"
-        2 : "All players except activator"
+        0 : "Activator only (Obey spawnflag 1)"
+        1 : "All Players"
+        2 : "All Players But Activator"
+        3 : "All Alive Players"
+        4 : "All Dead Players"
     ]
     item_suit(choices) : "item_suit" : 6 =
     [
