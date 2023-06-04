@@ -9405,7 +9405,7 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(Mandatory) = player_inbutton_solid : "Player Zone In-Button"
+@PointClass base(Mandatory) color(255 0 200) = player_inbutton : "Player Zone In-Button"
 [
     master(string) : "Master"
     m_fDelay(float) : "Delay Before Trigger" : 0.0
@@ -9431,12 +9431,9 @@
     target(target_destination) : "Target when press key"
     spawnflags(flags) =
     [
-        1 : "Allow Everywhere"     : 1
+        1 : "Allow Everywhere"
+        2 : "No message input"
     ]
-]
-
-@PointClass base(player_inbutton_solid) color(255 0 200) = player_inbutton : "Player Zone In-Button"
-[
     minhullsize(string) : "Minimun BBox Size"
     maxhullsize(string) : "Maximun BBox Size"
 ]
