@@ -9090,6 +9090,8 @@
         2 : "Kill"
         3 : "Toggle"
         6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
 ]
 
@@ -9139,6 +9141,8 @@
         2 : "Kill"
         3 : "Toggle"
         6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
     target(target_destination) : "Trigger after action"
 ]
@@ -9914,6 +9918,8 @@
         2 : "Kill"
         3 : "Toggle"
         6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
 ]
 
@@ -11303,7 +11309,7 @@
 // 
 // =================================================================================================================
 
-@PointClass base(Mandatory) = trigger_percent : "Trigger push"
+@PointClass base(Mandatory) = trigger_percent : "Trigger percent"
 [
     master(string) : "Master"
     spawnflags(flags) =
@@ -11313,6 +11319,17 @@
     m_iszTriggerOnAction(target_destination) : "target per player"
     m_iPercentage(integer) : "Percentage needed" : 66
     m_iszTriggerOnPercent(target_destination) : "target when percentage"
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
+    ]
 ]
 
 // =================================================================================================================
@@ -11456,6 +11473,27 @@
         4 : "Reusable (Unique only)" : 0
         8 : "Timed" : 0
         16 : "Unique" : 0
+    ]
+]
+
+// =================================================================================================================
+// 
+// =================================================================================================================
+
+@PointClass base(Mandatory, Target) color(255 230 150) = trigger_randomplayer : "Trigger with random player activator"
+[
+    master(string) : "Master"
+    $s_TriggerOnMaster(target_destination) : "Target when locked by master"
+    m_fDelay(float) : "Delay Before Trigger" : 0.0
+    m_iUseType(choices) : "Trigger State" : 4 =
+    [
+        0 : "Off"
+        1 : "On"
+        2 : "Kill"
+        3 : "Toggle"
+        6 : "Set"
+        4 : "Same as input"
+        5 : "Opposite of input"
     ]
 ]
 
