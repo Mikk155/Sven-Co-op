@@ -55,7 +55,7 @@ namespace game_text_custom
         return HOOK_CONTINUE;
     }
     
-    void MapInit()
+    void PluginInitEntity()
     {
         g_CustomEntityFuncs.RegisterCustomEntity( "game_text_custom::game_text_custom", "multi_language" );
     }
@@ -114,12 +114,14 @@ namespace game_text_custom
                 TextParams.r1 = g_Util.atoc( szValue ).r;
                 TextParams.g1 = g_Util.atoc( szValue ).g;
                 TextParams.b1 = g_Util.atoc( szValue ).b;
+                TextParams.a1 = g_Util.atoc( szValue ).a;
             }
             else if(szKey == "color2")
             {
                 TextParams.r2 = g_Util.atoc( szValue ).r;
                 TextParams.g2 = g_Util.atoc( szValue ).g;
                 TextParams.b2 = g_Util.atoc( szValue ).b;
+                TextParams.a2 = g_Util.atoc( szValue ).a;
             }
             else if(szKey == "fadein")
             {
@@ -166,21 +168,21 @@ namespace game_text_custom
                 return;
             }
 
-            if( spawnflag( ALL_PLAYERS ) )
+            for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
             {
-                for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
-                {
-                    CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+                CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
-                    if( pPlayer !is null )
+                if( pPlayer !is null )
+                {
+                    if( spawnflag( ALL_PLAYERS ) )
+                    {
+                        ShowText( pPlayer, useType );
+                    }
+                    else if( g_Util.WhoAffected( pPlayer, m_iAffectedPlayer, pActivator ) )
                     {
                         ShowText( pPlayer, useType );
                     }
                 }
-            }
-            else if( pActivator !is null && pActivator.IsPlayer() )
-            {
-                ShowText( cast<CBasePlayer@>(pActivator), useType );
             }
 
             g_Util.Trigger( killtarget, hactivator.GetEntity(), pCaller, USE_KILL, m_fDelay );
