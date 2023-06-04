@@ -9468,13 +9468,13 @@
     ]
     m_iStartObserverOrigin(choices) : "origin when start observer" : 0 =
     [
-        0 : "This entity Angles"
-        1 : "Player Angles"
+        0 : "This entity's origin"
+        1 : "Player's origin"
     ]
     m_iStartObserverAngles(choices) : "Angles when start observer" : 0 =
     [
-        0 : "This entity Angles"
-        1 : "Player Angles"
+        0 : "This entity's Angles"
+        1 : "Player's Angles"
     ]
     m_iszSetObserverBody(choices) : "remove body when start observer" : 0 =
     [
