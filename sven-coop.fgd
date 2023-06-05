@@ -11772,15 +11772,18 @@
 // 
 // =================================================================================================================
 
-@SolidClass base(BaseDSPSound) = trigger_sound_solid : "Trigger DSP Sound"
+@PointClass base(BaseDSPSound) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = trigger_sound : "DSP Sound"
 [
     master(string) : "Master"
-    // -TODO 1 : "USE Only" : 0
-    target(target_destination) : "Dest when triggered ( empty = all )" : "!activator"
-]
-
-@PointClass base(trigger_sound_solid) iconsprite("sprites/vhe-iconsprites/env_sound.spr") color(150 150 150) = trigger_sound : "DSP Sound"
-[
+    $s_TriggerOnMaster(target_destination) : "[AS] Target when locked by master"
+    m_iAffectedPlayer(choices) : "When Fired, Affect Player" : 0 =
+    [
+        0 : "Activator only (Default)"
+        1 : "All Players"
+        2 : "All Players But Activator"
+        3 : "All Alive Players"
+        4 : "All Dead Players"
+    ]
     minhullsize(string) : "Minimun BBox Size"
     maxhullsize(string) : "Maximun BBox Size"
 ]
@@ -12077,17 +12080,25 @@
     ]
 ]
 
-@BaseClass base( StealthConfig ) = MonsterStealth
+@BaseClass = MonsterStealth
 [
-    $i_stealth(choices) : "[AS] Stealth Watcher" : 0 =
-    [
-        0: "No"
-        1: "Yes"
-    ]
     $i_stealthmode(choices) : "[AS] Stealth Mode" : 0 =
     [
         0: "Affect Enemy Monsters"
         1: "Affect Only Players"
+    ]
+    $s_stealthspottarget(target_destination) : "[AS] Target when sees"
+    $f_stealth_targetdelay(float) : "[AS] Stealth Target delay" 0.0
+    $i_stealthKillmode(choices) : "[AS] Stealth Kill" : 0 =
+    [
+        0: "Kill Spotted enemy"
+        1: "Remove Spotted enemy"
+        2: "Don't kill spotted enemy"
+    ]
+    $i_stealthmemory(choices) : "[AS] Watcher behaviour" : 0 =
+    [
+        0: "Forget Spotted entity"
+        1: "Remember Spotted entity"
     ]
 ]
 
@@ -12597,16 +12608,6 @@
     [
         1024: "No Shockroach" : 0
     ]
-]
-
-@BaseClass base(Mandatory) color(255 0 0) = StealthConfig
-[
-    $s_stealth_target(target_destination) : "[AS] Stealth Target" 
-    $f_stealth_delay(float) : "[AS] Stealth Target delay" 0.0
-]
-
-@PointClass base(StealthConfig) = monster_stealth : "Stealth"
-[
 ]
 
 @PointClass base(Monster, BloodPuddle, env_bloodpuddle, MonsterStealth) size(-16 -16 0, 16 16 36) studio("models/w_squeak.mdl") = monster_snark : "Armed Snark" []
