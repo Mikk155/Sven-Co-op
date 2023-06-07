@@ -180,7 +180,7 @@ namespace game_time
 
             string CurrentTime = ( strHour.Length() == 1 ? '0' : '' ) + strHour + ':' + ( strMinute.Length() == 1 ? '0' : '' ) + strMinute;
 
-            for (uint i = 0; i < pPatterns.length(); i++)
+            for( uint i = 0; i < pPatterns.length(); i++ )
             {
                 string strTimex = pPatterns[i].SubString( 0, CurrentTime.Length() );
                 iszPattern = atoi( pPatterns[i].SubString( 6, pPatterns[i].Length() ) );
