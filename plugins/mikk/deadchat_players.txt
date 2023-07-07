@@ -1,0 +1,4 @@
+// Add here map names that this plugin should be disabled, use wildcard (*) to series
+
+mymap
+myserie_*
