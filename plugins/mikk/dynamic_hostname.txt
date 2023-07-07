@@ -1,0 +1,12 @@
+hl* Half-Life
+rp* Residual Point
+rl_* Residual Life
+ast_* A Soldier's Tale
+tln_* The Long Night
+accesspoint Access Point
+bridge_the_gap Bridge The Gap
+bm_sts BM: Special Tactics
+ba* Blue-Shift
+hcl* Hardcore-Life
+of_utbm* Under The Black Moon
+of* Opposing-Force
