@@ -1,6 +1,4 @@
-#include "utils/mapblacklist"
-
-const string iszConfigFile = 'scripts/plugins/mikk/survival_respawn.txt';
+#include "../../maps/mikk/utils/CUtils"
 
 void PluginInit()
 {
@@ -17,7 +15,7 @@ void MapInit()
 {
     if( g_SurvivalMode.MapSupportEnabled() )
     {
-        mapblacklist( iszConfigFile, MapBlackListed );
+        MapBlackListed = g_Util.IsStringInFile( 'scripts/plugins/mikk/survival_respawn.txt', string( g_Engine.mapname ) );
 
         if( !MapBlackListed )
         {
@@ -30,32 +28,28 @@ dictionary TrackPlayers;
 
 HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
 {
-    if( !MapBlackListed && pPlayer !is null )
+    if( pPlayer !is null )
     {
-        bool IsInDict = TrackPlayers.exists( string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) );
-
-        if( !IsInDict )
-        {
-            pPlayer.Respawn();
-            TrackPlayers[ string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) ] = 'Joined';
-        }
-
-        g_Scheduler.SetTimeout( "PrintMsg", 2.0f, @pPlayer, IsInDict );
+        g_Scheduler.SetTimeout( "DelayedCheck", 2.5f, @pPlayer );
     }
     return HOOK_CONTINUE;
 }
 
-void PrintMsg( CBasePlayer@ pPlayer, bool bAddedToDict = false )
+void DelayedCheck( CBasePlayer@ pPlayer )
 {
-    if( bAddedToDict )
+    if( pPlayer !is null )
     {
-        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "You have been respawned before, no respawning allowed for rejoining.\n" );
+        if( !TrackPlayers.exists( string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) ) )
+        {
+            g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Survival mode is active. No more respawning allowed for connected players.\n" );
+            g_PlayerFuncs.RespawnPlayer(pPlayer, true, true);
+            TrackPlayers[ string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) ] = 'Joined';
+        }
+        else
+        {
+            g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "You have been respawned before, no respawning allowed for rejoining.\n" );
+        }
     }
-    else
-    {
-        g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "Survival mode is active. No more respawning allowed for connected players.\n" );
-    }
-        
 }
 
 HookReturnCode MapChange()
