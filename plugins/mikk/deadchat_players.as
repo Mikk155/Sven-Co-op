@@ -1,6 +1,4 @@
-#include "utils/mapblacklist"
-
-const string iszConfigFile = 'scripts/plugins/mikk/deadchat_players.txt';
+#include "../../maps/mikk/utils/CUtils"
 
 void PluginInit()
 {
@@ -13,7 +11,7 @@ bool MapBlackListed;
 
 void MapInit()
 {
-    mapblacklist( iszConfigFile, MapBlackListed );
+    MapBlackListed = g_Util.IsStringInFile( 'scripts/plugins/mikk/deadchat_players.txt', string( g_Engine.mapname ) );
 }
 
 HookReturnCode ClientSay( SayParameters@ pParams )
