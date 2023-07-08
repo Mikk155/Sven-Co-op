@@ -9,18 +9,18 @@ void PluginInit()
     g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
 }
 
-bool bInitialised;
+bool MapBlackListed;
 
 void MapInit()
 {
-    mapblacklist( iszConfigFile, bInitialised );
+    mapblacklist( iszConfigFile, MapBlackListed );
 }
 
 HookReturnCode ClientSay( SayParameters@ pParams )
 {
     CBasePlayer@ pPlayer = pParams.GetPlayer();
 
-    if( !bInitialised && pPlayer !is null && !pPlayer.IsAlive() && !pParams.ShouldHide )
+    if( !MapBlackListed && pPlayer !is null && !pPlayer.IsAlive() && !pParams.ShouldHide )
     {
         const CCommand@ args = pParams.GetArguments();
         string FullSentence = pParams.GetCommand();
