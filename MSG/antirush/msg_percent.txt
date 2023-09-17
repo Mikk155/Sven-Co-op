@@ -1,0 +1,5 @@
+"english" "[Anti-Rush] Current percentage of players $got$ Needed $needed$"
+"spanish" "[Anti-Rush] Porcentaje actual de jugadores $got$ Necesario $needed$"
+"portuguese" "[Anti-Rush] Porcentagem atual de jogadores $got$ Necessario $needed$"
+"color" "255 0 0 255"
+"y" "0.50"
