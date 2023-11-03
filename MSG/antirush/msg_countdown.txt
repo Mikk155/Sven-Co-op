@@ -1,5 +1,0 @@
-"english" "[Anti-Rush] Countdown $count$ seconds."
-"spanish" "[Anti-Rush] Contador $count$ segundos."
-"portuguese" "[Anti-Rush] Contador $count$ segundos."
-"color" "255 0 0 255"
-"y" "0.50"

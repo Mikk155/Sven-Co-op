@@ -1,5 +1,0 @@
-"english" "[Anti-Rush] Kill remaining $skull$ enemies."
-"spanish" "[Anti-Rush] Elimina los $skull$ enemigos restantes."
-"portuguese" "[Anti-Rush] Elimine os $skull$ inimigos restantes."
-"color" "255 0 0 255"
-"y" "0.50"
