@@ -1,0 +1,271 @@
+{
+	"const uint32 Hooks::ASLP::Player::PlayerPostTakeArmor":
+	{
+		"prefix": [ "PlayerPostTakeArmor", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPostTakeArmor, @PlayerPostTakeArmor )" ],
+		"description" : "[ASLP] Post Call before a player receive armor."
+	},
+	"HookReturnCode PlayerPostTakeArmor( HealthInfo@ pInfo )":
+	{
+		"prefix": [ "PlayerPostTakeArmor", "Hooks" ],
+		"body" : [ "HookReturnCode PlayerPostTakeArmor( HealthInfo@ pInfo, int& out result )" ],
+		"description" : "[ASLP] Post Call before a player receive armor."
+	},
+	"const uint32 Hooks::ASLP::Player::PlayerPreTakeArmor":
+	{
+		"prefix": [ "PlayerPreTakeArmor", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPreTakeArmor, @PlayerPreTakeArmor )" ],
+		"description" : "[ASLP] Pre Call before a player receive armor."
+	},
+	"HookReturnCode PlayerPreTakeArmor( HealthInfo@ pInfo )":
+	{
+		"prefix": [ "PlayerPreTakeArmor", "Hooks" ],
+		"body" : [ "HookReturnCode PlayerPreTakeArmor( HealthInfo@ pInfo )" ],
+		"description" : "[ASLP] Pre Call before a player receive armor."
+	},
+	"const uint32 Hooks::ASLP::Player::PlayerPostTakeHealth":
+	{
+		"prefix": [ "PlayerPostTakeHealth", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPostTakeHealth, @PlayerPostTakeHealth )" ],
+		"description" : "[ASLP] Post Call before a player receive health."
+	},
+	"HookReturnCode PlayerPostTakeHealth( HealthInfo@ pInfo )":
+	{
+		"prefix": [ "PlayerPostTakeHealth", "Hooks" ],
+		"body" : [ "HookReturnCode PlayerPostTakeHealth( HealthInfo@ pInfo, int& out result )" ],
+		"description" : "[ASLP] Post Call before a player receive health."
+	},
+	"const uint32 Hooks::ASLP::Player::PlayerPreTakeHealth":
+	{
+		"prefix": [ "PlayerPreTakeHealth", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPreTakeHealth, @PlayerPreTakeHealth )" ],
+		"description" : "[ASLP] Pre Call before a player receive health."
+	},
+	"HookReturnCode PlayerPreTakeHealth( HealthInfo@ pInfo )":
+	{
+		"prefix": [ "PlayerPreTakeHealth", "Hooks" ],
+		"body" : [ "HookReturnCode PlayerPreTakeHealth( HealthInfo@ pInfo )" ],
+		"description" : "[ASLP] Pre Call before a player receive health."
+	},
+	"typedef HealthInfo@": {
+		"prefix": "HealthInfo",
+		"body" : [ "HealthInfo@" ],
+		"description" : "[ASLP] Constructor."
+	},
+	"CBaseEntity@ HealthInfo::pEntity": {
+		"prefix": [ "HealthInfo.pEntity" ],
+		"body" : [ "HealthInfo.pEntity" ],
+		"description" : "[ASLP] The player caller"
+	},
+	"float HealthInfo::flHealth": {
+		"prefix": [ "HealthInfo.flHealth" ],
+		"body" : [ "HealthInfo.flHealth" ],
+		"description" : "[ASLP] Health value"
+	},
+	"int HealthInfo::bitsDamageType": {
+		"prefix": [ "HealthInfo.bitsDamageType" ],
+		"body" : [ "HealthInfo.bitsDamageType" ],
+		"description" : "[ASLP] Damage type"
+	},
+	"int HealthInfo::health_cap": {
+		"prefix": [ "HealthInfo.health_cap" ],
+		"body" : [ "HealthInfo.health_cap" ],
+		"description" : "[ASLP] Damage cap"
+	},
+	"const uint32 Hooks::ASLP::Player::PlayerPreRevive":
+	{
+		"prefix": [ "PlayerPreRevive", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPreRevive, @PlayerPreRevive )" ],
+		"description" : "[ASLP] Pre Call before a player revive."
+	},
+	"HookReturnCode PlayerPreRevive( CBasePlayer@ pPlayer )":
+	{
+		"prefix": [ "PlayerPreRevive", "Hooks" ],
+		"body" : [ "HookReturnCode PlayerPreRevive( CBasePlayer@ pPlayer )" ],
+		"description" : "[ASLP] Pre Call before a player revive."
+	},
+	"const uint32 Hooks::ASLP::Player::PlayerPostRevive":
+	{
+		"prefix": [ "PlayerPostRevive", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPostRevive, @PlayerPostRevive )" ],
+		"description" : "[ASLP] Post Call before a player revive."
+	},
+	"HookReturnCode PlayerPostRevive( CBasePlayer@ pPlayer )":
+	{
+		"prefix": [ "PlayerPostRevive", "Hooks" ],
+		"body" : [ "HookReturnCode PlayerPostRevive( CBasePlayer@ pPlayer )" ],
+		"description" : "[ASLP] Post Call before a player revive."
+	},
+	"const uint32 Hooks::Engine::AddToFullPack_Post":
+	{
+		"prefix": [ "AddToFullPack_Post", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::AddToFullPack_Post, @AddToFullPack_Post )" ],
+		"description" : "[ASLP] Post call of gEntityInterface.pfnAddToFullPack_Post."
+	},
+	"HookReturnCode AddToFullPack_Post( entity_state_t@& out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES& out meta_result, int& out result )":
+	{
+		"prefix": [ "AddToFullPack_Post", "Hooks" ],
+		"body" : [ "HookReturnCode AddToFullPack_Post( entity_state_t@& out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES& out meta_result, int& out result )" ],
+		"description" : "[ASLP] Post call of gEntityInterface.pfnAddToFullPack_Post."
+	},
+	"const uint32 Hooks::Engine::AddToFullPack":
+	{
+		"prefix": [ "AddToFullPack", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::AddToFullPack, @AddToFullPack )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnAddToFullPack."
+	},
+	"HookReturnCode AddToFullPack( entity_state_t@& out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES& out meta_result, int& out result )":
+	{
+		"prefix": [ "AddToFullPack", "Hooks" ],
+		"body" : [ "HookReturnCode AddToFullPack( entity_state_t@& out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES& out meta_result, int& out result )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnAddToFullPack."
+	},
+	"const uint32 Hooks::Engine::Think_Post":
+	{
+		"prefix": [ "Think_Post", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::Think_Post, @Think_Post )" ],
+		"description" : "[ASLP] Post call of gEntityInterface.pfnThink_Post"
+	},
+	"HookReturnCode Think_Post( CBaseEntity@ pOther, META_RES& out meta_result )":
+	{
+		"prefix": [ "Think_Post", "Hooks" ],
+		"body" : [ "HookReturnCode Think_Post( CBaseEntity@ pOther, META_RES& out meta_result )" ],
+		"description" : "[ASLP] Post call of gEntityInterface.pfnThink_Post"
+	},
+	"const uint32 Hooks::Engine::Think":
+	{
+		"prefix": [ "Think", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::Think, @Think )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnThink."
+	},
+	"HookReturnCode Think( CBaseEntity@ pOther, META_RES& out meta_result )":
+	{
+		"prefix": [ "Think", "Hooks" ],
+		"body" : [ "HookReturnCode Think( CBaseEntity@ pOther, META_RES& out meta_result )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnThink."
+	},
+	"const uint32 Hooks::Engine::ShouldCollide":
+	{
+		"prefix": [ "ShouldCollide", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::ShouldCollide, @ShouldCollide )" ],
+		"description" : "[ASLP] Pre Call of gEntityInterface.pfnShouldCollide"
+	},
+	"HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pOther, META_RES& out meta_result, int& out result )":
+	{
+		"prefix": [ "ShouldCollide", "Hooks" ],
+		"body" : [ "HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pOther, META_RES& out meta_result, int& out result )" ],
+		"description" : "[ASLP] Pre Call of gEntityInterface.pfnShouldCollide"
+	},
+	"const uint32 Hooks::Engine::PM_Move":
+	{
+		"prefix": [ "PM_Move", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::PM_Move, @PM_Move )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnPM_Move."
+	},
+	"HookReturnCode PM_Move( playermove_t@& out pmove, int server, META_RES& out meta_result )":
+	{
+		"prefix": [ "PM_Move", "Hooks" ],
+		"body" : [ "HookReturnCode PM_Move( playermove_t@& out pmove, int server, META_RES& out meta_result )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnPM_Move."
+	},
+	"const uint32 Hooks::Engine::ClientCommand":
+	{
+		"prefix": [ "ClientCommand", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::ClientCommand, @ClientCommand )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnClientCommand."
+	},
+	"HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in command, META_RES& out meta_result )":
+	{
+		"prefix": [ "ClientCommand", "Hooks" ],
+		"body" : [ "HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in command, META_RES& out meta_result )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnClientCommand."
+	},
+	"const uint32 Hooks::Engine::KeyValue":
+	{
+		"prefix": [ "KeyValue", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::KeyValue, @KeyValue )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnKeyValue."
+	},
+	"HookReturnCode KeyValue( CBaseEntity@ pEntity, const string& in pszKey, const string& in pszValue, const string& in szClassName, META_RES& out meta_result )":
+	{
+		"prefix": [ "KeyValue", "Hooks" ],
+		"body" : [ "HookReturnCode KeyValue( CBaseEntity@ pEntity, const string& in pszKey, const string& in pszValue, const string& in szClassName, META_RES& out meta_result )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnKeyValue."
+	},
+	"const uint32 Hooks::Engine::Touch":
+	{
+		"prefix": [ "Touch", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::Touch, @Touch )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnTouch."
+	},
+	"HookReturnCode Touch( CBaseEntity@ pTouched, CBaseEntity@ pOther, META_RES& out meta_result )":
+	{
+		"prefix": [ "Touch", "Hooks" ],
+		"body" : [ "HookReturnCode Touch( CBaseEntity@ pTouched, CBaseEntity@ pOther, META_RES& out meta_result )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnTouch."
+	},
+	"const uint32 Hooks::Engine::Blocked":
+	{
+		"prefix": [ "Blocked", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Engine::Blocked, @Blocked )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnBlocked."
+	},
+	"HookReturnCode Blocked( CBaseEntity@ pBlocked, CBaseEntity@ pOther, META_RES & out meta_result )":
+	{
+		"prefix": [ "Blocked", "Hooks" ],
+		"body" : [ "HookReturnCode Blocked( CBaseEntity@ pBlocked, CBaseEntity@ pOther, META_RES & out meta_result )" ],
+		"description" : "[ASLP] Pre call of gEntityInterface.pfnBlocked."
+	},
+	"const uint32 Hooks::Monster::MonsterPreTraceAttack":
+	{
+		"prefix": [ "MonsterPreTraceAttack", "Hooks" ],
+		"body" : [ "g_Hooks.RegisterHook( Hooks::ASLP::Monster::MonsterPreTraceAttack, @MonsterPreTraceAttack )" ],
+		"description" : "[ASLP] Pre call of CBaseMonster::TraceAttack."
+	},
+	"HookReturnCode MonsterPreTraceAttack( TraceInfo@ pInfo )":
+	{
+		"prefix": [ "MonsterPreTraceAttack", "Hooks" ],
+		"body" : [ "HookReturnCode MonsterPreTraceAttack( TraceInfo@ pInfo )" ],
+		"description" : "[ASLP] Pre call of CBaseMonster::TraceAttack."
+	},
+	"typedef TraceInfo@": {
+		"prefix": "TraceInfo",
+		"body" : [ "TraceInfo@" ],
+		"description" : "[ASLP] Constructor."
+	},
+	"CBaseEntity@ TraceInfo::pVictim": {
+		"prefix": [ "TraceInfo.pVictim" ],
+		"body" : [ "TraceInfo.pVictim" ],
+		"description" : "[ASLP] Victim Entity"
+	},
+	"CBaseEntity@ TraceInfo::pVictim": {
+		"prefix": [ "TraceInfo.pVictim" ],
+		"body" : [ "TraceInfo.pVictim" ],
+		"description" : "[ASLP] Victim Entity"
+	},
+	"CBaseEntity@ TraceInfo::pInflictor": {
+		"prefix": [ "TraceInfo.pInflictor" ],
+		"body" : [ "TraceInfo.pInflictor" ],
+		"description" : "[ASLP] Inflictor Entity"
+	},
+	"float TraceInfo::flDamage": {
+		"prefix": [ "TraceInfo.flDamage" ],
+		"body" : [ "TraceInfo.flDamage" ],
+		"description" : "[ASLP] Damage"
+	},
+	"Vector TraceInfo::vecDir": {
+		"prefix": [ "TraceInfo.vecDir" ],
+		"body" : [ "TraceInfo.vecDir" ],
+		"description" : "[ASLP] Direction"
+	},
+	"TraceResult TraceInfo::ptr": {
+		"prefix": [ "TraceInfo.ptr" ],
+		"body" : [ "TraceInfo.ptr" ],
+		"description" : "[ASLP] Trace Results"
+	},
+	"int TraceInfo::bitsDamageType": {
+		"prefix": [ "TraceInfo.bitsDamageType" ],
+		"body" : [ "TraceInfo.bitsDamageType" ],
+		"description" : "[ASLP] Damage bits"
+	},
+}
