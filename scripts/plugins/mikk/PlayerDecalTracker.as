@@ -1,11 +1,4 @@
-/*
-	"plugin"
-	{
-		"name" "PlayerDecalTracker"
-		"script" "mikk/PlayerDecalTracker"
-	}
-*/
-#include '../../maps/mikk/as_utils'
+#include '../../mikk/as_utils'
 
 /*
 *	This plugins tracks all player decals

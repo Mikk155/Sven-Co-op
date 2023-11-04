@@ -1,4 +1,4 @@
-#include 'as_utils'
+#include '../../mikk/as_utils'
 
 bool reflection_register = g_RegisterReflection();
 
@@ -24,8 +24,6 @@ void MapStart()
 {
     g_Game.AlertMessage( at_console, '[Reflection] Called '+"MapStart"+'\n' );
     g_Reflection.CallFunction( 'MapStart' );
-
-    //g_FileSystem.RemoveFile( 'scripts/plugins/store/mikk_register.txt' );
 }
 
 Reflection@ g_Reflection;

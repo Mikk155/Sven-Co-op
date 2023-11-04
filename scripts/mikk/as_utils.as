@@ -1,10 +1,10 @@
-#include 'utils/CUtility'
-#include 'utils/CPlayerFuncs'
-#include 'utils/CEntityFuncs'
-#include 'utils/CMap'
-#include 'utils/CHooks'
-#include 'utils/CFileManager'
-#include 'utils/ScriptBaseCustomEntity'
+#include 'CUtility'
+#include 'CPlayerFuncs'
+#include 'CEntityFuncs'
+#include 'CMap'
+#include 'CHooks'
+#include 'CFileManager'
+#include 'ScriptBaseCustomEntity'
 
 CMKUtils mk;
 

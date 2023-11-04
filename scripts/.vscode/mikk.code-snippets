@@ -201,17 +201,17 @@
 		],
 		"description": "[Mikk] Return whatever the given angelscript have been already registered as a map_script."
 	},
-	"void global_messages( dictionary & out g_KeyValues, const string & in m_iszFind, bool & in IsPlugin = false, const string & in m_iszCustomPath = 'mikk/global_messages.ini' )":
+	"void GetMultiLanguageMessages( dictionary& out g_Dictionary, const string& in m_iszPath )":
 	{
 		"prefix":
 		[
-			"mk.FileManager.global_messages", "global_messages"
+			"mk.FileManager.GetMultiLanguageMessages", "GetMultiLanguageMessages"
 		],
 		"body":
 		[
-			"mk.FileManager.global_messages( ${1:dictionary & out g_KeyValues}, ${2:const string & in m_iszFind}, ${3:bool & in IsPlugin = false}, ${4:const string & in m_iszCustomPath = 'mikk/global_messages.ini'} )"
+			"mk.FileManager.GetMultiLanguageMessages( ${1:dictionary& out g_Dictionary}, ${2:const string& in m_iszPath} )"
 		],
-		"description": "[Mikk] Loads custom messages with multiple languages from a external filer."
+		"description": "[Mikk] Loads custom messages with multiple languages from a external file."
 	},
 	"bool LoadEntFile( const string iszFileLoad, string iszClassname = String::INVALID_INDEX )":
 	{
@@ -392,6 +392,18 @@
 		"body" : [ "HookReturnCode PlayerFlashLight( CBasePlayer@ pPlayer, const bool m_bIsActive, int&out m_iRechargeSpeed, int&out m_iConsumeSpeed )" ],
 		"description" : "[Mikk] Call when the player's flashlight has been toggled. m_iRechargeSpeed = 0 stops recharging, < 0 slow recharge > 1 fast recharge, m_iConsumeSpeed = 0 stops consuming, < 0 slow consuming > 1 fast consuming."
 	},
+	"bool Hooks::Player::PlayerJump" :
+	{
+		"prefix": [ "PlayerJump", "Hooks" ],
+		"body" : [ "mk.Hooks.RegisterHook( Hooks::Player::PlayerJump, @PlayerJump )" ],
+		"description" : "[Mikk] Call when the player jumps."
+	},
+	"HookReturnCode PlayerJump( CBasePlayer@ pPlayer )":
+	{
+		"prefix": [ "PlayerJump", "Hooks" ],
+		"body" : [ "HookReturnCode PlayerJump( CBasePlayer@ pPlayer )" ],
+		"description" : "[Mikk] Call when the player jumps."
+	},
 	"bool Hooks::Player::PlayerObserverMode" :
 	{
 		"prefix": [ "PlayerObserverMode", "Hooks" ],
@@ -415,5 +427,23 @@
 		"prefix": [ "MapChanged", "Hooks" ],
 		"body" : [ "HookReturnCode MapChanged( const string& in m_iszMapName )" ],
 		"description" : "[Mikk] Called at MapInit."
+	},
+	"enum Hooks::Game::SurvivalEndRound" :
+	{
+		"prefix": [ "SurvivalEndRound", "Hooks" ],
+		"body" : [ "mk.Hooks.RegisterHook( Hooks::Game::SurvivalEndRound, @SurvivalEndRound )" ],
+		"description" : "[Mikk] Call when a survival mode round ends."
+	},
+	"HookReturnCode SurvivalEndRound()":
+	{
+		"prefix": [ "SurvivalEndRound", "Hooks" ],
+		"body" : [ "HookReturnCode SurvivalEndRound()" ],
+		"description" : "[Mikk] Call when a survival mode round ends."
+	},
+	"string GetDiscord()" :
+	{
+		"prefix": [ "GetDiscord", "Discord" ],
+		"body" : [ "mk.GetDiscord()" ],
+		"description" : "[Mikk] Limitless Potential's discord server invite."
 	}
 }

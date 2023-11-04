@@ -1,4 +1,4 @@
-#include '../../maps/mikk/as_utils'
+#include '../../mikk/as_utils'
 
 // 2 minutes cooldown per players
 const int m_iPlayerVoteCooldown = 5;

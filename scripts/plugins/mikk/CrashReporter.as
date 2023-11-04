@@ -1,4 +1,6 @@
-// Put in here the name of the map your server is starting at
+#include '../../mikk/as_utils'
+
+// Put in here the name of the map your server is starting at by it's +map parameter
 const string m_iszServerStartMap = '_server_start';
 
 // Add this function to your vote map plugin, make sure to ejecute it when the map is going to be changed.
@@ -16,7 +18,7 @@ if( pLatest !is null && pLatest.IsOpen() )
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( "https://discord.gg/VsNnE3A7j8" );
+    g_Module.ScriptInfo.SetContactInfo( mk.GetDiscord() );
 
     g_Hooks.RegisterHook( Hooks::ASLP::Engine::KeyValue, @KeyValue );
 }
@@ -25,8 +27,10 @@ array<string> m_iszMapasSospechosos;
 
 HookReturnCode KeyValue( CBaseEntity@ pEntity, const string& in pszKey, const string& in pszValue, const string& in szClassName, META_RES& out meta_result )
 {
-    if( string( pEntity.pev.classname ) == 'trigger_changelevel' && pszKey == 'map' )
+    if( szClassName == 'trigger_changelevel' && pszKey == 'map' )
+    {
         m_iszMapasSospechosos.insertLast( pszValue );
+    }
     return HOOK_CONTINUE;
 }
 

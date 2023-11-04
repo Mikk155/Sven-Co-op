@@ -1,4 +1,12 @@
-#include '../../maps/mikk/as_utils'
+/*
+    as_command .AntiClip "entity classname"
+    - Won't collide with ally players, use for projectiles
+
+    as_command .AntiClip enable 1/0
+    - will enable/disable anticlip, removing or registering the hooks.
+*/
+
+#include '../../mikk/as_utils'
 
 void PluginInit()
 {
@@ -41,7 +49,7 @@ void SetCvars( const CCommand@ args )
             }
         }
 
-        mk.PlayerFuncs.PrintMessage( null, ( atoi( args[2] ) == 1 ? dictionary( msg[ 'anticlip enabled' ] ) : msg_disabled ), CMKPlayerFuncs_PRINT_CHAT, true );
+        mk.PlayerFuncs.PrintMessage( null, ( atoi( args[2] ) == 1 ? dictionary( msg[ 'anticlip enabled' ] ) : dictionary( msg[ 'anticlip disabled' ] ) ), CMKPlayerFuncs_PRINT_CHAT, true );
     }
     else if( !args[1].IsEmpty() )
     {
