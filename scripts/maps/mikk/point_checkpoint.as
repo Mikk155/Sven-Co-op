@@ -2,16 +2,13 @@
 
 namespace point_checkpoint
 {
-    dictionary msg_activated, msg_triggered, msg_use, msg_spawned;
-
     void MapInit()
     {
-        m_EntityFuncs.CustomEntity( 'point_checkpoint', true );
-        global_messages( msg_use, 'point_checkpoint use', false, 'mikk/point_checkpoint.ini' );
-        global_messages( msg_activated, 'point_checkpoint activated' false, 'mikk/point_checkpoint.ini' );
-        global_messages( msg_triggered, 'point_checkpoint triggered' false, 'mikk/point_checkpoint.ini' );
-        global_messages( msg_spawned, 'point_checkpoint spawned' false, 'mikk/point_checkpoint.ini' );
+        mk.EntityFuncs.CustomEntity( 'point_checkpoint', true );
+        mk.FileManager.GetMultiLanguageMessages( msg, 'scripts/maps/mikk/point_checkpoint.ini' );
     }
+
+    dictionary msg;
 
     enum POINT_CHECKPOINT
     {
@@ -184,7 +181,7 @@ namespace point_checkpoint
             or spawnflag( PC_START_OFF ) )
                 return;
 
-            m_EntityFuncs.Trigger( m_iszTriggerOnTouch, pOther, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
+            mk.EntityFuncs.Trigger( m_iszTriggerOnTouch, pOther, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
 
             if( IsLockedByMaster()
             or spawnflag( PC_ONLY_TRIGGER )
@@ -194,7 +191,7 @@ namespace point_checkpoint
 
             if( pOther.IsPlayer() )
             {
-                m_Language.PrintMessage( cast<CBasePlayer@>( pOther ), msg_use, ML_BIND, false, { { '$key$', '+use' } } );
+                mk.PlayerFuncs.PrintMessage( cast<CBasePlayer@>( pOther ), dictionary( msg[ 'point_checkpoint use' ] ), CMKPlayerFuncs_PRINT_BIND, false, { { '$key$', '+use' } } );
 
                 if( pOther.pev.button & IN_USE == 0 )
                     return;
@@ -262,7 +259,7 @@ namespace point_checkpoint
 
             if( !spawnflag( PC_NO_MESSAGE ) )
             {
-                m_Language.PrintMessage( null, ( m_iszActivator != '' ?  msg_activated : msg_triggered ), ML_CHAT, true, { { '$name$', m_iszActivator } } );
+                mk.PlayerFuncs.PrintMessage( null, ( m_iszActivator != '' ?  dictionary( msg[ 'point_checkpoint activated' ] ) : dictionary( msg[ 'point_checkpoint triggered' ] ) ), CMKPlayerFuncs_PRINT_CHAT, true, { { '$name$', m_iszActivator } } );
             }
 
 			g_SoundSystem.EmitSound( self.edict(), CHAN_STATIC, m_iszCustomMusic, 1.0f, ATTN_NONE );
@@ -281,7 +278,7 @@ namespace point_checkpoint
 
             g_Scheduler.SetTimeout( @this, 'StartSpawning', m_fDelayBeforeStart, @pPlayers );
 
-            m_EntityFuncs.Trigger( m_iszTriggerOnActivate, pActivator, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
+            mk.EntityFuncs.Trigger( m_iszTriggerOnActivate, pActivator, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
         }
 
         int OldRender;
@@ -352,7 +349,7 @@ namespace point_checkpoint
             }
             else
             {
-                m_EntityFuncs.Trigger( m_iszTriggerOnEnd, self, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
+                mk.EntityFuncs.Trigger( m_iszTriggerOnEnd, self, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
 
                 if( m_fDelayBeforeReActivate > 0.0f )
                 {
@@ -385,7 +382,7 @@ namespace point_checkpoint
         {
             if( spawnflag( PC_VALID_SPAWNPOINT ) )
             {
-                m_PlayerFuncs.RespawnPlayer( pPlayer );
+                mk.PlayerFuncs.RespawnPlayer( pPlayer );
             }
             else
             {
@@ -415,7 +412,7 @@ namespace point_checkpoint
             m_Effect.quake( pPlayer.pev.origin, 1 );
             g_SoundSystem.EmitSound( pPlayer.edict(), CHAN_ITEM, m_iszPlayerSpawnSound, 1.0f, ATTN_NORM );
 
-            m_EntityFuncs.Trigger( m_iszPlayersTarget, pPlayer, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
+            mk.EntityFuncs.Trigger( m_iszPlayersTarget, pPlayer, self, itout( m_iUseType, m_UTLatest ), m_fDelay );
         }
 
         void SpawnFinished( EHandle hActivator )
@@ -424,11 +421,11 @@ namespace point_checkpoint
             self.pev.effects &= ~EF_NODRAW;
             bnodraw = false;
             self.pev.spawnflags &= ~PC_START_OFF;
-            m_EntityFuncs.Trigger( m_iszTriggerOnSpawn, hActivator.GetEntity(), self, itout( m_iUseType, m_UTLatest ), m_fDelay );
+            mk.EntityFuncs.Trigger( m_iszTriggerOnSpawn, hActivator.GetEntity(), self, itout( m_iUseType, m_UTLatest ), m_fDelay );
 
             if( !spawnflag( PC_NO_MESSAGE ) )
             {
-                m_Language.PrintMessage( null, msg_spawned, ML_CHAT, true );
+                mk.PlayerFuncs.PrintMessage( null, dictionary( msg[ 'point_checkpoint spawned' ] ), CMKPlayerFuncs_PRINT_CHAT, true );
             }
         }
 

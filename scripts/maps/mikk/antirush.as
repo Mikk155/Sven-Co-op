@@ -5,25 +5,25 @@ namespace antirush
     void MapInit()
     {
         mk.EntityFuncs.CustomEntity( 'antirush' );
-
-        mk.FileManager.global_messages( msg_percent, 'antirush percent', false, 'mikk/antirush.ini' );
-        mk.FileManager.global_messages( msg_countdown, 'antirush countdown', false, 'mikk/antirush.ini' );
-        mk.FileManager.global_messages( msg_skull, 'antirush skull', false, 'mikk/antirush.ini' );
+        mk.FileManager.GetMultiLanguageMessages( msg, 'scripts/maps/mikk/antirush.ini' );
     }
 
     void UnRegister()
     {
-        antirush@ pAntiRush = null;
+        CBaseEntity@ pEntity = null;
 
-        while( ( @pAntiRush = cast<antirush@>( CastToScriptClass( g_EntityFuncs.FindEntityByClassname( pEntity, 'antirush' ) ) ) ) !is null )
+        while( ( @pEntity =  g_EntityFuncs.FindEntityByClassname( pEntity, 'antirush' ) ) !is null )
         {
-            pAntiRush.ConditionsMet( true );
+            antirush@ pAntiRush = cast<antirush@>( CastToScriptClass( pEntity ) );
+
+            if( pAntiRush !is null )
+                pAntiRush.ConditionsMet( true );
         }
 
         g_CustomEntityFuncs.UnRegisterCustomEntity( 'antirush' );
     }
 
-    dictionary lang, msg_skull, msg_percent, msg_countdown;
+    dictionary msg;
 
     enum ANTIRUSH
     {
@@ -141,7 +141,7 @@ namespace antirush
                             {
                                 if( !spawnflag( AR_HIDE_MESSAGE ) )
                                 {
-                                    mk.PlayerFuncs.PrintMessage( pPlayer, ( HasCustomMSG ? m_dCount : msg_skull ), CMKPlayerFuncs_PRINT_HUD, false, { { '$skull$', string( m_iCounter() ) } } );
+                                    mk.PlayerFuncs.PrintMessage( pPlayer, ( HasCustomMSG ? m_dCount : dictionary( msg[ 'antirush skull' ] ) ), CMKPlayerFuncs_PRINT_HUD, false, { { '$skull$', string( m_iCounter() ) } } );
                                 }
                             }
                             else
@@ -153,7 +153,7 @@ namespace antirush
 
                                 if( !spawnflag( AR_HIDE_MESSAGE ) )
                                 {
-                                    mk.PlayerFuncs.PrintMessage( pPlayer, msg_percent, CMKPlayerFuncs_PRINT_HUD, false, { { '$got$', string( int( CurrentPercentage ) ) }, { '$needed$', string( m_iNeedPercent ) } } );
+                                    mk.PlayerFuncs.PrintMessage( pPlayer, dictionary( msg[ 'antirush percent' ] ), CMKPlayerFuncs_PRINT_HUD, false, { { '$got$', string( int( CurrentPercentage ) ) }, { '$needed$', string( m_iNeedPercent ) } } );
                                 }
                             }
                         }
@@ -168,7 +168,7 @@ namespace antirush
                     if( !spawnflag( AR_HIDE_MESSAGE ) )
                     {
                         string iszTime = ( m_fCountdown < 10 ? '0' : '' ) + string( m_fCountdown ) + '.' + ( milisecs < 10 ? '0' : '' ) + string( milisecs );
-                        mk.PlayerFuncs.PrintMessage( null, msg_countdown, CMKPlayerFuncs_PRINT_HUD, true, { { '$count$', string( iszTime ) } } );
+                        mk.PlayerFuncs.PrintMessage( null, dictionary( msg[ 'antirush countdown' ] ), CMKPlayerFuncs_PRINT_HUD, true, { { '$count$', string( iszTime ) } } );
                     }
 
                     --milisecs;
