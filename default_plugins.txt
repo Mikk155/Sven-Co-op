@@ -1,0 +1,60 @@
+"plugins"
+{
+	"plugin"
+	{
+		"name" "AFBase"
+		"script" "AFBase"
+	}
+	"plugin"
+	{
+		"name" "AntiClip"
+		"script" "mikk/AntiClip"
+	}
+	"plugin"
+	{
+		"name" "SurvivalSpawnAll"
+		"script" "mikk/SurvivalSpawnAll"
+	}
+	"plugin"
+	{
+		"name" "FastRestart"
+		"script" "mikk/FastRestart"
+	}
+	"plugin"
+	{
+		"name" "svenfixes"
+		"script" "mikk/svenfixes"
+	}
+	"plugin"
+	{
+		"name" "PlayerDecalTracker"
+		"script" "mikk/PlayerDecalTracker"
+	}
+	"plugin"
+	{
+		"name" "antiblock"
+		"script" "antiblock"
+        "concommandns" "antiblock"
+	}
+	"plugin"
+	{
+		"name" "CrashReporter"
+		"script" "mikk/CrashReporter"
+	}
+	"plugin"
+	{
+		"name" "ServerVoteSystem"
+		"script" "mikk/ServerVoteSystem"
+	}
+	// Post
+	"plugin"
+	{
+		"name" "ChatColors"
+		"script" "ChatColors"
+	}
+	"plugin"
+	{
+		"name" "DiscordBridge"
+		"script" "DiscordBridge"
+	}
+}
