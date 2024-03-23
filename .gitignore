@@ -8,8 +8,11 @@ scripts/plugins/mikk/chatbridge/token.txt
 steam_autocloud.vdf
 
 # Visual Studio Code
-.vscode/*
+.vscode/*.*
 !.vscode/shared.code-snippets
+
+src/metamod/*
+!src/metamod/aslp/
 
 # C++
 *.pdb
