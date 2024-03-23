@@ -16,7 +16,36 @@
         "name" "chatbridge"
         "script" "mikk/chatbridge"
     }
-
+    "plugin"
+    {
+        "name" "emotes"
+        "script" "mikk/emotes"
+    }
+    "plugin"
+    {
+        "name" "chatroles"
+        "script" "mikk/chatroles"
+    }
+    "plugin"
+    {
+        "name" "CrashReporter"
+        "script" "mikk/CrashReporter"
+    }
+    "plugin"
+    {
+        "name" "dynamic_hostname"
+        "script" "mikk/dynamic_hostname"
+    }
+    "plugin"
+    {
+        "name" "SurvivalRespawnAll"
+        "script" "mikk/SurvivalRespawnAll"
+    }
+    "plugin"
+    {
+        "name" "FastRestart"
+        "script" "mikk/FastRestart"
+    }
     "plugin"
     {
         "name" "svenfixes"
