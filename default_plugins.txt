@@ -21,4 +21,9 @@
         "name" "emotes"
         "script" "mikk/emotes"
     }
+    "plugin"
+    {
+        "name" "chatroles"
+        "script" "mikk/chatroles"
+    }
 }

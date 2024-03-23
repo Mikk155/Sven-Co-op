@@ -99,4 +99,13 @@ class MKPlayerFuncs
         }
         return false;
     }
+
+    void PlayerSay( CBaseEntity@ pPlayer, string m_szMessage )
+    {
+        NetworkMessage m( MSG_ALL, NetworkMessages::NetworkMessageType(74), null );
+            m.WriteByte( pPlayer.entindex() );
+            m.WriteByte( 2 ); // tell the client to color the player name according to team
+            m.WriteString( m_szMessage + '\n' );
+        m.End();
+    }
 }

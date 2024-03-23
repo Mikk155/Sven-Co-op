@@ -29,4 +29,23 @@ class MKUtility
 
         @pTimer = g_Scheduler.SetInterval( "Think", flTime, iRepeat );
     }
+
+    bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )
+    {
+        array<string> PluginsList = g_PluginManager.GetPluginList();
+
+        if( bCaseSensitive )
+        {
+            return ( PluginsList.find( m_iszPluginName ) >= 0 );
+        }
+
+        for( uint ui = 0; ui < PluginsList.length(); ui++ )
+        {
+            if( PluginsList[ui].ToLowercase() == m_iszPluginName.ToLowercase() )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
