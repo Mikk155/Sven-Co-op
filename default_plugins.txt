@@ -26,4 +26,9 @@
         "name" "chatroles"
         "script" "mikk/chatroles"
     }
+    "plugin"
+    {
+        "name" "CrashReporter"
+        "script" "mikk/CrashReporter"
+    }
 }
