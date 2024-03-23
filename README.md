@@ -8,3 +8,4 @@
 | Name | Type | Release | Description |
 |---|---|---|---|
 | FastRestart | Plugin | [Download](https://github.com/Mikk155/Sven-Co-op/releases/tag/plugin) | When survival mode is enabled and there is no alive players the map is restarted  instantly |
+| AntiClip | Plugin | [Download](https://github.com/Mikk155/Sven-Co-op/releases/tag/AntiClip) | Prevent player-to-player clipping and player's projectiles-to-player clipping |
