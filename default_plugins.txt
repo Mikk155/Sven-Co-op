@@ -61,4 +61,9 @@
         "name" "PlayerDecalTracker"
         "script" "mikk/PlayerDecalTracker"
     }
+    "plugin"
+    {
+        "name" "CustomFlashLight"
+        "script" "mikk/CustomFlashLight"
+    }
 }
