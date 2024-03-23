@@ -27,6 +27,4 @@ def simplify( a ):
 
     d = c.sub( '', b )
 
-    print( f'c {d}')
-
     return d

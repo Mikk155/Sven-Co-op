@@ -15,10 +15,6 @@
 #                                                                                                                                       #
 #=======================================================================================================================================#
 
-import sys
-
-sys.path.append( 'chatbridge' )
-
 import discord
 
 from discord.ext import commands

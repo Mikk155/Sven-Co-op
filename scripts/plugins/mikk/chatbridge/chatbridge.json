@@ -6,7 +6,7 @@
     "interval angelscript to python": 20,
     "interval python read": 10,
     "bridge channel": 1211204941490688030,
-    "bot prefix": "w.",
+    "bot prefix": "!",
     "LOG":
     {
         "delete discord messages": false,

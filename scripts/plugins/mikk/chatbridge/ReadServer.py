@@ -37,15 +37,15 @@ async def ReadMessages():
 
     BridgeChannel = bot.get_channel( CHANNEL_BRIDGE )
 
-    with open( ServerFile, 'r') as txt:
+    with open( ServerFile, 'r') as r:
 
-        lines = txt.readlines()
+        lines = r.readlines()
 
-        txt.close()
+        r.close()
 
-        if os.path.exists( ServerFile ):
-
-            os.remove( ServerFile )
+        with open( ServerFile, 'w') as w:
+            w.writelines( '' )
+            w.close()
 
         for l in lines:
 

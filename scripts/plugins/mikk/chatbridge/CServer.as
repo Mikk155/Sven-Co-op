@@ -50,11 +50,11 @@ class CServer
             if( m_szBuffer.length() < 1 )
                 break;
 
-            g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, '[Discord] ' + m_szBuffer[0] + '\n' );
+            g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, m_szBuffer[0] + '\n' );
 
             if( JsonLog[ "print discord messages", false ] )
             {
-                g_Chatbridge.Discord.print( '[Discord] ' + m_szBuffer[0] );
+                g_Chatbridge.Discord.print( m_szBuffer[0] );
             }
 
             m_szBuffer.removeAt(0);

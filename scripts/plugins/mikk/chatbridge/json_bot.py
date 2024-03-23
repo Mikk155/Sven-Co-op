@@ -18,7 +18,7 @@
 import os
 import json
 
-file  = '../chatbridge.json'
+file  = 'chatbridge.json'
 
 with open( f'{os.path.join(os.path.dirname(__file__), file )}' ) as config:
     jsonf = json.load( config )
