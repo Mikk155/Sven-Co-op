@@ -1,5 +1,10 @@
 # Sven Co-op
 
-- almost map_scripts requires as_register.as and utils/ folder
+- Download [asset_installer](https://github.com/Mikk155/Sven-Co-op/releases/tag/asset_installer) for installing resources
 
-- almost plugins requires the latest build of [Gaftherman](https://github.com/Gaftherman)'s metamod plugin [Angel Script Limitless Potential](https://github.com/Gaftherman/LP-METAMOD)
+- Note almost **everything** needs these [shared](https://github.com/Mikk155/Sven-Co-op/releases/tag/shared) scripts.
+### Releases
+
+| Name | Type | Release | Description |
+|---|---|---|---|
+| FastRestart | Plugin | [Download](https://github.com/Mikk155/Sven-Co-op/releases/tag/plugin) | When survival mode is enabled and there is no alive players the map is restarted  instantly |
