@@ -132,16 +132,38 @@ HookReturnCode PlayerEnteredObserver( CBasePlayer@ pPlayer )
     {
         CBaseEntity@ pCorpse = null;
 
-        // Not in sphere, observers can spectate a player as soon as they're dead. instead check it's movetype
-        while( ( @pCorpse = g_EntityFuncs.FindEntityByClassname( pCorpse, 'deadplayer' ) ) !is null && pCorpse.pev.movetype != MOVETYPE_NONE )
+        while( ( @pCorpse = g_EntityFuncs.FindEntityByClassname( pCorpse, 'deadplayer' ) ) !is null && pCorpse.pev.renderamt == pPlayer.entindex() )
         {
-            pCorpse.pev.movetype = MOVETYPE_NONE;
-            pCorpse.pev.solid = SOLID_NOT;
-            pCorpse.pev.origin.z += 32;
+            CheckGroundCorpse( EHandle( pCorpse ) );
+            break;
         }
     }
 
 	return HOOK_CONTINUE;
+}
+
+void CheckGroundCorpse( EHandle hCorpse )
+{
+    CBaseEntity@ pCorpse = hCorpse.GetEntity();
+
+    if( pCorpse !is null )
+    {
+        TraceResult tr;
+
+        g_Utility.TraceLine( pCorpse.pev.origin, pCorpse.pev.origin, ignore_monsters, pCorpse.edict(), tr );
+
+        if( tr.fInOpen == 1 && ( pCorpse.pev.flags & FL_ONGROUND ) == 0 )
+        {
+            g_Scheduler.SetTimeout( 'CheckGroundCorpse', 0.1f, EHandle( pCorpse ) );
+        }
+        else
+        {
+            pCorpse.pev.origin.z += 64;
+            g_EngineFuncs.DropToFloor( pCorpse.edict() );
+            pCorpse.pev.movetype = MOVETYPE_NONE;
+            pCorpse.pev.solid = SOLID_NOT;
+        }
+    }
 }
 
 HookReturnCode PlayerLeftObserver( CBasePlayer@ pPlayer )
