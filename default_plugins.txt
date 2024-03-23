@@ -1,0 +1,19 @@
+"plugins"
+{
+    "plugin"
+    {
+        "name" "RCBot"
+        "script" "BotManager/BotManager"
+        "concommandns" "rcbot"
+    }
+    "plugin"
+    {
+        "name" "AFBase"
+        "script" "AFBase"
+    }
+    "plugin"
+    {
+        "name" "chatbridge"
+        "script" "mikk/chatbridge"
+    }
+}
