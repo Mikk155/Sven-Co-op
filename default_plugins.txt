@@ -36,4 +36,9 @@
         "name" "dynamic_hostname"
         "script" "mikk/dynamic_hostname"
     }
+    "plugin"
+    {
+        "name" "SurvivalRespawnAll"
+        "script" "mikk/SurvivalRespawnAll"
+    }
 }
