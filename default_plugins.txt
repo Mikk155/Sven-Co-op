@@ -66,4 +66,9 @@
         "name" "CustomFlashLight"
         "script" "mikk/CustomFlashLight"
     }
+    "plugin"
+    {
+        "name" "AFKManager"
+        "script" "mikk/AFKManager"
+    }
 }
