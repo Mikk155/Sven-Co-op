@@ -27,6 +27,26 @@ enum MKLANG
 
 class MKLanguage
 {
+    string GetLanguage( CBasePlayer@ pPlayer, json@ pJson, dictionary@ pReplacement = null )
+    {
+        string m_szLanguage = CustomKeyValue( pPlayer, "$s_language" );
+
+        if( m_szLanguage == String::EMPTY_STRING || m_szLanguage == '' )
+            m_szLanguage = "english";
+
+        string m_szMessage = pJson[ m_szLanguage, pJson[ 'english' ] ];
+
+        if( pReplacement !is null )
+        {
+            const array<string> strFrom = pReplacement.getKeys();
+
+            for( uint i = 0; i < strFrom.length(); i++ )
+                m_szMessage.Replace( "$" + strFrom[i] + "$", string( pReplacement[ strFrom[i] ] ) );
+        }
+
+        return m_szMessage;
+    }
+
     void PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
     {
         for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
@@ -43,23 +63,10 @@ class MKLanguage
         if( pPlayer is null || pJson is null )
             return;
 
-        string m_szLanguage = CustomKeyValue( pPlayer, "$s_language" );
+        string m_szMessage = GetLanguage( pPlayer, pJson, pReplacement );
 
-        if( m_szLanguage == String::EMPTY_STRING || m_szLanguage == '' )
-            m_szLanguage = "english";
-
-        string m_szMessage = pJson[ m_szLanguage, pJson[ 'english' ] ];
-
-        if( m_szMessage.IsEmpty() )
+        if( m_szMessage.IsEmpty() || m_szMessage == '' )
             return;
-
-        if( pReplacement !is null )
-        {
-            const array<string> strFrom = pReplacement.getKeys();
-
-            for( uint i = 0; i < strFrom.length(); i++ )
-                m_szMessage.Replace( "$" + strFrom[i] + "$", string( pReplacement[ strFrom[i] ] ) );
-        }
 
         switch( PrintType )
         {
@@ -90,7 +97,28 @@ class MKLanguage
             }
             case HUDMSG:
             {
-                g_PlayerFuncs.PrintKeyBindingString( pPlayer, m_szMessage + '\n' );
+                HUDTextParams textParams;
+                textParams.x = float( pJson[ 'x', -1 ] );
+                textParams.y = float( pJson[ 'y', -1 ] );
+                textParams.effect = pJson[ 'effect', 1 ];
+
+                RGBA rgba = atorgba( pJson[ 'color', '255 255 255' ] );
+                textParams.r1 = rgba.r;
+                textParams.g1 = rgba.g;
+                textParams.b1 = rgba.b;
+
+                RGBA rgba2 = atorgba( pJson[ 'color2', '255 255 255' ] );
+                textParams.r2 = rgba.r;
+                textParams.g2 = rgba.g;
+                textParams.b2 = rgba.b;
+
+                textParams.fadeinTime = float( pJson[ 'fadein', 0 ] );
+                textParams.fadeoutTime = float( pJson[ 'fadeout', 1 ] );
+                textParams.holdTime = float( pJson[ 'hold', 1 ] );
+                textParams.fxTime = float( pJson[ 'fxtime', 1 ] );
+                textParams.channel = pJson[ 'channel', 8 ];
+
+                g_PlayerFuncs.HudMessage( pPlayer, textParams, m_szMessage + '\n' );
                 break;
             }
         }
