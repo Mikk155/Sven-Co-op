@@ -16,4 +16,9 @@
         "name" "chatbridge"
         "script" "mikk/chatbridge"
     }
+    "plugin"
+    {
+        "name" "emotes"
+        "script" "mikk/emotes"
+    }
 }

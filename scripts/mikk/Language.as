@@ -15,7 +15,7 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-enum PRINT_LANGUAGE
+enum MKLANG
 {
     CHAT = 0,
     BIND,
@@ -27,20 +27,20 @@ enum PRINT_LANGUAGE
 
 class MKLanguage
 {
-    void PrintAll( json@ pJson, const string &in m_szKey, PRINT_LANGUAGE PrintType = CHAT, dictionary@ pReplacement = null )
+    void PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
     {
         for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
         {
             CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
 
             if( pPlayer !is null && pPlayer.IsConnected() )
-                Print( pPlayer, pJson, m_szKey, PrintType, pReplacement );
+                Print( pPlayer, pJson, PrintType, pReplacement );
         }
     }
 
-    void Print( CBasePlayer@ pPlayer, json@ pJson, const string &in m_szKey, PRINT_LANGUAGE PrintType = CHAT, dictionary@ pReplacement = null )
+    void Print( CBasePlayer@ pPlayer, json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
     {
-        if( pPlayer is null || m_szKey.IsEmpty() || pJson is null )
+        if( pPlayer is null || pJson is null )
             return;
 
         string m_szLanguage = CustomKeyValue( pPlayer, "$s_language" );
@@ -48,9 +48,7 @@ class MKLanguage
         if( m_szLanguage == String::EMPTY_STRING || m_szLanguage == '' )
             m_szLanguage = "english";
 
-        m_szLanguage.ToUppercase();
-
-        string m_szMessage = pJson[ m_szLanguage, pJson[ 'ENGLISH' ] ];
+        string m_szMessage = pJson[ m_szLanguage, pJson[ 'english' ] ];
 
         if( m_szMessage.IsEmpty() )
             return;
