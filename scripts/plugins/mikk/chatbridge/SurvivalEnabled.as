@@ -1,0 +1,33 @@
+//==========================================================================================================================================\\
+//                                                                                                                                          \\
+//                              Creative Commons Attribution-NonCommercial 4.0 International                                                \\
+//                              https://creativecommons.org/licenses/by-nc/4.0/                                                             \\
+//                                                                                                                                          \\
+//   * You are free to:                                                                                                                     \\
+//      * Copy and redistribute the material in any medium or format.                                                                       \\
+//      * Remix, transform, and build upon the material.                                                                                    \\
+//                                                                                                                                          \\
+//   * Under the following terms:                                                                                                           \\
+//      * You must give appropriate credit, provide a link to the license, and indicate if changes were made.                               \\
+//      * You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.                   \\
+//      * You may not use the material for commercial purposes.                                                                             \\
+//      * You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.     \\
+//                                                                                                                                          \\
+//==========================================================================================================================================\\
+
+namespace chatbridge
+{
+    namespace SurvivalEnabled
+    {
+        void MapInit()
+        {
+            if( JsonLog[ 'survival mode start', false ] && g_SurvivalMode.IsEnabled() )
+                g_Scheduler.SetTimeout( "SurvivalEnabled", g_SurvivalMode.GetDelayBeforeStart() + 2.0f );
+        }
+
+        void SurvivalEnabled()
+        {
+            g_Chatbridge.Discord.print( JsonLang[ 'survival_start' ], {} );
+        }
+    }
+}
