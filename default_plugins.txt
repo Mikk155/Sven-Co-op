@@ -56,4 +56,9 @@
         "name" "AntiClip"
         "script" "mikk/AntiClip"
     }
+    "plugin"
+    {
+        "name" "PlayerDecalTracker"
+        "script" "mikk/PlayerDecalTracker"
+    }
 }
