@@ -31,4 +31,9 @@
         "name" "CrashReporter"
         "script" "mikk/CrashReporter"
     }
+    "plugin"
+    {
+        "name" "dynamic_hostname"
+        "script" "mikk/dynamic_hostname"
+    }
 }
