@@ -7,4 +7,47 @@ scripts/plugins/mikk/chatbridge/token.txt
 # idk what this annoying thing is
 steam_autocloud.vdf
 
-.vscode/settings.json
+# Visual Studio Code
+.vscode/*
+!.vscode/shared.code-snippets
+
+# C++
+*.pdb
+*.idb
+.vs/
+*.suo
+*.sdf
+*.opensdf
+[Tt]emp/
+[Vv]s/
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+bin/
+obj/
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.tlog
+*.zip
+*.opendb
+*.VC.opendb
+*_ps.obj
+*_ps.pdb
+*.dbmdl
+*.VC.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.gpState
