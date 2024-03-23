@@ -1,4 +1,4 @@
 @echo off
-cd scripts/plugins/mikk/
+cd scripts/plugins/mikk/chatbridge/
 chatbridge.py
 pause

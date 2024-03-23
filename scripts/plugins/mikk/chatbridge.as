@@ -39,7 +39,7 @@ namespace chatbridge
 
     void LoadJson()
     {
-        pJson.load('plugins/mikk/chatbridge.json');
+        pJson.load('plugins/mikk/chatbridge/chatbridge.json');
 
         if( pJson.keysize <= 0 )
         {

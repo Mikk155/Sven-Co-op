@@ -23,7 +23,7 @@
 
 ---
 
-Open [chatbridge.json](chatbridge.json) and configure the plugin as you wish.
+Open [chatbridge.json](chatbridge/chatbridge.json) and configure the plugin as you wish.
 
 <details> <summary>View json commentary</summary>
 

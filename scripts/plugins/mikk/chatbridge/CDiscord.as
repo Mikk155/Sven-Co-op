@@ -31,14 +31,20 @@ class CDiscord
         }
     }
 
-    void print( string message, dictionary CReplacement = null )
+    void print( string message, dictionary@ CReplacement = null )
     {
         if( message.IsEmpty() or message == '' or message.Length() <= 1 )
             return;
 
-        array<string> str = CReplacement.getKeys();
-        for( uint ui = 0; ui < str.length(); ui++ )
-            message.Replace( '$' + str[ui] + '$', string( CReplacement[ str[ ui ] ] ) );
+        if( CReplacement !is null )
+        {
+            array<string> str = CReplacement.getKeys();
+
+            for( uint ui = 0; ui < str.length(); ui++ )
+            {
+                message.Replace( '$' + str[ui] + '$', string( CReplacement[ str[ ui ] ] ) );
+            }
+        }
 
         message.Replace( '@everyone', '~~everyone~~' );
         message.Replace( '@here', '~~here~~' );
