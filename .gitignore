@@ -1,0 +1,5 @@
+# Python cache
+*.pyc
+
+# My bot token
+scripts/plugins/mikk/chatbridge/token.txt
