@@ -11,3 +11,4 @@
 | AntiClip | Plugin | [Download](https://github.com/Mikk155/Sven-Co-op/releases/tag/AntiClip) | Prevent player-to-player clipping and player's projectiles-to-player clipping |
 | chatroles | Plugin | [Download](https://github.com/Mikk155/Sven-Co-op/releases/tag/chatroles) | Add any role to certain players, with chatcolors merged in if not using Wootguy's plugin |
 | emotes | Plugin | [Download](https://github.com/Mikk155/Sven-Co-op/releases/tag/emotes) | Wootguy's emotes with fixed 'anal' animation due to hitbox exploits and every message is now translated |
+| PlayerDecalTracker | Plugin | [Download](https://github.com/Mikk155/Sven-Co-op/releases/tag/PlayerDecalTracker) | Sven Co-op's PlayerDecalTracker but translated and now it prints on console the steamid of the owner of a spray |
