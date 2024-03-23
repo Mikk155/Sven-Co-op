@@ -51,4 +51,9 @@
         "name" "svenfixes"
         "script" "mikk/svenfixes"
     }
+    "plugin"
+    {
+        "name" "AntiClip"
+        "script" "mikk/AntiClip"
+    }
 }

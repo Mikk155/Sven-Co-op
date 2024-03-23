@@ -1,0 +1,18 @@
+{
+    "projectiles":
+    {
+        "sporegrenade": true,
+        "displacer_portal": true,
+        "grenade": true,
+        "monster_satchel": true,
+        "monster_tripmine": true,
+        "rpg_rocket": true,
+        "weapon_egon": true,
+        "playerhornet": true,
+        "bolt": true,
+        "weapon_crowbar": true,
+        "grappletongue": true,
+        "monster_snark": true,
+        "monster_chumtoad": true
+    }
+}
