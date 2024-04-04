@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'resources/chatbridge.res'
+      - 'scripts/mikk/*'
+      - 'scripts/plugins/chatbridge.*'
+      - 'scripts/plugins/chatbridge/*'
   schedule:
     - cron: '0 */12 * * *'
 
