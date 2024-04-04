@@ -14,4 +14,4 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run script
-      run: bash makefiles.bash scripts/plugins/mikk/chatbridge.res
+      run: python3 makefiles.py scripts/plugins/mikk/chatbridge.res
