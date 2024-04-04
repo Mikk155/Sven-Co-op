@@ -1,9 +1,7 @@
-name: Generate Dependencies
+name: chatbridge
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,3 +19,4 @@ jobs:
       with:
         name: dependencies
         path: dependencies
+        if-no-files-found: error
