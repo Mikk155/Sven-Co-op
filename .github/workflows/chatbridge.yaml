@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - '.github/workflows/chatbridge.yaml'
       - 'resources/chatbridge.res'
       - 'scripts/mikk/*'
       - 'scripts/plugins/chatbridge.*'
