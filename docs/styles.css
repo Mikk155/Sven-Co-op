@@ -1,0 +1,36 @@
+body
+{
+    background-color: rgb(50, 50, 50);
+    color: #0000FF;
+    font-weight: bold;
+    font-size:larger;
+    text-align: center;
+}
+
+pre
+{
+    background-color: rgb(37, 0, 80);
+    text-align: left;
+    font-weight: lighter;
+    font-size: medium;
+}
+
+a
+{
+    color: #0000FF;
+}
+
+a:hover
+{
+    color: #2482ef;
+}
+
+table
+{
+    margin: 0 auto;
+}
+
+table th, table td
+{
+    padding: 5px 10px;
+}
