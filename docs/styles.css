@@ -9,7 +9,7 @@ body
 
 pre
 {
-    background-color: rgb(37, 0, 80);
+    background-color: rgb(72, 96, 136);
     text-align: left;
     font-weight: lighter;
     font-size: medium;
@@ -17,7 +17,7 @@ pre
 
 a
 {
-    color: #0000FF;
+    color: rgb(72, 96, 136);
 }
 
 a:hover
