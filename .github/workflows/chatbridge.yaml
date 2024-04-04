@@ -1,4 +1,4 @@
-name: chatbridge
+name: Generate Dependencies
 
 on:
   push:
@@ -15,3 +15,9 @@ jobs:
 
     - name: Run script
       run: python3 makefiles.py scripts/plugins/mikk/chatbridge.res
+
+    - name: Archive dependencies
+      uses: actions/upload-artifact@v2
+      with:
+        name: dependencies
+        path: dependencies
