@@ -73,6 +73,11 @@
     }
     "plugin"
     {
+        "name" "developer"
+        "script" "mikk/developer"
+    }
+    "plugin"
+    {
         "name" "NPCMoveTo"
         "script" "mikk/NPCMoveTo"
     }
