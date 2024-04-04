@@ -1,7 +1,11 @@
 name: chatbridge
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 */12 * * *'
 
 jobs:
   build:
@@ -26,6 +30,6 @@ jobs:
     - name: Archive dependencies
       uses: actions/upload-artifact@v2
       with:
-        name: dependencies
+        name: svencoop
         path: dependencies
         if-no-files-found: error
