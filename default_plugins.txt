@@ -71,4 +71,9 @@
         "name" "AFKManager"
         "script" "mikk/AFKManager"
     }
+    "plugin"
+    {
+        "name" "NPCMoveTo"
+        "script" "mikk/NPCMoveTo"
+    }
 }
