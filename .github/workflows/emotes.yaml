@@ -1,0 +1,40 @@
+name: emotes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/emotes.yaml'
+      - 'resources/emotes.res'
+      - 'scripts/mikk/*'
+      - 'scripts/plugins/emotes.*'
+  schedule:
+    - cron: '0 */12 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run script
+      run: python3 makefiles.py resources/emotes.res
+
+    - name: Archive dependencies
+      uses: actions/upload-artifact@v2
+      with:
+        name: svencoop
+        path: dependencies
+        if-no-files-found: error
