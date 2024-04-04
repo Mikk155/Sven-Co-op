@@ -11,8 +11,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
     - name: Run script
-      run: python3 makefiles.py scripts/plugins/mikk/chatbridge.res
+      run: python3 makefiles.py resources/chatbridge.res
 
     - name: Archive dependencies
       uses: actions/upload-artifact@v2
