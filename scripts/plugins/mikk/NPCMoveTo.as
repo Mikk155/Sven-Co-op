@@ -23,17 +23,20 @@ void PluginInit()
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
 
     g_Hooks.RegisterHook( Hooks::ASLP::Engine::ClientCommand, @ClientCommand );
+    pJson.load( 'plugins/mikk/NPCMoveTo' );
 }
+
+json pJson;
 
 float time;
 
 HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszCommand, META_RES& out meta_result )
 {
-    if( pPlayer !is null && m_iszCommand == 'npc_moveto' )
+    if( pPlayer !is null
+    && m_iszCommand == 'npc_moveto' &&
+    || ( pPlayer.IsAlive() || Json[ 'observers can use', false ] )
+    && ( time > g_Engine.time || Json[ 'global cooldown', false ] ) )
     {
-        if( !pPlayer.IsAlive() ) return HOOK_CONTINUE; // Remove this line to allow spectators
-        if( time > g_Engine.time ) return HOOK_CONTINUE; // Remove this line to remove cooldown
-
         TraceResult tr;
 
         Vector anglesAim = pPlayer.pev.v_angle + pPlayer.pev.punchangle;
