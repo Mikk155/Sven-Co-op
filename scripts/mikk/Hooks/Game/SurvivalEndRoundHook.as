@@ -34,11 +34,6 @@ namespace SurvivalEndRoundHook
         }
         else
         {
-            if( Hooks::m_bMapChangekHook == false )
-            {
-                Hooks::m_bMapChangekHook = g_Hooks.RegisterHook( Hooks::Game::MapChange, @Hooks::MapChange );
-            }
-
             g_Game.AlertMessage( at_console, '[CMKHooks] Registered Hooks::Game::SurvivalEndRoundHook().\n' );
 
             SurvivalEndRoundHooks.insertLast( @pHook );
@@ -65,7 +60,6 @@ namespace SurvivalEndRoundHook
             g_Game.AlertMessage( at_error, '[CMKHooks] Could not remove Hooks::Game::SurvivalEndRound.\n' );
         }
 
-        CheckMapChangeHook();
         if( SurvivalEndRoundHooks.length() < 1 && g_SurvivalEndRound.Think !is null )
             g_Scheduler.RemoveTimer( g_SurvivalEndRound.Think );
     }
@@ -75,7 +69,6 @@ namespace SurvivalEndRoundHook
         SurvivalEndRoundHooks.resize( 0 );
         g_Game.AlertMessage( at_console, '[CMKHooks] Removed ALL hooks Hooks::Game::SurvivalEndRound.\n' );
 
-        CheckMapChangeHook();
         if( SurvivalEndRoundHooks.length() < 1 && g_SurvivalEndRound.Think !is null )
             g_Scheduler.RemoveTimer( g_SurvivalEndRound.Think );
     }
@@ -85,11 +78,22 @@ namespace SurvivalEndRoundHook
     class CSurvivalEndRound
     {
         CScheduledFunction@ Think = null;
-        bool SurvivalEndRoundEnded;
+        bool SurvivalEndRoundEnded( bool blEnded = false )
+        {
+            CBaseEntity@ pTarget = g_EntityFuncs.FindEntityByTargetname( null, "SurvivalEndRoundEndedHook" );
+
+            if( pTarget !is null )
+            {
+                if( blEnded )
+                    CustomKeyValue( pTarget, "$i_roundended", 1 );
+                return ( CustomKeyValue( pTarget, "$i_roundended" ) == 1 );
+            }
+            return false;
+        }
 
         void EndRoundThink()
         {
-            if( !SurvivalEndRoundEnded && SurvivalEndRoundHooks.length() > 0 && g_SurvivalMode.IsActive() && g_PlayerFuncs.GetNumPlayers() > 0 )
+            if( !SurvivalEndRoundEnded() && SurvivalEndRoundHooks.length() > 0 && g_SurvivalMode.IsActive() && g_PlayerFuncs.GetNumPlayers() > 0 )
             {
                 int iAlivePlayers = 0, iAllPlayers = 0;
 
@@ -118,7 +122,7 @@ namespace SurvivalEndRoundHook
                             break;
                         }
                     }
-                    SurvivalEndRoundEnded = true;
+                    SurvivalEndRoundEnded( true );
                 }
             }
         }

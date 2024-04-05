@@ -40,22 +40,6 @@ namespace Hooks
         }
     }
 
-    bool m_bMapChangekHook = false;
-
-    HookReturnCode MapChange()
-    {
-        Hooks::Game::SurvivalEndRoundHook::g_SurvivalEndRound.SurvivalEndRoundEnded = false;
-        return HOOK_CONTINUE;
-    }
-
-    void CheckMapChangeHook()
-    {
-        if( Hooks::Game::SurvivalEndRoundHook::SurvivalEndRoundHooks.length() < 1 )
-        {
-            g_Hooks.RemoveHook( Hooks::Game::MapChange, @Hooks::MapChange );
-        }
-    }
-
     bool m_bPlayerPreThinkHook = false;
 
     HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
