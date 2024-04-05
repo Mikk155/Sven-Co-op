@@ -29,13 +29,24 @@ void PluginInit()
 
 bool hooks;
 
-CConCommand g_Cvars( "anticlip", "AS Cvars", @SetCvars, ConCommandFlag::AdminOnly );
+CClientCommand CMD( "anticlip", "Toggle AntiClip, on/off", @Command, ConCommandFlag::AdminOnly );
 
-void SetCvars( const CCommand@ args )
+void Command( const CCommand@ args )
 {
-    if( g_Utility.IsStringInt( args[1] ) )
+    CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
+
+    if( args[1] == "on" || args[1] == "true" || atoi( args[1] ) == 1 )
     {
-        ToggleState( atoi( args[1] ) );
+        if( !hooks )
+        {
+            Mikk.Language.PrintAll( pJson[ "ENABLED", {} ], MKLANG::CHAT, { { "name", string( pPlayer.pev.netname ) } } );
+            ToggleState( 1 );
+        }
+    }
+    else if( hooks )
+    {
+        Mikk.Language.PrintAll( pJson[ "DISABLED", {} ], MKLANG::CHAT, { { "name", string( pPlayer.pev.netname ) } } );
+        ToggleState( 0 );
     }
 }
 
@@ -58,7 +69,11 @@ void ToggleState( int casex )
                 hooks = true;
                 g_Hooks.RegisterHook( Hooks::ASLP::Engine::PM_Move, @PM_Move );
                 g_Hooks.RegisterHook( Hooks::ASLP::Engine::AddToFullPack_Post, @AddToFullPack_Post );
-                g_Hooks.RegisterHook( Hooks::ASLP::Engine::ShouldCollide, @ShouldCollide );
+
+                if( pJson[ 'projectiles', {} ].getKeys().length() > 0 )
+                {
+                    g_Hooks.RegisterHook( Hooks::ASLP::Engine::ShouldCollide, @ShouldCollide );
+                }
             }
             break;
         }
@@ -70,6 +85,12 @@ HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pProjectile, M
     if( pTouched is null || pProjectile is null )
         return HOOK_CONTINUE;
 
+    if( pJson[ 'projectiles', {} ][ 'lasers', false ] && pTouched.IsPlayer() && pProjectile.IsPlayer() )
+    {
+        meta_result = MRES_SUPERCEDE;
+        return HOOK_CONTINUE;
+    }
+
     CBaseEntity@ pOwner = g_EntityFuncs.Instance( pProjectile.pev.owner );
 
     if( pOwner is null )
@@ -78,7 +99,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pProjectile, M
     if( pJson[ 'projectiles', {} ][ pProjectile.GetClassname(), false ]
     && ( pTouched.IsPlayer() && pTouched.Classify() == pOwner.Classify() || pOwner.IsPlayer() && pTouched.IsPlayerAlly() )
     ) {
-        g_Game.AlertMessage( at_console, 'MRES_SUPERCEDE ' + pProjectile.pev.classname + '\n' );
+        //g_Game.AlertMessage( at_console, 'MRES_SUPERCEDE ' + pProjectile.pev.classname + '\n' );
         meta_result = MRES_SUPERCEDE;
     }
     return HOOK_CONTINUE;

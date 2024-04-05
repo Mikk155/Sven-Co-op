@@ -1,6 +1,7 @@
 {
     "projectiles":
     {
+        "lasers": true,
         "sporegrenade": true,
         "displacer_portal": true,
         "grenade": true,
@@ -14,5 +15,13 @@
         "grappletongue": true,
         "monster_snark": true,
         "monster_chumtoad": true
+    },
+    "ENABLED": {
+        "english": "Anti-Clip enabled by admin $name$.",
+        "spanish": "Anti-Clip fue activado por el admin $name$."
+    },
+    "DISABLED": {
+        "english": "Anti-Clip disabled by admin $name$.",
+        "spanish": "Anti-Clip fue desactivado por el admin $name$."
     }
 }
