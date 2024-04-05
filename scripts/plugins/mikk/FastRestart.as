@@ -17,8 +17,6 @@
 
 #include '../../mikk/shared'
 
-const string SoundToPlay = 'limitlesspotential/cs/restart.wav';
-
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
@@ -29,18 +27,13 @@ void PluginInit()
 
 HookReturnCode SurvivalEndRound()
 {
-    CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( 'player_loadsaved', { { 'targetname', 'DDD_ReloadLevel' }, { 'loadtime', '1.5' } }, true );
-
     try
     {
-        pEntity.Use( null, null, USE_ON, 0.0f );
+        g_EntityFuncs.CreateEntity( 'player_loadsaved', { { 'targetname', 'a' }, { 'loadtime', '1.5' } }, true ).Use( null, null, USE_ON, 0.0f );
     }
     catch
     {
         g_EngineFuncs.ChangeLevel( string( g_Engine.mapname ) );
     }
-
-    Mikk.PlayerFuncs.ClientCommand( "spk \"sound/" + SoundToPlay + "\"", null, true );
-
     return HOOK_CONTINUE;
 }
