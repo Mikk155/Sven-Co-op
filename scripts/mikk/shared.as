@@ -38,7 +38,7 @@ class MKShared
     // body: Mikk
     string GetContactInfo()
     {
-        return "\nDiscord Server: " + GetDiscord() + "Github: https://github.com/Mikk155";
+        return "\nDiscord Server: " + GetDiscord() + "\nGithub: https://github.com/Mikk155";
     }
 
     MKHooks Hooks;
