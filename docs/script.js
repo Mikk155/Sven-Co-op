@@ -14,6 +14,7 @@ const LinkedWords =
         // Extern links
         "Discord": "https://discord.gg/THDKrgBEny",
         "metamod": "https://github.com/Mikk155/metamod-limitless-potential",
+        "snippets": "https://github.com/Mikk155/Sven-Co-op/blob/main/.vscode/shared.code-snippets",
 };
 
 // Change languages
