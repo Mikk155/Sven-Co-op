@@ -22,7 +22,7 @@ class MKEntityFuncs
         @body Mikk.EntityFuncs
         Creates a entity with the given keyvalue data, if blSpawnNow is false the entity is not spawned
     */
-    bool CreateEntity( dictionary g_Data, bool blSpawnNow = true )
+    CBaseEntity@ CreateEntity( dictionary g_Data, bool blSpawnNow = true )
     {
         if( g_Data.exists( 'classname' ) )
         {
@@ -38,10 +38,10 @@ class MKEntityFuncs
                 {
                     g_EntityFuncs.DispatchSpawn( pEntity.edict() );
                 }
-                return true;
+                return pEntity;
             }
         }
-        return false;
+        return null;
     }
 
     /*
