@@ -108,7 +108,7 @@ void CargarPosiblesCulpables()
 
             for( uint ui = 0; ui < m_iszPosibleCulpables.length(); ui++ )
             {
-                pCrashes.Write( '' + m_iszPosibleCulpables[ui] + '.bsp Probablemente haya crasheado el servidor el dia ' + string( g_CrashReportTime.GetDayOfMonth() ) + ' del mes '+ string( g_CrashReportTime.GetMonth() ) + ' a las ' + string( g_CrashReportTime.GetHour() ) + ':' + string( g_CrashReportTime.GetMinutes() ) + '\n' );
+                pCrashes.Write( '' + m_iszPosibleCulpables[ui] + '.bsp probably crashed the server the day ' + string( g_CrashReportTime.GetDayOfMonth() ) + ' del mes '+ string( g_CrashReportTime.GetMonth() ) + ' at ' + string( g_CrashReportTime.GetHour() ) + ':' + string( g_CrashReportTime.GetMinutes() ) + '\n' );
             }
             pCrashes.Close();
         }

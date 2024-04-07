@@ -11,6 +11,7 @@ const jsonData =
         "Plugin PlayerDecalTracker": "#PlayerDecalTracker",
         "Plugin SurvivalRespawnAll": "#SurvivalRespawnAll",
         "Plugin dynamic_hostname": "#dynamic_hostname",
+        "Plugin CrashReporter": "#CrashReporter",
         "HomeButton": "Pagina Principal",
         "description": "Este repositorio contiene #Plugins, Map-Scripts, entidades nuevas, modos de juego etc que puedan llegar a ser posibles mediante AngelScript, y si no lo es utilizaremos metamod para hacerlo posible.\nSi necesitas ayuda con cualquier cosa unete a nuestro Discord",
         "installing 1": "Installing scripts:",
@@ -53,7 +54,9 @@ const jsonData =
         "dynamic_hostname description 8": "name of the map: title to display",
         "dynamic_hostname description 9": "name of the map supports wildcard (*)",
         "dynamic_hostname description 10": "Original idea by Cubemath",
-   },
+        "CrashReporter description 1": "Simply writes a list of possible culprit maps within a text file and exposes them when the server has crashed.",
+        "CrashReporter description 2": "CrashReporter is a plugin that requires metamod to be installed.",
+     },
    "en":
    {
         "Plugin AntiClip": "#AntiClip (metamod)",
@@ -64,6 +67,7 @@ const jsonData =
         "Plugin PlayerDecalTracker": "#PlayerDecalTracker",
         "Plugin SurvivalRespawnAll": "#SurvivalRespawnAll",
         "Plugin dynamic_hostname": "#dynamic_hostname",
+        "Plugin CrashReporter": "#CrashReporter",
         "HomeButton": "Main Page",
         "description": "This repository contains #Plugins, Map-Scripts, new entities, gamemodes and so on that can be possible with AngelScript, and if not possible then we'll use metamod to make it possible.\nIf you need help with anything join our Discord",
         "installing 1": "Installing scripts:",
@@ -106,5 +110,7 @@ const jsonData =
         "dynamic_hostname description 8": "name of the map: title to display",
         "dynamic_hostname description 9": "name of the map supports wildcard (*)",
         "dynamic_hostname description 10": "Original idea by Cubemath",
+        "CrashReporter description 1": "Simply writes a list of possible culprit maps within a text file and exposes them when the server has crashed.",
+        "CrashReporter description 2": "CrashReporter is a plugin that requires metamod to be installed.",
    }
 };
