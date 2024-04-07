@@ -47,6 +47,12 @@
 		"body": "HookReturnCode PlayerObserverModeHook( ${1:CBasePlayer@}, ${2:ObserverMode})",
 		"description": "Called when a player change its spectator mode."
 	},
+	"void load( string m_szLoad, bool include = true )":
+	{
+		"prefix":[ "load", "json", "pars" ],
+		"body": "load( ${1:string m_szLoad}, ${2:bool include = true})",
+		"description": "Loads a json file within a json class. if include is false the json is cleared before loading the new one"
+	},
 	"enum MKLANG::CHAT":
 	{
 		"prefix": [ "CHAT", "MKLANG::CHAT" ],
@@ -137,10 +143,10 @@
 		"body": "Mikk.PlayerFuncs.PlayerSay( ${1:CBaseEntity@ pPlayer}, ${2:string m_szMessage}, ${3:CBasePlayer@ pTarget = null})",
 		"description": "Make a player say something, if pTarget is not null, only pTarget will see the message."
 	},
-	"bool CreateEntity( dictionary g_Data, blSpawnNow = true )":
+	"CBaseEntity@ CreateEntity( dictionary g_Data, bool blSpawnNow = true )":
 	{
 		"prefix":[ "Mikk.EntityFuncs.CreateEntity", "CreateEntity", "EntityCreat" ],
-		"body": "Mikk.EntityFuncs.CreateEntity( ${1:dictionary g_Data}, ${2:blSpawnNow = true})",
+		"body": "Mikk.EntityFuncs.CreateEntity( ${1:dictionary g_Data}, ${2:bool blSpawnNow = true})",
 		"description": "Creates a entity with the given keyvalue data, if blSpawnNow is false the entity is not spawned"
 	},
 	"bool LoadEntFile( const string &in m_szPath )":

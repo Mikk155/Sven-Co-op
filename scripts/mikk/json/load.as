@@ -19,6 +19,11 @@ namespace JSON
 {
     mixin class load
     {
+        /*
+            @prefix load json parse
+            Loads a json file within a json class.
+            if include is false the json is cleared before loading the new one
+        */
         void load( string m_szLoad, bool include = true )
         {
             if( !m_szLoad.IsEmpty() )
