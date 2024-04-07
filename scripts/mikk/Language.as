@@ -44,6 +44,122 @@ enum MKLANG
     CONSOLE,
 }
 
+namespace Language
+{
+    // This is bad but i can't make the external shared thing
+    bool blhook = blHook();
+
+    bool blHook()
+    {
+        g_Hooks.RemoveHook( Hooks::Player::ClientSay, @Language::ClientSay );
+        g_Hooks.RemoveHook( Hooks::Player::ClientPutInServer, @Language::ClientPutInServer );
+
+        return (
+            g_Hooks.RegisterHook( Hooks::Player::ClientSay, @Language::ClientSay ) &&
+            g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @Language::ClientPutInServer )
+        );
+    }
+
+    HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
+    {
+        if( pPlayer !is null && g_Data.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
+        {
+            SetLanguage( pPlayer, string( g_Data[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] ) );
+        }
+        return HOOK_CONTINUE;
+    }
+
+    HookReturnCode ClientSay( SayParameters@ pParams )
+    {
+        CBasePlayer@ pPlayer = pParams.GetPlayer();
+        const CCommand@ args = pParams.GetArguments();
+
+        if( pPlayer is null || args.ArgC() <= 0 )
+            return HOOK_CONTINUE;
+
+        array<string> strHook = { "trans","localization",
+        "lang","idioma","lenguaje","translate","lenguage","language",
+        "lingvo","langue","sprache","linguaggio","taal",
+        "gjuhe","dil","limba","jazyk","bahasa" };
+
+        if( strHook.find( args[0].SubString( ( args[0][0] == '/' ? 1 : 0 ), args[0].Length() ) ) >= 0 )
+        {
+            if( args.ArgC() == 2 )
+            {
+                SetLanguage( pPlayer, args[1] );
+            }
+            else
+            {
+                OpenMenu( pPlayer );
+            }
+            return HOOK_HANDLED;
+        }
+
+        return HOOK_CONTINUE;
+    }
+
+    void SetLanguage( CBasePlayer@ pPlayer, string m_szLanguage )
+    {
+        if( pPlayer !is null )
+        {
+            g_Data[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] = m_szLanguage;
+            CustomKeyValue( pPlayer, '$s_language', m_szLanguage.ToLowercase() );
+        }
+    }
+
+    array<string> LanguageSupport =
+    {
+        "English",
+        "Spanish",
+        "Spanish Spain",
+        "Portuguese",
+        "German",
+        "French",
+        "Italian",
+        "Esperanto",
+        "Czech",
+        "Dutch",
+        "Indonesian",
+        "Romanian",
+        "Turkish",
+        "Albanian"
+    };
+
+    dictionary g_Data;
+
+    CTextMenu@ g_VoteMenu;
+    void OpenMenu( CBasePlayer@ pPlayer )
+    {
+        if( pPlayer !is null && pPlayer.IsConnected() )
+        {
+            @g_VoteMenu = CTextMenu( @MainCallback );
+
+            g_VoteMenu.SetTitle( 'Language:\\r' );
+
+            for( uint ui = 0; ui < LanguageSupport.length(); ++ui )
+            {
+                g_VoteMenu.AddItem( LanguageSupport[ui] );
+            }
+
+            g_VoteMenu.Register();
+            g_VoteMenu.Open( 25, 0, pPlayer );
+        }
+    }
+
+    void MainCallback( CTextMenu@ CMenu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
+    {
+        if( pItem !is null && pPlayer !is null )
+        {
+            string Choice = pItem.m_szName;
+
+            if( iSlot >= 1 && !Choice.IsEmpty() )
+            {
+                SetLanguage( pPlayer, Choice );
+            }
+        }
+    }
+}
+
 class MKLanguage
 {
     /*
@@ -61,6 +177,11 @@ class MKLanguage
             m_szLanguage = "english";
 
         string m_szMessage = pJson[ m_szLanguage, pJson[ 'english' ] ];
+
+        if( m_szLanguage == "spanish spain" && pJson[ m_szLanguage ].IsEmpty() )
+            m_szMessage = pJson[ 'spanish', pJson[ 'english' ] ];
+        else if( m_szLanguage == "spanish" && pJson[ m_szLanguage ].IsEmpty() )
+            m_szMessage = pJson[ 'spanish spain', pJson[ 'english' ] ];
 
         if( pReplacement !is null )
         {
