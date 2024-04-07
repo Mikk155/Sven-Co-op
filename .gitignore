@@ -11,10 +11,8 @@ steam_autocloud.vdf
 .vscode/*.*
 !.vscode/shared.code-snippets
 
-src/metamod/*
-!src/metamod/aslp/
-
 maps/*
+scripts/plugins/wip/*
 
 # C++
 *.pdb
