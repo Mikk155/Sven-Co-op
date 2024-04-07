@@ -91,6 +91,11 @@ namespace SurvivalEndRoundHook
         {
             CBaseEntity@ pTarget = g_EntityFuncs.FindEntityByTargetname( null, "SurvivalEndRoundEndedHook" );
 
+            if( pTarget is null )
+            {
+                @pTarget = Mikk.EntityFuncs.CreateEntity( { { 'classname', 'info_target' }, { 'targetname', 'SurvivalEndRoundEndedHook' } } );
+            }
+
             if( pTarget !is null )
             {
                 if( blEnded )
