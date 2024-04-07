@@ -1,0 +1,218 @@
+{
+	"namespace SurvivalEndRoundHook":
+	{
+		"prefix":[ "Hooks::Game::SurvivalEndRoundHook", "SurvivalEndRoundHook" ],
+		"body": "Hooks::Game::SurvivalEndRoundHook",
+		"description": "Called once when a survival mode round ends at the moment there is no more alive players."
+	},
+	"funcdef HookReturnCode SurvivalEndRoundHook();":
+	{
+		"prefix":[ "SurvivalEndRoundHook" ],
+		"body": "HookReturnCode SurvivalEndRoundHook()",
+		"description": "Called once when a survival mode round ends at the moment there is no more alive players."
+	},
+	"namespace PlayerJumpHook":
+	{
+		"prefix":[ "Hooks::Player::PlayerJumpHook", "PlayerJumpHook" ],
+		"body": "Hooks::Player::PlayerJumpHook",
+		"description": "Called when a player jumps"
+	},
+	"funcdef HookReturnCode PlayerJumpHook( CBasePlayer@ );":
+	{
+		"prefix":[ "PlayerJumpHook" ],
+		"body": "HookReturnCode PlayerJumpHook( ${1:CBasePlayer@})",
+		"description": "Called when a player jumps"
+	},
+	"namespace PlayerKeyInputHook":
+	{
+		"prefix":[ "Hooks::Player::PlayerKeyInputHook", "PlayerKeyInputHook" ],
+		"body": "Hooks::Player::PlayerKeyInputHook",
+		"description": "Called when a player pev->buttons changes"
+	},
+	"funcdef HookReturnCode PlayerKeyInputHook( CBasePlayer@, In_Buttons, const bool );":
+	{
+		"prefix":[ "PlayerKeyInputHook" ],
+		"body": "HookReturnCode PlayerKeyInputHook( ${1:CBasePlayer@}, ${2:In_Buttons}, ${3:const bool})",
+		"description": "Called when a player pev->buttons changes. the given bool returns whatever the button has been released or pressed"
+	},
+	"namespace PlayerObserverModeHook":
+	{
+		"prefix":[ "Hooks::Player::PlayerObserverModeHook", "PlayerObserverModeHook" ],
+		"body": "Hooks::Player::PlayerObserverModeHook",
+		"description": "Called when a player change its spectator mode"
+	},
+	"funcdef HookReturnCode PlayerObserverModeHook( CBasePlayer@, ObserverMode );":
+	{
+		"prefix":[ "PlayerObserverModeHook" ],
+		"body": "HookReturnCode PlayerObserverModeHook( ${1:CBasePlayer@}, ${2:ObserverMode})",
+		"description": "Called when a player change its spectator mode."
+	},
+	"enum MKLANG::CHAT":
+	{
+		"prefix": [ "CHAT", "MKLANG::CHAT" ],
+		"body": "MKLANG::CHAT",
+		"description": "ClientPrint -> HUD_PRINTTALK",
+	},
+	"enum MKLANG::BIND":
+	{
+		"prefix": [ "BIND", "MKLANG::BIND" ],
+		"body": "MKLANG::BIND",
+		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString",
+	},
+	"enum MKLANG::CENTER":
+	{
+		"prefix": [ "CENTER", "MKLANG::CENTER" ],
+		"body": "MKLANG::CENTER",
+		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER",
+	},
+	"enum MKLANG::HUDMSG":
+	{
+		"prefix": [ "HUDMSG", "MKLANG::HUDMSG" ],
+		"body": "MKLANG::HUDMSG",
+		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8",
+	},
+	"enum MKLANG::NOTIFY":
+	{
+		"prefix": [ "NOTIFY", "MKLANG::NOTIFY" ],
+		"body": "MKLANG::NOTIFY",
+		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8 ClientPrint -> HUD_PRINTNOTIFY",
+	},
+	"enum MKLANG::CONSOLE":
+	{
+		"prefix": [ "CONSOLE", "MKLANG::CONSOLE" ],
+		"body": "MKLANG::CONSOLE",
+		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8 ClientPrint -> HUD_PRINTNOTIFY ClientPrint -> HUD_PRINTCONSOLE",
+	},
+	"string GetLanguage( CBasePlayer@ pPlayer, json@ pJson, dictionary@ pReplacement = null )":
+	{
+		"prefix":[ "Mikk.Language.GetLanguage", "GetLanguag" ],
+		"body": "Mikk.Language.GetLanguage( ${1:CBasePlayer@ pPlayer}, ${2:json@ pJson}, ${3:dictionary@ pReplacement = null})",
+		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8 ClientPrint -> HUD_PRINTNOTIFY ClientPrint -> HUD_PRINTCONSOLE Gets a language string from the given json value, pReplacement keys will be replaced with their values. note in the json string it have to be enclosed with two $"
+	},
+	"void PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )":
+	{
+		"prefix":[ "Mikk.Language.PrintAll", "PrintAll", "Languag" ],
+		"body": "Mikk.Language.PrintAll( ${1:json@ pJson}, ${2:MKLANG PrintType = CHAT}, ${3:dictionary@ pReplacement = null})",
+		"description": "Prints a language string from the given json value, PrintType is the message type. see the enum pReplacement keys will be replaced with their values. note in the json string it have to be enclosed with two $"
+	},
+	"void Print( CBasePlayer@ pPlayer, json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )":
+	{
+		"prefix":[ "Mikk.Language.PrintAll", "PrintAll", "Languag" ],
+		"body": "Mikk.Language.Print( ${1:CBasePlayer@ pPlayer}, ${2:json@ pJson}, ${3:MKLANG PrintType = CHAT}, ${4:dictionary@ pReplacement = null})",
+		"description": "Prints a language string from the given json value, PrintType is the message type. see the enum pReplacement keys will be replaced with their values. note in the json string it have to be enclosed with two $"
+	},
+	"void GetColormap( CBasePlayer@ pPlayer, RGBA &out TopRGB, RGBA &out BotRGB )":
+	{
+		"prefix":[ "Mikk.PlayerFuncs.GetColormap", "GetColormap", "colormap", "bottomcolor", "topcolor", "Hu" ],
+		"body": "Mikk.PlayerFuncs.GetColormap( ${1:CBasePlayer@ pPlayer}, ${2:RGBA &out TopRGB}, ${3:RGBA &out BotRGB})",
+		"description": "Gets bottomcolor and topcolor from the given player as a RGBA values"
+	},
+	"void ClientCommand( string_t m_iszCommand, CBasePlayer@ pPlayer, bool bAllPlayers = false )":
+	{
+		"prefix":[ "Mikk.PlayerFuncs.ClientCommand", "ClientCommand", "Command" ],
+		"body": "Mikk.PlayerFuncs.ClientCommand( ${1:string_t m_iszCommand}, ${2:CBasePlayer@ pPlayer}, ${3:bool bAllPlayers = false})",
+		"description": "Executes a console command on the given player or all players if bAllPlayers is true"
+	},
+	"CBasePlayer@ FindPlayerBySteamID( const string &in m_iszSteamID )":
+	{
+		"prefix":[ "Mikk.PlayerFuncs.FindPlayerBySteamID", "FindPlayerBySteamID", "SteamID" ],
+		"body": "Mikk.PlayerFuncs.FindPlayerBySteamID( ${1:const string &in m_iszSteamID})",
+		"description": "Get the CBasePlayer@ instance of the given SteamID"
+	},
+	"string GetSteamID( CBasePlayer@ pPlayer )":
+	{
+		"prefix":[ "Mikk.PlayerFuncs.GetSteamID", "GetSteamID", "SteamID" ],
+		"body": "Mikk.PlayerFuncs.GetSteamID( ${1:CBasePlayer@ pPlayer})",
+		"description": "Return the SteamID of the given player, BOTS will be enumerated by their index"
+	},
+	"bool RespawnPlayer( CBasePlayer@ pPlayer )":
+	{
+		"prefix":[ "Mikk.PlayerFuncs.RespawnPlayer", "RespawnPlay" ],
+		"body": "Mikk.PlayerFuncs.RespawnPlayer( ${1:CBasePlayer@ pPlayer})",
+		"description": "Revives the given player and then relocates him to a valid spawnpoint, returns true if revived"
+	},
+	"void PlayerSay( CBaseEntity@ pPlayer, string m_szMessage, CBasePlayer@ pTarget = null )":
+	{
+		"prefix":[ "Mikk.PlayerFuncs.PlayerSay", "chat", "say" ],
+		"body": "Mikk.PlayerFuncs.PlayerSay( ${1:CBaseEntity@ pPlayer}, ${2:string m_szMessage}, ${3:CBasePlayer@ pTarget = null})",
+		"description": "Make a player say something, if pTarget is not null, only pTarget will see the message."
+	},
+	"bool CreateEntity( dictionary g_Data, blSpawnNow = true )":
+	{
+		"prefix":[ "Mikk.EntityFuncs.CreateEntity", "CreateEntity", "EntityCreat" ],
+		"body": "Mikk.EntityFuncs.CreateEntity( ${1:dictionary g_Data}, ${2:blSpawnNow = true})",
+		"description": "Creates a entity with the given keyvalue data, if blSpawnNow is false the entity is not spawned"
+	},
+	"bool LoadEntFile( const string &in m_szPath )":
+	{
+		"prefix":[ "Mikk.EntityFuncs.LoadEntFile", "LoadEntFil" ],
+		"body": "Mikk.EntityFuncs.LoadEntFile( ${1:const string &in m_szPath})",
+		"description": "Loads an external .ent file into the map"
+	},
+	"void CallFunction( const string& in m_iszFunction )":
+	{
+		"prefix":[ "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
+		"body": "g_Reflection.CallFunction( ${1:const string& in m_iszFunction})",
+		"description": "Calls a function globaly in all namespaces. must include \"Reflection\""
+	},
+	"string GetDiscord()":
+	{
+		"prefix":[ "Mikk.GetDiscord", "Discord" ],
+		"body": "Mikk.GetDiscord()",
+		"description": "Get discord server invite"
+	},
+	"string GetContactInfo()":
+	{
+		"prefix":[ "Mikk.GetContactInfo", "Contact" ],
+		"body": "Mikk.GetContactInfo()",
+		"description": "Get contact info"
+	},
+	"RGBA atorgba( const string m_iszFrom )":
+	{
+		"prefix":[ "atorgba" ],
+		"body": "atorgba( ${1:const string m_iszFrom})",
+		"description": "Return the given string as a 4D RGBA"
+	},
+	"Vector atov( const string m_iszFrom )":
+	{
+		"prefix":[ "atov", "StringToVecto" ],
+		"body": "atov( ${1:const string m_iszFrom})",
+		"description": "Return the given string_t as a 3D Vector"
+	},
+	"Vector2D atov2( const string m_iszFrom )":
+	{
+		"prefix":[ "atov2", "StringToVecto" ],
+		"body": "atov2( ${1:const string m_iszFrom})",
+		"description": "Return the given string_t as a 2D Vector"
+	},
+	"string CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const string&in m_iszValue = String::EMPTY_STRING )":
+	{
+		"prefix":[ "CKV", "CustomKeyValu" ],
+		"body": "CustomKeyValue( ${1:CBaseEntity@ pEntity}, ${2:const string&in m_iszKey}, ${3:const string&in m_iszValue = String::EMPTY_STRING})",
+		"description": "Return the value of the given CustomKeyValue, if m_iszValue is given it will update the value, return String::INVALID_INDEX if the given entity is null, return String::EMPTY_STRING if the given entity doesn't have the custom key value"
+	},
+	"RGBA HUEtoRGB( float H )":
+	{
+		"prefix":[ "Hue", "HUEtoRGB" ],
+		"body": "HUEtoRGB( ${1:float H})",
+		"description": "Return a RGB color from a Hue color"
+	},
+	"float RGBtoHUE(Vector rgb)":
+	{
+		"prefix":[ "Hue", "RGBtoHUE" ],
+		"body": "RGBtoHUE( ${1:Vector rg})",
+		"description": "Return a Hue color from a RGB color"
+	},
+	"void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )":
+	{
+		"prefix":[ "Mikk.Utility.UpdateTimer", "UpdateTim" ],
+		"body": "Mikk.Utilit.UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0})",
+		"description": "Clears and sets a CScheduledFunction@ function with the given parameters"
+	},
+	"bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )":
+	{
+		"prefix":[ "Mikk.Utility.IsPluginInstalled", "IsPluginInstalled", "Plugin", "Installed", "IsInstalled" ],
+		"body": "Mikk.Utilit.IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false})",
+		"description": "Return whatever the given plugin name is installed on the server."
+	}
+}
