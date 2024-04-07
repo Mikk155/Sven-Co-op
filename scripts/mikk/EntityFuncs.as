@@ -15,58 +15,83 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-bool reflection_register = g_RegisterReflection();
-
-bool g_RegisterReflection()
-{
-    Reflection reflect(); @g_Reflection = @reflect;
-    return true;
-}
-
-void PluginInit()
-{
-    g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
-    g_Reflection.CallFunction( 'PluginInit' );
-}
-
-void MapInit()
-{
-    g_Reflection.CallFunction( 'MapInit' );
-}
-
-void MapActivate()
-{
-    g_Reflection.CallFunction( 'MapActivate' );
-}
-
-void MapStart()
-{
-    g_Reflection.CallFunction( 'MapStart' );
-}
-
-Reflection@ g_Reflection;
-
-final class Reflection
+class MKEntityFuncs
 {
     /*
-        @prefix g_Reflection.CallFunction CallFunction Reflection
-        @body g_Reflection
-        Calls a function globaly in all namespaces. must include "Reflection"
+        @prefix Mikk.EntityFuncs.CreateEntity CreateEntity EntityCreate
+        @body Mikk.EntityFuncs
+        Creates a entity with the given keyvalue data, if blSpawnNow is false the entity is not spawned
     */
-    void CallFunction( const string& in m_iszFunction )
+    bool CreateEntity( dictionary g_Data, bool blSpawnNow = true )
     {
-        uint GlobalCount = Reflection::g_Reflection.Module.GetGlobalFunctionCount();
-
-        for( uint i = 0; i < GlobalCount; i++ )
+        if( g_Data.exists( 'classname' ) )
         {
-            Reflection::Function@ m_fFunction = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( i );
+            CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( string( g_Data[ 'classname' ] ), g_Data, blSpawnNow );
 
-            if( m_fFunction !is null && m_fFunction.GetName() == m_iszFunction && !m_fFunction.GetNamespace().IsEmpty() )
+            if( pEntity !is null )
             {
-                m_fFunction.Call();
-                g_Game.AlertMessage( at_console, '[Reflection] Called '+'"' + m_fFunction.GetNamespace() + '::' + m_fFunction.GetName() + '"' + '\n' );
+                if( g_Data.exists( 'origin' ) )
+                {
+                    g_EntityFuncs.SetOrigin( pEntity, atov( string( g_Data[ 'origin' ] ) ) );
+                }
+                if( blSpawnNow )
+                {
+                    g_EntityFuncs.DispatchSpawn( pEntity.edict() );
+                }
+                return true;
             }
         }
+        return false;
+    }
+
+    /*
+        @prefix Mikk.EntityFuncs.LoadEntFile LoadEntFile
+        @body Mikk.EntityFuncs
+        Loads an external .ent file into the map
+    */
+    bool LoadEntFile( const string &in m_szPath )
+    {
+        File@ pFile = g_FileSystem.OpenFile(
+            ( m_szPath.StartsWith( 'scripts/' ) ? '' : 'scripts/' ) + m_szPath +
+            ( m_szPath.EndsWith( '.ent' ) ? '' : '.ent' ), OpenFile::READ
+        );
+
+        if( pFile is null or !pFile.IsOpen() )
+        {
+            return false;
+        }
+
+        string line, key, value;
+        dictionary g_Keyvalues;
+
+        while( !pFile.EOFReached() )
+        {
+            pFile.ReadLine( line );
+
+            if( line.Length() < 1 || line[0] == '/' && line[1] == '/' || line[0] == '{' )
+            {
+                continue;
+            }
+
+            if( line[0] == '}' )
+            {
+                Mikk.EntityFuncs.CreateEntity( g_Keyvalues );
+
+                g_Keyvalues.deleteAll();
+                continue;
+            }
+
+            key = line.SubString( 0, line.Find( '" "') );
+            key.Replace( '"', '' );
+
+            value = line.SubString( line.Find( '" "'), line.Length() );
+            value.Replace( '" "', '' );
+            value.Replace( '"', '' );
+
+            g_Keyvalues[ key ] = value;
+        }
+        pFile.Close();
+
+        return true;
     }
 }

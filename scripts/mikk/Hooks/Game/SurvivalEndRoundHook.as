@@ -17,8 +17,17 @@
 
 namespace Hooks {
 namespace Game {
+/*
+    @prefix Hooks::Game::SurvivalEndRoundHook SurvivalEndRoundHook
+    @body Hooks::Game
+    Called once when a survival mode round ends at the moment there is no more alive players.
+*/
 namespace SurvivalEndRoundHook
 {
+    /*
+        @prefix SurvivalEndRoundHook
+        Called once when a survival mode round ends at the moment there is no more alive players.
+    */
     funcdef HookReturnCode SurvivalEndRoundHook();
 
     array<SurvivalEndRoundHook@> SurvivalEndRoundHooks;

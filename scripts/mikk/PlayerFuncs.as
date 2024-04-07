@@ -17,9 +17,11 @@
 
 class MKPlayerFuncs
 {
-    // prefix: "Mikk.PlayerFuncs.GetColormap", "GetColormap", "colormap", "bottomcolor", "topcolor", "Hue"
-    // description: Gets bottomcolor and topcolor from the given player as a RGBA values
-    // body: Mikk.PlayerFuncs
+    /*
+        @prefix Mikk.PlayerFuncs.GetColormap GetColormap colormap bottomcolor topcolor Hue
+        @body Mikk.PlayerFuncs
+        Gets bottomcolor and topcolor from the given player as a RGBA values
+    */
     void GetColormap( CBasePlayer@ pPlayer, RGBA &out TopRGB, RGBA &out BotRGB )
     {
         if( pPlayer is null )
@@ -35,9 +37,11 @@ class MKPlayerFuncs
         BotRGB = HUEtoRGB( Bot_hue );
     }
 
-    // prefix: "Mikk.PlayerFuncs.ClientCommand", "ClientCommand", "Command"
-    // description: Executes a console command on the given player or all players if bAllPlayers is true
-    // body: Mikk.PlayerFuncs
+    /*
+        @prefix Mikk.PlayerFuncs.ClientCommand ClientCommand Command
+        @body Mikk.PlayerFuncs
+        Executes a console command on the given player or all players if bAllPlayers is true
+    */
     void ClientCommand( string_t m_iszCommand, CBasePlayer@ pPlayer, bool bAllPlayers = false )
     {
         if( pPlayer is null && !bAllPlayers )
@@ -57,9 +61,11 @@ class MKPlayerFuncs
         }
     }
 
-    // prefix: "Mikk.PlayerFuncs.FindPlayerBySteamID", "FindPlayerBySteamID", "SteamID"
-    // description: Get the CBasePlayer@ instance of the given SteamID
-    // body: Mikk.PlayerFuncs
+    /*
+        @prefix Mikk.PlayerFuncs.FindPlayerBySteamID FindPlayerBySteamID SteamID
+        @body Mikk.PlayerFuncs
+        Get the CBasePlayer@ instance of the given SteamID
+    */
     CBasePlayer@ FindPlayerBySteamID( const string &in m_iszSteamID )
     {
         CBasePlayer@ pPlayer = null;
@@ -75,18 +81,22 @@ class MKPlayerFuncs
         return pPlayer;
     }
 
-    // prefix: "Mikk.PlayerFuncs.GetSteamID", "GetSteamID", "SteamID"
-    // description: Return the SteamID of the given player, BOTS will be enumerated by their index
-    // body: Mikk.PlayerFuncs
+    /*
+        @prefix Mikk.PlayerFuncs.GetSteamID GetSteamID SteamID
+        @body Mikk.PlayerFuncs
+        Return the SteamID of the given player, BOTS will be enumerated by their index
+    */
     string GetSteamID( CBasePlayer@ pPlayer )
     {
         string ID = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() );
         return ( ID == "BOT" ? ID + string( pPlayer.entindex() ) : ID );
     }
 
-    // prefix: "Mikk.PlayerFuncs.RespawnPlayer", "RespawnPlayer"
-    // description: Revives the given player and then relocates him to a valid spawnpoint, returns true if revived
-    // body: Mikk.PlayerFuncs
+    /*
+        @prefix Mikk.PlayerFuncs.RespawnPlayer RespawnPlayer
+        @body Mikk.PlayerFuncs
+        Revives the given player and then relocates him to a valid spawnpoint, returns true if revived
+    */
     bool RespawnPlayer( CBasePlayer@ pPlayer )
     {
         CBaseEntity@ pSpawnPoint = null;
@@ -100,12 +110,31 @@ class MKPlayerFuncs
         return false;
     }
 
-    void PlayerSay( CBaseEntity@ pPlayer, string m_szMessage )
+    /*
+        @prefix Mikk.PlayerFuncs.PlayerSay chat say
+        @body Mikk.PlayerFuncs
+        Make a player say something, if pTarget is not null, only pTarget will see the message.
+    */
+    void PlayerSay( CBaseEntity@ pPlayer, string m_szMessage, CBasePlayer@ pTarget = null )
     {
-        NetworkMessage m( MSG_ALL, NetworkMessages::NetworkMessageType(74), null );
-            m.WriteByte( pPlayer.entindex() );
-            m.WriteByte( 2 ); // tell the client to color the player name according to team
-            m.WriteString( m_szMessage + '\n' );
-        m.End();
+        if( pPlayer !is null )
+        {
+            if( pTarget is null )
+            {
+                NetworkMessage m( MSG_ALL, NetworkMessages::NetworkMessageType(74), null );
+                    m.WriteByte( pPlayer.entindex() );
+                    m.WriteByte( 2 ); // tell the client to color the player name according to team
+                    m.WriteString( m_szMessage + '\n' );
+                m.End();
+            }
+            else
+            {
+                NetworkMessage m( MSG_ONE, NetworkMessages::NetworkMessageType(74), pPlayer.edict() );
+                    m.WriteByte( pPlayer.entindex() );
+                    m.WriteByte( 2 ); // tell the client to color the player name according to team
+                    m.WriteString( m_szMessage + '\n' );
+                m.End();
+            }
+        }
     }
 }

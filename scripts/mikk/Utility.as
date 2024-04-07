@@ -17,9 +17,11 @@
 
 class MKUtility
 {
-    // prefix: "UpdateTimer"
-    // description: Clears and sets a CScheduledFunction@ function with the given parameters
-    // body: Mikk.Utility
+    /*
+        @prefix Mikk.Utility.UpdateTimer UpdateTimer
+        @body Mikk.Utility
+        Clears and sets a CScheduledFunction@ function with the given parameters
+    */
     void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )
     {
         if( pTimer !is null )
@@ -30,6 +32,11 @@ class MKUtility
         @pTimer = g_Scheduler.SetInterval( "Think", flTime, iRepeat );
     }
 
+    /*
+        @prefix Mikk.Utility.IsPluginInstalled IsPluginInstalled Plugin Installed IsInstalled
+        @body Mikk.Utility
+        Return whatever the given plugin name is installed on the server.
+    */
     bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )
     {
         array<string> PluginsList = g_PluginManager.GetPluginList();

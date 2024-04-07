@@ -17,16 +17,42 @@
 
 enum MKLANG
 {
+    /*
+        ClientPrint -> HUD_PRINTTALK
+    */
     CHAT = 0,
+    /*
+        PrintKeyBindingString
+    */
     BIND,
+    /*
+        ClientPrint -> HUD_PRINTCENTER
+    */
     CENTER,
+    /*
+        HudMessage Pass arguments in the json file.
+        x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8
+    */
     HUDMSG,
+    /*
+        ClientPrint -> HUD_PRINTNOTIFY
+    */
     NOTIFY,
+    /*
+        ClientPrint -> HUD_PRINTCONSOLE
+    */
     CONSOLE,
 }
 
 class MKLanguage
 {
+    /*
+        @prefix Mikk.Language.GetLanguage GetLanguage
+        @body Mikk.Language
+        Gets a language string from the given json value,
+        pReplacement keys will be replaced with their values.
+        note in the json string it have to be enclosed with two $
+    */
     string GetLanguage( CBasePlayer@ pPlayer, json@ pJson, dictionary@ pReplacement = null )
     {
         string m_szLanguage = CustomKeyValue( pPlayer, "$s_language" );
@@ -47,6 +73,14 @@ class MKLanguage
         return m_szMessage;
     }
 
+    /*
+        @prefix Mikk.Language.PrintAll PrintAll Language
+        @body Mikk.Language
+        Prints a language string from the given json value,
+        PrintType is the message type. see the enum
+        pReplacement keys will be replaced with their values.
+        note in the json string it have to be enclosed with two $
+    */
     void PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
     {
         for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
@@ -58,6 +92,14 @@ class MKLanguage
         }
     }
 
+    /*
+        @prefix Mikk.Language.PrintAll PrintAll Language
+        @body Mikk.Language
+        Prints a language string from the given json value,
+        PrintType is the message type. see the enum
+        pReplacement keys will be replaced with their values.
+        note in the json string it have to be enclosed with two $
+    */
     void Print( CBasePlayer@ pPlayer, json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
     {
         if( pPlayer is null || pJson is null )

@@ -17,8 +17,17 @@
 
 namespace Hooks {
 namespace Player {
+/*
+    @prefix Hooks::Player::PlayerJumpHook PlayerJumpHook
+    @body Hooks::Player
+    Called when a player jumps
+*/
 namespace PlayerJumpHook
 {
+    /*
+        @prefix PlayerJumpHook
+        Called when a player jumps
+    */
     funcdef HookReturnCode PlayerJumpHook( CBasePlayer@ );
 
     array<PlayerJumpHook@> PlayerJumpHooks;

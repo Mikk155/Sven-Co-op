@@ -11,6 +11,7 @@
 "scripts/mikk/json.as"
 "scripts/mikk/Language.as"
 "scripts/mikk/PlayerFuncs.as"
+"scripts/mikk/EntityFuncs.as"
 "scripts/mikk/Reflection.as"
 "scripts/mikk/shared.as"
 "scripts/mikk/Utility.as"

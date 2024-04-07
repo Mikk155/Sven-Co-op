@@ -68,9 +68,11 @@ namespace Hooks
 
 class MKHooks
 {
-    // prefix: "Mikk.Hooks.RegisterHook", "RegisterHook", "Hooks"
-    // description: Register a custom hook
-    // body: Mikk.Hooks
+    /*
+        @prefix Mikk.Hooks.RegisterHook Hooks CustomHooks RegisterHooks
+        @body Mikk.Hooks
+        Register a custom hook
+    */
     bool RegisterHook( const int& in iHookID, ref @fn )
     {
         if( fn is null )
@@ -104,9 +106,11 @@ class MKHooks
         return false;
     }
 
-    // prefix: "Mikk.Hooks.RemoveHook", "RemoveHook", "Hooks"
-    // description: Remove a custom hook
-    // body: Mikk.Hooks
+    /*
+        @prefix Mikk.Hooks.RemoveHooks Hooks CustomHooks RemoveHook
+        @body Mikk.Hook
+        Remove a custom hook
+    */
     void RemoveHook( const int& in iHookID, ref @function )
     {
         if( function is null )
@@ -143,9 +147,11 @@ class MKHooks
         }
     }
 
-    // prefix: "Mikk.Hooks.RemoveHook", "RemoveHook", "Hooks"
-    // description: Remove all custom hook
-    // body: Mikk.Hooks
+    /*
+        @prefix Mikk.Hooks.RemoveHooks Hooks CustomHooks RemoveHooks
+        @body Mikk.Hooks
+        Remove all custom hook
+    */
     void RemoveHook( const int& in iHookID )
     {
         switch( iHookID )

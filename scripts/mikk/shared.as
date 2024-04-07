@@ -20,22 +20,27 @@
 #include "Utility"
 #include "Language"
 #include "PlayerFuncs"
+#include "EntityFuncs"
 
 MKShared Mikk;
 
 class MKShared
 {
-    // prefix: "GetDiscord", "Discord"
-    // description: Get discord server invite
-    // body: Mikk
+    /*
+        @prefix Mikk.GetDiscord Discord
+        @body Mikk
+        Get discord server invite
+    */
     string GetDiscord()
     {
         return 'https://discord.gg/THDKrgBEny';
     }
 
-    // prefix: "GetContactInfo", "Contact"
-    // description: Get contact info
-    // body: Mikk
+    /*
+        @prefix Mikk.GetContactInfo Contact
+        @body Mikk
+        Get contact info
+    */
     string GetContactInfo()
     {
         return "\nDiscord Server: " + GetDiscord() + "\nGithub: https://github.com/Mikk155";
@@ -45,6 +50,7 @@ class MKShared
     MKUtility Utility;
     MKLanguage Language;
     MKPlayerFuncs PlayerFuncs;
+    MKEntityFuncs EntityFuncs;
 
     MKShared()
     {
@@ -52,11 +58,14 @@ class MKShared
         Utility = MKUtility();
         Language = MKLanguage();
         PlayerFuncs = MKPlayerFuncs();
+        EntityFuncs = MKEntityFuncs();
     }
 }
 
-// prefix: "atorgba", "RGBA"
-// description: Return the given string as a 4D RGBA
+/*
+    @prefix atorgba
+    Return the given string as a 4D RGBA
+*/
 RGBA atorgba( const string m_iszFrom )
 {
     array<string> aSplit = m_iszFrom.Split( " " );
@@ -67,15 +76,10 @@ RGBA atorgba( const string m_iszFrom )
     return RGBA( atoui( aSplit[0] ), atoui( aSplit[1] ), atoui( aSplit[2] ), atoui( aSplit[3] ) );
 }
 
-// prefix: "atov", "StringToVector"
-// description: Return the given string_t as a 3D Vector
-Vector atov( string_t m_iszFrom )
-{
-    return atov( string( m_iszFrom ) );
-}
-
-// prefix: "atov", "StringToVector"
-// description: Return the given string as a 3D Vector
+/*
+    @prefix atov StringToVector
+    Return the given string_t as a 3D Vector
+*/
 Vector atov( const string m_iszFrom )
 {
     Vector m_vTo;
@@ -83,8 +87,24 @@ Vector atov( const string m_iszFrom )
     return m_vTo;
 }
 
-// prefix: "CKV", "CustomKeyValue"
-// description: Return the value of the given CustomKeyValue, if m_iszValue is given it will update the value, return String::INVALID_INDEX if the given entity is null, return String::EMPTY_STRING if the given entity doesn't have the custom key value
+/*
+    @prefix atov2 StringToVector
+    Return the given string_t as a 2D Vector
+*/
+Vector2D atov2( const string m_iszFrom )
+{
+    Vector m_vTo;
+    g_Utility.StringToVector( m_vTo, m_iszFrom );
+    return Vector2D( m_vTo.y, m_vTo.x );
+}
+
+/*
+    @prefix CKV CustomKeyValue
+    Return the value of the given CustomKeyValue,
+    if m_iszValue is given it will update the value,
+    return String::INVALID_INDEX if the given entity is null,
+    return String::EMPTY_STRING if the given entity doesn't have the custom key value
+*/
 string CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const string&in m_iszValue = String::EMPTY_STRING )
 {
     if( pEntity is null )
@@ -105,9 +125,10 @@ string CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const str
     return pEntity.GetCustomKeyvalues().GetKeyvalue( m_iszKey ).GetString();
 }
 
-
-// prefix: "Hue", "HUEtoRGB"
-// description: Return a RGB color from a Hue color
+/*
+    @prefix Hue HUEtoRGB
+    Return a RGB color from a Hue color
+*/
 RGBA HUEtoRGB( float H )
 {
     float R, G, B;
@@ -133,8 +154,10 @@ RGBA HUEtoRGB( float H )
     return RGBA( Math.clamp( 0, 255, int( R * 255.f ) ), Math.clamp( 0, 255.0f, int( G * 255.0f ) ), Math.clamp( 0, 255, int( B * 255.0f ) ), 255 );
 }
 
-// prefix: "Hue", "RGBtoHUE"
-// description: Return a Hue color from a RGB color
+/*
+    @prefix Hue RGBtoHUE
+    Return a Hue color from a RGB color
+*/
 float RGBtoHUE(Vector rgb)
 {
     float R = rgb.x;
