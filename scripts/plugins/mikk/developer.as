@@ -41,7 +41,7 @@ void Think()
 
 HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
 {
-    if( pPlayer !is null && g_Players.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) || true )
+    if( pPlayer !is null && g_Players.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
     {
         string left, right, top;
         left = right = top = '';
