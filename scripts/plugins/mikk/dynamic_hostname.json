@@ -3,7 +3,7 @@
         "HOSTNAME": "Limitless Potential",
         "DISABLED": "Disabled",
         "ENABLED": "Enabled",
-        "DYNAMIC_HOSTNAME": "$hostname$ | Playing $maps$ | Anti-Rush $antirush$ | Survival $survival$"
+        "DYNAMIC_HOSTNAME": "$hostname$ | Playing $maps$ | Diff $difficulty$ | Anti-Rush $antirush$ | Survival $survival$"
     },
     "MAPS": {
         "hl_c*": "Half-Life",

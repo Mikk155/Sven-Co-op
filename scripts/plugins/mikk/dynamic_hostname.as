@@ -29,6 +29,11 @@ json pJson;
 
 void MapActivate()
 {
+    g_Scheduler.SetTimeout( 'SetHostname', 10.0f );
+}
+
+void SetHostname()
+{
     string mapname = string( g_Engine.mapname ).ToLowercase();
     mapname.ToLowercase();
 
@@ -76,10 +81,20 @@ void MapActivate()
         }
     }
 
+    CBaseEntity@ pDiffy = g_EntityFuncs.FindEntityByTargetname( null, 'ddd_dumpinfo' );
+
+    string difficulty = CustomKeyValue( pDiffy, '$s_diff' );
+
+    if( difficulty != String::INVALID_INDEX )
+    {
+        difficulty += ' (' + CustomKeyValue( pDiffy, '$i_diff' ) + ')';
+    }
+
     string m_iszHostName = config[ "DYNAMIC_HOSTNAME" ];
     m_iszHostName.Replace( "$hostname$", config[ "HOSTNAME" ] );
     m_iszHostName.Replace( "$maps$", mapname );
     m_iszHostName.Replace( "$antirush$", antirush );
+    m_iszHostName.Replace( "$difficulty$", ( difficulty == String::INVALID_INDEX ? config[ "DISABLED" ] : difficulty ) );
     m_iszHostName.Replace( "$survival$", config[ ( g_SurvivalMode.MapSupportEnabled() ? "ENABLED" : "DISABLED" ) ] );
 
     g_EngineFuncs.ServerCommand( "hostname \"" + m_iszHostName + "\"\n" );
