@@ -33,7 +33,7 @@ class MKShared
     */
     string GetDiscord()
     {
-        return 'discord.gg/THDKrgBEny';
+        return 'discord.gg/sqK7F3kZfn';
     }
 
     /*
