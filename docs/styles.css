@@ -1,0 +1,101 @@
+:root
+{
+        --SVENCOOP_HUD: rgb(0, 60, 160);
+        --SVENCOOP_RGB: rgb(0, 40, 100);
+        --SVENCOOP_BACKGROUND: rgb(0, 20, 40);
+        --white: rgb( 255, 255, 255 );
+        --cyan: rgb(0, 255, 190);
+        --red: rgb( 255, 0, 0);
+        --blue: rgb(0, 24, 158);
+}
+
+body
+{
+        background-color: var(--SVENCOOP_BACKGROUND);
+        place-items: center;
+}
+
+.block
+{
+        transition: all 100ms;
+        position:relative;
+        background-color:rgba(255, 255, 255, 0.25);
+        color:var(--SVENCOOP_HUD);
+        border: 15px solid var(--SVENCOOP_HUD);
+        border-radius: 15px;
+        box-shadow: inset 0 0 5px var(--SVENCOOP_HUD), 0 0 10px var(--SVENCOOP_HUD);
+        border-style: none;
+}
+
+.neon-text
+{
+        color: var(--white);
+        text-shadow: 0 0 15px var(--white);
+}
+
+.neon-notice
+{
+        color: var(--white);
+        text-shadow: 0 0 15px var(--white);
+        text-decoration: underline;
+}
+
+.link-here
+{
+        color: var(--blue);
+        text-decoration:none;
+}
+
+.link-extern
+{
+        color: var(--cyan);
+}
+
+.link-here:hover,
+.link-extern:hover
+{
+        text-decoration:underline;
+        filter: blur(2px);
+}
+
+.json
+{
+        position:relative;
+        background-color:black;
+        box-shadow: inset 0 0 5px black, 0 0 10px black;
+
+        color: rgb(100, 100, 100);
+        text-align: left;
+        font-size:small;
+        font-family:monospace;
+}
+
+.json-tokens
+{
+        color: rgb(255, 255, 0);
+}
+
+.json-integer
+{
+        color: rgb(255, 0, 0);
+}
+
+.json-float
+{
+        color: rgb(0, 166, 255);
+}
+
+.json-false
+{
+        color: rgb(184, 35, 35);
+}
+
+.json-true
+{
+        color: rgb(0, 0, 255);
+}
+
+.json-string
+{
+        color: rgb(0, 255, 0);
+}

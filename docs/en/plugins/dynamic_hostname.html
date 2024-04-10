@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<head>
+        <title>Sven Co-op</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body>
+
+        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
+
+                <a href="https://mikk155.github.io/Sven-Co-op">
+                        <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
+                </a>
+
+                <div class="block">
+                <br>
+
+                        <div class="neon-text">
+
+                                <div class="neon-text" >
+                                        dynamic_hostname
+                                        <br><br>
+                                        Change the hostname depending on the map/campaign playing, antirush, survival state and difficulty
+                                        <br><br>
+                                        Open dynamic_hostname.json to configure.
+                                        <br><br>
+                                        Original idea by <a href="https://github.com/CubeMath" target="_blank" class="link-extern">Cubemath</a>
+
+                                        <br><br>
+                                        <a href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/dynamic_hostname.yaml" target="_blank">Download
+                                </div>
+                        </div>
+
+                <br>
+                </div>
+
+                <br>
+                <br>
+<pre class="json">
+<a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"CONFIG"</a> <a class="json-tokens">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Name of your server
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"HOSTNAME"</a><a class="json-tokens">:</a> <a class="json-string">"Limitless Potential"</a><a class="json-tokens">,</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Text to display when something is disabled
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DISABLED"</a><a class="json-tokens">:</a> <a class="json-string">"Disabled"</a><a class="json-tokens">,</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Text to display when something is enabled
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ENABLED"</a><a class="json-tokens">:</a> <a class="json-string">"Enabled"</a><a class="json-tokens">,</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Your new hostname
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $difficulty$ is it will be replaced with the current difficulty of DynamicDifficultyDeluxe
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $antirush$ is it will be replaced if there is any antirush entity available
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $survival$ is it will be replaced if survival mode is active or not
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $map$ is it will be replaced with the <a class="json-string">"MAPS"</a> category
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DYNAMIC_HOSTNAME"</a><a class="json-tokens">:</a> <a class="json-string">"$hostname$ | Playing $maps$ | Diff $difficulty$ | Anti-Rush $antirush$ | Survival $survival$"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;// key = name of the current map<a class="json-tokens">,</a> supports wildcard (*) at the end or at the start.
+&nbsp;&nbsp;&nbsp;&nbsp;// value = text to display at $map$
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MAPS"</a><a class="json-tokens">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"hl_c*"</a><a class="json-tokens">:</a> <a class="json-string">"Half-Life"</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"of*"</a><a class="json-tokens">:</a> <a class="json-string">"Opposing Force"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a>
+<a class="json-tokens">}</a>
+</pre>
+        </div>
+</body>
+</html>

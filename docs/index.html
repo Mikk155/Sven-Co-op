@@ -4,237 +4,38 @@
         <title>Sven Co-op</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-        <script src="script.js"></script>
-        <script src="language.js"></script>
+        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:40px;">
 
-        <!-- Language buttons-->
-        <div id="side-menu" class="side-menu" style="--max-height:250px;">
-                <a id="side-menu-button" class="side-menu-button" onclick="sandwitchButtonClick(this)">
-                    <div class="side-menu-b1"></div>
-                    <div class="side-menu-b2"></div>
-                    <div class="side-menu-b3"></div>
-                </a>
-                <div id="side-menu-elements" class="side-menu-elements">
-                        <form action="index.html"><button id="HomeButton" tabindex="-1" class="neon-button" style="width:100%;--clr-neon:white;font-size: 200%;"></button></form>
-                        <button id="englishButton" tabindex="-1" class="neon-button" style="width:100%;--clr-neon:white;font-size: 200%;" onclick="changeLanguage('en'),sandwitchButtonClick(this)">English</button>
-                        <button id="spanishButton" tabindex="-1" class="neon-button" style="width:100%;--clr-neon:white;font-size: 200%;" onclick="changeLanguage('es'),sandwitchButtonClick(this)">Español</button>
-                </div>
-        </div>
-
-        <div style="position:relative;padding-left:5%;text-align:center;">
-                <!-- Title -->
-                <div class="title">
+                <a href="https://mikk155.github.io/Sven-Co-op">
                         <img class="img-banner" src="media/svencoop.png" alt="Sven Co-op">
+                </a>
+
+                <div class="block">
+
+                        <div class="neon-text">
+
+                                <a href = "en" class="link-here">
+                                        English
+                                </a>
+                                <br>
+                        </div>
                 </div>
 
-                <div id="home-bar" style="padding-left:10%;font-weight:100;">
+                <br>
+                <br>
 
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="description"></a><br><br>
-                                </div>
+                <!--<div class="block">
+
+                        Thanks to:
+
+                        <div class="neon-text" style="font-size: 20px;">
+                                <a href="" class="link-extern"></a><br><br>
                         </div>
-                        <br>
-                        <br>
-                        <!-- Installation -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="installing 1"></a><br><br>
-                                        <a id="installing 2"></a><br><br>
-                                        <a id="installing 3"></a><br><br>
-                                        <img src="media/actions.png"><br><br>
-                                        <a id="installing 4"></a><br><br>
-                                        <img src="media/workflows.png"><br><br>
-                                        <a id="installing 5"></a><br><br>
-                                        <a id="installing 6"></a><br><br>
-                                        <img src="media/download.png"><br><br>
-                                        <a id="installing 7"></a><br><br>
-                                </div>
-                        </div>
-                        <br>
-                        <br>
-                        <!-- Plugins -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="the-actions">
-                                        <a id="Plugins" style="font-size:40px"></a><br>
-                                        <a id="Plugin AntiClip"></a><br>
-                                        <a id="Plugin chatroles"></a><br>
-                                        <a id="Plugin emotes"></a><br>
-                                        <a id="Plugin FastRestart"></a><br>
-                                        <a id="Plugin NPCMoveTo"></a><br>
-                                        <a id="Plugin PlayerDecalTracker"></a><br>
-                                        <a id="Plugin SurvivalRespawnAll"></a><br>
-                                        <a id="Plugin dynamic_hostname"></a><br>
-                                        <a id="Plugin CrashReporter"></a><br>
-                                </div>
-                        </div>
-                        <br><br>
-                        <!-- Anti-Clip -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="AntiClip" href="#AntiClip" class="own-link">AntiClip</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="AntiClip description 1"></a><br><br>
-                                        <a id="AntiClip description 2"></a><br><br>
-                                        <a id="AntiClip description 3"></a><br><br>
-                                        <a id="AntiClip description 4"></a><br><br>
-                                        <a id="AntiClip description 5"></a><br><br>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/AntiClip.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <br><br>
-                        <!-- chatroles -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="chatroles" href="#chatroles" class="own-link">chatroles</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="chatroles description 1"></a><br><br>
-                                        <a id="chatroles description 2"></a><br><br>
-                                        <a id="chatroles description 3"></a><br><br>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/chatroles.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <br><br>
-                        <!-- emotes -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="emotes" href="#emotes" class="own-link">emotes</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="emotes description 1"></a><br><br>
-                                        <a id="emotes description 2"></a><br><br>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/emotes.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <br><br>
-                        <!-- FastRestart -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="FastRestart" href="#FastRestart" class="own-link">FastRestart</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="FastRestart description 1"></a><br><br>
-                                        <a id="FastRestart description 2"></a><br><br>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/FastRestart.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <br><br>
-                        <!-- NPCMoveTo -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="NPCMoveTo" href="#NPCMoveTo" class="own-link">NPCMoveTo</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="NPCMoveTo description 1"></a>
-                                        <br><br>
-                                        <a id="NPCMoveTo description 2"></a>
-                                        <br><br>
-                                        <a id="NPCMoveTo description 3"></a>
-                                        <br><br>
-                                        <a id="NPCMoveTo description 4"></a>
-                                        <br><br>
-                                        <a id="NPCMoveTo description 5"></a>
-                                        <br><br>
-                                        <a id="NPCMoveTo description 6"></a>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/NPCMoveTo.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <br><br>
-                        <!-- PlayerDecalTracker -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="PlayerDecalTracker" href="#PlayerDecalTracker" class="own-link">PlayerDecalTracker</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="PlayerDecalTracker description 1"></a>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/PlayerDecalTracker.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <!-- SurvivalRespawnAll -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="SurvivalRespawnAll" href="#SurvivalRespawnAll" class="own-link">SurvivalRespawnAll</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="SurvivalRespawnAll description 1"></a><br><br>
-                                        <a id="SurvivalRespawnAll description 2"></a><br><br>
-                                        <a id="SurvivalRespawnAll description 3"></a><br><br>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/SurvivalRespawnAll.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <!-- dynamic_hostname -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="dynamic_hostname" href="#dynamic_hostname" class="own-link">dynamic_hostname</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="dynamic_hostname description 1"></a><br><br>
-                                        <a id="dynamic_hostname description 2"></a><br><br>
-                                        <a id="dynamic_hostname description 3"></a><br><br>
-                                        <a id="dynamic_hostname description 4"></a><br><br>
-                                        <a id="dynamic_hostname description 5"></a><br><br>
-                                        <a id="dynamic_hostname description 6"></a><br><br>
-                                        <a id="dynamic_hostname description 7"></a><br><br>
-                                        <a id="dynamic_hostname description 8"></a><br><br>
-                                        <a id="dynamic_hostname description 9"></a><br><br>
-                                        <a id="dynamic_hostname description 10"></a><br><br>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/dynamic_hostname.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                        <!-- CrashReporter -->
-                        <div tabindex="-1" class="the-box">
-                                <div class="neon-text" style="text-align:center;font-size:40px;--clr-neon:white;font-family: 'Courier New', Courier, monospace;">
-                                        <a id="CrashReporter" href="#CrashReporter" class="own-link">CrashReporter</a>
-                                </div>
-                                <br>
-                                <div class="neon-text" style="font-family: 'Courier New', Courier, monospace;">
-                                        <a id="CrashReporter description 1"></a><br><br>
-                                        <a id="CrashReporter description 2"></a><br><br>
-                                </div>
-                                <div class="the-actions">
-                                        <h2><a id="Actions" class="download-link" href="https://github.com/Mikk155/Sven-Co-op/actions/workflows/CrashReporter.yaml">Actions</a></h2>
-                                </div>
-                        </div>
-                </div>
+                </div>-->
         </div>
-
-        <!-- Apply english-->
-        <script>
-                document.getElementById('side-menu').addEventListener('change', function() {
-                        const selectedLanguage = this.value;
-                        changeLanguage(selectedLanguage);
-                });
-                changeLanguage('en');
-        </script>
 </body>
 </html>

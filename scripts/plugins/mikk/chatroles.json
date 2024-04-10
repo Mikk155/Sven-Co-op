@@ -1,6 +1,4 @@
 {
-    // true = load every time a map starts
-    // Load once on plugin load
     "json reload periodically": false,
     "STEAM_0:0:202010794":
     {
