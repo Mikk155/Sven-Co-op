@@ -23,7 +23,8 @@ void PluginInit()
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
 
     g_Hooks.RegisterHook( Hooks::ASLP::Engine::ClientCommand, @ClientCommand );
-    pJson.load( 'plugins/mikk/NPCMoveTo' );
+
+    pJson.load( 'plugins/mikk/NPCMoveTo.json' );
 }
 
 json pJson;
@@ -33,9 +34,9 @@ float time;
 HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszCommand, META_RES& out meta_result )
 {
     if( pPlayer !is null
-    && m_iszCommand == 'npc_moveto' &&
-    || ( pPlayer.IsAlive() || Json[ 'observers can use', false ] )
-    && ( time > g_Engine.time || Json[ 'global cooldown', false ] ) )
+    && m_iszCommand == 'npc_moveto'
+    && ( pPlayer.IsAlive() || pJson[ 'observers can use', false ] )
+    && ( g_Engine.time > time || pJson[ 'global cooldown', false ] ) )
     {
         TraceResult tr;
 
@@ -56,7 +57,7 @@ HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszComman
             m.WriteByte( 2 );
         m.End();
 
-        time = g_Engine.time + 1.0;
+        time = g_Engine.time + 0.5;
     }
     return HOOK_CONTINUE;
 }
