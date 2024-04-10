@@ -17,8 +17,8 @@
 
 #include "json"
 #include "Hooks"
-#include "Utility"
 #include "Language"
+#include "Reflection"
 #include "PlayerFuncs"
 #include "EntityFuncs"
 
@@ -33,7 +33,7 @@ class MKShared
     */
     string GetDiscord()
     {
-        return 'https://discord.gg/THDKrgBEny';
+        return 'discord.gg/THDKrgBEny';
     }
 
     /*
@@ -43,11 +43,10 @@ class MKShared
     */
     string GetContactInfo()
     {
-        return "\nDiscord Server: " + GetDiscord() + "\nGithub: https://github.com/Mikk155";
+        return GetDiscord() + " | github.com/Mikk155";
     }
 
     MKHooks Hooks;
-    MKUtility Utility;
     MKLanguage Language;
     MKPlayerFuncs PlayerFuncs;
     MKEntityFuncs EntityFuncs;
@@ -55,10 +54,48 @@ class MKShared
     MKShared()
     {
         Hooks = MKHooks();
-        Utility = MKUtility();
         Language = MKLanguage();
         PlayerFuncs = MKPlayerFuncs();
         EntityFuncs = MKEntityFuncs();
+    }
+
+    /*
+        @prefix Mikk.UpdateTimer UpdateTimer
+        @body Mikk
+        Clears and sets a CScheduledFunction@ function with the given parameters
+    */
+    void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )
+    {
+        if( pTimer !is null )
+        {
+            g_Scheduler.RemoveTimer( pTimer );
+        }
+
+        @pTimer = g_Scheduler.SetInterval( "Think", flTime, iRepeat );
+    }
+
+    /*
+        @prefix Mikk.IsPluginInstalled IsPluginInstalled Plugin Installed IsInstalled
+        @body Mikk
+        Return whatever the given plugin name is installed on the server.
+    */
+    bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )
+    {
+        array<string> PluginsList = g_PluginManager.GetPluginList();
+
+        if( bCaseSensitive )
+        {
+            return ( PluginsList.find( m_iszPluginName ) >= 0 );
+        }
+
+        for( uint ui = 0; ui < PluginsList.length(); ui++ )
+        {
+            if( PluginsList[ui].ToLowercase() == m_iszPluginName.ToLowercase() )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
@@ -93,8 +130,7 @@ Vector atov( const string m_iszFrom )
 */
 Vector2D atov2( const string m_iszFrom )
 {
-    Vector m_vTo;
-    g_Utility.StringToVector( m_vTo, m_iszFrom );
+    Vector m_vTo = atov( m_iszFrom );
     return Vector2D( m_vTo.y, m_vTo.x );
 }
 

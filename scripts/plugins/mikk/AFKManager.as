@@ -24,7 +24,7 @@ void PluginInit()
 
     g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
 
-    Mikk.Utility.UpdateTimer( g_Think, 'Think', 1.0f, g_Scheduler.REPEAT_INFINITE_TIMES );
+    Mikk.UpdateTimer( g_Think, 'Think', 1.0f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
     pJson.load( "plugins/mikk/AFKManager" );
 }

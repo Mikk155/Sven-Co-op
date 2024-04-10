@@ -23,27 +23,7 @@ bool g_RegisterReflection()
     return true;
 }
 
-void PluginInit()
-{
-    g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
-    g_Reflection.CallFunction( 'PluginInit' );
-}
-
-void MapInit()
-{
-    g_Reflection.CallFunction( 'MapInit' );
-}
-
-void MapActivate()
-{
-    g_Reflection.CallFunction( 'MapActivate' );
-}
-
-void MapStart()
-{
-    g_Reflection.CallFunction( 'MapStart' );
-}
+const uint MAX_FUNCTIONS = Reflection::g_Reflection.Module.GetGlobalFunctionCount();
 
 Reflection@ g_Reflection;
 
@@ -52,21 +32,61 @@ final class Reflection
     /*
         @prefix g_Reflection.CallFunction CallFunction Reflection
         @body g_Reflection
-        Calls a function globaly in all namespaces. must include "Reflection"
+        Calls a function globaly in all namespaces. Returns the number of functions called.
     */
-    void CallFunction( const string& in m_iszFunction )
+    int Call( const string m_iszFunction )
     {
-        uint GlobalCount = Reflection::g_Reflection.Module.GetGlobalFunctionCount();
+        int f = 0;
 
-        for( uint i = 0; i < GlobalCount; i++ )
+        for( uint i = 0; i < MAX_FUNCTIONS; i++ )
         {
             Reflection::Function@ m_fFunction = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( i );
 
-            if( m_fFunction !is null && m_fFunction.GetName() == m_iszFunction && !m_fFunction.GetNamespace().IsEmpty() )
+            if( m_fFunction !is null && !m_fFunction.GetNamespace().IsEmpty() && m_fFunction.GetName() == m_iszFunction )
             {
+                f++;
+                // g_Game.AlertMessage( at_console, '[Reflection] Called '+'"' + m_fFunction.GetNamespace() + '::' + m_fFunction.GetName() + '"' + '\n' );
                 m_fFunction.Call();
-                g_Game.AlertMessage( at_console, '[Reflection] Called '+'"' + m_fFunction.GetNamespace() + '::' + m_fFunction.GetName() + '"' + '\n' );
             }
         }
+        return f;
+    }
+
+    protected array<string> Functions(MAX_FUNCTIONS);
+
+    protected bool IsInitialised = false;
+
+    protected void Initialise()
+    {
+        for( uint i = 0; i < MAX_FUNCTIONS; i++ )
+        {
+            Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( i );
+
+            if( Func !is null )
+            {
+                Functions.insertAt( i, ( Func.GetNamespace().IsEmpty() ? '' : Func.GetNamespace() + '::' ) + Func.GetName() );
+            }
+        }
+    }
+
+    /*
+        @prefix g_Reflection.opIndex g_Reflection.Get g_Reflection.Function
+        @body g_Reflection
+        Get a script function by name or namespace::name
+    */
+    Reflection::Function@ opIndex( string m_iszFunction )
+    {
+        if( !IsInitialised )
+        {
+            Initialise();
+        }
+
+        if( Functions.find( m_iszFunction ) < 0 )
+        {
+            g_Game.AlertMessage( at_console, '[Reflection] GetFunction Couldn\'t find function "' + m_iszFunction + '"\n' );
+            return null;
+        }
+        // g_Game.AlertMessage( at_console, '[Reflection] GetFunction "' + Functions[ Functions.find( m_iszFunction ) ] + '" (' + Functions.find( m_iszFunction ) + ')\n' );
+        return Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( Functions.find( m_iszFunction ) );
     }
 }

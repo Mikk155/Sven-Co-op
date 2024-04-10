@@ -27,7 +27,13 @@ void PluginInit()
 
 	g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
     pJson.load('plugins/mikk/chatroles.json');
-    AddColor = !Mikk.Utility.IsPluginInstalled( 'ChatColors', false );
+    AddColor = !Mikk.IsPluginInstalled( 'ChatColors', false );
+}
+
+void MapInit()
+{
+    if( pJson[ 'json reload periodically', false ] )
+        pJson.load('plugins/mikk/chatroles.json');
 }
 
 // keeping the scoreboard color would be neat too, but then you can't see hp/armor

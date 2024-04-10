@@ -155,11 +155,17 @@
 		"body": "Mikk.EntityFuncs.LoadEntFile( ${1:const string &in m_szPath})",
 		"description": "Loads an external .ent file into the map"
 	},
-	"void CallFunction( const string& in m_iszFunction )":
+	"int Call( const string m_iszFunction )":
 	{
 		"prefix":[ "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
-		"body": "g_Reflection.CallFunction( ${1:const string& in m_iszFunction})",
-		"description": "Calls a function globaly in all namespaces. must include \"Reflection\""
+		"body": "g_Reflection.Call( ${1:const string m_iszFunction})",
+		"description": "Calls a function globaly in all namespaces. Returns the number of functions called."
+	},
+	"Reflection::Function@ opIndex( string m_iszFunction )":
+	{
+		"prefix":[ "g_Reflection.opIndex", "g_Reflection.Get", "g_Reflection.Function" ],
+		"body": "g_Reflection[ ${1:string m_iszFunction}]",
+		"description": "Get a script function by name or namespace::name"
 	},
 	"string GetDiscord()":
 	{
@@ -172,6 +178,18 @@
 		"prefix":[ "Mikk.GetContactInfo", "Contact" ],
 		"body": "Mikk.GetContactInfo()",
 		"description": "Get contact info"
+	},
+	"void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )":
+	{
+		"prefix":[ "Mikk.UpdateTimer", "UpdateTim" ],
+		"body": "Mikk.UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0})",
+		"description": "Clears and sets a CScheduledFunction@ function with the given parameters"
+	},
+	"bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )":
+	{
+		"prefix":[ "Mikk.IsPluginInstalled", "IsPluginInstalled", "Plugin", "Installed", "IsInstalled" ],
+		"body": "Mikk.IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false})",
+		"description": "Return whatever the given plugin name is installed on the server."
 	},
 	"RGBA atorgba( const string m_iszFrom )":
 	{
@@ -208,17 +226,5 @@
 		"prefix":[ "Hue", "RGBtoHUE" ],
 		"body": "RGBtoHUE( ${1:Vector rg})",
 		"description": "Return a Hue color from a RGB color"
-	},
-	"void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )":
-	{
-		"prefix":[ "Mikk.Utility.UpdateTimer", "UpdateTim" ],
-		"body": "Mikk.Utilit.UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0})",
-		"description": "Clears and sets a CScheduledFunction@ function with the given parameters"
-	},
-	"bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )":
-	{
-		"prefix":[ "Mikk.Utility.IsPluginInstalled", "IsPluginInstalled", "Plugin", "Installed", "IsInstalled" ],
-		"body": "Mikk.Utilit.IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false})",
-		"description": "Return whatever the given plugin name is installed on the server."
 	}
 }

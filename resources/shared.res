@@ -14,4 +14,3 @@
 "scripts/mikk/EntityFuncs.as"
 "scripts/mikk/Reflection.as"
 "scripts/mikk/shared.as"
-"scripts/mikk/Utility.as"

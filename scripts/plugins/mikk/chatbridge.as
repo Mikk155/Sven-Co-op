@@ -23,46 +23,55 @@ json JsonEmotes;
 json JsonLang;
 json JsonBadWords;
 
-namespace chatbridge
+void PluginInit()
 {
-    void PluginInit()
-    {
+    g_Module.ScriptInfo.SetAuthor( "Mikk" );
+    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+
+    g_Reflection.Call( 'PluginInit' );
+    LoadJson();
+    g_Chatbridge.PluginInit();
+}
+
+void MapInit()
+{
+    if( pJson[ 'json reload periodically', false ] )
         LoadJson();
-        g_Chatbridge.PluginInit();
-    }
 
-    void MapInit()
+    g_Reflection.Call( 'MapInit' );
+}
+
+void LoadJson()
+{
+    pJson.load('plugins/mikk/chatbridge/chatbridge.json');
+
+    if( pJson.keysize <= 0 )
     {
-        if( pJson[ 'json reload periodically', false ] )
-            LoadJson();
+        g_Game.AlertMessage( at_error, "WARNING! Can not open chatbridge.json! Shutting down plugin...\n" );
+        array<int>i(0);i[i.length()];
     }
 
-    void LoadJson()
-    {
-        pJson.load('plugins/mikk/chatbridge/chatbridge.json');
+    JsonLog = pJson[ 'LOG', {} ];
+    JsonEmotes = pJson[ 'emotes', {} ];
+    JsonLang = pJson[ pJson[ 'language', 'english' ], {} ];
+    JsonBadWords = pJson[ 'bad words', {} ];
+}
 
-        if( pJson.keysize <= 0 )
-        {
-            g_Game.AlertMessage( at_error, "WARNING! Can not open chatbridge.json! Shutting down plugin...\n" );
-            array<int>i(0);i[i.length()];
-        }
+HookReturnCode MapChange()
+{
+    g_Chatbridge.restarts++;
+    return HOOK_CONTINUE;
+}
 
-        JsonLog = pJson[ 'LOG', {} ];
-        JsonEmotes = pJson[ 'emotes', {} ];
-        JsonLang = pJson[ pJson[ 'language', 'english' ], {} ];
-        JsonBadWords = pJson[ 'bad words', {} ];
-    }
+void MapStart()
+{
+    g_Reflection.Call( 'MapStart' );
+    g_Chatbridge.mapname = g_Engine.mapname;
+}
 
-    HookReturnCode MapChange()
-    {
-        g_Chatbridge.restarts++;
-        return HOOK_CONTINUE;
-    }
-
-    void MapStart()
-    {
-        g_Chatbridge.mapname = g_Engine.mapname;
-    }
+void MapActivate()
+{
+    g_Reflection.Call( 'MapActivate' );
 }
 
 ChatBridge g_Chatbridge;
@@ -96,7 +105,7 @@ final class ChatBridge
 
         @this.CThink = g_Scheduler.SetInterval( @this, "Think", 1.0, g_Scheduler.REPEAT_INFINITE_TIMES );
 
-        g_Hooks.RegisterHook( Hooks::Game::MapChange, @chatbridge::MapChange );
+        g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
     }
 
     CScheduledFunction@ CThink = null;

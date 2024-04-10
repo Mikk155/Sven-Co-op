@@ -5,7 +5,7 @@ void PluginInit()
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
     g_Hooks.RegisterHook( Hooks::Player::PlayerPreThink, @PlayerPreThink );
-    Mikk.Utility.UpdateTimer( pThink, "Think", 0.1, g_Scheduler.REPEAT_INFINITE_TIMES );
+    Mikk.UpdateTimer( pThink, "Think", 0.1, g_Scheduler.REPEAT_INFINITE_TIMES );
 }
 
 CScheduledFunction@ pThink;
