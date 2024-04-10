@@ -109,10 +109,16 @@ def CreateSnippets():
 
                             snippet.write( f'\t\t"body": "' )
 
-                            if body != '':
+                            if function.startswith( 'opIndex' ):
+                                snippet.write( f'{body}' )
+
+                            elif body != '':
                                 snippet.write( f'{body}{Dot}' )
 
-                            snippet.write( f'{function}(' )
+                            if function.startswith( 'opIndex' ):
+                                snippet.write( f'[' )
+                            else:
+                                snippet.write( f'{function}(' )
 
                             for i, Args in enumerate( dListArgs ):
 
@@ -131,7 +137,10 @@ def CreateSnippets():
 
                                 snippet.write( f' {s}' )
 
-                            snippet.write( f')",\n' )
+                            if function.startswith( 'opIndex' ):
+                                snippet.write( f']",\n' )
+                            else:
+                                snippet.write( f')",\n' )
 
                         snippet.write( f'\t\t"description": "{description}"\n' )
 
