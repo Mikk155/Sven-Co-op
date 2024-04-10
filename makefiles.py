@@ -1,3 +1,7 @@
+# This script has been made for github workflows to take certain scripts the from the source code
+# and create an artifact from the resource file at resources/
+# This is automatially used for github, you dont need this in your game server.
+
 import os
 import sys
 import shutil
