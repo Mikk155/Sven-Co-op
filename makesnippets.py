@@ -1,3 +1,7 @@
+# This script has been made for reading the scripts at scripts/mikk/*
+# and generate a snippets project in .vscode/shared.code-snippets
+# This is used by me to update these snippets, you dont need this in your game server.
+
 import os
 
 def CreateSnippets():
