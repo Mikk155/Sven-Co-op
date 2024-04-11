@@ -19,6 +19,47 @@ namespace JSON
 {
     mixin class operators
     {
+        bool isinstance( string key, string instance )
+        {
+            if( instance == 'float' )
+            {
+                return g_Utility.IsStringFloat( this[ key ] );
+            }
+            else if( instance == 'integer' || instance == 'int' )
+            {
+                return g_Utility.IsStringInt( this[ key ] );
+            }
+            else if( instance == 'dict' || instance == 'dictionary' || instance == 'json' )
+            {
+                return ( this[ key ] == 'json@' );
+            }
+            else if( instance == 'array' )
+            {
+                return false;
+            }
+            else if( instance == 'Vector' )
+            {
+                return g_Utility.IsString3DVec( key );
+            }
+            else if( instance == 'Vector2D' )
+            {
+                array<string> szSplit = key.Split( ' ' );
+                return( szSplit.length() == 2 && g_Utility.IsStringFloat( szSplit[0] ) && g_Utility.IsStringFloat( szSplit[1] ) );
+            }
+            else if( instance == 'string' )
+            {
+                return
+                    ( !isinstance(key,'Vector2D')
+                     && !isinstance(key,'Vector')
+                      && !isinstance(key,'array')
+                       && !isinstance(key,'float')
+                        && !isinstance(key,'json')
+                         && !isinstance(key,'int')
+                    );
+            }
+            return false;
+        }
+
         Vector2D opIndex( string key, Vector2D value )
         {
             if( this.data.exists( key ) )
