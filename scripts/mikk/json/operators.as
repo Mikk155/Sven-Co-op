@@ -19,6 +19,32 @@ namespace JSON
 {
     mixin class operators
     {
+        Vector2D opIndex( string key, Vector2D value )
+        {
+            if( this.data.exists( key ) )
+            {
+                array<string> szSplit = string( data[ key ] ).Split( ' ' );
+
+                if( szSplit.length() == 2 && g_Utility.IsStringFloat( szSplit[0] ) && g_Utility.IsStringFloat( szSplit[1] ) )
+                {
+                    return atov2( string( data[ key ] ) );
+                }
+            }
+            return Vector2D( 0, 0 );
+        }
+
+        Vector opIndex( string key, Vector value )
+        {
+            if( this.data.exists( key ) )
+            {
+                if( g_Utility.IsString3DVec( string( data[ key ] ) ) )
+                {
+                    return atov( string( data[ key ] ) );
+                }
+            }
+            return g_vecZero;
+        }
+
         string opIndex( string key, string value = String::EMPTY_STRING )
         {
             if( this.data.exists( key ) )
