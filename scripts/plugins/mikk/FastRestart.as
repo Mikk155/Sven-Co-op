@@ -17,15 +17,19 @@
 
 #include '../../mikk/shared'
 
+json pJson;
+
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
 
     Mikk.Hooks.RegisterHook( Hooks::Game::SurvivalEndRound, @SurvivalEndRound );
+
+    pJson.load('plugins/mikk/FastRestart.json');
 }
 
-HookReturnCode SurvivalEndRound()
+void Restart()
 {
     try
     {
@@ -34,6 +38,56 @@ HookReturnCode SurvivalEndRound()
     catch
     {
         g_EngineFuncs.ChangeLevel( string( g_Engine.mapname ) );
+    }
+}
+
+bool MedicAround( Vector VecStart )
+{
+    CBaseEntity@ pSci = null, pAgr = null;
+
+    while(
+        ( ( @pAgr = g_EntityFuncs.FindEntityInSphere( pAgr, VecStart, pJson['SearchRadius', 1024], 'monster_human_medic_ally', 'classname' ) ) !is null
+            && pAgr.IsMonster() && cast<CBaseMonster@>(pAgr).IsPlayerAlly() ) ||
+                ( ( @pSci = g_EntityFuncs.FindEntityInSphere( pSci, VecStart, pJson['SearchRadius', 1024], 'monster_scientist', 'classname' ) ) !is null
+                    && pSci.IsMonster() && cast<CBaseMonster@>(pSci).IsPlayerAlly() ) )
+                    { return true;
+    }
+    return false;
+}
+
+
+HookReturnCode SurvivalEndRound()
+{
+    if( pJson[ 'ShouldWaitMedic', false ] )
+    {
+        CBaseEntity@ pCorpses = null;
+
+        while( ( @pCorpses = g_EntityFuncs.FindEntityByClassname( pCorpses, 'deadplayer' ) ) !is null )
+        {
+            if( MedicAround( pCorpses.pev.origin ) )
+            {
+                return HOOK_CONTINUE;
+            }
+        }
+
+        @pCorpses = null;
+
+        while( ( @pCorpses = g_EntityFuncs.FindEntityByClassname( pCorpses, 'player' ) ) !is null )
+        {
+            if( pCorpses.pev.health <= 0 )
+            {
+                if( MedicAround( pCorpses.pev.origin ) )
+                {
+                    return HOOK_CONTINUE;
+                }
+            }
+        }
+
+        Restart();
+    }
+    else
+    {
+        Restart();
     }
     return HOOK_CONTINUE;
 }
