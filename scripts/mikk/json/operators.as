@@ -183,5 +183,12 @@ namespace JSON
             }
             return pJson;
         }
+
+        int get( string key, int value ){ return this[ key, value ]; }
+        bool get( string key, bool value ){ return this[ key, value ]; }
+        Vector get( string key, Vector value ){ return this[ key, value ]; }
+        string get( string key, string value ){ return this[ key, value ]; }
+        Vector2D get( string key, Vector2D value ){ return this[ key, value ]; }
+        json get( string key, dictionary value ){ return this[ key, value ]; }
     }
 }
