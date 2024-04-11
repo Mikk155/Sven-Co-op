@@ -21,6 +21,7 @@
 
 class json : JSON::load, JSON::parse, JSON::operators
 {
+    array<string> OpIndex;
     int keysize = 0;
     string json = String::EMPTY_STRING;
     dictionary data;

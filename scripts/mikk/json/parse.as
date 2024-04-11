@@ -36,8 +36,13 @@ namespace JSON
             bool inscape = false;
             bool invalue = false;
             bool storekv = false;
+            bool inarray = false;
+            array<string> strArray;
 
-            f = f.SubString( ( f.Find( '{', 0 ) < 2 ? f.Find( '{', 0 ) + 1 : 0 ), ( f.FindLastOf( '}', 0 ) > f.Length() - 2 ? f.FindLastOf( '}', 0 ) : f.Length() ) );
+            while( f[0] == ' ' )
+                f = f.SubString( 1, f.Length() );
+
+            f = f.SubString( f.Find( '{', 0 ) + 1, f.FindLastOf( '}', 0 ) - 1 );
 
             for( string c = f[0]; f.Length() > 0; c = f[0], f = f.SubString( 1, f.Length() ) )
             {
@@ -46,7 +51,47 @@ namespace JSON
                     f = String::EMPTY_STRING;
                 }
 
-                if( InBrackets > 0 )
+                if( inarray )
+                {
+                    if( c == '"' && !inscape )
+                    {
+                        inquote = !inquote;
+                    }
+                    else if( c == '\\' && !inscape )
+                    {
+                        inscape = true;
+                    }
+                    else if( !inquote && ( c == ' ' || c == ',' || c == ']' ) )
+                    {
+                    }
+                    else
+                    {
+                        value += c;
+                    }
+
+                    if( !inquote && ( c == ',' || c == ']' ) )
+                    {
+                        while( value[0] == ' ' )
+                            value = value.SubString( 1, value.Length() );
+                        while( value[ value.Length() ] == ' ' )
+                            value = value.SubString( 0, value.Length() - 1 );
+
+                        strArray.insertLast( value );
+                        value = String::EMPTY_STRING;
+                    }
+
+                    if( !inquote && c == ']' )
+                    {
+                        this.keysize++;
+                        dict[ key ] = strArray;
+                        strArray.resize(0);
+                        OpIndex.insertLast( key );
+                        key = String::EMPTY_STRING;
+                        inarray = invalue = inscape = inquote = storekv = false;
+                    }
+                    continue;
+                }
+                else if( InBrackets > 0 )
                 {
                     value += c;
                     if( c == '}' )
@@ -55,11 +100,17 @@ namespace JSON
 
                         if( OutBrackets == InBrackets && !key.IsEmpty() && !value.IsEmpty() )
                         {
-                            dict[ key ] = ParseJsonFile( value + c );
+                            this.keysize++;
+                            dict[ key ] = ParseJsonFile( value );
+                            OpIndex.insertLast( key );
                             value = key = String::EMPTY_STRING;
                             InBrackets = OutBrackets = 0;
                             invalue = inscape = inquote = storekv = false;
                         }
+                    }
+                    else if( c == '{' )
+                    {
+                        InBrackets++;
                     }
                 }
                 else if( value == 'true' || value == 'false' )
@@ -68,6 +119,10 @@ namespace JSON
                 }
                 else if( c == ' ' && !inquote && InBrackets == 0 )
                 {
+                }
+                else if( invalue && !inquote && c == '[' )
+                {
+                    inarray = true;
                 }
                 else if( c == '"' && !inscape )
                 {
@@ -85,7 +140,7 @@ namespace JSON
                 {
                     inscape = true;
                 }
-                else if( c == '{' )
+                else if( c == '{' && !inquote )
                 {
                     InBrackets++;
                     value += c;
@@ -115,6 +170,7 @@ namespace JSON
 
                 if( storekv )
                 {
+                    OpIndex.insertLast( key );
                     dict[ key ] = value;
                     this.keysize++;
                     value = key = String::EMPTY_STRING;

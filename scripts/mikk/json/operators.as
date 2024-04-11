@@ -19,6 +19,28 @@ namespace JSON
 {
     mixin class operators
     {
+        /*
+            @prefix json instance
+            Return a string with the instance of the value for the given key
+        */
+        string instance( string key )
+        {
+            return (
+                isinstance(key,'int') ? 'int' :
+                isinstance(key,'array') ? 'array' :
+                isinstance(key,'json') ? 'json' :
+                isinstance(key,'bool') ? 'bool' :
+                isinstance(key,'float') ? 'float' :
+                isinstance(key,'Vector') ? 'Vector' :
+                isinstance(key,'string') ? 'string' :
+                isinstance(key,'Vector2D') ? 'Vector2D' : 'unknown'
+            );
+        }
+
+        /*
+            @prefix json instance isinstance
+            Return whatever the value for the given key is the given instance
+        */
         bool isinstance( string key, string instance )
         {
             if( instance == 'float' )
@@ -29,13 +51,17 @@ namespace JSON
             {
                 return g_Utility.IsStringInt( this[ key ] );
             }
+            else if( instance == 'bool' || instance == 'bool' )
+            {
+                return ( this[ key ] == 'true' || this[ key ] == 1 || this[ key ] == 'false' || this[ key ] == 0 );
+            }
             else if( instance == 'dict' || instance == 'dictionary' || instance == 'json' )
             {
-                return ( this[ key ] == 'json@' );
+                return ( this[ key ] == String::EMPTY_STRING );
             }
             else if( instance == 'array' )
             {
-                return false;
+                return ( array<string>( this.data[ key ] ).length() > 0 );
             }
             else if( instance == 'Vector' )
             {
@@ -54,6 +80,7 @@ namespace JSON
                       && !isinstance(key,'array')
                        && !isinstance(key,'float')
                         && !isinstance(key,'json')
+                        && !isinstance(key,'bool')
                          && !isinstance(key,'int')
                     );
             }
@@ -91,13 +118,17 @@ namespace JSON
             if( this.data.exists( key ) )
             {
                 value = string( data[ key ] );
-
-                if( dictionary( data[ key ] ).getSize() > 0 )
-                {
-                    return "json@";
-                }
             }
-            return value;
+            return ( value.IsEmpty() ? String::EMPTY_STRING : value );
+        }
+
+        string opIndex( uint index )
+        {
+            if( index < this.OpIndex.length() )
+            {
+                return this.OpIndex[ index ];
+            }
+            return String::EMPTY_STRING;
         }
 
         bool atobool2( string key, bool value )
@@ -128,7 +159,19 @@ namespace JSON
             json pJson;
             if( this.data.exists( key ) )
             {
-                pJson.data = dictionary( this.data[ key ] );
+                if( isinstance( key, 'array' ) )
+                {
+                    array<string> str = array<string>( data[ key ] );
+
+                    for( uint ui = 0; ui < str.length(); ui++ )
+                    {
+                        pJson.data[ string(ui) ] = str[ui];
+                    }
+                }
+                else
+                {
+                    pJson.data = dictionary( this.data[ key ] );
+                }
             }
             return pJson;
         }
@@ -184,6 +227,10 @@ namespace JSON
             return pJson;
         }
 
+        /*
+            @prefix json get
+            Use opIndex instead.
+        */
         int get( string key, int value ){ return this[ key, value ]; }
         bool get( string key, bool value ){ return this[ key, value ]; }
         Vector get( string key, Vector value ){ return this[ key, value ]; }

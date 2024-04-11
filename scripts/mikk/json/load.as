@@ -50,9 +50,17 @@ namespace JSON
 
                             if( line.Length() > 0 )
                             {
+                                while( line.StartsWith( '  ' ) )
+                                    line = line.SubString( 1, line.Length() );
+
+                                if( line.StartsWith( '//' ) )
+                                    continue;
+
                                 this.json += line;
                             }
                         }
+
+                        this.json += this.json.SubString( 0, json.FindLastOf( '}', 0 ) - 1 ) + ',}';
                         pFile.Close();
                     }
                 }

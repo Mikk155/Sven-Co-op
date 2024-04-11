@@ -53,6 +53,24 @@
 		"body": "load( ${1:string m_szLoad}, ${2:bool include = true})",
 		"description": "Loads a json file within a json class. if include is false the json is cleared before loading the new one"
 	},
+	"string instance( string key )":
+	{
+		"prefix":[ "json", "instanc" ],
+		"body": "instance( ${1:string key})",
+		"description": "Return a string with the instance of the value for the given key"
+	},
+	"bool isinstance( string key, string instance )":
+	{
+		"prefix":[ "json", "instance", "isinstanc" ],
+		"body": "isinstance( ${1:string key}, ${2:string instance})",
+		"description": "Return whatever the value for the given key is the given instance"
+	},
+	"int get( string key, int value ){ return this[ key, value ]; }":
+	{
+		"prefix":[ "json", "get" ],
+		"body": "get( ${1:string key}, ${2:int value})",
+		"description": "Use opIndex instead."
+	},
 	"enum MKLANG::CHAT":
 	{
 		"prefix": [ "CHAT", "MKLANG::CHAT" ],
@@ -157,13 +175,13 @@
 	},
 	"int Call( const string m_iszFunction )":
 	{
-		"prefix":[ "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
+		"prefix":[ "g_Reflection.Call", "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
 		"body": "g_Reflection.Call( ${1:const string m_iszFunction})",
 		"description": "Calls a function globaly in all namespaces. Returns the number of functions called."
 	},
 	"Reflection::Function@ opIndex( string m_iszFunction )":
 	{
-		"prefix":[ "g_Reflection.opIndex", "g_Reflection.Get", "g_Reflection.Function" ],
+		"prefix":[ "g_Reflection.opIndex", "g_Reflection.Get", "g_Reflection.Function", "Reflection" ],
 		"body": "g_Reflection[ ${1:string m_iszFunction}]",
 		"description": "Get a script function by name or namespace::name"
 	},

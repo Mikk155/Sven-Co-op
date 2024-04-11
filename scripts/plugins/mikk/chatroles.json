@@ -1,12 +1,9 @@
 {
     "json reload periodically": false,
-    "STEAM_0:0:202010794":
-    {
-        "role": "Owner",
-        "color": "green"
-    },
-    "STEAM_0:0:481307649":
-    {
-        "role": "Pavo"
-    }
+    "STEAM_0:0:202010794": [ "Owner", "green" ],
+    "STEAM_0:0:481307649": [ "Pavo", "yellow" ],
+    "STEAM_0:0:1": [ "Donor", "red" ],
+    "STEAM_0:0:2": [ "Admin", "blue" ],
+    "STEAM_0:0:3": [ "Admin", "" ],
+    "STEAM_0:0:4": [ "", "red" ]
 }
