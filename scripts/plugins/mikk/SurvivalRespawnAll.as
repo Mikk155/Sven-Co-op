@@ -23,15 +23,17 @@ void PluginInit()
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
 
     g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
-    Mikk.Hooks.RegisterHook( Hooks::Game::SurvivalEndRound, @SurvivalEndRound );
 
     pJson.load( "plugins/mikk/SurvivalRespawnAll" );
 }
 
 json pJson;
+dictionary TrackPlayers;
 
 void MapInit()
 {
+    TrackPlayers.deleteAll();
+
     if( pJson[ 'INSTANT_ENABLE', true ] && g_SurvivalMode.MapSupportEnabled() && g_SurvivalMode.GetStartOn() )
     {
         g_SurvivalMode.SetDelayBeforeStart( 0.0f );
@@ -67,12 +69,4 @@ void SpawnPlayer( EHandle hPlayer )
             TrackPlayers[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] = "Spawned";
         }
     }
-}
-
-dictionary TrackPlayers;
-
-HookReturnCode SurvivalEndRound()
-{
-    TrackPlayers.deleteAll();
-    return HOOK_CONTINUE;
 }
