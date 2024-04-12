@@ -67,6 +67,7 @@ final class Reflection
                 Functions.insertAt( i, ( Func.GetNamespace().IsEmpty() ? '' : Func.GetNamespace() + '::' ) + Func.GetName() );
             }
         }
+        IsInitialised = true;
     }
 
     /*
