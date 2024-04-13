@@ -1,0 +1,10 @@
+{
+    "Include":
+    [
+        "shared"
+    ],
+    "Resources":
+    [
+        "scripts/plugins/mikk/CrashReporter.as"
+    ]
+}
