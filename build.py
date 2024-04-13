@@ -31,7 +31,7 @@ def repack_resources( file ):
 
                 repack_resources( incl )
 
-        if not 'Resources' in data and len( data.get( 'Resources', {} ) ) <= 0:
+        if not 'Resources' in data or len( data.get( 'Resources', {} ) ) <= 0:
 
             broken( f'No Assets in "Resources" label in {file}.json.')
 
