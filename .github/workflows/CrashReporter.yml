@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/CrashReporter.yaml'
-      - 'resources/CrashReporter.res'
+      - 'resources/CrashReporter.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/CrashReporter.*'
 

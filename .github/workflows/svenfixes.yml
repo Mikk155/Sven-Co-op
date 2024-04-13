@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/svenfixes.yaml'
-      - 'resources/svenfixes.res'
+      - 'resources/svenfixes.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/svenfixes.*'
       - 'scripts/plugins/svenfixes/*'

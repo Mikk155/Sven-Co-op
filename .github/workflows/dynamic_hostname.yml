@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/dynamic_hostname.yaml'
-      - 'resources/dynamic_hostname.res'
+      - 'resources/dynamic_hostname.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/dynamic_hostname.*'
 

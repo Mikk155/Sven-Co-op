@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/NPCMoveTo.yaml'
-      - 'resources/NPCMoveTo.res'
+      - 'resources/NPCMoveTo.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/NPCMoveTo.*'
 

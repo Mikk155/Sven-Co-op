@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/chatroles.yaml'
-      - 'resources/chatroles.res'
+      - 'resources/chatroles.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/chatroles.*'
 

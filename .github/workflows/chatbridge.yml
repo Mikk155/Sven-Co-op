@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/chatbridge.yaml'
-      - 'resources/chatbridge.res'
+      - 'resources/chatbridge.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/chatbridge.*'
       - 'scripts/plugins/chatbridge/*'

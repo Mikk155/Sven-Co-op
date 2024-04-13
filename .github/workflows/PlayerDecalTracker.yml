@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/PlayerDecalTracker.yaml'
-      - 'resources/PlayerDecalTracker.res'
+      - 'resources/PlayerDecalTracker.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/PlayerDecalTracker.*'
 

@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/FastRestart.yaml'
-      - 'resources/FastRestart.res'
+      - 'resources/FastRestart.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/FastRestart.*'
 

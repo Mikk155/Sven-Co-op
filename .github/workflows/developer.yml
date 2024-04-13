@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/developer.yaml'
-      - 'resources/developer.res'
+      - 'resources/developer.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/developer.*'
 

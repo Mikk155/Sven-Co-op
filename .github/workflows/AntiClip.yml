@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - '.github/workflows/AntiClip.yaml'
-      - 'resources/AntiClip.res'
+      - 'resources/AntiClip.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/AntiClip.*'
 
