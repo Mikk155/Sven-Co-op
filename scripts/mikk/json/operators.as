@@ -20,6 +20,15 @@ namespace JSON
     mixin class operators
     {
         /*
+            @prefix json ilenghtnstance
+            Return lenght of this json data
+        */
+        uint length()
+        {
+            return this.data.getKeys().length();
+        }
+
+        /*
             @prefix json instance
             Return a string with the instance of the value for the given key
         */
