@@ -33,7 +33,7 @@ json pJson;
 
 HookReturnCode CanCollect( CBaseEntity@ pPickup, CBaseEntity@ pOther, bool& out bResult  )
 {
-    if( pPickup !is null && pOther !is null && pOther.IsPlayer() )
+    if( pPickup !is null && pOther !is null && pOther.IsPlayer() && ( pPickup.pev.flags & FL_ONGROUND ) != 0 )
     {
         for( uint ui = 0; ui < pItems.length(); ui++ )
         {
