@@ -1,6 +1,6 @@
 {
     // true = tell players to press E
-    // false = don't tell ( use less resources )
+    // false = Don't
     "MessagePlayer": true,
 
     // List of items this plugin supports. supports ending wildcard as asterisk (*)
