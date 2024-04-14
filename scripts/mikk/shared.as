@@ -71,7 +71,7 @@ class MKShared
             g_Scheduler.RemoveTimer( pTimer );
         }
 
-        @pTimer = g_Scheduler.SetInterval( "Think", flTime, iRepeat );
+        @pTimer = g_Scheduler.SetInterval( szFunction, flTime, iRepeat );
     }
 
     /*
