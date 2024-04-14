@@ -54,3 +54,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         target_owner: Mikk155
         target_repo: Sven-Co-op
+
+    - name: Update Changelog
+      run: python3 changelog.py ${{ env.APP_NAME }}
