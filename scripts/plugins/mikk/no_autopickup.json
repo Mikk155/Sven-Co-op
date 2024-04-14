@@ -1,0 +1,21 @@
+{
+    // true = tell players to press E
+    // false = don't tell ( use less resources )
+    "MessagePlayer": true,
+
+    // List of items this plugin supports. supports ending wildcard as asterisk (*)
+    "ItemList":
+    [
+        "weapon_*",
+        "item_healthkit",
+        "item_battery",
+        "weaponbox",
+        "ammo_*"
+    ],
+
+    "PickMeMessage":
+    {
+        "english": "+use pickup $item$",
+        "spanish": "+use recoger $item$"
+    }
+}
