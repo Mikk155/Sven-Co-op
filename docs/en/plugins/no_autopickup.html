@@ -5,6 +5,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
 </head>
 
 <body>
@@ -37,37 +41,60 @@
 
                 <br>
                 </div>
-
                 <br>
                 <br>
 
-<pre class="json">
-<a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;// true = tell players to press E
-&nbsp;&nbsp;&nbsp;&nbsp;// false = Don't show message
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MessagePlayer"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
-
-&nbsp;&nbsp;&nbsp;&nbsp;// true = Require to be on direct line of sight
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"RequiredLoS"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
-
-&nbsp;&nbsp;&nbsp;&nbsp;// List of items this plugin supports. supports ending wildcard as asterisk (*)
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ItemList"</a><a class="json-tokens">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">[</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_*"</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_healthkit"</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_battery"</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weaponbox"</a><a class="json-tokens">,</a>
+<pre class="json">json<br>
+<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MessagePlayer"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"RequiredLoS"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ItemList"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_*"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_healthkit"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_battery"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weaponbox"</a><a class="json-token-r">,</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ammo_*"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">]</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"PickMeMessage"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-token-y">:</a> <a class="json-string">"+use pickup $item$"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-token-y">:</a> <a class="json-string">"+use recoger $item$"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
+<a class="json-token-y">}</a>
+<br></pre>
+        <br>
+        <br>
+            <div class="block"><br>
+                <a class="neon-text">Configure Json file</a>
+                <br><br>
+                    <div class="mermaid">
+                                graph LR;
 
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"PickMeMessage"</a><a class="json-tokens">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-tokens">:</a> <a class="json-string">"+use pickup $item$"</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-tokens">:</a> <a class="json-string">"+use recoger $item$"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a>
-<a class="json-tokens">}</a>
-</pre>
-                <br>
+                                classDef color fill:black;
+                                classDef color color:gray;
+                                classDef color align-items:left;
+
+                                MessagePlayer{{"<a style="color: green">'MessagePlayer'</a>
+                                Type: <a style="color: blue">boolean</a>
+                                Description: <a style="color: white">Display message on the player's screen.</a>"}}:::color
+
+                                RequiredLoS{{"<a style="color: green">'RequiredLoS'</a>
+                                Type: <a style="color: blue">boolean</a>
+                                Description: <a style="color: white">Requires the item to be on direct Line Of Sight of the player.</a>"}}:::color
+
+                                ItemList{{"<a style="color: green">'ItemList'</a>
+                                Type: <a style="color: purple">dictionary</a>"}}:::color
+
+                                weapon_*{{"<a style="color: green">'item classname'</a>
+                                Type: <a style="color: cyan">string</a>
+                                Description: <a style="color: white">Name of the items allowed for this plugin.
+Supports wildcard (*) at the end.</a>"}}:::color
+
+                                ItemList --> weapon_*
+                    </div>
+                    <br>
+                </div>
                 <br>
         </div>
 </body>

@@ -5,6 +5,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
 </head>
 
 <body>
@@ -34,38 +38,74 @@
 
                 <br>
                 </div>
-
                 <br>
                 <br>
-<pre class="json">
-<a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"CONFIG"</a> <a class="json-tokens">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Name of your server
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"HOSTNAME"</a><a class="json-tokens">:</a> <a class="json-string">"Limitless Potential"</a><a class="json-tokens">,</a>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Text to display when something is disabled
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DISABLED"</a><a class="json-tokens">:</a> <a class="json-string">"Disabled"</a><a class="json-tokens">,</a>
+<pre class="json">json<br>
+<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"CONFIG"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"HOSTNAME"</a><a class="json-token-y">:</a> <a class="json-string">"Limitless Potential"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DISABLED"</a><a class="json-token-y">:</a> <a class="json-string">"Disabled"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ENABLED"</a><a class="json-token-y">:</a> <a class="json-string">"Enabled"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DYNAMIC_HOSTNAME"</a><a class="json-token-y">:</a> <a class="json-string">"$hostname$ | Playing $maps$ | Diff $difficulty$ | Anti-Rush $antirush$ | Survival $survival$"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MAPS"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"hl_c*"</a><a class="json-token-y">:</a> <a class="json-string">"Half-Life"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"of*"</a><a class="json-token-y">:</a> <a class="json-string">"Opposing Force"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
+<a class="json-token-y">}</a>
+<br></pre>
+        <br>
+        <br>
+            <div class="block"><br>
+                <a class="neon-text">Configure Json file</a>
+                <br><br>
+                    <div class="mermaid">
+                                graph LR;
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Text to display when something is enabled
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ENABLED"</a><a class="json-tokens">:</a> <a class="json-string">"Enabled"</a><a class="json-tokens">,</a>
+                                classDef color fill:black;
+                                classDef color color:gray;
+                                classDef color align-items:left;
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Your new hostname
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $difficulty$ is it will be replaced with the current difficulty of DynamicDifficultyDeluxe
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $antirush$ is it will be replaced if there is any antirush entity available
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $survival$ is it will be replaced if survival mode is active or not
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Where $map$ is it will be replaced with the <a class="json-string">"MAPS"</a> category
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DYNAMIC_HOSTNAME"</a><a class="json-tokens">:</a> <a class="json-string">"$hostname$ | Playing $maps$ | Diff $difficulty$ | Anti-Rush $antirush$ | Survival $survival$"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;// key = name of the current map<a class="json-tokens">,</a> supports wildcard (*) at the end or at the start.
-&nbsp;&nbsp;&nbsp;&nbsp;// value = text to display at $map$
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MAPS"</a><a class="json-tokens">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"hl_c*"</a><a class="json-tokens">:</a> <a class="json-string">"Half-Life"</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"of*"</a><a class="json-tokens">:</a> <a class="json-string">"Opposing Force"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a>
-<a class="json-tokens">}</a>
-</pre>
+                                CONFIG{{"<a style="color: green">'CONFIG'</a>
+                                Type: <a style="color: purple">dictionary</a>"}}:::color
+
+                                HOSTNAME{{"<a style="color: green">'HOSTNAME'</a>
+                                Type: <a style="color: cyan">string</a>
+                                Description: <a style="color: white">Your server's hostname</a>"}}:::color
+
+                                DISABLED{{"<a style="color: green">'DISABLED'</a>
+                                Type: <a style="color: cyan">string</a>
+                                Description: <a style="color: white">Message to apply when 'Disabled'</a>"}}:::color
+
+                                ENABLED{{"<a style="color: green">'ENABLED'</a>
+                                Type: <a style="color: cyan">string</a>
+                                Description: <a style="color: white">Message to apply when 'Enabled'</a>"}}:::color
+
+                                DYNAMIC_HOSTNAME{{"<a style="color: green">'DYNAMIC_HOSTNAME'</a>
+                                Type: <a style="color: cyan">string</a>
+                                Description: <a style="color: white">Your new hostname replacing the arguments.</a>"}}:::color
+
+                                MAPS{{"<a style="color: green">'MAPS'</a>
+                                Type: <a style="color: purple">dictionary</a>"}}:::color
+
+                                hl_c*{{"<a style="color: green">'map name'</a>
+                                Type: <a style="color: cyan">string</a>
+                                Description: <a style="color: white">a list of maps to identify.
+while the key is the map name the value is the string to display.
+supports ending wildcard for series.</a>"}}:::color
+
+                                CONFIG --> HOSTNAME
+                                CONFIG --> DISABLED
+                                CONFIG --> ENABLED
+                                CONFIG --> DYNAMIC_HOSTNAME
+                                MAPS --> hl_c*
+                    </div>
+                    <br>
+                </div>
+                <br>
         </div>
 </body>
 </html>

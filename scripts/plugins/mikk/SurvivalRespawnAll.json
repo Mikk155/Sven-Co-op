@@ -1,6 +1,7 @@
 {
     "INSTANT_ENABLE": true,
-    "SPAWNED": {
+    "SPAWNED":
+    {
         "english": "Survival mode now active. Only new players will spawn",
         "spanish": "El modo supervivencia a iniciado. Solo apareceran jugadores nuevos."
     }

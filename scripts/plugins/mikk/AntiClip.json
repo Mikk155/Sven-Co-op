@@ -1,26 +1,28 @@
 {
     "projectiles":
+    [
+        "bolt",
+        "lasers",
+        "grenade",
+        "rpg_rocket",
+        "weapon_egon",
+        "playerhornet",
+        "sporegrenade",
+        "grappletongue",
+        "monster_snark",
+        "weapon_crowbar",
+        "monster_satchel",
+        "monster_tripmine",
+        "displacer_portal",
+        "monster_chumtoad"
+    ],
+    "ENABLED":
     {
-        "lasers": true,
-        "sporegrenade": true,
-        "displacer_portal": true,
-        "grenade": true,
-        "monster_satchel": true,
-        "monster_tripmine": true,
-        "rpg_rocket": true,
-        "weapon_egon": true,
-        "playerhornet": true,
-        "bolt": true,
-        "weapon_crowbar": true,
-        "grappletongue": true,
-        "monster_snark": true,
-        "monster_chumtoad": true
-    },
-    "ENABLED": {
         "english": "Anti-Clip enabled by admin $name$.",
         "spanish": "Anti-Clip fue activado por el admin $name$."
     },
-    "DISABLED": {
+    "DISABLED":
+    {
         "english": "Anti-Clip disabled by admin $name$.",
         "spanish": "Anti-Clip fue desactivado por el admin $name$."
     }

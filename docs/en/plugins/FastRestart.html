@@ -5,6 +5,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
 </head>
 
 <body>
@@ -34,22 +38,37 @@
 
                 <br>
                 </div>
-
                 <br>
                 <br>
 
-<pre class="json">
-<a class="json-tokens">{</a>
+<pre class="json">json<br>
+<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ShouldWaitMedic"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SearchRadius"</a></a><a class="json-token-y">:</a> <a class="json-#DIGITTYPE#">1024
+<a class="json-token-y">}</a>
+<br></pre>
+        <br>
+        <br>
+            <div class="block"><br>
+                <a class="neon-text">Configure Json file</a>
+                <br><br>
+                    <div class="mermaid">
+                                graph LR;
 
-&nbsp;&nbsp;&nbsp;&nbsp;// true = wait if there is a medic npc around
-&nbsp;&nbsp;&nbsp;&nbsp;// false = ignore monsters and instant restart
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ShouldWaitMedic"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;// If ShouldWaitMedic is true<a class="json-tokens">,</a> this is the radius (from the corpse) to find medic npcs
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SearchRadius"</a></a><a class="json-tokens">:</a> <a class="json-#DIGITTYPE#">1024
-<a class="json-tokens">}</a>
-</pre>
+                                classDef color fill:black;
+                                classDef color color:gray;
+                                classDef color align-items:left;
 
-                <br>
+                                ShouldWaitMedic{{"<a style="color: green">'ShouldWaitMedic'</a>
+                                Type: <a style="color: blue">boolean</a>
+                                Description: <a style="color: white">Wait a moment if there are any medic npc around a dead player's body.</a>"}}:::color
+
+                                SearchRadius{{"<a style="color: green">'SearchRadius'</a>
+                                Type: <a style="color: red">integer</a>
+                                Description: <a style="color: white">Radius to search if ShouldWaitMedic is true.</a>"}}:::color
+                    </div>
+                    <br>
+                </div>
                 <br>
         </div>
 </body>

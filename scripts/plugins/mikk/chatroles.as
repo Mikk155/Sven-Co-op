@@ -32,8 +32,7 @@ void PluginInit()
 
 void MapInit()
 {
-    if( pJson[ 'json reload periodically', false ] )
-        pJson.load('plugins/mikk/chatroles.json');
+    pJson.reload('plugins/mikk/chatroles.json');
 }
 
 // keeping the scoreboard color would be neat too, but then you can't see hp/armor

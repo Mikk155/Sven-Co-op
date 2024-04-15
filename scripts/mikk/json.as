@@ -470,7 +470,6 @@ class json
 
     protected int GetValueType( string value )
     {
-    g_Game.AlertMessage( at_console, value +'\n' );
         if( value == 'true' || value == 'false' )
         {
             return JsonValueType::BOOLEAN;
@@ -516,6 +515,15 @@ class json
             return JsonValueType::JSON;
         }
         return JsonValueType::STRING;
+    }
+
+    /*
+        @prefix load json parse
+        Aliases to "load" but will return 1 if this json doesn't has a key "reload" on true
+    */
+    uint reload( string m_szLoad, bool include = false )
+    {
+        return ( this[ 'reload', false ] ? this.load( m_szLoad, include ) : 1 );
     }
 
     /*

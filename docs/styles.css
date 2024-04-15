@@ -66,13 +66,23 @@ body
 
         color: rgb(100, 100, 100);
         text-align: left;
-        font-size:small;
+        font-size:x-large;
         font-family:monospace;
 }
 
-.json-tokens
+.json-token-y
 {
         color: rgb(255, 255, 0);
+}
+
+.json-token-b
+{
+        color: rgb(0, 191, 255);
+}
+
+.json-token-r
+{
+        color: rgb(255, 0, 128);
 }
 
 .json-integer

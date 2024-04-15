@@ -5,6 +5,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
 </head>
 
 <body>
@@ -34,25 +38,79 @@
 
                 <br>
                 </div>
-
                 <br>
                 <br>
 
-<pre class="json">
-<a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;// true = load every time a map starts
-&nbsp;&nbsp;&nbsp;&nbsp;// Load once on plugin load
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"json reload periodically"</a><a class="json-tokens">:</a> <a class="json-false">false</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:202010794"</a><a class="json-tokens">:</a> <a class="json-tokens">[</a> <a class="json-string">"Owner"</a><a class="json-tokens">,</a> <a class="json-string">"green"</a> <a class="json-tokens">]</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:481307649"</a><a class="json-tokens">:</a> <a class="json-tokens">[</a> <a class="json-string">"Pavo"</a><a class="json-tokens">,</a> <a class="json-string">"yellow"</a> <a class="json-tokens">]</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:1"</a><a class="json-tokens">:</a> <a class="json-tokens">[</a> <a class="json-string">"Donor"</a><a class="json-tokens">,</a> <a class="json-string">"red"</a> <a class="json-tokens">]</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:2"</a><a class="json-tokens">:</a> <a class="json-tokens">[</a> <a class="json-string">"Admin"</a><a class="json-tokens">,</a> <a class="json-string">"blue"</a> <a class="json-tokens">]</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:3"</a><a class="json-tokens">:</a> <a class="json-tokens">[</a> <a class="json-string">"Admin"</a><a class="json-tokens">,</a> <a class="json-string">""</a> <a class="json-tokens">]</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:4"</a><a class="json-tokens">:</a> <a class="json-tokens">[</a> <a class="json-string">""</a><a class="json-tokens">,</a> <a class="json-string">"red"</a> <a class="json-tokens">]</a>
-<a class="json-tokens">}</a>
-</pre>
+<pre class="json">json<br>
+<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"reload"</a><a class="json-token-y">:</a> <a class="json-false">false</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:202010794"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"Owner"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"green"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:481307649"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"Donor"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"red"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:1"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">""</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"yellow"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:2"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"Admin"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"blue"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:3"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">""</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"red"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a>
+<a class="json-token-y">}</a>
+<br></pre>
+        <br>
+        <br>
+            <div class="block"><br>
+                <a class="neon-text">Configure Json file</a>
+                <br><br>
+                    <div class="mermaid">
+                                graph LR;
 
-                <br>
+                                classDef color fill:black;
+                                classDef color color:gray;
+                                classDef color align-items:left;
+
+                                reload{{"<a style="color: green">'reload'</a>
+                                Type: <a style="color: blue">bool</a>
+                                Description: <a style="color: white">If true, the json is loaded every MapStart (Not recomended)</a>"}}:::color
+
+                                steamid{{"<a style="color: green">'STEAMID'</a>
+                                Type: <a style="color: yellow">array</a>"}}:::color
+
+                                arg1{{"<a style="color: green">Role name, can be anything.</a>
+                                Type: <a style="color: cyan">string</a>"}}:::color
+
+                                arg2{{"<a style="color: green">Role color.</a>
+                                Type: <a style="color: cyan">string</a>"}}:::color
+
+                                cred{{"<a style="color: rgb(255, 0, 0)">red</a>"}}:::color
+                                gred{{"<a style="color: rgb(0, 255, 0)">green</a>"}}:::color
+                                bred{{"<a style="color: rgb(0, 0, 255)">blue</a>"}}:::color
+                                yred{{"<a style="color: rgb(255, 255, 0)">yellow</a>"}}:::color
+
+                                steamid --> arg2
+
+                                steamid --> arg1
+                                arg2 --> cred
+                                arg2 --> gred
+                                arg2 --> bred
+                                arg2 --> yred
+                    </div>
+                    <br>
+                </div>
                 <br>
         </div>
 </body>

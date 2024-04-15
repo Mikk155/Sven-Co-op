@@ -90,13 +90,19 @@ def EncodeHTML( js, path ):
                                 IsBoolean = True
                                 continue
                             if c in [ "{", "}", ",", "[", "]", ":" ]:
+                                TokenType = 'y'
+                                if c in [ '[', ']' ]:
+                                    TokenType = 'b'
+                                elif c == ',':
+                                    TokenType = 'r'
+
                                 if c == ":":
                                     IsValue = True
                                 if DigitType:
                                     AllChars += '</a>'
                                     AllChars = AllChars.replace( '#DIGITTYPE#', DigitType )
                                     DigitType = ''
-                                AllChars += f'<a class="json-tokens">'
+                                AllChars += f'<a class="json-token-{TokenType}">'
                                 Enclose = '</a>'
                         LastChar = c
                         AllChars += c
@@ -116,10 +122,9 @@ def EncodeHTML( js, path ):
 
                         value = value.replace( k, f'<a href="{v}" target="_blank" class="link-extern">{k}</a>' )
 
-                if line.find( f'#{key}#' ) != -1:
+                while lines[i].find( f'#{key}#' ) != -1:
 
-                    lines[i] = line.replace( f'#{key}#', value )
-
+                    lines[i] = lines[i].replace( f'#{key}#', value )
 
     if lines:
 

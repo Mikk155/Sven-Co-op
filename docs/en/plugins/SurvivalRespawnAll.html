@@ -5,6 +5,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
 </head>
 
 <body>
@@ -32,20 +36,40 @@
 
                 <br>
                 </div>
+                <br>
+                <br>
 
+<pre class="json">json<br>
+<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"INSTANT_ENABLE"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SPAWNED"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-token-y">:</a> <a class="json-string">"Survival mode now active. Only new players will spawn"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-token-y">:</a> <a class="json-string">"El modo supervivencia a iniciado. Solo apareceran jugadores nuevos."</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
+<a class="json-token-y">}</a>
+<br></pre>
+        <br>
+        <br>
+            <div class="block"><br>
+                <a class="neon-text">Configure Json file</a>
+                <br><br>
+                    <div class="mermaid">
+                                graph LR;
+
+                                classDef color fill:black;
+                                classDef color color:gray;
+                                classDef color align-items:left;
+
+                                INSTANT_ENABLE{{"<a style="color: green">'INSTANT_ENABLE'</a>
+                                Type: <a style="color: blue">boolean</a>
+                                Description: <a style="color: white">If true, nstantly enable survival mode
+(players will be able to spawn anyways)
+Else just allow the 'survival will start in & seconds.'-rush</a>"}}:::color
+                    </div>
+                    <br>
+                </div>
                 <br>
-                <br>
-<pre class="json">
-<a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;// true = When the map starts it instantly enables survival mode.
-&nbsp;&nbsp;&nbsp;// false = allow players to respawn multiple times as it is in <a class="json-string">"survival will start in & seconds"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"INSTANT_ENABLE"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SPAWNED"</a><a class="json-tokens">:</a> <a class="json-tokens">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-tokens">:</a> <a class="json-string">"Survival mode now active. Only new players will spawn"</a><a class="json-tokens">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-tokens">:</a> <a class="json-string">"El modo supervivencia a iniciado. Solo apareceran jugadores nuevos."</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a>
-<a class="json-tokens">}</a>
-</pre>
         </div>
 </body>
 </html>

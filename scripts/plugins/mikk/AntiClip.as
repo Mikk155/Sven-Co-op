@@ -70,7 +70,7 @@ void ToggleState( int casex )
                 g_Hooks.RegisterHook( Hooks::ASLP::Engine::PM_Move, @PM_Move );
                 g_Hooks.RegisterHook( Hooks::ASLP::Engine::AddToFullPack_Post, @AddToFullPack_Post );
 
-                if( pJson[ 'projectiles', {} ].getKeys().length() > 0 )
+                if( array<string>( pJson[ 'projectiles' ] ).length() > 0 )
                 {
                     g_Hooks.RegisterHook( Hooks::ASLP::Engine::ShouldCollide, @ShouldCollide );
                 }
@@ -85,7 +85,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pProjectile, M
     if( pTouched is null || pProjectile is null )
         return HOOK_CONTINUE;
 
-    if( pJson[ 'projectiles', {} ][ 'lasers', false ] && pTouched.IsPlayer() && pProjectile.IsPlayer() )
+    if( array<string>( pJson[ 'projectiles' ] ).find( 'lasers' ) >= 0 && pTouched.IsPlayer() && pProjectile.IsPlayer() )
     {
         meta_result = MRES_SUPERCEDE;
         return HOOK_CONTINUE;
@@ -96,7 +96,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pProjectile, M
     if( pOwner is null )
         return HOOK_CONTINUE;
 
-    if( pJson[ 'projectiles', {} ][ pProjectile.GetClassname(), false ]
+    if( array<string>( pJson[ 'projectiles' ] ).find( pProjectile.GetClassname() ) >= 0
     && ( pTouched.IsPlayer() && pTouched.Classify() == pOwner.Classify() || pOwner.IsPlayer() && pTouched.IsPlayerAlly() )
     ) {
         //g_Game.AlertMessage( at_console, 'MRES_SUPERCEDE ' + pProjectile.pev.classname + '\n' );
