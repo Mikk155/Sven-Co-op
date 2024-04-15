@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<head>
+        <title>Sven Co-op</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body>
+
+        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
+
+                <a href="https://mikk155.github.io/Sven-Co-op">
+                        <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
+                </a>
+
+                <div class="block">
+                <br>
+
+                        <div class="neon-text">
+
+                                <div class="neon-text" >
+                                        no_autopickup
+                                        <br><br>
+                                        Prevent players from automatic pick weapons on touching them
+                                        <br><br>
+                                        Instead requires players to press Use key (E)
+
+                                        <br><br>
+                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/no_autopickup" target="_blank">Download
+
+                                </div>
+
+                                <br>
+                        </div>
+
+                <br>
+                </div>
+
+                <br>
+                <br>
+
+<pre class="json">
+<a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;// true = tell players to press E
+&nbsp;&nbsp;&nbsp;&nbsp;// false = Don't show message
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MessagePlayer"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;// true = Require to be on direct line of sight
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"RequiredLoS"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;// List of items this plugin supports. supports ending wildcard as asterisk (*)
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ItemList"</a><a class="json-tokens">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_*"</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_healthkit"</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_battery"</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weaponbox"</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ammo_*"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">]</a><a class="json-tokens">,</a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"PickMeMessage"</a><a class="json-tokens">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-tokens">:</a> <a class="json-string">"+use pickup $item$"</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-tokens">:</a> <a class="json-string">"+use recoger $item$"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a>
+<a class="json-tokens">}</a>
+</pre>
+                <br>
+                <br>
+        </div>
+</body>
+</html>

@@ -1,6 +1,4 @@
 {
     "observers can use": true,
-
-    // Cooldown time, negative value disables this (not recommended )
     "player cooldown": 2.5
 }

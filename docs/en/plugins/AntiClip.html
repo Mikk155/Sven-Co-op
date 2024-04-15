@@ -25,17 +25,7 @@
                                         <br><br>
                                         Prevent player-to-player clipping and player's projectiles-to-player clipping
                                         <br><br>
-                                        Admin command .anticlip (value) to toggle AntiClip.
-                                        <br><br>
-                                        Possible values are on, true or 1, anything else or empty value is for disable.
-                                        <br><br>
-                                        Open AntiClip.json to modify the behaviour of projectiles.
-                                        <br><br>
-                                        Change to false the ones you would like to have collision on ally players.
-                                        <br><br>
-                                        "lasers" is a special threat, to be exact it is player-player.
-                                        <br><br>
-                                        If you experiment any collision bugs feel free to disable that.
+                                        Admin command .anticlip 0/1 to disable or enable AntiClip.
                                         <br><br>
                                         This plugins requires <a href="https://github.com/Mikk155/metamod-limitless-potential" target="_blank" class="link-extern">metamod</a>.
                                         <br><br>
@@ -51,6 +41,41 @@
 
                 <br>
                 </div>
+                <br>
+                <br>
+
+<pre class="json">
+<a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;// List of projectiles that shouldn't have collision
+&nbsp;&nbsp;&nbsp;&nbsp;// <a class="json-string">"lasers"</a> is a special threat<a class="json-tokens">,</a> to be exact it is player-player.
+&nbsp;&nbsp;&nbsp;&nbsp;// If you experiment any collision bugs feel free to disable that.
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"projectiles"</a><a class="json-tokens">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"lasers"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"sporegrenade"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"displacer_portal"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"grenade"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_satchel"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_tripmine"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"rpg_rocket"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_egon"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"playerhornet"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"bolt"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_crowbar"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"grappletongue"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_snark"</a><a class="json-tokens">:</a> <a class="json-true">true</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_chumtoad"</a><a class="json-tokens">:</a> <a class="json-true">true</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ENABLED"</a><a class="json-tokens">:</a> <a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-tokens">:</a> <a class="json-string">"Anti-Clip enabled by admin $name$."</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-tokens">:</a> <a class="json-string">"Anti-Clip fue activado por el admin $name$."</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DISABLED"</a><a class="json-tokens">:</a> <a class="json-tokens">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-tokens">:</a> <a class="json-string">"Anti-Clip disabled by admin $name$."</a><a class="json-tokens">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-tokens">:</a> <a class="json-string">"Anti-Clip fue desactivado por el admin $name$."</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-tokens">}</a>
+<a class="json-tokens">}</a>
+</pre>
                 <br>
                 <br>
         </div>
