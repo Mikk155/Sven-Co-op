@@ -180,6 +180,12 @@ class json
         return ( this[ key, '' ].IsEmpty() ? value : atoi( this[ key, string( value ) ] ) );
     }
 
+    float get( string key, float value ){ return this[ key, value ]; }
+    float opIndex( string key, float value )
+    {
+        return ( this[ key, '' ].IsEmpty() ? value : atof( this[ key, string( value ) ] ) );
+    }
+
     bool get( string key, bool value ){ return this[ key, value ]; }
     bool opIndex( string key, bool value )
     {
@@ -429,14 +435,14 @@ class json
             }
             else if( invalue )
             {
-                if( c == ',' )
+                if( c == ',' || c == '}' )
                 {
                     if( !inquote )
                     {
                         storekv = true;
                     }
                 }
-                if( c != ',' )
+                else if( c != ',' )
                 {
                     value += c;
                 }
@@ -464,6 +470,7 @@ class json
 
     protected int GetValueType( string value )
     {
+    g_Game.AlertMessage( at_console, value +'\n' );
         if( value == 'true' || value == 'false' )
         {
             return JsonValueType::BOOLEAN;

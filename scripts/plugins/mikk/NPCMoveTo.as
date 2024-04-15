@@ -35,8 +35,8 @@ HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszComman
 {
     if( pPlayer !is null
     && m_iszCommand == 'npc_moveto'
-    && ( pPlayer.IsAlive() || pJson[ 'observers can use', false ] )
-    && ( g_Engine.time > time || pJson[ 'global cooldown', false ] ) )
+    && ( pJson[ 'observers can use', false ] || pPlayer.IsAlive() )
+    && g_Engine.time > atof( CustomKeyValue( pPlayer, '$f_npcmoveto_cooldown' ) ) )
     {
         TraceResult tr;
 
@@ -57,7 +57,7 @@ HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszComman
             m.WriteByte( 2 );
         m.End();
 
-        time = g_Engine.time + 0.5;
+        CustomKeyValue( pPlayer, '$f_npcmoveto_cooldown', g_Engine.time + pJson[ 'player cooldown', 0.0 ] );
     }
     return HOOK_CONTINUE;
 }
