@@ -37,7 +37,6 @@ HookReturnCode CanCollect( CBaseEntity@ pPickup, CBaseEntity@ pOther, bool& out 
     {
         for( uint ui = 0; ui < pItems.length(); ui++ )
         {
-            g_Game.AlertMessage( at_console, pItems[ui] + '\n' );
             if( pPickup.GetClassname() == pItems[ui] || pItems[ui].EndsWith( '*' )
                     && ( pOther.IsFacing( pPickup.pev, VIEW_FIELD_NARROW ) || !pJson[ 'RequiredLoS', true ] )
                     && pPickup.GetClassname().StartsWith( pItems[ui].SubString( 0, pItems[ui].Length() - 1 ) ) ) {
