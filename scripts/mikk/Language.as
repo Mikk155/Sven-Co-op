@@ -176,12 +176,12 @@ class MKLanguage
         if( m_szLanguage == String::EMPTY_STRING || m_szLanguage == '' )
             m_szLanguage = "english";
 
-        string m_szMessage = pJson[ m_szLanguage, pJson[ 'english' ] ];
+        string m_szMessage = pJson[ m_szLanguage, pJson[ 'english', '' ] ];
 
-        if( m_szLanguage == "spanish spain" && pJson[ m_szLanguage ].IsEmpty() )
-            m_szMessage = pJson[ 'spanish', pJson[ 'english' ] ];
-        else if( m_szLanguage == "spanish" && pJson[ m_szLanguage ].IsEmpty() )
-            m_szMessage = pJson[ 'spanish spain', pJson[ 'english' ] ];
+        if( m_szLanguage == "spanish spain" && pJson[ m_szLanguage,'' ].IsEmpty() )
+            m_szMessage = pJson[ 'spanish', pJson[ 'english','' ] ];
+        else if( m_szLanguage == "spanish" && pJson[ m_szLanguage,'' ].IsEmpty() )
+            m_szMessage = pJson[ 'spanish spain', pJson[ 'english','' ] ];
 
         if( pReplacement !is null )
         {

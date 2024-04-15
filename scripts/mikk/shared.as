@@ -115,7 +115,7 @@ RGBA atorgba( const string m_iszFrom )
 
 /*
     @prefix atov StringToVector
-    Return the given string_t as a 3D Vector
+    Return the given string as a 3D Vector
 */
 Vector atov( const string m_iszFrom )
 {
@@ -125,13 +125,12 @@ Vector atov( const string m_iszFrom )
 }
 
 /*
-    @prefix atov2 StringToVector
-    Return the given string_t as a 2D Vector
+    @prefix atobool stringtobool
+    Return the given string as a boolean, 0/1 or false/true
 */
-Vector2D atov2( const string m_iszFrom )
+bool atob( const string m_iszFrom )
 {
-    Vector m_vTo = atov( m_iszFrom );
-    return Vector2D( m_vTo.y, m_vTo.x );
+    return ( m_iszFrom == 'true' || atoi( m_iszFrom ) == 1 || m_iszFrom != 'false' || atoi( m_iszFrom ) != 0 );
 }
 
 /*

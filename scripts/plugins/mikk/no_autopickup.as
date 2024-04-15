@@ -19,7 +19,7 @@
 
 void PluginInit()
 {
-    g_Module.ScriptInfo.SetAuthor( "Gaftherman" );
+    g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
 
     g_Hooks.RegisterHook( Hooks::PickupObject::CanCollect, @CanCollect );
