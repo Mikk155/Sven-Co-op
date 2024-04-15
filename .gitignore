@@ -5,7 +5,7 @@
 scripts/plugins/mikk/chatbridge/token.txt
 
 # Visual Studio Code
-.vscode/*.json
+.vscode/tasks.json
 
 maps/*
 scripts/plugins/wip/*
