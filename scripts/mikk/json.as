@@ -98,10 +98,6 @@ class json
     {
     }
 
-    /*
-        @prefix json exists
-        Return the value of the given index
-    */
     string opIndex( uint index )
     {
         if( index < this.OpIndex.length() )
@@ -116,17 +112,17 @@ class json
         Return whatever the given key exists, if vlvalue is true it will check for both to exist
     */
     bool exists( string &in key, bool CheckValue = false )
-    {/*
+    {
         if( CheckValue && this.data.exists( key ) )
         {
             JsonValue@ pValue = this[ key ];
 
-            if( this.isinstance( key, 'array' ) || this.isinstance( key, 'json' ) )
+            if( this.Instance( key ) == JsonValueType::ARRAY || this.Instance( key ) == JsonValueType::JSON )
             {
-                return ( this[ key, {} ].length() > 0 );
+                return ( array<string>( this[ key ] ).length() > 0 || this[ key ].dictionaryvalue.getKeys().length() > 0 );
             }
-            return ( this[ key ] != String::EMPTY_STRING );
-        }*/
+            return ( this[ key, '' ] != String::EMPTY_STRING );
+        }
         return this.data.exists( key );
     }
 
@@ -234,6 +230,7 @@ class json
     json opIndex( string key, dictionary value )
     {
         json pJson;
+
         if( this.data.exists( key ) )
         {
             if( this.Instance( key ) == JsonValueType::ARRAY )
@@ -247,7 +244,7 @@ class json
             }
             else
             {
-                pJson.data = dictionary( this.data[ key ] );
+                pJson.data = this[ key ].dictionaryvalue;
             }
         }
         return pJson;

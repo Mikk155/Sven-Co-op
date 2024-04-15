@@ -47,29 +47,59 @@
 		"body": "HookReturnCode PlayerObserverModeHook( ${1:CBasePlayer@}, ${2:ObserverMode})",
 		"description": "Called when a player change its spectator mode."
 	},
-	"void load( string m_szLoad, bool include = true )":
+	"string opIndex( uint index )":
+	{
+		"prefix":[ "JsonValue", "opInd" ],
+		"body": "opIndex( ${1:uint index})",
+		"description": "Return the given value on the array of this json if any, else returns empty string"
+	},
+	"string opIndex( uint index )":
+	{
+		"prefix":[ "json", "exists" ],
+		"body": "opIndex( ${1:uint index})",
+		"description": "Return the value of the given index"
+	},
+	"bool exists( string &in key, bool CheckValue = false )":
+	{
+		"prefix":[ "json", "exists" ],
+		"body": "exists( ${1:string &in key}, ${2:bool CheckValue = false})",
+		"description": "Return whatever the given key exists, if vlvalue is true it will check for both to exist"
+	},
+	"uint size()":
+	{
+		"prefix":[ "json", "siz" ],
+		"body": "size()",
+		"description": "Return the whole size of this json data"
+	},
+	"uint length()":
+	{
+		"prefix":[ "json", "length" ],
+		"body": "length()",
+		"description": "Return the length of this json data"
+	},
+	"JsonValue opIndex( string key )":
+	{
+		"prefix":[ "json", "opInd" ],
+		"body": "opIndex( ${1:string key})",
+		"description": "Return the JsonValue of the given key"
+	},
+	"string Instance( string key, bool ToString = false ){ return get( key ).Instance( ToString ); }":
+	{
+		"prefix":[ "json", "Instanc" ],
+		"body": "Instance( ${1:string key}, ${2:bool ToString = false})",
+		"description": "Return the instance name on enum JsonValueType, if ToString is true return as a string"
+	},
+	"":
+	{
+		"prefix":[ "" ],
+		"body": "",
+		"description": "Vector get( string key, Vector value ){ return this[ key, value ]; } Vector opIndex( string key, Vector value ) { return ( this[ key, '' ].IsEmpty() &&  && g_Utility.IsString3DVec( this[ key, '' ]) ? value : atov( this[ key, '' ] ) ); }  Vector2D get( string key, Vector2D value ){ return this[ key, value ]; } Vector2D opIndex( string key, Vector2D value ) { if( this.exists( key, true ) ) { array<string> szSplit = string( data[ key ] ).Split( ' ' );  if( szSplit.length() == 2 && g_Utility.IsStringFloat( szSplit[0] ) && g_Utility.IsStringFloat( szSplit[1] ) ) { return atov( string( data[ key ] ) ).Make2D(); } } return value; }  RGBA get( string key, RGBA value ){ return this[ key, value ]; } RGBA opIndex( string key, RGBA value ) { if( this.exists( key, true ) ) { array<string> szSplit = this[ key ].Split( ' ' );  for( uint ui = 0; ui < szSplit.length() && g_Utility.IsStringInt( szSplit[ui] ); ui++ ) { if( ui == 3 ) { return atorgba( string( data[ key ] ) ); } } } return value; }*/ json get( string key, json value ){ return this[ key, value ]; } json opIndex( string key, json value ){ return this[ key, value.data ]; } json get( string key, dictionary value ){ return this[ key, value ]; } json opIndex( string key, dictionary value ) { json pJson; if( this.data.exists( key ) ) { if( this.Instance( key ) == JsonValueType::ARRAY ) { array<string> str = this[ key ].arrayvalue;  for( uint ui = 0; ui < str.length(); ui++ ) { pJson.data[ string(ui) ] = str[ui]; } } else { pJson.data = dictionary( this.data[ key ] ); } } return pJson; }  array<string> getKeys() { return this.data.getKeys(); }  json opAssign( dictionary pkvd ) { array<string> str = pkvd.getKeys();  for( uint ui = 0; ui < str.length(); ui++ ) { if( string( pkvd[ str[ui] ] ).IsEmpty() ) { this.data.delete( str[ui] ); } else { this.data[ str[ui] ] = string( pkvd[ str[ui] ] ); } } return this; }"
+	},
+	"uint load( string m_szLoad, bool include = false )":
 	{
 		"prefix":[ "load", "json", "pars" ],
-		"body": "load( ${1:string m_szLoad}, ${2:bool include = true})",
-		"description": "Loads a json file within a json class. if include is false the json is cleared before loading the new one"
-	},
-	"string instance( string key )":
-	{
-		"prefix":[ "json", "instanc" ],
-		"body": "instance( ${1:string key})",
-		"description": "Return a string with the instance of the value for the given key"
-	},
-	"bool isinstance( string key, string instance )":
-	{
-		"prefix":[ "json", "instance", "isinstanc" ],
-		"body": "isinstance( ${1:string key}, ${2:string instance})",
-		"description": "Return whatever the value for the given key is the given instance"
-	},
-	"int get( string key, int value ){ return this[ key, value ]; }":
-	{
-		"prefix":[ "json", "get" ],
-		"body": "get( ${1:string key}, ${2:int value})",
-		"description": "Use opIndex instead."
+		"body": "load( ${1:string m_szLoad}, ${2:bool include = false})",
+		"description": "Loads a json file within a json class. if no format '.json' is provided it asumes you sent a string with json format if include is true the json is not cleared and new data will be written above, When specifying format, folder maps/plugins is necesary to include in the path. Return codes: 0 = everything fine 1 = empty string sent 2 = file not found"
 	},
 	"enum MKLANG::CHAT":
 	{
@@ -182,7 +212,7 @@
 	"Reflection::Function@ opIndex( string m_iszFunction )":
 	{
 		"prefix":[ "g_Reflection.opIndex", "g_Reflection.Get", "g_Reflection.Function", "Reflection" ],
-		"body": "g_Reflection[ ${1:string m_iszFunction}]",
+		"body": "g_Reflection.opIndex( ${1:string m_iszFunction})",
 		"description": "Get a script function by name or namespace::name"
 	},
 	"string GetDiscord()":
@@ -219,13 +249,13 @@
 	{
 		"prefix":[ "atov", "StringToVecto" ],
 		"body": "atov( ${1:const string m_iszFrom})",
-		"description": "Return the given string_t as a 3D Vector"
+		"description": "Return the given string as a 3D Vector"
 	},
-	"Vector2D atov2( const string m_iszFrom )":
+	"bool atob( const string m_iszFrom )":
 	{
-		"prefix":[ "atov2", "StringToVecto" ],
-		"body": "atov2( ${1:const string m_iszFrom})",
-		"description": "Return the given string_t as a 2D Vector"
+		"prefix":[ "atobool", "stringtobool" ],
+		"body": "atob( ${1:const string m_iszFrom})",
+		"description": "Return the given string as a boolean, 0/1 or false/true"
 	},
 	"string CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const string&in m_iszValue = String::EMPTY_STRING )":
 	{

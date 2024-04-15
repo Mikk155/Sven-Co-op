@@ -23,7 +23,7 @@ namespace chatbridge
         {
             if( JsonLog[ 'map start', false ] && g_Chatbridge.mapname != g_Engine.mapname )
             {
-                g_Chatbridge.Discord.print( JsonLang[ 'map_start' ], { { 'name', string( g_Engine.mapname ) } } );
+                g_Chatbridge.Discord.print( JsonLang[ 'map_start','' ], { { 'name', string( g_Engine.mapname ) } } );
             }
         }
     }

@@ -32,7 +32,7 @@ namespace chatbridge
             if( pPlayer !is null )
             {
                 string name = string( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) + " " + string( pPlayer.pev.netname );
-                g_Chatbridge.Discord.print( JsonLang[ 'player_connected' ], { { 'name', name } } );
+                g_Chatbridge.Discord.print( JsonLang[ 'player_connected','' ], { { 'name', name } } );
             }
             return HOOK_CONTINUE;
         }

@@ -25,10 +25,10 @@ void PluginInit()
     g_Hooks.RegisterHook( Hooks::PickupObject::CanCollect, @CanCollect );
 
     pJson.load( 'plugins/mikk/no_autopickup.json' );
-    pItems = pJson[ 'ItemList', {} ];
+    pItems = array<string>( pJson[ 'ItemList' ] );
 }
 
-json pItems;
+array<string> pItems;
 json pJson;
 
 HookReturnCode CanCollect( CBaseEntity@ pPickup, CBaseEntity@ pOther, bool& out bResult  )
@@ -37,8 +37,10 @@ HookReturnCode CanCollect( CBaseEntity@ pPickup, CBaseEntity@ pOther, bool& out 
     {
         for( uint ui = 0; ui < pItems.length(); ui++ )
         {
-            if( pPickup.GetClassname() == pItems[ui,''] || pItems[ui,''].EndsWith( '*' )
-                    && pPickup.GetClassname().StartsWith( pItems[ui, ''].SubString( 0, pItems[ui, ''].Length() - 1 ) ) ) {
+            g_Game.AlertMessage( at_console, pItems[ui] + '\n' );
+            if( pPickup.GetClassname() == pItems[ui] || pItems[ui].EndsWith( '*' )
+                    && ( pOther.IsFacing( pPickup.pev, VIEW_FIELD_NARROW ) || !pJson[ 'RequiredLoS', true ] )
+                    && pPickup.GetClassname().StartsWith( pItems[ui].SubString( 0, pItems[ui].Length() - 1 ) ) ) {
 
                 if( pJson[ 'MessagePlayer', false ] )
                 {

@@ -22,7 +22,7 @@ void PluginInit()
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
 
-    pJson.load( "plugins/mikk/dynamic_hostname" );
+    pJson.load( "plugins/mikk/dynamic_hostname.json" );
 }
 
 json pJson;
@@ -60,7 +60,7 @@ void SetHostname()
 
     json config = pJson[ 'CONFIG', {} ];
 
-    string antirush = config[ "DISABLED" ];
+    string antirush = config[ "DISABLED", '' ];
 
     array<string> strAntirush =
     {
@@ -76,7 +76,7 @@ void SetHostname()
 
         while( ( @pAntiRush = g_EntityFuncs.FindEntityByClassname( pAntiRush, strAntirush[i] ) ) !is null )
         {
-            antirush = config[ "ENABLED" ];
+            antirush = config[ "ENABLED", '' ];
             break;
         }
     }
@@ -90,12 +90,12 @@ void SetHostname()
         difficulty += ' (' + CustomKeyValue( pDiffy, '$i_diff' ) + ')';
     }
 
-    string m_iszHostName = config[ "DYNAMIC_HOSTNAME" ];
-    m_iszHostName.Replace( "$hostname$", config[ "HOSTNAME" ] );
+    string m_iszHostName = config[ "DYNAMIC_HOSTNAME", '' ];
+    m_iszHostName.Replace( "$hostname$", config[ "HOSTNAME", '' ] );
     m_iszHostName.Replace( "$maps$", mapname );
     m_iszHostName.Replace( "$antirush$", antirush );
-    m_iszHostName.Replace( "$difficulty$", ( difficulty == String::INVALID_INDEX ? config[ "DISABLED" ] : difficulty ) );
-    m_iszHostName.Replace( "$survival$", config[ ( g_SurvivalMode.MapSupportEnabled() ? "ENABLED" : "DISABLED" ) ] );
+    m_iszHostName.Replace( "$difficulty$", ( difficulty == String::INVALID_INDEX ? config[ "DISABLED", '' ] : difficulty ) );
+    m_iszHostName.Replace( "$survival$", config[ ( g_SurvivalMode.MapSupportEnabled() ? "ENABLED" : "DISABLED" ), '' ] );
 
     g_EngineFuncs.ServerCommand( "hostname \"" + m_iszHostName + "\"\n" );
     g_EngineFuncs.ServerExecute();

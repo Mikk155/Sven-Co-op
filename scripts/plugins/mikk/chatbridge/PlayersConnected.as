@@ -35,7 +35,7 @@ namespace chatbridge
 
             if( a > 0 )
             {
-                g_Chatbridge.Discord.print( JsonLang[ 'connected_players' ], { { 'number', string(a) }, { 's', ( a == 1 ? "" : "s" ) } } );
+                g_Chatbridge.Discord.print( JsonLang[ 'connected_players','' ], { { 'number', string(a) }, { 's', ( a == 1 ? "" : "s" ) } } );
             }
         }
     }

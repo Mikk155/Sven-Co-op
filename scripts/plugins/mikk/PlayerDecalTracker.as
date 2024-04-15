@@ -11,7 +11,7 @@ void PluginInit()
 	// g_Module.ScriptInfo.SetMinimumAdminLevel( ADMIN_YES );
 
 	g_Hooks.RegisterHook( Hooks::Player::PlayerDecal, @PlayerDecalTracker::PlayerDecalHook );
-    pJson.load( 'plugins/mikk/PlayerDecalTracker' );
+    pJson.load( 'plugins/mikk/PlayerDecalTracker.json' );
 }
 
 json pJson;

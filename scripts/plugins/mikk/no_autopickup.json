@@ -3,6 +3,9 @@
     // false = Don't
     "MessagePlayer": true,
 
+    // true = Require to be on direct line of sight
+    "RequiredLoS": true,
+
     // List of items this plugin supports. supports ending wildcard as asterisk (*)
     "ItemList":
     [

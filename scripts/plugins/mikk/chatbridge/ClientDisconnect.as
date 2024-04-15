@@ -32,7 +32,7 @@ namespace chatbridge
             if( pPlayer !is null )
             {
                 string name = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) + " " + string( pPlayer.pev.netname );
-                g_Chatbridge.Discord.print( JsonLang[ 'player_disconnect' ], { { 'name', name } } );
+                g_Chatbridge.Discord.print( JsonLang[ 'player_disconnect','' ], { { 'name', name } } );
             }
             return HOOK_CONTINUE;
         }

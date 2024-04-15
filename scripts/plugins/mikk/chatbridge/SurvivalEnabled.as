@@ -27,7 +27,7 @@ namespace chatbridge
 
         void SurvivalEnabled()
         {
-            g_Chatbridge.Discord.print( JsonLang[ 'survival_start' ], {} );
+            g_Chatbridge.Discord.print( JsonLang[ 'survival_start','' ], {} );
         }
     }
 }

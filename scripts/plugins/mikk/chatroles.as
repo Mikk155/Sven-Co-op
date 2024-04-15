@@ -55,31 +55,31 @@ HookReturnCode ClientSay( SayParameters@ pParams )
     && !pParams.ShouldHide
     && args.GetCommandString() != ''
     && hiden.find( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) < 0
-    && pJson.isinstance( Mikk.PlayerFuncs.GetSteamID( pPlayer ), 'array' ) )
+    && pJson.Instance( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) == JsonValueType::ARRAY )
     {
-        json pData = pJson[ Mikk.PlayerFuncs.GetSteamID( pPlayer ), {} ];
+        array<string> pData = array<string>( pJson[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] );
 
         int oldClassify;
 
-        if( AddColor && !pData[ 1, '' ].IsEmpty() )
+        if( AddColor && pData.length() == 2 )
         {
             oldClassify = pPlayer.Classify();
 
             if( oldClassify < 16 || oldClassify > 19 )
             {
-                if( pData[ 1, '' ] == 'red' )
+                if( pData[1] == 'red' )
                 {
                     pPlayer.SetClassification( 17 );
                 }
-                else if( pData[ 1, '' ] == 'green' )
+                else if( pData[1] == 'green' )
                 {
                     pPlayer.SetClassification( 19 );
                 }
-                else if( pData[ 1, '' ] == 'blue' )
+                else if( pData[1] == 'blue' )
                 {
                     pPlayer.SetClassification( 16 );
                 }
-                else if( pData[ 1, '' ] == 'yellow' )
+                else if( pData[1] == 'yellow' )
                 {
                     pPlayer.SetClassification( 18 );
                 }
@@ -87,7 +87,7 @@ HookReturnCode ClientSay( SayParameters@ pParams )
             }
         }
 
-        string preText = ( pData[ 0, '' ].IsEmpty() ? '' : '[' + pData[ 0, '' ] + '] ' );
+        string preText = ( pData[0].IsEmpty() ? '' : '[' + pData[0] + '] ' );
         Mikk.PlayerFuncs.PlayerSay( pPlayer, preText + string( pPlayer.pev.netname ) + ': ' + args.GetCommandString() );
 
         if( AddColor )

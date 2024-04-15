@@ -43,7 +43,7 @@ namespace chatbridge
                 if( JsonBadWords[ BadWords[ui], true ] )
                     sentence.Replace( BadWords[ui], '|| ' + BadWords[ui] + ' ||' );
 
-            g_Chatbridge.Discord.print( '- ' + GetEmote( pPlayer ) + ( pPlayer.IsAlive() ? "" : JsonLang[ 'player_status_dead' ] + " " ) + string( pPlayer.pev.netname ) + ": " + sentence, {} );
+            g_Chatbridge.Discord.print( '- ' + GetEmote( pPlayer ) + ( pPlayer.IsAlive() ? "" : JsonLang[ 'player_status_dead','' ] + " " ) + string( pPlayer.pev.netname ) + ": " + sentence, {} );
 
             return HOOK_CONTINUE;
         }

@@ -45,9 +45,9 @@ void LoadJson()
 {
     pJson.load('plugins/mikk/chatbridge/chatbridge.json');
 
-    if( pJson.keysize <= 0 )
+    if( pJson.length() <= 0 )
     {
-        g_Game.AlertMessage( at_error, "WARNING! Can not open chatbridge.json! Shutting down plugin...\n" );
+        g_EngineFuncs.ServerPrint( "WARNING! Can not open chatbridge.json! Shutting down plugin...\n" );
         array<int>i(0);i[i.length()];
     }
 

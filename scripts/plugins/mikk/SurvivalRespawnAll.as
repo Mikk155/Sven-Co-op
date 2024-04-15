@@ -24,7 +24,7 @@ void PluginInit()
 
     g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
 
-    pJson.load( "plugins/mikk/SurvivalRespawnAll" );
+    pJson.load( "plugins/mikk/SurvivalRespawnAll.json" );
 }
 
 json pJson;

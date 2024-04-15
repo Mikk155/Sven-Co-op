@@ -36,13 +36,13 @@ namespace chatbridge
 
                 if( pAttacker is null )
                 {
-                    g_Chatbridge.Discord.print( JsonLang[ 'player_die' ], pReplacement );
+                    g_Chatbridge.Discord.print( JsonLang[ 'player_die','' ], pReplacement );
                 }
                 else
                 {
                     if( pAttacker is pPlayer )
                     {
-                        g_Chatbridge.Discord.print( JsonLang[ 'player_suicide' ], pReplacement );
+                        g_Chatbridge.Discord.print( JsonLang[ 'player_suicide','' ], pReplacement );
                     }
                     else
                     {
@@ -64,7 +64,7 @@ namespace chatbridge
                             }
                         }
                         pReplacement["killer"] = ( pAttacker.IsPlayer() ? string( pAttacker.pev.netname ) : string( pAttacker.pev.classname ) );
-                        g_Chatbridge.Discord.print( JsonLang[ 'player_killed' ], pReplacement );
+                        g_Chatbridge.Discord.print( JsonLang[ 'player_killed','' ], pReplacement );
                     }
                 }
             }

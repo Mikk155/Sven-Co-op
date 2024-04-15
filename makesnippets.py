@@ -3,6 +3,7 @@
 # This is used by me to update these snippets, you dont need this in your game server.
 
 import os
+import json
 
 def CreateSnippets():
 
@@ -12,7 +13,7 @@ def CreateSnippets():
 
         os.makedirs(vsfolder)
 
-    res_file = os.path.join( os.path.dirname(__file__), 'resources/shared.res' )
+    res_file = os.path.join( os.path.dirname(__file__), 'resources/shared.json' )
 
     with open(res_file, 'r') as f, open( f'{vsfolder}/shared.code-snippets', 'w') as snippet:
 
@@ -20,11 +21,11 @@ def CreateSnippets():
 
         snippet.write( '{\n' )
 
-        for line in f:
+        datajs = json.load(f)
 
-            file_path = line.strip().strip('"')
+        for i in datajs.get( 'Resources', {} ):
 
-            asDst = os.path.join( os.path.dirname(__file__), file_path )
+            asDst = os.path.join( os.path.dirname(__file__), i )
 
             with open( asDst, 'r' ) as a:
 
@@ -108,21 +109,14 @@ def CreateSnippets():
 
                             function = function[ : function.find( '(' ) ]
 
-                            dArgs = ''
                             dListArgs = Arguments.split( ',' )
 
                             snippet.write( f'\t\t"body": "' )
 
-                            if function.startswith( 'opIndex' ):
-                                snippet.write( f'{body}' )
-
-                            elif body != '':
+                            if body != '':
                                 snippet.write( f'{body}{Dot}' )
 
-                            if function.startswith( 'opIndex' ):
-                                snippet.write( f'[' )
-                            else:
-                                snippet.write( f'{function}(' )
+                            snippet.write( f'{function}(' )
 
                             for i, Args in enumerate( dListArgs ):
 
@@ -141,10 +135,7 @@ def CreateSnippets():
 
                                 snippet.write( f' {s}' )
 
-                            if function.startswith( 'opIndex' ):
-                                snippet.write( f']",\n' )
-                            else:
-                                snippet.write( f')",\n' )
+                            snippet.write( f')",\n' )
 
                         snippet.write( f'\t\t"description": "{description}"\n' )
 

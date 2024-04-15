@@ -31,7 +31,7 @@ namespace chatbridge
         {
             if( pPlayer !is null )
             {
-                g_Chatbridge.Discord.print( JsonLang[ 'player_spawned' ], { { 'name', string( pPlayer.pev.netname ) } } );
+                g_Chatbridge.Discord.print( JsonLang[ 'player_spawned','' ], { { 'name', string( pPlayer.pev.netname ) } } );
             }
             return HOOK_CONTINUE;
         }
