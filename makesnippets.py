@@ -52,7 +52,7 @@ def CreateSnippets():
                             IsEnum = ''
                             EnumValue = 0
                             continue
-                        elif( line.startswith( '/*' ) ):
+                        elif( line.startswith( '/*@' ) ):
                             InComment = True
                             continue
                         elif( line.startswith( '*/' ) ):
@@ -155,7 +155,7 @@ def CreateSnippets():
                         prefix = prefix.replace( ' ', '", "' )
                     elif( line.startswith( '@body' ) ):
                         body = line.strip( '@body' )
-                    elif( line.startswith( '/*' ) ):
+                    elif( line.startswith( '/*@' ) ):
                         InComment = True
                     elif( line.startswith( '*/' ) ):
                         InComment = False

@@ -17,28 +17,28 @@
 
 enum MKLANG
 {
-    /*
+    /*@
         ClientPrint -> HUD_PRINTTALK
     */
     CHAT = 0,
-    /*
+    /*@
         PrintKeyBindingString
     */
     BIND,
-    /*
+    /*@
         ClientPrint -> HUD_PRINTCENTER
     */
     CENTER,
-    /*
+    /*@
         HudMessage Pass arguments in the json file.
         x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8
     */
     HUDMSG,
-    /*
+    /*@
         ClientPrint -> HUD_PRINTNOTIFY
     */
     NOTIFY,
-    /*
+    /*@
         ClientPrint -> HUD_PRINTCONSOLE
     */
     CONSOLE,
@@ -162,7 +162,7 @@ namespace Language
 
 class MKLanguage
 {
-    /*
+    /*@
         @prefix Mikk.Language.GetLanguage GetLanguage
         @body Mikk.Language
         Gets a language string from the given json value,
@@ -194,7 +194,7 @@ class MKLanguage
         return m_szMessage;
     }
 
-    /*
+    /*@
         @prefix Mikk.Language.PrintAll PrintAll Language
         @body Mikk.Language
         Prints a language string from the given json value,
@@ -213,7 +213,7 @@ class MKLanguage
         }
     }
 
-    /*
+    /*@
         @prefix Mikk.Language.PrintAll PrintAll Language
         @body Mikk.Language
         Prints a language string from the given json value,

@@ -17,14 +17,14 @@
 
 namespace Hooks {
 namespace Player {
-/*
+/*@
     @prefix Hooks::Player::PlayerKeyInputHook PlayerKeyInputHook
     @body Hooks::Player
     Called when a player pev->buttons changes
 */
 namespace PlayerKeyInputHook
 {
-    /*
+    /*@
         @prefix PlayerKeyInputHook
         Called when a player pev->buttons changes. the given bool returns whatever the button has been released or pressed
     */

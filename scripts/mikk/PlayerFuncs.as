@@ -17,7 +17,7 @@
 
 class MKPlayerFuncs
 {
-    /*
+    /*@
         @prefix Mikk.PlayerFuncs.GetColormap GetColormap colormap bottomcolor topcolor Hue
         @body Mikk.PlayerFuncs
         Gets bottomcolor and topcolor from the given player as a RGBA values
@@ -37,7 +37,7 @@ class MKPlayerFuncs
         BotRGB = HUEtoRGB( Bot_hue );
     }
 
-    /*
+    /*@
         @prefix Mikk.PlayerFuncs.ClientCommand ClientCommand Command
         @body Mikk.PlayerFuncs
         Executes a console command on the given player or all players if bAllPlayers is true
@@ -61,7 +61,7 @@ class MKPlayerFuncs
         }
     }
 
-    /*
+    /*@
         @prefix Mikk.PlayerFuncs.FindPlayerBySteamID FindPlayerBySteamID SteamID
         @body Mikk.PlayerFuncs
         Get the CBasePlayer@ instance of the given SteamID
@@ -81,7 +81,7 @@ class MKPlayerFuncs
         return pPlayer;
     }
 
-    /*
+    /*@
         @prefix Mikk.PlayerFuncs.GetSteamID GetSteamID SteamID
         @body Mikk.PlayerFuncs
         Return the SteamID of the given player, BOTS will be enumerated by their index
@@ -92,7 +92,7 @@ class MKPlayerFuncs
         return ( ID == "BOT" ? ID + string( pPlayer.entindex() ) : ID );
     }
 
-    /*
+    /*@
         @prefix Mikk.PlayerFuncs.RespawnPlayer RespawnPlayer
         @body Mikk.PlayerFuncs
         Revives the given player and then relocates him to a valid spawnpoint, returns true if revived
@@ -110,7 +110,7 @@ class MKPlayerFuncs
         return false;
     }
 
-    /*
+    /*@
         @prefix Mikk.PlayerFuncs.PlayerSay chat say
         @body Mikk.PlayerFuncs
         Make a player say something, if pTarget is not null, only pTarget will see the message.

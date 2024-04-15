@@ -29,7 +29,7 @@ Reflection@ g_Reflection;
 
 final class Reflection
 {
-    /*
+    /*@
         @prefix g_Reflection.Call g_Reflection.CallFunction CallFunction Reflection
         @body g_Reflection
         Calls a function globaly in all namespaces. Returns the number of functions called.
@@ -70,7 +70,7 @@ final class Reflection
         IsInitialised = true;
     }
 
-    /*
+    /*@
         @prefix g_Reflection.opIndex g_Reflection.Get g_Reflection.Function Reflection
         @body g_Reflection
         Get a script function by name or namespace::name

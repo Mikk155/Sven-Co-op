@@ -17,14 +17,14 @@
 
 namespace Hooks {
 namespace Player {
-/*
+/*@
     @prefix Hooks::Player::PlayerObserverModeHook PlayerObserverModeHook
     @body Hooks::Player
     Called when a player change its spectator mode
 */
 namespace PlayerObserverModeHook
 {
-    /*
+    /*@
         @prefix PlayerObserverModeHook
         Called when a player change its spectator mode.
     */

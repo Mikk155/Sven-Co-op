@@ -26,7 +26,7 @@ MKShared Mikk;
 
 class MKShared
 {
-    /*
+    /*@
         @prefix Mikk.GetDiscord Discord
         @body Mikk
         Get discord server invite
@@ -36,7 +36,7 @@ class MKShared
         return 'discord.gg/sqK7F3kZfn';
     }
 
-    /*
+    /*@
         @prefix Mikk.GetContactInfo Contact
         @body Mikk
         Get contact info
@@ -59,7 +59,7 @@ class MKShared
         EntityFuncs = MKEntityFuncs();
     }
 
-    /*
+    /*@
         @prefix Mikk.UpdateTimer UpdateTimer
         @body Mikk
         Clears and sets a CScheduledFunction@ function with the given parameters
@@ -74,7 +74,7 @@ class MKShared
         @pTimer = g_Scheduler.SetInterval( szFunction, flTime, iRepeat );
     }
 
-    /*
+    /*@
         @prefix Mikk.IsPluginInstalled IsPluginInstalled Plugin Installed IsInstalled
         @body Mikk
         Return whatever the given plugin name is installed on the server.
@@ -99,7 +99,7 @@ class MKShared
     }
 }
 
-/*
+/*@
     @prefix atorgba
     Return the given string as a 4D RGBA
 */
@@ -113,7 +113,7 @@ RGBA atorgba( const string m_iszFrom )
     return RGBA( atoui( aSplit[0] ), atoui( aSplit[1] ), atoui( aSplit[2] ), atoui( aSplit[3] ) );
 }
 
-/*
+/*@
     @prefix atov StringToVector
     Return the given string as a 3D Vector
 */
@@ -124,7 +124,7 @@ Vector atov( const string m_iszFrom )
     return m_vTo;
 }
 
-/*
+/*@
     @prefix atobool stringtobool
     Return the given string as a boolean, 0/1 or false/true
 */
@@ -133,7 +133,7 @@ bool atob( const string m_iszFrom )
     return ( m_iszFrom == 'true' || atoi( m_iszFrom ) == 1 || m_iszFrom != 'false' || atoi( m_iszFrom ) != 0 );
 }
 
-/*
+/*@
     @prefix CKV CustomKeyValue
     Return the value of the given CustomKeyValue,
     if m_iszValue is given it will update the value,
@@ -160,7 +160,7 @@ string CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const str
     return pEntity.GetCustomKeyvalues().GetKeyvalue( m_iszKey ).GetString();
 }
 
-/*
+/*@
     @prefix Hue HUEtoRGB
     Return a RGB color from a Hue color
 */
@@ -189,7 +189,7 @@ RGBA HUEtoRGB( float H )
     return RGBA( Math.clamp( 0, 255, int( R * 255.f ) ), Math.clamp( 0, 255.0f, int( G * 255.0f ) ), Math.clamp( 0, 255, int( B * 255.0f ) ), 255 );
 }
 
-/*
+/*@
     @prefix Hue RGBtoHUE
     Return a Hue color from a RGB color
 */

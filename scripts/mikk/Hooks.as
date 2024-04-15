@@ -68,7 +68,7 @@ namespace Hooks
 
 class MKHooks
 {
-    /*
+    /*@
         @prefix Mikk.Hooks.RegisterHook Hooks CustomHooks RegisterHooks
         @body Mikk.Hooks
         Register a custom hook
@@ -106,7 +106,7 @@ class MKHooks
         return false;
     }
 
-    /*
+    /*@
         @prefix Mikk.Hooks.RemoveHooks Hooks CustomHooks RemoveHook
         @body Mikk.Hook
         Remove a custom hook
@@ -147,7 +147,7 @@ class MKHooks
         }
     }
 
-    /*
+    /*@
         @prefix Mikk.Hooks.RemoveHooks Hooks CustomHooks RemoveHooks
         @body Mikk.Hooks
         Remove all custom hook

@@ -61,7 +61,7 @@ class JsonValue
         return string( instance );
     }
 
-    /*
+    /*@
         @prefix JsonValue opIndex
         Return the given value on the array of this json if any, else returns empty string
     */
@@ -107,7 +107,7 @@ class json
         return String::EMPTY_STRING;
     }
 
-    /*
+    /*@
         @prefix json exists
         Return whatever the given key exists, if vlvalue is true it will check for both to exist
     */
@@ -126,7 +126,7 @@ class json
         return this.data.exists( key );
     }
 
-    /*
+    /*@
         @prefix json size
         Return the whole size of this json data
     */
@@ -135,7 +135,7 @@ class json
         return this.keysize;
     }
 
-    /*
+    /*@
         @prefix json length
         Return the length of this json data
     */
@@ -149,7 +149,7 @@ class json
         return JsonValue( this.data[ key ] );
     }
 
-    /*
+    /*@
         @prefix json opIndex
         Return the JsonValue of the given key
     */
@@ -158,7 +158,7 @@ class json
         return get( key );
     }
 
-    /*
+    /*@
         @prefix json Instance
         Return the instance name on enum JsonValueType, if ToString is true return as a string
     */
@@ -517,7 +517,7 @@ class json
         return JsonValueType::STRING;
     }
 
-    /*
+    /*@
         @prefix load json parse
         Aliases to "load" but will return 1 if this json doesn't has a key "reload" on true
     */
@@ -526,7 +526,7 @@ class json
         return ( this[ 'reload', false ] ? this.load( m_szLoad, include ) : 1 );
     }
 
-    /*
+    /*@
         @prefix load json parse
         Loads a json file within a json class. if no format '.json' is provided it asumes you sent a string with json format
         if include is true the json is not cleared and new data will be written above,

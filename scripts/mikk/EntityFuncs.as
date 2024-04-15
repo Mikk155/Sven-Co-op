@@ -17,7 +17,7 @@
 
 class MKEntityFuncs
 {
-    /*
+    /*@
         @prefix Mikk.EntityFuncs.CreateEntity CreateEntity EntityCreate
         @body Mikk.EntityFuncs
         Creates a entity with the given keyvalue data, if blSpawnNow is false the entity is not spawned
@@ -44,7 +44,7 @@ class MKEntityFuncs
         return null;
     }
 
-    /*
+    /*@
         @prefix Mikk.EntityFuncs.LoadEntFile LoadEntFile
         @body Mikk.EntityFuncs
         Loads an external .ent file into the map
