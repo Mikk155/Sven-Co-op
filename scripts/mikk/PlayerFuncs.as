@@ -33,8 +33,8 @@ class MKPlayerFuncs
         float Top_hue = float(TopUi) / 255.0f;
         float Bot_hue = float(BotUi) / 255.0f;
 
-        TopRGB = HUEtoRGB( Top_hue );
-        BotRGB = HUEtoRGB( Bot_hue );
+        TopRGB = fft::HueToRGBA( Top_hue );
+        BotRGB = fft::HueToRGBA( Bot_hue );
     }
 
     /*@
