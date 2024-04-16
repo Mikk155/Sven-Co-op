@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<head>
+        <title>Sven Co-op</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+</head>
+
+<body>
+
+        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
+
+            <a href="https://mikk155.github.io/Sven-Co-op">
+                    <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
+            </a>
+
+            <div class="block">
+                <br>
+                <div class="neon-text">
+                    AntiClip
+                    <br><br>
+                    Previene la colision entre jugador-jugador y projectiles-jugador
+                    <br><br>
+                    Comando de administradores .anticlip 0/1 para desactivar o activar AntiClip.
+                    <br><br>
+                    Este plugin requiere <a href="https://github.com/Mikk155/metamod-limitless-potential" target="_blank" class="link-extern">metamod</a>.
+                    <br><br>
+                    Script hecho por <a href="https://github.com/Gaftherman" target="_blank" class="link-extern">Gaftherman</a>.
+
+                    <br><br>
+                    <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/AntiClip" target="_blank">Descargar</a>
+                    <br>
+                </div>
+                <br>
+                <br>
+            </div>
+            <br>
+            <br>
+
+<pre class="json">json<br>
+<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"projectiles"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"lasers"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"sporegrenade"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"displacer_portal"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"grenade"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_satchel"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_tripmine"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"rpg_rocket"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_egon"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"playerhornet"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"bolt"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_crowbar"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"grappletongue"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_snark"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"monster_chumtoad"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ENABLED"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-token-y">:</a> <a class="json-string">"Anti-Clip enabled by admin $name$."</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-token-y">:</a> <a class="json-string">"Anti-Clip fue activado por el admin $name$."</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DISABLED"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-token-y">:</a> <a class="json-string">"Anti-Clip disabled by admin $name$."</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-token-y">:</a> <a class="json-string">"Anti-Clip fue desactivado por el admin $name$."</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
+<a class="json-token-y">}</a>
+<br></pre>
+    <br>
+    <br>
+        <div class="block"><br>
+            <a class="neon-text">Configure el archivo json</a>
+            <br><br>
+                <div class="mermaid">
+                            graph LR;
+
+                            classDef color fill:black;
+                            classDef color color:gray;
+                            classDef color align-items:left;
+
+                            projectiles{{"<a style="color: green">'projectiles'</a>
+                            Tipo: <a style="color: yellow">array</a>
+                            Descripción: <a style="color: white">Lista de projectiles que no deberian colisionar con jugadores aliados.</a>"}}:::color
+                            lasers{{"
+                            <a style="color: green">'lasers'</a>
+                            Tipo: <a style="color: cyan">string</a>
+                            Descripción: <a style="color: white">Lasers de jugadores (rpg, deagle),\nSi experimentas algun problema culpa esto y desactivalo</a>"}}:::color
+                            sporegrenade{{"
+                            <a style="color: green">'sporegrenade'</a>
+                            Tipo: <a style="color: cyan">string</a>
+                            Descripción: <a style="color: white">Puede que no funcione como se espera.</a>"}}:::color
+
+                            projectiles --> lasers
+                            projectiles --> sporegrenade
+                </div>
+                <br>
+            </div>
+            <br>
+
+        </div>
+</body>
+</html>

@@ -1,0 +1,298 @@
+{
+"en":
+{
+    "NotWorkAsExpected":
+"May not work as expected.",
+
+    "ReloadJson":
+"If true, the json is loaded every MapStart (Not recomended)",
+
+    "Installing":
+"Installing content",
+
+    "Plugins":
+"Plugins",
+
+    "Credits":
+"Credits",
+
+    "Type":
+"Type",
+
+    "Description":
+"Description",
+
+    "ConfigureJson":
+"Configure Json file",
+
+    "MapScripts":
+"Map Scripts",
+
+    "Entities":
+"Custom Entities",
+
+    "Metamod":
+"Metamod",
+
+    "Download":
+"Download",
+
+    "RepoDescription":
+"This repository contains Plugins, Map-Scripts, new entities and gamemodes that can be possible with AngelScript. </br></br> If not possible then we'll use metamod to make it possible. </br></br> If you need help with anything join our Discord server.",
+
+    "Installing::Please":
+"For plugins please use \"name\" in default_plugins.txt to be the name of the file as these plugins sometimes do check for other plugins installed.",
+
+    "MetamodRequired":
+"This plugins requires metamod.",
+    "AntiClip::Description":
+"Prevent player-to-player clipping and player's projectiles-to-player clipping",
+
+    "AntiClip::Command":
+"Admin command .anticlip 0/1 to disable or enable AntiClip.",
+
+    "AntiClip::Proj::lasers":
+"Players lasers (rpg, deagle),\\nif you experiment any issue then blame this and disable.",
+
+    "AntiClip::Projs":
+"List of projectiles that should not collide with ally players.",
+
+    "chatroles::Description":
+"Add any role to certain players, with chatcolors merged in if not using Wootguy's plugin.",
+
+    "chatroles::Command":
+"Admin command .hiderole 1 to hide the role and color.",
+
+    "chatroles::RoleField":
+"Role name, can be anything.",
+
+    "chatroles::RoleColor":
+"Role color.",
+
+    "FastRestart::Description":
+"When survival mode is enabled and there is no alive players the map is restarted instantly.",
+
+    "FastRestart::Idea":
+"Original idea by Rick.",
+
+    "FastRestart::ShouldWaitMedic":
+"Wait a moment if there are any medic npc around a dead player's body.",
+
+    "FastRestart::SearchRadius":
+"Radius to search if ShouldWaitMedic is true.",
+
+    "PlayerDecalTracker::Description":
+"Sven Co-op's PlayerDecalTracker but translated.",
+
+    "PlayerDecalTracker::Description2":
+"Now it prints on console the steamid of the owner of the spray.",
+
+    "ByGafther":
+"Script by Gaftherman",
+
+    "emotes::Description":
+"emotes with fixed 'anal' animation due to hitbox exploits and every message is now translated",
+
+    "ByWootguy":
+"Script by Wootguy",
+
+    "dynamic_hostname::Description":
+"Change the hostname depending on the map/campaign playing, antirush, survival state and difficulty",
+
+    "dynamic_hostname::Idea":
+"Original idea by Cubemath",
+
+    "dynamic_hostname::HOSTNAME":
+"Your server's hostname",
+
+    "dynamic_hostname::DISABLED":
+"Message to apply when 'Disabled'",
+
+    "dynamic_hostname::ENABLED":
+"Message to apply when 'Enabled'",
+
+    "dynamic_hostname::DYNAMIC_HOSTNAME":
+"Your new hostname replacing the arguments.",
+
+    "dynamic_hostname::MAPS":
+"a list of maps to identify.\nwhile the key is the map name the value is the string to display.\nsupports ending wildcard for series.",
+
+    "CrashReporter::Description":
+"Simply writes a list of possible culprit maps within a text file and exposes them when the server has crashed.",
+
+    "SurvivalRespawnAll::Description":
+"When survival is enabled, spawn all players once when they connect for the first time.",
+
+    "SurvivalRespawnAll::InstantEnable":
+"If true, instantly enable survival mode\n(players will be able to spawn anyways)\nElse just allow the 'survival will start in & seconds.'-rush",
+
+    "NPCMoveTo::Description":
+"Shows a implosion effect when and where a player used a npc_moveto command.",
+
+    "no_autopickup::Description":
+"Prevent players from automatic pick weapons on touching them",
+
+    "no_autopickup::Description2":
+"Instead requires players to press Use key (E)",
+
+    "no_autopickup::MessagePlayer":
+"Display message on the player's screen.",
+
+    "no_autopickup::RequiredLoS":
+"Requires the item to be on direct Line Of Sight of the player.",
+
+    "no_autopickup::ItemList":
+"Name of the items allowed for this plugin.\nSupports wildcard (*) at the end.",
+
+    "EOF": true
+},
+"es":
+{
+    "NotWorkAsExpected":
+"Puede que no funcione como se espera.",
+
+    "ReloadJson":
+"Si es true, el json va a ser recargado cada vez que se inicie un mapa (No es recomendable)",
+
+    "Installing":
+"Instalando contenido",
+
+    "Plugins":
+"Plugins",
+
+    "Credits":
+"Creditos",
+
+    "Type":
+"Tipo",
+
+    "Description":
+"Descripción",
+
+    "ConfigureJson":
+"Configure el archivo json",
+
+    "MapScripts":
+"Map Scripts",
+
+    "Entities":
+"Entities",
+
+    "Metamod":
+"Metamod",
+
+    "Download":
+"Descargar",
+
+    "RepoDescription":
+"Este repositorio contiene Plugins, Map-Scripts, nuevas entidades y modos de juegos que pueden ser posibles con AngelScript.<br><br> Si no es posible entonces lo harémos posible utilizando metamod.<br><br>Si necesitas ayuda con cualquier cosa unete a nuestro servidor de Discord.",
+
+    "Installing::Please":
+"Para plugins por favor utilice en \"name\" en default_plugins.txt para que sea igual a el nombre del archivo ya que estos plugins algunas veces verifican si otros plugins estan instalados.",
+
+    "MetamodRequired":
+"Este plugin requiere metamod.",
+
+    "AntiClip::Description":
+"Previene la colision entre jugador-jugador y projectiles-jugador",
+
+    "AntiClip::Command":
+"Comando de administradores .anticlip 0/1 para desactivar o activar AntiClip.",
+
+"AntiClip::Proj::lasers":
+"Lasers de jugadores (rpg, deagle),\\nSi experimentas algun problema culpa esto y desactivalo",
+
+"AntiClip::Projs":
+"Lista de projectiles que no deberian colisionar con jugadores aliados.",
+
+"chatroles::Description":
+"Añade cualquier rol a ciertos jugadores, con chatcolors combinado si no se esta utilizando el plugin de Wootguy.",
+
+"chatroles::Command":
+"Comando de administradores .hiderole 1 para ocultar el rol y color.",
+
+"chatroles::RoleField":
+"Nombre del rol, Puede ser cualquier cosa.",
+
+"chatroles::RoleColor":
+"Color del rol.",
+
+"FastRestart::Description":
+"Cuando el modo supervivencia esta activado y no hay mas jugadores vivos el mapa es reiniciado rapidamente.",
+
+"FastRestart::Idea":
+"Idea original de Rick.",
+
+"FastRestart::ShouldWaitMedic":
+"Espera un momento si hay algun npc medico cerca del cuerpo de un jugador muerto.",
+
+"FastRestart::SearchRadius":
+"Radio para buscar si ShouldWaitMedic es true.",
+
+"PlayerDecalTracker::Description":
+"PlayerDecalTracker de Sven Co-op pero traducido.",
+
+"PlayerDecalTracker::Description2":
+"Ahora escribe la steamid del dueño de un spray en la consola.",
+
+"ByGafther":
+"Script hecho por Gaftherman.",
+
+"emotes::Description":
+"emotes pero sin 'anal' debido a abusos en la hitbox y ahora cada mensaje esta traducido.",
+
+"ByWootguy":
+"Script hecho por Wootguy",
+
+"dynamic_hostname::Description":
+"Cambia el nombre del servidor dinamicamente dependiendo el mapa/campaña, antirush, estado de survival y dificultad",
+
+"dynamic_hostname::Idea":
+"Idea original de Cubemath",
+
+"dynamic_hostname::HOSTNAME":
+"El nombre de tu servidor",
+
+"dynamic_hostname::DISABLED":
+"Mensaje a mostrar cuando algo esta 'Desactivado'",
+
+"dynamic_hostname::ENABLED":
+"Mensaje a mostrar cuando algo esta 'Activado'",
+
+"dynamic_hostname::DYNAMIC_HOSTNAME":
+"Tu nuevo nombre de servidor reemplazando los argumentos.",
+
+"dynamic_hostname::MAPS":
+"una lista de mapas a identificar.\nMientras que key es el nombre del mapa, value es el texto a mostrar.\nSoporta comodin al final para series.",
+
+"CrashReporter::Description":
+"Simplemente escribe una lista de posibles mapas culpables en un archivo de texto y los expone si el servidor se ha caido.",
+
+"SurvivalRespawnAll::Description":
+"Cuando el modo supervivencia esta activo, Permite aparecer a todos los jugadores una vez cuando se conectan por primera vez.",
+
+"SurvivalRespawnAll::InstantEnable":
+"Si true, Instantaneamente activa el modo supervivencia\n(Los jugadores podrán aparecer de todas formas)\nDe otra forma se mantiene el 'Survival will start in & seconds'",
+
+"NPCMoveTo::Description":
+"Muestra un efecto de implosion cuando y donde un jugador utilizo el comando npc_moveto.",
+
+"no_autopickup::Description":
+"Previene que los jugadores recogan los objetos automaticamente tras tocarlos",
+
+"no_autopickup::Description2":
+"En lugar requiere que los jugadores presionen su tecla Usar (E)",
+
+"no_autopickup::MessagePlayer":
+"Muestra un mensaje en la pantalla del jugador.",
+
+"no_autopickup::RequiredLoS":
+"Requiere que el item este en linea directa de vision de el jugador.",
+
+"no_autopickup::ItemList":
+"Nombre de los items permitidos por este plugin.\nSoporta comodin al final.",
+
+    "EOF": true
+},
+"EOF": true
+}

@@ -25,12 +25,14 @@
                         <div class="neon-text">
 
                                 <div class="neon-text" >
-                                        SurvivalRespawnAll
+                                        FastRestart
                                         <br><br>
-                                        When survival is enabled, spawn all players once when they connect for the first time.
+                                        Cuando el modo supervivencia esta activado y no hay mas jugadores vivos el mapa es reiniciado rapidamente.
+                                        <br><br>
+                                        Idea original de <a href="https://github.com/RedSprend" target="_blank" class="link-extern">Rick</a>.
 
                                         <br><br>
-                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/SurvivalRespawnAll" target="_blank">Download
+                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/FastRestart" target="_blank">Descargar
                                 </div>
                         </div>
 
@@ -41,18 +43,14 @@
 
 <pre class="json">json<br>
 <a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"INSTANT_ENABLE"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SPAWNED"</a><a class="json-token-y">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-token-y">:</a> <a class="json-string">"Survival mode now active. Only new players will spawn"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-token-y">:</a> <a class="json-string">"El modo supervivencia a iniciado. Solo apareceran jugadores nuevos."</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ShouldWaitMedic"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SearchRadius"</a></a><a class="json-token-y">:</a> <a class="json-#DIGITTYPE#">1024
 <a class="json-token-y">}</a>
 <br></pre>
         <br>
         <br>
             <div class="block"><br>
-                <a class="neon-text">Configure Json file</a>
+                <a class="neon-text">Configure el archivo json</a>
                 <br><br>
                     <div class="mermaid">
                                 graph LR;
@@ -61,11 +59,13 @@
                                 classDef color color:gray;
                                 classDef color align-items:left;
 
-                                INSTANT_ENABLE{{"<a style="color: green">'INSTANT_ENABLE'</a>
-                                Type: <a style="color: blue">boolean</a>
-                                Description: <a style="color: white">If true, instantly enable survival mode
-(players will be able to spawn anyways)
-Else just allow the 'survival will start in & seconds.'-rush</a>"}}:::color
+                                ShouldWaitMedic{{"<a style="color: green">'ShouldWaitMedic'</a>
+                                Tipo: <a style="color: blue">boolean</a>
+                                Descripción: <a style="color: white">Espera un momento si hay algun npc medico cerca del cuerpo de un jugador muerto.</a>"}}:::color
+
+                                SearchRadius{{"<a style="color: green">'SearchRadius'</a>
+                                Tipo: <a style="color: red">integer</a>
+                                Descripción: <a style="color: white">Radio para buscar si ShouldWaitMedic es true.</a>"}}:::color
                     </div>
                     <br>
                 </div>

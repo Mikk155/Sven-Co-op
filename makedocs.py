@@ -27,6 +27,8 @@ href = {
 # read the sentences.json and the config files then after swap json's key to json's values paste into an html file
 def EncodeHTML( js, path ):
 
+    dest = ''
+
     with open( path, 'r') as fr:
 
         lines = fr.readlines()
@@ -126,17 +128,13 @@ def EncodeHTML( js, path ):
 
                     lines[i] = lines[i].replace( f'#{key}#', value )
 
-    if lines:
-
-        with open( path.replace( 'config', 'html' ), 'w') as fw:
-
-            fw.writelines( lines )
+    return lines
 
 
-# Open all docs/*.config
+# Open all src/website/*.config
 def FindJsonFiles():
 
-    jsonpath = os.path.join( 'docs/', 'sentences.json' )
+    jsonpath = os.path.join( 'src/website/', 'sentences.json' )
 
     with open( jsonpath, 'r') as file:
 
@@ -150,13 +148,19 @@ def FindJsonFiles():
 
                 jsLang = js.get( key, {} )
 
-                for dirpath, _, filenames in os.walk( f'docs\{key}' ):
+                for dirpath, _, filenames in os.walk( f'src\website' ):
 
                     for filename in filenames:
 
                         if filename.endswith('.config'):
 
-                            EncodeHTML( jsLang, os.path.join( dirpath, filename ) )
+                            HTML = os.path.join( f'docs\\{key}' + dirpath.replace( 'src\\website', '' ), filename.replace( '.config', '.html' ) )
+                            print(f'{HTML}')
+                            with open( HTML, 'w') as fw:
+
+                                lines = EncodeHTML( jsLang, os.path.join( dirpath, filename ) )
+
+                                fw.writelines( lines )
 
         except json.JSONDecodeError as e:
 

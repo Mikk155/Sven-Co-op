@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<head>
+        <title>Sven Co-op</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+</head>
+
+<body>
+
+        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
+
+                <a href="https://mikk155.github.io/Sven-Co-op">
+                        <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
+                </a>
+
+                <div class="block">
+                <br>
+
+                        <div class="neon-text">
+
+                                <div class="neon-text" >
+                                        chatroles
+                                        <br><br>
+                                        Añade cualquier rol a ciertos jugadores, con chatcolors combinado si no se esta utilizando el plugin de <a href="https://github.com/wootguy" target="_blank" class="link-extern">Wootguy</a>.
+                                        <br><br>
+                                        Comando de administradores .hiderole 1 para ocultar el rol y color.
+
+                                        <br><br>
+                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/chatroles" target="_blank">Descargar
+                                </div>
+                        </div>
+
+                <br>
+                </div>
+                <br>
+                <br>
+
+<pre class="json">json<br>
+<a class="json-token-y">{</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"reload"</a><a class="json-token-y">:</a> <a class="json-false">false</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:202010794"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"Owner"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"green"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:481307649"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"Donor"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"red"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:1"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">""</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"yellow"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:2"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"Admin"</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"blue"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"STEAM_0:0:3"</a><a class="json-token-y">:</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">""</a><a class="json-token-r">,</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"red"</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a>
+<a class="json-token-y">}</a>
+<br></pre>
+        <br>
+        <br>
+            <div class="block"><br>
+                <a class="neon-text">Configure el archivo json</a>
+                <br><br>
+                    <div class="mermaid">
+                                graph LR;
+
+                                classDef color fill:black;
+                                classDef color color:gray;
+                                classDef color align-items:left;
+
+                                reload{{"<a style="color: green">'reload'</a>
+                                Tipo: <a style="color: blue">bool</a>
+                                Descripción: <a style="color: white">Si es true, el json va a ser recargado cada vez que se inicie un mapa (No es recomendable)</a>"}}:::color
+
+                                steamid{{"<a style="color: green">'STEAMID'</a>
+                                Tipo: <a style="color: yellow">array</a>"}}:::color
+
+                                arg1{{"<a style="color: green">Nombre del rol, Puede ser cualquier cosa.</a>
+                                Tipo: <a style="color: cyan">string</a>"}}:::color
+
+                                arg2{{"<a style="color: green">Color del rol.</a>
+                                Tipo: <a style="color: cyan">string</a>"}}:::color
+
+                                cred{{"<a style="color: rgb(255, 0, 0)">red</a>"}}:::color
+                                gred{{"<a style="color: rgb(0, 255, 0)">green</a>"}}:::color
+                                bred{{"<a style="color: rgb(0, 0, 255)">blue</a>"}}:::color
+                                yred{{"<a style="color: rgb(255, 255, 0)">yellow</a>"}}:::color
+
+                                steamid --> arg2
+
+                                steamid --> arg1
+                                arg2 --> cred
+                                arg2 --> gred
+                                arg2 --> bred
+                                arg2 --> yred
+                    </div>
+                    <br>
+                </div>
+                <br>
+        </div>
+</body>
+</html>
