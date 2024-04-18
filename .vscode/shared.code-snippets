@@ -47,6 +47,66 @@
 		"body": "HookReturnCode PlayerObserverModeHook( ${1:CBasePlayer@}, ${2:ObserverMode})",
 		"description": "Called when a player change its spectator mode."
 	},
+	"string to_string( RGBA From, bool AddColons = false, bool AddSpace = true )":
+	{
+		"prefix":[ "fft::to_string", "to_string", "RGBA", "format" ],
+		"body": "fft::.to_string( ${1:RGBA From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true})",
+		"description": "Format the given RGBA to string. If AddColons is true add colons. If AddSpace is false then do not add white spaces."
+	},
+	"string to_string( bool From, bool MakeDigit = false )":
+	{
+		"prefix":[ "fft::to_string", "to_string", "bool", "format" ],
+		"body": "fft::.to_string( ${1:bool From}, ${2:bool MakeDigit = false})",
+		"description": "Format the given bool to string, if MakeDigit is true then false = 0, true = 1"
+	},
+	"string to_string( Vector From, bool AddColons = false, bool AddSpace = true )":
+	{
+		"prefix":[ "fft::to_string", "to_string", "Vector", "format" ],
+		"body": "fft::.to_string( ${1:Vector From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true})",
+		"description": "Format the given Vector to string. If AddColons is true add colons. If AddSpace is false then do not add white spaces."
+	},
+	"string to_string( Vector2D From, bool AddColons = false, bool AddSpace = true )":
+	{
+		"prefix":[ "fft::to_string", "to_string", "Vector2D", "format" ],
+		"body": "fft::.to_string( ${1:Vector2D From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true})",
+		"description": "Format the given Vector2D to string. If AddColons is true add colons. If AddSpace is false then do not add white spaces."
+	},
+	"RGBA HueToRGBA( float H )":
+	{
+		"prefix":[ "fft::HueToRGBA", "fft::Hue", "fft::RGBA", "Hue", "format" ],
+		"body": "fft::.HueToRGBA( ${1:float H})",
+		"description": "Format the given hue float value to RGBA (.a will most likely be empty)"
+	},
+	"float RGBAToHue( RGBA rgb ){ return ToHue( Vector( rgb.r, rgb.g, rgb.b ) ); }":
+	{
+		"prefix":[ "fft::ToHue", "fft::Hue", "fft::RGBAToHue", "RGBAToHue", "Hue", "format" ],
+		"body": "fft::.RGBAToHue( ${1:RGBA rgb})",
+		"description": "Format the given RGBA to hue value in a float form"
+	},
+	"float ToHue( Vector rgb )":
+	{
+		"prefix":[ "fft::ToHue", "fft::Hue", "Hue", "format" ],
+		"body": "fft::.ToHue( ${1:Vector rgb})",
+		"description": "Format the given Vector to hue value in a float form"
+	},
+	"RGBA atorgba( const string From )":
+	{
+		"prefix":[ "atorgba" ],
+		"body": "atorgba( ${1:const string From})",
+		"description": "Return the given string as a 4D RGBA"
+	},
+	"Vector atov( const string From )":
+	{
+		"prefix":[ "atov", "StringToVecto" ],
+		"body": "atov( ${1:const string From})",
+		"description": "Return the given string as a 3D Vector"
+	},
+	"bool atob( const string From )":
+	{
+		"prefix":[ "atobool", "stringtobool" ],
+		"body": "atob( ${1:const string From})",
+		"description": "Return the given string as a boolean, 0/1 or false/true"
+	},
 	"string opIndex( uint index )":
 	{
 		"prefix":[ "JsonValue", "opInd" ],
@@ -239,40 +299,10 @@
 		"body": "Mikk.IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false})",
 		"description": "Return whatever the given plugin name is installed on the server."
 	},
-	"RGBA atorgba( const string m_iszFrom )":
-	{
-		"prefix":[ "atorgba" ],
-		"body": "atorgba( ${1:const string m_iszFrom})",
-		"description": "Return the given string as a 4D RGBA"
-	},
-	"Vector atov( const string m_iszFrom )":
-	{
-		"prefix":[ "atov", "StringToVecto" ],
-		"body": "atov( ${1:const string m_iszFrom})",
-		"description": "Return the given string as a 3D Vector"
-	},
-	"bool atob( const string m_iszFrom )":
-	{
-		"prefix":[ "atobool", "stringtobool" ],
-		"body": "atob( ${1:const string m_iszFrom})",
-		"description": "Return the given string as a boolean, 0/1 or false/true"
-	},
 	"string CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const string&in m_iszValue = String::EMPTY_STRING )":
 	{
 		"prefix":[ "CKV", "CustomKeyValu" ],
 		"body": "CustomKeyValue( ${1:CBaseEntity@ pEntity}, ${2:const string&in m_iszKey}, ${3:const string&in m_iszValue = String::EMPTY_STRING})",
 		"description": "Return the value of the given CustomKeyValue, if m_iszValue is given it will update the value, return String::INVALID_INDEX if the given entity is null, return String::EMPTY_STRING if the given entity doesn't have the custom key value"
-	},
-	"RGBA HUEtoRGB( float H )":
-	{
-		"prefix":[ "Hue", "HUEtoRGB" ],
-		"body": "HUEtoRGB( ${1:float H})",
-		"description": "Return a RGB color from a Hue color"
-	},
-	"float RGBtoHUE(Vector rgb)":
-	{
-		"prefix":[ "Hue", "RGBtoHUE" ],
-		"body": "RGBtoHUE( ${1:Vector rg})",
-		"description": "Return a Hue color from a RGB color"
 	}
 }
