@@ -1,101 +1,52 @@
 <!DOCTYPE html>
-
 <head>
         <title>Sven Co-op</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
-        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script>
-            mermaid.initialize({ startOnLoad: true });
-        </script>
+        <script src="../../scripts.js"></script>
 </head>
-
 <body>
+<a href="../../"><img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op"></a>
+<div class="block">
+<br>
 
-        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
-
-                <a href="https://mikk155.github.io/Sven-Co-op">
-                        <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
-                </a>
-
-                <div class="block">
-                <br>
-
-                        <div class="neon-text">
-
-                                <div class="neon-text" >
-                                        no_autopickup
-                                        <br><br>
-                                        Previene que los jugadores recogan los objetos automaticamente tras tocarlos
-                                        <br><br>
-                                        En lugar requiere que los jugadores presionen su tecla Usar (E)
-
-                                        <br><br>
-                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/no_autopickup" target="_blank">Descargar
-
-                                </div>
-
-                                <br>
+<div class="neon-text">
+        no_autopickup<br><br>
+        Previene que los jugadores recogan los objetos automaticamente tras tocarlos<br><br>
+        En lugar requiere que los jugadores presionen su tecla Usar (E)
+</div>
+<br>
+</div>
+<br><br>
+<div class="block">
+<br>
+<div class="neon-text">
+        Configure el archivo json.<br><br>
+        <div style="text-align: left;padding-left: 1%;"><br>
+                <button onclick="toggleTable('json_1')">"MessagePlayer"</button><br>
+                <div id="json_1" class="hidden" style="padding-left: 2%;">
+                        <button class="json-description">Tipo: </button><button class="json-boolean">boolean</button><br>
+                        <button class="json-description">Descripción: </button><button class="json-description2">Muestra un mensaje en la pantalla del jugador.</button><br>
+                </div>
+                <button onclick="toggleTable('json_2')">"RequiredLoS"</button><br>
+                <div id="json_2" class="hidden" style="padding-left: 2%;">
+                        <button class="json-description">Tipo: </button><button class="json-boolean">boolean</button><br>
+                        <button class="json-description">Descripción: </button><button class="json-description2">Requiere que el item este en linea directa de vision de el jugador.</button><br>
+                </div>
+                <button onclick="toggleTable('json_3')">"ItemList"</button><br>
+                <div id="json_3" class="hidden" style="padding-left: 2%;">
+                        <button class="json-description">Tipo: </button><button class="json-array">array</button><br>
+                        <button onclick="toggleTable('json_4')">Valor</button><br>
+                        <div id="json_4" class="hidden" style="padding-left: 3%;">
+                                <button class="json-description2">Nombre de los items permitidos por este plugin.<br>Soporta comodin (*) al final.</button><br>
                         </div>
-
-                <br>
                 </div>
-                <br>
-                <br>
-
-<pre class="json">json<br>
-<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MessagePlayer"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"RequiredLoS"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ItemList"</a><a class="json-token-y">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">[</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weapon_*"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_healthkit"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"item_battery"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"weaponbox"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ammo_*"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-b">]</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"PickMeMessage"</a><a class="json-token-y">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-token-y">:</a> <a class="json-string">"+use pickup $item$"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-token-y">:</a> <a class="json-string">"+use recoger $item$"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
-<a class="json-token-y">}</a>
-<br></pre>
-        <br>
-        <br>
-            <div class="block"><br>
-                <a class="neon-text">Configure el archivo json</a>
-                <br><br>
-                    <div class="mermaid">
-                                graph LR;
-
-                                classDef color fill:black;
-                                classDef color color:gray;
-                                classDef color align-items:left;
-
-                                MessagePlayer{{"<a style="color: green">'MessagePlayer'</a>
-                                Tipo: <a style="color: blue">boolean</a>
-                                Descripción: <a style="color: white">Muestra un mensaje en la pantalla del jugador.</a>"}}:::color
-
-                                RequiredLoS{{"<a style="color: green">'RequiredLoS'</a>
-                                Tipo: <a style="color: blue">boolean</a>
-                                Descripción: <a style="color: white">Requiere que el item este en linea directa de vision de el jugador.</a>"}}:::color
-
-                                ItemList{{"<a style="color: green">'ItemList'</a>
-                                Tipo: <a style="color: purple">dictionary</a>"}}:::color
-
-                                weapon_*{{"<a style="color: green">'item classname'</a>
-                                Tipo: <a style="color: cyan">string</a>
-                                Descripción: <a style="color: white">Nombre de los items permitidos por este plugin.
-Soporta comodin al final.</a>"}}:::color
-
-                                ItemList --> weapon_*
-                    </div>
-                    <br>
-                </div>
-                <br>
         </div>
+</div>
+<br>
+</div>
+<br><br>
+<div class="block"><a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/no_autopickup" target="_blank">Descargar</a><br></div><br>
 </body>
 </html>

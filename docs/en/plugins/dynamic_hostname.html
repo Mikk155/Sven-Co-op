@@ -1,111 +1,90 @@
 <!DOCTYPE html>
-
 <head>
         <title>Sven Co-op</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
-        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script>
-            mermaid.initialize({ startOnLoad: true });
-        </script>
+        <script src="../../scripts.js"></script>
 </head>
-
 <body>
+<a href="../../"><img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op"></a>
+<div class="block">
+<br>
+<div class="neon-text">
+        dynamic_hostname<br><br>
+        Change the hostname depending on the map/campaign playing, antirush, survival state and difficulty<br><br>
+        Original idea CubeMath
 
-        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
+</div>
+<br>
+</div>
+<br><br>
+<div class="block">
+<br>
+    <div class="neon-text">
+        Configure the json file.<br><br>
+        <div style="text-align: left;padding-left: 1%;"><br>
+                <button onclick="toggleTable('json_1')">"CONFIG"</button><br>
+                <div id="json_1" class="hidden" style="padding-left: 2%;">
+                        <button class="json-description">Type: </button><button class="json-dictionary">dictionary</button><br>
 
-                <a href="https://mikk155.github.io/Sven-Co-op">
-                        <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
-                </a>
-
-                <div class="block">
-                <br>
-
-                        <div class="neon-text">
-
-                                <div class="neon-text" >
-                                        dynamic_hostname
-                                        <br><br>
-                                        Change the hostname depending on the map/campaign playing, antirush, survival state and difficulty
-                                        <br><br>
-                                        Original idea by <a href="https://github.com/CubeMath" target="_blank" class="link-extern">Cubemath</a>
-
-                                        <br><br>
-                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/dynamic_hostname" target="_blank">Download
-                                </div>
+                        <button onclick="toggleTable('json_2')">"HOSTNAME"</button><br>
+                        <div id="json_2" class="hidden" style="padding-left: 3%;">
+                                <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                                <button class="json-description">Description: </button><button class="json-description2">Your server's hostname</button><br>
                         </div>
 
-                <br>
+                        <button onclick="toggleTable('json_3')">"DISABLED"</button><br>
+                        <div id="json_3" class="hidden" style="padding-left: 3%;">
+                                <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                                <button class="json-description">Description: </button><button class="json-description2">Message to apply when 'Disabled'</button><br>
+                        </div>
+
+                        <button onclick="toggleTable('json_4')">"ENABLED"</button><br>
+                        <div id="json_4" class="hidden" style="padding-left: 3%;">
+                                <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                                <button class="json-description">Description: </button><button class="json-description2">Message to apply when 'Enabled'</button><br>
+                        </div>
+
+                        <button onclick="toggleTable('json_5')">"DYNAMIC_HOSTNAME"</button><br>
+                        <div id="json_5" class="hidden" style="padding-left: 3%;">
+                                <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                                <button class="json-description">Description: </button><button class="json-description2">Your new hostname replacing the arguments.</button><br>
+                                <button onclick="toggleTable('json_6')">Value</button><br>
+                                <div id="json_6" class="hidden" style="padding-left: 4%;">
+                                        <button onclick="toggleTable('json_7')">$hostname$</button><br>
+                                        <div id="json_7" class="hidden" style="padding-left: 5%;">
+                                                <button class="json-description">Description: </button><button class="json-description2">Represents the hostname, the content of "HOSTNAME"</button><br>
+                                        </div>
+                                        <button onclick="toggleTable('json_8')">$maps$</button><br>
+                                        <div id="json_8" class="hidden" style="padding-left: 5%;">
+                                                <button class="json-description">Description: </button><button class="json-description2">Represents the name of the map, the content of "MAPS"</button><br>
+                                        </div>
+                                        <button onclick="toggleTable('json_9')">$antirush$</button><br>
+                                        <div id="json_9" class="hidden" style="padding-left: 5%;">
+                                                <button class="json-description">Description: </button><button class="json-description2">#dynamic_hostname::fantirush#</button><br>
+                                        </div>
+                                        <button onclick="toggleTable('json_10')">$survival$</button><br>
+                                        <div id="json_10" class="hidden" style="padding-left: 5%;">
+                                                <button class="json-description">Description: </button><button class="json-description2">Represents if the map is in survival mode</button><br>
+                                        </div>
+                                        <button onclick="toggleTable('json_11')">$difficulty$</button><br>
+                                        <div id="json_11" class="hidden" style="padding-left: 5%;">
+                                                <button class="json-description">Description: </button><button class="json-description2">Represents the current difficulty level of the plugin DynamicDifficultyDeluxe</button><br>
+                                        </div>
+                                </div>
+                        </div>
                 </div>
-                <br>
-                <br>
 
-<pre class="json">json<br>
-<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"CONFIG"</a><a class="json-token-y">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"HOSTNAME"</a><a class="json-token-y">:</a> <a class="json-string">"Limitless Potential"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DISABLED"</a><a class="json-token-y">:</a> <a class="json-string">"Disabled"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ENABLED"</a><a class="json-token-y">:</a> <a class="json-string">"Enabled"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"DYNAMIC_HOSTNAME"</a><a class="json-token-y">:</a> <a class="json-string">"$hostname$ | Playing $maps$ | Diff $difficulty$ | Anti-Rush $antirush$ | Survival $survival$"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"MAPS"</a><a class="json-token-y">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"hl_c*"</a><a class="json-token-y">:</a> <a class="json-string">"Half-Life"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"of*"</a><a class="json-token-y">:</a> <a class="json-string">"Opposing Force"</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
-<a class="json-token-y">}</a>
-<br></pre>
-        <br>
-        <br>
-            <div class="block"><br>
-                <a class="neon-text">Configure Json file</a>
-                <br><br>
-                    <div class="mermaid">
-                                graph LR;
-
-                                classDef color fill:black;
-                                classDef color color:gray;
-                                classDef color align-items:left;
-
-                                CONFIG{{"<a style="color: green">'CONFIG'</a>
-                                Type: <a style="color: purple">dictionary</a>"}}:::color
-
-                                HOSTNAME{{"<a style="color: green">'HOSTNAME'</a>
-                                Type: <a style="color: cyan">string</a>
-                                Description: <a style="color: white">Your server's hostname</a>"}}:::color
-
-                                DISABLED{{"<a style="color: green">'DISABLED'</a>
-                                Type: <a style="color: cyan">string</a>
-                                Description: <a style="color: white">Message to apply when 'Disabled'</a>"}}:::color
-
-                                ENABLED{{"<a style="color: green">'ENABLED'</a>
-                                Type: <a style="color: cyan">string</a>
-                                Description: <a style="color: white">Message to apply when 'Enabled'</a>"}}:::color
-
-                                DYNAMIC_HOSTNAME{{"<a style="color: green">'DYNAMIC_HOSTNAME'</a>
-                                Type: <a style="color: cyan">string</a>
-                                Description: <a style="color: white">Your new hostname replacing the arguments.</a>"}}:::color
-
-                                MAPS{{"<a style="color: green">'MAPS'</a>
-                                Type: <a style="color: purple">dictionary</a>"}}:::color
-
-                                hl_c*{{"<a style="color: green">'map name'</a>
-                                Type: <a style="color: cyan">string</a>
-                                Description: <a style="color: white">a list of maps to identify.
-while the key is the map name the value is the string to display.
-supports ending wildcard for series.</a>"}}:::color
-
-                                CONFIG --> HOSTNAME
-                                CONFIG --> DISABLED
-                                CONFIG --> ENABLED
-                                CONFIG --> DYNAMIC_HOSTNAME
-                                MAPS --> hl_c*
-                    </div>
-                    <br>
+                <button onclick="toggleTable('json_12')">"MAPS"</button><br>
+                <div id="json_12" class="hidden" style="padding-left: 4%;">
+                        <button class="json-description">Type: </button><button class="json-dictionary">dictionary</button><br>
+                        <button class="json-description">Description: </button><button class="json-description2">a list of maps to identify.<br>while the key is the map name the value is the string to display.<br>supports ending wildcard (*) for series.</button><br>
                 </div>
-                <br>
         </div>
+    </div>
+<br>
+</div>
+<br><br>
+<div class="block"><a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/dynamic_hostname" target="_blank">Download</a><br></div><br>
 </body>
-</html>

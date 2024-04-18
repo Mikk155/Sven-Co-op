@@ -5,71 +5,35 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
-        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script>
-            mermaid.initialize({ startOnLoad: true });
-        </script>
+        <script src="../../scripts.js"></script>
 </head>
 
 <body>
-
-        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
-
-                <a href="https://mikk155.github.io/Sven-Co-op">
-                        <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
-                </a>
-
-                <div class="block">
-                <br>
-
-                        <div class="neon-text">
-
-                                <div class="neon-text" >
-                                        SurvivalRespawnAll
-                                        <br><br>
-                                        Cuando el modo supervivencia esta activo, Permite aparecer a todos los jugadores una vez cuando se conectan por primera vez.
-
-                                        <br><br>
-                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/SurvivalRespawnAll" target="_blank">Descargar
-                                </div>
-                        </div>
-
-                <br>
+<a href="../../"><img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op"></a>
+<div class="block">
+<br>
+<div class="neon-text">
+        SurvivalRespawnAll<br><br>
+        Cuando el modo supervivencia esta activo, Permite aparecer a todos los jugadores una vez cuando se conectan por primera vez.
+</div>
+<br>
+</div>
+<br><br>
+<div class="block">
+<br>
+<div class="neon-text">
+        Configure el archivo json.<br><br>
+        <div style="text-align: left;padding-left: 1%;"><br>
+                <button onclick="toggleTable('json_1')">"INSTANT_ENABLE"</button><br>
+                <div id="json_1" class="hidden" style="padding-left: 2%;">
+                        <button class="json-description">Tipo: </button><button class="json-boolean">boolean</button><br>
+                        <button class="json-description">Descripción: </button><button class="json-description2">Si true, Instantaneamente activa el modo supervivencia<br>(Los jugadores podrán aparecer de todas formas)<br>De otra forma se mantiene el 'Survival will start in & seconds'</button><br>
                 </div>
-                <br>
-                <br>
-
-<pre class="json">json<br>
-<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"INSTANT_ENABLE"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SPAWNED"</a><a class="json-token-y">:</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"english"</a><a class="json-token-y">:</a> <a class="json-string">"Survival mode now active. Only new players will spawn"</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"spanish"</a><a class="json-token-y">:</a> <a class="json-string">"El modo supervivencia a iniciado. Solo apareceran jugadores nuevos."</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-token-y">}</a>
-<a class="json-token-y">}</a>
-<br></pre>
-        <br>
-        <br>
-            <div class="block"><br>
-                <a class="neon-text">Configure el archivo json</a>
-                <br><br>
-                    <div class="mermaid">
-                                graph LR;
-
-                                classDef color fill:black;
-                                classDef color color:gray;
-                                classDef color align-items:left;
-
-                                INSTANT_ENABLE{{"<a style="color: green">'INSTANT_ENABLE'</a>
-                                Tipo: <a style="color: blue">boolean</a>
-                                Descripción: <a style="color: white">Si true, Instantaneamente activa el modo supervivencia
-(Los jugadores podrán aparecer de todas formas)
-De otra forma se mantiene el 'Survival will start in & seconds'</a>"}}:::color
-                    </div>
-                    <br>
-                </div>
-                <br>
         </div>
+</div>
+<br>
+</div>
+<br><br>
+<div class="block"><a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/SurvivalRespawnAll" target="_blank">Descargar</a><br></div><br>
 </body>
 </html>

@@ -5,71 +5,40 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles.css">
-        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-        <script>
-            mermaid.initialize({ startOnLoad: true });
-        </script>
+        <script src="../../scripts.js"></script>
 </head>
-
 <body>
-
-        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:30px;">
-
-                <a href="https://mikk155.github.io/Sven-Co-op">
-                        <img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op">
-                </a>
-
-                <div class="block">
-                <br>
-
-                        <div class="neon-text">
-
-                                <div class="neon-text" >
-                                        FastRestart
-                                        <br><br>
-                                        When survival mode is enabled and there is no alive players the map is restarted instantly.
-                                        <br><br>
-                                        Original idea by <a href="https://github.com/RedSprend" target="_blank" class="link-extern">Rick</a>.
-
-                                        <br><br>
-                                        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/FastRestart" target="_blank">Download
-                                </div>
-                        </div>
-
-                <br>
+<a href="../../"><img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op"></a>
+<div class="block">
+<br>
+<div class="neon-text">
+        FastRestart<br><br>
+        When survival mode is enabled and there is no alive players the map is restarted instantly.<br><br>
+        Original idea: Rick
+</div>
+<br>
+</div>
+<br><br>
+<div class="block">
+<br>
+<div class="neon-text">
+        Configure the json file.<br><br>
+        <div style="text-align: left;padding-left: 1%;"><br>
+                <button onclick="toggleTable('json_1')">"ShouldWaitMedic"</button><br>
+                <div id="json_1" class="hidden" style="padding-left: 2%;">
+                        <button class="json-description">Type: </button><button class="json-boolean">boolean</button><br>
+                        <button class="json-description">Description: </button><button class="json-description2">Wait a moment if there are any medic npc around a dead player's body.</button><br>
                 </div>
-                <br>
-                <br>
-
-<pre class="json">json<br>
-<a class="json-token-y">{</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"ShouldWaitMedic"</a><a class="json-token-y">:</a> <a class="json-true">true</a><a class="json-token-r">,</a>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="json-string">"SearchRadius"</a></a><a class="json-token-y">:</a> <a class="json-#DIGITTYPE#">1024
-<a class="json-token-y">}</a>
-<br></pre>
-        <br>
-        <br>
-            <div class="block"><br>
-                <a class="neon-text">Configure Json file</a>
-                <br><br>
-                    <div class="mermaid">
-                                graph LR;
-
-                                classDef color fill:black;
-                                classDef color color:gray;
-                                classDef color align-items:left;
-
-                                ShouldWaitMedic{{"<a style="color: green">'ShouldWaitMedic'</a>
-                                Type: <a style="color: blue">boolean</a>
-                                Description: <a style="color: white">Wait a moment if there are any medic npc around a dead player's body.</a>"}}:::color
-
-                                SearchRadius{{"<a style="color: green">'SearchRadius'</a>
-                                Type: <a style="color: red">integer</a>
-                                Description: <a style="color: white">Radius to search if ShouldWaitMedic is true.</a>"}}:::color
-                    </div>
-                    <br>
+                <button onclick="toggleTable('json_2')">"SearchRadius"</button><br>
+                <div id="json_2" class="hidden" style="padding-left: 2%;">
+                        <button class="json-description">Type: </button><button class="json-integer">integer</button><br>
+                        <button class="json-description">Description: </button><button class="json-description2">Radius to search if "ShouldWaitMedic" is true.</button><br>
                 </div>
-                <br>
         </div>
+</div>
+<br>
+</div>
+<br><br>
+<div class="block"><a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/FastRestart" target="_blank">Download</a><br></div><br>
 </body>
 </html>
