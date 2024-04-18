@@ -84,7 +84,7 @@ final class Reflection
 
         if( Functions.find( m_iszFunction ) < 0 )
         {
-            g_Engine.ServerPrint( '[Reflection] GetFunction Couldn\'t find function "' + m_iszFunction + '"\n' );
+            g_EngineFuncs.ServerPrint( '[Reflection] GetFunction Couldn\'t find function "' + m_iszFunction + '"\n' );
             return null;
         }
         // g_Game.AlertMessage( at_console, '[Reflection] GetFunction "' + Functions[ Functions.find( m_iszFunction ) ] + '" (' + Functions.find( m_iszFunction ) + ')\n' );
