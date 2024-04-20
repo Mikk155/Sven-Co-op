@@ -285,6 +285,21 @@
 "es": "Tiempo de enfriamiento por jugador.",
 "en": "Cooldown time per player."
 },
+"NPCMoveTo::radius":
+{
+"es": "Radio del effecto",
+"en": "Effect radius."
+},
+"NPCMoveTo::count":
+{
+"es": "Cantidad de efectos.",
+"en": "Ammount of effects."
+},
+"NPCMoveTo::life":
+{
+"es": "Tiempo de vida del efect.",
+"en": "Effect's life time."
+},
 "no_autopickup::Description":
 {
 "es": "Previene que los jugadores recogan los objetos automaticamente tras tocarlos",
@@ -309,6 +324,31 @@
 {
 "es": "Nombre de los items permitidos por este plugin.<br>Soporta comodin (*) al final.",
 "en": "Name of the items allowed for this plugin.<br>Supports wildcard (*) at the end."
+},
+"DiscordBridge::Description":
+{
+"es": "Enlaza un servidor de Discord a un servidor de Sven Co-op.",
+"en": "Links a Discord server to a Sven Co-op server."
+},
+"DiscordBridge::MESSAGES":
+{
+"es": "Configuracion de todos los mensajes que son enviados de Sven Co-op a Discord.",
+"en": "Configuration of all the messages that are sent from Sven Co-op to Discord."
+},
+"DiscordBridge::Enable":
+{
+"es": "La mayoria de clases tienen esto, si es false eso desactiva esa clase.",
+"en": "Almost all classes has this, if false it disables that class."
+},
+"DiscordBridge::MESSAGES::Gib":
+{
+"es": "Mensaje para el argumento $gib$, indice 0 para cuando explota",
+"en": "Message for the argument $gib$, index 0 for gibbed"
+},
+"DiscordBridge::language":
+{
+"es": "Lenguaje a utilizar, debe ser definido en cada clase.",
+"en": "Language to use, must be defined on each class."
 },
 "EOF": true
 }
