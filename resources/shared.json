@@ -15,6 +15,7 @@
         "scripts/mikk/EntityFuncs.as",
         "scripts/mikk/Reflection.as",
         "scripts/mikk/datashared.as",
+        "scripts/mikk/PlayerAttackHook.as",
         "scripts/mikk/shared.as"
     ]
 }

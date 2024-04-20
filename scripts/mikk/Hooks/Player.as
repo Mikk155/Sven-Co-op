@@ -15,6 +15,7 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
+#include "Player/PlayerAttackHook"
 #include "Player/PlayerJumpHook"
 #include "Player/PlayerKeyInputHook"
 #include "Player/PlayerFlashLightHook"

@@ -28,6 +28,7 @@ namespace Hooks
             PlayerFlashLight,
             PlayerJump,
             PlayerObserverMode,
+            PlayerAttack,
             CONST
         }
     }
@@ -54,6 +55,39 @@ namespace Hooks
         return HOOK_CONTINUE;
     }
 
+    bool m_bWeaponPrimaryAttackHook = false;
+
+    HookReturnCode WeaponPrimaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon )
+    {
+        if( pPlayer !is null )
+        {
+            Hooks::Player::PlayerAttackHook::PlayerAttackFunction( pPlayer, pWeapon, 1 );
+        }
+        return HOOK_CONTINUE;
+    }
+
+    bool m_bWeaponSecondaryAttackHook = false;
+
+    HookReturnCode WeaponSecondaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon )
+    {
+        if( pPlayer !is null )
+        {
+            Hooks::Player::PlayerAttackHook::PlayerAttackFunction( pPlayer, pWeapon, 2 );
+        }
+        return HOOK_CONTINUE;
+    }
+
+    bool m_bWeaponTertiaryAttackHook = false;
+
+    HookReturnCode WeaponTertiaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon )
+    {
+        if( pPlayer !is null )
+        {
+            Hooks::Player::PlayerAttackHook::PlayerAttackFunction( pPlayer, pWeapon, 3 );
+        }
+        return HOOK_CONTINUE;
+    }
+
     void CheckPlayerPreThinkHook()
     {
         if( Hooks::Player::PlayerKeyInputHook::PlayerKeyInputHooks.length() < 1
@@ -62,6 +96,30 @@ namespace Hooks
         or Hooks::Player::PlayerObserverModeHook::PlayerObserverModeHooks.length() < 1 )
         {
             g_Hooks.RemoveHook( Hooks::Player::PlayerPreThink, @Hooks::PlayerPreThink );
+        }
+    }
+
+    void CheckPlayerPrimaryAttackHook()
+    {
+        if( Hooks::Player::PlayerAttackHook::PlayerAttackHooks.length() < 1 )
+        {
+            g_Hooks.RemoveHook( Hooks::Weapon::WeaponPrimaryAttack, @Hooks::WeaponPrimaryAttack );
+        }
+    }
+
+    void CheckPlayerSecondaryAttackHook()
+    {
+        if( Hooks::Player::PlayerAttackHook::PlayerAttackHooks.length() < 1 )
+        {
+            g_Hooks.RemoveHook( Hooks::Weapon::WeaponSecondaryAttack, @Hooks::WeaponSecondaryAttack );
+        }
+    }
+
+    void CheckPlayerTertiaryAttackHook()
+    {
+        if( Hooks::Player::PlayerAttackHook::PlayerAttackHooks.length() < 1 )
+        {
+            g_Hooks.RemoveHook( Hooks::Weapon::WeaponTertiaryAttack, @Hooks::WeaponTertiaryAttack );
         }
     }
 }
@@ -89,6 +147,9 @@ class MKHooks
 
             case   Hooks::Player::PlayerFlashLight:
             return Hooks::Player::PlayerFlashLightHook::Register( fn );
+
+            case   Hooks::Player::PlayerAttack:
+            return Hooks::Player::PlayerAttackHook::Register( fn );
 
             case   Hooks::Player::PlayerJump:
             return Hooks::Player::PlayerJumpHook::Register( fn );
@@ -129,6 +190,10 @@ class MKHooks
                  Hooks::Player::PlayerFlashLightHook::Remove( function );
             break;
 
+            case Hooks::Player::PlayerAttack:
+                 Hooks::Player::PlayerAttackHook::Remove( function );
+            break;
+
             case Hooks::Player::PlayerJump:
                  Hooks::Player::PlayerJumpHook::Remove( function );
             break;
@@ -162,6 +227,10 @@ class MKHooks
 
             case Hooks::Player::PlayerFlashLight:
                  Hooks::Player::PlayerFlashLightHook::RemoveAll();
+            break;
+
+            case Hooks::Player::PlayerAttack:
+                 Hooks::Player::PlayerAttackHook::RemoveAll();
             break;
 
             case Hooks::Player::PlayerJump:
