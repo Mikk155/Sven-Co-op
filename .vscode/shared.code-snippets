@@ -151,7 +151,7 @@
 	},
 	"uint reload( string m_szLoad, bool include = false )":
 	{
-		"prefix":[ "load", "json", "pars" ],
+		"prefix":[ "load", "reload", "json", "pars" ],
 		"body": "reload( ${1:string m_szLoad}, ${2:bool include = false})",
 		"description": "Aliases to \"load\" but will return 1 if this json doesn't has a key \"reload\" on true"
 	},
