@@ -29,10 +29,37 @@ json pJson;
 
 void MapActivate()
 {
-    g_Scheduler.SetTimeout( 'SetHostname', 10.0f );
+    // Delayed due to how we obtain some data
+    g_Scheduler.SetTimeout( 'SetHostname', 5.0f );
 }
 
 void SetHostname()
+{
+    string m_iszHostName = pJson[ 'CONFIG', {} ][ "DYNAMIC_HOSTNAME", '' ];
+
+    m_iszHostName.Replace( "$hostname$", pJson[ 'CONFIG', {} ][ "HOSTNAME", '' ] );
+
+    m_iszHostName.Replace( "$maps$", GetMapName() );
+
+    m_iszHostName.Replace( "$antirush$", GetAntiRush() );
+
+    m_iszHostName.Replace( "$difficulty$",
+        ( gpDataShared[ "diff", "DynamicDifficultyDeluxe" ] == String::INVALID_INDEX ?
+            pJson[ 'CONFIG', {} ][ "DISABLED", '' ] : gpDataShared[ "diff", '', "DynamicDifficultyDeluxe" ] )
+    );
+
+    m_iszHostName.Replace( "$survival$", pJson[ 'CONFIG', {} ][ ( g_SurvivalMode.MapSupportEnabled() ? "ENABLED" : "DISABLED" ), '' ] );
+
+    g_EngineFuncs.ServerCommand( "hostname \"" + m_iszHostName + "\"\n" );
+    g_EngineFuncs.ServerExecute();
+
+    // Update score board on connected clients
+    NetworkMessage title( MSG_ALL, NetworkMessages::ServerName );
+        title.WriteString( m_iszHostName );
+    title.End();
+}
+
+string GetMapName()
 {
     string mapname = string( g_Engine.mapname ).ToLowercase();
     mapname.ToLowercase();
@@ -57,11 +84,14 @@ void SetHostname()
             break;
         }
     }
+    return mapname;
+}
 
-    json config = pJson[ 'CONFIG', {} ];
+string GetAntiRush()
+{
+    string antirush = pJson[ 'CONFIG', {} ][ "DISABLED", '' ];
 
-    string antirush = config[ "DISABLED", '' ];
-
+    // Known antirush entities
     array<string> strAntirush =
     {
         "trigger_once_mp",
@@ -76,27 +106,10 @@ void SetHostname()
 
         while( ( @pAntiRush = g_EntityFuncs.FindEntityByClassname( pAntiRush, strAntirush[i] ) ) !is null )
         {
-            antirush = config[ "ENABLED", '' ];
+            antirush = pJson[ 'CONFIG', {} ][ "ENABLED", '' ];
             break;
         }
     }
 
-    CBaseEntity@ pDiffy = g_EntityFuncs.FindEntityByTargetname( null, 'ddd_dumpinfo' );
-
-    string difficulty = CustomKeyValue( pDiffy, '$s_diff' );
-
-    if( difficulty != String::INVALID_INDEX )
-    {
-        difficulty += ' (' + CustomKeyValue( pDiffy, '$i_diff' ) + ')';
-    }
-
-    string m_iszHostName = config[ "DYNAMIC_HOSTNAME", '' ];
-    m_iszHostName.Replace( "$hostname$", config[ "HOSTNAME", '' ] );
-    m_iszHostName.Replace( "$maps$", mapname );
-    m_iszHostName.Replace( "$antirush$", antirush );
-    m_iszHostName.Replace( "$difficulty$", ( difficulty == String::INVALID_INDEX ? config[ "DISABLED", '' ] : difficulty ) );
-    m_iszHostName.Replace( "$survival$", config[ ( g_SurvivalMode.MapSupportEnabled() ? "ENABLED" : "DISABLED" ), '' ] );
-
-    g_EngineFuncs.ServerCommand( "hostname \"" + m_iszHostName + "\"\n" );
-    g_EngineFuncs.ServerExecute();
+    return antirush;
 }
