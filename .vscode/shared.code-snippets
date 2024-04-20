@@ -275,6 +275,12 @@
 		"body": "g_Reflection.opIndex( ${1:string m_iszFunction})",
 		"description": "Get a script function by name or namespace::name"
 	},
+	"string opIndex( const string &in szKey, string szValue = '', string szFrom = String::EMPTY_STRING )":
+	{
+		"prefix":[ "DataShared", "Shared", "Data", "Plugin" ],
+		"body": "gpDataShare.opIndex( ${1:const string &in szKey}, ${2:string szValue = ''}, ${3:string szFrom = String::EMPTY_STRING})",
+		"description": "Return the value of the given key for this plugin, if szValue is set it will be updated. if szFrom is set is the plugin name"
+	},
 	"string GetDiscord()":
 	{
 		"prefix":[ "Mikk.GetDiscord", "Discord" ],

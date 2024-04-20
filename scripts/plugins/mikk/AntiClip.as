@@ -78,6 +78,13 @@ void ToggleState( int casex )
             break;
         }
     }
+
+    gpDataShared[ "state", casex ];
+}
+
+void MapInit()
+{
+    gpDataShared[ "state", ( hooks ? 1 : 0 ) ];
 }
 
 HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pProjectile, META_RES& out meta_result, int &out result )
@@ -99,7 +106,6 @@ HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pProjectile, M
     if( array<string>( pJson[ 'projectiles' ] ).find( pProjectile.GetClassname() ) >= 0
     && ( pTouched.IsPlayer() && pTouched.Classify() == pOwner.Classify() || pOwner.IsPlayer() && pTouched.IsPlayerAlly() )
     ) {
-        //g_Game.AlertMessage( at_console, 'MRES_SUPERCEDE ' + pProjectile.pev.classname + '\n' );
         meta_result = MRES_SUPERCEDE;
     }
     return HOOK_CONTINUE;

@@ -518,7 +518,7 @@ class json
     }
 
     /*@
-        @prefix load json parse
+        @prefix load reload json parse
         Aliases to "load" but will return 1 if this json doesn't has a key "reload" on true
     */
     uint reload( string m_szLoad, bool include = false )

@@ -14,6 +14,7 @@
         "scripts/mikk/PlayerFuncs.as",
         "scripts/mikk/EntityFuncs.as",
         "scripts/mikk/Reflection.as",
+        "scripts/mikk/datashared.as",
         "scripts/mikk/shared.as"
     ]
 }

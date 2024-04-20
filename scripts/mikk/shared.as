@@ -22,6 +22,7 @@
 #include "Reflection"
 #include "PlayerFuncs"
 #include "EntityFuncs"
+#include "datashared"
 
 MKShared Mikk;
 
