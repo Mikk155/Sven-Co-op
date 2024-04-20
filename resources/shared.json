@@ -16,6 +16,7 @@
         "scripts/mikk/EntityFuncs.as",
         "scripts/mikk/Reflection.as",
         "scripts/mikk/datashared.as",
+        "scripts/mikk/UserMessages.as",
         "scripts/mikk/shared.as"
     ]
 }

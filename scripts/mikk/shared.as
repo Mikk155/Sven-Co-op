@@ -23,7 +23,7 @@
 #include "PlayerFuncs"
 #include "EntityFuncs"
 #include "datashared"
-//#include "UserMessages"
+#include "UserMessages"
 
 MKShared Mikk;
 
@@ -53,6 +53,7 @@ class MKShared
     MKLanguage Language;
     MKPlayerFuncs PlayerFuncs;
     MKEntityFuncs EntityFuncs;
+    MKUserMessages UserMessages;
 
     MKShared()
     {
@@ -60,6 +61,7 @@ class MKShared
         Language = MKLanguage();
         PlayerFuncs = MKPlayerFuncs();
         EntityFuncs = MKEntityFuncs();
+        UserMessages = MKUserMessages();
     }
 
     /*@

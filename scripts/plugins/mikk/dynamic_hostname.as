@@ -54,9 +54,7 @@ void SetHostname()
     g_EngineFuncs.ServerExecute();
 
     // Update score board on connected clients
-    NetworkMessage title( MSG_ALL, NetworkMessages::ServerName );
-        title.WriteString( m_iszHostName );
-    title.End();
+    Mikk.UserMessages.ServerName( m_iszHostName );
 }
 
 string GetMapName()
