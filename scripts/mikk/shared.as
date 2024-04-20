@@ -23,6 +23,7 @@
 #include "PlayerFuncs"
 #include "EntityFuncs"
 #include "datashared"
+//#include "UserMessages"
 
 MKShared Mikk;
 
