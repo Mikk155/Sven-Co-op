@@ -47,15 +47,10 @@ HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszComman
 
         g_Utility.TraceLine( vecSrc, vecSrc + vecDir * 8192, dont_ignore_monsters, pPlayer.edict(), tr );
 
-        NetworkMessage m( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
-            m.WriteByte( TE_IMPLOSION );
-            m.WriteCoord( tr.vecEndPos.x);
-            m.WriteCoord( tr.vecEndPos.y);
-            m.WriteCoord( tr.vecEndPos.z - ( ( tr.vecPlaneNormal.z < 0 ) ? 4 : 0 ) );
-            m.WriteByte( 32 );
-            m.WriteByte( 32 );
-            m.WriteByte( 2 );
-        m.End();
+        Vector VecPos = tr.vecEndPos;
+        VecPos.z -= ( ( tr.vecPlaneNormal.z < 0 ) ? 4 : 0 );
+
+        Mikk.UserMessages.Entity.Implosion( VecPos, uint8(pJson['radius',32]), uint8(pJson['count',32]),uint8(pJson['life',2]));
 
         CustomKeyValue( pPlayer, '$f_npcmoveto_cooldown', g_Engine.time + pJson[ 'player cooldown', 0.0 ] );
     }
