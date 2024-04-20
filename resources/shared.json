@@ -3,7 +3,7 @@
     [
         "scripts/mikk/Hooks/Game/SurvivalEndRoundHook.as",
         "scripts/mikk/Hooks/Player/PlayerFlashLightHook.as",
-        "scripts/mikk/Hooks/PlayerAttackHook.as",
+        "scripts/mikk/Hooks/Player/PlayerAttackHook.as",
         "scripts/mikk/Hooks/Player/PlayerJumpHook.as",
         "scripts/mikk/Hooks/Player/PlayerKeyInputHook.as",
         "scripts/mikk/Hooks/Player/PlayerObserverModeHook.as",

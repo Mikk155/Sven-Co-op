@@ -39,6 +39,7 @@ class MKShared
         return 'discord.gg/sqK7F3kZfn';
     }
 
+
     /*@
         @prefix Mikk.GetContactInfo Contact
         @body Mikk
