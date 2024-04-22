@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/AFKManager.yaml'
+      - '.github/workflows/AFKManager.yml'
       - 'resources/AFKManager.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/AFKManager.*'

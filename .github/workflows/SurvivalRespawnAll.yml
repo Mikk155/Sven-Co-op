@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/SurvivalRespawnAll.yaml'
+      - '.github/workflows/SurvivalRespawnAll.yml'
       - 'resources/SurvivalRespawnAll.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/SurvivalRespawnAll.*'

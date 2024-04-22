@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/FastRestart.yaml'
+      - '.github/workflows/FastRestart.yml'
       - 'resources/FastRestart.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/FastRestart.*'

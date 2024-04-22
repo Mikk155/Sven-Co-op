@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/NPCMoveTo.yaml'
+      - '.github/workflows/NPCMoveTo.yml'
       - 'resources/NPCMoveTo.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/NPCMoveTo.*'

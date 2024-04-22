@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/chatroles.yaml'
+      - '.github/workflows/chatroles.yml'
       - 'resources/chatroles.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/chatroles.*'

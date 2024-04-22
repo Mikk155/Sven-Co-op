@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/no_autopickup.yaml'
+      - '.github/workflows/no_autopickup.yml'
       - 'resources/no_autopickup.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/no_autopickup.*'

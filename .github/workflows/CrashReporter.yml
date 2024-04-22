@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/CrashReporter.yaml'
+      - '.github/workflows/CrashReporter.yml'
       - 'resources/CrashReporter.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/CrashReporter.*'

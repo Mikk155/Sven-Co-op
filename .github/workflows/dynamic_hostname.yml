@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/dynamic_hostname.yaml'
+      - '.github/workflows/dynamic_hostname.yml'
       - 'resources/dynamic_hostname.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/dynamic_hostname.*'

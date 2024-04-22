@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/PlayerDecalTracker.yaml'
+      - '.github/workflows/PlayerDecalTracker.yml'
       - 'resources/PlayerDecalTracker.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/PlayerDecalTracker.*'

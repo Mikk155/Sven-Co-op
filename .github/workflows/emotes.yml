@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/emotes.yaml'
+      - '.github/workflows/emotes.yml'
       - 'resources/emotes.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/emotes.*'

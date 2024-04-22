@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/AntiClip.yaml'
+      - '.github/workflows/AntiClip.yml'
       - 'resources/AntiClip.json'
       - 'scripts/mikk/*'
       - 'scripts/plugins/mikk/AntiClip.*'
