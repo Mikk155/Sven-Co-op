@@ -8,7 +8,7 @@ on:
       - '.github/workflows/FastRestart.yaml'
       - 'resources/FastRestart.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/FastRestart.*'
+      - 'scripts/plugins/mikk/FastRestart.*'
 
 permissions:
   contents: write

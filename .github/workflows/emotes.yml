@@ -8,7 +8,7 @@ on:
       - '.github/workflows/emotes.yaml'
       - 'resources/emotes.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/emotes.*'
+      - 'scripts/plugins/mikk/emotes.*'
 
 permissions:
   contents: write

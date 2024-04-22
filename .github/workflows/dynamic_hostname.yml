@@ -8,7 +8,7 @@ on:
       - '.github/workflows/dynamic_hostname.yaml'
       - 'resources/dynamic_hostname.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/dynamic_hostname.*'
+      - 'scripts/plugins/mikk/dynamic_hostname.*'
 
 permissions:
   contents: write

@@ -8,8 +8,8 @@ on:
       - '.github/workflows/svenfixes.yaml'
       - 'resources/svenfixes.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/svenfixes.*'
-      - 'scripts/plugins/svenfixes/*'
+      - 'scripts/plugins/mikk/svenfixes.*'
+      - 'scripts/plugins/mikk/svenfixes/*'
 
 permissions:
   contents: write

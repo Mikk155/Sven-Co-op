@@ -8,7 +8,7 @@ on:
       - '.github/workflows/AFKManager.yaml'
       - 'resources/AFKManager.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/AFKManager.*'
+      - 'scripts/plugins/mikk/AFKManager.*'
 
 permissions:
   contents: write

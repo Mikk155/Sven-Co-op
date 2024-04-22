@@ -8,7 +8,7 @@ on:
       - '.github/workflows/developer.yaml'
       - 'resources/developer.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/developer.*'
+      - 'scripts/plugins/mikk/developer.*'
 
 permissions:
   contents: write

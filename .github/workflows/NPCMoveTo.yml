@@ -8,7 +8,7 @@ on:
       - '.github/workflows/NPCMoveTo.yaml'
       - 'resources/NPCMoveTo.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/NPCMoveTo.*'
+      - 'scripts/plugins/mikk/NPCMoveTo.*'
 
 permissions:
   contents: write

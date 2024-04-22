@@ -8,7 +8,7 @@ on:
       - '.github/workflows/PlayerDecalTracker.yaml'
       - 'resources/PlayerDecalTracker.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/PlayerDecalTracker.*'
+      - 'scripts/plugins/mikk/PlayerDecalTracker.*'
 
 permissions:
   contents: write

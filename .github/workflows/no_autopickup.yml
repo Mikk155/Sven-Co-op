@@ -8,7 +8,7 @@ on:
       - '.github/workflows/no_autopickup.yaml'
       - 'resources/no_autopickup.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/no_autopickup.*'
+      - 'scripts/plugins/mikk/no_autopickup.*'
 
 permissions:
   contents: write

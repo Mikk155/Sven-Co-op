@@ -8,7 +8,7 @@ on:
       - '.github/workflows/SurvivalRespawnAll.yaml'
       - 'resources/SurvivalRespawnAll.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/SurvivalRespawnAll.*'
+      - 'scripts/plugins/mikk/SurvivalRespawnAll.*'
 
 permissions:
   contents: write

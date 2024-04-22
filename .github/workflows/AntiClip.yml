@@ -8,7 +8,7 @@ on:
       - '.github/workflows/AntiClip.yaml'
       - 'resources/AntiClip.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/AntiClip.*'
+      - 'scripts/plugins/mikk/AntiClip.*'
 
 permissions:
   contents: write

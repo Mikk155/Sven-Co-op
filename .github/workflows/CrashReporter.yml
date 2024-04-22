@@ -8,7 +8,7 @@ on:
       - '.github/workflows/CrashReporter.yaml'
       - 'resources/CrashReporter.json'
       - 'scripts/mikk/*'
-      - 'scripts/plugins/CrashReporter.*'
+      - 'scripts/plugins/mikk/CrashReporter.*'
 
 permissions:
   contents: write
