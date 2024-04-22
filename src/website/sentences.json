@@ -350,5 +350,65 @@
 "es": "Lenguaje a utilizar, debe ser definido en cada clase.",
 "en": "Language to use, must be defined on each class."
 },
+"svenfixes::Description":
+{
+"es": "Arregla varios errores y/o problemas que existan en Sven Co-op y sean posibles de arreglar mediante AngelScript.",
+"en": "Fix multiple errors and/or problems that exists in Sven Co-op and are possible to fix with AngelScript."
+},
+"svenfixes::ThisFixes":
+{
+"es": "Arregla los siguientes problemas:",
+"en": "Fixes the next problems:"
+},
+"svenfixes::observer_noises":
+{
+"es": "Jugadores en modo espectador normalmente hacen sonidos de agua tras pasar por ciertas superficies.",
+"en": "Players on observer mode normally does water noises by passing through certain surfaces."
+},
+"svenfixes::grenade_revivable":
+{
+"es": "Normalmente las granadas pueden ser revividas, los jugadores explotan esto ya que cuando reviven estas generan velocidad Z mandando a los jugadores a volar.",
+"en": "Normally grenades can be revived, the players exploits this because when a grenade is revived it does generate Z velocity sending the players to the sky."
+},
+"svenfixes::observer_presence":
+{
+"es": "Los espectadores pueden ser vistos y saludados por npcs con flag \"Wait til seen\" (Espera a ser visto) rompiendo algunos mapas.",
+"en": "Spectators can be seen and greeted by npcs with flag \"Wait til seen\" breaking some maps."
+},
+"svenfixes::gravity_lost":
+{
+"es": "Cuando la gravedad de un jugador es modificada individualmente y este muere, al ser revivido este perderá la gravedad, si esta es necesaria para algun salto, este jugador ya no podrá avanzar.",
+"en": "When the gravity of an individual player is modified and then this player die, when revived he will lost it's gravity, if that is necesary for a jump, this player won't be able to keep going."
+},
+"svenfixes::satchel_stun":
+{
+"es": "Npcs \"Inteligentes\" que saben detectar explosiones son \"Stuneados\" al lanzar un c4 cerca de ellos mas no explotarlo, los jugadores explotan este problema dejando a los enemigos inmoviles.",
+"en": "\"Inteligent\" Npcs that detects explosions are \"Stunned\" when throwing a c4 around them but not exploding, players exploits this bug and let enemies unable to move."
+},
+"svenfixes::deadplayer_sink":
+{
+"es": "Los cadaveres de los jugadores pueden hundirse en el suelo si ciertas condiciones de espacio se cumplen.",
+"en": "Player corpses can sink into the ground if certain space conditions are met."
+},
+"svenfixes::tripmine_spam":
+{
+"es": "Cuando te encuentras en un lugar donde una tripmine aparece demasiado rapido, los jugadores pueden tumbar el servidor tras poner una gran cantidad de tripmines en un mismo lugar.",
+"en": "When you are on a map that spawns tripmines in a short period, players are able to crash the server by placing a big ammount of tripmines on the same spot."
+},
+"svenfixes::gonome_crouch":
+{
+"es": "Cuando estas en el rango de melee un gonome, si presionas control (agacharse) repetidas veces, este no puede atacarte.",
+"en": "When you are on the melee range of a gonome, if you press control (duck) repeated times, this won't be able to attack you."
+},
+"svenfixes::hwgrunt_crouch":
+{
+"es": "Cuando estas en el rango melee de un grunt con minigun, si mantienes control presionado (agacharse) sus balas no te darán.",
+"en": "When you are on the melee range of a grunt with minigun, if you hold control (duck) it's bullets won't hit you."
+},
+"svenfixes::longjump_revive":
+{
+"es": "Cuando mueres teniendo el modulo de salto largo y eres revivido pierdes este item.",
+"en": "When you die having the long jump module and you are revived you will lose this item."
+},
 "EOF": true
 }
