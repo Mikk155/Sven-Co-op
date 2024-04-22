@@ -27,7 +27,7 @@ href = {
 
     # Extern links
     "Discord": "https://discord.gg/sqK7F3kZfn",
-    "metamod": "https://github.com/Mikk155/metamod-limitless-potential",
+    "metamod": "https://github.com/Mikk155/Sven-Co-op/releases/tag/metamod",
     "snippets": "https://github.com/Mikk155/Sven-Co-op/blob/main/.vscode/shared.code-snippets",
 }
 
