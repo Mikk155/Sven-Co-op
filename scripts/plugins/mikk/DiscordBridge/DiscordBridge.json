@@ -1,7 +1,7 @@
 {
     "reload": false,
     "language": "english",
-    "bot prefix": "!",
+    "bot prefix": "$",
     "method": "fileload",
     "interval": 10,
     "messages per second": 2,
@@ -36,6 +36,11 @@
             {
                 "spanish": "Este comando esta bloqueado.",
                 "english": "This command is blocked."
+            },
+            "GetHelp":
+            {
+                "spanish": "Comandos-de-servidor soportados:",
+                "english": "Supported server-commands:"
             },
             "NoAccess":
             {

@@ -82,53 +82,5 @@ async def ReadServer():
     if ToStatus and ToStatus != '':
         UpdateStatus( ToStatus )
 
-async def SendServer( message ):
-
-    BridgeChannel = bot.get_channel( CHANNEL_BRIDGE )
-
-    if not os.path.exists( ServerFile ) or not BridgeChannel:
-        return
-
-    Print = ''
-
-    message: discord.Message
-
-    user = message.author
-
-    user: discord.Member
-    name = user.name
-
-    SendMessage = message.content
-
-    if message.content.startswith( pJson.get( 'bot prefix', '!' ) ):
-        SendMessage = SendMessage[ (len( pJson.get( 'bot prefix', '!' ) ) ): len(SendMessage)]
-
-        commands = pJson.get( 'commands', {} )
-
-        if not any( role.name in commands.get( "roles", [] ) for role in user.roles ):
-            snd = GetMessage( "NoAccess" )
-            await BridgeChannel.send( f'{user.mention} {snd}')
-            return
-
-        if SendMessage.find( ";" ) != -1:
-            snd = GetMessage( "NoFuckedCmd" )
-            await BridgeChannel.send( f'{user.mention} {snd}\n```{SendMessage}```')
-            return
-
-        cmds = SendMessage.split()
-        list = commands.get( 'list', {} )
-        if list[0] == 'white' and cmds[0] in list or list[0] == 'black' and not cmds[0] in list:
-            Print =  f'{TO_COMMAND}{SendMessage}'
-            snd = GetMessage( "CommandSent" )
-            await BridgeChannel.send( f'{user.mention} {snd}\n```{SendMessage}```')
-        else:
-            snd = GetMessage( "NotInList" )
-            await BridgeChannel.send( f'{user.mention} {snd}\n```{SendMessage}```')
-
-    elif message.content.startswith( '//' ):
-        return
-    else:
-        Print = f'{TO_SERVER}[Discord] {name} : {SendMessage}'
-
-    if Print and Print != '':
-        PrintList.append(Print)
+async def ToServerAppendFile( Print ):
+    PrintList.append(Print)
