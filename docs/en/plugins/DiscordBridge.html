@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<head>
+        <title>Sven Co-op</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../styles.css">
+        <script src="../../scripts.js"></script>
+</head>
+
+<body>
+<a href="../../"><img class="img-banner" src="../../media/svencoop.png" alt="Sven Co-op"></a>
+<div class="block">
+<br>
+    <div class="neon-text">
+        DiscordBridge<br><br>
+        Bridges and links a <a href="https://discord.gg/sqK7F3kZfn" target="_blank" class="link-extern">Discord</a> server to a Sven Co-op server.<br><br>
+        There are three methods to do our bridge.<br><br>
+        Open ChatBridge.as and go to the line 19, change the metod for one of the next.<br><br>
+
+        <button onclick="toggleTable('method_0_A')" style="color: white;">"fileload"</button><br>
+        <div id="method_0_A" class="hidden">
+            <button onclick="toggleTable('method_0_B')" style="color: white;">Description</button><br>
+            <div id="method_0_B" class="hidden">
+                Reads and writtes text files on the game's folder.
+            </div>
+            <button onclick="toggleTable('method_0_C')" style="color: lime;">Pros</button><br>
+            <div id="method_0_C" class="hidden">
+                No <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/metamod" target="_blank" class="link-extern">metamod</a> is required.
+            </div>
+            <button onclick="toggleTable('method_0_D')" style="color: red;">Cons</button><br>
+            <div id="method_0_D" class="hidden">
+                Requires a discord BOT to be running in the same machine of the server.<br>
+                Opening files on AngelScript is slow. setting a low value could result on fps drops.<br>
+            </div>
+        </div><br>
+
+        <button onclick="toggleTable('method_1_A')" style="color: white;">"webhook"</button><br>
+        <div id="method_1_A" class="hidden">
+            <button onclick="toggleTable('method_1_B')" style="color: white;">Description</button><br>
+            <div id="method_1_B" class="hidden">
+                Transfers info directly sending an HTTP Request to a discord's webhook.
+            </div>
+            <button onclick="toggleTable('method_1_C')" style="color: lime;">Pros</button><br>
+            <div id="method_1_C" class="hidden">
+                Is fast.
+            </div>
+            <button onclick="toggleTable('method_1_D')" style="color: red;">Cons</button><br>
+            <div id="method_1_D" class="hidden">
+                Requires <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/metamod" target="_blank" class="link-extern">metamod</a>.<br>
+                Only game to discord, no discord to game.<br>
+            </div>
+        </div><br>
+
+        <button onclick="toggleTable('method_2_A')" style="color: white;">"sockets"</button><br>
+        <div id="method_2_A" class="hidden">
+            <button onclick="toggleTable('method_2_B')" style="color: white;">Description</button><br>
+            <div id="method_2_B" class="hidden">
+                Sends information from one program to another using sockets.
+            </div>
+            <button onclick="toggleTable('method_2_C')" style="color: lime;">Pros</button><br>
+            <div id="method_2_C" class="hidden">
+                Is fast.
+            </div>
+            <button onclick="toggleTable('method_2_D')" style="color: red;">Cons</button><br>
+            <div id="method_2_D" class="hidden">
+                Requires <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/metamod" target="_blank" class="link-extern">metamod</a>.<br>
+                Requires a discord BOT to be running in the same machine of the server.<br>
+            </div>
+        </div>
+        <br><br>
+
+        Metamod is optional, you can disable it in ChatBridge.as commenting/removing the line 20.
+    </div>
+<br>
+</div>
+<br>
+<br>
+<div class="block">
+<br>
+    <div class="neon-text">
+        Configure the json file.<br><br>
+        <div style="text-align: left;padding-left: 1%;"><br>
+            <button onclick="toggleTable('json_0')">"language"</button><br>
+            <div id="json_0" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Language to use, must be defined on each class.</button><br>
+            </div>
+            <button onclick="toggleTable('json_0a')">"bot prefix"</button><br>
+            <div id="json_0a" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Prefix for your bot's commands.</button><br>
+            </div>
+            <button onclick="toggleTable('json_0b')">"method"</button><br>
+            <div id="json_0b" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Method for the discord bot, can be fileload, sockets or http.</button><br>
+                    <button class="json-description">Hardcoded to: </button>
+                    <button class="json-description2">fileload</button>
+                    <button class="json-description2">webhook</button>
+                    <button class="json-description2">http</button>
+                    <button class="json-description2">sockets</button>
+            </div>
+            <button onclick="toggleTable('json_0c')">"channel bridge"</button><br>
+            <div id="json_0c" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-integer">integer</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Channel's ID at wich we'll send the messages.</button><br>
+            </div>
+            <button onclick="toggleTable('json_0d')">"interval"</button><br>
+            <div id="json_0d" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-float">float</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Interval of time at wich both scripts are executed.</button><br>
+            </div>
+            <button onclick="toggleTable('json_0d')">"messages per second"</button><br>
+            <div id="json_0d" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-integer">integer</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">How many messages show in Sven co-op per each second.</button><br>
+            </div>
+            <button onclick="toggleTable('json_1')">"enable"</button><br>
+            <div id="json_1" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-boolean">boolean</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Almost all classes has this, if false it disables that class.</button><br>
+            </div>
+            <button onclick="toggleTable('json_2')">"reload"</button><br>
+            <div id="json_2" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-boolean">boolean</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">If true, the json is loaded every MapStart (Not recomended)</button><br>
+            </div>
+            <button onclick="toggleTable('json_3')">"commands"</button><br>
+            <div id="json_3" class="hidden" style="padding-left: 2%;">
+                    <button class="json-description">Type: </button><button class="json-dictionary">dictionary</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Commands configuration.</button><br>
+                    <button class="json-string" onclick="toggleTable('json_3_A')">"role"</button><br>
+                    <div id="json_3_A" class="hidden" style="padding-left: 3%;">
+                        <button class="json-description">Type: </button><button class="json-string">string</button><br>
+                        <button class="json-description">Description: </button><button class="json-description2">Role name that is allowed to use commands.</button><br>
+                    </div>
+                    <button class="json-string" onclick="toggleTable('json_3_B')">"list"</button><br>
+                    <div id="json_3_B" class="hidden" style="padding-left: 3%;">
+                        <button class="json-description">Type: </button><button class="json-array">array</button><br>
+                        <button class="json-description">Description: </button><button class="json-description2">List of commands, the index 0 represents if this is a black list (black) or a white list (white).</button><br>
+
+                        <button class="json-string" onclick="toggleTable('json_3_C')">"index 0"</button><br>
+                        <div id="json_3_C" class="hidden" style="padding-left: 4%;">
+                            <button class="json-description">Hardcoded to: </button>
+                            <button class="json-description2">white</button>
+                            <button class="json-description2">black</button>
+                        </div>
+                    </div>
+            </div>
+            <button onclick="toggleTable('json_4')">"MESSAGES"</button>
+            <div id="json_4" class="hidden" style="padding-left: 2%;">
+                <button class="json-description">Type: </button><button class="json-dictionary">dictionary</button><br>
+                    <button class="json-description">Description: </button><button class="json-description2">Configuration of all the messages that are sent from Sven Co-op to <a href="https://discord.gg/sqK7F3kZfn" target="_blank" class="link-extern">Discord</a>.</button><br>
+                    <button class="json-string" onclick="toggleTable('json_4_A')">"PlayerKilled"</button><br>
+                    <div id="json_4_A" class="hidden" style="padding-left: 3%;">
+                        <button class="json-description">Type: </button><button class="json-dictionary">dictionary</button><br>
+                        <button class="json-string" onclick="toggleTable('json_4_B')">"Gib"</button><br>
+                        <div id="json_4_B" class="hidden" style="padding-left: 4%;">
+                            <button class="json-description">Type: </button><button class="json-array">array</button><br>
+                            <button class="json-description">Description: </button><button class="json-description2">Message for the argument $gib$, index 0 for gibbed</button><br>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+<br>
+</div>
+<br><br>
+<div class="block"><a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/DiscordBridge" target="_blank">Download</a><br></div><br>
+</body>
+</html>
