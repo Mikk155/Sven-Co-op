@@ -450,10 +450,10 @@
 "es": "Configuración de comandos.",
 "en": "Commands configuration."
 },
-"DiscordBridge::commands_role":
+"DiscordBridge::commands_roles":
 {
-"es": "Nombre del rol que tiene permitido utilizar comandos.",
-"en": "Role name that is allowed to use commands."
+"es": "Nombres de los roles que tiene permitido utilizar comandos.",
+"en": "Roles name that are allowed to use commands."
 },
 "DiscordBridge::commands_list":
 {

@@ -9,7 +9,12 @@
     "channel status": 1211204941490688030,
     "commands":
     {
-        "role": "Mikk",
+        "roles":
+        [
+            "Mikk",
+            "Moderator",
+            "Sven Co-op Admin"
+        ],
         "list":
         [
             "white",

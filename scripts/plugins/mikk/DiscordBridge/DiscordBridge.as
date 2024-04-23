@@ -106,6 +106,7 @@ void Think()
     {
         if( g_Reflection[ 'fileload::ThinkForFileLoad' ] !is null )
             g_Reflection[ 'fileload::ThinkForFileLoad' ].Call();
+
         flfileloadNextThink = g_Engine.time + float( pJson[ 'interval' ] );
     }
 

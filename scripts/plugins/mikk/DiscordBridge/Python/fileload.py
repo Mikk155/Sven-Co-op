@@ -105,7 +105,7 @@ async def SendServer( message ):
 
         commands = pJson.get( 'commands', {} )
 
-        if not any( role.name == commands.get( "role", "" ) for role in user.roles ):
+        if not any( role.name in commands.get( "roles", [] ) for role in user.roles ):
             snd = GetMessage( "NoAccess" )
             await BridgeChannel.send( f'{user.mention} {snd}')
             return
