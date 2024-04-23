@@ -8,10 +8,9 @@
     "channel bridge": 1211204941490688030,
     "status":
     {
-        "message": 0,
         "color": 16711680,
         "channel": 1232279491192295464,
-        "hostname": true
+        "message": 0
     },
     "commands":
     {
