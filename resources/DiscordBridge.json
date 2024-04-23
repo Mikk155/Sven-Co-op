@@ -27,7 +27,6 @@
         "scripts/plugins/mikk/DiscordBridge/method/fileload.as",
         "scripts/plugins/mikk/DiscordBridge/method/http.as",
         "scripts/plugins/mikk/DiscordBridge/Python/RunBot.py",
-        "scripts/plugins/mikk/DiscordBridge/Python/token.txt",
         "scripts/plugins/mikk/DiscordBridge/Python/UpdateStatus.py",
         "scripts/plugins/mikk/DiscordBridge/Python/config.py",
         "scripts/plugins/mikk/DiscordBridge/Python/fileload.py",

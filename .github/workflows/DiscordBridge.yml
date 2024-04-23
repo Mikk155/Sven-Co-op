@@ -1,4 +1,4 @@
-name: dynamic_hostname
+name: DiscordBridge
 
 on:
   push:
