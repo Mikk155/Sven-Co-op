@@ -9,6 +9,7 @@
         "scripts/mikk/Hooks/Player/PlayerObserverModeHook.as",
         "scripts/mikk/Hooks/Game.as",
         "scripts/mikk/Hooks/Player.as",
+        "scripts/mikk/Hooks.as",
         "scripts/mikk/fft.as",
         "scripts/mikk/json.as",
         "scripts/mikk/Language.as",
