@@ -39,48 +39,52 @@ async def ReadServer():
     if not os.path.exists( ServerFile ) or not BridgeChannel:
         return
 
-    with open( ServerFile, 'r') as r:
+    with open( ServerFile, 'r+') as r:
         lines = r.readlines()
+
+        if not lines:
+            r.close()
+            return
+
+        ToDiscord = []
+        ToServer = []
+        ToStatus = ''
+
+        for l in lines:
+            if l and l != '':
+                if l[0] == TO_DISCORD:
+                    l = l[1:len(l)]
+                    if l and l != '' and not l.isspace():
+                        ToDiscord.append( l + '\n' )
+                elif l[0] == TO_SERVER or l[0] == TO_COMMAND:
+                    if l and l != '' and not l.isspace():
+                        ToServer.append( l + '\n' )
+                elif l[0] == TO_STATUS:
+                    l = l[1:len(l)]
+                    if l and l != '' and not l.isspace():
+                        ToStatus = l
+
+        while len(PrintList) > 0:
+            ToServer.append( PrintList[0] + '\n' )
+            PrintList.pop(0)
+
+        r.seek(0)
+        r.truncate()
+        r.writelines( ToServer )
+        ToServer.clear()
+
+        SendMessage = ''
+        for msg in ToDiscord:
+            if msg and msg != '' and not msg.isspace():
+                SendMessage = f'{SendMessage}{msg}'
+            ToDiscord.pop(0)
+
+        if SendMessage and SendMessage != '':
+            await BridgeChannel.send(SendMessage)
+
+        if ToStatus and ToStatus != '':
+            await UpdateStatus( ToStatus )
         r.close()
-
-    if not lines:
-        return
-
-    ToDiscord = []
-    ToServer = []
-    ToStatus = ''
-
-    for l in lines:
-        if l and l != '':
-            if l[0] == TO_DISCORD:
-                l = l[1:len(l)]
-                if l and l != '' and not l.isspace():
-                    ToDiscord.append( l )
-            elif l[0] == TO_SERVER or l[0] == TO_COMMAND:
-                if l and l != '' and not l.isspace():
-                    ToServer.append( l + '\n' )
-            elif l[0] == TO_STATUS:
-                l = l[1:len(l)]
-                if l and l != '' and not l.isspace():
-                    ToStatus = l
-
-    while len(PrintList) > 0:
-        ToServer.append( PrintList[0] + '\n' )
-        PrintList.pop(0)
-
-    if ToServer and len(ToServer) > 0:
-        with open( ServerFile, 'w') as w:
-            w.writelines( ToServer )
-            ToServer.clear()
-            w.close()
-
-    for msg in ToDiscord:
-        if msg and msg != '' and not msg.isspace():
-            await BridgeChannel.send(msg)
-        ToDiscord.pop(0)
-
-    if ToStatus and ToStatus != '':
-        UpdateStatus( ToStatus )
 
 async def ToServerAppendFile( Print ):
     PrintList.append(Print)

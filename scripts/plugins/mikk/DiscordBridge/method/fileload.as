@@ -39,7 +39,10 @@ namespace fileload
                 }
                 else if( line.StartsWith( TO_COMMAND ) )
                 {
-
+                    m_szCommandBuffer.insertLast( line.SubString( 1, line.Length() ) );
+                }
+                else if( line.StartsWith( TO_STATUS ) )
+                {
                 }
                 else
                 {
@@ -53,8 +56,7 @@ namespace fileload
 
         if( pWrite !is null && pWrite.IsOpen() )
         {
-        g_Game.AlertMessage( at_console, 'Reading ' + m_szWholeFile + '\n' );
-            pWrite.Write( m_szWholeFile );
+            pWrite.Write( m_szWholeFile + '\n' );
             pWrite.Close();
         }
         m_szWholeFile = String::EMPTY_STRING;
@@ -65,9 +67,8 @@ namespace fileload
         g_FileSystem.RemoveFile( 'scripts/plugins/store/DiscordBridge.txt' );
     }
 
-    void ToDiscord( string szMessage )
+    void ToDiscord( string szMessage, bool isstatus )
     {
-        m_szWholeFile += TO_DISCORD + szMessage + '\n';
-        g_Game.AlertMessage( at_console, 'sex ' + m_szWholeFile + '\n' );
+        m_szWholeFile += ( isstatus ? TO_STATUS : TO_DISCORD ) + szMessage + '\n';
     }
 }

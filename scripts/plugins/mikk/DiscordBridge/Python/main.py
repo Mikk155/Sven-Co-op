@@ -29,6 +29,8 @@ bot = discord.Client( intents = discord.Intents.all() )
 
 # Vars
 CHANNEL_BRIDGE = int( pJson.get( 'channel bridge', '' ) )
+CHANNEL_STATUS = int( pJson.get( 'status', {} ).get( 'channel', '' ) )
+STATUS_ID = int( pJson.get( 'status', {} ).get( 'message', '' ) )
 METHOD = pJson.get( 'method', 'fileload' )
 
 from fileload import ReadServer, ToServerAppendFile, ServerFile
@@ -93,7 +95,7 @@ async def on_message( message ):
     elif message.content.startswith( '//' ):
         return
     else:
-        Print = f'{TO_SERVER}[Discord] {name} : {SendMessage}'
+        Print = f'{TO_SERVER}{name}: {SendMessage}'
 
     if Print and Print != '':
         if METHOD == 'fileload' and os.path.exists( ServerFile ):

@@ -6,7 +6,13 @@
     "interval": 10,
     "messages per second": 2,
     "channel bridge": 1211204941490688030,
-    "channel status": 1211204941490688030,
+    "status":
+    {
+        "message": 0,
+        "color": 16711680,
+        "channel": 1232279491192295464,
+        "hostname": true
+    },
     "commands":
     {
         "roles":
@@ -18,20 +24,44 @@
         "list":
         [
             "white",
-            "as_reloadplugins",
-            "as_reloadplugin",
             "restart",
             "say"
         ]
     },
     "emotes":
     {
-        "STEAM_0:0:202010794": ":mikk:"
+        "STEAM_0:0:202010794": "<:mikk:894467189665595392>"
     },
+    "bad words":
+    [
+        "nigga",
+        "nigger",
+        "fuck you"
+    ],
     "MESSAGES":
     {
         "Discord":
         {
+            "Players":
+            {
+                "spanish": "Jugadores",
+                "english": "Players"
+            },
+            "survival":
+            {
+                "spanish": "Modo supervivencia",
+                "english": "Survival mode"
+            },
+            "checkpoints":
+            {
+                "spanish": "Puntos de control",
+                "english": "Check points"
+            },
+            "UpdateStatusID":
+            {
+                "spanish": "Por favor, Actualiza status::message en el json con esta ID.",
+                "english": "Please, Update the json's status::message with this ID."
+            },
             "NotInList":
             {
                 "spanish": "Este comando esta bloqueado.",
@@ -58,6 +88,7 @@
                 "english": "Command sent."
             }
         },
+        "FromDiscordTag": "[Discord]",
         "ClientSay":
         {
             "enable": true,
@@ -66,8 +97,7 @@
                 "spanish": "muerto:skull_crossbones:",
                 "english": "dead:skull_crossbones:"
             },
-            "spanish": "$steam$ $emote$ $dead$ $name$: $message$",
-            "english": "$steam$ $emote$ $dead$ $name$: $message$"
+            "message": "$steam$ $emote$ $dead$ $name$: $message$"
         },
         "PlayerKilled":
         {

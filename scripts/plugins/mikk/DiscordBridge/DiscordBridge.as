@@ -29,6 +29,7 @@
 #include "AngelScript/GetPlayers"
 #include "AngelScript/ClientSay"
 #include "AngelScript/GetEmote"
+#include "AngelScript/gamestatus"
 
 json pJson;
 string language;
@@ -36,6 +37,7 @@ string language;
 CScheduledFunction@ pTimer;
 
 array<string> m_szBuffer;
+array<string> m_szCommandBuffer;
 
 const string TO_DISCORD = '<';
 const string TO_SERVER  = '>';
@@ -95,13 +97,22 @@ void RegisterAll()
     if( g_Reflection[ 'SurvivalEndRound::Register' ] !is null )
         g_Reflection[ 'SurvivalEndRound::Register' ].Call();
     if( g_Reflection[ 'PlayerSpawn::Register' ] !is null )
-        g_Reflection[ 'PlayerSpawn::Register' ].Call();
+        g_Reflection[ 'ClientSay::Register' ].Call();
 }
 
 float flfileloadNextThink;
+float flCreateJsonNextThink;
 
 void Think()
 {
+    if( int( pJson[ 'status', {} ][ 'channel' ] ) > 0 && g_Engine.time > flCreateJsonNextThink )
+    {
+        if( g_Reflection[ 'gamestatus::CreateJson' ] !is null )
+            g_Reflection[ 'gamestatus::CreateJson' ].Call();
+
+        flCreateJsonNextThink = g_Engine.time + float( pJson[ 'interval' ] );
+    }
+
     if( string( pJson[ 'method' ] ) == 'fileload' && g_Engine.time > flfileloadNextThink )
     {
         if( g_Reflection[ 'fileload::ThinkForFileLoad' ] !is null )
@@ -112,7 +123,26 @@ void Think()
 
     for( int i = 0; m_szBuffer.length() > 0 && i < int( pJson[ 'messages per second' ] ); i++ )
     {
-        g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, m_szBuffer[0] + '\n' );
+        string MSG = string( pJson[ 'MESSAGES', {} ][ 'FromDiscordTag' ] ) + m_szBuffer[0];
         m_szBuffer.removeAt(0);
+        g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, MSG + '\n' );
+    }
+
+    for( int i = 0; m_szCommandBuffer.length() > 0 && i < int( pJson[ 'messages per second' ] ); i++ )
+    {
+        array<string> pArgs = m_szCommandBuffer[0].Split( ' ' );
+        m_szCommandBuffer.removeAt(0);
+        if( pArgs.length() > 0 )
+        {
+            string Command = pArgs[0];
+            string Args = ( pArgs.length() > 1 ? ' "' : '' );
+            for( uint ui = 1; ui < pArgs.length(); ui++ ){
+                Args += ( ui == 1 ? '' : ' ' ) + pArgs[ui]; }
+            Args += ( pArgs.length() > 1 ? '"' : '' );
+            string FullCommand = Command + Args;
+            FullCommand = FullCommand.Replace( '\\n', '' );
+            g_EngineFuncs.ServerCommand( FullCommand + '\n');
+            g_EngineFuncs.ServerExecute();
+        }
     }
 }

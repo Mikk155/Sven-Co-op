@@ -15,7 +15,7 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-void FormatMessage( string szMessage, dictionary@ pReplacement = null )
+void FormatMessage( string szMessage, dictionary@ pReplacement = null, bool isstatus = false )
 {
     if( pReplacement !is null )
     {
@@ -28,5 +28,5 @@ void FormatMessage( string szMessage, dictionary@ pReplacement = null )
     }
 
     if( g_Reflection[ pJson[ 'method', 'fileload' ] + '::ToDiscord' ] !is null )
-        g_Reflection[ pJson[ 'method', 'fileload' ] + '::ToDiscord' ].Call( szMessage );
+        g_Reflection[ pJson[ 'method', 'fileload' ] + '::ToDiscord' ].Call( szMessage, isstatus );
 }

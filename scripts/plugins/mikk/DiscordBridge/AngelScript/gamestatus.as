@@ -15,52 +15,54 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-namespace ClientSay
+namespace gamestatus
 {
-    void Register()
+    void CreateJson()
     {
-        g_Hooks.RemoveHook( Hooks::Player::ClientSay, @ClientSay::ClientSay );
+        string szBuffer
+        = '{'
+        +       '"hostname": "$hostname$",'
+        +       '"color": $color$,'
+        +       '"campos":'
+        +       '{'
+        +           '"$k_players$": {'
+        +               '"valor": "$v_players$",'
+        +               '"inline": true'
+        +           '},'
+        +           '"$k_survival$": {'
+        +               '"valor": "$v_survival$",'
+        +               '"inline": true'
+        +           '}'
+        +       '}'
+        + '}';
 
-        if( pJson[ 'MESSAGES', {} ][ 'ClientSay', {} ][ 'enable', false ] )
-        {
-            g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay::ClientSay );
-        }
+        json msg = pJson[ 'MESSAGES', {} ][ 'Discord', {} ];
+
+        dictionary pData;
+        pData[ 'hostname' ] = g_EngineFuncs.CVarGetString( 'hostname' );
+        pData[ 'color' ] = pJson[ 'status', {} ][ 'color', '16711680' ];
+
+        pData[ 'k_players' ] = msg[ 'Players', {} ][ language, '' ];
+        pData[ 'v_players' ] = string( g_PlayerFuncs.GetNumPlayers() ) + '/' + g_Engine.maxClients;
+
+        bool b;
+
+        b = g_SurvivalMode.MapSupportEnabled();
+        pData[ 'k_survival' ] = ( b ? msg[ 'survival', {} ][ 'language', '' ] : '' );
+        pData[ 'v_survival' ] = ( b ? string( GetCheckpoints() ) + ' ' + msg[ 'checkpoints', {} ][ 'language', '' ] : '' );
+
+        szBuffer = szBuffer.Replace( '\\n', ' ' );
+
+        FormatMessage( szBuffer, pData, true );
     }
 
-    HookReturnCode ClientSay( SayParameters@ pParams )
+    int GetCheckpoints()
     {
-        CBasePlayer@ pPlayer = pParams.GetPlayer();
-        const CCommand@ args = pParams.GetArguments();
-
-        if( pPlayer is null || args.ArgC() <= 0 || pParams.ShouldHide )
-            return HOOK_CONTINUE;
-
-        string sentence = args.GetCommandString();
-
-        array<string> BadWords = array<string>( pJson[ 'bad words' ] );
-
-        for( uint ui = 0; ui < BadWords.length(); ui++ )
-        {
-            int ilength = BadWords[ui].Length();
-            string strAsterisks;
-            while( ilength > 0 )
-            {
-                strAsterisks += '*';
-                ilength--;
-            }
-            sentence.Replace( BadWords[ui], strAsterisks );
-        }
-        g_Game.AlertMessage( at_console, 'sex ' + sentence + '\n' );
-
-        FormatMessage( string( pJson[ 'MESSAGES', {} ][ 'ClientSay', {} ][ 'message' ] ),
-        {
-            { 'message', sentence },
-            { 'emote', GetEmote( pPlayer ) },
-            { 'name', string( pPlayer.pev.netname ) },
-            { 'steam', Mikk.PlayerFuncs.GetSteamID( pPlayer ) },
-            { 'dead', ( pPlayer.IsAlive() ? '' : string( pJson[ 'MESSAGES', {} ][ 'ClientSay', {} ][ 'dead', {} ][ language ] ) ) }
-        });
-
-        return HOOK_CONTINUE;
+        int i = 0;
+        CBaseEntity@ pCheckPoint = null;
+        while( ( @pCheckPoint = g_EntityFuncs.FindEntityByClassname( pCheckPoint, 'point_checkpoint' ) ) !is null )
+            i++;
+        return i;
     }
 }
+
