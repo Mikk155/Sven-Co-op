@@ -558,7 +558,10 @@ class json
             File@ pFile = g_FileSystem.OpenFile( ( m_szLoad.StartsWith( 'scripts/' ) ? '' : 'scripts/' ) + m_szLoad, OpenFile::READ );
 
             if( pFile is null || !pFile.IsOpen() )
+            {
+                g_EngineFuncs.ServerPrint( "WARNING! Can not open " + m_szLoad + " things won't work as expected!\n" );
                 return 2;
+            }
 
             while( !pFile.EOFReached() )
             {
