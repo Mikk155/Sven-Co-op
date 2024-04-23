@@ -2,7 +2,7 @@
 *.pyc
 
 # My bot token
-scripts/plugins/mikk/chatbridge/token.txt
+scripts/plugins/mikk/DiscordBridge/Python/token.txt
 
 # Visual Studio Code
 .vscode/tasks.json
