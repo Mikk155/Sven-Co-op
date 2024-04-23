@@ -29,6 +29,7 @@
 #include 'svenfixes/gonome_crouch'
 #include 'svenfixes/hwgrunt_crouch'
 #include 'svenfixes/longjump_revive'
+#include 'svenfixes/strip_longjump'
 // Not finished yet.-
 //#include 'svenfixes/changelevel_items'
 

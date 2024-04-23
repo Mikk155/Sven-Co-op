@@ -520,5 +520,10 @@
 "es": "Cuando mueres teniendo el modulo de salto largo y eres revivido pierdes este item.",
 "en": "When you die having the long jump module and you are revived you will lose this item."
 },
+"svenfixes::strip_longjump":
+{
+"es": "Cuando el traje es removido (player_weaponstrip) tu modulo de salto largo no es removido.",
+"en": "When your suit is removed (player_weaponstrip) your longjump module is not removed."
+},
 "EOF": true
 }
