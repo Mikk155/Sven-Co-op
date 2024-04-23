@@ -1,0 +1,12 @@
+{
+    "interval": 5,
+    "arguments":
+    [
+        "-console",
+        "+ip 192.168.1.173",
+        "-port 27015",
+        "+maxplayers 24",
+        "+log on",
+        "+map hl_c04"
+    ]
+}
