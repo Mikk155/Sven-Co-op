@@ -1,14 +1,6 @@
 {
     "MessagePlayer": true,
     "RequiredLoS": true,
-    "ItemList":
-    [
-        "weapon_*",
-        "item_healthkit",
-        "item_battery",
-        "weaponbox",
-        "ammo_*"
-    ],
     "PickMeMessage":
     {
         "english": "+use pickup $item$",
