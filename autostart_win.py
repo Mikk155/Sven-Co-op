@@ -21,7 +21,7 @@ import json
 import psutil
 import subprocess
 
-f = os.path.join(os.path.dirname(__file__), 'autorun_server.json' )
+f = os.path.join(os.path.dirname(__file__), 'autostart.json' )
 
 with open( f, 'r') as d:
     args = json.load( d )
