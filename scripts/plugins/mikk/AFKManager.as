@@ -16,163 +16,242 @@
 //==========================================================================================================================================\\
 
 #include '../../mikk/shared'
+#include '../../mikk/Discord'
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
 
-    g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
-
-    Mikk.UpdateTimer( g_Think, 'Think', 1.0f, g_Scheduler.REPEAT_INFINITE_TIMES );
-
     pJson.load( "plugins/mikk/AFKManager.json" );
+    g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
+    g_Hooks.RegisterHook( Hooks::Player::PlayerPreThink, @PlayerPreThink );
+    g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
+    g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
 }
 
 json pJson;
 
-int AFKMaxTime = 500;
+int AFK_TIME;
 
-CScheduledFunction@ g_Think = null;
+dictionary gData;
+
+dictionary gPlayerData;
+
+const string ckv = '$s_afkmanager_';
+
+void MapStart() { pJson.reload( "plugins/mikk/AFKManager.json" ); }
+
+void Command( const CCommand@ args ) { AFK_TIME = atoi( args[1] ); }
+
+CClientCommand CMD( "afk", "AFKManager max afk time", @Command, ConCommandFlag::AdminOnly );
+
+const int MaxTime() { return ( AFK_TIME >= 11 ? AFK_TIME : int( pJson[ 'max afk time' ] ) ); }
+
+const bool IsAFK( CBaseEntity@ pPlayer ) { return ( atoi( CustomKeyValue( pPlayer, ckv + 'afk' ) ) == 1 ); }
+
+class CAFKManagerData
+{
+    int afk;
+    int time;
+    int live;
+
+    void opIndex( int _afk_, int _time_, int _live_ )
+    {
+        afk = _afk_;
+        time = _time_;
+        live = _live_;
+    }
+}
+
+HookReturnCode MapChange()
+{
+    gPlayerData.deleteAll();
+
+    for( int i = 0; i <= g_Engine.maxClients; i++ )
+    {
+        CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( i );
+
+        if( pPlayer !is null )
+        {
+            CAFKManagerData pData;
+
+            pData[
+                atoi( CustomKeyValue( pPlayer, ckv + 'afk' ) ),
+                    atoi( CustomKeyValue( pPlayer, ckv + 'time' ) ),
+                        atoi( CustomKeyValue( pPlayer, ckv + 'live' ) )
+            ];
+
+            gPlayerData[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] = pData;
+        }
+    }
+
+    return HOOK_CONTINUE;
+}
+
+HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
+{
+    if( pPlayer !is null && gPlayerData.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
+    {
+        CAFKManagerData@ pData = cast<CAFKManagerData@>( gPlayerData[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] );
+
+        if( pData !is null )
+        {
+            CustomKeyValue( pPlayer, ckv + 'afk', pData.afk );
+            CustomKeyValue( pPlayer, ckv + 'time', pData.time );
+            CustomKeyValue( pPlayer, ckv + 'live', pData.live );
+            gPlayerData.delete( Mikk.PlayerFuncs.GetSteamID( pPlayer ) );
+        }
+    }
+
+    return HOOK_CONTINUE;
+}
 
 HookReturnCode ClientSay( SayParameters@ pParams )
 {
-    if( pParams.GetArguments()[0] == '/afk' )
+    CBasePlayer@ pPlayer = pParams.GetPlayer();
+
+    if( pPlayer !is null )
     {
-        Join( pParams.GetPlayer(), true );
+        if( pParams.GetArguments()[0] == '/afk' )
+        {
+            Join( pParams.GetPlayer(), true );
+        }
+        else if( pJson[ 'Add afk to names', false ] && IsAFK( pPlayer ) )
+        {
+            string name = string( pPlayer.pev.netname );
+            pPlayer.pev.netname = string_t( '(AFK) ' + name );
+            g_Scheduler.SetTimeout( "RestoreName", 0.01f, EHandle( pPlayer ), string_t( name ) );
+        }
     }
     return HOOK_CONTINUE;
 }
 
-dictionary Players;
+void RestoreName( EHandle hPlayer, string_t name )
+{
+    CBaseEntity@ pPlayer = hPlayer.GetEntity();
+
+    if( pPlayer !is null )
+    {
+        pPlayer.pev.netname = name;
+    }
+}
 
 void Join( CBasePlayer@ pPlayer, bool &in ByChat = false )
 {
-    if( pPlayer !is null && string( Players[ g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ] ) != 'AFK' )
+    if( pPlayer !is null && !IsAFK( pPlayer ) )
     {
-        Players[ string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) ] = 'AFK';
+        Mikk.Language.Print( pPlayer, pJson[ 'youve_moved_afk', {} ], MKLANG::CHAT );
+        dictionary gpArgs = { { 'name', string( pPlayer.pev.netname ) } };
+        Mikk.Language.Print( pPlayer, pJson[ 'player_join_afk', {} ], MKLANG::CHAT, gpArgs );
+        Discord::print( string( pJson[ 'player_join_afk', {} ][ Discord::language() ] ), gpArgs );
 
-        if( !ByChat )
-        {
-            Mikk.Language.Print( pPlayer, pJson[ 'youve_moved_afk', {} ], MKLANG::CHAT );
-            Mikk.Language.Print( pPlayer, pJson[ 'player_join_afk', {} ], MKLANG::CHAT, { { 'name', string( pPlayer.pev.netname ) } } );
-        }
-
-        CustomKeyValue( pPlayer, '$i_afkmanager_isafk', 1 );
-
-        /*if( GetLPLevel( pPlayer ) > LP_NONE )
-        {
-            CustomKeyValue( pPlayer, '$i_afkmanager_live', ( pPlayer.IsAlive() ? '1' : '0' ) );
-        }*/
+        CustomKeyValue( pPlayer, ckv + 'afk', 1 );
 
         if( pPlayer.IsAlive() )
         {
+            if( pJson[ 'respawn on exit', false ] )
+            {
+                CustomKeyValue( pPlayer, ckv + 'live', 1 );
+            }
+
             pPlayer.GetObserver().StartObserver( pPlayer.pev.origin, pPlayer.pev.angles, false );
         }
     }
 }
 
-void Think()
+void Leave( CBasePlayer@ pPlayer )
 {
-    for( int iPlayer = 1; iPlayer <= g_Engine.maxClients; iPlayer++ )
+    if( pPlayer !is null )
     {
-        CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iPlayer );
+        int f = atoi( CustomKeyValue( pPlayer, ckv + 'time' ) );
+        int h = f / 3600;
+        int m = ( f % 3600 ) / 60;
+        int s = f % 60;
+        dictionary gpArgs = { { 'name', string( pPlayer.pev.netname ) }, { 'time', string(h) + ":" + string(m) + ":" + string(s) } };
+        Mikk.Language.Print( pPlayer, pJson[ 'player_left_afk', {} ], MKLANG::CHAT, gpArgs );
+        Discord::print( string( pJson[ 'player_left_afk', {} ][ Discord::language() ] ), gpArgs );
 
-        if( pPlayer is null || !pPlayer.IsConnected() )
-            return;
+        CustomKeyValue( pPlayer, ckv + 'afk', 0 );
+        CustomKeyValue( pPlayer, ckv + 'time', 0 );
 
-        if( string( Players[ g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ] ) == 'AFK' )
+        if( CustomKeyValue( pPlayer, ckv + 'live' ) == 1 )
         {
-            if( pPlayer.IsAlive() )
-            {
-                pPlayer.GetObserver().StartObserver( pPlayer.pev.origin, pPlayer.pev.angles, false );
-            }
+            Mikk.PlayerFuncs.RespawnPlayer( pPlayer );
+        }
+    }
+}
 
-            Mikk.Language.Print( pPlayer, pJson[ 'hold_to_exit', {} ], MKLANG::BIND );
+HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
+{
+    if( pPlayer is null )
+        return HOOK_CONTINUE;
 
-            if( pPlayer.pev.button & IN_USE > 0 )
-            {
-                Mikk.Language.Print( pPlayer, pJson[ 'client_left_afk', {} ], MKLANG::CHAT );
-                Mikk.Language.Print( pPlayer, pJson[ 'player_left_afk', {} ], MKLANG::CHAT, { { 'name', string( pPlayer.pev.netname ) } } );
-
-                CustomKeyValue( pPlayer, '$i_afkmanager', 0 );
-                Players[ string( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) ] = 'notAFK';
-                CustomKeyValue( pPlayer, '$i_afkmanager_isafk', 0 );
-                pPlayer.pev.nextthink = 0.1f;
-
-                int iKeepLife = 0;
-                CustomKeyValue( pPlayer, '$i_afkmanager_live', iKeepLife );
-
-                if( iKeepLife == 1 )
-                {
-                    CBaseEntity@ pSpawns = null;
-
-                    while( ( @pSpawns = g_EntityFuncs.FindEntityByClassname( pSpawns, 'info_player_deathmatch' ) ) !is null )
-                    {
-                        if( g_PlayerFuncs.IsSpawnPointValid( pSpawns, pPlayer ) )
-                        {
-                            g_EntityFuncs.SetOrigin( pPlayer, pSpawns.pev.origin );
-                            pPlayer.pev.angles = pSpawns.pev.angles;
-                            pPlayer.Revive();
-                            break;
-                        }
-                    }
-                }
-
-                return;
-            }
-            pPlayer.pev.nextthink = g_Engine.time + 3.0f;
-            return;
+    // Player is AFK
+    if( IsAFK( pPlayer ) )
+    {
+        if( g_Engine.time > atof( CustomKeyValue( pPlayer, ckv + 'think' ) ) )
+        {
+            CustomKeyValue( pPlayer, ckv + 'time', atoi( CustomKeyValue( pPlayer, ckv + 'time' ) ) + 1 );
+            CustomKeyValue( pPlayer, ckv + 'think', g_Engine.time + 1.0f );
         }
 
-        if( pJson[ 'blacklist maps', {} ][ string( g_Engine.mapname ), false ] )
-        {
-            return;
-        }
-
-        Vector VecOrigin; atov( CustomKeyValue( pPlayer, '$v_afkmanager_origin', VecOrigin.ToString() ) );
-        Vector VecAngles; atov( CustomKeyValue( pPlayer, '$v_afkmanager_angles', VecAngles.ToString() ) );
-        int iAFKTime = 0;
-        CustomKeyValue( pPlayer, '$i_afkmanager', iAFKTime );
-        if( iAFKTime < 0 )
-            iAFKTime = 0;
+        pPlayer.pev.nextthink = g_Engine.time + 0.1f;
 
         if( pPlayer.IsAlive() )
         {
-            if( iAFKTime == AFKMaxTime )
-            {
-                if( g_PlayerFuncs.GetNumPlayers() == g_Engine.maxClients /*&& GetLPLevel( pPlayer ) > 0*/ )
-                {
-                    Mikk.Language.Print( pPlayer, pJson[ 'kick_advice', {} ], MKLANG::CHAT, { { 'name', string( pPlayer.pev.netname ) } } );
+            pPlayer.GetObserver().StartObserver( pPlayer.pev.origin, pPlayer.pev.angles, false );
+        }
 
-                    g_EngineFuncs.ServerCommand
-                    (
-                        "kick #" + g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() )+ " \"" +
-                        Mikk.Language.GetLanguage( pPlayer, pJson[ 'kick_reason', {} ] ) + "\"\n"
-                    );
-                }
-                else
-                {
-                    Join( pPlayer );
-                }
-            }
-            else if( iAFKTime > AFKMaxTime - 10 )
+        Mikk.Language.Print( pPlayer, pJson[ 'hold_to_exit', {} ], MKLANG::BIND );
+
+        if( pPlayer.pev.button & IN_USE > 0 )
+        {
+            Leave( pPlayer ); // Print empty string so it disappears as soon as the player press E
+            g_PlayerFuncs.PrintKeyBindingString( pPlayer, '\n' );
+        }
+    }
+    else if( pPlayer.IsAlive() )
+    {
+        if( array<string>( pJson[ 'blacklist maps' ] ).find( string( g_Engine.mapname ) ) < 1 )
+        {
+            if( atoi( CustomKeyValue( pPlayer, ckv + 'button' ) ) != pPlayer.pev.button )
             {
-                string sti = string( AFKMaxTime - iAFKTime );
-                Mikk.Language.Print( pPlayer, pJson[ 'afk_advice', {} ], MKLANG::HUDMSG, { { 'time', sti } } );
-                Mikk.Language.Print( pPlayer, pJson[ 'afk_advice', {} ], MKLANG::CONSOLE, { { 'time', sti } } );
+                CustomKeyValue( pPlayer, ckv + 'button', pPlayer.pev.button );
+                CustomKeyValue( pPlayer, ckv + 'time', 0 );
             }
 
-            if( pPlayer.pev.origin != VecOrigin && pPlayer.pev.angles != VecAngles )
+            if( g_Engine.time > atof( CustomKeyValue( pPlayer, ckv + 'think' ) ) )
             {
-                CustomKeyValue( pPlayer, '$v_afkmanager_origin', pPlayer.pev.origin.ToString() );
-                CustomKeyValue( pPlayer, '$v_afkmanager_angles', pPlayer.pev.angles.ToString() );
-                CustomKeyValue( pPlayer, '$i_afkmanager', 0 );
-            }
-            else
-            {
-                CustomKeyValue( pPlayer, '$i_afkmanager', iAFKTime + 1 );
+                int time =  atoi( CustomKeyValue( pPlayer, ckv + 'time' ) );
+
+                if( time >= MaxTime() )
+                {
+                    if( g_PlayerFuncs.GetNumPlayers() == g_Engine.maxClients
+                    && ( g_PlayerFuncs.AdminLevel( pPlayer ) < AdminLevel_t::ADMIN_YES ) || !pJson[ 'protect admins', true ] )
+                    {
+                        g_EngineFuncs.ServerCommand(
+                            "kick #" + g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() )+ " \"" +
+                                Mikk.Language.GetLanguage( pPlayer, pJson[ 'kick_reason', {} ] ) + "\"\n"
+                        );
+
+                        dictionary gpArgs = { { 'name', string( pPlayer.pev.netname ) } };
+                        Mikk.Language.Print( pPlayer, pJson[ 'kick_advice', {} ], MKLANG::CHAT, gpArgs );
+                        Discord::print( string( pJson[ 'kick_advice', {} ][ Discord::language() ] ), gpArgs );
+                    }
+                    else
+                    {
+                        Join( pPlayer );
+                    }
+                }
+                else if( time > ( MaxTime() - 10 ) )
+                {
+                    Mikk.Language.Print( pPlayer, pJson[ 'afk_advice', {} ], MKLANG::HUDMSG, { { 'time', string( MaxTime() - time ) } } );
+                }
+                CustomKeyValue( pPlayer, ckv + 'time', atoi( CustomKeyValue( pPlayer, ckv + 'time' ) ) + 1 );
+                CustomKeyValue( pPlayer, ckv + 'think', g_Engine.time + 1.0f );
             }
         }
     }
+    return HOOK_CONTINUE;
 }

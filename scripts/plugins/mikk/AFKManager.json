@@ -1,21 +1,21 @@
 {
+    "reload": false,
+    "max afk time": 500,
+    "respawn on exit": true,
+    "Add afk to names": true,
+    "protect admins": true,
     "blacklist maps":
-    {
-        "hl_c00": true
-    },
+    [
+        "hl_c00",
+        "of0a0"
+    ],
     "afk_advice":
     {
-        "english": "[AFKManager] You'll be transfered to spectator mode in $time$ second(s).",
-        "spanish": "[AFKManager] Seras movido al modo espectador en $time$ segundo(s).",
-        "portuguese": "[AFKManager] Voce ira para o modo espectador em $time$ segundo(s).",
+        "english": "[AFKManager] You'll be transfered to spectator mode in $time$ seconds.",
+        "spanish": "[AFKManager] Seras movido al modo espectador en $time$ segundos.",
+        "portuguese": "[AFKManager] Voce ira para o modo espectador em $time$ segundos.",
         "color": "255 0 0 0",
         "hold": "1.0"
-    },
-    "client_left_afk":
-    {
-        "english": "[AFKManager] you've left AFK-mode.",
-        "spanish": "[AFKManager] Saliste del modo AFK.",
-        "portuguese": "[AFKManager] Voce saiu do modo AFK."
     },
     "hold_to_exit":
     {
@@ -43,9 +43,9 @@
     },
     "player_left_afk":
     {
-        "english": "[AFKManager] The player $name$ left AFK-mode.",
-        "spanish": "[AFKManager] El jugador $name$ salio del modo AFK.",
-        "portuguese": "[AFKManager] O jogador $name$ saiu do modo AFK."
+        "english": "[AFKManager] The player $name$ left AFK-mode after $time$",
+        "spanish": "[AFKManager] El jugador $name$ salio del modo AFK despues de $time$",
+        "portuguese": "[AFKManager] O jogador $name$ saiu do modo AFK depois do $time$"
     },
     "youve_moved_afk":
     {

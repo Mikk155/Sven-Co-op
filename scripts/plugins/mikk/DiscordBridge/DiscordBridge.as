@@ -16,6 +16,7 @@
 //==========================================================================================================================================\\
 
 #include "../../../mikk/shared"
+#include "../../../mikk/Discord"
 #include "method/fileload"
 #include "metamod/main"
 #include "AngelScript/PlayerKilled"
@@ -30,6 +31,7 @@
 #include "AngelScript/ClientSay"
 #include "AngelScript/GetEmote"
 #include "AngelScript/gamestatus"
+#include "AngelScript/MapStarted"
 
 json pJson;
 string language;
@@ -64,6 +66,21 @@ void MapInit()
     if( pJson.reload( 'plugins/mikk/DiscordBridge.json' ) == 0 )
     {
         RegisterAll();
+    }
+
+    g_CustomEntityFuncs.RegisterCustomEntity( 'DiscordBridgeEntity', Discord::name );
+    Mikk.EntityFuncs.CreateEntity( { { 'classname', Discord::name } } );
+}
+
+class DiscordBridgeEntity : ScriptBaseEntity
+{
+    bool KeyValue( const string& in szKeyName, const string& in szValue )
+    {
+        if( szKeyName == 'catch' && szValue != '' )
+        {
+            FormatMessage( szValue );
+        }
+        return false;
     }
 }
 
@@ -123,7 +140,7 @@ void Think()
 
     for( int i = 0; m_szBuffer.length() > 0 && i < int( pJson[ 'messages per second' ] ); i++ )
     {
-        string MSG = string( pJson[ 'MESSAGES', {} ][ 'FromDiscordTag' ] ) + m_szBuffer[0];
+        string MSG = string( pJson[ 'MESSAGES', {} ][ 'FromDiscordTag' ] ) + ' ' + m_szBuffer[0];
         m_szBuffer.removeAt(0);
         g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, MSG + '\n' );
     }
