@@ -1,314 +1,434 @@
 {
-	"namespace SurvivalEndRoundHook":
+	"namespace datashared":
 	{
-		"prefix":[ "Hooks::Game::SurvivalEndRoundHook", "SurvivalEndRoundHook" ],
-		"body": "Hooks::Game::SurvivalEndRoundHook",
-		"description": "Called once when a survival mode round ends at the moment there is no more alive players."
+		"prefix": [ "#include", "datashared" ],
+		"body": "#include \"${1:../../}mikk/datashared\"",
+		"description": "(datashared.as) Utilidad utilizada para hacer que cualquier plugin pueda enviar informacion a otros plugins mediante la trasnferencia de dictionary"
 	},
-	"funcdef HookReturnCode SurvivalEndRoundHook();":
+	"CSharedDataPlugins@ GetDataClass()":
 	{
-		"prefix":[ "SurvivalEndRoundHook" ],
-		"body": "HookReturnCode SurvivalEndRoundHook()",
-		"description": "Called once when a survival mode round ends at the moment there is no more alive players."
+		"prefix": [ "datashared", "datashared::GetDataClass", "GetDataClass", "shared" ],
+		"body": "datashared::GetDataClass()",
+		"description": "(datashared.as) Obten la instancia CSharedDataPlugins@ presente, si no existe una nueva será creada"
 	},
-	"namespace PlayerJumpHook":
+	"dictionary GetData( const string szPlugin = String::EMPTY_STRING )":
 	{
-		"prefix":[ "Hooks::Player::PlayerJumpHook", "PlayerJumpHook" ],
-		"body": "Hooks::Player::PlayerJumpHook",
-		"description": "Called when a player jumps"
+		"prefix": [ "datashared", "datashared::GetData", "GetData", "shared" ],
+		"body": "datashared::GetData( ${1:const string szPlugin = String::EMPTY_STRING} )",
+		"description": "(datashared.as) Obten el dictionary correspondiente a el plugin con el nombre szPlugin\nSi ningun nombre es utilizado, se utilizara el nombre del archivo del plugin que este usando esta funcion"
 	},
-	"funcdef HookReturnCode PlayerJumpHook( CBasePlayer@ );":
+	"dictionary SetData( dictionary pNewData, const string szPlugin = String::EMPTY_STRING )":
 	{
-		"prefix":[ "PlayerJumpHook" ],
-		"body": "HookReturnCode PlayerJumpHook( ${1:CBasePlayer@})",
-		"description": "Called when a player jumps"
+		"prefix": [ "datashared", "datashared::SetData", "SetData", "shared" ],
+		"body": "datashared::SetData( ${1:dictionary pNewData}, ${2:const string szPlugin = String::EMPTY_STRING} )",
+		"description": "(datashared.as) Actualiza el dictionario del plugin szPlugin\nRetorna una copia del dictionario luego de haber sido guardado\nSi ningun nombre es utilizado, se utilizara el nombre del archivo del plugin que este usando esta funcion"
 	},
-	"namespace PlayerKeyInputHook":
+	"namespace Discord":
 	{
-		"prefix":[ "Hooks::Player::PlayerKeyInputHook", "PlayerKeyInputHook" ],
-		"body": "Hooks::Player::PlayerKeyInputHook",
-		"description": "Called when a player pev->buttons changes"
+		"prefix": [ "#include", "Discord" ],
+		"body": "#include \"${1:../../}mikk/Discord\"",
+		"description": "(Discord.as) Utilidad utilizada para hacer que cualquier plugin pueda enviar un string a discord mediante el plugin DiscordBridge."
 	},
-	"funcdef HookReturnCode PlayerKeyInputHook( CBasePlayer@, In_Buttons, const bool );":
+	"const string language()":
 	{
-		"prefix":[ "PlayerKeyInputHook" ],
-		"body": "HookReturnCode PlayerKeyInputHook( ${1:CBasePlayer@}, ${2:In_Buttons}, ${3:const bool})",
-		"description": "Called when a player pev->buttons changes. the given bool returns whatever the button has been released or pressed"
+		"prefix": [ "Discord", "Discord::language", "language" ],
+		"body": "Discord::language()",
+		"description": "(Discord.as) Accede a la eleccion de lenguaje del operador del servidor."
 	},
-	"namespace PlayerObserverModeHook":
+	"void print( string szMessage, dictionary@ pReplacement = null )":
 	{
-		"prefix":[ "Hooks::Player::PlayerObserverModeHook", "PlayerObserverModeHook" ],
-		"body": "Hooks::Player::PlayerObserverModeHook",
-		"description": "Called when a player change its spectator mode"
+		"prefix": [ "Discord", "Discord::bridge", "Discord::print" ],
+		"body": "Discord::print( ${1:string szMessage}, ${2:dictionary@ pReplacement = null} )",
+		"description": "(Discord.as) Envia un mensaje a el plugin DiscordBridge para que este se encargue de enviarlo a Discord.\nSi tienes un plugin con multiples lenguajes utiliza Discord::language() para saber que mensaje enviar.\npReplacement son los argumentos a reemplazar en el string."
 	},
-	"funcdef HookReturnCode PlayerObserverModeHook( CBasePlayer@, ObserverMode );":
+	"namespace EntityFuncs":
 	{
-		"prefix":[ "PlayerObserverModeHook" ],
-		"body": "HookReturnCode PlayerObserverModeHook( ${1:CBasePlayer@}, ${2:ObserverMode})",
-		"description": "Called when a player change its spectator mode."
-	},
-	"string to_string( RGBA From, bool AddColons = false, bool AddSpace = true )":
-	{
-		"prefix":[ "fft::to_string", "to_string", "RGBA", "format" ],
-		"body": "fft::.to_string( ${1:RGBA From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true})",
-		"description": "Format the given RGBA to string. If AddColons is true add colons. If AddSpace is false then do not add white spaces."
-	},
-	"string to_string( bool From, bool MakeDigit = false )":
-	{
-		"prefix":[ "fft::to_string", "to_string", "bool", "format" ],
-		"body": "fft::.to_string( ${1:bool From}, ${2:bool MakeDigit = false})",
-		"description": "Format the given bool to string, if MakeDigit is true then false = 0, true = 1"
-	},
-	"string to_string( Vector From, bool AddColons = false, bool AddSpace = true )":
-	{
-		"prefix":[ "fft::to_string", "to_string", "Vector", "format" ],
-		"body": "fft::.to_string( ${1:Vector From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true})",
-		"description": "Format the given Vector to string. If AddColons is true add colons. If AddSpace is false then do not add white spaces."
-	},
-	"string to_string( Vector2D From, bool AddColons = false, bool AddSpace = true )":
-	{
-		"prefix":[ "fft::to_string", "to_string", "Vector2D", "format" ],
-		"body": "fft::.to_string( ${1:Vector2D From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true})",
-		"description": "Format the given Vector2D to string. If AddColons is true add colons. If AddSpace is false then do not add white spaces."
-	},
-	"RGBA HueToRGBA( float H )":
-	{
-		"prefix":[ "fft::HueToRGBA", "fft::Hue", "fft::RGBA", "Hue", "format" ],
-		"body": "fft::.HueToRGBA( ${1:float H})",
-		"description": "Format the given hue float value to RGBA (.a will most likely be empty)"
-	},
-	"float RGBAToHue( RGBA rgb ){ return ToHue( Vector( rgb.r, rgb.g, rgb.b ) ); }":
-	{
-		"prefix":[ "fft::ToHue", "fft::Hue", "fft::RGBAToHue", "RGBAToHue", "Hue", "format" ],
-		"body": "fft::.RGBAToHue( ${1:RGBA rgb})",
-		"description": "Format the given RGBA to hue value in a float form"
-	},
-	"float ToHue( Vector rgb )":
-	{
-		"prefix":[ "fft::ToHue", "fft::Hue", "Hue", "format" ],
-		"body": "fft::.ToHue( ${1:Vector rgb})",
-		"description": "Format the given Vector to hue value in a float form"
-	},
-	"RGBA atorgba( const string From )":
-	{
-		"prefix":[ "atorgba" ],
-		"body": "atorgba( ${1:const string From})",
-		"description": "Return the given string as a 4D RGBA"
-	},
-	"Vector atov( const string From )":
-	{
-		"prefix":[ "atov", "StringToVecto" ],
-		"body": "atov( ${1:const string From})",
-		"description": "Return the given string as a 3D Vector"
-	},
-	"bool atob( const string From )":
-	{
-		"prefix":[ "atobool", "stringtobool" ],
-		"body": "atob( ${1:const string From})",
-		"description": "Return the given string as a boolean, 0/1 or false/true"
-	},
-	"string opIndex( uint index )":
-	{
-		"prefix":[ "JsonValue", "opInd" ],
-		"body": "opIndex( ${1:uint index})",
-		"description": "Return the given value on the array of this json if any, else returns empty string"
-	},
-	"bool exists( string &in key, bool CheckValue = false )":
-	{
-		"prefix":[ "json", "exists" ],
-		"body": "exists( ${1:string &in key}, ${2:bool CheckValue = false})",
-		"description": "Return whatever the given key exists, if vlvalue is true it will check for both to exist"
-	},
-	"uint size()":
-	{
-		"prefix":[ "json", "siz" ],
-		"body": "size()",
-		"description": "Return the whole size of this json data"
-	},
-	"uint length()":
-	{
-		"prefix":[ "json", "length" ],
-		"body": "length()",
-		"description": "Return the length of this json data"
-	},
-	"JsonValue opIndex( string key )":
-	{
-		"prefix":[ "json", "opInd" ],
-		"body": "opIndex( ${1:string key})",
-		"description": "Return the JsonValue of the given key"
-	},
-	"string Instance( string key, bool ToString = false ){ return get( key ).Instance( ToString ); }":
-	{
-		"prefix":[ "json", "Instanc" ],
-		"body": "Instance( ${1:string key}, ${2:bool ToString = false})",
-		"description": "Return the instance name on enum JsonValueType, if ToString is true return as a string"
-	},
-	"":
-	{
-		"prefix":[ "" ],
-		"body": "",
-		"description": ""
-	},
-	"uint reload( string m_szLoad, bool include = false )":
-	{
-		"prefix":[ "load", "reload", "json", "pars" ],
-		"body": "reload( ${1:string m_szLoad}, ${2:bool include = false})",
-		"description": "Aliases to \"load\" but will return 1 if this json doesn't has a key \"reload\" on true"
-	},
-	"uint load( string m_szLoad, bool include = false )":
-	{
-		"prefix":[ "load", "json", "pars" ],
-		"body": "load( ${1:string m_szLoad}, ${2:bool include = false})",
-		"description": "Loads a json file within a json class. if no format '.json' is provided it asumes you sent a string with json format if include is true the json is not cleared and new data will be written above, When specifying format, folder maps/plugins is necesary to include in the path. Return codes: 0 = everything fine 1 = empty string sent 2 = file not found"
-	},
-	"enum MKLANG::CHAT":
-	{
-		"prefix": [ "CHAT", "MKLANG::CHAT" ],
-		"body": "MKLANG::CHAT",
-		"description": "ClientPrint -> HUD_PRINTTALK",
-	},
-	"enum MKLANG::BIND":
-	{
-		"prefix": [ "BIND", "MKLANG::BIND" ],
-		"body": "MKLANG::BIND",
-		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString",
-	},
-	"enum MKLANG::CENTER":
-	{
-		"prefix": [ "CENTER", "MKLANG::CENTER" ],
-		"body": "MKLANG::CENTER",
-		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER",
-	},
-	"enum MKLANG::HUDMSG":
-	{
-		"prefix": [ "HUDMSG", "MKLANG::HUDMSG" ],
-		"body": "MKLANG::HUDMSG",
-		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8",
-	},
-	"enum MKLANG::NOTIFY":
-	{
-		"prefix": [ "NOTIFY", "MKLANG::NOTIFY" ],
-		"body": "MKLANG::NOTIFY",
-		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8 ClientPrint -> HUD_PRINTNOTIFY",
-	},
-	"enum MKLANG::CONSOLE":
-	{
-		"prefix": [ "CONSOLE", "MKLANG::CONSOLE" ],
-		"body": "MKLANG::CONSOLE",
-		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8 ClientPrint -> HUD_PRINTNOTIFY ClientPrint -> HUD_PRINTCONSOLE",
-	},
-	"string GetLanguage( CBasePlayer@ pPlayer, json@ pJson, dictionary@ pReplacement = null )":
-	{
-		"prefix":[ "Mikk.Language.GetLanguage", "GetLanguag" ],
-		"body": "Mikk.Language.GetLanguage( ${1:CBasePlayer@ pPlayer}, ${2:json@ pJson}, ${3:dictionary@ pReplacement = null})",
-		"description": "ClientPrint -> HUD_PRINTTALK PrintKeyBindingString ClientPrint -> HUD_PRINTCENTER HudMessage Pass arguments in the json file. x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8 ClientPrint -> HUD_PRINTNOTIFY ClientPrint -> HUD_PRINTCONSOLE Gets a language string from the given json value, pReplacement keys will be replaced with their values. note in the json string it have to be enclosed with two $"
-	},
-	"void PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )":
-	{
-		"prefix":[ "Mikk.Language.PrintAll", "PrintAll", "Languag" ],
-		"body": "Mikk.Language.PrintAll( ${1:json@ pJson}, ${2:MKLANG PrintType = CHAT}, ${3:dictionary@ pReplacement = null})",
-		"description": "Prints a language string from the given json value, PrintType is the message type. see the enum pReplacement keys will be replaced with their values. note in the json string it have to be enclosed with two $"
-	},
-	"void Print( CBasePlayer@ pPlayer, json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )":
-	{
-		"prefix":[ "Mikk.Language.PrintAll", "PrintAll", "Languag" ],
-		"body": "Mikk.Language.Print( ${1:CBasePlayer@ pPlayer}, ${2:json@ pJson}, ${3:MKLANG PrintType = CHAT}, ${4:dictionary@ pReplacement = null})",
-		"description": "Prints a language string from the given json value, PrintType is the message type. see the enum pReplacement keys will be replaced with their values. note in the json string it have to be enclosed with two $"
-	},
-	"void GetColormap( CBasePlayer@ pPlayer, RGBA &out TopRGB, RGBA &out BotRGB )":
-	{
-		"prefix":[ "Mikk.PlayerFuncs.GetColormap", "GetColormap", "colormap", "bottomcolor", "topcolor", "Hu" ],
-		"body": "Mikk.PlayerFuncs.GetColormap( ${1:CBasePlayer@ pPlayer}, ${2:RGBA &out TopRGB}, ${3:RGBA &out BotRGB})",
-		"description": "Gets bottomcolor and topcolor from the given player as a RGBA values"
-	},
-	"void ClientCommand( string_t m_iszCommand, CBasePlayer@ pPlayer, bool bAllPlayers = false )":
-	{
-		"prefix":[ "Mikk.PlayerFuncs.ClientCommand", "ClientCommand", "Command" ],
-		"body": "Mikk.PlayerFuncs.ClientCommand( ${1:string_t m_iszCommand}, ${2:CBasePlayer@ pPlayer}, ${3:bool bAllPlayers = false})",
-		"description": "Executes a console command on the given player or all players if bAllPlayers is true"
-	},
-	"CBasePlayer@ FindPlayerBySteamID( const string &in m_iszSteamID )":
-	{
-		"prefix":[ "Mikk.PlayerFuncs.FindPlayerBySteamID", "FindPlayerBySteamID", "SteamID" ],
-		"body": "Mikk.PlayerFuncs.FindPlayerBySteamID( ${1:const string &in m_iszSteamID})",
-		"description": "Get the CBasePlayer@ instance of the given SteamID"
-	},
-	"string GetSteamID( CBasePlayer@ pPlayer )":
-	{
-		"prefix":[ "Mikk.PlayerFuncs.GetSteamID", "GetSteamID", "SteamID" ],
-		"body": "Mikk.PlayerFuncs.GetSteamID( ${1:CBasePlayer@ pPlayer})",
-		"description": "Return the SteamID of the given player, BOTS will be enumerated by their index"
-	},
-	"bool RespawnPlayer( CBasePlayer@ pPlayer )":
-	{
-		"prefix":[ "Mikk.PlayerFuncs.RespawnPlayer", "RespawnPlay" ],
-		"body": "Mikk.PlayerFuncs.RespawnPlayer( ${1:CBasePlayer@ pPlayer})",
-		"description": "Revives the given player and then relocates him to a valid spawnpoint, returns true if revived"
-	},
-	"void PlayerSay( CBaseEntity@ pPlayer, string m_szMessage, CBasePlayer@ pTarget = null )":
-	{
-		"prefix":[ "Mikk.PlayerFuncs.PlayerSay", "chat", "say" ],
-		"body": "Mikk.PlayerFuncs.PlayerSay( ${1:CBaseEntity@ pPlayer}, ${2:string m_szMessage}, ${3:CBasePlayer@ pTarget = null})",
-		"description": "Make a player say something, if pTarget is not null, only pTarget will see the message."
+		"prefix": [ "#include", "EntityFuncs" ],
+		"body": "#include \"${1:../../}mikk/EntityFuncs\"",
+		"description": "(EntityFuncs.as) Utilidades relacionadas a entidades"
 	},
 	"CBaseEntity@ CreateEntity( dictionary g_Data, bool blSpawnNow = true )":
 	{
-		"prefix":[ "Mikk.EntityFuncs.CreateEntity", "CreateEntity", "EntityCreat" ],
-		"body": "Mikk.EntityFuncs.CreateEntity( ${1:dictionary g_Data}, ${2:bool blSpawnNow = true})",
-		"description": "Creates a entity with the given keyvalue data, if blSpawnNow is false the entity is not spawned"
+		"prefix": [ "EntityFuncs", "EntityFuncs::CreateEntity", "CreateEntity" ],
+		"body": "EntityFuncs::CreateEntity( ${1:dictionary g_Data}, ${2:bool blSpawnNow = true} )",
+		"description": "(EntityFuncs.as) Crea y retorna una entidad con todas las keyvalues que existan en el dictionary g_Data"
 	},
-	"bool LoadEntFile( const string &in m_szPath )":
+	"int LoadEntFile( const string &in m_szPath )":
 	{
-		"prefix":[ "Mikk.EntityFuncs.LoadEntFile", "LoadEntFil" ],
-		"body": "Mikk.EntityFuncs.LoadEntFile( ${1:const string &in m_szPath})",
-		"description": "Loads an external .ent file into the map"
+		"prefix": [ "EntityFuncs", "EntityFuncs::LoadEntFile", "LoadEntFile" ],
+		"body": "EntityFuncs::LoadEntFile( ${1:const string &in m_szPath} )",
+		"description": "(EntityFuncs.as) Abre un archivo con formato ripent y crea todas las entidades en el juego.\nRetorna el numero de entidades creadas, -1 si el archivo no se pudo abrir."
 	},
-	"int Call( const string m_iszFunction )":
+	"string CustomKeyValue( CBaseEntity@ pEntity, const string &in m_iszKey, const string &in m_iszValue = String::EMPTY_STRING )":
 	{
-		"prefix":[ "g_Reflection.Call", "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
-		"body": "g_Reflection.Call( ${1:const string m_iszFunction})",
-		"description": "Calls a function globaly in all namespaces. Returns the number of functions called."
+		"prefix": [ "EntityFuncs", "EntityFuncs::CustomKeyValue", "CustomKeyValue" ],
+		"body": "CustomKeyValue( ${1:CBaseEntity@ pEntity}, ${2:const string&in m_iszKey}, ${3:const string&in m_iszValue = String::EMPTY_STRING} )",
+		"description": "(EntityFuncs.as) Retorna el valor dela custom-key-value\nSi m_iszValue es dada el valor se actualizará\nSi la entidad es nula retorna String::INVALID_INDEX\nSi la entidad no tiene la customkeyvalue retorna String::EMPTY_STRING"
 	},
-	"Reflection::Function@ opIndex( string m_iszFunction )":
+	"namespace fft":
 	{
-		"prefix":[ "g_Reflection.opIndex", "g_Reflection.Get", "g_Reflection.Function", "Reflection" ],
-		"body": "g_Reflection.opIndex( ${1:string m_iszFunction})",
-		"description": "Get a script function by name or namespace::name"
+		"prefix": [ "#include", "fft" ],
+		"body": "#include \"${1:../../}mikk/fft\"",
+		"description": "(fft.as) Utilidades relacionadas conversiones"
 	},
-	"string opIndex( const string &in szKey, string szValue = '', string szFrom = String::EMPTY_STRING )":
+	"string to_string( RGBA From, bool AddColons = false, bool AddSpace = true )":
 	{
-		"prefix":[ "DataShared", "Shared", "Data", "Plugin" ],
-		"body": "gpDataShare.opIndex( ${1:const string &in szKey}, ${2:string szValue = ''}, ${3:string szFrom = String::EMPTY_STRING})",
-		"description": "Return the value of the given key for this plugin, if szValue is set it will be updated. if szFrom is set is the plugin name"
+		"prefix": [ "fft", "fft::to_string", "to_string", "RGBA" ],
+		"body": "fft::to_string( ${1:RGBA From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
+		"description": "(fft.as) Retorna una variable RGBA como string.\nAddColons va a añadir comas y AddSpace espacios."
 	},
-	"string GetDiscord()":
+	"string to_string( bool From, bool MakeDigit = false )":
 	{
-		"prefix":[ "Mikk.GetDiscord", "Discord" ],
-		"body": "Mikk.GetDiscord()",
-		"description": "Get discord server invite"
+		"prefix": [ "fft", "fft::to_string", "to_string", "bool" ],
+		"body": "fft::to_string( ${1:bool From}, ${2:bool MakeDigit = false} )",
+		"description": "(fft.as) Retorna una variable bool como string.\nMakeDigit especifica como queremos obtenerla. 0/1 o false/true"
 	},
-	"string GetContactInfo()":
+	"string to_string( Vector From, bool AddColons = false, bool AddSpace = true )":
 	{
-		"prefix":[ "Mikk.GetContactInfo", "Contact" ],
-		"body": "Mikk.GetContactInfo()",
-		"description": "Get contact info"
+		"prefix": [ "fft", "fft::to_string", "to_string", "Vector" ],
+		"body": "fft::to_string( ${1:Vector From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
+		"description": "(fft.as) Retorna una variable Vector como string.\nAddColons va a añadir comas y AddSpace espacios."
 	},
-	"void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )":
+	"string to_string( Vector2D From, bool AddColons = false, bool AddSpace = true )":
 	{
-		"prefix":[ "Mikk.UpdateTimer", "UpdateTim" ],
-		"body": "Mikk.UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0})",
-		"description": "Clears and sets a CScheduledFunction@ function with the given parameters"
+		"prefix": [ "fft", "fft::to_string", "to_string", "Vector2D" ],
+		"body": "fft::to_string( ${1:Vector2D From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
+		"description": "(fft.as) Retorna una variable Vector2D como string.\nAddColons va a añadir comas y AddSpace espacios."
+	},
+	"RGBA HueToRGBA( float H )":
+	{
+		"prefix": [ "fft", "fft::HueToRGBA", "HueToRGBA", "Hue", "RGBA" ],
+		"body": "fft::HueToRGBA( ${1:float H} )",
+		"description": "(fft.as) Retorna el color Hue a RGBA."
+	},
+	"float RGBAToHue( RGBA rgb ){ return ToHue( Vector( rgb.r, rgb.g, rgb.b ) ); }":
+	{
+		"prefix": [ "fft", "fft::RGBAToHue", "RGBAToHue", "Hue", "RGBA" ],
+		"body": "fft::RGBAToHue( ${1:RGBA rgb} )",
+		"description": "(fft.as) Retorna el color RGBA a Hue."
+	},
+	"float ToHue( Vector rgb )":
+	{
+		"prefix": [ "fft", "fft::RGBAToHue", "RGBAToHue", "Hue", "RGBA", "ToHue", "fft::ToHue" ],
+		"body": "fft::ToHue( ${1:Vector rgb} )",
+		"description": "(fft.as) Retorna el color RGBA a Hue."
+	},
+	"RGBA atorgba( const string From )":
+	{
+		"prefix": [ "fft", "fft::atorgba", "atorgba" ],
+		"body": "atorgba( ${1:const string From} )",
+		"description": "(fft.as) Retorna el string a RGBA"
+	},
+	"Vector atov( const string From )":
+	{
+		"prefix": [ "fft", "fft::atov", "atov" ],
+		"body": "atov( ${1:const string From} )",
+		"description": "(fft.as) Retorna el string a Vector"
+	},
+	"bool atob( const string From )":
+	{
+		"prefix": [ "fft", "fft::atob", "atob" ],
+		"body": "atob( ${1:const string From} )",
+		"description": "(fft.as) Retorna el string a bool, 0/1 o tambien false/true"
+	},
+	"namespace GameFuncs":
+	{
+		"prefix": [ "#include", "GameFuncs" ],
+		"body": "#include \"${1:../../}mikk/GameFuncs\"",
+		"description": "(GameFuncs.as) Utilidades sin aparente relacion"
 	},
 	"bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )":
 	{
-		"prefix":[ "Mikk.IsPluginInstalled", "IsPluginInstalled", "Plugin", "Installed", "IsInstalled" ],
-		"body": "Mikk.IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false})",
-		"description": "Return whatever the given plugin name is installed on the server."
+		"prefix": [ "GameFuncs", "GameFuncs::IsPluginInstalled", "IsPluginInstalled", "plugin" ],
+		"body": "GameFuncs::IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false} )",
+		"description": "(GameFuncs.as) Retorna si el plugin esta instalado"
 	},
-	"string CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const string&in m_iszValue = String::EMPTY_STRING )":
+	"void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )":
 	{
-		"prefix":[ "CKV", "CustomKeyValu" ],
-		"body": "CustomKeyValue( ${1:CBaseEntity@ pEntity}, ${2:const string&in m_iszKey}, ${3:const string&in m_iszValue = String::EMPTY_STRING})",
-		"description": "Return the value of the given CustomKeyValue, if m_iszValue is given it will update the value, return String::INVALID_INDEX if the given entity is null, return String::EMPTY_STRING if the given entity doesn't have the custom key value"
+		"prefix": [ "GameFuncs", "GameFuncs::UpdateTimer", "schedule" ],
+		"body": "GameFuncs::UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0} )",
+		"description": "(GameFuncs.as) Actualiza un timer rapidamente"
+	},
+	"namespace Hooks":
+	{
+		"prefix": [ "#include", "EntityFuncs" ],
+		"body": "#include \"${1:../../}mikk/EntityFuncs\"",
+		"description": "(Hooks.as) Utilidades relacionadas a entidades"
+	},
+	"string Instance( bool ToString ) const":
+	{
+		"prefix": [ "JsonValue", "json", "Instance" ],
+		"body": "Instance( ${1:bool ToString} )",
+		"description": "(json.as) Retorna el nombre de la instancia de este JsonValue.\nRetorna JsonValueType o nombre de string si ToString es true.\nint, RGBA, bool, json, array, float, Vector, string, Vector2D"
+	},
+	"string_t opConv() const { return string_t(value); }":
+	{
+		"prefix": [ "JsonValue", "string_t" ],
+		"body": "string_t( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de string_t"
+	},
+	"string opConv() const { return value; }":
+	{
+		"prefix": [ "JsonValue", "string" ],
+		"body": "string( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de string"
+	},
+	"uint opConv() const { return atoui(value); }":
+	{
+		"prefix": [ "JsonValue", "uint" ],
+		"body": "uint( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de uint"
+	},
+	"int opConv() const { return atoi(value); }":
+	{
+		"prefix": [ "JsonValue", "uint\nJsonValue", "int" ],
+		"body": "int( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de uint\nRetorna el valor de este JsonValue en forma de int"
+	},
+	"float opConv() const { return atof(value); }":
+	{
+		"prefix": [ "JsonValue", "float" ],
+		"body": "float( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de float"
+	},
+	"bool opConv() const { return ( tolower( value ) == 'true' || atoi( value ) == 1 ); }":
+	{
+		"prefix": [ "JsonValue", "bool" ],
+		"body": "bool( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de bool"
+	},
+	"RGBA opConv() const{ return ( arrayvalue.length() == 4 ? RGBA( atoi(arrayvalue[0]), atoi(arrayvalue[1]), atoi(arrayvalue[2]), atoi(arrayvalue[3]) ) : RGBA_WHITE ); }":
+	{
+		"prefix": [ "JsonValue", "RGBA" ],
+		"body": "RGBA( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de RGBA"
+	},
+	"Vector opConv() const{ return ( arrayvalue.length() == 3 ? Vector( atof(arrayvalue[0]), atof(arrayvalue[1]), atof(arrayvalue[2]) ) : g_vecZero ); }":
+	{
+		"prefix": [ "JsonValue", "Vector" ],
+		"body": "Vector( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de Vector"
+	},
+	"Vector2D opConv() const{ return ( arrayvalue.length() == 2 ? Vector2D( atof(arrayvalue[0]), atof(arrayvalue[1]) ) : g_vecZero.Make2D() ); }":
+	{
+		"prefix": [ "JsonValue", "Vector2D" ],
+		"body": "Vector2D( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de Vector2D"
+	},
+	"array<string> opConv() const { return arrayvalue; }":
+	{
+		"prefix": [ "JsonValue", "array<string>" ],
+		"body": "array<string>( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de array<string>"
+	},
+	"json opConv() const { json pJson; pJson.data = dictionaryvalue; return pJson; }":
+	{
+		"prefix": [ "JsonValue", "json" ],
+		"body": "json( ${1:JsonValue@ pJson} )",
+		"description": "(json.as) Retorna el valor de este JsonValue en forma de json"
+	},
+	"class json":
+	{
+		"prefix": [ "#include", "json" ],
+		"body": "#include \"${1:../../}mikk/json\"",
+		"description": "(json.as) Mi version de json, puede no ser igual ya que esto fue creado a mi conveniencia."
+	},
+	"bool exists( string &in key, bool CheckValue = false )":
+	{
+		"prefix": [ "json", "exists" ],
+		"body": "exists( ${1:string &in key}, ${2:bool CheckValue = false} )",
+		"description": "(json.as) Retorna si la variable dada existe.\nSi CheckValue es true retorna si el valor existe"
+	},
+	"uint size()":
+	{
+		"prefix": [ "json", "size", "length" ],
+		"body": "size()",
+		"description": "(json.as) Retorna la cantidad de valores que existen en este json"
+	},
+	"uint length()":
+	{
+		"prefix": [ "json", "size", "length" ],
+		"body": "size()",
+		"description": "(json.as) Retorna la cantidad de valores *accesibles* que existen en este json"
+	},
+	"JsonValue get( string key )":
+	{
+		"prefix": [ "json", "get" ],
+		"body": "get( ${1:string key} )",
+		"description": "(json.as) Retorna el valor de la variable dada"
+	},
+	"string get( string key, string value ){ return this[ key, value ]; }":
+	{
+		"prefix": [ "json", "get" ],
+		"body": "get( ${1:string key}, ${2:string value} )",
+		"description": "(json.as) Retorna el valor de la variable dada, si no existe retorna value"
+	},
+	"int get( string key, int value ){ return this[ key, value ]; }":
+	{
+		"prefix": [ "json", "get" ],
+		"body": "get( ${1:string key}, ${2:int value} )",
+		"description": "(json.as) Retorna el valor de la variable dada, si no existe retorna value"
+	},
+	"float get( string key, float value ){ return this[ key, value ]; }":
+	{
+		"prefix": [ "json", "get" ],
+		"body": "get( ${1:string key}, ${2:float value} )",
+		"description": "(json.as) Retorna el valor de la variable dada, si no existe retorna value"
+	},
+	"bool get( string key, bool value ){ return this[ key, value ]; }":
+	{
+		"prefix": [ "json", "get" ],
+		"body": "get( ${1:string key}, ${2:bool value} )",
+		"description": "(json.as) Retorna el valor de la variable dada, si no existe retorna value"
+	},
+	"json get( string key, json value ){ return this[ key, value ]; }":
+	{
+		"prefix": [ "json", "get" ],
+		"body": "get( ${1:string key}, ${2:json value} )",
+		"description": "(json.as) Retorna el valor de la variable dada, si no existe retorna value"
+	},
+	"json get( string key, dictionary value ){ return this[ key, value ]; }":
+	{
+		"prefix": [ "json", "get" ],
+		"body": "get( ${1:string key}, ${2:dictionary value} )",
+		"description": "(json.as) Retorna el valor de la variable dada, si no existe retorna value"
+	},
+	"array<string> getKeys()":
+	{
+		"prefix": [ "json", "get", "getKeys" ],
+		"body": "getKeys()",
+		"description": "(json.as) Retorna una array de strings con todas las claves"
+	},
+	"uint reload( string m_szLoad, bool include = false )":
+	{
+		"prefix": [ "json", "reload", "load", "parse", "decode" ],
+		"body": "reload( ${1:string m_szLoad}, ${2:bool include = false} )",
+		"description": "(json.as) Alias a \"load\" pero retornará 1 si este json no tiene la clave \"reload\" en true."
+	},
+	"uint load( string m_szLoad, bool include = false )":
+	{
+		"prefix": [ "json", "reload", "load", "parse", "decode" ],
+		"body": "load( ${1:string m_szLoad}, ${2:bool include = false} )",
+		"description": "(json.as) Carga un archivo de texto y decodifica a la class json.\nsi no se especifica \".json\" al final entonces se asume que el string es el texto a decodificar."
+	},
+	"namespace Language":
+	{
+		"prefix": [ "#include", "Language" ],
+		"body": "#include \"${1:../../}mikk/Language\"",
+		"description": "(Language.as) Utilidades relacionadas mensajeria con los jugadores"
+	},
+	"string GetLanguage( CBasePlayer@ pPlayer, json@ pJson, dictionary@ pReplacement = null )":
+	{
+		"prefix": [ "Language", "Language::GetLanguage", "GetLanguage" ],
+		"body": "Language::GetLanguage( ${1:CBasePlayer@ pPlayer}, ${2:json@ pJson}, ${3:dictionary@ pReplacement = null} )",
+		"description": "(Language.as) Retorna el mensaje correspondiente para este jugador"
+	},
+	"void PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )":
+	{
+		"prefix": [ "Language", "Language::PrintAll", "PrintAll" ],
+		"body": "Language::PrintAll( ${1:json@ pJson}, ${2:MKLANG PrintType = CHAT}, ${3:dictionary@ pReplacement = null} )",
+		"description": "(Language.as) Muestra un mensaje con el lenguaje correspondiente para cada jugador"
+	},
+	"void Print( CBasePlayer@ pPlayer, json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )":
+	{
+		"prefix": [ "Language", "Language::PrintAll", "PrintAll" ],
+		"body": "Language::PrintAll( ${1:json@ pJson}, ${2:MKLANG PrintType = CHAT}, ${3:dictionary@ pReplacement = null} )",
+		"description": "(Language.as) Muestra un mensaje con el lenguaje correspondiente para este jugador"
+	},
+	"namespace PlayerFuncs":
+	{
+		"prefix": [ "#include", "PlayerFuncs" ],
+		"body": "#include \"${1:../../}mikk/PlayerFuncs\"",
+		"description": "(PlayerFuncs.as) Utilidades relacionadas a jugadores"
+	},
+	"float bottomcolor( CBasePlayer@ pPlayer )":
+	{
+		"prefix": [ "PlayerFuncs", "PlayerFuncs::bottomcolor", "bottomcolor", "colormap" ],
+		"body": "PlayerFuncs::bottomcolor( ${1:CBasePlayer@ pPlayer} )",
+		"description": "(PlayerFuncs.as) Separa y retorna los colores del jugador"
+	},
+	"float topcolor( CBasePlayer@ pPlayer )":
+	{
+		"prefix": [ "PlayerFuncs", "PlayerFuncs::topcolor", "topcolor", "colormap" ],
+		"body": "PlayerFuncs::topcolor( ${1:CBasePlayer@ pPlayer} )",
+		"description": "(PlayerFuncs.as) Separa y retorna los colores del jugador"
+	},
+	"CBasePlayer@ FindPlayerBySteamID( const string &in m_iszSteamID )":
+	{
+		"prefix": [ "PlayerFuncs", "PlayerFuncs::FindPlayerBySteamID", "FindPlayerBySteamID", "SteamID" ],
+		"body": "PlayerFuncs::FindPlayerBySteamID( ${1:const string &in m_iszSteamID} )",
+		"description": "(PlayerFuncs.as) Busca y retorna a un jugador mediante su Steam ID"
+	},
+	"string GetSteamID( CBasePlayer@ pPlayer )":
+	{
+		"prefix": [ "PlayerFuncs", "PlayerFuncs::GetSteamID", "GetSteamID", "SteamID" ],
+		"body": "PlayerFuncs::GetSteamID( ${1:CBasePlayer@ pPlayer} )",
+		"description": "(PlayerFuncs.as) Obtiene la Steam ID de un jugador, agregando prefijos para Bots"
+	},
+	"bool RespawnPlayer( CBasePlayer@ pPlayer )":
+	{
+		"prefix": [ "PlayerFuncs", "PlayerFuncs::RespawnPlayer", "RespawnPlayer" ],
+		"body": "PlayerFuncs::RespawnPlayer( ${1:CBasePlayer@ pPlayer} )",
+		"description": "(PlayerFuncs.as) Revive y Reaparece a un jugador."
+	},
+	"final class Reflection":
+	{
+		"prefix": [ "#include", "Reflection" ],
+		"body": "#include \"${1:../../}mikk/Reflection\"",
+		"description": "(Reflection.as) Utilidades relacionadas con el manejo de funciones"
+	},
+	"int Call( const string m_iszFunction )":
+	{
+		"prefix": [ "g_Reflection.Call", "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
+		"body": "g_Reflection.Call( ${1:const string m_iszFunction} )",
+		"description": "(Reflection.as) Llama a todas las funciones con el nombre dado sin importar el namespace donde se encuentren.\nretorna la cantidad de funciones encontradas."
+	},
+	"namespace UserMessages":
+	{
+		"prefix": [ "#include", "UserMessages" ],
+		"body": "#include \"${1:../../}mikk/UserMessages\"",
+		"description": "(UserMessages.as) Utilidades relacionadas UserMessages que el server envia a los clientes"
+	},
+	"void ClientCommand( string m_iszCommand, CBasePlayer@ pTarget = null )":
+	{
+		"prefix": [ "UserMessages", "UserMessages::ClientCommand", "ClientCommand" ],
+		"body": "UserMessages::ClientCommand( ${1:string m_iszCommand}, ${2:CBasePlayer@ pTarget = null} )",
+		"description": "(UserMessages.as) ejecuta un comando en la consola de pTarget o todos los jugadores si pTarget es null"
+	},
+	"void PlayerSay( CBaseEntity@ pPlayer, string m_szMessage, uint8 uiColor = 2, CBasePlayer@ pTarget = null )":
+	{
+		"prefix": [ "UserMessages", "UserMessages::PlayerSay", "PlayerSay" ],
+		"body": "UserMessages::PlayerSay( ${1:CBaseEntity@ pPlayer}, ${2:string m_szMessage}, ${3:CBasePlayer@ pTarget = null} )",
+		"description": "(UserMessages.as) Hace que un jugador escriba en el chat, pueden verlo pTarget o todos los jugadores si pTarget es null"
+	},
+	"void ServerName( string m_iszHostName = String::EMPTY_STRING, CBaseEntity@ pTargetPlayer = null )":
+	{
+		"prefix": [ "UserMessages", "UserMessages::ServerName", "ServerName" ],
+		"body": "UserMessages::ServerName( ${1:string m_iszHostName = String::EMPTY_STRING}, ${2:CBaseEntity@ pTargetPlayer = null} )",
+		"description": "(UserMessages.as) Actualiza el nombre del servidor en la pestaña de puntuacion, pueden verlo pTarget o todos los jugadores si pTarget es null"
+	},
+	"void Implosion( Vector VecStart = Vector( 0, 0, 0 ), uint8 radius = 255, uint8 count = 32, uint8 life = 30, CBaseEntity@ pTargetPlayer = null )":
+	{
+		"prefix": [ "UserMessages", "UserMessages::Implosion", "Implosion" ],
+		"body": "UserMessages::Implosion( ${1:Vector VecStart = Vector( 0}, ${2:0}, ${3:0 )}, ${4:uint8 radius = 255}, ${5:uint8 count = 32}, ${6:uint8 life = 30}, ${7:CBaseEntity@ pTargetPlayer = null} )",
+		"description": "(UserMessages.as) Crea un efecto de implosion\nPueden verlo pTarget o todos los jugadores si pTarget es null"
+	},
+	"void DynamicLight( Vector VecStart = g_vecZero, RGBA color = RGBA( 255, 255, 255, 32 ), uint8 life = 255, uint8 noise = 255, CBaseEntity@ pTargetPlayer = null )":
+	{
+		"prefix": [ "UserMessages", "UserMessages::DynamicLight", "DynamicLight" ],
+		"body": "UserMessages::DynamicLight( ${1:Vector VecStart = g_vecZero}, ${2:RGBA color = RGBA( 255}, ${3:255}, ${4:255}, ${5:32 )}, ${6:uint8 life = 255}, ${7:uint8 noise = 255}, ${8:CBaseEntity@ pTargetPlayer = null} )",
+		"description": "(UserMessages.as) Crea un efecto de luz dinamica\nPueden verlo pTarget o todos los jugadores si pTarget es null"
+	},
+	"void Explosion( Vector VecStart, int g_sModelIndex, uint8 flDamage, uint8 flFrameRate, uint8 iFlags = TE_EXPLFLAG_NONE, CBaseEntity@ pTargetPlayer = null )":
+	{
+		"prefix": [ "UserMessages", "UserMessages::Explosion", "Explosion" ],
+		"body": "UserMessages::Explosion( ${1:Vector VecStart}, ${2:int g_sModelIndex}, ${3:uint8 flDamage}, ${4:uint8 flFrameRate}, ${5:uint8 iFlags = TE_EXPLFLAG_NONE}, ${6:CBaseEntity@ pTargetPlayer = null} )",
+		"description": "(UserMessages.as) Crea un efecto de explosion\nPueden verlo pTarget o todos los jugadores si pTarget es null"
+	},
+	"void Smoke( Vector VecStart, int g_sModelIndex, uint8 flDamage, uint8 flFrameRate, CBaseEntity@ pTargetPlayer = null )":
+	{
+		"prefix": [ "UserMessages", "UserMessages::Smoke", "Smoke" ],
+		"body": "UserMessages::Smoke( ${1:Vector VecStart}, ${2:int g_sModelIndex}, ${3:uint8 flDamage}, ${4:uint8 flFrameRate}, ${5:CBaseEntity@ pTargetPlayer = null} )",
+		"description": "(UserMessages.as) Crea un efecto de humo\nPueden verlo pTarget o todos los jugadores si pTarget es null"
 	}
 }

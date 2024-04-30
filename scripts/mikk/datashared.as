@@ -15,59 +15,92 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-DataShared gpDataShared;
-
-array<string> DataShared_e =
+/*
+    @prefix #include datashared
+    @body #include "${1:../../}mikk/datashared"
+    @description Utilidad utilizada para hacer que cualquier plugin pueda enviar informacion a otros plugins mediante la trasnferencia de dictionary
+*/
+namespace datashared
 {
-    "AntiClip",
-    "dynamic_hostname",
-    "DynamicDifficultyDeluxe"
-};
-
-class DataShared
-{
-    /*@
-        @prefix DataShared Shared Data Plugin
-        @body gpDataShared
-        Return the value of the given key for this plugin, if szValue is set it will be updated. if szFrom is set is the plugin name
+    /*
+        @prefix datashared datashared::GetDataClass GetDataClass shared
+        @body datashared::GetDataClass()
+        @description Obten la instancia CSharedDataPlugins@ presente, si no existe una nueva será creada
     */
-    string opIndex( const string &in szKey, string szValue = '', string szFrom = String::EMPTY_STRING )
+    CSharedDataPlugins@ GetDataClass()
     {
-        return GetValue( szKey, szValue, szFrom );
-    }
-
-    protected string szThisPlugin = g_Module.GetModuleName();
-
-    protected string GetValue( const string &in szKey, string szValue = '', string szFrom = String::EMPTY_STRING )
-    {
-        int index = DataShared_e.find( ( szFrom != '' ? szFrom : szThisPlugin ) );
-
-        if( index >= 0 )
+        if( !g_CustomEntityFuncs.IsCustomEntity( 'data_shared' ) )
         {
-            string szCustomKeyValue = '$s_' + string( index ) + '_' + szKey;
-
-            if( szValue != '' )
-            {
-                return CustomKeyValue( GetEntity(), szCustomKeyValue, szValue );
-            }
-            else
-            {
-                return CustomKeyValue( GetEntity(), szCustomKeyValue );
-            }
+            g_CustomEntityFuncs.RegisterCustomEntity( 'datashared::CSharedDataPlugins', 'data_shared' );
         }
 
-        return String::EMPTY_STRING;
-    }
+        CBaseEntity@ pDataEnt = g_EntityFuncs.FindEntityByClassname( null, 'data_shared' );
 
-    protected CBaseEntity@ GetEntity()
-    {
-        CBaseEntity@ pEnt = g_EntityFuncs.FindEntityByTargetname( null, 'datashared_plugins' );
-
-        if( pEnt is null )
+        if( pDataEnt is null )
         {
-            @pEnt = Mikk.EntityFuncs.CreateEntity( { { 'classname', 'info_target' }, { 'targetname', 'datashared_plugins' } } );
+            @pDataEnt = g_EntityFuncs.Create( 'data_shared', g_vecZero, g_vecZero, false );
         }
 
-        return @pEnt;
+        if( pDataEnt is null )
+        {
+            return null;
+        }
+
+        CSharedDataPlugins@ pDataClass = cast<CSharedDataPlugins@>( CastToScriptClass( pDataEnt ) );
+
+        if( pDataClass is null )
+        {
+            return null;
+        }
+
+        return @pDataClass;
+    }
+
+    /*
+        @prefix datashared datashared::GetData GetData shared
+        @body datashared::GetData( const string szPlugin = String::EMPTY_STRING )
+        @description Obten el dictionary correspondiente a el plugin con el nombre szPlugin
+        @description Si ningun nombre es utilizado, se utilizara el nombre del archivo del plugin que este usando esta funcion
+    */
+    dictionary GetData( const string szPlugin = String::EMPTY_STRING )
+    {
+        string szLabel = ( szPlugin == String::EMPTY_STRING ? g_Module.GetModuleName() : szPlugin );
+
+        CSharedDataPlugins@ pData = GetDataClass();
+
+        if( pData !is null )
+        {
+            return dictionary( pData.gpData[ szLabel ] );
+        }
+
+        return {};
+    }
+
+    /*
+        @prefix datashared datashared::SetData SetData shared
+        @body datashared::SetData( dictionary pNewData, const string szPlugin = String::EMPTY_STRING )
+        @description Actualiza el dictionario del plugin szPlugin
+        @description Retorna una copia del dictionario luego de haber sido guardado
+        @description Si ningun nombre es utilizado, se utilizara el nombre del archivo del plugin que este usando esta funcion
+    */
+    dictionary SetData( dictionary pNewData, const string szPlugin = String::EMPTY_STRING )
+    {
+        string szLabel = ( szPlugin == String::EMPTY_STRING ? g_Module.GetModuleName() : szPlugin );
+
+        CSharedDataPlugins@ pData = GetDataClass();
+        dictionary gOldData = {};
+
+        if( pData !is null )
+        {
+            gOldData = dictionary( pData.gpData[ szLabel ] );
+            pData.gpData[ szLabel ] = pNewData;
+        }
+
+        return gOldData;
+    }
+
+    class CSharedDataPlugins : ScriptBaseEntity
+    {
+        dictionary gpData;
     }
 }

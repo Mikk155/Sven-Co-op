@@ -1,7 +1,4 @@
 {
-    "python.analysis.extraPaths": [
-        "./scripts/plugins/mikk/chatbridge"
-    ],
     "files.associations": {
         "*.config": "html"
     }

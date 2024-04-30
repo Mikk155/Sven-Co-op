@@ -1,0 +1,31 @@
+name: FastRestart
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/FastRestart.yml'
+      - 'build/resources/FastRestart.json'
+      - 'scripts/mikk/*'
+      - 'scripts/plugins/mikk/FastRestart.*'
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Installing Python
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Release
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: python3 build/run.py FastRestart

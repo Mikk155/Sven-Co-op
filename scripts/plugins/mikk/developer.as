@@ -1,11 +1,31 @@
-#include '../../mikk/shared'
+//==========================================================================================================================================\\
+//                                                                                                                                          \\
+//                              Creative Commons Attribution-NonCommercial 4.0 International                                                \\
+//                              https://creativecommons.org/licenses/by-nc/4.0/                                                             \\
+//                                                                                                                                          \\
+//   * You are free to:                                                                                                                     \\
+//      * Copy and redistribute the material in any medium or format.                                                                       \\
+//      * Remix, transform, and build upon the material.                                                                                    \\
+//                                                                                                                                          \\
+//   * Under the following terms:                                                                                                           \\
+//      * You must give appropriate credit, provide a link to the license, and indicate if changes were made.                               \\
+//      * You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.                   \\
+//      * You may not use the material for commercial purposes.                                                                             \\
+//      * You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.     \\
+//                                                                                                                                          \\
+//==========================================================================================================================================\\
+
+#include "../../mikk/fft"
+#include "../../mikk/json"
+#include "../../mikk/GameFuncs"
+#include "../../mikk/PlayerFuncs"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
     g_Hooks.RegisterHook( Hooks::Player::PlayerPreThink, @PlayerPreThink );
-    Mikk.UpdateTimer( pThink, "Think", 0.1, g_Scheduler.REPEAT_INFINITE_TIMES );
+    GameFuncs::UpdateTimer( pThink, "Think", 0.1, g_Scheduler.REPEAT_INFINITE_TIMES );
 }
 
 CScheduledFunction@ pThink;
@@ -16,7 +36,7 @@ CClientCommand CMD( "dev", "Sets developer mode for developer plugin, on/off", @
 
 void Command( const CCommand@ args )
 {
-    string ID = Mikk.PlayerFuncs.GetSteamID( g_ConCommandSystem.GetCurrentPlayer() );
+    string ID = PlayerFuncs::GetSteamID( g_ConCommandSystem.GetCurrentPlayer() );
 
     if( args[1] == "on" || args[1] == "true" || atoi( args[1] ) == 1 )
     {
@@ -41,7 +61,7 @@ void Think()
 
 HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
 {
-    if( pPlayer !is null && g_Players.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
+    if( pPlayer !is null && g_Players.exists( PlayerFuncs::GetSteamID( pPlayer ) ) )
     {
         string left, right, top;
         left = right = top = '';
@@ -127,6 +147,7 @@ dictionary GetInfo( CBasePlayer@ pPlayer )
     g_Data[ "gravity" ] = string( f1 ) + ( f2 != 1.0 ? ' * ' + string( f2 ) + " (" + string( int( f1 * f2 ) ) + ")" : '' );
 
     g_Data[ "air_finished" ] = Floor( pPlayer.pev.air_finished - g_Engine.time, 1 );
+    g_Data[ "flags" ] = string( pPlayer.pev.flags );
 
     TraceResult tr;
 

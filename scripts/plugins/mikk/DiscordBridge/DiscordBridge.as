@@ -15,12 +15,17 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include "../../../mikk/shared"
+#include "../../../mikk/json"
 #include "../../../mikk/Discord"
+#include "../../../mikk/GameFuncs"
+#include "../../../mikk/Reflection"
+#include "../../../mikk/EntityFuncs"
+#include "../../../mikk/PlayerFuncs"
+
 #include "method/fileload"
 #include "metamod/main"
+
 #include "AngelScript/PlayerKilled"
-#include "AngelScript/SurvivalEndRound"
 #include "AngelScript/SurvivalStartRound"
 #include "AngelScript/PlayerConnect"
 #include "AngelScript/ClientDisconnect"
@@ -49,16 +54,16 @@ const string TO_STATUS  = '=';
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     pJson.load( 'plugins/mikk/DiscordBridge/DiscordBridge.json' );
 
     if( g_Reflection[ 'fileload::PluginInit' ] !is null )
         g_Reflection[ 'fileload::PluginInit' ].Call();
 
-    RegisterAll();
+    GameFuncs::UpdateTimer( pTimer, 'Think', 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
-    Mikk.UpdateTimer( pTimer, 'Think', 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
+    RegisterAll();
 }
 
 void MapInit()
@@ -69,7 +74,8 @@ void MapInit()
     }
 
     g_CustomEntityFuncs.RegisterCustomEntity( 'DiscordBridgeEntity', Discord::name );
-    Mikk.EntityFuncs.CreateEntity( { { 'classname', Discord::name } } );
+    EntityFuncs::CreateEntity( { { 'classname', Discord::name } } );
+    SurvivalRoundEnded = false;
 }
 
 class DiscordBridgeEntity : ScriptBaseEntity
@@ -96,7 +102,7 @@ void MapStart()
 
 void MapActivate()
 {
-    Mikk.UpdateTimer( pTimer, 'Think', 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
+    GameFuncs::UpdateTimer( pTimer, 'Think', 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
 }
 
 void RegisterAll()
@@ -111,14 +117,13 @@ void RegisterAll()
         g_Reflection[ 'PlayerConnect::Register' ].Call();
     if( g_Reflection[ 'ClientDisconnect::Register' ] !is null )
         g_Reflection[ 'ClientDisconnect::Register' ].Call();
-    if( g_Reflection[ 'SurvivalEndRound::Register' ] !is null )
-        g_Reflection[ 'SurvivalEndRound::Register' ].Call();
     if( g_Reflection[ 'PlayerSpawn::Register' ] !is null )
         g_Reflection[ 'ClientSay::Register' ].Call();
 }
 
 float flfileloadNextThink;
 float flCreateJsonNextThink;
+bool SurvivalRoundEnded;
 
 void Think()
 {
@@ -128,6 +133,31 @@ void Think()
             g_Reflection[ 'gamestatus::CreateJson' ].Call();
 
         flCreateJsonNextThink = g_Engine.time + float( pJson[ 'interval' ] );
+    }
+
+    if( !SurvivalRoundEnded && pJson[ 'MESSAGES', {} ][ 'SurvivalEndRound', {} ][ 'enable', false ] )
+    {
+        int iAlivePlayers = 0, iAllPlayers = 0;
+
+        for( int iIndex = 1; iIndex <= g_Engine.maxClients; ++iIndex )
+        {
+            CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iIndex );
+
+            if( pPlayer !is null )
+            {
+                if( pPlayer.IsAlive() )
+                {
+                    ++iAlivePlayers;
+                }
+                ++iAllPlayers;
+            }
+        }
+
+        if( g_SurvivalMode.IsActive() && g_PlayerFuncs.GetNumPlayers() > 0 && iAlivePlayers == 0 )
+        {
+            FormatMessage( pJson[ 'MESSAGES', {} ][ 'SurvivalEndRound', {} ][ 'Ended', {} ][ language, '' ] );
+            SurvivalRoundEnded = true;
+        }
     }
 
     if( string( pJson[ 'method' ] ) == 'fileload' && g_Engine.time > flfileloadNextThink )

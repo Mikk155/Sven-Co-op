@@ -32,7 +32,7 @@ namespace PlayerConnect
         if( pPlayer is null )
             return HOOK_CONTINUE;
 
-        FormatMessage( pJson[ 'MESSAGES', {} ][ 'PlayerConnect', {} ][ 'join', {} ][ language, '' ], { { 'player', Mikk.PlayerFuncs.GetSteamID( pPlayer ) + " " + string( pPlayer.pev.netname ) } } );
+        FormatMessage( pJson[ 'MESSAGES', {} ][ 'PlayerConnect', {} ][ 'join', {} ][ language, '' ], { { 'player', PlayerFuncs::GetSteamID( pPlayer ) + " " + string( pPlayer.pev.netname ) } } );
 
         return HOOK_CONTINUE;
     }

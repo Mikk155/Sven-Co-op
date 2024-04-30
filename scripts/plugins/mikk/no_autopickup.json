@@ -1,6 +1,11 @@
 {
     "MessagePlayer": true,
     "RequiredLoS": true,
+    "blacklist maps":
+    [
+        "hl_c00",
+        "of0a0"
+    ],
     "PickMeMessage":
     {
         "english": "+use pickup $item$",

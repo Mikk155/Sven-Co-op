@@ -1,4 +1,5 @@
-#include '../../mikk/shared'
+#include "../../mikk/json"
+#include "../../mikk/Language"
 
 /*
 *	This plugins tracks all player decals
@@ -308,11 +309,11 @@ namespace PlayerDecalTracker
 						{
 							bWasLooking = true;
 
-                            Mikk.Language.Print( pPlayer, pJson[ "advice", {} ], MKLANG::BIND, { { 'name', string( pNearest.PlayerName ) } } );
+                            Language::Print( pPlayer, pJson[ "advice", {} ], MKLANG::BIND, { { 'name', string( pNearest.PlayerName ) } } );
 
 							if( pPlayer.pev.button & IN_USE != 0 )
 							{
-                                Mikk.Language.Print( pPlayer, pJson[ "show_author", {} ], MKLANG::CHAT, { { 'steamid', string( pNearest.AuthId ) }, { 'name', string( pNearest.PlayerName ) } } );
+                                Language::Print( pPlayer, pJson[ "show_author", {} ], MKLANG::CHAT, { { 'steamid', string( pNearest.AuthId ) }, { 'name', string( pNearest.PlayerName ) } } );
 							}
 						}
 					}

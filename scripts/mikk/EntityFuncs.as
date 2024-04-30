@@ -15,12 +15,19 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-class MKEntityFuncs
+/*
+    @prefix #include EntityFuncs
+    @body #include "${1:../../}mikk/EntityFuncs"
+    @description Utilidades relacionadas a entidades
+*/
+namespace EntityFuncs
 {
-    /*@
-        @prefix Mikk.EntityFuncs.CreateEntity CreateEntity EntityCreate
-        @body Mikk.EntityFuncs
-        Creates a entity with the given keyvalue data, if blSpawnNow is false the entity is not spawned
+    void print(string s,string d){g_Game.AlertMessage( at_console, g_Module.GetModuleName() + ' [EntityFuncs::'+s+'] '+d+'\n' );}
+
+    /*
+        @prefix EntityFuncs EntityFuncs::CreateEntity CreateEntity
+        @body EntityFuncs::CreateEntity( dictionary g_Data, bool blSpawnNow = true )
+        @description Crea y retorna una entidad con todas las keyvalues que existan en el dictionary g_Data
     */
     CBaseEntity@ CreateEntity( dictionary g_Data, bool blSpawnNow = true )
     {
@@ -32,8 +39,11 @@ class MKEntityFuncs
             {
                 if( g_Data.exists( 'origin' ) )
                 {
-                    g_EntityFuncs.SetOrigin( pEntity, atov( string( g_Data[ 'origin' ] ) ) );
+                    Vector VecPos;
+                    g_Utility.StringToVector( VecPos, string( g_Data[ 'origin' ] ) );
+                    g_EntityFuncs.SetOrigin( pEntity, VecPos );
                 }
+
                 if( blSpawnNow )
                 {
                     g_EntityFuncs.DispatchSpawn( pEntity.edict() );
@@ -41,15 +51,21 @@ class MKEntityFuncs
                 return pEntity;
             }
         }
+        else
+        {
+            print('CreateEntity','No classname field given!');
+        }
+
         return null;
     }
 
-    /*@
-        @prefix Mikk.EntityFuncs.LoadEntFile LoadEntFile
-        @body Mikk.EntityFuncs
-        Loads an external .ent file into the map
+    /*
+        @prefix EntityFuncs EntityFuncs::LoadEntFile LoadEntFile
+        @body EntityFuncs::LoadEntFile( const string &in m_szPath )
+        @description Abre un archivo con formato ripent y crea todas las entidades en el juego.
+        @description Retorna el numero de entidades creadas, -1 si el archivo no se pudo abrir.
     */
-    bool LoadEntFile( const string &in m_szPath )
+    int LoadEntFile( const string &in m_szPath )
     {
         File@ pFile = g_FileSystem.OpenFile(
             ( m_szPath.StartsWith( 'scripts/' ) ? '' : 'scripts/' ) + m_szPath +
@@ -58,9 +74,11 @@ class MKEntityFuncs
 
         if( pFile is null or !pFile.IsOpen() )
         {
-            return false;
+            print('LoadEntFile','can not open file "'+m_szPath+'"');
+            return -1;
         }
 
+        int ents = 0;
         string line, key, value;
         dictionary g_Keyvalues;
 
@@ -75,8 +93,10 @@ class MKEntityFuncs
 
             if( line[0] == '}' )
             {
-                Mikk.EntityFuncs.CreateEntity( g_Keyvalues );
-
+                if( CreateEntity( g_Keyvalues ) !is null )
+                {
+                    ents++;
+                }
                 g_Keyvalues.deleteAll();
                 continue;
             }
@@ -92,6 +112,34 @@ class MKEntityFuncs
         }
         pFile.Close();
 
-        return true;
+        return ents;
     }
+}
+
+/*
+    @prefix EntityFuncs EntityFuncs::CustomKeyValue CustomKeyValue
+    @body CustomKeyValue( CBaseEntity@ pEntity, const string&in m_iszKey, const string&in m_iszValue = String::EMPTY_STRING )
+    @description Retorna el valor dela custom-key-value
+    @description Si m_iszValue es dada el valor se actualizará
+    @description Si la entidad es nula retorna String::INVALID_INDEX
+    @description Si la entidad no tiene la customkeyvalue retorna String::EMPTY_STRING
+*/
+string CustomKeyValue( CBaseEntity@ pEntity, const string &in m_iszKey, const string &in m_iszValue = String::EMPTY_STRING )
+{
+    if( pEntity is null )
+    {
+        return String::INVALID_INDEX;
+    }
+
+    if( m_iszValue != String::EMPTY_STRING )
+    {
+        g_EntityFuncs.DispatchKeyValue( pEntity.edict(), m_iszKey, m_iszValue );
+    }
+
+    if( !pEntity.GetCustomKeyvalues().HasKeyvalue( m_iszKey ) )
+    {
+        return String::EMPTY_STRING;
+    }
+
+    return pEntity.GetCustomKeyvalues().GetKeyvalue( m_iszKey ).GetString();
 }

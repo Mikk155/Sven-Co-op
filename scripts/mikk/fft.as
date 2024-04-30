@@ -15,14 +15,20 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
+/*
+    @prefix #include fft
+    @body #include "${1:../../}mikk/fft"
+    @description Utilidades relacionadas conversiones
+*/
 namespace fft
 {
-    /*@
-        @prefix fft::to_string to_string RGBA format
-        @body fft::
-        Format the given RGBA to string.
-        If AddColons is true add colons.
-        If AddSpace is false then do not add white spaces.
+    void print(string s,string d){g_Game.AlertMessage( at_console, g_Module.GetModuleName() + ' [fft::'+s+'] '+d+'\n' );}
+
+    /*
+        @prefix fft fft::to_string to_string RGBA
+        @body fft::to_string( RGBA From, bool AddColons = false, bool AddSpace = true )
+        @description Retorna una variable RGBA como string.
+        @description AddColons va a añadir comas y AddSpace espacios.
     */
     string to_string( RGBA From, bool AddColons = false, bool AddSpace = true )
     {
@@ -33,22 +39,22 @@ namespace fft
         return _s_;
     }
 
-    /*@
-        @prefix fft::to_string to_string bool format
-        @body fft::
-        Format the given bool to string, if MakeDigit is true then false = 0, true = 1
+    /*
+        @prefix fft fft::to_string to_string bool
+        @body fft::to_string( bool From, bool MakeDigit = false )
+        @description Retorna una variable bool como string.
+        @description MakeDigit especifica como queremos obtenerla. 0/1 o false/true
     */
     string to_string( bool From, bool MakeDigit = false )
     {
         return ( !MakeDigit ? ( From ? 'true' : 'false' ) : ( From ? '1' : '0' ) );
     }
 
-    /*@
-        @prefix fft::to_string to_string Vector format
-        @body fft::
-        Format the given Vector to string.
-        If AddColons is true add colons.
-        If AddSpace is false then do not add white spaces.
+    /*
+        @prefix fft fft::to_string to_string Vector
+        @body fft::to_string( Vector From, bool AddColons = false, bool AddSpace = true )
+        @description Retorna una variable Vector como string.
+        @description AddColons va a añadir comas y AddSpace espacios.
     */
     string to_string( Vector From, bool AddColons = false, bool AddSpace = true )
     {
@@ -59,12 +65,11 @@ namespace fft
         return _s_;
     }
 
-    /*@
-        @prefix fft::to_string to_string Vector2D format
-        @body fft::
-        Format the given Vector2D to string.
-        If AddColons is true add colons.
-        If AddSpace is false then do not add white spaces.
+    /*
+        @prefix fft fft::to_string to_string Vector2D
+        @body fft::to_string( Vector2D From, bool AddColons = false, bool AddSpace = true )
+        @description Retorna una variable Vector2D como string.
+        @description AddColons va a añadir comas y AddSpace espacios.
     */
     string to_string( Vector2D From, bool AddColons = false, bool AddSpace = true )
     {
@@ -75,10 +80,10 @@ namespace fft
         return _s_;
     }
 
-    /*@
-        @prefix fft::HueToRGBA fft::Hue fft::RGBA Hue format
-        @body fft::
-        Format the given hue float value to RGBA (.a will most likely be empty)
+    /*
+        @prefix fft fft::HueToRGBA HueToRGBA Hue RGBA
+        @body fft::HueToRGBA( float H )
+        @description Retorna el color Hue a RGBA.
     */
     RGBA HueToRGBA( float H )
     {
@@ -105,16 +110,17 @@ namespace fft
         return RGBA( Math.clamp( 0, 255, int( R * 255.f ) ), Math.clamp( 0, 255.0f, int( G * 255.0f ) ), Math.clamp( 0, 255, int( B * 255.0f ) ), 255 );
     }
 
-    /*@
-        @prefix fft::ToHue fft::Hue fft::RGBAToHue RGBAToHue Hue format
-        @body fft::
-        Format the given RGBA to hue value in a float form
+    /*
+        @prefix fft fft::RGBAToHue RGBAToHue Hue RGBA
+        @body fft::RGBAToHue( RGBA rgb )
+        @description Retorna el color RGBA a Hue.
     */
     float RGBAToHue( RGBA rgb ){ return ToHue( Vector( rgb.r, rgb.g, rgb.b ) ); }
-    /*@
-        @prefix fft::ToHue fft::Hue Hue format
-        @body fft::
-        Format the given Vector to hue value in a float form
+
+    /*
+        @prefix fft fft::RGBAToHue RGBAToHue Hue RGBA ToHue fft::ToHue
+        @body fft::ToHue( Vector rgb )
+        @description Retorna el color RGBA a Hue.
     */
     float ToHue( Vector rgb )
     {
@@ -158,9 +164,10 @@ namespace fft
     }
 }
 
-/*@
-    @prefix atorgba
-    Return the given string as a 4D RGBA
+/*
+    @prefix fft fft::atorgba atorgba
+    @body atorgba( const string From )
+    @description Retorna el string a RGBA
 */
 RGBA atorgba( const string From )
 {
@@ -172,9 +179,10 @@ RGBA atorgba( const string From )
     return RGBA( atoui( aSplit[0] ), atoui( aSplit[1] ), atoui( aSplit[2] ), atoui( aSplit[3] ) );
 }
 
-/*@
-    @prefix atov StringToVector
-    Return the given string as a 3D Vector
+/*
+    @prefix fft fft::atov atov
+    @body atov( const string From )
+    @description Retorna el string a Vector
 */
 Vector atov( const string From )
 {
@@ -186,11 +194,12 @@ Vector atov( const string From )
     return Vector( atof( aSplit[0] ), atof( aSplit[1] ), atof( aSplit[2] ) );
 }
 
-/*@
-    @prefix atobool stringtobool
-    Return the given string as a boolean, 0/1 or false/true
+/*
+    @prefix fft fft::atob atob
+    @body atob( const string From )
+    @description Retorna el string a bool, 0/1 o tambien false/true
 */
 bool atob( const string From )
 {
-    return ( From == 'true' || atoi( From ) == 1 );
+    return ( tolower( From ) == 'true' || atoi( From ) == 1 );
 }

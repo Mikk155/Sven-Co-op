@@ -15,7 +15,11 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include "../../mikk/shared"
+#include "../../mikk/fft"
+#include "../../mikk/json"
+#include "../../mikk/GameFuncs"
+#include "../../mikk/PlayerFuncs"
+#include "../../mikk/UserMessages"
 
 json pJson;
 bool AddColor;
@@ -23,14 +27,14 @@ bool AddColor;
 void PluginInit()
 {
 	g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
 	g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
     pJson.load('plugins/mikk/chatroles.json');
-    AddColor = !Mikk.IsPluginInstalled( 'ChatColors', false );
+    AddColor = !GameFuncs::IsPluginInstalled( 'ChatColors' );
 }
 
-void MapInit()
+void MapActivate()
 {
     pJson.reload('plugins/mikk/chatroles.json');
 }
@@ -53,10 +57,10 @@ HookReturnCode ClientSay( SayParameters@ pParams )
     if( pPlayer !is null
     && !pParams.ShouldHide
     && args.GetCommandString() != ''
-    && hiden.find( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) < 0
-    && pJson.Instance( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) == JsonValueType::ARRAY )
+    && hiden.find( PlayerFuncs::GetSteamID( pPlayer ) ) < 0
+    && pJson.Instance( PlayerFuncs::GetSteamID( pPlayer ) ) == JsonValueType::ARRAY )
     {
-        array<string> pData = array<string>( pJson[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] );
+        array<string> pData = array<string>( pJson[ PlayerFuncs::GetSteamID( pPlayer ) ] );
 
         int oldClassify;
 
@@ -87,7 +91,7 @@ HookReturnCode ClientSay( SayParameters@ pParams )
         }
 
         string preText = ( pData[0].IsEmpty() ? '' : '[' + pData[0] + '] ' );
-        Mikk.PlayerFuncs.PlayerSay( pPlayer, preText + string( pPlayer.pev.netname ) + ': ' + args.GetCommandString() );
+        UserMessages::PlayerSay( pPlayer, preText + string( pPlayer.pev.netname ) + ': ' + args.GetCommandString() );
 
         if( AddColor )
         {
@@ -128,6 +132,6 @@ void consoleCmd( const CCommand@ args )
 {
     if( g_ConCommandSystem.GetCurrentPlayer() !is null )
     {
-        hidemode( Mikk.PlayerFuncs.GetSteamID( g_ConCommandSystem.GetCurrentPlayer() ), atoi( args[1] ) );
+        hidemode( PlayerFuncs::GetSteamID( g_ConCommandSystem.GetCurrentPlayer() ), atoi( args[1] ) );
     }
 }

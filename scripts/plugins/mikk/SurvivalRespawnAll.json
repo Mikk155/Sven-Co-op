@@ -1,5 +1,10 @@
 {
     "INSTANT_ENABLE": true,
+    "blacklist maps":
+    [
+        "hl_c00",
+        "of0a0"
+    ],
     "SPAWNED":
     {
         "english": "Survival mode now active. Only new players will spawn",

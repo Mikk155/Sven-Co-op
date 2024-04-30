@@ -1,0 +1,31 @@
+name: developer
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/developer.yml'
+      - 'build/resources/developer.json'
+      - 'scripts/mikk/*'
+      - 'scripts/plugins/mikk/developer.*'
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Installing Python
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Release
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: python3 build/run.py developer

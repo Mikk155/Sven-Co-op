@@ -1,0 +1,17 @@
+{
+    "Resources":
+    [
+        "scripts/plugins/mikk/svenfixes.as",
+        "scripts/plugins/mikk/svenfixes/observer_noises.as",
+        "scripts/plugins/mikk/svenfixes/grenade_revivable.as",
+        "scripts/plugins/mikk/svenfixes/observer_presence.as",
+        "scripts/plugins/mikk/svenfixes/gravity_lost.as",
+        "scripts/plugins/mikk/svenfixes/satchel_stun.as",
+        "scripts/plugins/mikk/svenfixes/deadplayer_sink.as",
+        "scripts/plugins/mikk/svenfixes/tripmine_spam.as",
+        "scripts/plugins/mikk/svenfixes/gonome_crouch.as",
+        "scripts/plugins/mikk/svenfixes/hwgrunt_crouch.as",
+        "scripts/plugins/mikk/svenfixes/longjump_revive.as",
+        "scripts/plugins/mikk/svenfixes/changelevel_items.as"
+    ]
+}

@@ -15,12 +15,13 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
+#include "../../mikk/json"
+#include "../../mikk/UserMessages"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Gaftherman" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Gaftherman | https://github.com/Mikk155/Sven-Co-op" );
 
     g_Hooks.RegisterHook( Hooks::ASLP::Engine::ClientCommand, @ClientCommand );
 
@@ -36,7 +37,7 @@ HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszComman
     if( pPlayer !is null
     && m_iszCommand == 'npc_moveto'
     && ( pJson[ 'observers can use', false ] || pPlayer.IsAlive() )
-    && g_Engine.time > atof( CustomKeyValue( pPlayer, '$f_npcmoveto_cooldown' ) ) )
+    && g_Engine.time > pPlayer.GetCustomKeyvalues().GetKeyvalue( '$f_npcmoveto_cooldown' ).GetFloat() )
     {
         TraceResult tr;
 
@@ -50,9 +51,9 @@ HookReturnCode ClientCommand( CBasePlayer@ pPlayer, const string& in m_iszComman
         Vector VecPos = tr.vecEndPos;
         VecPos.z -= ( ( tr.vecPlaneNormal.z < 0 ) ? 4 : 0 );
 
-        Mikk.UserMessages.Entity.Implosion( VecPos, uint8(pJson['radius',32]), uint8(pJson['count',32]),uint8(pJson['life',2]));
+        UserMessages::Implosion( VecPos, uint8( pJson[ 'radius', 32 ] ), uint8( pJson[ 'count', 32 ] ), uint8( pJson[ 'life', 2 ] ) );
 
-        CustomKeyValue( pPlayer, '$f_npcmoveto_cooldown', g_Engine.time + pJson[ 'player cooldown', 0.0 ] );
+        g_EntityFuncs.DispatchKeyValue( pPlayer.edict(), '$f_npcmoveto_cooldown', g_Engine.time + pJson[ 'player cooldown', 0.0 ] );
     }
     return HOOK_CONTINUE;
 }

@@ -15,35 +15,28 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
+#include "fft"
+#include "json"
+
 enum MKLANG
 {
-    /*@
-        ClientPrint -> HUD_PRINTTALK
-    */
     CHAT = 0,
-    /*@
-        PrintKeyBindingString
-    */
     BIND,
-    /*@
-        ClientPrint -> HUD_PRINTCENTER
-    */
     CENTER,
     /*@
         HudMessage Pass arguments in the json file.
         x = -1, y = -1, effect = 1, color = 255 255 255, color2 = 255 255 255, fadein = 0, fadeout = 1, hold = 1, fxtime = 1, channel = 8
     */
     HUDMSG,
-    /*@
-        ClientPrint -> HUD_PRINTNOTIFY
-    */
     NOTIFY,
-    /*@
-        ClientPrint -> HUD_PRINTCONSOLE
-    */
     CONSOLE,
 }
 
+/*
+    @prefix #include Language
+    @body #include "${1:../../}mikk/Language"
+    @description Utilidades relacionadas mensajeria con los jugadores
+*/
 namespace Language
 {
     // This is bad but i can't make the external shared thing
@@ -62,9 +55,9 @@ namespace Language
 
     HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
     {
-        if( pPlayer !is null && g_Data.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
+        if( pPlayer !is null && g_Data.exists( g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ) )
         {
-            SetLanguage( pPlayer, string( g_Data[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] ) );
+            SetLanguage( pPlayer, string( g_Data[ g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ] ) );
         }
         return HOOK_CONTINUE;
     }
@@ -102,8 +95,8 @@ namespace Language
     {
         if( pPlayer !is null )
         {
-            g_Data[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] = m_szLanguage;
-            CustomKeyValue( pPlayer, '$s_language', m_szLanguage.ToLowercase() );
+            g_Data[ g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() ) ] = m_szLanguage;
+            pPlayer.GetCustomKeyvalues().SetKeyvalue( '$s_language', m_szLanguage.ToLowercase() );
         }
     }
 
@@ -158,20 +151,15 @@ namespace Language
             }
         }
     }
-}
 
-class MKLanguage
-{
-    /*@
-        @prefix Mikk.Language.GetLanguage GetLanguage
-        @body Mikk.Language
-        Gets a language string from the given json value,
-        pReplacement keys will be replaced with their values.
-        note in the json string it have to be enclosed with two $
+    /*
+        @prefix Language Language::GetLanguage GetLanguage
+        @body Language::GetLanguage( CBasePlayer@ pPlayer, json@ pJson, dictionary@ pReplacement = null )
+        @description Retorna el mensaje correspondiente para este jugador
     */
     string GetLanguage( CBasePlayer@ pPlayer, json@ pJson, dictionary@ pReplacement = null )
     {
-        string m_szLanguage = CustomKeyValue( pPlayer, "$s_language" );
+        string m_szLanguage = pPlayer.GetCustomKeyvalues().GetKeyvalue( "$s_language" ).GetString();
 
         if( m_szLanguage == String::EMPTY_STRING || m_szLanguage == '' )
             m_szLanguage = "english";
@@ -194,13 +182,10 @@ class MKLanguage
         return m_szMessage;
     }
 
-    /*@
-        @prefix Mikk.Language.PrintAll PrintAll Language
-        @body Mikk.Language
-        Prints a language string from the given json value,
-        PrintType is the message type. see the enum
-        pReplacement keys will be replaced with their values.
-        note in the json string it have to be enclosed with two $
+    /*
+        @prefix Language Language::PrintAll PrintAll
+        @body Language::PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
+        @description Muestra un mensaje con el lenguaje correspondiente para cada jugador
     */
     void PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
     {
@@ -213,13 +198,10 @@ class MKLanguage
         }
     }
 
-    /*@
-        @prefix Mikk.Language.PrintAll PrintAll Language
-        @body Mikk.Language
-        Prints a language string from the given json value,
-        PrintType is the message type. see the enum
-        pReplacement keys will be replaced with their values.
-        note in the json string it have to be enclosed with two $
+    /*
+        @prefix Language Language::PrintAll PrintAll
+        @body Language::PrintAll( json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
+        @description Muestra un mensaje con el lenguaje correspondiente para este jugador
     */
     void Print( CBasePlayer@ pPlayer, json@ pJson, MKLANG PrintType = CHAT, dictionary@ pReplacement = null )
     {

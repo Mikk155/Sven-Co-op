@@ -1,0 +1,32 @@
+name: svenfixes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/svenfixes.yml'
+      - 'build/resources/svenfixes.json'
+      - 'scripts/mikk/*'
+      - 'scripts/plugins/mikk/svenfixes.*'
+      - 'scripts/plugins/mikk/svenfixes/*'
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Installing Python
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Release
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: python3 build/run.py svenfixes

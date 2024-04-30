@@ -32,7 +32,7 @@ namespace ClientDisconnect
         if( pPlayer is null )
             return HOOK_CONTINUE;
 
-        FormatMessage( pJson[ 'MESSAGES', {} ][ 'ClientDisconnect', {} ][ 'left', {} ][ language, '' ], { { 'player', Mikk.PlayerFuncs.GetSteamID( pPlayer ) + " " + string( pPlayer.pev.netname ) } } );
+        FormatMessage( pJson[ 'MESSAGES', {} ][ 'ClientDisconnect', {} ][ 'left', {} ][ language, '' ], { { 'player', PlayerFuncs::GetSteamID( pPlayer ) + " " + string( pPlayer.pev.netname ) } } );
 
         return HOOK_CONTINUE;
     }

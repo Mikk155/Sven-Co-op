@@ -16,6 +16,11 @@
         "displacer_portal",
         "monster_chumtoad"
     ],
+    "blacklist maps":
+    [
+        "hl_c00",
+        "of0a0"
+    ],
     "ENABLED":
     {
         "english": "Anti-Clip enabled by admin $name$.",

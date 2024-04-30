@@ -1,178 +1,128 @@
-# This script has been made for reading the scripts at scripts/mikk/*
-# and generate a snippets project in .vscode/shared.code-snippets
-# This is used by me to update these snippets, you dont need this in your game server.
-
 import os
-import json
+
+def ListScripts():
+    for ruta, directorios, archivos in os.walk( 'scripts\mikk' ):
+        for nombre_archivo in archivos:
+            ruta_completa = os.path.join(ruta, nombre_archivo)
+            yield ruta_completa
 
 def CreateSnippets():
 
     vsfolder = os.path.join( os.path.dirname(__file__), '.vscode/' )
 
     if not os.path.exists(vsfolder):
-
         os.makedirs(vsfolder)
 
-    res_file = os.path.join( os.path.dirname(__file__), 'resources/shared.json' )
-
-    with open(res_file, 'r') as f, open( f'{vsfolder}/shared.code-snippets', 'w') as snippet:
-
-        Quote = ''
+    with open( f'{vsfolder}/shared.code-snippets', 'w') as snippet:
 
         snippet.write( '{\n' )
 
-        datajs = json.load(f)
+        FirstEntry = True
 
-        for i in datajs.get( 'Resources', {} ):
+        allfiles = list(ListScripts())
+        allfiles.append( 'src\\aslp\\aslp.cpp' )
 
-            asDst = os.path.join( os.path.dirname(__file__), i )
+        for archivo in allfiles:
 
-            with open( asDst, 'r' ) as a:
+            Script = os.path.join( os.path.dirname(__file__), archivo )
+            with open( f'{Script}', 'r') as a:
 
                 lines = a.readlines()
 
-                InComment = False
-                IsEnum = ''
-                EnumValue = 0
-                ShouldCopyFunction = False
-
-                prefix = ''
+                type = ''
                 body = ''
+                prefix = ''
+                function = ''
                 description = ''
+                InComment = False
+                CatchFunction = False
 
                 for line in lines:
 
-                    line = line.strip()
+                    line = line.strip( ' ' )
+                    if line.endswith( '\n' ):
+                        line = line[0:line.rindex('\n') ]
+                    line = line.replace( '"', '\\"' )
 
-                    if IsEnum != '':
+                    if not line or line == '':
+                        continue
+                    if line == '/*':
+                        InComment = True
+                    elif line == '*/':
+                        CatchFunction = True
+                        InComment = False
+                    elif InComment:
+                        if line.startswith( '@prefix' ):
+                            pr = line[ len('@prefix ') : ]
+                            pr = pr.replace( ' ', '", "' )
+                            if prefix != '':
+                                prefix = f'{prefix}\\n{pr}'
+                            else:
+                                prefix = f'{pr}'
+                        elif line.startswith( '@body' ):
+                            body = line[ len('@body ') : ]
+                        elif line.startswith( '@description' ):
+                            pr = line[ len('@description ') : ]
+                            if description != '':
+                                description = f'{description}\\n{pr}'
+                            else:
+                                description = f'{pr}'
+                    elif CatchFunction and description and prefix and body:
+                        type = line[ 0 : line.find( ' ', 0 ) ]
+                        line = line[ line.find( ' ', 0 ) + 1 :]
 
-                        if line == '{':
-                            continue
-                        elif line == '}':
-                            IsEnum = ''
-                            EnumValue = 0
-                            continue
-                        elif( line.startswith( '/*@' ) ):
-                            InComment = True
-                            continue
-                        elif( line.startswith( '*/' ) ):
-                            InComment = False
-                            ShouldCopyFunction = True
-                            continue
+                        if type in [ 'const', 'private', 'protected' ]:
+                            sz = line[ 0 : line.find( ' ', 0 ) ]
+                            type = f'{type} {sz}'
+                            line = line[ line.find( ' ', 0 ) + 1 :]
 
-                        if ShouldCopyFunction:
+                        function = line
 
-                            line = line.replace( ' ', '' )
-                            for i in line.split( ',' ):
+                        if not FirstEntry:
+                            snippet.write( ',\n' )
+                        FirstEntry = False
 
-                                if '=' in i:
-                                    v = i.split( '=' )
-                                    EnumValue = int( v[1] )
-                                    i = v[0]
+                        if body.find( '(' ) != -1 and body.find( ')' ) != -1:
+                            fn = body[ 0 : body.find( '(' ) ]
+                            fnargs = body[ body.find( '(' ) + 1: ]
+                            if fnargs.find( ')' ) != -1:
+                                fnargs = fnargs[ 0 : fnargs.rindex( ')' ) ]
+                            doargs = fnargs.split( ',' )
+                            forallargs = ''
+                            if len(doargs) > 0:
+                                eindex = 1
+                                for dargs in doargs:
+                                    dargs = dargs.strip()
+                                    if not dargs or dargs == '':
+                                        continue
+                                    dargs = '${' + f'{eindex}:{dargs}' + '}'
+                                    if eindex > 1:
+                                        forallargs = f'{forallargs}, {dargs}'
+                                    else:
+                                        forallargs = dargs
+                                    eindex = eindex + 1
 
-                                if i == '':
-                                    continue
+                            if forallargs and forallargs != '':
+                                body = f'{fn}( {forallargs} )'
+                            else:
+                                body = f'{fn}()'
 
-                                snippet.write( f'{Quote}\t"enum {IsEnum}::{i}":\n' )
-                                snippet.write( '\t{\n' )
-                                snippet.write( f'\t\t"prefix": [ "{i}", "{IsEnum}::{i}" ],\n' )
-                                snippet.write( f'\t\t"body": "{IsEnum}::{i}",\n' )
-                                snippet.write( f'\t\t"description": "{description}",\n' )
-                                snippet.write( '\t}' )
-                            EnumValue = EnumValue + 1
-                            ShouldCopyFunction = False
-
-                    elif( ShouldCopyFunction ):
-                        snippet.write( f'{Quote}\t"{line}":\n' )
+                        lib = archivo[ archivo.rfind( '\\' ) + 1 : ]
+                        snippet.write( f'\t"{type} {function}":\n' )
                         snippet.write( '\t{\n' )
-                        snippet.write( f'\t\t"prefix":[ "{prefix}" ],\n' )
+                        snippet.write( f'\t\t"prefix": [ "{prefix}" ],\n' )
+                        snippet.write( f'\t\t"body": "{body}",\n' )
+                        snippet.write( f'\t\t"description": "({lib}) {description}"\n' )
+                        snippet.write( '\t}' )
 
-                        function = line[ line.find ( " " ) + 1:]
-                        body = body.strip( ' ' )
-
-                        Dot = '.'
-
-                        if line.startswith( 'namespace' ):
-                            Dot = '::'
-
-                        if not "(" in function:
-
-                            snippet.write( f'\t\t"body": "' )
-
-                            if body != '':
-                                snippet.write( f'{body}{Dot}' )
-                            snippet.write( f'{function}",\n' )
-
-                        else:
-
-                            Arguments = function[ function.find( '(' ) + 1 : function.find( ')' ) - 1 ]
-
-                            function = function[ : function.find( '(' ) ]
-
-                            dListArgs = Arguments.split( ',' )
-
-                            snippet.write( f'\t\t"body": "' )
-
-                            if body != '':
-                                snippet.write( f'{body}{Dot}' )
-
-                            snippet.write( f'{function}(' )
-
-                            for i, Args in enumerate( dListArgs ):
-
-                                if not Args:
-                                    continue
-
-                                if Args.startswith( ' ' ):
-                                    Args = Args[1:]
-
-                                Args = Args.strip()
-
-                                s = f'${{{i + 1}:{Args}}}'
-
-                                if i < len( dListArgs ) - 1:
-                                    s += ','
-
-                                snippet.write( f' {s}' )
-
-                            snippet.write( f')",\n' )
-
-                        snippet.write( f'\t\t"description": "{description}"\n' )
-
-                        line = ''
+                        type = ''
                         body = ''
                         prefix = ''
-                        Quote = ',\n'
+                        function = ''
                         description = ''
-                        snippet.write( '\t}' )
-                        ShouldCopyFunction = False
-
-                    if line.startswith( 'enum' ):
-                        IsEnum = line[ line.find( ' ' ) + 1 : ]
-                    elif( line.startswith( '@prefix' ) ):
-                        prefix = line.strip( '@prefix' )
-                        prefix = prefix.strip()
-                        prefix = prefix.replace( ' ', '", "' )
-                    elif( line.startswith( '@body' ) ):
-                        body = line.strip( '@body' )
-                    elif( line.startswith( '/*@' ) ):
-                        InComment = True
-                    elif( line.startswith( '*/' ) ):
                         InComment = False
-                        ShouldCopyFunction = True
-                    elif InComment:
-                        line = line.replace( '"', '\\"' )
-                        if description != '':
-                            description = f'{description} {line}'
-                        else:
-                            description = line
-
+                        CatchFunction = False
                 a.close()
-
-        f.close()
         snippet.write( '\n}\n' )
         snippet.close()
-
-if __name__ == "__main__":
-
-    CreateSnippets()
+CreateSnippets()

@@ -15,14 +15,18 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
+#include "../../mikk/fft"
+#include "../../mikk/json"
+#include "../../mikk/Language"
+#include "../../mikk/datashared"
+#include "../../mikk/EntityFuncs"
 
 json pJson;
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Gaftherman" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Gaftherman | https://github.com/Mikk155/Sven-Co-op" );
     pJson.load('plugins/mikk/AntiClip.json');
     ToggleState( 1 );
 }
@@ -39,13 +43,13 @@ void Command( const CCommand@ args )
     {
         if( !hooks )
         {
-            Mikk.Language.PrintAll( pJson[ "ENABLED", {} ], MKLANG::CHAT, { { "name", string( pPlayer.pev.netname ) } } );
+            Language::PrintAll( pJson[ "ENABLED", {} ], MKLANG::CHAT, { { "name", string( pPlayer.pev.netname ) } } );
             ToggleState( 1 );
         }
     }
     else if( hooks )
     {
-        Mikk.Language.PrintAll( pJson[ "DISABLED", {} ], MKLANG::CHAT, { { "name", string( pPlayer.pev.netname ) } } );
+        Language::PrintAll( pJson[ "DISABLED", {} ], MKLANG::CHAT, { { "name", string( pPlayer.pev.netname ) } } );
         ToggleState( 0 );
     }
 }
@@ -79,12 +83,31 @@ void ToggleState( int casex )
         }
     }
 
-    gpDataShared[ "state", casex ];
+    datashared::SetData( { { "state", string(casex) } } );
 }
 
-void MapInit()
+bool MapBlackListed, WasEnabled;
+
+void MapActivate()
 {
-    gpDataShared[ "state", ( hooks ? 1 : 0 ) ];
+    pJson.reload( 'plugins/mikk/AntiClip.json' );
+
+    if( array<string>( pJson[ 'blacklist maps' ] ).find( string( g_Engine.mapname ) ) > 0 )
+    {
+        MapBlackListed = true;
+        WasEnabled = hooks;
+        ToggleState(0);
+    }
+    else if( MapBlackListed )
+    {
+        if( WasEnabled )
+        {
+            ToggleState(1);
+        }
+        MapBlackListed = false;
+    }
+
+    datashared::SetData( { { "state", ( hooks ? '1' : '0' ) } } );
 }
 
 HookReturnCode ShouldCollide( CBaseEntity@ pTouched, CBaseEntity@ pProjectile, META_RES& out meta_result, int &out result )

@@ -57,7 +57,7 @@ namespace ClientSay
             { 'message', sentence },
             { 'emote', GetEmote( pPlayer ) },
             { 'name', string( pPlayer.pev.netname ) },
-            { 'steam', Mikk.PlayerFuncs.GetSteamID( pPlayer ) },
+            { 'steam', PlayerFuncs::GetSteamID( pPlayer ) },
             { 'dead', ( pPlayer.IsAlive() ? '' : string( pJson[ 'MESSAGES', {} ][ 'ClientSay', {} ][ 'dead', {} ][ language ] ) ) }
         });
 

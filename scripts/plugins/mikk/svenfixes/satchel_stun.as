@@ -15,6 +15,8 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
+#include "../../../mikk/UserMessages"
+
 namespace svenfixes
 {
     namespace satchel_stun
@@ -193,7 +195,7 @@ namespace svenfixes
                             }
                         }
 
-                        Mikk.PlayerFuncs.ClientCommand( 'spk "items/gunpickup2.wav"', pPlayer );
+                        UserMessages::ClientCommand( 'spk "items/gunpickup2.wav"', pPlayer );
 
                         g_EntityFuncs.Remove( self );
                     }

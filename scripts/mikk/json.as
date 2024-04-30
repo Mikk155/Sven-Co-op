@@ -41,6 +41,13 @@ class JsonValue
     array<string> arrayvalue;
     dictionary dictionaryvalue;
 
+    /*
+        @prefix JsonValue json Instance
+        @body Instance( bool ToString )
+        @description Retorna el nombre de la instancia de este JsonValue.
+        @description Retorna JsonValueType o nombre de string si ToString es true.
+        @description int, RGBA, bool, json, array, float, Vector, string, Vector2D
+    */
     string Instance( bool ToString ) const
     {
         if( ToString )
@@ -61,10 +68,6 @@ class JsonValue
         return string( instance );
     }
 
-    /*@
-        @prefix JsonValue opIndex
-        Return the given value on the array of this json if any, else returns empty string
-    */
     string opIndex( uint index )
     {
         if( index < arrayvalue.length() )
@@ -74,19 +77,84 @@ class JsonValue
         return String::EMPTY_STRING;
     }
 
+    /*
+        @prefix JsonValue string_t
+        @body string_t( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de string_t
+    */
     string_t opConv() const { return string_t(value); }
+    /*
+        @prefix JsonValue string
+        @body string( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de string
+    */
     string opConv() const { return value; }
+    /*
+        @prefix JsonValue uint
+        @body uint( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de uint
+    */
     uint opConv() const { return atoui(value); }
+    /*
+        @prefix JsonValue uint
+        @body uint( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de uint
+    */
+    /*
+        @prefix JsonValue int
+        @body int( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de int
+    */
     int opConv() const { return atoi(value); }
+    /*
+        @prefix JsonValue float
+        @body float( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de float
+    */
     float opConv() const { return atof(value); }
-    bool opConv() const { return atob(value); }
+    /*
+        @prefix JsonValue bool
+        @body bool( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de bool
+    */
+    bool opConv() const { return ( value == 'true' || atoi( value ) == 1 ); }
+    /*
+        @prefix JsonValue RGBA
+        @body RGBA( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de RGBA
+    */
     RGBA opConv() const{ return ( arrayvalue.length() == 4 ? RGBA( atoi(arrayvalue[0]), atoi(arrayvalue[1]), atoi(arrayvalue[2]), atoi(arrayvalue[3]) ) : RGBA_WHITE ); }
+    /*
+        @prefix JsonValue Vector
+        @body Vector( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de Vector
+    */
     Vector opConv() const{ return ( arrayvalue.length() == 3 ? Vector( atof(arrayvalue[0]), atof(arrayvalue[1]), atof(arrayvalue[2]) ) : g_vecZero ); }
+    /*
+        @prefix JsonValue Vector2D
+        @body Vector2D( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de Vector2D
+    */
     Vector2D opConv() const{ return ( arrayvalue.length() == 2 ? Vector2D( atof(arrayvalue[0]), atof(arrayvalue[1]) ) : g_vecZero.Make2D() ); }
+    /*
+        @prefix JsonValue array<string>
+        @body array<string>( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de array<string>
+    */
     array<string> opConv() const { return arrayvalue; }
+    /*
+        @prefix JsonValue json
+        @body json( JsonValue@ pJson )
+        @description Retorna el valor de este JsonValue en forma de json
+    */
     json opConv() const { json pJson; pJson.data = dictionaryvalue; return pJson; }
 }
 
+/*
+    @prefix #include json
+    @body #include "${1:../../}mikk/json"
+    @description Mi version de json, puede no ser igual ya que esto fue creado a mi conveniencia.
+*/
 class json
 {
     protected array<string> OpIndex;
@@ -107,9 +175,11 @@ class json
         return String::EMPTY_STRING;
     }
 
-    /*@
+    /*
         @prefix json exists
-        Return whatever the given key exists, if vlvalue is true it will check for both to exist
+        @body exists( string &in key, bool CheckValue = false )
+        @description Retorna si la variable dada existe.
+        @description Si CheckValue es true retorna si el valor existe
     */
     bool exists( string &in key, bool CheckValue = false )
     {
@@ -126,44 +196,48 @@ class json
         return this.data.exists( key );
     }
 
-    /*@
-        @prefix json size
-        Return the whole size of this json data
+    /*
+        @prefix json size length
+        @body size()
+        @description Retorna la cantidad de valores que existen en este json
     */
     uint size()
     {
         return this.keysize;
     }
 
-    /*@
-        @prefix json length
-        Return the length of this json data
+    /*
+        @prefix json size length
+        @body length()
+        @description Retorna la cantidad de valores *accesibles* que existen en este json
     */
     uint length()
     {
         return this.data.getKeys().length();
     }
 
+    /*
+        @prefix json get
+        @body get( string key )
+        @description Retorna el valor de la variable dada
+    */
     JsonValue get( string key )
     {
         return JsonValue( this.data[ key ] );
     }
 
-    /*@
-        @prefix json opIndex
-        Return the JsonValue of the given key
-    */
     JsonValue opIndex( string key )
     {
         return get( key );
     }
 
-    /*@
-        @prefix json Instance
-        Return the instance name on enum JsonValueType, if ToString is true return as a string
-    */
     string Instance( string key, bool ToString = false ){ return get( key ).Instance( ToString ); }
 
+    /*
+        @prefix json get
+        @body get( string key, string value )
+        @description Retorna el valor de la variable dada, si no existe retorna value
+    */
     string get( string key, string value ){ return this[ key, value ]; }
     string opIndex( string key, string value )
     {
@@ -174,22 +248,37 @@ class json
         return ( value.IsEmpty() ? String::EMPTY_STRING : value );
     }
 
+    /*
+        @prefix json get
+        @body get( string key, int value )
+        @description Retorna el valor de la variable dada, si no existe retorna value
+    */
     int get( string key, int value ){ return this[ key, value ]; }
     int opIndex( string key, int value )
     {
         return ( this[ key, '' ].IsEmpty() ? value : atoi( this[ key, string( value ) ] ) );
     }
 
+    /*
+        @prefix json get
+        @body get( string key, float value )
+        @description Retorna el valor de la variable dada, si no existe retorna value
+    */
     float get( string key, float value ){ return this[ key, value ]; }
     float opIndex( string key, float value )
     {
         return ( this[ key, '' ].IsEmpty() ? value : atof( this[ key, string( value ) ] ) );
     }
 
+    /*
+        @prefix json get
+        @body get( string key, bool value )
+        @description Retorna el valor de la variable dada, si no existe retorna value
+    */
     bool get( string key, bool value ){ return this[ key, value ]; }
     bool opIndex( string key, bool value )
     {
-        return ( this[ key, '' ].IsEmpty() ? value : atob( this[ key, '' ] ) );
+        return ( this[ key, '' ].IsEmpty() ? value : ( key == 'true' || atoi( key ) == 1 ) );
     }
 /*
     Vector get( string key, Vector value ){ return this[ key, value ]; }
@@ -230,8 +319,18 @@ class json
             }
             return value;
         }*/
+    /*
+        @prefix json get
+        @body get( string key, json value )
+        @description Retorna el valor de la variable dada, si no existe retorna value
+    */
     json get( string key, json value ){ return this[ key, value ]; }
     json opIndex( string key, json value ){ return this[ key, value.data ]; }
+    /*
+        @prefix json get
+        @body get( string key, dictionary value )
+        @description Retorna el valor de la variable dada, si no existe retorna value
+    */
     json get( string key, dictionary value ){ return this[ key, value ]; }
     json opIndex( string key, dictionary value )
     {
@@ -256,6 +355,11 @@ class json
         return pJson;
     }
 
+    /*
+        @prefix json get getKeys
+        @body getKeys()
+        @description Retorna una array de strings con todas las claves
+    */
     array<string> getKeys()
     {
         return this.data.getKeys();
@@ -517,29 +621,28 @@ class json
         return JsonValueType::STRING;
     }
 
-    /*@
-        @prefix load reload json parse
-        Aliases to "load" but will return 1 if this json doesn't has a key "reload" on true
+    /*
+        @prefix json reload load parse decode
+        @body reload( string m_szLoad, bool include = false )
+        @description Alias a "load" pero retornará 1 si este json no tiene la clave "reload" en true.
     */
     uint reload( string m_szLoad, bool include = false )
     {
         return ( this[ 'reload', false ] ? this.load( m_szLoad, include ) : 1 );
     }
 
-    /*@
-        @prefix load json parse
-        Loads a json file within a json class. if no format '.json' is provided it asumes you sent a string with json format
-        if include is true the json is not cleared and new data will be written above,
-        When specifying format, folder maps/plugins is necesary to include in the path.
-        Return codes:
-        0 = everything fine
-        1 = empty string sent
-        2 = file not found
+    /*
+        @prefix json reload load parse decode
+        @body load( string m_szLoad, bool include = false )
+        @description Carga un archivo de texto y decodifica a la class json.
+        @description si no se especifica ".json" al final entonces se asume que el string es el texto a decodificar.
     */
     uint load( string m_szLoad, bool include = false )
     {
         if( m_szLoad.IsEmpty() )
+        {
             return 1;
+        }
 
         if( !include )
         {

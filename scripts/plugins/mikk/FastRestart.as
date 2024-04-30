@@ -15,29 +15,32 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
+#include "../../mikk/json"
 
 json pJson;
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
-
-    Mikk.Hooks.RegisterHook( Hooks::Game::SurvivalEndRound, @SurvivalEndRound );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     pJson.load('plugins/mikk/FastRestart.json');
 }
 
-void Restart()
+CScheduledFunction@ pTimer;
+
+void MapStart()
 {
-    try
+    if( pTimer !is null )
     {
-        g_EntityFuncs.CreateEntity( 'player_loadsaved', { { 'targetname', 'a' }, { 'loadtime', '1.5' } }, true ).Use( null, null, USE_ON, 0.0f );
+        g_Scheduler.RemoveTimer( pTimer );
     }
-    catch
+
+    pJson.reload( 'plugins/mikk/FastRestart.json' );
+
+    if( g_SurvivalMode.MapSupportEnabled() && array<string>( pJson[ 'blacklist maps' ] ).find( string( g_Engine.mapname ) ) < 1 )
     {
-        g_EngineFuncs.ChangeLevel( string( g_Engine.mapname ) );
+        @pTimer = g_Scheduler.SetInterval( "Think", 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
     }
 }
 
@@ -55,39 +58,59 @@ bool MedicAround( Vector VecStart )
     return false;
 }
 
-
-HookReturnCode SurvivalEndRound()
+void Think()
 {
-    if( pJson[ 'ShouldWaitMedic', false ] )
+    int iAlivePlayers = 0, iAllPlayers = 0;
+
+    for( int iIndex = 1; iIndex <= g_Engine.maxClients; ++iIndex )
     {
-        CBaseEntity@ pCorpses = null;
+        CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( iIndex );
 
-        while( ( @pCorpses = g_EntityFuncs.FindEntityByClassname( pCorpses, 'deadplayer' ) ) !is null )
+        if( pPlayer !is null )
         {
-            if( MedicAround( pCorpses.pev.origin ) )
+            if( pPlayer.IsAlive() )
             {
-                return HOOK_CONTINUE;
+                ++iAlivePlayers;
             }
+            ++iAllPlayers;
         }
+    }
 
-        @pCorpses = null;
-
-        while( ( @pCorpses = g_EntityFuncs.FindEntityByClassname( pCorpses, 'player' ) ) !is null )
+    if( g_SurvivalMode.IsActive() && g_PlayerFuncs.GetNumPlayers() > 0 && iAlivePlayers == 0 )
+    {
+        if( pJson[ 'ShouldWaitMedic', false ] )
         {
-            if( pCorpses.pev.health <= 0 )
+            CBaseEntity@ pCorpses = null;
+
+            while( ( @pCorpses = g_EntityFuncs.FindEntityByClassname( pCorpses, 'deadplayer' ) ) !is null )
             {
                 if( MedicAround( pCorpses.pev.origin ) )
                 {
-                    return HOOK_CONTINUE;
+                    return;
+                }
+            }
+
+            @pCorpses = null;
+
+            while( ( @pCorpses = g_EntityFuncs.FindEntityByClassname( pCorpses, 'player' ) ) !is null )
+            {
+                if( pCorpses.pev.health <= 0 )
+                {
+                    if( MedicAround( pCorpses.pev.origin ) )
+                    {
+                        return;
+                    }
                 }
             }
         }
 
-        Restart();
+        try
+        {
+            g_EntityFuncs.CreateEntity( 'player_loadsaved', { { 'targetname', 'a' }, { 'loadtime', '1.5' } }, true ).Use( null, null, USE_ON, 0.0f );
+        }
+        catch
+        {
+            g_EngineFuncs.ChangeLevel( string( g_Engine.mapname ) );
+        }
     }
-    else
-    {
-        Restart();
-    }
-    return HOOK_CONTINUE;
 }

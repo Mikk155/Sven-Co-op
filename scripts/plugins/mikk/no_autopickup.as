@@ -15,17 +15,28 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
+#include "../../mikk/json"
+#include "../../mikk/Language"
+#include "../../mikk/EntityFuncs"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
-
-    g_Hooks.RegisterHook( Hooks::PickupObject::CanCollect, @CanCollect );
-    g_Hooks.RegisterHook( Hooks::Game::EntityCreated, @EntityCreated );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     pJson.load( 'plugins/mikk/no_autopickup.json' );
+}
+
+void MapActivate()
+{
+    g_Hooks.RemoveHook( Hooks::Game::EntityCreated, @EntityCreated );
+    g_Hooks.RemoveHook( Hooks::PickupObject::CanCollect, @CanCollect );
+
+    if( array<string>( pJson[ 'blacklist maps' ] ).find( string( g_Engine.mapname ) ) < 1 )
+    {
+        g_Hooks.RegisterHook( Hooks::Game::EntityCreated, @EntityCreated );
+        g_Hooks.RegisterHook( Hooks::PickupObject::CanCollect, @CanCollect );
+    }
 }
 
 json pJson;
@@ -48,9 +59,10 @@ HookReturnCode CanCollect( CBaseEntity@ pPickup, CBaseEntity@ pOther, bool& out 
 {
     if( pPickup !is null && pOther !is null && pOther.IsPlayer() && g_Engine.time > CustomKeyValue( pPickup, '$f_no_autopickup_wait' ) )
     {
-        bool b = ( pOther.IsFacing( pPickup.pev, VIEW_FIELD_NARROW ) || !pJson[ 'RequiredLoS', true ] );
+        bool Facing = ( pOther.IsFacing( pPickup.pev, VIEW_FIELD_NARROW ) || !pJson[ 'RequiredLoS', true ] );
+        bool CanTake = true; // -TODO https://github.com/Mikk155/Sven-Co-op/issues/30
 
-        if( b )
+        if( Facing && CanTake )
         {
             if( pJson[ 'MessagePlayer', false ] )
             {
@@ -70,10 +82,10 @@ HookReturnCode CanCollect( CBaseEntity@ pPickup, CBaseEntity@ pOther, bool& out 
                     name = str[1];
                 }
 
-                Mikk.Language.Print( cast<CBasePlayer@>( pOther ), pJson[ 'PickMeMessage', {} ], MKLANG::BIND, { { 'item', name } } );
+                Language::Print( cast<CBasePlayer@>( pOther ), pJson[ 'PickMeMessage', {} ], MKLANG::BIND, { { 'item', name } } );
             }
         }
-        bResult = ( ( pOther.pev.button & IN_USE ) != 0 && b );
+        bResult = ( Facing && ( pOther.pev.button & IN_USE ) != 0 );
     }
     return HOOK_CONTINUE;
 }

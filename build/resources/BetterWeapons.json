@@ -1,0 +1,7 @@
+{
+    "Resources":
+    [
+        "scripts/plugins/mikk/BetterWeapons.as",
+        "scripts/plugins/mikk/BetterWeapons.json"
+    ]
+}

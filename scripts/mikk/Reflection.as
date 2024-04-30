@@ -27,12 +27,18 @@ const uint MAX_FUNCTIONS = Reflection::g_Reflection.Module.GetGlobalFunctionCoun
 
 Reflection@ g_Reflection;
 
-final class Reflection
+/*
+    @prefix #include Reflection
+    @body #include "${1:../../}mikk/Reflection"
+    @description Utilidades relacionadas con el manejo de funciones
+*/
+class Reflection
 {
-    /*@
+    /*
         @prefix g_Reflection.Call g_Reflection.CallFunction CallFunction Reflection
-        @body g_Reflection
-        Calls a function globaly in all namespaces. Returns the number of functions called.
+        @body g_Reflection.Call( const string m_iszFunction )
+        @description Llama a todas las funciones con el nombre dado sin importar el namespace donde se encuentren.
+        @description retorna la cantidad de funciones encontradas.
     */
     int Call( const string m_iszFunction )
     {
@@ -70,11 +76,6 @@ final class Reflection
         IsInitialised = true;
     }
 
-    /*@
-        @prefix g_Reflection.opIndex g_Reflection.Get g_Reflection.Function Reflection
-        @body g_Reflection
-        Get a script function by name or namespace::name
-    */
     Reflection::Function@ opIndex( string m_iszFunction )
     {
         if( !IsInitialised )
@@ -82,12 +83,28 @@ final class Reflection
             Initialise();
         }
 
-        if( Functions.find( m_iszFunction ) < 0 )
+        if( Functions.find( m_iszFunction ) < 1 )
         {
-            g_EngineFuncs.ServerPrint( '[Reflection] GetFunction Couldn\'t find function "' + m_iszFunction + '"\n' );
+            g_EngineFuncs.ServerPrint( '[Reflection] Couldn\'t find function "' + m_iszFunction + '"\n' );
             return null;
         }
         // g_Game.AlertMessage( at_console, '[Reflection] GetFunction "' + Functions[ Functions.find( m_iszFunction ) ] + '" (' + Functions.find( m_iszFunction ) + ')\n' );
         return Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( Functions.find( m_iszFunction ) );
+    }
+
+    /*
+        @prefix g_Reflection.SetTimeOut SetTimeOut
+        @body g_Reflection.SetTimeOut( string &in szFunction, float flTime )
+        @description Exactamente g_Scheduler.SetTimeOut pero ahora respetamos namespaces, por ejemplo "test::Think"
+    */
+    CScheduledFunction@ SetTimeOut( string &in szFunction, float flTime )
+    {
+        return @g_Scheduler.SetTimeout( this, 'SetTimeOutPost', flTime, szFunction );
+    }
+
+    void SetTimeOutPost( string &in szFunction )
+    {
+        if( this[ szFunction ] !is null )
+            this[ szFunction ].Call();
     }
 }

@@ -15,14 +15,14 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
+#include "../../mikk/json"
+#include "../../mikk/Language"
+#include "../../mikk/PlayerFuncs"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
-
-    g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     pJson.load( "plugins/mikk/SurvivalRespawnAll.json" );
 }
@@ -33,11 +33,16 @@ dictionary TrackPlayers;
 void MapInit()
 {
     TrackPlayers.deleteAll();
+    g_Hooks.RemoveHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
 
-    if( pJson[ 'INSTANT_ENABLE', true ] && g_SurvivalMode.MapSupportEnabled() && g_SurvivalMode.GetStartOn() )
+    if( array<string>( pJson[ 'blacklist maps' ] ).find( string( g_Engine.mapname ) ) < 1 )
     {
-        g_SurvivalMode.SetDelayBeforeStart( 0.0f );
-        g_SurvivalMode.Activate( true );
+        g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
+        if( pJson[ 'INSTANT_ENABLE', true ] && g_SurvivalMode.MapSupportEnabled() && g_SurvivalMode.GetStartOn() )
+        {
+            g_SurvivalMode.SetDelayBeforeStart( 0.0f );
+            g_SurvivalMode.Activate( true );
+        }
     }
 }
 
@@ -45,7 +50,7 @@ HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
 {
     if( pPlayer !is null )
     {
-        if( !TrackPlayers.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
+        if( !TrackPlayers.exists( PlayerFuncs::GetSteamID( pPlayer ) ) )
         {
             g_Scheduler.SetTimeout( "SpawnPlayer", 4.5f, EHandle( pPlayer ) );
         }
@@ -63,10 +68,10 @@ void SpawnPlayer( EHandle hPlayer )
         {
             if( !pPlayer.IsAlive() )
             {
-                Mikk.PlayerFuncs.RespawnPlayer( pPlayer );
+                PlayerFuncs::RespawnPlayer( pPlayer );
             }
-            Mikk.Language.Print( pPlayer, pJson[ "SPAWNED", {} ] );
-            TrackPlayers[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] = "Spawned";
+            Language::Print( pPlayer, pJson[ "SPAWNED", {} ] );
+            TrackPlayers[ PlayerFuncs::GetSteamID( pPlayer ) ] = "Spawned";
         }
     }
 }

@@ -1,0 +1,20 @@
+{
+    "reload": true,
+
+    "weapon_sporelauncher":
+    {
+        "enable": true,
+
+        "Primary Attack":
+        {
+            "Next Attack": 1.0,
+            "Spore Time": 10.0
+        },
+
+        "Tertiary Attack":
+        {
+            "Next Attack": 1.0,
+            "Spore Speed": 300
+        }
+    }
+}

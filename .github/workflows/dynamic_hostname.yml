@@ -1,0 +1,31 @@
+name: dynamic_hostname
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/dynamic_hostname.yml'
+      - 'build/resources/dynamic_hostname.json'
+      - 'scripts/mikk/*'
+      - 'scripts/plugins/mikk/dynamic_hostname.*'
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Installing Python
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Release
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: python3 build/run.py dynamic_hostname

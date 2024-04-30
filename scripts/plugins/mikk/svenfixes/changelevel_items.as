@@ -35,9 +35,9 @@ namespace svenfixes
 
         void OnPlayerSpawn( CBasePlayer@ pPlayer )
         {
-            if( g_Data.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
+            if( g_Data.exists( PlayerFuncs::GetSteamID( pPlayer ) ) )
             {
-                int iBits = int( g_Data[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] );
+                int iBits = int( g_Data[ PlayerFuncs::GetSteamID( pPlayer ) ] );
 
                 if( ( iBits & gData_e::akimbo ) != 0 )
                 {
@@ -88,7 +88,7 @@ namespace svenfixes
                         DataItems |= gData_e::longjump;
                     }
 
-                    g_Data[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] = DataItems;
+                    g_Data[ PlayerFuncs::GetSteamID( pPlayer ) ] = DataItems;
                 }
             }
         }

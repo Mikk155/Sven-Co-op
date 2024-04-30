@@ -1,0 +1,108 @@
+name: Metamod Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/aslp/*
+      - '.github/workflows/metamod.yml'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Download dependencies
+        run: |
+          git clone --depth 1 https://github.com/hzqst/metamod-fallguys.git dependencies
+          cp -r dependencies/metamod src/metamod
+          cp -r dependencies/asext src/asext
+          cp -r dependencies/hlsdk src/hlsdk
+
+      - name: Create build directory
+        run: cmake -E make_directory build
+
+      - name: Generate build files
+        run: cmake -S src/aslp -B build
+
+      - name: Build project
+        run: cmake --build build --config Release
+
+      - name: Create Release
+        uses: xresloader/upload-to-github-release@v1.5.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          file: "build/Release/aslp.so"
+          default_release_body_path: CHANGELOG.md
+          overwrite: true
+          tags: true
+          draft: false
+          prerelease: false
+          tag_name: metamod
+          branches: main
+          default_release_name: metamod
+          token: ${{ secrets.TOKEN }}
+          target_owner: Mikk155
+          target_repo: metamod-linux-build
+
+  win32:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - uses: lukka/get-cmake@latest
+
+      - name: Download dependencies
+        run: |
+          git clone --depth 1 https://github.com/hzqst/metamod-fallguys.git dependencies
+          cp -r dependencies/metamod src/metamod
+          cp -r dependencies/asext src/asext
+          cp -r dependencies/hlsdk src/hlsdk
+
+      - name: Create build directory
+        run: cmake -E make_directory build
+
+      - name: Generate build files
+        run: cmake -S src/aslp -B build
+
+      - name: Build project
+        run: cmake --build build --config Release
+
+      - name: Create Release
+        uses: xresloader/upload-to-github-release@v1.6.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          file: "build/Release/aslp.dll"
+          default_release_body_path: CHANGELOG.md
+          update_release_body_append: true
+          overwrite: true
+          tags: true
+          draft: false
+          prerelease: false
+          tag_name: metamod
+          branches: main
+          default_release_name: metamod
+          token: ${{ secrets.TOKEN }}
+          target_owner: Mikk155
+          target_repo: Sven-Co-op

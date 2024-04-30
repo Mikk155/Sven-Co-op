@@ -15,13 +15,17 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
-#include '../../mikk/Discord'
+#include "../../mikk/fft"
+#include "../../mikk/json"
+#include "../../mikk/Discord"
+#include "../../mikk/Language"
+#include "../../mikk/EntityFuncs"
+#include "../../mikk/PlayerFuncs"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     pJson.load( "plugins/mikk/AFKManager.json" );
     g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
@@ -82,7 +86,7 @@ HookReturnCode MapChange()
                         atoi( CustomKeyValue( pPlayer, ckv + 'live' ) )
             ];
 
-            gPlayerData[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] = pData;
+            gPlayerData[ PlayerFuncs::GetSteamID( pPlayer ) ] = pData;
         }
     }
 
@@ -91,16 +95,16 @@ HookReturnCode MapChange()
 
 HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
 {
-    if( pPlayer !is null && gPlayerData.exists( Mikk.PlayerFuncs.GetSteamID( pPlayer ) ) )
+    if( pPlayer !is null && gPlayerData.exists( PlayerFuncs::GetSteamID( pPlayer ) ) )
     {
-        CAFKManagerData@ pData = cast<CAFKManagerData@>( gPlayerData[ Mikk.PlayerFuncs.GetSteamID( pPlayer ) ] );
+        CAFKManagerData@ pData = cast<CAFKManagerData@>( gPlayerData[ PlayerFuncs::GetSteamID( pPlayer ) ] );
 
         if( pData !is null )
         {
             CustomKeyValue( pPlayer, ckv + 'afk', pData.afk );
             CustomKeyValue( pPlayer, ckv + 'time', pData.time );
             CustomKeyValue( pPlayer, ckv + 'live', pData.live );
-            gPlayerData.delete( Mikk.PlayerFuncs.GetSteamID( pPlayer ) );
+            gPlayerData.delete( PlayerFuncs::GetSteamID( pPlayer ) );
         }
     }
 
@@ -141,9 +145,9 @@ void Join( CBasePlayer@ pPlayer, bool &in ByChat = false )
 {
     if( pPlayer !is null && !IsAFK( pPlayer ) )
     {
-        Mikk.Language.Print( pPlayer, pJson[ 'youve_moved_afk', {} ], MKLANG::CHAT );
+        Language::Print( pPlayer, pJson[ 'youve_moved_afk', {} ], MKLANG::CHAT );
         dictionary gpArgs = { { 'name', string( pPlayer.pev.netname ) } };
-        Mikk.Language.Print( pPlayer, pJson[ 'player_join_afk', {} ], MKLANG::CHAT, gpArgs );
+        Language::Print( pPlayer, pJson[ 'player_join_afk', {} ], MKLANG::CHAT, gpArgs );
         Discord::print( string( pJson[ 'player_join_afk', {} ][ Discord::language() ] ), gpArgs );
 
         CustomKeyValue( pPlayer, ckv + 'afk', 1 );
@@ -169,7 +173,7 @@ void Leave( CBasePlayer@ pPlayer )
         int m = ( f % 3600 ) / 60;
         int s = f % 60;
         dictionary gpArgs = { { 'name', string( pPlayer.pev.netname ) }, { 'time', string(h) + ":" + string(m) + ":" + string(s) } };
-        Mikk.Language.Print( pPlayer, pJson[ 'player_left_afk', {} ], MKLANG::CHAT, gpArgs );
+        Language::Print( pPlayer, pJson[ 'player_left_afk', {} ], MKLANG::CHAT, gpArgs );
         Discord::print( string( pJson[ 'player_left_afk', {} ][ Discord::language() ] ), gpArgs );
 
         CustomKeyValue( pPlayer, ckv + 'afk', 0 );
@@ -177,7 +181,7 @@ void Leave( CBasePlayer@ pPlayer )
 
         if( CustomKeyValue( pPlayer, ckv + 'live' ) == 1 )
         {
-            Mikk.PlayerFuncs.RespawnPlayer( pPlayer );
+            PlayerFuncs::RespawnPlayer( pPlayer );
         }
     }
 }
@@ -203,7 +207,7 @@ HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
             pPlayer.GetObserver().StartObserver( pPlayer.pev.origin, pPlayer.pev.angles, false );
         }
 
-        Mikk.Language.Print( pPlayer, pJson[ 'hold_to_exit', {} ], MKLANG::BIND );
+        Language::Print( pPlayer, pJson[ 'hold_to_exit', {} ], MKLANG::BIND );
 
         if( pPlayer.pev.button & IN_USE > 0 )
         {
@@ -232,11 +236,11 @@ HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
                     {
                         g_EngineFuncs.ServerCommand(
                             "kick #" + g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() )+ " \"" +
-                                Mikk.Language.GetLanguage( pPlayer, pJson[ 'kick_reason', {} ] ) + "\"\n"
+                                Language::GetLanguage( pPlayer, pJson[ 'kick_reason', {} ] ) + "\"\n"
                         );
 
                         dictionary gpArgs = { { 'name', string( pPlayer.pev.netname ) } };
-                        Mikk.Language.Print( pPlayer, pJson[ 'kick_advice', {} ], MKLANG::CHAT, gpArgs );
+                        Language::Print( pPlayer, pJson[ 'kick_advice', {} ], MKLANG::CHAT, gpArgs );
                         Discord::print( string( pJson[ 'kick_advice', {} ][ Discord::language() ] ), gpArgs );
                     }
                     else
@@ -246,7 +250,7 @@ HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
                 }
                 else if( time > ( MaxTime() - 10 ) )
                 {
-                    Mikk.Language.Print( pPlayer, pJson[ 'afk_advice', {} ], MKLANG::HUDMSG, { { 'time', string( MaxTime() - time ) } } );
+                    Language::Print( pPlayer, pJson[ 'afk_advice', {} ], MKLANG::HUDMSG, { { 'time', string( MaxTime() - time ) } } );
                 }
                 CustomKeyValue( pPlayer, ckv + 'time', atoi( CustomKeyValue( pPlayer, ckv + 'time' ) ) + 1 );
                 CustomKeyValue( pPlayer, ckv + 'think', g_Engine.time + 1.0f );

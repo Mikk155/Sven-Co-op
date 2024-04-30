@@ -15,12 +15,15 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
+#include "../../mikk/fft"
+#include "../../mikk/json"
+#include "../../mikk/datashared"
+#include "../../mikk/UserMessages"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     pJson.load( "plugins/mikk/dynamic_hostname.json" );
 }
@@ -44,8 +47,8 @@ void SetHostname()
     m_iszHostName.Replace( "$antirush$", GetAntiRush() );
 
     m_iszHostName.Replace( "$difficulty$",
-        ( gpDataShared[ "diff", "DynamicDifficultyDeluxe" ] == String::INVALID_INDEX ?
-            pJson[ 'CONFIG', {} ][ "DISABLED", '' ] : gpDataShared[ "diff", '', "DynamicDifficultyDeluxe" ] )
+        ( string( datashared::GetData( 'DynamicDifficultyDeluxe' )[ "diff" ] ) == String::INVALID_INDEX ?
+            pJson[ 'CONFIG', {} ][ "DISABLED", '' ] : string( datashared::GetData( 'DynamicDifficultyDeluxe' )[ "diff" ] ) )
     );
 
     m_iszHostName.Replace( "$survival$", pJson[ 'CONFIG', {} ][ ( g_SurvivalMode.MapSupportEnabled() ? "ENABLED" : "DISABLED" ), '' ] );
@@ -54,7 +57,7 @@ void SetHostname()
     g_EngineFuncs.ServerExecute();
 
     // Update score board on connected clients
-    Mikk.UserMessages.ServerName( m_iszHostName );
+    UserMessages::ServerName( m_iszHostName );
 }
 
 string GetMapName()

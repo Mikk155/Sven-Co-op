@@ -1,0 +1,31 @@
+name: no_autopickup
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/no_autopickup.yml'
+      - 'build/resources/no_autopickup.json'
+      - 'scripts/mikk/*'
+      - 'scripts/plugins/mikk/no_autopickup.*'
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Installing Python
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Release
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+      run: python3 build/run.py no_autopickup

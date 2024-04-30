@@ -15,7 +15,11 @@
 //                                                                                                                                          \\
 //==========================================================================================================================================\\
 
-#include '../../mikk/shared'
+#include "../../mikk/fft"
+#include "../../mikk/json"
+#include "../../mikk/GameFuncs"
+#include "../../mikk/Reflection"
+#include "../../mikk/EntityFuncs"
 
 // Plugins, you can comment out these to disable
 // Or you can also create your own using the same method as these does.
@@ -203,7 +207,7 @@ void MapStart()
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
-    g_Module.ScriptInfo.SetContactInfo( Mikk.GetContactInfo() );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     g_Hooks.RegisterHook( Hooks::Game::MapChange, @svenfixes::MapChange );
     g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @svenfixes::PlayerSpawn );
@@ -216,7 +220,7 @@ void PluginInit()
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponSecondaryAttack, @svenfixes::WeaponSecondaryAttack );
     g_Hooks.RegisterHook( Hooks::ASLP::Monster::MonsterPostCheckEnemy, @svenfixes::MonsterPostCheckEnemy );
 
-    Mikk.UpdateTimer( svenfixes::pThink, 'Think', 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
+    GameFuncs::UpdateTimer( svenfixes::pThink, 'Think', 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
     g_Reflection.Call( 'PluginInit' );
 }

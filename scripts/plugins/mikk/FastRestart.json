@@ -1,4 +1,9 @@
 {
     "ShouldWaitMedic": true,
-    "SearchRadius": 1024
+    "SearchRadius": 1024,
+    "blacklist maps":
+    [
+        "hl_c00",
+        "of0a0"
+    ]
 }

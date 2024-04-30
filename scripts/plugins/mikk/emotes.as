@@ -1,4 +1,5 @@
-#include '../../mikk/shared'
+#include "../../mikk/json"
+#include '../../mikk/Language'
 
 json pJson;
 
@@ -7,7 +8,7 @@ void println(string text) { print(text + "\n"); }
 
 void PluginInit() {
     g_Module.ScriptInfo.SetAuthor( "w00tguy" );
-    g_Module.ScriptInfo.SetContactInfo( "https://github.com/wootguy/emotes" );
+    g_Module.ScriptInfo.SetContactInfo( "https://github.com/wootguy/emotes | https://github.com/Mikk155/Sven-Co-op" );
 
     g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
 
@@ -482,7 +483,7 @@ void doEmote(CBasePlayer@ plr, Emote emote, int partIdx) {
         @emoteEnt = getGhostEnt(plr);
         if (emoteEnt is null)
         {
-            Mikk.Language.Print( plr, pJson[ "DEAD", {} ] );
+            Language::Print( plr, pJson[ "DEAD", {} ] );
             return;
         } else {
             emoteEnt.pev.noise1 = "emote"; // tell the ghosts plugin that an emote is playing
@@ -521,7 +522,7 @@ void doEmoteCommand(CBasePlayer@ plr, const CCommand@ args, bool inConsole)
 
         if( emoteName == 'anal' || atoi( emoteName ) == 14 )
         {
-            Mikk.Language.Print( plr, pJson[ "ANAL", {} ] );
+            Language::Print( plr, pJson[ "ANAL", {} ] );
             return;
         }
 
@@ -631,11 +632,11 @@ void doEmoteCommand(CBasePlayer@ plr, const CCommand@ args, bool inConsole)
                 if (ghostEnt !is null) {
                     ghostEnt.pev.noise1 = ""; // tell the ghsots plugin that the emote was stopped
                 }
-                Mikk.Language.Print( plr, pJson[ "STOPPED", {} ] );
+                Language::Print( plr, pJson[ "STOPPED", {} ] );
             }
             else
             {
-                Mikk.Language.Print( plr, pJson[ "NOEMOTE", {} ] );
+                Language::Print( plr, pJson[ "NOEMOTE", {} ] );
             }
         }
         else // named emote
@@ -652,7 +653,7 @@ void doEmoteCommand(CBasePlayer@ plr, const CCommand@ args, bool inConsole)
             }
             else
             {
-                Mikk.Language.Print( plr, pJson[ "NOTFOUND", {} ], MKLANG::CHAT, { { 'name', emoteName } } );
+                Language::Print( plr, pJson[ "NOTFOUND", {} ], MKLANG::CHAT, { { 'name', emoteName } } );
             }
         }
     }
@@ -663,27 +664,27 @@ void doEmoteCommand(CBasePlayer@ plr, const CCommand@ args, bool inConsole)
             g_PlayerFuncs.ClientPrint(plr, HUD_PRINTCONSOLE, '----------------------------------Emotes----------------------------------\n\n');
         }
 
-        Mikk.Language.Print( plr, pJson[ "HOWTO", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
-        Mikk.Language.Print( plr, pJson[ "TOOFF", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
-        Mikk.Language.Print( plr, pJson[ "TOPLAY", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
-        Mikk.Language.Print( plr, pJson[ "TOCONTROL", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
+        Language::Print( plr, pJson[ "HOWTO", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
+        Language::Print( plr, pJson[ "TOOFF", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
+        Language::Print( plr, pJson[ "TOPLAY", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
+        Language::Print( plr, pJson[ "TOCONTROL", {} ], ( !inConsole ? MKLANG::CHAT : MKLANG::CONSOLE ) );
 
 
         if( !inConsole )
         {
-            Mikk.Language.Print( plr, pJson[ "MOREINFO", {} ] );
+            Language::Print( plr, pJson[ "MOREINFO", {} ] );
         }
 
         if( inConsole )
         {
-            Mikk.Language.Print( plr, pJson[ "ADVANCED", {} ], MKLANG::CONSOLE );
-            Mikk.Language.Print( plr, pJson[ "TOARGS", {} ], MKLANG::CONSOLE );
-            Mikk.Language.Print( plr, pJson[ "SEQUENCE", {} ], MKLANG::CONSOLE );
-            Mikk.Language.Print( plr, pJson[ "MODE", {} ], MKLANG::CONSOLE );
-            Mikk.Language.Print( plr, pJson[ "CHAIN", {} ], MKLANG::CONSOLE );
-            Mikk.Language.Print( plr, pJson[ "SPEED", {} ], MKLANG::CONSOLE );
-            Mikk.Language.Print( plr, pJson[ "FRAMES", {} ], MKLANG::CONSOLE );
-            Mikk.Language.Print( plr, pJson[ "SAMPLES", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "ADVANCED", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "TOARGS", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "SEQUENCE", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "MODE", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "CHAIN", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "SPEED", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "FRAMES", {} ], MKLANG::CONSOLE );
+            Language::Print( plr, pJson[ "SAMPLES", {} ], MKLANG::CONSOLE );
 
             g_PlayerFuncs.ClientPrint(plr, HUD_PRINTCONSOLE, '.e oof\n');
             g_PlayerFuncs.ClientPrint(plr, HUD_PRINTCONSOLE, '.e oof 2\n');
