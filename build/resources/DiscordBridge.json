@@ -1,8 +1,4 @@
 {
-    "Include":
-    [
-        "shared"
-    ],
     "Resources":
     [
         "scripts/plugins/mikk/DiscordBridge/DiscordBridge.as",
