@@ -232,7 +232,7 @@ HookReturnCode PlayerPreThink( CBasePlayer@ pPlayer, uint& out uiFlags )
                 if( time >= MaxTime() )
                 {
                     if( g_PlayerFuncs.GetNumPlayers() == g_Engine.maxClients
-                    && ( g_PlayerFuncs.AdminLevel( pPlayer ) < AdminLevel_t::ADMIN_YES ) || !pJson[ 'protect admins', true ] )
+                    && ( g_PlayerFuncs.AdminLevel( pPlayer ) < AdminLevel_t::ADMIN_YES || !pJson[ 'protect admins', true ] ) )
                     {
                         g_EngineFuncs.ServerCommand(
                             "kick #" + g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() )+ " \"" +
