@@ -34,6 +34,7 @@
 #include 'svenfixes/hwgrunt_crouch'
 #include 'svenfixes/longjump_revive'
 #include 'svenfixes/strip_longjump'
+#include 'svenfixes/elevator_kill'
 // Not finished yet.-
 //#include 'svenfixes/changelevel_items'
 
@@ -56,6 +57,7 @@ namespace svenfixes
         { 'OnObserverMode', '' },
         { 'OnPlayerRevive', '' },
         { 'OnPlayerKilled', '' },
+        { 'OnPlayerTakeDamage', '' },
         { 'OnPlayerSpawn', '' },
         { 'OnMonsterCheckEnemy', '' },
         { 'OnMapChange', '' },
@@ -145,6 +147,15 @@ namespace svenfixes
         return HOOK_CONTINUE;
     }
 
+    HookReturnCode PlayerTakeDamage( DamageInfo@ pDamageInfo )
+    {
+        array<string> Functions = array<string>( g_HookData[ 'OnPlayerTakeDamage' ] );
+        for( uint ui = 0; ui < Functions.length(); ui++ )
+            if( g_Reflection[ Functions[ui] ] !is null )
+                g_Reflection[ Functions[ui] ].Call( @pDamageInfo );
+        return HOOK_CONTINUE;
+    }
+
     HookReturnCode PlayerSpawn( CBasePlayer@ pPlayer )
     {
         if( pPlayer !is null )
@@ -212,6 +223,7 @@ void PluginInit()
     g_Hooks.RegisterHook( Hooks::Game::MapChange, @svenfixes::MapChange );
     g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @svenfixes::PlayerSpawn );
     g_Hooks.RegisterHook( Hooks::Player::PlayerKilled, @svenfixes::PlayerKilled );
+    g_Hooks.RegisterHook( Hooks::Player::PlayerTakeDamage, @svenfixes::PlayerTakeDamage );
     g_Hooks.RegisterHook( Hooks::Player::PlayerLeftObserver, @svenfixes::PlayerLeftObserver );
     g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPostRevive, @svenfixes::PlayerPostRevive );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponPrimaryAttack, @svenfixes::WeaponPrimaryAttack );
