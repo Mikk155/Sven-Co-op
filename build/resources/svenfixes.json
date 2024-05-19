@@ -12,6 +12,8 @@
         "scripts/plugins/mikk/svenfixes/gonome_crouch.as",
         "scripts/plugins/mikk/svenfixes/hwgrunt_crouch.as",
         "scripts/plugins/mikk/svenfixes/longjump_revive.as",
+        "scripts/plugins/mikk/svenfixes/elevator_kill.as",
+        "scripts/plugins/mikk/svenfixes/strip_longjump.as",
         "scripts/plugins/mikk/svenfixes/changelevel_items.as"
     ]
 }
