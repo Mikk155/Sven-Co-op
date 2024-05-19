@@ -3,7 +3,6 @@ import os, sys
 from movefile import movefile
 from broken import broken
 from resources import resources
-from ListScripts import ListScripts
 from zipassets import zipassets
 from release import ReleaseTag
 
@@ -17,9 +16,6 @@ if not os.path.exists( asbse ):
     broken( f"File \"resources/{file}\" does not exists!" )
 
 resources( file )
-
-for r in ListScripts():
-    movefile( r )
 
 movefile( '.vscode/shared.code-snippets' )
 

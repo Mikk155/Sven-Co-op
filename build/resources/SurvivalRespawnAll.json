@@ -1,4 +1,10 @@
 {
+    "Include":
+    [
+        "json",
+        "Language",
+        "PlayerFuncs"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/SurvivalRespawnAll.as",

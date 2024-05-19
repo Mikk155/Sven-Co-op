@@ -1,4 +1,10 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "Language"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/emotes.as",

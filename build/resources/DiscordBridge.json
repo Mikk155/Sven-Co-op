@@ -1,4 +1,14 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "Discord",
+        "GameFuncs",
+        "Reflection",
+        "EntityFuncs",
+        "PlayerFuncs"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/DiscordBridge/DiscordBridge.as",

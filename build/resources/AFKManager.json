@@ -1,4 +1,13 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "Discord",
+        "Language",
+        "EntityFuncs",
+        "PlayerFuncs"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/AFKManager.as",

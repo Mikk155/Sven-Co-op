@@ -1,4 +1,9 @@
 {
+    "Include":
+    [
+        "json",
+        "Language"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/PlayerDecalTracker.as",

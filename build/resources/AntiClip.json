@@ -1,4 +1,12 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "Language",
+        "datashared",
+        "EntityFuncs"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/AntiClip.as",

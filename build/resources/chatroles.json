@@ -1,4 +1,12 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "GameFuncs",
+        "PlayerFuncs",
+        "UserMessages"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/chatroles.as",

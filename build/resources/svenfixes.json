@@ -1,4 +1,12 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "GameFuncs",
+        "Reflection",
+        "EntityFuncs"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/svenfixes.as",

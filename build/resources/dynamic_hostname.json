@@ -1,4 +1,11 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "datashared",
+        "UserMessages"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/dynamic_hostname.as",

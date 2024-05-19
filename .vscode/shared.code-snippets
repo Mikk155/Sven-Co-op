@@ -149,12 +149,6 @@
 		"body": "GameFuncs::UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0} )",
 		"description": "(GameFuncs.as) Actualiza un timer rapidamente"
 	},
-	"namespace Hooks":
-	{
-		"prefix": [ "#include", "EntityFuncs" ],
-		"body": "#include \"${1:../../}mikk/EntityFuncs\"",
-		"description": "(Hooks.as) Utilidades relacionadas a entidades"
-	},
 	"string Instance( bool ToString ) const":
 	{
 		"prefix": [ "JsonValue", "json", "Instance" ],
@@ -191,7 +185,7 @@
 		"body": "float( ${1:JsonValue@ pJson} )",
 		"description": "(json.as) Retorna el valor de este JsonValue en forma de float"
 	},
-	"bool opConv() const { return ( tolower( value ) == 'true' || atoi( value ) == 1 ); }":
+	"bool opConv() const { return ( value == 'true' || atoi( value ) == 1 ); }":
 	{
 		"prefix": [ "JsonValue", "bool" ],
 		"body": "bool( ${1:JsonValue@ pJson} )",
@@ -248,7 +242,7 @@
 	"uint length()":
 	{
 		"prefix": [ "json", "size", "length" ],
-		"body": "size()",
+		"body": "length()",
 		"description": "(json.as) Retorna la cantidad de valores *accesibles* que existen en este json"
 	},
 	"JsonValue get( string key )":
@@ -371,7 +365,7 @@
 		"body": "PlayerFuncs::RespawnPlayer( ${1:CBasePlayer@ pPlayer} )",
 		"description": "(PlayerFuncs.as) Revive y Reaparece a un jugador."
 	},
-	"final class Reflection":
+	"class Reflection":
 	{
 		"prefix": [ "#include", "Reflection" ],
 		"body": "#include \"${1:../../}mikk/Reflection\"",
@@ -382,6 +376,12 @@
 		"prefix": [ "g_Reflection.Call", "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
 		"body": "g_Reflection.Call( ${1:const string m_iszFunction} )",
 		"description": "(Reflection.as) Llama a todas las funciones con el nombre dado sin importar el namespace donde se encuentren.\nretorna la cantidad de funciones encontradas."
+	},
+	"CScheduledFunction@ SetTimeOut( string &in szFunction, float flTime )":
+	{
+		"prefix": [ "g_Reflection.SetTimeOut", "SetTimeOut" ],
+		"body": "g_Reflection.SetTimeOut( ${1:string &in szFunction}, ${2:float flTime} )",
+		"description": "(Reflection.as) Exactamente g_Scheduler.SetTimeOut pero ahora respetamos namespaces, por ejemplo \"test::Think\""
 	},
 	"namespace UserMessages":
 	{
@@ -430,5 +430,53 @@
 		"prefix": [ "UserMessages", "UserMessages::Smoke", "Smoke" ],
 		"body": "UserMessages::Smoke( ${1:Vector VecStart}, ${2:int g_sModelIndex}, ${3:uint8 flDamage}, ${4:uint8 flFrameRate}, ${5:CBaseEntity@ pTargetPlayer = null} )",
 		"description": "(UserMessages.as) Crea un efecto de humo\nPueden verlo pTarget o todos los jugadores si pTarget es null"
+	},
+	"namespace CGrenade":
+	{
+		"prefix": [ "#include", "CGrenade" ],
+		"body": "#include \"${1:../../}mikk/CGrenade\"",
+		"description": "(CGrenade.as) CGrenade como una class para heredar"
+	},
+	"bool Register()":
+	{
+		"prefix": [ "CGrenade", "CGrenade::Register" ],
+		"body": "CGrenade::Register()",
+		"description": "(CGrenade.as) Registra la class CGrenade, en map_scripts esto es automatico sin embargo en plugins debes registrarla."
+	},
+	"Class@ GetClass( CBaseEntity@ pEntity ) {":
+	{
+		"prefix": [ "CGrenade", "CGrenade::GetClass", "GetClass" ],
+		"body": "CGrenade::GetClass( ${1:CBaseEntity@ pEntity} )",
+		"description": "(CGrenade.as) Retorna la instancia de CGrenade"
+	},
+	"CBaseEntity@ GetEntity( Class@ pEntity ) {":
+	{
+		"prefix": [ "CGrenade", "CGrenade::GetEntity", "GetEntity" ],
+		"body": "CGrenade::GetEntity( ${1:Class@ pEntity} )",
+		"description": "(CGrenade.as) Retorna la entidad de CGrenade"
+	},
+	"namespace CSpore":
+	{
+		"prefix": [ "#include", "CSpore" ],
+		"body": "#include \"${1:../../}mikk/CSpore\"",
+		"description": "(CSpore.as) CSpore como una class para heredar"
+	},
+	"bool Register()":
+	{
+		"prefix": [ "CSpore", "CSpore::Register" ],
+		"body": "CSpore::Register()",
+		"description": "(CSpore.as) Registra la class CSpore, en map_scripts esto es automatico sin embargo en plugins debes registrarla."
+	},
+	"Class@ GetClass( CBaseEntity@ pEntity ) {":
+	{
+		"prefix": [ "CSpore", "CSpore::GetClass", "GetClass" ],
+		"body": "CSpore::GetClass( ${1:CBaseEntity@ pEntity} )",
+		"description": "(CSpore.as) Retorna la instancia de CSpore"
+	},
+	"CBaseEntity@ GetEntity( Class@ pEntity ) {":
+	{
+		"prefix": [ "CSpore", "CSpore::GetEntity", "GetEntity" ],
+		"body": "CSpore::GetEntity( ${1:Class@ pEntity} )",
+		"description": "(CSpore.as) Retorna la entidad de CSpore"
 	}
 }

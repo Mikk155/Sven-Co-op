@@ -1,4 +1,9 @@
 {
+    "Include":
+    [
+        "json",
+        "UserMessages"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/NPCMoveTo.as",

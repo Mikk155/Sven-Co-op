@@ -1,10 +1,11 @@
 {
     "Include":
     [
+        "fft",
         "json"
     ],
     "Resources":
     [
-        "scripts/plugins/mikk/FastRestart.as"
+        "scripts/mikk/Language.as"
     ]
 }

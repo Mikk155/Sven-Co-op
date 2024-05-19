@@ -1,4 +1,11 @@
 {
+    "Include":
+    [
+        "fft",
+        "json",
+        "GameFuncs",
+        "PlayerFuncs"
+    ],
     "Resources":
     [
         "scripts/plugins/mikk/developer.as"

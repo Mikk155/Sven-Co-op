@@ -19,4 +19,4 @@ def zipassets():
 
                 zipf.write( absp, relp )
                 dbg = relp[ relp.rfind( '\\' ) + 1 : ]
-                print( f'Compressing {dbg}')
+                #print( f'Compressing {dbg}')
