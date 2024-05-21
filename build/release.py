@@ -28,13 +28,15 @@ def ReleaseTag( file ):
 
         changelog = os.path.join( os.path.dirname(__file__), f'../changelog/{file}.md' )
 
-        with open( changelog, 'r') as cl:
+        if os.path.exists( changelog ):
 
-            for line in cl.readlines():
+            with open( changelog, 'r') as cl:
 
-                new_body = f'{new_body}{line}'
+                for line in cl.readlines():
 
-            cl.close()
+                    new_body = f'{new_body}{line}'
+
+                cl.close()
 
         if new_body:
             release.update_release(release.title, new_body)
