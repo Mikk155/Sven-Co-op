@@ -1,0 +1,11 @@
+{
+    "Include":
+    [
+        "json"
+    ],
+    "Resources":
+    [
+        "scripts/plugins/mikk/CustomPrecache.as",
+        "scripts/plugins/mikk/CustomPrecache.json"
+    ]
+}

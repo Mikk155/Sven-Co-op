@@ -460,6 +460,46 @@
 "es": "List de comandos, el index 0 representa si esta es una lista negra (black) o una lista blanca (white).",
 "en": "List of commands, the index 0 represents if this is a black list (black) or a white list (white)."
 },
+"CustomPrecache::Description":
+{
+"es": "Precacha contenido siempre o de forma dinamica",
+"en": "Precache assets always and dynamically"
+},
+"CustomPrecache::DescrJson_1A":
+{
+"es": "Lista de modelos (.mdl y .spr)",
+"en": "List of models (.mdl and .spr)"
+},
+"CustomPrecache::DescrJson_1B":
+{
+"es": "Lista de cualquier otro tipo de archivos",
+"en": "List of any other type of assets"
+},
+"CustomPrecache::DescrJson_1C":
+{
+"es": "Lista de sonidos (sound*/)",
+"en": "List of sounds (sound/*)"
+},
+"CustomPrecache::DescrJson_1D":
+{
+"es": "Lista de entidades (classname)",
+"en": "List of entities (classname)"
+},
+"CustomPrecache::DescrJson_2":
+{
+"es": "Lista de archivos para precachar, Estos van a ser precachados siempre sin importar que",
+"en": "List of assets to precache, These will be always precached no mather what"
+},
+"CustomPrecache::DescrJson_3":
+{
+"es": "Lista de archivos para precachar, Estos van a ser precachados dinamica mente por turnos cada vez que el mapa sea cambiado",
+"en": "List of assets to precache, These will be precached dynamically by turns each time the map is changed"
+},
+"CustomPrecache::DescrJson_4":
+{
+"es": "Cantidad de archivos a precachar por cada mapa",
+"en": "Amount of assets to precache for each map"
+},
 "svenfixes::Description":
 {
 "es": "Arregla varios errores y/o problemas que existan en Sven Co-op y sean posibles de arreglar mediante AngelScript.",
