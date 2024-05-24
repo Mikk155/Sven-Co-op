@@ -37,6 +37,7 @@
 #include 'svenfixes/elevator_kill'
 // Not finished yet.-
 //#include 'svenfixes/changelevel_items'
+//#include 'svenfixes/scoreboard_press'
 
 namespace svenfixes
 {
@@ -54,6 +55,7 @@ namespace svenfixes
         { 'OnMapStart', '' },
         { 'OnMapActivate', '' },
         { 'OnThink', '' },
+        { 'OnPlayerPostThink', '' },
         { 'OnObserverMode', '' },
         { 'OnPlayerRevive', '' },
         { 'OnPlayerKilled', '' },
@@ -128,6 +130,18 @@ namespace svenfixes
         if( pPlayer !is null )
         {
             array<string> Functions = array<string>( g_HookData[ 'OnPlayerRevive' ] );
+            for( uint ui = 0; ui < Functions.length(); ui++ )
+                if( g_Reflection[ Functions[ui] ] !is null )
+                    g_Reflection[ Functions[ui] ].Call( @pPlayer );
+        }
+        return HOOK_CONTINUE;
+    }
+
+    HookReturnCode PlayerPostThink( CBasePlayer@ pPlayer )
+    {
+        if( pPlayer !is null )
+        {
+            array<string> Functions = array<string>( g_HookData[ 'OnPlayerPostThink' ] );
             for( uint ui = 0; ui < Functions.length(); ui++ )
                 if( g_Reflection[ Functions[ui] ] !is null )
                     g_Reflection[ Functions[ui] ].Call( @pPlayer );
@@ -226,6 +240,7 @@ void PluginInit()
     g_Hooks.RegisterHook( Hooks::Player::PlayerTakeDamage, @svenfixes::PlayerTakeDamage );
     g_Hooks.RegisterHook( Hooks::Player::PlayerLeftObserver, @svenfixes::PlayerLeftObserver );
     g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPostRevive, @svenfixes::PlayerPostRevive );
+    g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @svenfixes::PlayerPostThink );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponPrimaryAttack, @svenfixes::WeaponPrimaryAttack );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponTertiaryAttack, @svenfixes::WeaponTertiaryAttack );
     g_Hooks.RegisterHook( Hooks::Player::PlayerEnteredObserver, @svenfixes::PlayerEnteredObserver );
