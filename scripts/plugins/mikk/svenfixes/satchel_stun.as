@@ -124,6 +124,7 @@ namespace svenfixes
                 g_SoundSystem.PrecacheSound( "weapons/g_bounce1.wav" );
                 g_SoundSystem.PrecacheSound( "weapons/g_bounce2.wav" );
                 g_SoundSystem.PrecacheSound( "weapons/g_bounce3.wav" );
+                g_SoundSystem.PrecacheSound( "items/gunpickup2.wav" );
             }
 
             void SatchelSlide( CBaseEntity@ pOther )
@@ -195,7 +196,7 @@ namespace svenfixes
                             }
                         }
 
-                        UserMessages::ClientCommand( 'spk "items/gunpickup2.wav"', pPlayer );
+                        g_SoundSystem.PlaySound( pPlayer.edict(), CHAN_WEAPON, "items/gunpickup2.wav", 0.5f, ATTN_NONE );
 
                         g_EntityFuncs.Remove( self );
                     }
