@@ -23,30 +23,12 @@ namespace svenfixes
         {
             InitHook( 'OnPlayerAttack', 'satchel_stun' );
             InitHook( 'OnMapInit', 'satchel_stun' );
-            InitHook( 'OnThink', 'satchel_stun' );
         }
 
         void OnMapInit()
         {
             g_CustomEntityFuncs.RegisterCustomEntity( 'svenfixes::satchel_stun::CSatchelCharge', 'svenfixes_satchel' );
             g_Game.PrecacheOther( 'svenfixes_satchel' );
-        }
-
-        float time;
-
-        void OnThink()
-        {
-            if( g_Engine.time > time && g_CustomEntityFuncs.IsCustomEntity( 'svenfixes_satchel' ) )
-            {
-                CBaseEntity@ pGrenade = null;
-
-                while( ( @pGrenade = g_EntityFuncs.FindEntityByClassname( pGrenade, 'grenade' ) ) !is null  )
-                {
-                    g_EntityFuncs.DispatchKeyValue( pGrenade.edict(), 'is_not_revivable', '1' );
-                }
-
-                time = g_Engine.time + 5.0f;
-            }
         }
 
         void OnPlayerAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon, ATTACK AttackMode )
