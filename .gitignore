@@ -1,0 +1,24 @@
+# Python cache
+*.pyc
+
+# Visual Studio Code
+.vscode/tasks.json
+svencoop.zip
+
+# Bot token
+BOT.txt
+
+# Markdown used on my local machine
+BOT.md
+
+# Sven Co-op
+gfx/*
+maps/*
+scripts/*
+models/*
+sound/*
+sprites/*
+wip/*
+*.wad
+default_plugins.txt
+steam_autocloud.vdf
