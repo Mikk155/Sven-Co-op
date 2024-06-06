@@ -196,8 +196,8 @@ else:
 
 if RELEASE:
     zipassets()
-    #GenerateRelease( ResName )
-    #InitBot()
+    GenerateRelease( ResName )
+    InitBot()
 
 # python build.py assetname true true < release
 # python build.py bot < send BOT.md
