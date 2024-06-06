@@ -1,0 +1,35 @@
+{
+    "projectiles":
+    [
+        "bolt",
+        "lasers",
+        "grenade",
+        "rpg_rocket",
+        "weapon_egon",
+        "playerhornet",
+        "sporegrenade",
+        "grappletongue",
+        "monster_snark",
+        "weapon_crowbar",
+        "monster_satchel",
+        "monster_tripmine",
+        "displacer_portal",
+        "monster_chumtoad"
+    ],
+    "reload": false,
+    "blacklist maps":
+    [
+        "hl_c00",
+        "of0a0"
+    ],
+    "ENABLED":
+    {
+        "english": "enabled by admin $name$.",
+        "spanish": "fue activado por el admin $name$."
+    },
+    "DISABLED":
+    {
+        "english": "disabled by admin $name$.",
+        "spanish": "fue desactivado por el admin $name$."
+    }
+}

@@ -1,32 +1,1027 @@
+<!--
+    I'm not a web designer neither a JS scripter.
+    So forgive me for this crap if it is.
+    You're free to do a pull request for upgrading this site.
+-->
 <!DOCTYPE html>
-
+<html lang="es">
 <head>
-        <title>Sven Co-op</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sven Co-op</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
 </head>
-
 <body>
-        <div style="position:relative;padding-left:0%;text-align:center;font-weight:100;font-size:40px;">
-                <a><img class="img-banner" src="media/svencoop.png" alt="Sven Co-op"></a>
+    <header>
+        <a href="index.html"><img src="media/banner/svencoop.png" alt="Sven Co-op Logo" id="svencoop_logo"></a>
 
-                <div class="block">
-                        <div class="neon-text">
-                                <a href = "en" class="link-here">English</a><br>
-                                <a href = "es" class="link-here">Español</a><br>
-                        </div>
-                </div>
-                <br>
-                <br>
-                <!--<div class="block">
+        <nav>
+        <ul style="font-size: 150%;">
+                <li><a pkvd="botupdater" href="#botupdater"></a></li>
+                <li><a pkvd="plugins" href="#plugins"></a></li>
+                <li><a pkvd="map_scripts" href="404.html"></a></li>
+                <li><a pkvd="entityguide" href="https://www.svenmanor.com/entity-guide" target="_blank"></a></li>
+                <li><a pkvd="scriptingapi" href="404.html"></a></li>
+                <li><a href="https://discord.com/invite/sqK7F3kZfn" target="_blank">Discord</a></li>
+            </ul>
+        </nav>
+    </header>
 
-                        Thanks to:
+    <!--Floating Buttons-->
+    <select class="FloatingButton" id="languageDropdown" style="top: 6%; bottom: 90%;" onchange="changeLanguage(event)">
+        <option value="english">English</option>
+    </select>
 
-                        <div class="neon-text" style="font-size: 20px;">
-                                <a href="" class="link-extern"></a><br><br>
-                        </div>
-                </div>-->
+    <button class="FloatingButton" style="top: 12%; bottom: 84%;" onclick="openElement('contribute')" pkvd="Contribute"></button>
+    <div id="contribute" class="emergent-window" onclick="closeElement('contribute')">
+        <div class="emergent-window-content">
+            <h2 pkvd="Contribute"></h2>
+            <ul>
+                <li><img src="media/icons/contributor.png"style="width: 28px;"><a href="https://github.com/Mikk155/Sven-Co-op/tree/main/docs/markdown/translations.md" target="_blank" pkvd="translations" style="font-size: 28px;"></a></li>
+                <li><img src="media/icons/dollar.png" style="width: 28px;"><a href="https://paypal.me/mikk1555" target="_blank" pkvd="donations" style="font-size: 28px;"></a></li>
+            </ul>
         </div>
+    </div>
+<!--
+    <button class="FloatingButton" style="top: 18%; bottom: 78%;" onclick="openElement('translations')">Translations</button>
+    <div id="translations" class="emergent-window" onclick="closeElement('translations')">
+        <div class="emergent-window-content">
+            <h2 pkvd="translationsTitle">Translations</h2>
+            <ul>
+                <li pkvd="translatorName"></li>
+            </ul>
+        </div>
+    </div>
+-->
+    <main>
+        <section>
+            <h1 pkvd="About"></h1>
+        </section>
+
+        <section id="botupdater">
+            <hr class="PageSplitter">
+            <h1 pkvd="botupdater"></h1>
+            <h3 style="display: flex;" pkvd="BOT_Description"></h3>
+            <section style="display: flex;align-items: flex-start;">
+                <div class="content">
+                    <a href="https://discord.com/oauth2/authorize?client_id=1231184089701158972&scope=bot&permissions=347200" target="_blank"><img src="media/bot/profile.png" style="margin-right: 20px;" alt="BOT Profile"></a>
+                </div>
+                <section>
+                    <h3 style="display: flex;" pkvd="BOT_Usage"></h3>
+                    <img src="media/bot/channel.png">
+                    <h3 style="display: flex;" pkvd="BOT_Role"></h3>
+                    <img src="media/bot/role.png">
+                    <h3 style="display: flex;" pkvd="BOT_Permission"></h3>
+                    <img src="media/bot/write.png">
+                </section>
+            </section>
+            <br>
+            <div style="display: flex; justify-content: space-between;">
+                <a href="https://discord.com/oauth2/authorize?client_id=1231184089701158972&scope=bot&permissions=347200" class="Download" pkvd="BOT_Invite" target="_blank"></a>
+                <a href="https://github.com/Mikk155/Sven-Co-op/blob/main/PRIVACY_POLICY.md" class="Download" pkvd="BOT_Privacy" target="_blank"></a>
+                <a href="https://github.com/Mikk155/Sven-Co-op/tree/main/bot.py" class="Download" pkvd="sourceopen" target="_blank"></a>
+            </div>
+        </section>
+
+        <!-- Plugins -->
+        <section id="plugins">
+            <hr class="PageSplitter">
+            <h1 pkvd="plugins"></h1>
+            <table border>
+                <tr>
+                    <th pkvd="name"></th>
+                    <th pkvd="Description"></th>
+                    <th pkvd="Download"></th>
+                    <th pkvd="CreditScriptIdea"></th>
+                    <th pkvd="Metamod"></th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_AntiClip">AntiClip</a></th>
+                    <th pkvd="AntiClip_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/AntiClip" target="_blank">Github</a></th>
+                    <th>#Gaftherman</th>
+                    <th>✅</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_chatroles">chatroles</a></th>
+                    <th pkvd="chatroles_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/chatroles" target="_blank">Github</a></th>
+                    <th>#Wootguy</th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_CrashReporter">CrashReporter</a></th>
+                    <th pkvd="CrashReporter_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/CrashReporter" target="_blank">Github</a></th>
+                    <th></th>
+                    <th>✅</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_dynamic_hostname">dynamic_hostname</a></th>
+                    <th pkvd="dynamic_hostname_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/dynamic_hostname" target="_blank">Github</a></th>
+                    <th>#CubeMath</th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_emotes">emotes</a></th>
+                    <th pkvd="emotes_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/emotes" target="_blank">Github</a></th>
+                    <th>#Wootguy</th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_FastRestart">FastRestart</a></th>
+                    <th pkvd="FastRestart_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/FastRestart" target="_blank">Github</a></th>
+                    <th></th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_no_autopickup">no_autopickup</a></th>
+                    <th pkvd="no_autopickup_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/no_autopickup" target="_blank">Github</a></th>
+                    <th></th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_NPCMoveTo">NPCMoveTo</a></th>
+                    <th pkvd="NPCMoveTo_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/NPCMoveTo" target="_blank">Github</a></th>
+                    <th>#Gaftherman</th>
+                    <th>✅</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_PlayerDecalTracker">PlayerDecalTracker</a></th>
+                    <th pkvd="PlayerDecalTracker_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/PlayerDecalTracker" target="_blank">Github</a></th>
+                    <th>#Sven Co-op Team</th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_SurvivalRespawnAll">SurvivalRespawnAll</a></th>
+                    <th pkvd="SurvivalRespawnAll_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/SurvivalRespawnAll" target="_blank">Github</a></th>
+                    <th></th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_svenfixes">svenfixes</a></th>
+                    <th pkvd="svenfixes_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/svenfixes" target="_blank">Github</a></th>
+                    <th></th>
+                    <th>❌</th>
+                </tr>
+
+                <tr>
+                    <th><a href = "#plugin_CustomPrecache">CustomPrecache</a></th>
+                    <th pkvd="CustomPrecache_Description"></th>
+                    <th><a href = "https://github.com/Mikk155/Sven-Co-op/releases/tag/CustomPrecache" target="_blank">Github</a></th>
+                    <th></th>
+                    <th>❌</th>
+                </tr>
+
+            </table>
+            <br> <!--without this break, the table is cut x[-->
+        </section>
+
+    <!-- plugin_AntiClip -->
+    <section id="plugin_AntiClip">
+        <hr class="PageSplitter">
+        <h1>AntiClip</h1>
+        <h3 pkvd="AntiClip_Description"></h3>
+        <hr>
+        <table border>
+            <tr>
+                <th pkvd="Command"></th>
+                <th pkvd="Value"></th>
+                <th pkvd="Description"></th>
+                <th pkvd="AdminLevel"></th>
+            </tr>
+
+            <tr>
+                <th>.anticlip</th>
+                <th>0</th>
+                <th pkvd="Disables">Disables</th>
+                <th><img src="media/icons/admin.png" style="width: 28px;"><ht class="th" pkvd="Administrator"></ht></th>
+            </tr>
+
+            <tr>
+                <th>.anticlip</th>
+                <th>1</th>
+                <th pkvd="Enables">Enables</th>
+                <th><img src="media/icons/admin.png" style="width: 28px;"><ht class="th" pkvd="Administrator"></ht></th>
+            </tr>
+
+            <tr>
+                <th>mp_ignore_tracer_player</th>
+                <th>0</th>
+                <th pkvd="Default">Default</th>
+                <th><img src="media/icons/svencoop.png" style="width: 28px;"><ht class="th" pkvd="Server"></ht></th>
+            </tr>
+
+            <tr>
+                <th>mp_ignore_tracer_player</th>
+                <th>1</th>
+                <th pkvd="AntiClip_MetaCvar"></th>
+                <th><img src="media/icons/svencoop.png" style="width: 28px;"><ht class="th" pkvd="Server"></ht></th>
+            </tr>
+
+        </table>
+        <hr>
+        <img src="media/icons/note.png" style="width: 150px;">
+        <h3 pkvd="AntiClip_KnownIssue"></h3>
+        <img src="media/plugins/anticliup.png" style="width: 150px;">
+        <hr>
+        <img src="media/icons/tip.png" style="width: 150px;">
+        <h3 pkvd="AntiClip_Tip"></h3>
+        <hr>
+        <img src="media/icons/note.png" style="width: 150px;">
+        <h3 pkvd="AntiClip_Note"></h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+
+        <table border>
+            <tr>
+                <th pkvd="Key"></th>
+                <th pkvd="Value"></th>
+                <th pkvd="Type"></th>
+                <th pkvd="Description"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">projectiles</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="AntiClip_Projectiles"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">reload</th>
+                <th class="JSON_boolean">false</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="JSON_Reload"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">blacklist maps</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="JSON_BlackList"></th>
+            </tr>
+
+        </table>
+        <hr>
+        <h3 pkvd="ScriptDe">ScriptDe</h3><h3>#Gaftherman</h3>
+        <hr>
+        <h3 style="color: var(--red);" pkvd="Metamod" class="Download">Metamod</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/AntiClip" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_chatroles">
+        <hr class="PageSplitter">
+        <h1>chatroles</h1>
+        <h3 pkvd="chatroles_Description">Description</h3>
+        <img src="media/plugins/chatroles.png" style="width: 45%;">
+        <hr>
+        <table border>
+            <tr>
+                <th pkvd="Command">Command</th>
+                <th pkvd="Value">Value</th>
+                <th pkvd="Description">Description</th>
+                <th pkvd="AdminLevel">Admin Level</th>
+            </tr>
+
+            <tr>
+                <th>.hiderole</th>
+                <th>0</th>
+                <th pkvd="Enables">Enables</th>
+                <th><ht class="th" pkvd="None"></ht></th>
+            </tr>
+
+            <tr>
+                <th>.hiderole</th>
+                <th>1</th>
+                <th pkvd="Disables">Disables</th>
+                <th><ht class="th" pkvd="None"></ht></th>
+            </tr>
+        </table>
+        <hr>
+        <img src="media/icons/tip.png" style="width: 150px;">
+        <h3 pkvd="chatroles_KnownIssue"></h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+        <table border>
+            <tr>
+                <th pkvd="Key">Key</th>
+                <th pkvd="Value">Value</th>
+                <th pkvd="Type">Type</th>
+                <th pkvd="Description">Description</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">Client's SteamID</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="chatroles_json"></th>
+            </tr>
+
+        </table>
+        <hr>
+        <h3 pkvd="IdeaDe"></h3><h3>#Rizulix</h3>
+        <hr>
+        <h3 pkvd="CodeDe"></h3><h3>#Wootguy</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/chatroles" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_CrashReporter">
+        <hr class="PageSplitter">
+        <h1>CrashReporter</h1>
+        <h3 pkvd="CrashReporter_Description">Description</h3>
+        <h3><li class>svencoop/scripts/plugins/store/CrashReporter_MapCrashes.txt</li></h3>
+        <hr>
+        <h3 style="color: var(--red);" pkvd="Metamod" class="Download">Metamod</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/CrashReporter" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_dynamic_hostname">
+        <hr class="PageSplitter">
+        <h1>dynamic_hostname</h1>
+        <h3 pkvd="dynamic_hostname_Description">Description</h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+        <table border>
+            <tr>
+                <th pkvd="Key">Key</th>
+                <th pkvd="Value">Value</th>
+                <th pkvd="Type">Type</th>
+                <th pkvd="Description">Description</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">CONFIG</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="dynamic_hostname_Config"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">CONFIG<span class="tooltip-text" pkvd="dynamic_hostname_Config"></span></span>
+                        <br>HOSTNAME</p>
+                </th>
+                <th class="JSON_string">" "</th>
+                <th class="JSON_string"><p><span class="tooltip-container">string<span class="tooltip-text" pkvd="JSON_string"></span></span></p></th>
+                <th pkvd="dynamic_hostname_Hostname"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">CONFIG<span class="tooltip-text" pkvd="dynamic_hostname_Config"></span></span>
+                        <br>DISABLED</p>
+                </th>
+                <th class="JSON_string">"Disabled"</th>
+                <th class="JSON_string"><p><span class="tooltip-container">string<span class="tooltip-text" pkvd="JSON_string"></span></span></p></th>
+                <th pkvd="dynamic_hostname_Trans"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">CONFIG<span class="tooltip-text" pkvd="dynamic_hostname_Config"></span></span>
+                        <br>ENABLED</p>
+                </th>
+                <th class="JSON_string">"Enabled"</th>
+                <th class="JSON_string"><p><span class="tooltip-container">string<span class="tooltip-text" pkvd="JSON_string"></span></span></p></th>
+                <th pkvd="dynamic_hostname_Trans"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">CONFIG<span class="tooltip-text" pkvd="dynamic_hostname_Config"></span></span>
+                        <br>DYNAMIC_HOSTNAME</p>
+                </th>
+                <th class="JSON_string">" "</th>
+                <th class="JSON_string"><p><span class="tooltip-container" >string<span class="tooltip-text" pkvd="JSON_string"></span></span></p></th>
+                <th pkvd="dynamic_hostname_HostnameDynamic"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">MAPS</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="dynamic_hostname_Maps"></th>
+            </tr>
+        </table>
+        <h3 pkvd="SpecialStrings"></h3>
+        <table border>
+            <tr>
+                <th pkvd="Value">Value</th>
+                <th pkvd="Description">Description</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">hostname</th>
+                <th pkvd="dynamic_hostname_str_1"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">maps</th>
+                <th pkvd="dynamic_hostname_str_2"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">difficulty</th>
+                <th pkvd="dynamic_hostname_str_3"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">antirush</th>
+                <th pkvd="dynamic_hostname_str_4"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">survival</th>
+                <th pkvd="dynamic_hostname_str_5"></th>
+            </tr>
+        </table>
+
+        <hr>
+        <h3 pkvd="IdeaDe"></h3><h3>#CubeMath</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/dynamic_hostname" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_emotes">
+        <hr class="PageSplitter">
+        <h1>emotes</h1>
+        <h3 pkvd="emotes_Description">Description</h3>
+        <hr>
+        <h3 pkvd="ScriptDe">ScriptDe</h3><h3>#Wootguy</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/emotes" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_FastRestart">
+        <hr class="PageSplitter">
+        <h1>FastRestart</h1>
+        <h3 pkvd="FastRestart_Description">Description</h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+        <table border>
+            <tr>
+                <th pkvd="Key">Key</th>
+                <th pkvd="Value">Value</th>
+                <th pkvd="Type">Type</th>
+                <th pkvd="Description">Description</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">ShouldWaitMedic</th>
+                <th class="JSON_boolean">true</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="FastRestart_ShouldWaitMedic"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">SearchRadius</th>
+                <th class="JSON_integer">1024</th>
+                <th class="JSON_integer"><p><span class="tooltip-container">integer<span class="tooltip-text" pkvd="JSON_integer"></span></span></p></th>
+                <th pkvd="FastRestart_SearchRadius"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">blacklist maps</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="JSON_BlackList"></th>
+            </tr>
+
+        </table>
+        <hr>
+        <h3 pkvd="IdeaDe"></h3><h3>#Rick</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/FastRestart" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_no_autopickup">
+        <hr class="PageSplitter">
+        <h1>no_autopickup</h1>
+        <h3 pkvd="no_autopickup_Description">Description</h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+        <table border>
+            <tr>
+                <th pkvd="Key">Key</th>
+                <th pkvd="Value">Value</th>
+                <th pkvd="Type">Type</th>
+                <th pkvd="Description">Description</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">MessagePlayer</th>
+                <th class="JSON_boolean">true</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="no_autopickup_MessagePlayer"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">RequiredLoS</th>
+                <th class="JSON_boolean">true</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="no_autopickup_RequiredLoS"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">blacklist maps</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="JSON_BlackList"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">blacklist items</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="no_autopickup_BlackListItems"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">item names</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="no_autopickup_EntNames"></th>
+            </tr>
+        </table>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/no_autopickup" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_NPCMoveTo">
+        <hr class="PageSplitter">
+        <h1>NPCMoveTo</h1>
+        <h3 pkvd="NPCMoveTo_Description">Description</h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+        <table border>
+            <tr>
+                <th pkvd="Key">Key</th>
+                <th pkvd="Value">Value</th>
+                <th pkvd="Type">Type</th>
+                <th pkvd="Description">Description</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">observers can use</th>
+                <th class="JSON_boolean">true</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="NPCMoveTo_ObsCan"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">player cooldown</th>
+                <th class="JSON_float">2.5</th>
+                <th class="JSON_float"><p><span class="tooltip-container">float<span class="tooltip-text" pkvd="JSON_float"></span></span></p></th>
+                <th pkvd="NPCMoveTo_PlrCooldown"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">radius</th>
+                <th class="JSON_integer">32</th>
+                <th class="JSON_integer"><p><span class="tooltip-container">integer<span class="tooltip-text" pkvd="JSON_integer"></span></span></p></th>
+                <th pkvd="NPCMoveTo_Radius"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">count</th>
+                <th class="JSON_integer">32</th>
+                <th class="JSON_integer"><p><span class="tooltip-container">integer<span class="tooltip-text" pkvd="JSON_integer"></span></span></p></th>
+                <th pkvd="NPCMoveTo_Count"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">life</th>
+                <th class="JSON_integer">2</th>
+                <th class="JSON_integer"><p><span class="tooltip-container">integer<span class="tooltip-text" pkvd="JSON_integer"></span></span></p></th>
+                <th pkvd="NPCMoveTo_Life"></th>
+            </tr>
+        </table>
+        <hr>
+        <h3 pkvd="ScriptDe"></h3><h3>#Gaftherman</h3>
+        <hr>
+        <h3 style="color: var(--red);" pkvd="Metamod" class="Download">Metamod</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/NPCMoveTo" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_PlayerDecalTracker">
+        <hr class="PageSplitter">
+        <h1>PlayerDecalTracker</h1>
+        <h3 pkvd="PlayerDecalTracker_Description"></h3>
+        <hr>
+        <h3 pkvd="ScriptDe"></h3><h3>#Sven Co-op Team</h3>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/PlayerDecalTracker" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_SurvivalRespawnAll">
+        <hr class="PageSplitter">
+        <h1>SurvivalRespawnAll</h1>
+        <h3 pkvd="SurvivalRespawnAll_Description"></h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+
+        <table border>
+            <tr>
+                <th pkvd="Key"></th>
+                <th pkvd="Value"></th>
+                <th pkvd="Type"></th>
+                <th pkvd="Description"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">INSTANT_ENABLE</th>
+                <th class="JSON_boolean">true</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="SurvivalRespawnAll_Enable"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">blacklist maps</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="JSON_BlackList"></th>
+            </tr>
+
+        </table>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/SurvivalRespawnAll" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_svenfixes">
+        <hr class="PageSplitter">
+        <h1>svenfixes</h1>
+        <h3 pkvd="svenfixes_Description"></h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+
+        <table border>
+            <tr>
+                <th pkvd="Key"></th>
+                <th pkvd="Value"></th>
+                <th pkvd="Type"></th>
+                <th pkvd="Description"></th>
+                <th pkvd="CreditScriptIdea"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">reload</th>
+                <th class="JSON_boolean">false</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="JSON_Reload"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">gonome crouch spam</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_gonomecrouch"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">elevator friendly kill</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_elekill"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">hwgrunt crouch</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_hwgruntcrouch"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">corpse sink</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_corpsesink"></th>
+                <th>#CubeMath</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">grenade revivable</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_grenade"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">revive lose gravity</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_gravity"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">tripmine spam</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_tripmine"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">observer noises</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_obsnoises"></th>
+                <th>#Rick</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">observer presence</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_obspres"></th>
+                <th>#Rick</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">revive lose longjump</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_ljres"></th>
+                <th>#KEZAEIV</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">strip longjump</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_ljstrip"></th>
+                <th>#KEZAEIV</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">Satchel Stun</th>
+                <th class="JSON_dict">{ }</th>
+                <th><p><span class="tooltip-container" style="color:magenta">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_Satchel"></th>
+                <th>#Giegue</th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">tripmine spam<span class="tooltip-text" pkvd="svenfixes_tripmine"></span></span>
+                        <br>max mines</p>
+                </th>
+                <th class="JSON_integer">20</th>
+                <th class="JSON_integer"><p><span class="tooltip-container">integer<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="svenfixes_tripminemax"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">*<span class="tooltip-text" pkvd="SharedVariable"></span></span>
+                        <br>active</p>
+                </th>
+                <th class="JSON_boolean">true</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="svenfixes_Enable"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">*<span class="tooltip-text" pkvd="SharedVariable"></span></span>
+                        <br>map-blacklist</p>
+                </th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="JSON_BlackList"></th>
+                <th></th>
+            </tr>
+        </table>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/svenfixes" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+    <section id="plugin_CustomPrecache">
+        <hr class="PageSplitter">
+        <h1>CustomPrecache</h1>
+        <h3 pkvd="CustomPrecache_Description"></h3>
+        <hr>
+        <section style="display: flex;align-items: flex-start;">
+            <div class="content">
+                <img src="media/icons/json.png" style="width: 50px;">
+            </div>
+            <section>
+                <h3 pkvd="ConfigureJson"></h3>
+            </section>
+        </section>
+
+        <table border>
+            <tr>
+                <th pkvd="Key"></th>
+                <th pkvd="Value"></th>
+                <th pkvd="Type"></th>
+                <th pkvd="Description"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">reload</th>
+                <th class="JSON_boolean">false</th>
+                <th class="JSON_boolean"><p><span class="tooltip-container">boolean<span class="tooltip-text" pkvd="JSON_boolean"></span></span></p></th>
+                <th pkvd="JSON_Reload"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">blacklist maps</th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="JSON_BlackList"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">PrecacheModel</th>
+                <th class="JSON_dict">[ ]</th>
+                <th class="JSON_dict"><p><span class="tooltip-container">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="CustomPrecache_Model"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">PrecacheGeneric</th>
+                <th class="JSON_dict">[ ]</th>
+                <th class="JSON_dict"><p><span class="tooltip-container">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="CustomPrecache_Generic"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">PrecacheSound</th>
+                <th class="JSON_dict">[ ]</th>
+                <th class="JSON_dict"><p><span class="tooltip-container">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="CustomPrecache_Sound"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">PrecacheOther</th>
+                <th class="JSON_dict">[ ]</th>
+                <th class="JSON_dict"><p><span class="tooltip-container">dictionary<span class="tooltip-text" pkvd="JSON_dict"></span></span></p></th>
+                <th pkvd="CustomPrecache_Other"></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">*<span class="tooltip-text" pkvd="SharedVariable"></span></span>
+                        <br>Always Precache</p>
+                </th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="CustomPrecache_Always"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">*<span class="tooltip-text" pkvd="SharedVariable"></span></span>
+                        <br>Dynamic Precache</p>
+                </th>
+                <th class="JSON_array">[ ]</th>
+                <th class="JSON_array"><p><span class="tooltip-container">array<span class="tooltip-text" pkvd="JSON_array"></span></span></p></th>
+                <th pkvd="CustomPrecache_Dynamic"></th>
+                <th></th>
+            </tr>
+
+            <tr>
+                <th class="JSON_key">
+                    <p>
+                        <span class="tooltip-container" style="color:magenta">*<span class="tooltip-text" pkvd="SharedVariable"></span></span>
+                        <br>Dynamic Assets</p>
+                </th>
+                <th class="JSON_integer">3</th>
+                <th class="JSON_integer"><p><span class="tooltip-container">integer<span class="tooltip-text" pkvd="JSON_integer"></span></span></p></th>
+                <th pkvd="CustomPrecache_MaxAssets"></th>
+                <th></th>
+            </tr>
+        </table>
+        <hr>
+        <a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/CustomPrecache" target="_blank" pkvd="Download" class="Download">Download</a>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <hr>
+    <hr class="PageSplitter">
+    <h3 pkvd="TranslatedBy"></h3>
+</main>
+    <footer>
+        <p pkvd="OpenSrcAs">This site is Open Source under</p><a href="https://github.com/Mikk155/Sven-Co-op/tree/main?tab=License-1-ov-file" target="_blank">Creative Commons Attribution-NonCommercial</a>
+    </footer>
+<!--Fin-->
 </body>
 </html>

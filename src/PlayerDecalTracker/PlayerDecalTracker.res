@@ -1,0 +1,6 @@
+"path" "scripts/plugins/mikk/"
+"PlayerDecalTracker/PlayerDecalTracker.as"
+"PlayerDecalTracker/PlayerDecalTracker.json"
+"utils/fft.as"
+"utils/json.as"
+"utils/Language.as"

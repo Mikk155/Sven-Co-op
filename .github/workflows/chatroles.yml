@@ -6,26 +6,22 @@ on:
       - main
     paths:
       - '.github/workflows/chatroles.yml'
-      - 'build/resources/chatroles.json'
-      - 'scripts/mikk/*'
-      - 'scripts/plugins/mikk/chatroles.*'
+      - 'src/utils/*'
+      - 'src/chatroles.*'
 
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-
     - name: Installing Python
       run: |
         pip install --upgrade pip
         pip install -r requirements.txt
-
     - name: Release
       env:
         TOKEN: ${{ secrets.TOKEN }}
-      run: python3 build/run.py chatroles
+        BOT: ${{ secrets.BOT }}
+      run: python3 build.py chatroles true true

@@ -1,0 +1,8 @@
+"path" "scripts/plugins/mikk/"
+"AntiClip/AntiClip.as"
+"AntiClip/AntiClip.json"
+"utils/fft.as"
+"utils/json.as"
+"utils/Language.as"
+"utils/EntityFuncs.as"
+"utils/datashared.as"

@@ -1,0 +1,14 @@
+{
+    "advice":
+    {
+        "english": "Hold +use to print $name$'s ID.",
+        "spanish": "Manten +use para mostrar la ID de $name$.",
+        "portuguese": "Segure +use para mostrar o ID de $name$."
+    },
+    "show_author":
+    {
+        "english" : "Spray by $name$ Auth ID: $steamid$",
+        "spanish" : "Spray de $name$ ID del autor: $steamid$",
+        "portuguese" : "Spray de $name$ ID do autor: $steamid$"
+    }
+}

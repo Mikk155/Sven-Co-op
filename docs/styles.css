@@ -1,116 +1,264 @@
 :root
 {
-        --SVENCOOP_HUD: rgb(0, 60, 160);
-        --SVENCOOP_RGB: rgb(0, 40, 100);
-        --SVENCOOP_BACKGROUND: rgb(0, 20, 40);
-        --white: rgb( 255, 255, 255 );
-        --greenlight: rgb(0, 255, 145);
-        --cyan: rgb(0, 251, 255);
-        --red: rgb( 255, 0, 0);
-        --blue: rgb(0, 24, 158);
+    --background_dark: rgb(18, 22, 33);
+
+    --SVENCOOP_HUD: rgb(0, 60, 160);
+    --SVENCOOP_RGB: rgb(0, 40, 100);
+    --SVENCOOP_BACKGROUND: rgb(0, 20, 40);
+    --white: rgb( 255, 255, 255 );
+    --greenlight: rgb(0, 255, 145);
+    --cyan: rgb(0, 251, 255);
+    --red: rgb( 255, 0, 0);
+    --blue: rgb(0, 24, 158);
 }
 
 body
 {
-        background-color: var(--SVENCOOP_BACKGROUND);
-        place-items: center;
-        position:relative;
-        padding-left:0%;
-        text-align:center;
-        font-weight:100;
-        font-size:40px;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100vh;
+    color: var(--white);
+    text-shadow: 0 0 15px var(--white);
 }
 
-.block
+.body-notice
 {
-        transition: all 100ms;
-        position:relative;
-        background-color:rgba(255, 255, 255, 0.25);
-        color:var(--SVENCOOP_HUD);
-        border: 15px solid var(--SVENCOOP_HUD);
-        border-radius: 15px;
-        box-shadow: inset 0 0 5px var(--SVENCOOP_HUD), 0 0 10px var(--SVENCOOP_HUD);
-        border-style: none;
+    color: var(--white);
+    text-shadow: 0 0 15px var(--white);
+    text-decoration: underline;
 }
 
-.tabla
+header
 {
-        margin-left: auto;
-        margin-right: auto;
-        width: 90%;
+    background-color: var(--background_dark);
+    padding: 20px;
+    text-align: center;
 }
 
-button
+#logo
 {
-        background-color: black;
-        border: 15px solid var(--white);
-        border-radius: 35px;
-        box-shadow: inset 0 0 45px var(--SVENCOOP_HUD), 0 0 40px var(--white);
-        border-style: none;
-        font-size: 35px;
-        color: rgb(0, 255, 0);
+    width: 600px;
+    height: auto;
 }
 
-.hidden {
-        display: none;
-}
-
-.neon-text
+nav ul
 {
-        color: var(--white);
-        text-shadow: 0 0 15px var(--white);
+    list-style: none;
+    padding: 0;
 }
 
-.neon-notice
+nav ul li
 {
-        color: var(--white);
-        text-shadow: 0 0 15px var(--white);
-        text-decoration: underline;
+    display: inline;
+    margin: 0 15px;
 }
 
-.link-here
+nav ul li a
 {
-        color: var(--blue);
-        text-decoration:none;
+    text-decoration: none;
+    color: #76c7c0;
 }
 
-.link-extern
+main
 {
-        color: var(--greenlight);
+    padding: 5%;
 }
 
-.link-here:hover,
-.link-extern:hover
+h1, h2
 {
-        text-decoration:underline;
-        filter: blur(2px);
+    color: #76c7c0;
+    font-size: 300%;
+    text-align: center;
 }
 
-.json-description {
-        color: var(--cyan)
+a
+{
+    color: #76c7c0;
+    text-decoration: none;
 }
-.json-description2 {
-        color: var(--greenlight)
+
+a:hover
+{
+    text-decoration: underline;
 }
-.json-array {
-        color: rgb(255, 255, 0);
+
+footer
+{
+    background-color: var(--background_dark);
+    text-align: center;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
-.json-dictionary {
-        color: rgb(230, 0, 255);
+
+.emergent-window
+{
+    display: none;
+    position: fixed;
+    text-align: center;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
 }
-.json-integer {
-        color: rgb(255, 0, 0);
+
+.emergent-window-content
+{
+    background-color: var( --background_dark );
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--SVENCOOP_BACKGROUND);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
 }
-.json-float {
-        color: rgb(0, 166, 255);
+
+.emergent-window ul
+{
+    list-style: none;
+    padding: 0;
 }
-.json-false {
-        color: rgb(184, 35, 35);
+
+.emergent-window ul li
+{
+    margin: 10px 0;
 }
-.json-true,
-.json-boolean {
-        color: rgb(0, 0, 255);
+
+.FloatingButton
+{
+    position: fixed;
+    right: 1%;
+    background-color: #76c7c0;
+    color: #121212;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
 }
-.json-string {
-        color: rgb(0, 255, 0);
+
+.FloatingButton:hover
+{
+    background-color: #5ea8a3;
+}
+
+table
+{
+    background-color: var(--SVENCOOP_BACKGROUND);
+    font-size: large;
+    border-color: var(--SVENCOOP_RGB);
+    width: 50%;
+    border-collapse: collapse;
+    line-height: 250%;
+    border-left-width: 250%;
+    min-width: 100%;
+}
+
+th, td {
+    padding: 1px;  /* Añade espacio interno a las celdas */
+    border: 1px solid var(--SVENCOOP_RGB);  /* Asegura que las celdas tengan bordes */
+}
+
+.PageSplitter
+{
+    background: var(--cyan);
+    height: 5px;
+}
+
+hr
+{
+    border: 0;
+    height: 0px;
+    margin: 80px 0;
+}
+
+h3
+{
+    text-align: left;
+    font-size: 150%;
+}
+
+.Download
+{
+    color: var(--greenlight);
+    font-size: 250%;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+.tooltip-container
+{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip-text
+{
+    visibility: hidden;
+    width:max-content;
+    background-color: var(--SVENCOOP_HUD);
+    color: #fff;
+    text-align: left;
+    border-radius: 15px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip-text::after
+{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+.JSON_integer {
+    color: crimson;
+}
+.JSON_array {
+    color: gold;
+}
+.JSON_key {
+    color: turquoise;
+}
+.JSON_string {
+    color: chartreuse;
+}
+.JSON_float {
+    color: orange;
+}
+.JSON_dict {
+    color: magenta;
+}
+.JSON_boolean {
+    color: aqua ;
 }
