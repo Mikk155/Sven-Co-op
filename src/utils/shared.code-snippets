@@ -146,6 +146,7 @@
 
 
 
+
 	"namespace GameFuncs":
 	{
 		"prefix": [ "import", "#include", "GameFuncs" ],
