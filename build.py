@@ -181,7 +181,7 @@ if len( sys.argv ) > 2 and sys.argv[2] == 'true':
 if len( sys.argv ) > 3 and sys.argv[3] == 'true':
     RELEASE = True
 
-AbsPathRes = os.path.join( os.path.dirname( __file__ ), f'src\\{ResName}\\{ResName}.res' )
+AbsPathRes = os.path.join( os.path.dirname( __file__ ), f'src\{ResName}\{ResName}.res' )
 if not os.path.exists( AbsPathRes ) and ResName != 'bot':
     broken( f"File \"src/{ResName}/{ResName}.res\" does not exists!" )
 
