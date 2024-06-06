@@ -137,6 +137,12 @@
 		"body": "atob( ${1:const string From} )",
 		"description": "(fft.as) Returns the given variable as a boolean."
 	},
+	"enum fft::TimeStamp":
+	{
+		"prefix": [ "TimeStamp", "fft::TimeStamp" ],
+		"body": "fft::TimeStamp::ALL",
+		"description": "(fft.as) "
+	},
 
 
 
