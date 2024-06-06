@@ -1,6 +1,8 @@
 import os, sys, shutil, zipfile
 from github import Github, GithubException
 
+abs = os.path.abspath( '' )
+
 #=========================================================#
 #============= Something went wrong, notice ==============#
 #=========================================================#
@@ -55,13 +57,11 @@ def movefile( AssetFile, DestinationPath ):
     if not filename:
         return
 
-    DestinationPath = DestinationPath.replace( '/', '\\' )
-
-    destination_folder = os.path.join( os.path.dirname( __file__ ), f'{DestinationPath}' )
-    destination_asset = os.path.join( os.path.dirname( __file__ ), f'{DestinationPath}{filename}' )
-
+    destination_folder = f'{abs}/{DestinationPath}'
     if not os.path.exists( destination_folder ):
         os.makedirs( os.path.dirname( destination_folder ), exist_ok = True )
+
+    destination_asset = f'{abs}/{DestinationPath}{filename}'
 
     try:
         shutil.copyfile( abssolute_asset, destination_asset )
@@ -93,7 +93,7 @@ def zipassets():
 #=========================================================#
 def WriteLicence( File ):
     if File.endswith( '.as' ):
-        with open( File, 'r+') as f, open( os.path.join( os.path.dirname( __file__ ), 'header.ini' ), 'r') as l:
+        with open( File, 'r+') as f, open( f'{abs}/header.ini', 'r') as l:
             lines = f.readlines()
             f.seek(0)
             lines.insert( 0, '\n' )
@@ -134,7 +134,7 @@ def GenerateRelease( appname ):
         release = repo.create_git_release(tag_name, tag_name, f"# {tag_name}" )
         new_body = ""
 
-        changelog = os.path.join( os.path.dirname(__file__), f'src/{appname}/changelog.md' )
+        changelog = f'{abs}/src/{appname}/changelog.md'
         if os.path.exists( changelog ):
             with open( changelog, 'r') as cl:
                 verb( f'Reading changelog for release body')
@@ -181,11 +181,11 @@ if len( sys.argv ) > 2 and sys.argv[2] == 'true':
 if len( sys.argv ) > 3 and sys.argv[3] == 'true':
     RELEASE = True
 
-AbsPathRes = os.path.join( os.path.dirname( __file__ ), f'src/{ResName}/{ResName}.res' )
+AbsPathRes = f'{abs}/src/{ResName}/{ResName}.res'
 if not os.path.exists( AbsPathRes ) and ResName != 'bot':
     broken( f"File \"src/{ResName}/{ResName}.res\" does not exists!" )
 
-CCHangelogFile = os.path.join( os.path.dirname(__file__), f'src/{ResName}/changelog.md' )
+CCHangelogFile = f'{abs}/src/{ResName}/changelog.md'
 
 from bot import InitBot
 
@@ -196,8 +196,8 @@ else:
 
 if RELEASE:
     zipassets()
-    GenerateRelease( ResName )
-    InitBot()
+    #GenerateRelease( ResName )
+    #InitBot()
 
 # python build.py assetname true true < release
 # python build.py bot < send BOT.md
