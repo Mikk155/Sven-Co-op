@@ -398,14 +398,6 @@ HookReturnCode PlayerSpawn( CBasePlayer@ pPlayer )
     return HOOK_CONTINUE;
 }
 
-HookReturnCode MonsterPostCheckEnemy( CBaseMonster@ pMonster, CBaseEntity@ pEnemy )
-{
-    if( pMonster is null )
-        return HOOK_CONTINUE;
-
-    return HOOK_CONTINUE;
-}
-
 void deadplayer_sinkCheckCorpse( EHandle hCorpse, Vector VecPos )
 {
     CBaseEntity@ pCorpse = hCorpse.GetEntity();
