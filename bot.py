@@ -78,7 +78,7 @@ async def PrepareMessage( guild, channel ):
                 for line in lines:
                     if line.startswith( "<details><summary>" ):
                         line = line[ 18: ]
-                        if line.startswith( fecha ):
+                        if line.startswith( f'latest {fecha}' ):
                             AnythingNew = True
                             Message = f'# {ResName}\n### {fecha}'
                             continue
