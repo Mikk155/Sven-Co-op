@@ -1,4 +1,7 @@
 #include "json"
+#include "Reflection"
+
+#include "BetterWeapons/weapon_9mmhandgun"
 
 json pJson;
 
@@ -9,31 +12,51 @@ void PluginInit()
 
     pJson.load( 'plugins/mikk/BetterWeapons.json' );
 
-    PluginUpdate();
+    // This for testing, remove on release
+                    Register();
 }
+
+bool Registered;
 
 void MapInit()
 {
     if( pJson.reload('plugins/mikk/BetterWeapons.json') != 1 )
     {
-        PluginUpdate();
+        UnRegister();
+    }
+
+    if( array<string>( pJson[ 'blacklist maps' ] ).find( string( g_Engine.mapname ) ) > 0 )
+    {
+        UnRegister();
+        return;
+    }
+
+    if( !Registered )
+    {
+        Register();
     }
 }
 
-void PluginUpdate()
+void UnRegister()
 {
-    g_Hooks.RemoveHook( Hooks::Player::MapChange, @MapChange );
-    g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
-    g_Hooks.RemoveHook( Hooks::Player::PlayerKilled, @PlayerKilled );
-    g_Hooks.RegisterHook( Hooks::Player::PlayerKilled, @PlayerKilled );
-    g_Hooks.RemoveHook( Hooks::Player::PlayerPostThink, @PlayerPostThink );
-    g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @PlayerPostThink );
-    g_Hooks.RemoveHook( Hooks::Player::WeaponPrimaryAttack, @WeaponPrimaryAttack );
+    g_Hooks.RemoveHook( Hooks::Game::MapChange, @OnMapChange );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerKilled, @OnPlayerKilled );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerPostThink, @OnPlayerPostThink );
+    g_Hooks.RemoveHook( Hooks::Weapon::WeaponPrimaryAttack, @WeaponPrimaryAttack );
+    g_Hooks.RemoveHook( Hooks::Weapon::WeaponTertiaryAttack, @WeaponTertiaryAttack );
+    g_Hooks.RemoveHook( Hooks::Weapon::WeaponSecondaryAttack, @WeaponSecondaryAttack );
+    Registered = false;
+}
+
+void Register()
+{
+    g_Hooks.RegisterHook( Hooks::Game::MapChange, @OnMapChange );
+    g_Hooks.RegisterHook( Hooks::Player::PlayerKilled, @OnPlayerKilled );
+    g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @OnPlayerPostThink );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponPrimaryAttack, @WeaponPrimaryAttack );
-    g_Hooks.RemoveHook( Hooks::Player::WeaponTertiaryAttack, @WeaponTertiaryAttack );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponTertiaryAttack, @WeaponTertiaryAttack );
-    g_Hooks.RemoveHook( Hooks::Player::WeaponSecondaryAttack, @WeaponSecondaryAttack );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponSecondaryAttack, @WeaponSecondaryAttack );
+    Registered = true;
 }
 
 enum ATTACK
@@ -43,7 +66,13 @@ enum ATTACK
     TERTIARY = 3,
 };
 
-HookReturnCode MapChange()
+enum ReflectionHook
+{
+    NONE = 0,
+    HOOK_HANDLED = 1
+};
+
+HookReturnCode OnMapChange()
 {
     return HOOK_CONTINUE;
 }
@@ -53,21 +82,56 @@ HookReturnCode WeaponTertiaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pW
 HookReturnCode WeaponSecondaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon ) { OnPlayerAttack( pPlayer, pWeapon, ATTACK::SECONDARY ); return HOOK_CONTINUE; }
 HookReturnCode OnPlayerAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon, ATTACK AttackMode )
 {
-    if( pPlayer is null || pWeapon is null )
+    if( pPlayer is null || pWeapon is null || pWeapon.m_fInReload )
         return HOOK_CONTINUE;
+
+    Reflection::Function@ href = g_Reflection[ "BetterWeapons::" + pWeapon.GetClassname() + "::OnPlayerAttack" ];
+
+    if( href !is null )
+    {
+        HookReturnCode bHooking = HOOK_CONTINUE;
+
+        Reflection::ReturnValue@ pValue = href.Call( @pPlayer, @pWeapon, int(AttackMode) );
+
+        int ibits = 0;
+        if( pValue.HasReturnValue() )
+        {
+            pValue.ToAny().retrieve( ibits );
+        }
+
+        if( ibits != 0 )
+        {
+            ReflectionHook bits = ReflectionHook( ibits );
+
+            if( ( bits & ReflectionHook::HOOK_HANDLED ) != 0 )
+            {
+                bHooking = HOOK_HANDLED;
+            }
+        }
+        return bHooking;
+    }
 
     return HOOK_CONTINUE;
 }
 
-HookReturnCode PlayerPostThink( CBasePlayer@ pPlayer )
+HookReturnCode OnPlayerPostThink( CBasePlayer@ pPlayer )
 {
     if( pPlayer is null )
         return HOOK_CONTINUE;
 
+    CBaseEntity@ pItem = pPlayer.m_hActiveItem.GetEntity();
+    CBasePlayerWeapon@ pWeapon = ( pItem !is null ? cast<CBasePlayerWeapon@>( pItem ) : null );
+
+    if( pWeapon !is null )
+    {
+        if( g_Reflection[ "BetterWeapons::" + pWeapon.GetClassname() + "::OnPlayerPostThink" ] !is null )
+            g_Reflection[ "BetterWeapons::" + pWeapon.GetClassname() + "::OnPlayerPostThink" ].Call( @pPlayer, @pWeapon );
+    }
+
     return HOOK_CONTINUE;
 }
 
-HookReturnCode PlayerKilled( CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int iGib )
+HookReturnCode OnPlayerKilled( CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int iGib )
 {
     if( pPlayer is null )
         return HOOK_CONTINUE;

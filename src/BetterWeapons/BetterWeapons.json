@@ -4,5 +4,10 @@
     [
         "hl_c00",
         "of0a0"
-    ]
+    ],
+    "weapon_9mmhandgun":
+    {
+        "m_flNextSecondaryAttack": 0.09,
+        "punchangle": [ 3.0, 1.0, 1.0 ]
+    }
 }
