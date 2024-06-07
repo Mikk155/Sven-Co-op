@@ -1,0 +1,8 @@
+{
+    "reload": false,
+    "blacklist maps":
+    [
+        "hl_c00",
+        "of0a0"
+    ]
+}
