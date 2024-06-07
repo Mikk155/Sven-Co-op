@@ -21,7 +21,7 @@ void PluginInit()
 
 void MapInit()
 {
-    // Actually i don't need a per-frame think but consider using checks for g_Engine.time
+    // Actually i don't need a per-frame think but consider using checks for g_Engine.time if you modify this file
     GameFuncs::UpdateTimer( pThink, 'Think', 0.4f, g_Scheduler.REPEAT_INFINITE_TIMES );
 
     if( pJson.reload('plugins/mikk/svenfixes.json') != 1 )
@@ -42,18 +42,29 @@ void MapStart()
 
 void PluginUpdate()
 {
+    g_Hooks.RemoveHook( Hooks::Game::MapChange, @MapChange );
     g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerSpawn, @PlayerSpawn );
     g_Hooks.RegisterHook( Hooks::Player::PlayerSpawn, @PlayerSpawn );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerKilled, @PlayerKilled );
     g_Hooks.RegisterHook( Hooks::Player::PlayerKilled, @PlayerKilled );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerTakeDamage, @PlayerTakeDamage );
     g_Hooks.RegisterHook( Hooks::Player::PlayerTakeDamage, @PlayerTakeDamage );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerLeftObserver, @PlayerLeftObserver );
     g_Hooks.RegisterHook( Hooks::Player::PlayerLeftObserver, @PlayerLeftObserver );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerPostThink, @PlayerPostThink );
     g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @PlayerPostThink );
+    g_Hooks.RemoveHook( Hooks::Weapon::WeaponPrimaryAttack, @WeaponPrimaryAttack );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponPrimaryAttack, @WeaponPrimaryAttack );
+    g_Hooks.RemoveHook( Hooks::Weapon::WeaponTertiaryAttack, @WeaponTertiaryAttack );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponTertiaryAttack, @WeaponTertiaryAttack );
+    g_Hooks.RemoveHook( Hooks::Player::PlayerEnteredObserver, @PlayerEnteredObserver );
     g_Hooks.RegisterHook( Hooks::Player::PlayerEnteredObserver, @PlayerEnteredObserver );
+    g_Hooks.RemoveHook( Hooks::Weapon::WeaponSecondaryAttack, @WeaponSecondaryAttack );
     g_Hooks.RegisterHook( Hooks::Weapon::WeaponSecondaryAttack, @WeaponSecondaryAttack );
 
     #if ASLP
+        g_Hooks.RemoveHook( Hooks::ASLP::Player::PlayerPostRevive, @PlayerPostRevive );
         g_Hooks.RegisterHook( Hooks::ASLP::Player::PlayerPostRevive, @PlayerPostRevive );
         aslp = true;
     #endif

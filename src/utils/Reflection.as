@@ -56,7 +56,6 @@ class Reflection
 
         if( Functions.find( m_iszFunction ) < 1 )
         {
-            g_EngineFuncs.ServerPrint( '[Reflection] Couldn\'t find function "' + m_iszFunction + '"\n' );
             return null;
         }
         // g_Game.AlertMessage( at_console, '[Reflection] GetFunction "' + Functions[ Functions.find( m_iszFunction ) ] + '" (' + Functions.find( m_iszFunction ) + ')\n' );

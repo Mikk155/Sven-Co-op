@@ -1,3 +1,13 @@
+<details><summary>07/06/24</summary><p>
+
+- Removed unused code
+
+- Unregister plugins to prevent issues if using json's "reload" on true
+
+---
+
+</p></details>
+
 <details><summary>06/06/24</summary><p>
 
 - Redesigned the whole plugin so doesn't depends on Metamod API anymore
