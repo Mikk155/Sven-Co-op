@@ -111,6 +111,7 @@
         "CustomPrecache_Always": "List for always precache",
         "CustomPrecache_Dynamic": "List for precache dynamically across level changes",
         "CustomPrecache_MaxAssets": "Amount of items to be precached per level",
+        "BetterWeapons_Description": "This plugin aims to make Sven's weapons a bit better by implementing them alternative fire modes or replacing existent ones",
 
         "TranslatedBy": ""
     }
