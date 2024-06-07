@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/SurvivalRespawnAll.yml'
       - 'src/utils/*'
-      - 'src/SurvivalRespawnAll.*'
+      - 'src/SurvivalRespawnAll/*'
 
 jobs:
   build:

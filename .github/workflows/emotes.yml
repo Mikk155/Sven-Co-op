@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/emotes.yml'
       - 'src/utils/*'
-      - 'src/emotes.*'
+      - 'src/emotes/*'
 
 jobs:
   build:

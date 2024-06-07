@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/AntiClip.yml'
       - 'src/utils/*'
-      - 'src/AntiClip.*'
+      - 'src/AntiClip/*'
 
 jobs:
   build:

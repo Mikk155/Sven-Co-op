@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/chatroles.yml'
       - 'src/utils/*'
-      - 'src/chatroles.*'
+      - 'src/chatroles/*'
 
 jobs:
   build:

@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/no_autopickup.yml'
       - 'src/utils/*'
-      - 'src/no_autopickup.*'
+      - 'src/no_autopickup/*'
 
 jobs:
   build:

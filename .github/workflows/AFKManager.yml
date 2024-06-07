@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/AFKManager.yml'
       - 'src/utils/*'
-      - 'src/AFKManager.*'
+      - 'src/AFKManager/*'
 
 jobs:
   build:

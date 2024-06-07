@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/dynamic_hostname.yml'
       - 'src/utils/*'
-      - 'src/dynamic_hostname.*'
+      - 'src/dynamic_hostname/*'
 
 jobs:
   build:

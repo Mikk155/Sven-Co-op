@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/svenfixes.yml'
       - 'src/utils/*'
-      - 'src/svenfixes.*'
+      - 'src/svenfixes/*'
 
 jobs:
   build:

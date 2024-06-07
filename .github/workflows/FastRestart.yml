@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/FastRestart.yml'
       - 'src/utils/*'
-      - 'src/FastRestart.*'
+      - 'src/FastRestart/*'
 
 jobs:
   build:

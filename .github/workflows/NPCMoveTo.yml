@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/NPCMoveTo.yml'
       - 'src/utils/*'
-      - 'src/NPCMoveTo.*'
+      - 'src/NPCMoveTo/*'
 
 jobs:
   build:
