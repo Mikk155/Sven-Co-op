@@ -88,9 +88,6 @@ async def PrepareMessage( guild, channel ):
                         Message = f'{Message}{line}'
                 f.close()
 
-            if Message == '':
-                Message = f'# {ResName}\n### New release ({fecha})'
-
             if Message and Message != '':
                 Message = f'{Message}\n[Download Here](https://github.com/Mikk155/Sven-Co-op/releases/tag/{ResName}/svencoop.zip)'
                 await SendMessage( guild, channel, Message )
