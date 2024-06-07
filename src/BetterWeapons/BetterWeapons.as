@@ -12,7 +12,7 @@ void PluginInit()
 
     pJson.load( 'plugins/mikk/BetterWeapons.json' );
 
-    // This for testing, remove on release
+    // This for testing, dont need on final release
                     Register();
 }
 
@@ -77,9 +77,9 @@ HookReturnCode OnMapChange()
     return HOOK_CONTINUE;
 }
 
-HookReturnCode WeaponPrimaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon ) { OnPlayerAttack( pPlayer, pWeapon, ATTACK::PRIMARY ); return HOOK_CONTINUE; }
-HookReturnCode WeaponTertiaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon ) { OnPlayerAttack( pPlayer, pWeapon, ATTACK::TERTIARY ); return HOOK_CONTINUE; }
-HookReturnCode WeaponSecondaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon ) { OnPlayerAttack( pPlayer, pWeapon, ATTACK::SECONDARY ); return HOOK_CONTINUE; }
+HookReturnCode WeaponPrimaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon ) { return OnPlayerAttack( pPlayer, pWeapon, ATTACK::PRIMARY ); }
+HookReturnCode WeaponTertiaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon ) { return OnPlayerAttack( pPlayer, pWeapon, ATTACK::TERTIARY ); }
+HookReturnCode WeaponSecondaryAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon ) { return OnPlayerAttack( pPlayer, pWeapon, ATTACK::SECONDARY ); }
 HookReturnCode OnPlayerAttack( CBasePlayer@ pPlayer, CBasePlayerWeapon@ pWeapon, ATTACK AttackMode )
 {
     if( pPlayer is null || pWeapon is null || pWeapon.m_fInReload )
