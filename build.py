@@ -187,7 +187,7 @@ if not os.path.exists( AbsPathRes ) and ResName != 'bot':
 
 CCHangelogFile = f'{abs}/src/{ResName}/changelog.md'
 
-from bot import InitBot
+from bot import InitBot, Testing
 
 if ResName == 'bot':
     InitBot()
@@ -196,7 +196,8 @@ else:
 
 if RELEASE:
     zipassets()
-    GenerateRelease( ResName )
+    if not Testing:
+        GenerateRelease( ResName )
     InitBot()
 
 # python build.py assetname true true < release

@@ -116,6 +116,7 @@ async def on_ready():
     print('Initialising BOT {0.user}'.format( bot ) )
 
     for guild in bot.guilds:
+        print( f'Getting Server "{guild.name}"')
         await GetChannels( guild )
 
     await bot.close()
