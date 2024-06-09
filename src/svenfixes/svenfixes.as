@@ -129,27 +129,25 @@ void Think()
             } @pEntity = null;
         }
 
-        if( g_Game.GetGameVersion() == 525 )
+        if( IsActive( "hwgrunt crouch" ) )
         {
-            if( IsActive( "hwgrunt crouch" ) )
+            while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, "monster_hwgrunt" ) ) !is null )
             {
-                while( ( @pEntity = g_EntityFuncs.FindEntityByClassname( pEntity, "monster_hwgrunt" ) ) !is null )
+                CBaseMonster@ pHeavy = cast<CBaseMonster@>( pEntity );
+
+                if( pHeavy !is null && pHeavy.m_hEnemy.IsValid() )
                 {
-                    CBaseMonster@ pHeavy = cast<CBaseMonster@>( pEntity );
+                    CBaseEntity@ pEnemy = pHeavy.m_hEnemy.GetEntity();
 
-                    if( pHeavy !is null && pHeavy.m_hEnemy.IsValid() )
+                    if( pEnemy.IsPlayer() && pEnemy.IsAlive() && ( pEnemy.pev.origin - pHeavy.pev.origin ).Length() < 84 && pEnemy.pev.button & IN_DUCK != 0 )
                     {
-                        CBaseEntity@ pEnemy = pHeavy.m_hEnemy.GetEntity();
-
-                        if( pEnemy.IsPlayer() && pEnemy.IsAlive() && ( pEnemy.pev.origin - pHeavy.pev.origin ).Length() < 84 && pEnemy.pev.button & IN_DUCK != 0 )
-                        {
-                            PushForward( pEnemy );
-                        }
+                        PushForward( pEnemy );
                     }
-                } @pEntity = null;
-            }
+                }
+            } @pEntity = null;
         }
-        else if( g_Game.GetGameVersion() == 525 )
+
+        if( g_Game.GetGameVersion() == 525 )
         {
             if( IsActive( "grenade revivable" ) )
             {

@@ -1,3 +1,13 @@
+<details><summary>latest 09/06/24</summary><p>
+
+- Sven coop 5.26 will fix grenade revival, added a check for game version before patching them.
+
+- moved hwgrunt outside of game version check.
+
+---
+
+</p></details>
+
 <details><summary>07/06/24</summary><p>
 
 - Removed unused code
