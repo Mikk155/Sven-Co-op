@@ -8,6 +8,8 @@
         "sourceopen": "Open Source Code",
         "OpenSrcAs": "This site is Open Source under",
         "name": "Name",
+        "$MapName$": "(Map Name)",
+        "$Any$": "(Any)",
         "Description": "Description",
         "Download": "Download",
         "CreditScriptIdea": "Credit Script / Idea",
@@ -112,6 +114,10 @@
         "CustomPrecache_Dynamic": "List for precache dynamically across level changes",
         "CustomPrecache_MaxAssets": "Amount of items to be precached per level",
         "BetterWeapons_Description": "This plugin aims to make Sven's weapons a bit better by implementing them alternative fire modes or replacing existent ones",
+        "SwapWeapons_Description": "Allow AoM-like weapon inventory, need to drop a specific weapon to get different one, you can customize it all in the provided json",
+        "SwapWeapons_Classes": "List of weapon classes",
+        "SwapWeapons_ClassesMap": "Same as \"Classes\" but overrides it completelly if the current map name is this class name",
+        "SwapWeapons_Classnames": "classname of weapons that can not be equiped at the same time",
 
         "TranslatedBy": ""
     }
