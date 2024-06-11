@@ -21,6 +21,11 @@
         "Key": "Key",
         "Value": "Value",
         "Type": "Type",
+        "CustomEntity": "Custom Entity",
+        "Squadmakerfn": "squadmaker Function",
+        "trigger_scriptfnth": "trigger_script Think Function",
+        "trigger_scriptfnus": "trigger_script Use Function",
+        "gamemode": "Game mode",
         "AdminLevel": "Admin Level",
         "None": "None",
         "Administrator": "Administrator",
@@ -118,7 +123,8 @@
         "SwapWeapons_Classes": "List of weapon classes",
         "SwapWeapons_ClassesMap": "Same as \"Classes\" but overrides it completelly if the current map name is this class name",
         "SwapWeapons_Classnames": "classname of weapons that can not be equiped at the same time",
-
+        "MonsterSpawnAlert_Description": "Makes the spawned monster be aware of position and target a random player",
+        
         "TranslatedBy": ""
     }
 }
