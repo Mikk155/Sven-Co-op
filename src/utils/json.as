@@ -70,7 +70,7 @@ class json
 {
     protected array<string> OpIndex;
     protected int keysize = 0;
-    protected string json = String::EMPTY_STRING;
+    string json = String::EMPTY_STRING;
     dictionary data;
 
     json()
@@ -240,7 +240,7 @@ class json
     }
     */
 
-    private void parse()
+    void parse()
     {
         string file = this.json;
         this.data = ParseJsonFile( file );

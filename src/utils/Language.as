@@ -218,25 +218,25 @@ namespace Language
             case HUDMSG:
             {
                 HUDTextParams textParams;
-                textParams.x = float( pJson[ 'x', -1 ] );
-                textParams.y = float( pJson[ 'y', -1 ] );
-                textParams.effect = pJson[ 'effect', 1 ];
+                textParams.x = float( pJson[ 'x' ] );
+                textParams.y = float( pJson[ 'y' ] );
+                textParams.effect = int( pJson[ 'effect' ] );
 
-                RGBA rgba = atorgba( pJson[ 'color', '255 255 255' ] );
+                RGBA rgba = RGBA( pJson[ 'color' ] );
                 textParams.r1 = rgba.r;
                 textParams.g1 = rgba.g;
                 textParams.b1 = rgba.b;
 
-                RGBA rgba2 = atorgba( pJson[ 'color2', '255 255 255' ] );
+                RGBA rgba2 = RGBA( pJson[ 'color2' ] );
                 textParams.r2 = rgba.r;
                 textParams.g2 = rgba.g;
                 textParams.b2 = rgba.b;
 
-                textParams.fadeinTime = float( pJson[ 'fadein', 0 ] );
-                textParams.fadeoutTime = float( pJson[ 'fadeout', 1 ] );
-                textParams.holdTime = float( pJson[ 'hold', 1 ] );
-                textParams.fxTime = float( pJson[ 'fxtime', 1 ] );
-                textParams.channel = pJson[ 'channel', 8 ];
+                textParams.fadeinTime = float( pJson[ 'fadein' ] );
+                textParams.fadeoutTime = float( pJson[ 'fadeout' ] );
+                textParams.holdTime = float( pJson[ 'hold' ] );
+                textParams.fxTime = float( pJson[ 'fxtime' ] );
+                textParams.channel = int( pJson[ 'channel' ] );
 
                 g_PlayerFuncs.HudMessage( pPlayer, textParams, m_szMessage + '\n' );
                 break;
