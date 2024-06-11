@@ -1,4 +1,12 @@
-<details><summary>latest 10/06/24</summary><p>
+<details><summary>latest 11/06/24</summary><p>
+
+- Corrected json variable message::z to message::y
+
+---
+
+</p></details>
+
+<details><summary>10/06/24</summary><p>
 
 First released
 

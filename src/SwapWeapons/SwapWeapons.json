@@ -26,7 +26,7 @@
         "spanish": "Deja $gun1$ para agarrar $gun2$",
 
         "x": -1,
-        "z": -1,
+        "y": -1,
         "color": [ 255, 150, 255 ],
         "fadein": 0.0,
         "fadeout": 0.0,
