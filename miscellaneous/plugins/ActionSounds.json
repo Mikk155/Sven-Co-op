@@ -1,0 +1,16 @@
+{
+    // When a player is killed
+    "PlayerKilled":
+    {
+        // When pAttacker classname is
+        "pAttacker":
+        {
+            "monster_pitdrone": "oghs/cs06/pit.wav"
+        },
+        // Pick one random sound for anything else
+        "random":
+        {
+
+        }
+    }
+}

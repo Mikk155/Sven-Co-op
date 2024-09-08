@@ -1,0 +1,75 @@
+@BaseClass = BaseCheckPoint
+[
+	// Not toggle only. you can call USETYPE ON or OFF to do the respective thing acording to checkpoint state. see health keyvalues
+	targetname(target_source) : "Name"
+
+	// Use #0 #1 #2 at the end of the target value the same as it was a multi_manager to send the respective TriggerState.
+	target(target_destination) : "Target"
+
+	// Trigger something every time a player RE-Spawns. at this point the respawned player is the activator.
+	netname(target_destination) : "ReSpawned Target"
+
+	// Xenmaker template to fire (works with any entity) it will change its origin to resurrected player origin and then fire the entity
+	message(target_destination) : "Xenmaker Template"
+
+	spawnflags(flags) =
+	[
+		// Keep origin of the entity to revive players at. don't tick if the map uses a forced teleport or something.
+		1 : "Keep Vector" : 0
+
+		// revive players instantly instead of save their lifes
+		2 : "Insta ReSpawn" : 0
+
+		// Tells the entity to keep player's inventory on respawn
+		4 : "Keep Inventory" : 0
+
+		// Save only activator life not everyone. not work with flag 2
+		8 : "Activator Only" : 0
+
+		// Not touch. USE-key to activate
+		16 : "Use Only" : 0
+	]
+
+	// Button that players must press to resurrect
+	frags(choices) : "Button to ReSpawn" = 32
+	[
+		1 : "Primary attack"
+		2 : "Jump"
+		4 : "Duck"
+		32 : "Use"
+		2048 : "Secondary attack"
+		8192 : "Reload"
+		16384 : "Tertiary attack"
+	]
+
+	// State of the checkpoint
+	health(choices) : "Checkpoint State" = 3
+	[
+		// While its state is 1 and/or survival mode is disabled. the checkpoint is invisible and can't work but still thinks
+		1 : "Start off"
+		// while its state is 2 the entity requires to be triggered (ON) and then players can touch and enable it
+		2 : "Trigger to enable touch"
+		// While its state is 3 players can touch and enable it
+		3 : "Can touch"
+		// while its state is 4 players can't touch it. only a direct trigger will activate it
+		4 : "Trigger to activate"
+	]
+
+	// Custom activation music
+	music(sound) : "Activation music" : "../media/valve.mp3"
+]
+
+// Use a brush model instead
+@SolidClass base(BaseCheckPoint) = trigger_checkpoint: "Checkpoint"
+[
+]
+
+@PointClass base(BaseCheckPoint) size( -32 -32 -32, 32 32 32 ) = trigger_checkpoint : "Checkpoint"
+[
+	// Set custom model
+	model(studio) : "Custom Model" : "models/common/lambda.mdl"
+
+	// Set custom BBOX
+	minhullsize(string) : "Custom Min Hull Size (X Y Z)"
+	maxhullsize(string) : "Custom Max Hull Size (X Y Z)"
+]

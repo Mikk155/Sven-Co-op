@@ -1,0 +1,131 @@
+@BaseClass = RenderFxChoices
+[
+	renderfx(choices) : "Render FX" : 0 =
+	[
+		0: "Normal"
+		1: "Slow Pulse"
+		2: "Fast Pulse"
+		3: "Slow Wide Pulse"
+		4: "Fast Wide Pulse"
+		9: "Slow Strobe"
+		10: "Fast Strobe"
+		11: "Faster Strobe"
+		12: "Slow Flicker"
+		13: "Fast Flicker"
+		5: "Slow Fade Away"
+		6: "Fast Fade Away"
+		7: "Slow Become Solid"
+		8: "Fast Become Solid"
+		14: "Constant Glow"
+		15: "Distort"
+		16: "Hologram (Distort + fade)"
+		17: "Dead Player (DONT USE!)"
+		18: "Explode (Garg Like)"
+		19: "Glow Shell"
+		20: "ClampMinScale (Sprites)"
+	]
+]
+
+@BaseClass base(RenderFxChoices) = RenderFields
+[
+	rendermode(choices) : "Render Mode" : 0 =
+	[
+		0: "Normal"
+		1: "Color"
+		2: "Texture"
+		3: "Glow"
+		4: "Solid"
+		5: "Additive"
+	]
+	renderamt(integer) : "FX Amount (1 - 255)"
+	rendercolor(color255) : "FX Color (R G B)" : "0 0 0"
+]
+
+@BaseClass base(TargetName, RenderFields) = BaseCharger : "Base Charger"
+[
+	CustomJuice(integer) : "Custom Juice Amount" : 0
+	CustomRechargeTime(integer) : "Custom Recharge Time" : 0
+
+	TriggerOnEmpty(target_destination) : "Trigger On Empty"
+
+	CustomDeniedSound(sound) : "Custom Denied Sound"
+	CustomStartSound(sound) : "Custom Start Sound"
+	CustomLoopSound(sound) : "Custom Loop Sound"
+]
+
+@BaseClass base(RenderFields) size(-8 -8 0, 8 8 16) color(4 128 240) = Ammo
+[
+	targetname(target_source) : "Name"
+	
+	// Pplayer is the !activator.
+	target(target_destination) : "Target"
+	
+	delay(string) : "Delay Before Trigger" : "0"
+	
+	angles(string) : "Pitch Yaw Roll (X Y Z)" : "0 0 0"
+	
+	// For custom World models.
+	model(studio) : "Custom Model" : ""
+	
+	spawnflags(Flags) =
+	[
+		// if set both flags you'll need to trigger the entity first before players can pick up that item.
+		128 : "TOUCH Only" : 0
+		// Must press E to pick up.
+		256 : "USE Only" : 0
+	]
+	
+	movetype(choices) : "Gravity Setting" : 0 =
+	[
+		0: "Fall to the ground (default)"
+		
+		// Ditto ^
+		5: "Hover in the air"
+	]
+]
+
+@PointClass base(Ammo) = weaponbox_individual : "weaponbox" 
+[
+	// Note that keyvalues do not defines the clips.
+	// They defines the bullets. so if you set uranium -> 1
+	// you will literally receive 1 of uranium, not a clip with 20
+	// This item is not made for remap ripent.
+	// this is for mapper's choice of giving items individually.
+	// you could remap them but make sure to balance the given bullets.
+	9mm : "9mm"
+	ARgrenades : "M16's M203 grenades"
+    357 : "357"
+	556 : "5.56mm M16/m249"
+	m40a1 : "7.62mm sniper rifle"
+	buckshot : "Shotgun shell"
+	bolts : "Crossbow bolts"
+	uranium : "Uranium"
+	rockets : "Rockets"
+	snarks : "snark"
+	sporeclip : "sporeclip"
+	TM : "Trip Mine"
+	HG : "Hand Grenade"
+	satchel : "Satchel Charge"
+	model(studio) : "Custom Model" : "models/w_weaponbox.mdl"
+]
+
+@PointClass base(Ammo) studio("models/w_357ammobox.mdl") = ammo_357_individual : "357 / desert eagle round box" []
+@PointClass base(Ammo) studio("models/w_saw_clip.mdl") = ammo_556_individual : "5.56mm round box" []
+@PointClass base(Ammo) studio("models/w_9mmARclip.mdl") = ammo_556clip_individual : "5.56mm M16 rifle magazine" []
+@PointClass base(Ammo) studio("models/w_m40a1clip.mdl") = ammo_762_individual : "7.62mm sniper rifle magazine" []
+@PointClass base(Ammo) studio("models/w_mp5_clip.mdl") = ammo_9mmAR_individual : "9mm assault rifle magazine" []
+@PointClass base(Ammo) studio("models/w_chainammo.mdl") = ammo_9mmbox_individual : "9mm round box (big)" []
+@PointClass base(Ammo) studio("models/w_9mmclip.mdl") = ammo_9mmclip_individual : "9mm pistol magazine" []
+@PointClass base(Ammo) studio("models/w_argrenade.mdl") = ammo_ARgrenades_individual : "M16's M203 grenades (x2)" []
+@PointClass base(Ammo) studio("models/w_shotbox.mdl") = ammo_buckshot_individual : "Shotgun shell box" []
+@PointClass base(Ammo) studio("models/w_crossbow_clip.mdl") = ammo_crossbow_individual : "Crossbow bolt magazine" []
+@PointClass base(Ammo) studio("models/w_gaussammo.mdl") = ammo_gaussclip_individual : "Gauss/Gluon gun battery" []
+@PointClass base(Ammo) studio("models/w_rpgammo.mdl") = ammo_rpgclip_individual : "Rockets (x2)" []
+@PointClass base(Ammo) studio("models/spore.mdl") = ammo_sporeclip_individual : "Spore" []
+@PointClass base(Ammo) studio("models/w_uzi_clip.mdl") = ammo_uziclip_individual : "9mm Uzi magazine" []
+@PointClass base(Ammo) studio("models/w_sqknest.mdl") = ammo_snarks_individual : "Squeak Grenade" []
+@PointClass base(Ammo) studio("models/w_grenade.mdl") = ammo_handgrenade_individual : "Hand Grenade" []
+@PointClass base(Ammo) studio("models/w_medkit.mdl") = ammo_medkit_individual : "Health kit AMMO" []
+@PointClass base(Ammo) studio("models/w_medkit.mdl") = item_healthkit_individual : "Health kit" []
+@PointClass base(Ammo) studio("models/w_battery.mdl") = item_battery_individual : "HEV battery" []
+@PointClass base(Ammo) studio("models/w_satchel.mdl") = ammo_satchel_individual : "Satchel Charge" []
