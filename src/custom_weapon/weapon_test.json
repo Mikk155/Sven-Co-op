@@ -1,0 +1,9 @@
+{
+    "classname": "weapon_test",
+
+    "txt sprites": "",
+
+    "ammo": "ammo_test",
+
+	"$schema": "schema.json"
+}

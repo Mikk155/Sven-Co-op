@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties":
+    {
+        "$schema":
+        {
+            "type": "string"
+        },
+        "classname":
+        {
+            "type": "string",
+            "description": "Weapon entity classname"
+        },
+        "txt sprites":
+        {
+            "type": "string",
+            "description": "Folder to weapon's txt"
+        },
+        "ammo":
+        {
+            "type": "string",
+            "description": "Ammo entity"
+        }
+    },
+    "required":
+    [
+        "$schema",
+        "classname"
+    ],
+    "additionalProperties": false
+}
