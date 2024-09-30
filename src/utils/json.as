@@ -59,9 +59,9 @@ class JsonValue
     int opConv() const { return atoi(value); }
     float opConv() const { return atof(value); }
     bool opConv() const { return ( value == 'true' || atoi( value ) == 1 ); }
-    RGBA opConv() const{ return ( arrayvalue.length() == 4 ? RGBA( atoi(arrayvalue[0]), atoi(arrayvalue[1]), atoi(arrayvalue[2]), atoi(arrayvalue[3]) ) : RGBA_WHITE ); }
-    Vector opConv() const{ return ( arrayvalue.length() == 3 ? Vector( atof(arrayvalue[0]), atof(arrayvalue[1]), atof(arrayvalue[2]) ) : g_vecZero ); }
-    Vector2D opConv() const{ return ( arrayvalue.length() == 2 ? Vector2D( atof(arrayvalue[0]), atof(arrayvalue[1]) ) : g_vecZero.Make2D() ); }
+    RGBA opConv() const{ return RGBA( arrayvalue.length() > 0 ? atoi(arrayvalue[0]) : 0, arrayvalue.length() > 1 ? atoi(arrayvalue[1]) : 0, arrayvalue.length() > 2 ? atoi(arrayvalue[2]) : 0, arrayvalue.length() > 3 ? atoi(arrayvalue[3]) : 0 ); }
+    Vector opConv() const{ return Vector( arrayvalue.length() > 0 ? atof(arrayvalue[0]) : 0, arrayvalue.length() > 1 ? atof(arrayvalue[1]) : 0, arrayvalue.length() > 2 ? atof(arrayvalue[2]) : 0 ); }
+    Vector2D opConv() const{ return Vector( this ).Make2D(); }
     array<string> opConv() const { return arrayvalue; }
     json opConv() const { json pJson; pJson.data = dictionaryvalue; return pJson; }
 }
