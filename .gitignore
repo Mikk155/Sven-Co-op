@@ -23,3 +23,8 @@ wip/*
 *.wad
 default_plugins.txt
 steam_autocloud.vdf
+
+wip/*
+src/counterstrike/*
+.github/workflows/counterstrike.yml
+src/ScriptBaseClass/CGrenade.as
