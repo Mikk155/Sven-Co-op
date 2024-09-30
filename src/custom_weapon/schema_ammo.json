@@ -10,17 +10,7 @@
         "classname":
         {
             "type": "string",
-            "description": "Weapon entity classname"
-        },
-        "txt sprites":
-        {
-            "type": "string",
-            "description": "Folder to weapon's txt"
-        },
-        "ammo":
-        {
-            "type": "string",
-            "description": "Ammo entity"
+            "description": "Ammo entity classname"
         }
     },
     "required":

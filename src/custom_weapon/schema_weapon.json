@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties":
+    {
+        "$schema":
+        {
+            "type": "string"
+        },
+        "classname":
+        {
+            "type": "string",
+            "description": "Weapon entity classname"
+        },
+        "txt sprites":
+        {
+            "type": "string",
+            "description": "Folder to weapon's txt"
+        },
+        "Primary Attack":
+        {
+            "type": "object",
+            "properties":
+            {
+                "ammo":
+                {
+                    "type": "string",
+                    "description": "Ammo entity classname"
+                }
+            },
+            "additionalProperties": false,
+            "description": "Primary Attack"
+        },
+        "Secondary Attack":
+        {
+            "type": "object",
+            "properties":
+            {
+            },
+            "additionalProperties": false,
+            "description": "Secondary Attack"
+        }
+    },
+    "required":
+    [
+        "$schema",
+        "classname"
+    ],
+    "additionalProperties": false
+}

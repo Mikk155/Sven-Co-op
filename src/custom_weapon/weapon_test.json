@@ -3,7 +3,14 @@
 
     "txt sprites": "",
 
-    "ammo": "ammo_test",
+    "Primary Attack":
+    {
+        "ammo": "ammo_test"
+    },
 
-	"$schema": "schema.json"
+    "Secondary Attack":
+    {
+    },
+
+	"$schema": "schema_weapon.json"
 }
