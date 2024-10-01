@@ -5,12 +5,21 @@
 
     "Primary Attack":
     {
-        "ammo": "ammo_test"
+        "ammo":
+        {
+            "classname": "ammo_test"
+        }
     },
 
     "Secondary Attack":
     {
     },
+
+    "animations":
+    [
+        "draw",
+        "shoot"
+    ],
 
 	"$schema": "schema_weapon.json"
 }
