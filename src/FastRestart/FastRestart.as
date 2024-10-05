@@ -90,7 +90,7 @@ void Think()
 
         try
         {
-            g_EntityFuncs.CreateEntity( 'player_loadsaved', { { 'targetname', 'a' }, { 'loadtime', '1.5' } }, true ).Use( null, null, USE_ON, 0.0f );
+            g_EntityFuncs.CreateEntity( 'player_loadsaved', { { 'targetname', 'a' }, { 'loadtime', pJson[ 'ReloadTime', 1.5 ] } }, true ).Use( null, null, USE_ON, 0.0f );
         }
         catch
         {
