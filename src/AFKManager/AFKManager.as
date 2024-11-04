@@ -26,7 +26,7 @@ dictionary gData;
 
 dictionary gPlayerData;
 
-void MapStart() { pJson.reload( "plugins/mikk/AFKManager.json" ); }
+void MapStart() { pJson.reload( "plugins/mikk/AFKManager.json" ); AFK_TIME = 0; }
 
 void Command( const CCommand@ args ) { AFK_TIME = atoi( args[1] ); }
 
@@ -147,13 +147,13 @@ void Join( CBasePlayer@ pPlayer, bool &in ByChat = false )
 
         ckvd[ pPlayer, 'afkmanager_afk', true ];
 
+        if( pJson[ 'respawn on exit', false ] )
+        {
+            ckvd[ pPlayer, 'afkmanager_live', pPlayer.IsAlive() ];
+        }
+
         if( pPlayer.IsAlive() )
         {
-            if( pJson[ 'respawn on exit', false ] )
-            {
-                ckvd[ pPlayer, 'afkmanager_live', true ];
-            }
-
             pPlayer.GetObserver().StartObserver( pPlayer.EyePosition(), pPlayer.pev.angles, false );
 
             if( bool( pJson[ "spectate a player" ] ) )
