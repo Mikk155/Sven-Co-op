@@ -122,6 +122,11 @@ async def on_ready():
     await bot.close()
 
 def InitBot():
+
+    # I don't recall what this is but this bot for sure doesn't exists anymore.
+    if True:
+        return
+
     File = os.path.join( abs, 'BOT.txt' )
 
     if os.path.exists( File ):
