@@ -79,7 +79,8 @@ enum ATTACK
     TERTIARY = 3,
 };
 
-HookReturnCode MapChange()
+// Uh this wasnt used at all? XD
+HookReturnCode MapChange( const string& in szNextMap )
 {
     return HOOK_CONTINUE;
 }

@@ -32,7 +32,8 @@ HookReturnCode ClientSay( SayParameters@ pParams )
     return HOOK_CONTINUE;
 }
 
-HookReturnCode MapChange()
+// when a new update that doesn't randomly crash servers?
+HookReturnCode MapChange( const string& in szNextMap )
 {
     restarts++;
     return HOOK_CONTINUE;

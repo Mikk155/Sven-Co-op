@@ -72,7 +72,8 @@ enum ReflectionHook
     HOOK_HANDLED = 1
 };
 
-HookReturnCode OnMapChange()
+// Man how many cool stuff i did think of, None will ever be completed
+HookReturnCode OnMapChange( const string& in szNextMap )
 {
     return HOOK_CONTINUE;
 }

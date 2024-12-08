@@ -25,7 +25,7 @@ namespace Hooks
 
     bool m_bMapChangekHook = false;
 
-    HookReturnCode MapChange()
+    HookReturnCode MapChange( const string& in szNextMap )
     {
         Hooks::Game::SurvivalEndRoundHook::g_SurvivalEndRound.SurvivalEndRoundEnded = false;
         return HOOK_CONTINUE;

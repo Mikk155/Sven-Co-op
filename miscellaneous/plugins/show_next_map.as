@@ -37,7 +37,8 @@ HookReturnCode KeyValue( CBaseEntity@ pEntity, const string& in pszKey, const st
     return HOOK_CONTINUE;
 }
 
-HookReturnCode MapChange()
+// Funny how many stupid things i wrote
+HookReturnCode MapChange( const string& in szNextMap )
 {
     a_sMaps.resize(0);
     return HOOK_CONTINUE;

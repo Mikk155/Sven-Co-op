@@ -48,7 +48,8 @@ class CAFKManagerData
     }
 }
 
-HookReturnCode MapChange()
+// Fuck you Sniper. -With love, Mikk
+HookReturnCode MapChange( const string& in szNextMap )
 {
     gPlayerData.deleteAll();
 

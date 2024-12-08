@@ -43,7 +43,8 @@ HookReturnCode ClientSay( SayParameters@ pParams )
     return HOOK_CONTINUE;
 }
 
-HookReturnCode MapChange()
+// What are you looking at, pavobestia?
+HookReturnCode MapChange( const string& in szNextMap )
 {
     restarts++;
     return HOOK_CONTINUE;
