@@ -1,0 +1,3 @@
+[submodule "scripts/utils"]
+	path = scripts/utils
+	url = https://github.com/Mikk155/Python-Utilities

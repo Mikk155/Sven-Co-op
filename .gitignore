@@ -15,7 +15,7 @@ BOT.md
 gfx/*
 events/*
 maps/*
-scripts/*
+build/*
 models/*
 sound/*
 sprites/*
