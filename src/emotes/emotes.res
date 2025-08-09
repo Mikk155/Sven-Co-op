@@ -1,6 +1,0 @@
-"path" "scripts/plugins/mikk/"
-"emotes/emotes.as"
-"emotes/emotes.json"
-"utils/fft.as"
-"utils/json.as"
-"utils/Language.as"

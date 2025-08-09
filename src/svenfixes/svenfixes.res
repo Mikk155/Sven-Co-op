@@ -1,8 +1,0 @@
-"path" "scripts/plugins/mikk/"
-"svenfixes/svenfixes.as"
-"svenfixes/svenfixes.json"
-"utils/fft.as"
-"utils/json.as"
-"utils/GameFuncs.as"
-"utils/EntityFuncs.as"
-"utils/CustomKeyValues.as"

@@ -1,5 +1,0 @@
-"path" "scripts/plugins/mikk/"
-"NPCMoveTo/NPCMoveTo.as"
-"NPCMoveTo/NPCMoveTo.json"
-"utils/json.as"
-"utils/UserMessages.as"
