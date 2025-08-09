@@ -93,14 +93,14 @@ del PathPackage;
 PathSvenCoop: str = Path.enter( "steamapps", "common", "Sven Co-op", CurrentDir= Path.GetSteamInstallation() );
 PathSources: str = Path.enter( "src" );
 
+from enum import IntEnum
+
 class ASSET( IntEnum ):
     ABS_SOURCE = 0;
     ABS_SVEN = 1;
     RELATIVE = 2;
 
 RelativeAssetsPath: list[tuple[ASSET]] = [];
-
-from enum import IntEnum
 
 for Root, _, Files in os.walk( PathFile ):
 #
