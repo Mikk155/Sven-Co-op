@@ -1,0 +1,5 @@
+{
+    "$schema": "../../schemas/assets.json",
+
+    "type": "plugin"
+}

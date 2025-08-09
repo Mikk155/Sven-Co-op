@@ -12,6 +12,7 @@ BOT.txt
 BOT.md
 
 # Sven Co-op
+scripts/tasks/*
 gfx/*
 events/*
 maps/*

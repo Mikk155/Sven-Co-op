@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties":
+    {
+        "$schema":
+        {
+            "type": "string"
+        },
+        "type":
+        {
+            "type": "string",
+            "enum":
+            [
+                "plugin",
+                "map_script",
+                "metamod"
+            ],
+            "description": "Type of source"
+        },
+        "assets":
+        {
+            "type": "array",
+            "description": "List of additional assets"
+        }
+    },
+    "additionalProperties": false,
+    "required":
+    [
+        "type"
+    ]
+}

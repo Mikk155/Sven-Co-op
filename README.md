@@ -2,6 +2,10 @@
 
 ---
 
+## Scripts
+
+This repository uses helper Python scripts. this is only for developing purposes. to use them install Python 3 or newer and run [setup.py](scripts/setup.py) to configure these scripts.
+
 # Visual Studio Code recomended extensions
 | Name | Download | Description |
 |---|---|---|
