@@ -1,300 +1,346 @@
 {
-	"namespace datashared":
-	{
-		"prefix": [ "import", "#include", "datashared" ],
-		"body": "#include \"${1:../../}mikk/datashared\"",
-		"description": "(datashared.as) Allow plugins and map script to comunicate by the use of a custom entity that has a public dictionary member in it"
-	},
-	"CSharedDataPlugins@ GetDataClass()":
-	{
-		"prefix": [ "datashared", "datashared::GetDataClass", "GetDataClass", "shared" ],
-		"body": "datashared::GetDataClass()",
-		"description": "(datashared.as) Returns the present instance of CSharedDataPlugins@, If not exist a new one will be created"
-	},
-	"dictionary GetData( const string szPlugin = String::EMPTY_STRING )":
-	{
-		"prefix": [ "datashared", "datashared::GetData", "GetData", "shared" ],
-		"body": "datashared::GetData( ${1:const string szPlugin = String::EMPTY_STRING} )",
-		"description": "(datashared.as) Returns the dictionary of the given szPlugin name\nIf no szPlugin is provided, will use the name of the plugin file"
-	},
-	"dictionary SetData( dictionary pNewData, const string szPlugin = String::EMPTY_STRING )":
-	{
-		"prefix": [ "datashared", "datashared::SetData", "SetData", "shared" ],
-		"body": "datashared::SetData( ${1:dictionary pNewData}, ${2:const string szPlugin = String::EMPTY_STRING} )",
-		"description": "(datashared.as) Updates the data of the given szPlugin\nReturns a copy of the dictionary after it's been saved\nIf no szPlugin is given, will use the name of the plugin file"
-	},
-	"bool CSharedDataPlugins.KeyValue( const string& in szKey, const string& in szValue )":
-	{
-		"prefix": [ "datashared", "datashared::KeyValue", "KeyValue", "shared" ],
-		"body": "KeyValue( const string& in szKey, const string& in szValue )",
-		"description": "(datashared.as) Updates the data of the given key with the given value, this is a simple string data, use SetData outside of mapping"
-	},
+    "namespace datashared":
+    {
+        "scope": "as",
+        "prefix": [ "import", "#include", "datashared" ],
+        "body": "#include \"${1:../../}mikk/datashared\"",
+        "description": "(datashared.as) Allow plugins and map script to comunicate by the use of a custom entity that has a public dictionary member in it"
+    },
+    "CSharedDataPlugins@ GetDataClass()":
+    {
+        "scope": "as",
+        "prefix": [ "datashared", "datashared::GetDataClass", "GetDataClass", "shared" ],
+        "body": "datashared::GetDataClass()",
+        "description": "(datashared.as) Returns the present instance of CSharedDataPlugins@, If not exist a new one will be created"
+    },
+    "dictionary GetData( const string szPlugin = String::EMPTY_STRING )":
+    {
+        "scope": "as",
+        "prefix": [ "datashared", "datashared::GetData", "GetData", "shared" ],
+        "body": "datashared::GetData( ${1:const string szPlugin = String::EMPTY_STRING} )",
+        "description": "(datashared.as) Returns the dictionary of the given szPlugin name\nIf no szPlugin is provided, will use the name of the plugin file"
+    },
+    "dictionary SetData( dictionary pNewData, const string szPlugin = String::EMPTY_STRING )":
+    {
+        "scope": "as",
+        "prefix": [ "datashared", "datashared::SetData", "SetData", "shared" ],
+        "body": "datashared::SetData( ${1:dictionary pNewData}, ${2:const string szPlugin = String::EMPTY_STRING} )",
+        "description": "(datashared.as) Updates the data of the given szPlugin\nReturns a copy of the dictionary after it's been saved\nIf no szPlugin is given, will use the name of the plugin file"
+    },
+    "bool CSharedDataPlugins.KeyValue( const string& in szKey, const string& in szValue )":
+    {
+        "scope": "as",
+        "prefix": [ "datashared", "datashared::KeyValue", "KeyValue", "shared" ],
+        "body": "KeyValue( const string& in szKey, const string& in szValue )",
+        "description": "(datashared.as) Updates the data of the given key with the given value, this is a simple string data, use SetData outside of mapping"
+    },
 
 
 
-	"namespace EntityFuncs":
-	{
-		"prefix": [ "import", "#include", "EntityFuncs" ],
-		"body": "#include \"${1:../../}mikk/EntityFuncs\"",
-		"description": "(EntityFuncs.as) Entities related utilities"
-	},
-	"CBaseEntity@ CreateEntity( dictionary pkvd, bool blSpawnNow = true )":
-	{
-		"prefix": [ "EntityFuncs", "EntityFuncs::CreateEntity", "CreateEntity" ],
-		"body": "EntityFuncs::CreateEntity( ${1:dictionary pkvd}, ${2:bool blSpawnNow = true} )",
-		"description": "(EntityFuncs.as) Creates and returns a entity with the given keyvalues on pkvd"
-	},
-	"CBaseEntity@ CreateEntity( string szClassname, dictionary pkvd, bool blSpawnNow = true )":
-	{
-		"prefix": [ "EntityFuncs", "EntityFuncs::CreateEntity", "CreateEntity" ],
-		"body": "EntityFuncs::CreateEntity( ${1:string szClassname} ${2:dictionary pkvd}, ${3:bool blSpawnNow = true} )",
-		"description": "(EntityFuncs.as) Creates and returns a entity with the given keyvalues on pkvd"
-	},
-	"void PrecacheCustom( dictionary pkvd )":
-	{
-		"prefix": [ "EntityFuncs", "EntityFuncs::PrecacheCustom" ],
-		"body": "EntityFuncs::PrecacheCustom( ${1:dictionary pkvd} )",
-		"description": "(EntityFuncs.as) Precaches a entity with the given key value data in pkvd"
-	},
-	"void PrecacheCustom( string m_szClassname, dictionary pkvd )":
-	{
-		"prefix": [ "EntityFuncs", "EntityFuncs::PrecacheCustom" ],
-		"body": "EntityFuncs::PrecacheCustom( ${1:string m_szClassname}, ${2:dictionary pkvd} )",
-		"description": "(EntityFuncs.as) Precaches a entity with the given key value data in pkvd"
-	},
-	"array<int> LoadEntFile( const string &in m_szPath )":
-	{
-		"prefix": [ "EntityFuncs", "EntityFuncs::LoadEntFile", "LoadEntFile" ],
-		"body": "EntityFuncs::LoadEntFile( ${1:const string &in m_szPath} )",
-		"description": "(EntityFuncs.as) Opens a file with ripent format and creates these entities in game.\nReturns an array of integer representing the entindex of these entities."
-	},
+    "namespace EntityFuncs":
+    {
+        "scope": "as",
+        "prefix": [ "import", "#include", "EntityFuncs" ],
+        "body": "#include \"${1:../../}mikk/EntityFuncs\"",
+        "description": "(EntityFuncs.as) Entities related utilities"
+    },
+    "CBaseEntity@ CreateEntity( dictionary pkvd, bool blSpawnNow = true )":
+    {
+        "scope": "as",
+        "prefix": [ "EntityFuncs", "EntityFuncs::CreateEntity", "CreateEntity" ],
+        "body": "EntityFuncs::CreateEntity( ${1:dictionary pkvd}, ${2:bool blSpawnNow = true} )",
+        "description": "(EntityFuncs.as) Creates and returns a entity with the given keyvalues on pkvd"
+    },
+    "CBaseEntity@ CreateEntity( string szClassname, dictionary pkvd, bool blSpawnNow = true )":
+    {
+        "scope": "as",
+        "prefix": [ "EntityFuncs", "EntityFuncs::CreateEntity", "CreateEntity" ],
+        "body": "EntityFuncs::CreateEntity( ${1:string szClassname} ${2:dictionary pkvd}, ${3:bool blSpawnNow = true} )",
+        "description": "(EntityFuncs.as) Creates and returns a entity with the given keyvalues on pkvd"
+    },
+    "void PrecacheCustom( dictionary pkvd )":
+    {
+        "scope": "as",
+        "prefix": [ "EntityFuncs", "EntityFuncs::PrecacheCustom" ],
+        "body": "EntityFuncs::PrecacheCustom( ${1:dictionary pkvd} )",
+        "description": "(EntityFuncs.as) Precaches a entity with the given key value data in pkvd"
+    },
+    "void PrecacheCustom( string m_szClassname, dictionary pkvd )":
+    {
+        "scope": "as",
+        "prefix": [ "EntityFuncs", "EntityFuncs::PrecacheCustom" ],
+        "body": "EntityFuncs::PrecacheCustom( ${1:string m_szClassname}, ${2:dictionary pkvd} )",
+        "description": "(EntityFuncs.as) Precaches a entity with the given key value data in pkvd"
+    },
+    "array<int> LoadEntFile( const string &in m_szPath )":
+    {
+        "scope": "as",
+        "prefix": [ "EntityFuncs", "EntityFuncs::LoadEntFile", "LoadEntFile" ],
+        "body": "EntityFuncs::LoadEntFile( ${1:const string &in m_szPath} )",
+        "description": "(EntityFuncs.as) Opens a file with ripent format and creates these entities in game.\nReturns an array of integer representing the entindex of these entities."
+    },
 
 
 
-	"namespace fft":
-	{
-		"prefix": [ "import", "#include", "fft" ],
-		"body": "#include \"${1:../../}mikk/fft\"",
-		"description": "(fft.as) Entities related to conversions"
-	},
-	"string to_string( RGBA From, bool AddColons = false, bool AddSpace = true )":
-	{
-		"prefix": [ "fft", "fft::to_string", "to_string", "RGBA" ],
-		"body": "fft::to_string( ${1:RGBA From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
-		"description": "(fft.as) Returns the given variable as a string."
-	},
-	"string to_string( bool From, bool MakeDigit = false )":
-	{
-		"prefix": [ "fft", "fft::to_string", "to_string", "bool" ],
-		"body": "fft::to_string( ${1:bool From}, ${2:bool MakeDigit = false} )",
-		"description": "(fft.as) Returns the given variable as a string."
-	},
-	"string to_string( Vector From, bool AddColons = false, bool AddSpace = true )":
-	{
-		"prefix": [ "fft", "fft::to_string", "to_string", "Vector" ],
-		"body": "fft::to_string( ${1:Vector From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
-		"description": "(fft.as) Returns the given variable as a string."
-	},
-	"string to_string( Vector2D From, bool AddColons = false, bool AddSpace = true )":
-	{
-		"prefix": [ "fft", "fft::to_string", "to_string", "Vector2D" ],
-		"body": "fft::to_string( ${1:Vector2D From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
-		"description": "(fft.as) Returns the given variable as a string."
-	},
-	"RGBA HueToRGBA( float H )":
-	{
-		"prefix": [ "fft", "fft::HueToRGBA", "HueToRGBA", "Hue", "RGBA" ],
-		"body": "fft::HueToRGBA( ${1:float H} )",
-		"description": "(fft.as) Returns the given variable as a RGBA."
-	},
-	"float RGBAToHue( RGBA rgb ){ return ToHue( Vector( rgb.r, rgb.g, rgb.b ) ); }":
-	{
-		"prefix": [ "fft", "fft::RGBAToHue", "RGBAToHue", "Hue", "RGBA" ],
-		"body": "fft::RGBAToHue( ${1:RGBA rgb} )",
-		"description": "(fft.as) Returns the given variable as a float."
-	},
-	"float ToHue( Vector rgb )":
-	{
-		"prefix": [ "fft", "fft::RGBAToHue", "RGBAToHue", "Hue", "RGBA", "ToHue", "fft::ToHue" ],
-		"body": "fft::ToHue( ${1:Vector rgb} )",
-		"description": "(fft.as) Returns the given variable as a float."
-	},
-	"RGBA atorgba( const string From )":
-	{
-		"prefix": [ "fft", "fft::atorgba", "atorgba" ],
-		"body": "atorgba( ${1:const string From} )",
-		"description": "(fft.as) Returns the given variable as a RGBA."
-	},
-	"Vector atov( const string From )":
-	{
-		"prefix": [ "fft", "fft::atov", "atov" ],
-		"body": "atov( ${1:const string From} )",
-		"description": "(fft.as) Returns the given variable as a Vector."
-	},
-	"bool atob( string From )":
-	{
-		"prefix": [ "fft", "fft::atob", "atob" ],
-		"body": "atob( ${1:const string From} )",
-		"description": "(fft.as) Returns the given variable as a boolean."
-	},
+    "namespace fft":
+    {
+        "scope": "as",
+        "prefix": [ "import", "#include", "fft" ],
+        "body": "#include \"${1:../../}mikk/fft\"",
+        "description": "(fft.as) Entities related to conversions"
+    },
+    "string to_string( RGBA From, bool AddColons = false, bool AddSpace = true )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::to_string", "to_string", "RGBA" ],
+        "body": "fft::to_string( ${1:RGBA From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
+        "description": "(fft.as) Returns the given variable as a string."
+    },
+    "string to_string( bool From, bool MakeDigit = false )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::to_string", "to_string", "bool" ],
+        "body": "fft::to_string( ${1:bool From}, ${2:bool MakeDigit = false} )",
+        "description": "(fft.as) Returns the given variable as a string."
+    },
+    "string to_string( Vector From, bool AddColons = false, bool AddSpace = true )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::to_string", "to_string", "Vector" ],
+        "body": "fft::to_string( ${1:Vector From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
+        "description": "(fft.as) Returns the given variable as a string."
+    },
+    "string to_string( Vector2D From, bool AddColons = false, bool AddSpace = true )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::to_string", "to_string", "Vector2D" ],
+        "body": "fft::to_string( ${1:Vector2D From}, ${2:bool AddColons = false}, ${3:bool AddSpace = true} )",
+        "description": "(fft.as) Returns the given variable as a string."
+    },
+    "RGBA HueToRGBA( float H )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::HueToRGBA", "HueToRGBA", "Hue", "RGBA" ],
+        "body": "fft::HueToRGBA( ${1:float H} )",
+        "description": "(fft.as) Returns the given variable as a RGBA."
+    },
+    "float RGBAToHue( RGBA rgb ){ return ToHue( Vector( rgb.r, rgb.g, rgb.b ) ); }":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::RGBAToHue", "RGBAToHue", "Hue", "RGBA" ],
+        "body": "fft::RGBAToHue( ${1:RGBA rgb} )",
+        "description": "(fft.as) Returns the given variable as a float."
+    },
+    "float ToHue( Vector rgb )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::RGBAToHue", "RGBAToHue", "Hue", "RGBA", "ToHue", "fft::ToHue" ],
+        "body": "fft::ToHue( ${1:Vector rgb} )",
+        "description": "(fft.as) Returns the given variable as a float."
+    },
+    "RGBA atorgba( const string From )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::atorgba", "atorgba" ],
+        "body": "atorgba( ${1:const string From} )",
+        "description": "(fft.as) Returns the given variable as a RGBA."
+    },
+    "Vector atov( const string From )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::atov", "atov" ],
+        "body": "atov( ${1:const string From} )",
+        "description": "(fft.as) Returns the given variable as a Vector."
+    },
+    "bool atob( string From )":
+    {
+        "scope": "as",
+        "prefix": [ "fft", "fft::atob", "atob" ],
+        "body": "atob( ${1:const string From} )",
+        "description": "(fft.as) Returns the given variable as a boolean."
+    },
 
 
 
-	"namespace GameFuncs":
-	{
-		"prefix": [ "import", "#include", "GameFuncs" ],
-		"body": "#include \"${1:../../}mikk/GameFuncs\"",
-		"description": "(GameFuncs.as) General utilities"
-	},
-	"bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )":
-	{
-		"prefix": [ "GameFuncs", "GameFuncs::IsPluginInstalled", "IsPluginInstalled", "plugin" ],
-		"body": "GameFuncs::IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false} )",
-		"description": "(GameFuncs.as) Returns whatever the given plugin is installed"
-	},
-	"void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )":
-	{
-		"prefix": [ "GameFuncs", "GameFuncs::UpdateTimer", "schedule" ],
-		"body": "GameFuncs::UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0} )",
-		"description": "(GameFuncs.as) Removes and updates a timer"
-	},
+    "namespace GameFuncs":
+    {
+        "scope": "as",
+        "prefix": [ "import", "#include", "GameFuncs" ],
+        "body": "#include \"${1:../../}mikk/GameFuncs\"",
+        "description": "(GameFuncs.as) General utilities"
+    },
+    "bool IsPluginInstalled( string m_iszPluginName, bool bCaseSensitive = false )":
+    {
+        "scope": "as",
+        "prefix": [ "GameFuncs", "GameFuncs::IsPluginInstalled", "IsPluginInstalled", "plugin" ],
+        "body": "GameFuncs::IsPluginInstalled( ${1:string m_iszPluginName}, ${2:bool bCaseSensitive = false} )",
+        "description": "(GameFuncs.as) Returns whatever the given plugin is installed"
+    },
+    "void UpdateTimer( CScheduledFunction@ &out pTimer, string &in szFunction, float flTime, int iRepeat = 0 )":
+    {
+        "scope": "as",
+        "prefix": [ "GameFuncs", "GameFuncs::UpdateTimer", "schedule" ],
+        "body": "GameFuncs::UpdateTimer( ${1:CScheduledFunction@ &out pTimer}, ${2:string &in szFunction}, ${3:float flTime}, ${4:int iRepeat = 0} )",
+        "description": "(GameFuncs.as) Removes and updates a timer"
+    },
 
 
 
-	"namespace PlayerFuncs":
-	{
-		"prefix": [ "import", "#include", "PlayerFuncs" ],
-		"body": "#include \"${1:../../}mikk/PlayerFuncs\"",
-		"description": "(PlayerFuncs.as) Player related utilities"
-	},
-	"float bottomcolor( CBasePlayer@ pPlayer )":
-	{
-		"prefix": [ "PlayerFuncs", "PlayerFuncs::bottomcolor", "bottomcolor", "colormap" ],
-		"body": "PlayerFuncs::bottomcolor( ${1:CBasePlayer@ pPlayer} )",
-		"description": "(PlayerFuncs.as) Splits and return the player's bottom color"
-	},
-	"float topcolor( CBasePlayer@ pPlayer )":
-	{
-		"prefix": [ "PlayerFuncs", "PlayerFuncs::topcolor", "topcolor", "colormap" ],
-		"body": "PlayerFuncs::topcolor( ${1:CBasePlayer@ pPlayer} )",
-		"description": "(PlayerFuncs.as) Splits and return the player's top color"
-	},
-	"CBasePlayer@ FindPlayerBySteamID( const string &in m_iszSteamID )":
-	{
-		"prefix": [ "PlayerFuncs", "PlayerFuncs::FindPlayerBySteamID", "FindPlayerBySteamID", "SteamID" ],
-		"body": "PlayerFuncs::FindPlayerBySteamID( ${1:const string &in m_iszSteamID} )",
-		"description": "(PlayerFuncs.as) Finds a player by SteamID"
-	},
-	"string GetSteamID( CBasePlayer@ pPlayer )":
-	{
-		"prefix": [ "PlayerFuncs", "PlayerFuncs::GetSteamID", "GetSteamID", "SteamID" ],
-		"body": "PlayerFuncs::GetSteamID( ${1:CBasePlayer@ pPlayer} )",
-		"description": "(PlayerFuncs.as) Get a player's SteamID"
-	},
-	"bool RespawnPlayer( CBasePlayer@ pPlayer )":
-	{
-		"prefix": [ "PlayerFuncs", "PlayerFuncs::RespawnPlayer", "RespawnPlayer" ],
-		"body": "PlayerFuncs::RespawnPlayer( ${1:CBasePlayer@ pPlayer} )",
-		"description": "(PlayerFuncs.as) Revive and re-spawn the given player"
-	},
+    "namespace PlayerFuncs":
+    {
+        "scope": "as",
+        "prefix": [ "import", "#include", "PlayerFuncs" ],
+        "body": "#include \"${1:../../}mikk/PlayerFuncs\"",
+        "description": "(PlayerFuncs.as) Player related utilities"
+    },
+    "float bottomcolor( CBasePlayer@ pPlayer )":
+    {
+        "scope": "as",
+        "prefix": [ "PlayerFuncs", "PlayerFuncs::bottomcolor", "bottomcolor", "colormap" ],
+        "body": "PlayerFuncs::bottomcolor( ${1:CBasePlayer@ pPlayer} )",
+        "description": "(PlayerFuncs.as) Splits and return the player's bottom color"
+    },
+    "float topcolor( CBasePlayer@ pPlayer )":
+    {
+        "scope": "as",
+        "prefix": [ "PlayerFuncs", "PlayerFuncs::topcolor", "topcolor", "colormap" ],
+        "body": "PlayerFuncs::topcolor( ${1:CBasePlayer@ pPlayer} )",
+        "description": "(PlayerFuncs.as) Splits and return the player's top color"
+    },
+    "CBasePlayer@ FindPlayerBySteamID( const string &in m_iszSteamID )":
+    {
+        "scope": "as",
+        "prefix": [ "PlayerFuncs", "PlayerFuncs::FindPlayerBySteamID", "FindPlayerBySteamID", "SteamID" ],
+        "body": "PlayerFuncs::FindPlayerBySteamID( ${1:const string &in m_iszSteamID} )",
+        "description": "(PlayerFuncs.as) Finds a player by SteamID"
+    },
+    "string GetSteamID( CBasePlayer@ pPlayer )":
+    {
+        "scope": "as",
+        "prefix": [ "PlayerFuncs", "PlayerFuncs::GetSteamID", "GetSteamID", "SteamID" ],
+        "body": "PlayerFuncs::GetSteamID( ${1:CBasePlayer@ pPlayer} )",
+        "description": "(PlayerFuncs.as) Get a player's SteamID"
+    },
+    "bool RespawnPlayer( CBasePlayer@ pPlayer )":
+    {
+        "scope": "as",
+        "prefix": [ "PlayerFuncs", "PlayerFuncs::RespawnPlayer", "RespawnPlayer" ],
+        "body": "PlayerFuncs::RespawnPlayer( ${1:CBasePlayer@ pPlayer} )",
+        "description": "(PlayerFuncs.as) Revive and re-spawn the given player"
+    },
 
 
 
-	"class Reflection":
-	{
-		"prefix": [ "import", "#include", "Reflection" ],
-		"body": "#include \"${1:../../}mikk/Reflection\"",
-		"description": "(Reflection.as) Reflection API utilities"
-	},
-	"int Reflection::Call( const string m_iszFunction )":
-	{
-		"prefix": [ "g_Reflection.Call", "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
-		"body": "g_Reflection.Call( ${1:const string m_iszFunction} )",
-		"description": "(Reflection.as) Calls all the functions that exists with this name and within a namespace, Returns the number of functions found."
-	},
-	"CScheduledFunction@ Reflection::SetTimeOut( string &in szFunction, float flTime )":
-	{
-		"prefix": [ "g_Reflection.SetTimeOut", "SetTimeOut" ],
-		"body": "g_Reflection.SetTimeOut( ${1:string &in szFunction}, ${2:float flTime} )",
-		"description": "(Reflection.as) Just g_Scheduler.SetTimeOut But now it obeys namespace \"test::Think\""
-	},
-	"Reflection::Function@ Reflection::opIndex( string m_iszFunction )":
-	{
-		"prefix": [ "g_Reflection[", "opIndex" ],
-		"body":
-		[
-			"if( g_Reflection[ ${1:string m_iszFunction} ] !is null ) {",
-			"\tg_Reflection[ ${1:string m_iszFunction} ].Call();\n}",
-		],
-		"description": "(Reflection.as) Just g_Scheduler.SetTimeOut But now it obeys namespace \"test::Think\""
-	},
+    "class Reflection":
+    {
+        "scope": "as",
+        "prefix": [ "import", "#include", "Reflection" ],
+        "body": "#include \"${1:../../}mikk/Reflection\"",
+        "description": "(Reflection.as) Reflection API utilities"
+    },
+    "int Reflection::Call( const string m_iszFunction )":
+    {
+        "scope": "as",
+        "prefix": [ "g_Reflection.Call", "g_Reflection.CallFunction", "CallFunction", "Reflection" ],
+        "body": "g_Reflection.Call( ${1:const string m_iszFunction} )",
+        "description": "(Reflection.as) Calls all the functions that exists with this name and within a namespace, Returns the number of functions found."
+    },
+    "CScheduledFunction@ Reflection::SetTimeOut( string &in szFunction, float flTime )":
+    {
+        "scope": "as",
+        "prefix": [ "g_Reflection.SetTimeOut", "SetTimeOut" ],
+        "body": "g_Reflection.SetTimeOut( ${1:string &in szFunction}, ${2:float flTime} )",
+        "description": "(Reflection.as) Just g_Scheduler.SetTimeOut But now it obeys namespace \"test::Think\""
+    },
+    "Reflection::Function@ Reflection::opIndex( string m_iszFunction )":
+    {
+        "scope": "as",
+        "prefix": [ "g_Reflection[", "opIndex" ],
+        "body":
+        [
+            "if( g_Reflection[ ${1:string m_iszFunction} ] !is null ) {",
+            "\tg_Reflection[ ${1:string m_iszFunction} ].Call();\n}",
+        ],
+        "description": "(Reflection.as) Just g_Scheduler.SetTimeOut But now it obeys namespace \"test::Think\""
+    },
 
 
 
-	"namespace UserMessages":
-	{
-		"prefix": [ "import", "#include", "UserMessages" ],
-		"body": "#include \"${1:../../}mikk/UserMessages\"",
-		"description": "(UserMessages.as) UserMessages utilities with some filters"
-	},
-	"enum UserMessages::TargetFilter::NONE":
-	{
-		"prefix": [ "UserMessages::TargetFilter", "TargetFilter", "NONE" ],
-		"body": "UserMessages::TargetFilter::NONE",
-		"description": "(UserMessages.as) _0_ No filter bit, has no effect"
-	},
-	"enum UserMessages::TargetFilter::DEAD":
-	{
-		"prefix": [ "UserMessages::TargetFilter", "TargetFilter", "DEAD" ],
-		"body": "UserMessages::TargetFilter::DEAD",
-		"description": "(UserMessages.as) _1_ Filter dead clients"
-	},
-	"enum UserMessages::TargetFilter::ALIVE":
-	{
-		"prefix": [ "UserMessages::TargetFilter", "TargetFilter", "ALIVE" ],
-		"body": "UserMessages::TargetFilter::ALIVE",
-		"description": "(UserMessages.as) _2_ Filter alive clients"
-	},
-	"enum UserMessages::TargetFilter::OBSERVER":
-	{
-		"prefix": [ "UserMessages::TargetFilter", "TargetFilter", "OBSERVER" ],
-		"body": "UserMessages::TargetFilter::OBSERVER",
-		"description": "(UserMessages.as) _4_ Filter observer clients"
-	},
-	"enum UserMessages::TargetFilter::ACTIVATOR":
-	{
-		"prefix": [ "UserMessages::TargetFilter", "TargetFilter", "ACTIVATOR" ],
-		"body": "UserMessages::TargetFilter::ACTIVATOR",
-		"description": "(UserMessages.as) _8_ Filter activator client"
-	},
-	"enum UserMessages::TargetFilter::CUSTOMKEYVALUE":
-	{
-		"prefix": [ "UserMessages::TargetFilter", "TargetFilter", "CUSTOMKEYVALUE" ],
-		"body": "UserMessages::TargetFilter::CUSTOMKEYVALUE",
-		"description": "(UserMessages.as) _16_ Filter clients with custom key value \"$i_UserMessageTargetFilter\" == 1"
-	},
-	"enum UserMessages::TargetFilter::ALL_EXCEPT_ACTIVATOR":
-	{
-		"prefix": [ "UserMessages::TargetFilter", "TargetFilter", "ALL_EXCEPT_ACTIVATOR" ],
-		"body": "UserMessages::TargetFilter::ALL_EXCEPT_ACTIVATOR",
-		"description": "(UserMessages.as) _32_ Filter all clients except activator client"
-	},
-	"array<int> UserMessages::ClientCommand( string m_iszCommand, TargetFilter m_ClientFilter = TargetFilter::NONE, CBasePlayer@ pActivator = null )":
-	{
-		"prefix": [ "UserMessages::ClientCommand", "ClientCommand" ],
-		"body": "UserMessages::ClientCommand( ${1:string m_iszCommand}, ${2:TargetFilter m_ClientFilter = TargetFilter::NONE}, ${3:CBasePlayer@ pActivator = null} )",
-		"description": "(UserMessages.as) Executes a command on the client console"
-	},
-	"array<int> UserMessages::PlayerSay( CBaseEntity@ pTarget, string m_szMessage, uint8 uiColor = 2, TargetFilter m_ClientFilter = TargetFilter::NONE, CBasePlayer@ pActivator = null )":
-	{
-		"prefix": [ "UserMessages::PlayerSay", "PlayerSay" ],
-		"body": "UserMessages::PlayerSay( ${1:CBaseEntity@ pTarget}, ${2:string m_szMessage}, ${3:uint8 uiColor = 2}, ${4:TargetFilter m_ClientFilter = TargetFilter::NONE}, ${5:CBasePlayer@ pActivator = null} )",
-		"description": "(UserMessages.as) Makes the pTarget say m_szMessage in chat"
-	},
-	"array<int> UserMessages::ServerName( string m_iszHostName = String::EMPTY_STRING, TargetFilter m_ClientFilter = TargetFilter::NONE, CBasePlayer@ pActivator = null )":
-	{
-		"prefix": [ "UserMessages::ServerName", "ServerName" ],
-		"body": "UserMessages::ServerName( ${1:string m_iszHostName = String::EMPTY_STRING}, ${2:TargetFilter m_ClientFilter = TargetFilter::NONE}, ${3:CBasePlayer@ pActivator = null} )",
-		"description": "(UserMessages.as) Update the server hostname, if empty string we'll use the server's \"hostname\""
-	}
+    "namespace UserMessages":
+    {
+        "scope": "as",
+        "prefix": [ "import", "#include", "UserMessages" ],
+        "body": "#include \"${1:../../}mikk/UserMessages\"",
+        "description": "(UserMessages.as) UserMessages utilities with some filters"
+    },
+    "enum UserMessages::TargetFilter::NONE":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::TargetFilter", "TargetFilter", "NONE" ],
+        "body": "UserMessages::TargetFilter::NONE",
+        "description": "(UserMessages.as) _0_ No filter bit, has no effect"
+    },
+    "enum UserMessages::TargetFilter::DEAD":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::TargetFilter", "TargetFilter", "DEAD" ],
+        "body": "UserMessages::TargetFilter::DEAD",
+        "description": "(UserMessages.as) _1_ Filter dead clients"
+    },
+    "enum UserMessages::TargetFilter::ALIVE":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::TargetFilter", "TargetFilter", "ALIVE" ],
+        "body": "UserMessages::TargetFilter::ALIVE",
+        "description": "(UserMessages.as) _2_ Filter alive clients"
+    },
+    "enum UserMessages::TargetFilter::OBSERVER":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::TargetFilter", "TargetFilter", "OBSERVER" ],
+        "body": "UserMessages::TargetFilter::OBSERVER",
+        "description": "(UserMessages.as) _4_ Filter observer clients"
+    },
+    "enum UserMessages::TargetFilter::ACTIVATOR":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::TargetFilter", "TargetFilter", "ACTIVATOR" ],
+        "body": "UserMessages::TargetFilter::ACTIVATOR",
+        "description": "(UserMessages.as) _8_ Filter activator client"
+    },
+    "enum UserMessages::TargetFilter::CUSTOMKEYVALUE":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::TargetFilter", "TargetFilter", "CUSTOMKEYVALUE" ],
+        "body": "UserMessages::TargetFilter::CUSTOMKEYVALUE",
+        "description": "(UserMessages.as) _16_ Filter clients with custom key value \"$i_UserMessageTargetFilter\" == 1"
+    },
+    "enum UserMessages::TargetFilter::ALL_EXCEPT_ACTIVATOR":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::TargetFilter", "TargetFilter", "ALL_EXCEPT_ACTIVATOR" ],
+        "body": "UserMessages::TargetFilter::ALL_EXCEPT_ACTIVATOR",
+        "description": "(UserMessages.as) _32_ Filter all clients except activator client"
+    },
+    "array<int> UserMessages::ClientCommand( string m_iszCommand, TargetFilter m_ClientFilter = TargetFilter::NONE, CBasePlayer@ pActivator = null )":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::ClientCommand", "ClientCommand" ],
+        "body": "UserMessages::ClientCommand( ${1:string m_iszCommand}, ${2:TargetFilter m_ClientFilter = TargetFilter::NONE}, ${3:CBasePlayer@ pActivator = null} )",
+        "description": "(UserMessages.as) Executes a command on the client console"
+    },
+    "array<int> UserMessages::PlayerSay( CBaseEntity@ pTarget, string m_szMessage, uint8 uiColor = 2, TargetFilter m_ClientFilter = TargetFilter::NONE, CBasePlayer@ pActivator = null )":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::PlayerSay", "PlayerSay" ],
+        "body": "UserMessages::PlayerSay( ${1:CBaseEntity@ pTarget}, ${2:string m_szMessage}, ${3:uint8 uiColor = 2}, ${4:TargetFilter m_ClientFilter = TargetFilter::NONE}, ${5:CBasePlayer@ pActivator = null} )",
+        "description": "(UserMessages.as) Makes the pTarget say m_szMessage in chat"
+    },
+    "array<int> UserMessages::ServerName( string m_iszHostName = String::EMPTY_STRING, TargetFilter m_ClientFilter = TargetFilter::NONE, CBasePlayer@ pActivator = null )":
+    {
+        "scope": "as",
+        "prefix": [ "UserMessages::ServerName", "ServerName" ],
+        "body": "UserMessages::ServerName( ${1:string m_iszHostName = String::EMPTY_STRING}, ${2:TargetFilter m_ClientFilter = TargetFilter::NONE}, ${3:CBasePlayer@ pActivator = null} )",
+        "description": "(UserMessages.as) Update the server hostname, if empty string we'll use the server's \"hostname\""
+    }
 }
