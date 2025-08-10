@@ -5,6 +5,7 @@
     [
         "scripts/Mikk155/constdef.as",
         "scripts/Mikk155/fmt.as",
+        "scripts/Mikk155/Logger.as",
         "scripts/Mikk155/Reflection.as"
     ]
 }
