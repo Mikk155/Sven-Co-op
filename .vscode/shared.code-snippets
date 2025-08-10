@@ -1,0 +1,23 @@
+{
+    "int Reflection::CallNamespaces( const string&in fnName )":
+    {
+        "scope": "angelscript",
+        "prefix": [ "g_Reflection.CallNamespaces", "Reflection" ],
+        "body": "g_Reflection.CallNamespaces( ${1:const string&in fnName} )",
+        "description": "(Reflection.as) Calls all the functions that exists with this name and within a namespace, Returns the number of functions found."
+    },
+    "Reflection::Function@ GetFunctionByName( const string&in fnName, bool IgnoreNamespace = false )":
+    {
+        "scope": "angelscript",
+        "prefix": [ "g_Reflection.GetFunctionByName", "Reflection" ],
+        "body": "g_Reflection.GetFunctionByName( ${1:const string&in fnName}, ${2:bool IgnoreNamespace = false} )",
+        "description": "(Reflection.as) Get a function by name. this is a valid iteration"
+    },
+    "Reflection::Function@ GetFunctionByName( const string&in fnName )":
+    {
+        "scope": "angelscript",
+        "prefix": [ "g_Reflection.GetFunctionByName", "Reflection" ],
+        "body": "g_Reflection.GetFunctionByName( ${1:const string&in fnName} )",
+        "description": "(Reflection.as) Get a function by name. this is a valid iteration"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/Mikk155/Reflection.as"
+    ]
+}
