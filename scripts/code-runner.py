@@ -134,7 +134,7 @@ def InstallAssets( AssetsPath: str ):
 
     for Include in AssetsPackage.get( "includes", [] ):
     #
-        g_Logger.error( "Including <g>{}<>", Include );
+        g_Logger.info( "Including <g>{}<>", Include );
         InstallAssets( Include );
     #
 
