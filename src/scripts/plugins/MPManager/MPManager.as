@@ -4,6 +4,8 @@
 *   To include any new plugin go to the MPManager/plugins.as and add a new entry.
 **/
 
+#include "../../Mikk155/Reflection"
+
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );

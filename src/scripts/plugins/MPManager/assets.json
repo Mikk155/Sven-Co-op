@@ -4,6 +4,11 @@
     "assets":
     [
         "scripts/plugins/MPManager/plugins.as",
-        "scripts/plugins/MPManager.as"
+        "scripts/plugins/MPManager/MPManager.as"
+    ],
+
+    "includes":
+    [
+        "scripts/Mikk155/assets.json"
     ]
 }
