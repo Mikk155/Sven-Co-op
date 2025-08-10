@@ -148,7 +148,7 @@ import filecmp;
 for asset in AssetsInstallationList:
 #
     SourceDest: str = asset.Source;
-    TargetDest: str = asset.Source;
+    TargetDest: str = asset.Destination;
 
     if os.path.exists( SourceDest ):
     #
