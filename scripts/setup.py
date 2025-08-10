@@ -51,7 +51,7 @@ MPManagerHeader: str = '''\n
 \t"plugin"
 \t{
 \t\t"name" "MPManager"
-\t\t"script" "MPManager"
+\t\t"script" "MPManager/MPManager"
 \t\t"concommandns" "mpm"
 \t}\n
 ''';
