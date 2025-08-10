@@ -143,14 +143,20 @@ InstallAssets( os.path.relpath( PathPackage, PathSources ) );
 del PathPackage;
 
 import shutil;
+import filecmp;
 
 for asset in AssetsInstallationList:
 #
-    g_Logger.info( "Installing <g>{}<>", asset.Relative );
+    SourceDest: str = asset.Source;
+    TargetDest: str = asset.Source;
 
-    if os.path.exists( asset.Source ):
+    if os.path.exists( SourceDest ):
     #
-        shutil.copy( asset.Source, asset.Destination );
+        if not os.path.exists( TargetDest ) or not filecmp.cmp( SourceDest, TargetDest, shallow=False ):
+        #
+            g_Logger.info( "Installing <g>{}<>", asset.Relative );
+            shutil.copy( SourceDest, TargetDest );
+        #
     #
     else:
     #
