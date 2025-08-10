@@ -3,6 +3,7 @@
 
     "assets":
     [
+        "scripts/Mikk155/constdef.as",
         "scripts/Mikk155/Reflection.as"
     ]
 }
