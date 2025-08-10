@@ -7,26 +7,20 @@
         {
             "type": "string"
         },
-        "type":
-        {
-            "type": "string",
-            "enum":
-            [
-                "plugin",
-                "map_script",
-                "metamod"
-            ],
-            "description": "Type of source"
-        },
         "assets":
         {
             "type": "array",
-            "description": "List of additional assets"
+            "description": "List of assets"
+        },
+        "includes":
+        {
+            "type": "array",
+            "description": "Include extra assets json"
         }
     },
     "additionalProperties": false,
     "required":
     [
-        "type"
+        "assets"
     ]
 }

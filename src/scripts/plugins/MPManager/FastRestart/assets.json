@@ -1,0 +1,13 @@
+{
+    "$schema": "../../../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/MPManager/FastRestart/main.as"
+    ],
+
+    "includes":
+    [
+        "scripts/plugins/MPManager/assets.json"
+    ]
+}

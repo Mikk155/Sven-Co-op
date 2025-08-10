@@ -1,0 +1,9 @@
+{
+    "$schema": "../../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/MPManager/plugins.as",
+        "scripts/plugins/MPManager.as"
+    ]
+}

@@ -23,7 +23,7 @@ SOFTWARE
 '''
 
 import os;
-import sys;
+import sys
 
 MyWorkspace: str = os.path.abspath( os.path.dirname( os.path.dirname( __file__ ) ) );
 
@@ -76,70 +76,86 @@ if not os.path.exists( PathPackage ):
     g_Logger.critical( "Unexistent package file <c>{}<>", PathPackage, Exit=True );
 #
 
-from utils.jsonc import jsonc;
-AssetsPackage: dict = jsonc(
-    file_path=PathPackage,
-    schema_validation=jsonc(
-        Path.enter(
-            "schemas",
-            "assets.json"
-        )
-    ),
-    sensitive=True,
-    fnoutput=g_Logger.info
-);
-del PathPackage;
-
-PathSvenCoop: str = Path.enter( "steamapps", "common", "Sven Co-op", CurrentDir= Path.GetSteamInstallation() );
+PathSvenCoop: str = Path.enter( "steamapps", "common", "Sven Co-op", "svencoop_addon", CurrentDir= Path.GetSteamInstallation() );
 PathSources: str = Path.enter( "src" );
 
-from enum import IntEnum
+class Asset:
 
-class ASSET( IntEnum ):
-    ABS_SOURCE = 0;
-    ABS_SVEN = 1;
-    RELATIVE = 2;
-
-RelativeAssetsPath: list[tuple[ASSET]] = [];
-
-for Root, _, Files in os.walk( PathFile ):
-#
-    for File in Files:
+    def __init__( self, path: str ) -> None:
     #
-        if File == "assets.json":
-        #
-            continue;
-        #
-
-        AssetType: str = AssetsPackage[ "type" ];
-
-        if AssetType == "metamod":
-        #
-            continue;
-        #
-
-        PathAbsoluleToSource: str = os.path.join( Root,  File );
-        PathRelative: str = os.path.relpath( PathAbsoluleToSource, PathSources );
-        PathAbsoluleToSven: str = Path.enter(
-            "svencoop_addon",
-            "scripts",
-            "plugins" if AssetType == "plugin" else "maps",
-            PathRelative,
-            SupressWarning=True,
-            CreateIfNoExists=True,
-            CurrentDir=PathSvenCoop
-        );
-
-        RelativeAssetsPath.append( ( PathAbsoluleToSource, PathAbsoluleToSven, PathRelative ) );
+        self.paths: list[str] = path.split( "/" );
     #
-#
+
+    @property
+    def Relative( self ) -> str:
+    #
+        return os.path.relpath( self.Source, PathSources );
+    #
+
+    @property
+    def Source( self ) -> str:
+    #
+        return Path.enter( *self.paths, CurrentDir=PathSources, CreateIfNoExists=True, SupressWarning=True );
+    #
+
+    @property
+    def Destination( self ) -> str:
+    #
+        return Path.enter( *self.paths, CurrentDir=PathSvenCoop, CreateIfNoExists=True, SupressWarning=True );
+    #
+
+    @property
+    def IsValid( self ) -> bool:
+    #
+        return os.path.exists( self.Source );
+    #
+
+AssetsInstallationList: list[Asset] = [];
+
+def InstallAssets( AssetsPath: str ):
+
+    from utils.jsonc import jsonc;
+
+    AssetsPackage: dict = jsonc( file_path=os.path.join( PathSources, AssetsPath ), sensitive=True, fnoutput=g_Logger.trace );
+
+    for asset_path in AssetsPackage[ "assets" ]:
+    #
+        asset = Asset( asset_path );
+
+        if asset.IsValid:
+        #
+            AssetsInstallationList.append( asset );
+        #
+        else:
+        #
+            g_Logger.error( "Unexistent asset <g>{}<>", asset_path );
+        #
+    #
+
+    for Include in AssetsPackage.get( "includes", [] ):
+    #
+        g_Logger.error( "Including <g>{}<>", Include );
+        InstallAssets( Include );
+    #
+
+InstallAssets( os.path.relpath( PathPackage, PathSources ) );
+
+del PathPackage;
 
 import shutil;
-for Asset in RelativeAssetsPath:
+
+for asset in AssetsInstallationList:
 #
-    g_Logger.info( "Installing <g>{}<>", Asset[ASSET.RELATIVE] );
-    shutil.copy( Asset[ASSET.ABS_SOURCE], Asset[ASSET.ABS_SVEN] );
-    del Asset;
+    g_Logger.info( "Installing <g>{}<>", asset.Relative );
+
+    if os.path.exists( asset.Source ):
+    #
+        shutil.copy( asset.Source, asset.Destination );
+    #
+    else:
+    #
+        g_Logger.error( "Unextistent defined asset <c>{}<>", asset.Relative );
+    #
 #
 
-del RelativeAssetsPath;
+del AssetsInstallationList;
