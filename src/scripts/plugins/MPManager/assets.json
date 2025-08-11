@@ -3,8 +3,10 @@
 
     "assets":
     [
-        "scripts/plugins/MPManager/plugins.as",
-        "scripts/plugins/MPManager/MPManager.as"
+        "scripts/plugins/MPManager/IPlugin.as",
+        "scripts/plugins/MPManager/MPManager.as",
+        "scripts/plugins/MPManager/PluginManager.as",
+        "scripts/plugins/MPManager/plugins.as"
     ],
 
     "includes":

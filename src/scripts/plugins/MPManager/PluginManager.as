@@ -22,29 +22,35 @@
 *    SOFTWARE.
 **/
 
-abstract class IPlugin
+enum HookCode
 {
-    string GetName()
+    Continue = 0,
+    // Stop calling other IPlugin classes
+    Break = ( 1 << 0 ),
+    // Handle vanilla and metamod plugins. equivalent to HOOK_HANDLED
+    Handle = ( 1 << 1 ),
+    // Handle the original game's call (metamod plugins)
+    Supercede = ( 1 << 2 ),
+};
+
+// This class contains the base logic to call all instances of IPlugin
+final class MPManager
+{
+    private array<IPlugin@> Plugins;
+
+    void NewPluginEntry( @plugin )
     {
-        return String::EMPTY_STRING;
+        Plugins.insertLast( @plugin );
     }
 
-    CLogger@ Logger;
-
-    IPlugin()
+    void PluginInit()
     {
-        @Logger = CLogger( GetName() );
-
-        string buffer;
-        snprintf( buffer, "Registered plugin %1", GetName() );
-        Logger.info( buffer );
     }
+}
 
-/**
-* ========================
-*          Start of Hooks
-* ========================
-**/
-    // Equivalent to PluginInit
-    HookCode OnPluginEnable() { return HookCode.Continue; }
+MPManager g_MPManager;
+
+void AddPlugin( IPlugin@ plugin )
+{
+    g_MPManager.NewPluginEntry( @plugin );
 }

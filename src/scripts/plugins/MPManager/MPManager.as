@@ -9,6 +9,7 @@
 
 #include "IPlugin"
 #include "plugins"
+#include "PluginManager"
 
 CLogger g_Logger( "MPManager", true );
 
@@ -18,12 +19,8 @@ void PluginInit()
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     Logger::RegisterConCommands();
+
     RegisterAllPlugins();
-}
 
-array<IPlugin@> Plugins;
-
-void AddPlugin( IPlugin@ plugin )
-{
-    Plugins.insertLast( @plugin );
+    g_MPManager.PluginInit();
 }
