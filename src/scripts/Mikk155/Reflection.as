@@ -38,6 +38,14 @@ Reflection@ g_Reflection;
 
 class Reflection
 {
+    /**
+    <summary>
+        <return>uint</return>
+        <body>g_Reflection.MaxMethods</body>
+        <prefix>g_Reflection.MaxMethods, MaxMethods</prefix>
+        <description>Return the number of functions this script instance holds</description>
+    </summary>
+    **/
     uint MaxMethods
     {
         get const { return Reflection::g_Reflection.Module.GetGlobalFunctionCount(); }
@@ -45,6 +53,14 @@ class Reflection
 
     private uint __FakeIteration__ = 0;
 
+    /**
+    <summary>
+        <return>Reflection::Function@</return>
+        <body>g_Reflection.GetFunctionByName( const string&in fnName )</body>
+        <prefix>g_Reflection.GetFunctionByName, GetFunctionByName</prefix>
+        <description>Get a function by name, this method is valid for iterations if using with IgnoreNamespace true</description>
+    </summary>
+    **/
     Reflection::Function@ GetFunctionByName( const string&in fnName, bool IgnoreNamespace = false )
     {
         for( ; this.__FakeIteration__ < this.MaxMethods; this.__FakeIteration__++ )
@@ -70,6 +86,14 @@ class Reflection
         return null;
     }
 
+    /**
+    <summary>
+        <return>int</return>
+        <body>g_Reflection.CallNamespaces( const string&in fnName )</body>
+        <prefix>g_Reflection.CallNamespaces, Reflection, CallNamespaces</prefix>
+        <description>Calls all the functions that exists with this name and within a namespace, Returns the number of functions found.</description>
+    </summary>
+    **/
     int CallNamespaces( const string&in fnName )
     {
         int iFunctions = 0;

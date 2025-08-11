@@ -24,6 +24,14 @@
 
 namespace fmt
 {
+    /**
+    <summary>
+        <return>array<string></return>
+        <body>fmt::SplitBuffer</body>
+        <prefix>fmt::SplitBuffer, SplitBuffer</prefix>
+        <description>Split the given string into an array by the given size deliiter for each element</description>
+    </summary>
+    **/
     array<string> SplitBuffer( string buffer, uint size )
     {
         array<string> list;

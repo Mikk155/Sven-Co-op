@@ -24,5 +24,13 @@
 
 namespace CONSTDEF
 {
+    /**
+    <summary>
+        <body>CONSTDEF::CHAT_BUFFER_SIZE</body>
+        <return>const uint</return>
+        <prefix>CONSTDEF::CHAT_BUFFER_SIZE, CHAT_BUFFER_SIZE</prefix>
+        <description>Buffer size for the game's chat message</description>
+    </summary>
+    **/
     const uint CHAT_BUFFER_SIZE = 128;
 }

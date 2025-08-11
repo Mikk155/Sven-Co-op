@@ -140,6 +140,14 @@ namespace Logger
         return true;
     }
 
+    /**
+    <summary>
+        <return>CLogger@</return>
+        <body>Logger::GetLogger( const string&in Name )</body>
+        <prefix>Logger::GetLogger, GetLogger</prefix>
+        <description>Get a registered logger instance by name</description>
+    </summary>
+    **/
     CLogger@ GetLogger( const string&in Name )
     {
         if( Name != String::EMPTY_STRING )
@@ -157,6 +165,14 @@ namespace Logger
         return null;
     }
 
+    /**
+    <summary>
+        <return>int</return>
+        <body>Logger::GetLevelFromString( string Name )</body>
+        <prefix>Logger::GetLevelFromString, GetLevelFromString</prefix>
+        <description>Get a int equivalent to a Logger::Level enum by the given string, 0 if invalid.</description>
+    </summary>
+    **/
     int GetLevelFromString( string Name )
     {
         Name.ToLowercase();
@@ -302,15 +318,39 @@ namespace Logger
     }
 }
 
+/**
+<summary>
+    <return>CLogger@</return>
+    <body>CLogger( const string& name, bool IsStatic = false )</body>
+    <prefix>Logger, CLogger</prefix>
+    <description>Create a new CLogger instance, if IsStatic is true this logger is not added to the handler list</description>
+</summary>
+**/
 class CLogger
 {
-    string _Name;
+    private string _Name;
 
+    /**
+    <summary>
+        <return>string</return>
+        <body>Name</body>
+        <prefix>CLogger.Name, Name</prefix>
+        <description>Return the name of this logger handle</description>
+    </summary>
+    **/
     string Name
     {
         get const { return this._Name; }
     }
 
+    /**
+    <summary>
+        <return>int</return>
+        <body>Level</body>
+        <prefix>CLogger.Level, Level</prefix>
+        <description>Return the log level of this logger handle</description>
+    </summary>
+    **/
     int Level = Logger::GlobalLevel;
 
     CLogger( const string& in name, bool IsStatic = false /*Zzz being unable to know this automatically*/ )
@@ -328,6 +368,14 @@ class CLogger
         this.Shutdown();
     }
 
+    /**
+    <summary>
+        <return>void</return>
+        <body>Shutdown</body>
+        <prefix>CLogger.Shutdown, Shutdown</prefix>
+        <description>Remove this logger handle from the logger handler list</description>
+    </summary>
+    **/
     void Shutdown()
     {
         // Remove the reference from the logger list
@@ -352,34 +400,82 @@ class CLogger
         return buffer;
     }
 
+    /**
+    <summary>
+        <return>void</return>
+        <body>error( const string&in message )</body>
+        <prefix>CLogger.error, error</prefix>
+        <description>Print a error message. this ignores the log level and will always be printed.</description>
+    </summary>
+    **/
     void error( const string&in message )
     {
         this.log( message, "Error" );
     }
 
+    /**
+    <summary>
+        <return>void</return>
+        <body>critical( const string&in message )</body>
+        <prefix>CLogger.critical, critical</prefix>
+        <description>Print a critical message. this ignores the log level and will always be printed.</description>
+    </summary>
+    **/
     void critical( const string&in message )
     {
         this.log( message, "Critical" );
     }
 
+    /**
+    <summary>
+        <return>void</return>
+        <body>warn( const string&in message )</body>
+        <prefix>CLogger.warn, warn</prefix>
+        <description>Print a warn message.</description>
+    </summary>
+    **/
     void warn( const string&in message )
     {
         if( Level & Logger::Level::Warning != 0 && Logger::GlobalLevel & Logger::Level::Warning != 0 )
             this.log( message, "Warning" );
     }
 
+    /**
+    <summary>
+        <return>void</return>
+        <body>info( const string&in message )</body>
+        <prefix>CLogger.info, info</prefix>
+        <description>Print a info message.</description>
+    </summary>
+    **/
     void info( const string&in message )
     {
         if( Level & Logger::Level::Information != 0 && Logger::GlobalLevel & Logger::Level::Information != 0 )
             this.log( message, "Information" );
     }
 
+    /**
+    <summary>
+        <return>void</return>
+        <body>debug( const string&in message )</body>
+        <prefix>CLogger.debug, debug</prefix>
+        <description>Print a debug message.</description>
+    </summary>
+    **/
     void debug( const string&in message )
     {
         if( Level & Logger::Level::Debug != 0 && Logger::GlobalLevel & Logger::Level::Debug != 0 )
             this.log( message, "Debug" );
     }
 
+    /**
+    <summary>
+        <return>void</return>
+        <body>trace( const string&in message )</body>
+        <prefix>CLogger.trace, trace</prefix>
+        <description>Print a trace message.</description>
+    </summary>
+    **/
     void trace( const string&in message )
     {
         if( Level & Logger::Level::Trace != 0 && Logger::GlobalLevel & Logger::Level::Trace != 0 )
