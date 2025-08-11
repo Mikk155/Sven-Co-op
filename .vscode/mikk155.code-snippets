@@ -1,0 +1,167 @@
+{
+    "summary": {
+        "scope": "angelscript",
+        "prefix": [
+            "summary",
+            "<summary>",
+            "snippet",
+            "/**"
+        ],
+        "body": "/**\n<summary>\n\t<return>${1:Return value type}</return>\n\t<body>${2:Body of the method}</body>\n\t<prefix>${3:Prefixes. separate by a coma}</prefix>\n\t<description>${4:Description}</description>\n</summary>\n**/",
+        "description": "Create a comment block that will get formated into user snippets"
+    },
+    "const uint CONSTDEF::CHAT_BUFFER_SIZE": {
+        "scope": "angelscript",
+        "prefix": [
+            "CONSTDEF::CHAT_BUFFER_SIZE",
+            "CHAT_BUFFER_SIZE"
+        ],
+        "body": "CONSTDEF::CHAT_BUFFER_SIZE",
+        "description": "[constdef.as] Buffer size for the game's chat message"
+    },
+    "array<string> fmt::SplitBuffer": {
+        "scope": "angelscript",
+        "prefix": [
+            "fmt::SplitBuffer",
+            "SplitBuffer"
+        ],
+        "body": "fmt::SplitBuffer",
+        "description": "[fmt.as] Split the given string into an array by the given size deliiter for each element"
+    },
+    "CLogger@ Logger::GetLogger( const string&in Name )": {
+        "scope": "angelscript",
+        "prefix": [
+            "Logger::GetLogger",
+            "GetLogger"
+        ],
+        "body": "Logger::GetLogger( ${1:const string&in Name} )",
+        "description": "[Logger.as] Get a registered logger instance by name"
+    },
+    "int Logger::GetLevelFromString( string Name )": {
+        "scope": "angelscript",
+        "prefix": [
+            "Logger::GetLevelFromString",
+            "GetLevelFromString"
+        ],
+        "body": "Logger::GetLevelFromString( ${1:string Name} )",
+        "description": "[Logger.as] Get a int equivalent to a Logger::Level enum by the given string, 0 if invalid."
+    },
+    "CLogger@ CLogger( const string& name, bool IsStatic = false )": {
+        "scope": "angelscript",
+        "prefix": [
+            "Logger",
+            "CLogger"
+        ],
+        "body": "CLogger( ${1:const string& name}, ${2:bool IsStatic = false} )",
+        "description": "[Logger.as] Create a new CLogger instance, if IsStatic is true this logger is not added to the handler list"
+    },
+    "string Name": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.Name",
+            "Name"
+        ],
+        "body": "Name",
+        "description": "[Logger.as] Return the name of this logger handle"
+    },
+    "int Level": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.Level",
+            "Level"
+        ],
+        "body": "Level",
+        "description": "[Logger.as] Return the log level of this logger handle"
+    },
+    "void Shutdown": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.Shutdown",
+            "Shutdown"
+        ],
+        "body": "Shutdown",
+        "description": "[Logger.as] Remove this logger handle from the logger handler list"
+    },
+    "void error( const string&in message )": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.error",
+            "error"
+        ],
+        "body": "error( ${1:const string&in message} )",
+        "description": "[Logger.as] Print a error message. this ignores the log level and will always be printed."
+    },
+    "void critical( const string&in message )": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.critical",
+            "critical"
+        ],
+        "body": "critical( ${1:const string&in message} )",
+        "description": "[Logger.as] Print a critical message. this ignores the log level and will always be printed."
+    },
+    "void warn( const string&in message )": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.warn",
+            "warn"
+        ],
+        "body": "warn( ${1:const string&in message} )",
+        "description": "[Logger.as] Print a warn message."
+    },
+    "void info( const string&in message )": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.info",
+            "info"
+        ],
+        "body": "info( ${1:const string&in message} )",
+        "description": "[Logger.as] Print a info message."
+    },
+    "void debug( const string&in message )": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.debug",
+            "debug"
+        ],
+        "body": "debug( ${1:const string&in message} )",
+        "description": "[Logger.as] Print a debug message."
+    },
+    "void trace( const string&in message )": {
+        "scope": "angelscript",
+        "prefix": [
+            "CLogger.trace",
+            "trace"
+        ],
+        "body": "trace( ${1:const string&in message} )",
+        "description": "[Logger.as] Print a trace message."
+    },
+    "uint g_Reflection.MaxMethods": {
+        "scope": "angelscript",
+        "prefix": [
+            "g_Reflection.MaxMethods",
+            "MaxMethods"
+        ],
+        "body": "g_Reflection.MaxMethods",
+        "description": "[Reflection.as] Return the number of functions this script instance holds"
+    },
+    "Reflection::Function@ g_Reflection.GetFunctionByName( const string&in fnName )": {
+        "scope": "angelscript",
+        "prefix": [
+            "g_Reflection.GetFunctionByName",
+            "GetFunctionByName"
+        ],
+        "body": "g_Reflection.GetFunctionByName( ${1:const string&in fnName} )",
+        "description": "[Reflection.as] Get a function by name, this method is valid for iterations if using with IgnoreNamespace true"
+    },
+    "int g_Reflection.CallNamespaces( const string&in fnName )": {
+        "scope": "angelscript",
+        "prefix": [
+            "g_Reflection.CallNamespaces",
+            "Reflection",
+            "CallNamespaces"
+        ],
+        "body": "g_Reflection.CallNamespaces( ${1:const string&in fnName} )",
+        "description": "[Reflection.as] Calls all the functions that exists with this name and within a namespace, Returns the number of functions found."
+    }
+}
