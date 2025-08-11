@@ -16,6 +16,11 @@
         {
             "type": "array",
             "description": "Include extra assets json"
+        },
+        "script":
+        {
+            "type": "string",
+            "description": "Python script module to load and execute after the installation is done. the directory is in \"<workspace>/scripts/tasks/\" see task_example.py and task.py"
         }
     },
     "additionalProperties": false,

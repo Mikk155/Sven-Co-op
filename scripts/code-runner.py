@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
 '''
 
+from importlib.machinery import ModuleSpec
 import os;
 import sys
 
@@ -112,6 +113,10 @@ class Asset:
 
 AssetsInstallationList: list[Asset] = [];
 
+from tasks.task import Task;
+
+Tasks: list[Task] = [];
+
 def InstallAssets( AssetsPath: str ):
 
     from utils.jsonc import jsonc;
@@ -136,6 +141,53 @@ def InstallAssets( AssetsPath: str ):
     #
         g_Logger.info( "Including <g>{}<>", Include );
         InstallAssets( Include );
+    #
+
+    if "script" in AssetsPackage:
+    #
+        import importlib.util;
+        import inspect;
+        from pathlib import Path as PathLib;
+
+        ScriptFile: str = AssetsPackage[ "script" ];
+
+        if not ScriptFile.endswith( ".py" ):
+        #
+            ScriptFile = f'{ScriptFile}.py';
+        #
+
+        ScriptPath: str = Path.enter( "scripts", "tasks", ScriptFile );
+        ModuleName: str = PathLib( ScriptPath ).stem;
+
+        spec: ModuleSpec | None = importlib.util.spec_from_file_location( ModuleName, ScriptPath );
+
+        if spec is None:
+        #
+            g_Logger.error( "Can't load spec for <g>{}<>", ScriptPath, Exit=True );
+        #
+
+        Module: sys.ModuleType = importlib.util.module_from_spec( spec );
+        spec.loader.exec_module( Module );
+
+        TaskClass = None;
+
+        for _, obj in inspect.getmembers( Module , inspect.isclass ):
+        #
+            if issubclass( obj, Task ) and obj is not Task:
+            #
+                TaskClass = obj;
+                break
+            #
+        #
+
+        if TaskClass is None:
+        #
+            g_Logger.error( "Module doesn't implement the Task class <g>{}<>", ScriptPath, Exit=True );
+        #
+
+        TaskPointer: Task = TaskClass();
+        TaskPointer.Name = ScriptFile;
+        Tasks.append( TaskPointer );
     #
 
 InstallAssets( os.path.relpath( PathPackage, PathSources ) );
@@ -165,3 +217,17 @@ for asset in AssetsInstallationList:
 #
 
 del AssetsInstallationList;
+
+for task in Tasks:
+#
+    g_Logger.info( "Calling Task module <g>{}<>", task.Name );
+
+    code: int = task.Run();
+
+    if code != 0:
+    #
+        sys.exit(code);
+    #
+#
+
+del Tasks;
