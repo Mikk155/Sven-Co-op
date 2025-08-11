@@ -22,6 +22,48 @@
 *    SOFTWARE.
 **/
 
+#define [HOOK_RETURNCODE]
+return HOOK_CODE;
+#end
+
+#define [HOOK_METARES]
+// MRES
+#end
+
+#define [HOOK_CALL]
+bool META_SUPERCEDE = false;
+HookReturnCode HOOK_CODE = HOOK_CONTINUE;
+
+for( uint ui = 0; ui < Plugins.length(); ui++ )
+{
+    IPlugin@ plugin = Plugins[ ui ];
+
+    HookCode result = plugin.<()>;
+
+    if( result == HookCode.Continue )
+    {
+        continue;
+    }
+
+    if( result & HookCode.Supercede != 0 )
+    {
+        META_SUPERCEDE = true;
+    }
+
+    if( result & HookCode.Handle != 0 )
+    {
+        g_Logger.warn( "Plugin \"" + plugin.GetName() + "\" returned HOOK_HANDLED for hook \"<()>\" " );
+        HOOK_CODE = HOOK_HANDLED;
+    }
+
+    if( result & HookCode.Break != 0 )
+    {
+        g_Logger.warn( "Plugin \"" + plugin.GetName() + "\" breaked the chain of calls for hook \"<()>\"" );
+        break;
+    }
+}
+#end
+
 enum HookCode
 {
     Continue = 0,
@@ -45,6 +87,9 @@ final class MPManager
 
     void PluginInit()
     {
+        [HOOK_CALL]
+        OnPluginEnable();
+        [end]
     }
 }
 
