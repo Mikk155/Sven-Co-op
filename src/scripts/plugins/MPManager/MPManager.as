@@ -24,3 +24,24 @@ void PluginInit()
 
     g_MPManager.PluginInit();
 }
+
+void PluginExit()
+{
+    g_MPManager.PluginExit();
+}
+
+void MapInit()
+{
+    g_MPManager.MapInit();
+}
+
+void MapStart()
+{
+    g_MPManager.MapStart();
+}
+
+void MapActivate()
+{
+    g_MPManager.MapActivate();
+}
+

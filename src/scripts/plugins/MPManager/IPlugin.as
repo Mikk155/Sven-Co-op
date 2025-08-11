@@ -47,4 +47,22 @@ abstract class IPlugin
 **/
     // Equivalent to PluginInit
     HookCode OnPluginEnable() { return HookCode.Continue; }
+    // Equivalent to PluginExit
+    HookCode OnPluginDisable() { return HookCode.Continue; }
+    // Equivalent to MapInit
+    HookCode OnMapInit() { return HookCode.Continue; }
+    // Equivalent to MapActivate
+    HookCode OnMapActivate() { return HookCode.Continue; }
+    // Equivalent to MapStart
+    HookCode OnMapStart() { return HookCode.Continue; }
+    // Called every server frame. starting from MapActivate
+    HookCode OnThink() { return HookCode.Continue; }
+    // Called when the class plugin is disabled for the current map
+    HookCode OnMapDisabled() { return HookCode.Continue; }
+    // Called when the map is being changed
+    HookCode OnMapChange( const string&in mapname ) { return HookCode.Continue; }
+    // Called when the map is restarted to the same level
+    HookCode OnMapRestart() { return HookCode.Continue; }
+    // Called when all players die in a survival mode game
+    HookCode OnSurvivalRoundEnd() { return HookCode.Continue; }
 }

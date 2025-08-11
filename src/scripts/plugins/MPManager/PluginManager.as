@@ -91,6 +91,34 @@ final class MPManager
         OnPluginEnable();
         [end]
     }
+
+    void PluginExit()
+    {
+        [HOOK_CALL]
+        OnPluginDisable();
+        [end]
+    }
+
+    void MapInit()
+    {
+        [HOOK_CALL]
+        OnMapInit();
+        [end]
+    }
+
+    void MapActivate()
+    {
+        [HOOK_CALL]
+        OnMapActivate();
+        [end]
+    }
+
+    void MapStart()
+    {
+        [HOOK_CALL]
+        OnMapStart();
+        [end]
+    }
 }
 
 MPManager g_MPManager;
