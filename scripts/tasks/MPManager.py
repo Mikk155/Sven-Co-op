@@ -85,7 +85,7 @@ class Task_Example( Task ):
 
         with open( PluginManagerFile, "w" ) as f:
         #
-            f.write( PluginContent );
+            f.writelines( [ a for a in PluginContent.splitlines(True) if a != '\n' ] );
         #
 
         return 0;
