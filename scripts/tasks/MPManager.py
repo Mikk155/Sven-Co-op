@@ -80,7 +80,6 @@ class Task_Example( Task ):
                 #
 
                 PluginContent =  PluginContent[ : PluginContent.rfind( "\n", 0, StartIndex - DefSize ) + 1 ]  + NewDef + PluginContent[ EndIndex + 5 : ];
-                break;
             #
         #
 
