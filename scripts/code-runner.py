@@ -80,36 +80,7 @@ if not os.path.exists( PathPackage ):
 PathSvenCoop: str = Path.enter( "steamapps", "common", "Sven Co-op", "svencoop_addon", CurrentDir= Path.GetSteamInstallation() );
 PathSources: str = Path.enter( "src" );
 
-class Asset:
-
-    def __init__( self, path: str ) -> None:
-    #
-        self.paths: list[str] = path.split( "/" );
-    #
-
-    @property
-    def Relative( self ) -> str:
-    #
-        return os.path.relpath( self.Source, PathSources );
-    #
-
-    @property
-    def Source( self ) -> str:
-    #
-        return Path.enter( *self.paths, CurrentDir=PathSources, CreateIfNoExists=True, SupressWarning=True );
-    #
-
-    @property
-    def Destination( self ) -> str:
-    #
-        return Path.enter( *self.paths, CurrentDir=PathSvenCoop, CreateIfNoExists=True, SupressWarning=True );
-    #
-
-    @property
-    def IsValid( self ) -> bool:
-    #
-        return os.path.exists( self.Source );
-    #
+from shared.Asset import Asset;
 
 AssetsInstallationList: list[Asset] = [];
 
@@ -125,7 +96,7 @@ def InstallAssets( AssetsPath: str ):
 
     for asset_path in AssetsPackage[ "assets" ]:
     #
-        asset = Asset( asset_path );
+        asset = Asset( asset_path, PathSources, PathSvenCoop );
 
         if asset.IsValid:
         #
@@ -216,13 +187,11 @@ for asset in AssetsInstallationList:
     #
 #
 
-del AssetsInstallationList;
-
 for task in Tasks:
 #
     g_Logger.info( "Calling Task module <g>{}<>", task.Name );
 
-    code: int = task.Run();
+    code: int = task.Run( AssetsInstallationList );
 
     if code != 0:
     #
@@ -230,4 +199,5 @@ for task in Tasks:
     #
 #
 
+del AssetsInstallationList;
 del Tasks;

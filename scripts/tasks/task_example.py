@@ -1,4 +1,4 @@
-from tasks.task import Task;
+from tasks.task import Task, Asset;
 
 # Workspace and loggers are already setup from __main__
 from utils.Path import Path;
@@ -8,7 +8,7 @@ class Task_Example( Task ):
 
     logger = Logger( "Task Example" );
 
-    def Run( self ) -> int:
+    def Run( self, assets: list[Asset] ) -> int:
 
         print( 'Run your code here.' );
 
