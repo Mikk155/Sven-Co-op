@@ -7,6 +7,7 @@
 #include "../../Mikk155/Logger"
 #include "../../Mikk155/Reflection"
 
+#include "IPlugin"
 #include "plugins"
 
 CLogger g_Logger( "MPManager", true );
@@ -18,25 +19,6 @@ void PluginInit()
 
     Logger::RegisterConCommands();
     RegisterAllPlugins();
-}
-
-abstract class IPlugin
-{
-    string GetName()
-    {
-        return String::EMPTY_STRING;
-    }
-
-    CLogger@ Logger;
-
-    IPlugin()
-    {
-        @Logger = CLogger( GetName() );
-
-        string buffer;
-        snprintf( buffer, "Registered plugin %1", GetName() );
-        Logger.info( buffer );
-    }
 }
 
 array<IPlugin@> Plugins;
