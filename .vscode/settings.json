@@ -1,4 +1,12 @@
 {
+    "files.exclude":
+    {
+        "**/__pycache__": true
+    },
+    "search.exclude":
+    {
+        "**/__pycache__": true
+    },
     "code-runner.executorMapByFileExtension":
     {
         ".as": "python scripts/code-runner.py -file \"$fullFileName\""
