@@ -72,98 +72,106 @@ def Summary( content: str, type: str ) -> str | None:
     return content[ SummaryStart + 2 + len(type) : SummaryEnd ];
 #
 
+def GenerateSnippetsForFile( file: str ) -> None:
+
+    if not file.endswith(".as"):
+    #
+        return;
+    #
+
+    content: str = None;
+
+    with open( file, "r", encoding="utf-8" ) as f:
+    #
+        content = f.read();
+    #
+
+    if content is None:
+    #
+        return;
+    #
+
+    SumStartIndex = content.find( "<summary>" );
+
+    if SumStartIndex == -1:
+    #
+        return;
+    #
+
+    g_Logger.info( "Generating snippets for <c>{}<>...", os.path.relpath( file, Path.Workspace() ) );
+
+    while SumStartIndex != -1:
+    #
+        SummaryContent = Summary( content, "summary" );
+
+        if SummaryContent is None:
+        #
+            break;
+        #
+
+        content = content[ content.find( "</summary>", SumStartIndex ) + 10 : ];
+        SumStartIndex = content.find( "<summary>" );
+
+        SumaryPrefix = Summary( SummaryContent, "prefix" );
+
+        if SumaryPrefix is None:
+        #
+            g_Logger.warn( "Missing <c><prefix><> ignoring..." );
+            continue;
+        #
+
+        SummaryBody = Summary( SummaryContent, "body" );
+
+        if SummaryBody is None:
+        #
+            g_Logger.warn( "Missing <c><body><> ignoring..." );
+            continue;
+        #
+
+        SumaryReturn = Summary( SummaryContent, "return" );
+
+        SumaryDescription = Summary( SummaryContent, "description" );
+
+        SumaryPrefixList = [ a.strip( " " ) for a in SumaryPrefix.split( "," ) ]
+
+        SummaryBodyPrefixed = SummaryBody;
+
+        if "(" in SummaryBodyPrefixed and ")" in SummaryBodyPrefixed:
+        #
+            BodyBefore, InsideMethod = SummaryBodyPrefixed.split( "(", 1 );
+            InsideMethod: str = InsideMethod.rsplit( ")", 1 )[0].strip();
+
+            args: list[str] = [ arg.strip() for arg in InsideMethod.split( "," ) ] if InsideMethod else [];
+
+            ArgsPlaceholder: list[str] = [];
+
+            for i, arg in enumerate( args, start=1 ):
+            #
+                ArgsPlaceholder.append( f"${{{i}:{arg}}}" );
+            #
+
+            if len( ArgsPlaceholder ) > 0:
+            #
+                SummaryBodyPrefixed = f"{BodyBefore}( {', '.join( ArgsPlaceholder )} )"
+            #
+        #
+
+        filename: str = os.path.basename( file );
+
+        SNIPPETS[ f'{SumaryReturn} {SummaryBody}' if SumaryReturn else SummaryBody ] = {
+            "scope": "angelscript",
+            "prefix": SumaryPrefixList,
+            "body": SummaryBodyPrefixed,
+            "description": f'[{filename}] {SumaryDescription}' if SumaryDescription else filename
+        }
+    #
+#
+
 for root, _, files in os.walk( UtilsFolderPath ):
 #
     for file in files:
     #
-        if not file.endswith(".as"):
-        #
-            continue;
-        #
-
-        path: str = os.path.join( root, file );
-
-        content: str = None;
-
-        with open( path, "r", encoding="utf-8" ) as f:
-        #
-            content = f.read();
-        #
-
-        if content is None:
-        #
-            continue;
-        #
-
-        SumStartIndex = content.find( "<summary>" );
-
-        if SumStartIndex == -1:
-        #
-            continue;
-        #
-
-        g_Logger.info( "Generating snippets for <c>{}<>...", file );
-
-        while SumStartIndex != -1:
-        #
-            SummaryContent = Summary( content, "summary" );
-
-            if SummaryContent is None:
-            #
-                break;
-            #
-
-            content = content[ content.find( "</summary>", SumStartIndex ) + 10 : ];
-            SumStartIndex = content.find( "<summary>" );
-
-            SumaryPrefix = Summary( SummaryContent, "prefix" );
-
-            if SumaryPrefix is None:
-            #
-                g_Logger.warn( "Missing <c><prefix><> ignoring..." );
-                continue;
-            #
-
-            SummaryBody = Summary( SummaryContent, "body" );
-
-            if SummaryBody is None:
-            #
-                g_Logger.warn( "Missing <c><body><> ignoring..." );
-                continue;
-            #
-
-            SumaryReturn = Summary( SummaryContent, "return" );
-
-            SumaryDescription = Summary( SummaryContent, "description" );
-
-            SumaryPrefixList = [ a.strip( " " ) for a in SumaryPrefix.split( "," ) ]
-
-            SummaryBodyPrefixed = SummaryBody;
-
-            if "(" in SummaryBodyPrefixed and ")" in SummaryBodyPrefixed:
-            #
-                BodyBefore, InsideMethod = SummaryBodyPrefixed.split( "(", 1 );
-                InsideMethod: str = InsideMethod.rsplit( ")", 1 )[0].strip();
-
-                args: list[str] = [ arg.strip() for arg in InsideMethod.split( "," ) ] if InsideMethod else [];
-
-                ArgsPlaceholder: list[str] = [];
-
-                for i, arg in enumerate( args, start=1 ):
-                #
-                    ArgsPlaceholder.append( f"${{{i}:{arg}}}" );
-                #
-
-                SummaryBodyPrefixed = f"{BodyBefore}( {', '.join( ArgsPlaceholder )} )"
-            #
-
-            SNIPPETS[ f'{SumaryReturn} {SummaryBody}' if SumaryReturn else SummaryBody ] = {
-                "scope": "angelscript",
-                "prefix": SumaryPrefixList,
-                "body": SummaryBodyPrefixed,
-                "description": f'[{file}] {SumaryDescription}' if SumaryDescription else file
-            }
-        #
+        GenerateSnippetsForFile( os.path.join( root, file ) );
     #
 #
 
