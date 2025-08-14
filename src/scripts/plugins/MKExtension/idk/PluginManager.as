@@ -22,6 +22,12 @@
 *    SOFTWARE.
 **/
 
+enum OnMapRestartType
+{
+    SurvivalRoundEnd = 0,
+    PlayerLoadSaved = 1,
+};
+
 #define [HOOK_RETURNCODE]
 return HOOK_CODE;
 #end
@@ -47,6 +53,7 @@ for( uint ui = 0; ui < Plugins.length(); ui++ )
 
     if( result & HookCode.Supercede != 0 )
     {
+        g_Logger.warn( "Plugin \"" + plugin.GetName() + "\" prevented the game's original call for \"<()>\" " );
         META_SUPERCEDE = true;
     }
 
@@ -64,29 +71,20 @@ for( uint ui = 0; ui < Plugins.length(); ui++ )
 }
 #end
 
-enum HookCode
-{
-    Continue = 0,
-    // Stop calling other IPlugin classes
-    Break = ( 1 << 0 ),
-    // Handle vanilla and metamod plugins. equivalent to HOOK_HANDLED
-    Handle = ( 1 << 1 ),
-    // Handle the original game's call (metamod plugins)
-    Supercede = ( 1 << 2 ),
-};
-
 // This class contains the base logic to call all instances of IPlugin
 final class MPManager
 {
     private array<IPlugin@> Plugins;
 
-    void NewPluginEntry( @plugin )
+    void NewPluginEntry( IPlugin@ plugin )
     {
         Plugins.insertLast( @plugin );
     }
 
     void PluginInit()
     {
+        GameHooks::PluginInit();
+
         [HOOK_CALL]
         OnPluginEnable();
         [end]
@@ -108,6 +106,12 @@ final class MPManager
 
     void MapActivate()
     {
+        CBaseEntity@ loadsaved = null;
+
+        while( ( @loadsaved = g_EntityFuncs.FindEntityByClassname( loadsaved, "player_loadsaved" ) ) !is null )
+        {
+        }
+
         [HOOK_CALL]
         OnMapActivate();
         [end]
@@ -126,4 +130,51 @@ MPManager g_MPManager;
 void AddPlugin( IPlugin@ plugin )
 {
     g_MPManager.NewPluginEntry( @plugin );
+}
+
+namespace GameHooks
+{
+    void PluginInit()
+    {
+        g_Hooks.RegisterHook( Hooks::Game::MapChange, @GameHooks::MapChange );
+    }
+
+    HookReturnCode MapChange( const string& in szNextMap )
+    {
+        [HOOK_CALL]
+        OnMapChange( szNextMap );
+        [end]
+        [HOOK_RETURNCODE]
+        [end]
+
+        if( g_Engine.mapname == szNextMap )
+        {
+            // -TODO Get if trigger_changelevel,
+            OnMapRestartType type;
+PlayerLoadSaved
+            if( g_SurvivalMode.IsActive() )
+            {
+                bool AnoyoneAlive;
+                for( int i = 1; i <= g_Engine.maxClients; i++ )
+                {
+                    auto player = g_PlayerFuncs.FindPlayerByIndex( i );
+
+                    if( player !is null && player.IsAlive() )
+                    {
+                        AnoyoneAlive = true;
+                        break;
+                    }
+                }
+
+                if( !AnoyoneAlive )
+                {
+                    type = OnMapRestartType::SurvivalRoundEnd;
+                }
+            }
+
+            [HOOK_CALL]
+            OnMapRestart( type );
+            [end]
+        }
+    }
 }

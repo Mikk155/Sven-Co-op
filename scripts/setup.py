@@ -50,9 +50,9 @@ PathPluginsAddon: str = Path.enter( "svencoop_addon", "default_plugins.txt", Cur
 MPManagerHeader: str = '''\n
 \t"plugin"
 \t{
-\t\t"name" "MPManager"
-\t\t"script" "MPManager/MPManager"
-\t\t"concommandns" "mpm"
+\t\t"name" "MKExtension"
+\t\t"script" "MKExtension/main"
+\t\t"concommandns" "mke"
 \t}\n
 ''';
 

@@ -1,0 +1,19 @@
+{
+    "$schema": "../../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/MKExtension/main.as",
+        "scripts/plugins/MKExtension/Reflection.as",
+
+        "scripts/plugins/MKExtension/Hooks/main.as",
+
+        "scripts/plugins/MKExtension/Extensions/Extension.as",
+        "scripts/plugins/MKExtension/Extensions/main.as"
+    ],
+
+    "includes":
+    [
+        "scripts/Mikk155/assets.json"
+    ]
+}
