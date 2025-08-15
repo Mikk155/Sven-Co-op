@@ -11,5 +11,16 @@
     {
         ".as": "python scripts/code-runner.py -file \"$fullFileName\""
     },
-    "code-runner.runInTerminal": true
+    "code-runner.runInTerminal": true,
+
+    "emeraldwalk.runonsave":
+    {
+        "commands":
+        [
+            {
+                "match": "(\\.as$|/assets\\.json$|\\\\assets\\.json$)",
+                "cmd": "start cmd /c python scripts/code-runner.py -file \"${file}\""
+            }
+        ]
+    }
 }

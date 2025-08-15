@@ -2,6 +2,7 @@
     "recommendations":
     [
         "formulahendry.code-runner",
-        "renesackers.angelscript"
+        "renesackers.angelscript",
+        "emeraldwalk.RunOnSave"
     ]
 }
