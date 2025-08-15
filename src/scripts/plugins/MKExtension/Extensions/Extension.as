@@ -22,15 +22,8 @@
 *    SOFTWARE.
 **/
 
-final class MKExtension
+final class MKExtension : NameGetter
 {
-    private string __Name__;
-
-    const string& Name
-    {
-        get const { return this.__Name__; }
-    }
-
     MKExtension( const string& in name )
     {
         __Name__ = name;

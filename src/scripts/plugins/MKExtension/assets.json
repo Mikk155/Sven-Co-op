@@ -5,6 +5,7 @@
     [
         "scripts/plugins/MKExtension/main.as",
         "scripts/plugins/MKExtension/Reflection.as",
+        "scripts/plugins/MKExtension/Utils.as",
 
         "scripts/plugins/MKExtension/Hooks/main.as",
 

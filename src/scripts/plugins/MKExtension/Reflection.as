@@ -24,129 +24,293 @@
 
 #include "../../Mikk155/Reflection"
 
-final class HookData
+// Represents an extension's method.
+final class MKEHook : NameGetter
 {
-    // Contains the name of the hook, for example "OnMapInit"
-    string Name;
-
-    HookData( const string&in name )
-    {
-        this.Name = name;
-        g_Logger.debug( "Registered hook \"" + this.Name + "\"" );
+    private MKExtension@ __Owner__;
+    const MKExtension@ Owner {
+        get const { return this.__Owner__; }
     }
 
-    // Contains the index of the methods this hook should call
-    array<uint> PluginHookIndex;
+    private int __Index__;
+    const int Index {
+        get const { return this.__Index__; }
+    }
+
+    MKEHook( const string &in name, int index, MKExtension@ extension )
+    {
+        this.Name = name;
+        this.__Index__ = index;
+        @this.__Owner__ = extension;
+    }
 }
+
+// Represents a global hook
+final class HookData : NameGetter
+{
+    HookData( const string &in name )
+    {
+        this.Name = name;
+        g_Logger.debug( "Registered hook \"" + this.GetName() + "\"" );
+    }
+
+    array<MKEHook@> Callables;
+}
+
+//=========================================
+final class MKExtension : NameGetter
+{
+    MKExtension( const string &in name )
+    {
+        this.Name = name;
+    }
+
+    bool IsActive() const
+    {
+        return true;
+    }
+};
 
 final class MKExtensionManager : Reflection
 {
-    private array<HookData@> m_hooks;
+    // a list containing all the plugin's hooks
+    private array<HookData@> m_Hooks = {};
+    private array<MKExtension@> m_Extensions = {};
 
-    private int RegisteredPluginIndex = -1;
-
-    int PluginsCount
+    private HookData@ FirstOrNullHook( const string &in Name )
     {
-        get const { return this.RegisteredPluginIndex; }
+        for( uint ui = 0; ui < m_Hooks.length(); ui++ )
+        {
+            HookData@ pHook = m_Hooks[ui];
+
+            if( pHook.GetName() == Name )
+            {
+                return @pHook;
+            }
+        }
+        return null;
+    }
+
+    private MKExtension@ FirstOrNullExtension( const string &in Name )
+    {
+        for( uint ui = 0; ui < m_Extensions.length(); ui++ )
+        {
+            MKExtension@ pExtension = m_Extensions[ui];
+
+            if( pExtension.GetName() == Name )
+            {
+                return @pExtension;
+            }
+        }
+        return null;
+    }
+
+    private void RegisterHookName( const string &in name )
+    {
+        m_Hooks.insertLast( @HookData( name ) );
+        g_Logger.trace( "Registered hook name \"" + name + "\"" );
     }
 
     MKExtensionManager()
     {
+        g_Logger.info( "Registering Hooks" );
+
+        // This being at the first index is important.
+        RegisterHookName( "OnExtensionInit" );
+
         for( uint fnIndex = 0; fnIndex < MaxMethods; fnIndex++ )
         {
             Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( fnIndex );
 
             if( Func !is null && Func.GetNamespace() == "Hooks" )
             {
-                m_hooks.insertLast( @HookData( Func.GetName() ) );
+                RegisterHookName( Func.GetName() );
             }
         }
     }
 
-    int RegisterHooks( const string&in szNameSpace )
+    private array<string>@ m_temp_plugins = {};
+
+    void Register( const string&in name )
     {
-        for( uint fnIndex = 0; fnIndex < MaxMethods; fnIndex++ )
+        if( m_temp_plugins.find( name ) > 0 )
+        {
+            g_Logger.error( "An extension with name \"" + name + "\" already exists!" );
+        }
+        else
+        {
+            m_temp_plugins.insertLast( name );
+        }
+    }
+
+    const uint Count
+    {
+        get const { return this.m_Extensions.length(); }
+    }
+
+    void InitExtensions()
+    {
+        g_Logger.info( "Registering Extensions" );
+
+        for( uint fnIndex = 0; fnIndex < this.MaxMethods; fnIndex++ )
         {
             Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( fnIndex );
 
             if( Func is null )
                 continue;
 
-            string szMethodNameSpace = Func.GetNamespace();
-
-            if( szMethodNameSpace.IsEmpty() )
+            if( Func.GetName() != "GetName" )
                 continue;
 
-            if( szMethodNameSpace.Find( szNameSpace ) == String::INVALID_INDEX )
+            if( !Func.GetNamespace().StartsWith( "Extensions::" ) )
                 continue;
 
-            if( !szMethodNameSpace.StartsWith( "Extensions::" ) )
+            string ExtensionName;
+
+            Reflection::ReturnValue@ ValueReturn = Func.Call();
+
+            if( !ValueReturn.HasReturnValue() )
             {
-                g_Logger.error( "Error \"" + szMethodNameSpace + "\"Can not register hooks outside of the \"Extensions\" namespace! Make sure your plugin's namespace is also in the \"Extensions\" namespace" );
-                return -1;
+                g_Logger.error( "Method \""+ Func.GetNamespace() + "::" + Func.GetName() + "\" has no return type of string!" );
+                continue;
             }
 
-            for( uint HookIndex = 0; HookIndex < m_hooks.length(); HookIndex++ )
-            {
-                HookData@ pHookData = m_hooks[HookIndex];
+            any@ ValueAny = ValueReturn.ToAny();
 
-                if( pHookData.Name == Func.GetName() )
+            ValueAny.retrieve( ExtensionName );
+
+            bool result;
+            
+            // Seems the "find" method checks for the same memory and not if they're equals
+            // m_temp_plugins.find( ExtensionName );
+            for( uint ui = 0; ui < m_temp_plugins.length(); ui++ )
+            {
+                if( m_temp_plugins[ui] == ExtensionName )
                 {
-                    pHookData.PluginHookIndex.insertLast( fnIndex );
-                    g_Logger.trace( "Adding hook callback \"" + szNameSpace + "::" + pHookData.Name + "\"" );
+                    m_temp_plugins.removeAt(ui);
+                    result = true;
+                    break;
                 }
             }
+
+            if( !result )
+            {
+                g_Logger.error( "Unregistered extension \"" + ExtensionName + "\"\nPlease check MKExtension/Extensions/main.as" );
+                continue;
+            }
+
+            MKExtension@ pExtension = MKExtension( ExtensionName );
+
+            m_Extensions.insertLast( @pExtension );
+            g_Logger.info( "Registered extension \"" + ExtensionName + "\" at index " + this.Count );
         }
 
-        RegisteredPluginIndex++;
-        return RegisteredPluginIndex;
+        while( m_temp_plugins.length() > 0 )
+        {
+            g_Logger.error( "Extension \""+ m_temp_plugins[0] + "\" is not being registered!" );
+            m_temp_plugins.removeAt(0);
+        }
+        @m_temp_plugins = null;
+
+        for( uint fnIndex = 0; fnIndex < this.MaxMethods; fnIndex++ )
+        {
+            Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( fnIndex );
+
+            if( Func is null )
+                continue;
+
+            if( Func.GetNamespace().IsEmpty() )
+                continue;
+
+            if( !Func.GetNamespace().StartsWith( "Extensions::" ) )
+                continue;;
+
+            HookData@ pHook = this.FirstOrNullHook( Func.GetName() );
+
+            if( pHook is null )
+                continue;
+
+            string szLastNameSpace = Func.GetNamespace().SubString( 12 /*"Extensions::"*/ );
+
+            MKExtension@ pExtension = this.FirstOrNullExtension( szLastNameSpace );
+
+            if( pExtension is null )
+                continue;
+
+            pHook.Callables.insertLast( MKEHook( pHook.GetName(), fnIndex, @pExtension ) );
+        }
+
+        array<MKEHook@>@ Callables = m_Hooks[0].Callables;
+
+        for( uint ui = 0; ui < Callables.length(); ui++ )
+        {
+            MKEHook@ pHookMethod = Callables[ui];
+
+            if( !pHookMethod.Owner.IsActive() )
+                continue;
+
+            Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( pHookMethod.Index );
+
+            if( Func is null )
+                continue;
+
+            Hooks::InfoExtensionInit@ info = Hooks::InfoExtensionInit();
+            info.ExtensionIndex = int(ui) + 1;
+            Func.Call( @info );
+        }
+        m_Hooks.removeAt(0);
     }
 
-    int CallHook( const string&in HookName, HookInfo@ info )
+    int CallHook( const string&in HookName, Hooks::Info@ info )
     {
         int ActionPostHook = HookCode::Continue;
 
-        for( uint HookIndex = 0; HookIndex < m_hooks.length(); HookIndex++ )
+        HookData@ pHook = this.FirstOrNullHook( HookName );
+
+        if( pHook is null )
         {
-            HookData@ pHookData = m_hooks[HookIndex];
+            g_Logger.critical( "Unknown hook \"" + HookName + "\"" );
+            return ActionPostHook;
+        }
 
-            if( pHookData.Name == HookName )
+        array<MKEHook@>@ Callables = pHook.Callables;
+
+        for( uint ui = 0; ui < Callables.length(); ui++ )
+        {
+            MKEHook@ pHookMethod = Callables[ui];
+
+            if( !pHookMethod.Owner.IsActive() )
+                continue;
+
+            Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( pHookMethod.Index );
+
+            if( Func is null )
+                continue;
+
+            Func.Call( info );
+
+            if( info.code == HookCode::Continue )
             {
-                for( uint fnIndex = 0; fnIndex < pHookData.PluginHookIndex.length(); fnIndex++ )
-                {
-                    uint CallbackIndex = pHookData.PluginHookIndex[fnIndex];
+                continue;
+            }
 
-                    Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( CallbackIndex );
+            if( info.code & HookCode::Supercede != 0 )
+            {
+                ActionPostHook |= HookCode::Supercede;
+                g_Logger.warn( "Plugin \"" + pHookMethod.Owner.GetName() + "\" prevented the game's original call for \"" + HookName + "\" " );
+            }
 
-                    if( Func !is null )
-                    {
-                        Func.Call( info );
+            if( info.code & HookCode::Handle != 0 )
+            {
+                ActionPostHook |= HookCode::Handle;
+                g_Logger.warn( "Plugin \"" + pHookMethod.Owner.GetName() + "\" returned HOOK_HANDLED for hook \"" + HookName + "\" " );
+            }
 
-                        if( info.code == HookCode::Continue )
-                        {
-                            continue;
-                        }
-
-                        if( info.code & HookCode::Supercede != 0 )
-                        {
-                            ActionPostHook |= HookCode::Supercede;
-//                            g_Logger.warn( "Plugin \"" + plugin.GetName() + "\" prevented the game's original call for \"<()>\" " );
-                        }
-
-                        if( info.code & HookCode::Handle != 0 )
-                        {
-                            ActionPostHook |= HookCode::Handle;
-//                            g_Logger.warn( "Plugin \"" + plugin.GetName() + "\" returned HOOK_HANDLED for hook \"<()>\" " );
-                        }
-
-                        if( info.code & HookCode::Break != 0 )
-                        {
-                            ActionPostHook |= HookCode::Break;
-//                            g_Logger.warn( "Plugin \"" + plugin.GetName() + "\" breaked the chain of calls for hook \"<()>\"" );
-                            return ActionPostHook;
-                        }
-                    }
-                }
+            if( info.code & HookCode::Break != 0 )
+            {
+                ActionPostHook |= HookCode::Break;
+                g_Logger.warn( "Plugin \"" + pHookMethod.Owner.GetName() + "\" breaked the chain of calls for hook \"" + HookName + "\"" );
+                return ActionPostHook;
             }
         }
         return ActionPostHook;

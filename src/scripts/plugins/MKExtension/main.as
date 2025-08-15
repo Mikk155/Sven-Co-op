@@ -31,11 +31,13 @@
 #include "../../Mikk155/Logger"
 CLogger g_Logger( "MKExtension", true );
 
+#include "Utils"
+
 #include "Hooks/main"
 
 #include "Reflection"
 
-#include "Extensions/Extension"
+//#include "Extensions/Extension"
 #include "Extensions/main"
 
 void PluginInit()
@@ -47,7 +49,26 @@ void PluginInit()
     Logger::RegisterConCommands();
 
     // Register all plugins in here.
-    Extensions::RegisterAllPlugins();
+    Extensions::RegisterExtensions();
 
-    g_MKExtensionManager.CallHook( "OnPluginExit", HookInfo() );
+    g_MKExtensionManager.InitExtensions();
+
+    Hooks::OnPluginInit();
+}
+
+void PluginExit()
+{
+}
+
+void MapInit()
+{
+}
+
+void MapStart()
+{
+}
+
+void MapActivate()
+{
+    Hooks::MapActivate();
 }

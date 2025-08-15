@@ -1,32 +1,47 @@
 // Is obligatory to work under the "Extensions" namespace.
 namespace Extensions
 {
+    /**
+    *   All the HookInfo arguments provided by the hooks supports:
+    *   code: bitwise
+    *       HookCode::Continue = 0
+    *           Continue calling other extensions normally
+    *       HookCode::Break = 1
+    *           Stop calling other extensions
+    *       HookCode::Handle = ( 1 << 1 )
+    *           Handle vanilla and metamod plugins. equivalent to HOOK_HANDLED
+    *       HookCode::Supercede = ( 1 << 2 )
+    *           Handle the original game's call (metamod API only)
+    **/
     namespace PluginExample
     {
-        // This is obligatory and must be the namespace in string form.
+        /**
+        *   This is obligatory and must be the namespace in string form.
+        **/
         string GetName()
         {
             return "PluginExample";
         }
 
-        void Register()
+        /**
+        *   Called when the extension is initialized
+        *   @info
+        *       ExtensionIndex: Contains the index for the current extension if needed to notice server ops to update the installation hierarchy.
+        **/
+        void OnExtensionInit( Hooks::InfoExtensionInit@ info )
         {
-            // This register all the hooks in this namespace.
-            // Returns the index of registration of this space if needed to notice server ops to update the installation hierarchy.
-            // Returns -1 on any failure and the namespace is ignored and marked as disabled.
-            // in such case you can still make use of the current context method to handle stuff
-            int index = g_MKExtensionManager.RegisterHooks( GetName() );
+            info.ExtensionIndex;
         }
 
-        void OnPluginInit( HookInfo@ info )
+        /**
+        *   Called whenall extensions has been initialized. this is the last action in the plugin's PluginInit method.
+        **/
+        void OnPluginInit( Hooks::Info@ info )
         {
-            g_Logger.debug( "Called plugins::PluginExample::OnPluginInit" );
-
-            // Update the hook's post action if needed
-            // info.code = ( HookCode::Break );
+                g_Logger.warn( "Called OnPluginInit for \"" + GetName() + "\"" );
         }
 
-        void OnMapActivate( HookInfoMapActivate@ info )
+        void OnMapActivate( Hooks::InfoMapActivate@ info )
         {
         }
     }

@@ -22,35 +22,29 @@
 *    SOFTWARE.
 **/
 
-namespace Hooks
+enum HookCode
 {
-    class Info
-    {
-        HookCode code = HookCode::Continue;
+    // Continue calling other extensions normally
+    Continue = 0,
+    // Stop calling other extensions
+    Break = ( 1 << 0 ),
+    // Handle vanilla and metamod plugins. equivalent to HOOK_HANDLED
+    Handle = ( 1 << 1 ),
+    // Handle the original game's call (metamod API only)
+    Supercede = ( 1 << 2 ),
+};
 
-        Info() { }
-    }
+enum MKExtensionManager_e
+{
+    NO_EXTENSIONS = 0
+};
 
-    class InfoExtensionInit : Info
-    {
-        int ExtensionIndex;
-    }
+mixin class NameGetter
+{
+    private string Name;
 
-    void OnPluginInit()
+    const string& GetName() const
     {
-        g_MKExtensionManager.CallHook( "OnPluginInit", Info() );
-    }
-
-    class InfoMapActivate : Info
-    {
-        // Number of entities before any hook spawns something else
-        int NumberOfEntities;
-    }
-
-    void MapActivate()
-    {
-        InfoMapActivate@ info = InfoMapActivate();
-        info.NumberOfEntities = g_EngineFuncs.NumberOfEntities();
-        g_MKExtensionManager.CallHook( "OnMapActivate", @info );
+        return this.Name;
     }
 }
