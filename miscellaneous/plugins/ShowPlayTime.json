@@ -1,6 +1,0 @@
-{
-    "MESSAGE" : {
-        "ENGLISH": "This map has been running for $restarts$ restart$(s)$, total time $days$D, $hours$H, $minutes$M.",
-        "SPANISH": "Este mapa estuvo corriendo durante $restarts$ reinicio$(s)$, tiempo total $days$D, $hours$H, $minutes$M."
-    }
-}
