@@ -60,8 +60,12 @@ final class HookData : NameGetter
 
 final class MKExtensionManager : Reflection
 {
+    private bool TemporalVariableToDisableGlobally;
     bool IsActive()
     {
+        if( TemporalVariableToDisableGlobally )
+            return false;
+
         return true;
     }
 
@@ -201,6 +205,13 @@ final class MKExtensionManager : Reflection
 
             m_Extensions.insertLast( @pExtension );
             g_Logger.info( "Registered extension \"" + ExtensionName + "\" at index " + this.Count );
+        }
+
+        if( this.Count == 0 )
+        {
+            this.TemporalVariableToDisableGlobally = true;
+            g_Logger.critical( "No extensions loaded! Disabling plugin..." );
+            return;
         }
 
         while( m_temp_plugins.length() > 0 )
