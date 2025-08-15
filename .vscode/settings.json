@@ -18,7 +18,7 @@
         "commands":
         [
             {
-                "match": "(\\.as$|/assets\\.json$|\\\\assets\\.json$)",
+                "match": "\\assets.json$",
                 "cmd": "start cmd /c python scripts/code-runner.py -file \"${file}\""
             }
         ]
