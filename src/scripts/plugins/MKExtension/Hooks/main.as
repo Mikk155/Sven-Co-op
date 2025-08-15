@@ -36,21 +36,9 @@ namespace Hooks
         int ExtensionIndex;
     }
 
-    void OnPluginInit()
-    {
-        g_MKExtensionManager.CallHook( "OnPluginInit", Info() );
-    }
-
     class InfoMapActivate : Info
     {
         // Number of entities before any hook spawns something else
         int NumberOfEntities;
-    }
-
-    void MapActivate()
-    {
-        InfoMapActivate@ info = InfoMapActivate();
-        info.NumberOfEntities = g_EngineFuncs.NumberOfEntities();
-        g_MKExtensionManager.CallHook( "OnMapActivate", @info );
     }
 }

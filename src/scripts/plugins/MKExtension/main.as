@@ -52,23 +52,26 @@ void PluginInit()
     Extensions::RegisterExtensions();
 
     g_MKExtensionManager.InitExtensions();
-
-    Hooks::OnPluginInit();
 }
 
 void PluginExit()
 {
+    g_MKExtensionManager.CallHook( "OnPluginExit", @Hooks::Info() );
 }
 
 void MapInit()
 {
+    g_MKExtensionManager.CallHook( "OnMapInit", @Hooks::Info() );
 }
 
 void MapStart()
 {
+    g_MKExtensionManager.CallHook( "OnMapStart", @Hooks::Info() );
 }
 
 void MapActivate()
 {
-    Hooks::MapActivate();
+    Hooks::InfoMapActivate@ info = Hooks::InfoMapActivate();
+    info.NumberOfEntities = g_EngineFuncs.NumberOfEntities();
+    g_MKExtensionManager.CallHook( "OnMapActivate", @info );
 }

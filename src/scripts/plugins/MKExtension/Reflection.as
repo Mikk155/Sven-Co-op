@@ -42,6 +42,7 @@ final class MKEHook : NameGetter
         this.Name = name;
         this.__Index__ = index;
         @this.__Owner__ = extension;
+        g_Logger.trace( "Registered hook \"" + this.GetName() + "\" for \"" + this.Owner.GetName() + "\" method index " + this.Index );
     }
 }
 
@@ -51,7 +52,7 @@ final class HookData : NameGetter
     HookData( const string &in name )
     {
         this.Name = name;
-        g_Logger.debug( "Registered hook \"" + this.GetName() + "\"" );
+        g_Logger.trace( "Registered hook \"" + this.GetName() + "\"" );
     }
 
     array<MKEHook@> Callables;
@@ -99,7 +100,6 @@ final class MKExtensionManager : Reflection
     private void RegisterHookName( const string &in name )
     {
         m_Hooks.insertLast( @HookData( name ) );
-        g_Logger.trace( "Registered hook name \"" + name + "\"" );
     }
 
     MKExtensionManager()
@@ -108,6 +108,13 @@ final class MKExtensionManager : Reflection
 
         // This being at the first index is important.
         RegisterHookName( "OnExtensionInit" );
+        // Same goes for PluginInit. these two are removed from the array after used.
+        RegisterHookName( "OnPluginInit" );
+
+        RegisterHookName( "OnPluginExit" );
+        RegisterHookName( "OnMapActivate" );
+        RegisterHookName( "OnMapStart" );
+        RegisterHookName( "OnMapInit" );
 
         for( uint fnIndex = 0; fnIndex < MaxMethods; fnIndex++ )
         {
@@ -246,7 +253,12 @@ final class MKExtensionManager : Reflection
             info.ExtensionIndex = int(ui) + 1;
             Func.Call( @info );
         }
-        m_Hooks.removeAt(0);
+
+        m_Hooks.removeAt(0); // OnExtensionInit
+
+        this.CallHook( "OnPluginInit", @Hooks::Info() );
+
+        m_Hooks.removeAt(0); // OnPluginInit
     }
 
     int CallHook( const string&in HookName, Hooks::Info@ info )
