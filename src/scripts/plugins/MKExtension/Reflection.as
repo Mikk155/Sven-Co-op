@@ -57,22 +57,13 @@ final class HookData : NameGetter
     array<MKEHook@> Callables;
 }
 
-//=========================================
-final class MKExtension : NameGetter
+final class MKExtensionManager : Reflection
 {
-    MKExtension( const string &in name )
-    {
-        this.Name = name;
-    }
-
-    bool IsActive() const
+    bool IsActive()
     {
         return true;
     }
-};
 
-final class MKExtensionManager : Reflection
-{
     // a list containing all the plugin's hooks
     private array<HookData@> m_Hooks = {};
     private array<MKExtension@> m_Extensions = {};
@@ -246,9 +237,6 @@ final class MKExtensionManager : Reflection
         {
             MKEHook@ pHookMethod = Callables[ui];
 
-            if( !pHookMethod.Owner.IsActive() )
-                continue;
-
             Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( pHookMethod.Index );
 
             if( Func is null )
@@ -264,6 +252,9 @@ final class MKExtensionManager : Reflection
     int CallHook( const string&in HookName, Hooks::Info@ info )
     {
         int ActionPostHook = HookCode::Continue;
+
+        if( !this.IsActive() )
+            return -1;
 
         HookData@ pHook = this.FirstOrNullHook( HookName );
 

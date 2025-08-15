@@ -22,10 +22,16 @@
 *    SOFTWARE.
 **/
 
+// Represents an extension
 final class MKExtension : NameGetter
 {
-    MKExtension( const string& in name )
+    MKExtension( const string &in name )
     {
-        __Name__ = name;
+        this.Name = name;
     }
-}
+
+    bool IsActive() const
+    {
+        return true;
+    }
+};

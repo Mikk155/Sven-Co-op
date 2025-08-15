@@ -15,6 +15,9 @@ namespace Extensions
     **/
     namespace PluginExample
     {
+        // You can register your own logger but idealy do after the plugin is being propertly registered.
+        CLogger@ Logger;
+
         /**
         *   This is obligatory and must be the namespace in string form.
         **/
@@ -30,7 +33,8 @@ namespace Extensions
         **/
         void OnExtensionInit( Hooks::InfoExtensionInit@ info )
         {
-            info.ExtensionIndex;
+            @Logger = CLogger( "Plugin Example" );
+            Logger.info( "Registered \"" + GetName() + "\" at index \"" + info.ExtensionIndex + "\"" );
         }
 
         /**
@@ -38,7 +42,7 @@ namespace Extensions
         **/
         void OnPluginInit( Hooks::Info@ info )
         {
-                g_Logger.warn( "Called OnPluginInit for \"" + GetName() + "\"" );
+            Logger.info( "Called OnPluginInit for \"" + GetName() + "\"" );
         }
 
         void OnMapActivate( Hooks::InfoMapActivate@ info )

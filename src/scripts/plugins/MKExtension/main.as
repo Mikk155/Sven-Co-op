@@ -37,7 +37,7 @@ CLogger g_Logger( "MKExtension", true );
 
 #include "Reflection"
 
-//#include "Extensions/Extension"
+#include "Extensions/Extension"
 #include "Extensions/main"
 
 void PluginInit()
