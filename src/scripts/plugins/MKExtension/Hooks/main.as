@@ -38,7 +38,33 @@ namespace Hooks
 
     class InfoMapActivate : Info
     {
-        // Number of entities before any hook spawns something else
         int NumberOfEntities;
     }
+
+    /* This fucking game i swear is a fucking shit with the "unexpected crash" with no fucking debuggers not even a fucking proper message
+    class InfoMapChange : Info
+    {
+        private string __NextMap__;
+
+        const string& NextMap {
+            get const { return this.__NextMap__; }
+        }
+
+        InfoMapChange( const string& in szNextMap )
+        {
+            __NextMap__ = szNextMap;
+        }
+    }
+
+    HookReturnCode OnMapChange( const string& in szNextMap )
+    {
+        Hooks::InfoMapChange@ info = Hooks::InfoMapChange;
+        info.NextMap = szNextMap;
+        g_MKExtensionManager.CallHook( "OnMapChange", @info );
+
+        if( info.code & HookCode::Handle != 0 )
+            return HOOK_HANDLED;
+        return HOOK_CONTINUE;
+    }
+    */
 }

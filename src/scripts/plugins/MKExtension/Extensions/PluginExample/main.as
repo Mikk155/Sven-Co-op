@@ -48,5 +48,12 @@ namespace Extensions
         void OnMapActivate( Hooks::InfoMapActivate@ info )
         {
         }
+
+        /*
+        void OnMapChange( Hooks::InfoMapChange@ info )
+        {
+            Logger.info( "Called OnMapChange for \"" + GetName() + "\" to \"" + info.NextMap + "\"" );
+        }
+        */
     }
 }

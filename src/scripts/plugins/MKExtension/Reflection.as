@@ -270,6 +270,54 @@ final class MKExtensionManager : Reflection
         this.CallHook( "OnPluginInit", @Hooks::Info() );
 
         m_Hooks.removeAt(0); // OnPluginInit
+
+        for( uint ui = 0; ui < m_Hooks.length(); ui++ )
+        {
+            HookData@ pHook = m_Hooks[ui];
+
+            if( pHook.Callables.length() > 0 )
+                continue;
+
+            g_Logger.trace( "Removed unused hook \"" + pHook.GetName() + "\" to free some memory" );
+            m_Hooks.removeAt(ui);
+            ui--;
+        }
+
+        InitializeRequiredHooks();
+    }
+
+    private bool RegisterOrRemoveHook( const string &in Name )
+    {
+        for( uint ui = 0; ui < m_Hooks.length(); ui++ )
+        {
+            HookData@ pHook = m_Hooks[ui];
+
+            if( pHook.GetName() != Name )
+                continue;
+
+            if( pHook.Callables.length() > 0 )
+            {
+                return true;
+            }
+            else
+            {
+                g_Logger.trace( "Removed unused hook \"" + Name + "\" to free some memory" );
+                m_Hooks.removeAt(ui);
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private void InitializeRequiredHooks()
+    {
+        /*
+        if( RegisterOrRemoveHook( "OnMapChange" ) )
+        {
+            g_Hooks.RegisterHook( Hooks::Game::MapChange, @Hooks::OnMapChange );
+        }
+        */
     }
 
     int CallHook( const string&in HookName, Hooks::Info@ info )
@@ -284,7 +332,7 @@ final class MKExtensionManager : Reflection
         if( pHook is null )
         {
             g_Logger.critical( "Unknown hook \"" + HookName + "\"" );
-            return ActionPostHook;
+            return -1;
         }
 
         array<MKEHook@>@ Callables = pHook.Callables;
