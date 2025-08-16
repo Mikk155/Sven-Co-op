@@ -24,5 +24,7 @@
     "includes":
     [
         "scripts/Mikk155/assets.json"
-    ]
+    ],
+
+    "script": "MKExtensionSnippets"
 }
