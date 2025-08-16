@@ -22,8 +22,6 @@
 *    SOFTWARE.
 **/
 
-#include "../../Mikk155/Reflection"
-
 // Represents an extension's method.
 final class MKEHook : NameGetter
 {

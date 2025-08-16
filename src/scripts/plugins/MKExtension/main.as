@@ -29,16 +29,18 @@
 **/
 
 #include "../../Mikk155/Logger"
-CLogger g_Logger( "MKExtension", true );
+#include "../../Mikk155/player"
+#include "../../Mikk155/Reflection"
 
 #include "Utils"
-
 #include "Hooks/main"
 
 #include "Reflection"
 
 #include "Extensions/Extension"
 #include "Extensions/main"
+
+CLogger g_Logger( "MKExtension", true );
 
 void PluginInit()
 {
