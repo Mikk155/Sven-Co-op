@@ -136,6 +136,15 @@
         "body": "trace( ${1:const string&in message} )",
         "description": "[Logger.as] Print a trace message."
     },
+    "array<CBasePlayer@> player::NumberOfPlayers( const player::FindFilter filter = player::FindFilter::None )": {
+        "scope": "angelscript",
+        "prefix": [
+            "player::NumberOfPlayers",
+            "NumberOfPlayers"
+        ],
+        "body": "player::NumberOfPlayers( ${1:const player::FindFilter filter = player::FindFilter::None} )",
+        "description": "[player.as] Gets the number of connected players matching the filters (see player::player::FindFilter enum)"
+    },
     "uint g_Reflection.MaxMethods": {
         "scope": "angelscript",
         "prefix": [
