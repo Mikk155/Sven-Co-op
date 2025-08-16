@@ -48,28 +48,11 @@ void PluginInit()
     // Required reload to have the concommand prefix from default_plugins x[
     Logger::RegisterConCommands();
 
-    // Register all plugins in here.
+    g_MKExtensionManager.RegisterAllHooks();
+
     Extensions::RegisterExtensions();
 
     g_MKExtensionManager.InitExtensions();
 }
 
-void PluginExit()
-{
-    g_MKExtensionManager.CallHook( "OnPluginExit", @Hooks::Info() );
-}
-
-void MapStart()
-{
-    g_MKExtensionManager.CallHook( "OnMapStart", @Hooks::Info() );
-}
-
-void MapInit()
-{
-    Hooks::Garbage::MapInit();
-}
-
-void MapActivate()
-{
-    Hooks::Garbage::MapActivate();
-}
+// -TODO On all class's members use "this" for readability.

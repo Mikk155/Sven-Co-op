@@ -22,51 +22,37 @@
 *    SOFTWARE.
 **/
 
-#include "events/OnMapActivate"
-#include "events/OnMapChange"
-#include "events/OnMapInit"
-#include "events/OnMapStart"
-#include "events/OnMapThink"
-#include "events/OnPlayerSay"
-#include "events/OnPluginExit"
-
 namespace Hooks
 {
-    class Hook : NameGetter
+    class IMapActivate : IHookInfo
     {
-        Hook( const string &in name )
-        {
-            this.Name = name;
+        private int ___NumberOfEntities_;
+
+        int NumberOfEntities {
+            get const { return this.___NumberOfEntities_; }
         }
 
-        // Called only if this hook is being used by any extension
+        IMapActivate( int _NumberOfEntities )
+        {
+            this.___NumberOfEntities_ = _NumberOfEntities;
+        }
+    }
+
+    namespace OnMapActivate
+    {
         void Register()
         {
-            g_Logger.debug( "Registered hook \"" + this.GetName() + "\"" );
-        }
-
-        array<MKEHook@> Callables;
-    }
-
-    // Base class for any hook's arguments
-    class IHookInfo
-    {
-        HookCode code = HookCode::Continue;
-
-        IHookInfo() { }
-    }
-
-    class IExtensionInit : IHookInfo
-    {
-        private uint __ExtensionIndex__;
-
-        uint ExtensionIndex {
-            get const { return this.__ExtensionIndex__; }
-        }
-
-        IExtensionInit( uint _ExtensionIndex )
-        {
-            this.__ExtensionIndex__ = _ExtensionIndex;
+            g_MKExtensionManager.RegisterHook( @Hook( "OnMapActivate" ) );
         }
     }
+}
+
+void MapActivate()
+{
+    Hooks::IMapActivate@ info = Hooks::IMapActivate( g_EngineFuncs.NumberOfEntities() );
+
+    // Don't count our entities
+    Hooks::OnMapThink::MapActivate();
+
+    g_MKExtensionManager.CallHook( "OnMapActivate", @info );
 }

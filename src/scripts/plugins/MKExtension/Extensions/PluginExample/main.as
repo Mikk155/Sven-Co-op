@@ -31,7 +31,7 @@ namespace Extensions
         *   @info
         *       ExtensionIndex: Contains the index for the current extension if needed to notice server ops to update the installation hierarchy.
         **/
-        void OnExtensionInit( Hooks::InfoExtensionInit@ info )
+        void OnExtensionInit( Hooks::IExtensionInit@ info )
         {
             @Logger = CLogger( "Plugin Example" );
             Logger.info( "Registered \"" + GetName() + "\" at index \"" + info.ExtensionIndex + "\"" );
@@ -40,30 +40,21 @@ namespace Extensions
         /**
         *   Called when all extensions has been initialized. this is the last action in the plugin's PluginInit method.
         **/
-        void OnPluginInit( Hooks::Info@ info )
+        void OnPluginInit( Hooks::IHookInfo@ info )
         {
             Logger.info( "Called OnPluginInit for \"" + GetName() + "\"" );
         }
 
-        void OnMapActivate( Hooks::InfoMapActivate@ info )
+        void OnMapActivate( Hooks::IMapActivate@ info )
         {
         }
 
-        /**
-        *   Called every server frame only after MapActivate and before MapChange
-        **/
-        /*
-        void OnThink( Hooks::Info@ info )
-        {
-        }
-        */
-
-        void OnMapChange( Hooks::InfoMapChange@ info )
+        void OnMapChange( Hooks::IMapChange@ info )
         {
             Logger.info( "Called OnMapChange for \"" + GetName() + "\" to \"" + info.NextMap + "\"" );
         }
 
-        void OnClientSay( Hooks::InfoClientSay@ info )
+        void OnPlayerSay( Hooks::IPlayerSay@ info )
         {
             Logger.info( "Called OnClientSay for \"" + GetName() + "\" to \"" + info.params.GetArguments()[0] + "\"" );
         }

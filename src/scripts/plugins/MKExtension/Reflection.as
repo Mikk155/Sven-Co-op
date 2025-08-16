@@ -46,21 +46,13 @@ final class MKEHook : NameGetter
     }
 }
 
-// Represents a global hook
-final class HookData : NameGetter
-{
-    HookData( const string &in name )
-    {
-        this.Name = name;
-        g_Logger.trace( "Registered hook \"" + this.GetName() + "\"" );
-    }
-
-    array<MKEHook@> Callables;
-}
-
 final class MKExtensionManager : Reflection
 {
+    MKExtensionManager() { }
+    ~MKExtensionManager() { }
+
     private bool TemporalVariableToDisableGlobally;
+
     bool IsActive()
     {
         if( TemporalVariableToDisableGlobally )
@@ -69,22 +61,63 @@ final class MKExtensionManager : Reflection
         return true;
     }
 
-    // a list containing all the plugin's hooks
-    private array<HookData@> m_Hooks = {};
+    // List containing all the plugin's hooks
+    private array<Hooks::Hook@> m_Hooks = {};
+
+    // List containing all the extensions
     private array<MKExtension@> m_Extensions = {};
 
-    private HookData@ FirstOrNullHook( const string &in Name )
+    private Hooks::Hook@ FirstOrNullHook( const string &in Name )
     {
         for( uint ui = 0; ui < m_Hooks.length(); ui++ )
         {
-            HookData@ pHook = m_Hooks[ui];
+            Hooks::Hook@ hHook = m_Hooks[ui];
 
-            if( pHook.GetName() == Name )
+            if( hHook.GetName() == Name )
             {
-                return @pHook;
+                return @hHook;
             }
         }
         return null;
+    }
+
+    void RegisterHook( Hooks::Hook@ hHook )
+    {
+        if( FirstOrNullHook( hHook.GetName() ) !is null )
+        {
+            g_Logger.critical( "Hook with name \"" + hHook.GetName() + "\" is already registered!" );
+            return;
+        }
+
+        m_Hooks.insertLast( @hHook );
+    }
+
+    void RegisterAllHooks()
+    {
+        g_Logger.info( "Loading Hooks" );
+
+        // This being at the first index is important.
+        this.RegisterHook( @Hooks::Hook( "OnExtensionInit" ) );
+        // Same goes for PluginInit. these two are removed from the array after used.
+        this.RegisterHook( @Hooks::Hook( "OnPluginInit" ) );
+
+        for( uint ui = 0; ui < MaxMethods; ui++ )
+        {
+            Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( ui );
+
+            if( Func is null )
+                continue;
+
+            if( Func.GetName() != "Register" )
+                continue;
+
+            if( !Func.GetNamespace().StartsWith( "Hooks::" ) )
+                continue;
+
+            g_Logger.trace( "Calling \"" + Func.GetNamespace() + "::Register()\"" );
+
+            Func.Call();
+        }
     }
 
     private MKExtension@ FirstOrNullExtension( const string &in Name )
@@ -99,37 +132,6 @@ final class MKExtensionManager : Reflection
             }
         }
         return null;
-    }
-
-    private void RegisterHookName( const string &in name )
-    {
-        m_Hooks.insertLast( @HookData( name ) );
-    }
-
-    MKExtensionManager()
-    {
-        g_Logger.info( "Registering Hooks" );
-
-        // This being at the first index is important.
-        RegisterHookName( "OnExtensionInit" );
-        // Same goes for PluginInit. these two are removed from the array after used.
-        RegisterHookName( "OnPluginInit" );
-
-        RegisterHookName( "OnPluginExit" );
-        RegisterHookName( "OnMapActivate" );
-        RegisterHookName( "OnMapStart" );
-        RegisterHookName( "OnMapInit" );
-        RegisterHookName( "OnThink" );
-
-        for( uint fnIndex = 0; fnIndex < MaxMethods; fnIndex++ )
-        {
-            Reflection::Function@ Func = Reflection::g_Reflection.Module.GetGlobalFunctionByIndex( fnIndex );
-
-            if( Func !is null && Func.GetNamespace() == "Hooks" )
-            {
-                RegisterHookName( Func.GetName() );
-            }
-        }
     }
 
     private array<string>@ m_temp_plugins = {};
@@ -198,7 +200,7 @@ final class MKExtensionManager : Reflection
 
             if( !result )
             {
-                g_Logger.error( "Unregistered extension \"" + ExtensionName + "\"\nPlease check MKExtension/Extensions/main.as" );
+                g_Logger.error( "Fail registration of extension \"" + ExtensionName + "\"\nRegister the extension in MKExtension/Extensions/main.as" );
                 continue;
             }
 
@@ -235,7 +237,7 @@ final class MKExtensionManager : Reflection
             if( !Func.GetNamespace().StartsWith( "Extensions::" ) )
                 continue;;
 
-            HookData@ pHook = this.FirstOrNullHook( Func.GetName() );
+            Hooks::Hook@ pHook = this.FirstOrNullHook( Func.GetName() );
 
             if( pHook is null )
                 continue;
@@ -261,87 +263,42 @@ final class MKExtensionManager : Reflection
             if( Func is null )
                 continue;
 
-            Hooks::InfoExtensionInit@ info = Hooks::InfoExtensionInit();
-            info.ExtensionIndex = int(ui) + 1;
+            Hooks::IExtensionInit@ info = Hooks::IExtensionInit( ui + 1 );
             Func.Call( @info );
         }
 
         m_Hooks.removeAt(0); // OnExtensionInit
 
-        this.CallHook( "OnPluginInit", @Hooks::Info() );
+        this.CallHook( "OnPluginInit", @Hooks::IHookInfo() );
 
         m_Hooks.removeAt(0); // OnPluginInit
 
+        g_Logger.info( "Registering Hooks" );
+
         for( uint ui = 0; ui < m_Hooks.length(); ui++ )
         {
-            HookData@ pHook = m_Hooks[ui];
+            Hooks::Hook@ pHook = m_Hooks[ui];
 
             if( pHook.Callables.length() > 0 )
+            {
+                pHook.Register();
                 continue;
+            }
 
             g_Logger.trace( "Removed unused hook \"" + pHook.GetName() + "\" to free some memory" );
             m_Hooks.removeAt(ui);
             ui--;
         }
-
-        InitializeRequiredHooks();
     }
 
-    private bool RegisterOrRemoveHook( const string &in Name )
+    int CallHook( const string&in HookName, Hooks::IHookInfo@ info )
     {
-        for( uint ui = 0; ui < m_Hooks.length(); ui++ )
-        {
-            HookData@ pHook = m_Hooks[ui];
-
-            if( pHook.GetName() != Name )
-                continue;
-
-            if( pHook.Callables.length() > 0 )
-            {
-                return true;
-            }
-            else
-            {
-                g_Logger.trace( "Removed unused hook \"" + Name + "\" to free some memory" );
-                m_Hooks.removeAt(ui);
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    private bool __OnThinkEnabled__;
-    
-    const bool HookOnThinkEnabled
-    {
-        get const { return this.__OnThinkEnabled__; }
-    }
-
-    private void InitializeRequiredHooks()
-    {
-        if( RegisterOrRemoveHook( "OnThink" ) )
-        {
-            this.__OnThinkEnabled__ = true;
-        }
-        if( RegisterOrRemoveHook( "OnClientSay" ) )
-        {
-            g_Hooks.RegisterHook( Hooks::Player::ClientSay, @Hooks::OnClientSay );
-        }
-        if( RegisterOrRemoveHook( "OnMapChange" ) )
-        {
-            g_Hooks.RegisterHook( Hooks::Game::MapChange, @Hooks::OnMapChange );
-        }
-    }
-
-    int CallHook( const string&in HookName, Hooks::Info@ info )
-    {
-        int ActionPostHook = HookCode::Continue;
-
         if( !this.IsActive() )
             return -1;
 
-        HookData@ pHook = this.FirstOrNullHook( HookName );
+        int ActionPostHook = HookCode::Continue;
+
+        Hooks::Hook@ pHook = this.FirstOrNullHook( HookName );
 
         if( pHook is null )
         {

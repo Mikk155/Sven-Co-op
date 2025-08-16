@@ -7,6 +7,14 @@
         "scripts/plugins/MKExtension/Reflection.as",
         "scripts/plugins/MKExtension/Utils.as",
 
+        "scripts/plugins/MKExtension/Hooks/events/OnMapActivate.as",
+        "scripts/plugins/MKExtension/Hooks/events/OnMapChange.as",
+        "scripts/plugins/MKExtension/Hooks/events/OnMapInit.as",
+        "scripts/plugins/MKExtension/Hooks/events/OnMapStart.as",
+        "scripts/plugins/MKExtension/Hooks/events/OnMapThink.as",
+        "scripts/plugins/MKExtension/Hooks/events/OnPlayerSay.as",
+        "scripts/plugins/MKExtension/Hooks/events/OnPluginExit.as",
+
         "scripts/plugins/MKExtension/Hooks/main.as",
 
         "scripts/plugins/MKExtension/Extensions/Extension.as",

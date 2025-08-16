@@ -22,51 +22,20 @@
 *    SOFTWARE.
 **/
 
-#include "events/OnMapActivate"
-#include "events/OnMapChange"
-#include "events/OnMapInit"
-#include "events/OnMapStart"
-#include "events/OnMapThink"
-#include "events/OnPlayerSay"
-#include "events/OnPluginExit"
-
 namespace Hooks
 {
-    class Hook : NameGetter
+    namespace OnMapInit
     {
-        Hook( const string &in name )
-        {
-            this.Name = name;
-        }
-
-        // Called only if this hook is being used by any extension
         void Register()
         {
-            g_Logger.debug( "Registered hook \"" + this.GetName() + "\"" );
-        }
-
-        array<MKEHook@> Callables;
-    }
-
-    // Base class for any hook's arguments
-    class IHookInfo
-    {
-        HookCode code = HookCode::Continue;
-
-        IHookInfo() { }
-    }
-
-    class IExtensionInit : IHookInfo
-    {
-        private uint __ExtensionIndex__;
-
-        uint ExtensionIndex {
-            get const { return this.__ExtensionIndex__; }
-        }
-
-        IExtensionInit( uint _ExtensionIndex )
-        {
-            this.__ExtensionIndex__ = _ExtensionIndex;
+            g_MKExtensionManager.RegisterHook( @Hook( "OnMapInit" ) );
         }
     }
+}
+
+void MapInit()
+{
+    Hooks::OnMapThink::MapInit();
+
+    g_MKExtensionManager.CallHook( "OnMapInit", @Hooks::IHookInfo() );
 }

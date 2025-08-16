@@ -22,51 +22,52 @@
 *    SOFTWARE.
 **/
 
-#include "events/OnMapActivate"
-#include "events/OnMapChange"
-#include "events/OnMapInit"
-#include "events/OnMapStart"
-#include "events/OnMapThink"
-#include "events/OnPlayerSay"
-#include "events/OnPluginExit"
-
 namespace Hooks
 {
-    class Hook : NameGetter
+    class IMapChange : IHookInfo
     {
-        Hook( const string &in name )
-        {
-            this.Name = name;
+        private string __NextMap__;
+
+        string NextMap {
+            get const { return this.__NextMap__; }
         }
 
-        // Called only if this hook is being used by any extension
+        IMapChange( const string &in _NextMap )
+        {
+            this.__NextMap__ = _NextMap;
+        }
+    }
+
+    namespace OnMapChange
+    {
+        class HookMapChange : Hook
+        {
+            HookMapChange( const string &in name )
+            {
+                super(name);
+            }
+
+            void Register()
+            {
+                g_Hooks.RegisterHook( Hooks::Game::MapChange, @Hooks::OnMapChange::MapChange );
+                Hook::Register();
+            }
+        }
+
         void Register()
         {
-            g_Logger.debug( "Registered hook \"" + this.GetName() + "\"" );
+            g_MKExtensionManager.RegisterHook( @HookMapChange( "OnMapChange" ) );
         }
 
-        array<MKEHook@> Callables;
-    }
-
-    // Base class for any hook's arguments
-    class IHookInfo
-    {
-        HookCode code = HookCode::Continue;
-
-        IHookInfo() { }
-    }
-
-    class IExtensionInit : IHookInfo
-    {
-        private uint __ExtensionIndex__;
-
-        uint ExtensionIndex {
-            get const { return this.__ExtensionIndex__; }
-        }
-
-        IExtensionInit( uint _ExtensionIndex )
+        HookReturnCode MapChange( const string& in szNextMap )
         {
-            this.__ExtensionIndex__ = _ExtensionIndex;
+            Hooks::IMapChange@ info = Hooks::IMapChange(szNextMap);
+            g_MKExtensionManager.CallHook( "OnMapChange", @info );
+
+            if( info.code & HookCode::Handle != 0 )
+                return HOOK_HANDLED;
+
+            return HOOK_CONTINUE;
         }
     }
 }

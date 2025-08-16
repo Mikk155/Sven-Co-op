@@ -22,51 +22,48 @@
 *    SOFTWARE.
 **/
 
-#include "events/OnMapActivate"
-#include "events/OnMapChange"
-#include "events/OnMapInit"
-#include "events/OnMapStart"
-#include "events/OnMapThink"
-#include "events/OnPlayerSay"
-#include "events/OnPluginExit"
-
 namespace Hooks
 {
-    class Hook : NameGetter
+    class IPlayerSay : IHookInfo
     {
-        Hook( const string &in name )
+        SayParameters@ params;
+
+        IPlayerSay( SayParameters@ _params )
         {
-            this.Name = name;
+            @this.params = _params;
+        }
+    }
+
+    namespace OnPlayerSay
+    {
+        class HookPlayerSay : Hook
+        {
+            HookPlayerSay( const string &in name )
+            {
+                super(name);
+            }
+
+            void Register()
+            {
+                g_Hooks.RegisterHook( Hooks::Player::ClientSay, @Hooks::OnPlayerSay::ClientSay );
+                Hook::Register();
+            }
         }
 
-        // Called only if this hook is being used by any extension
         void Register()
         {
-            g_Logger.debug( "Registered hook \"" + this.GetName() + "\"" );
+            g_MKExtensionManager.RegisterHook( @HookPlayerSay( "OnPlayerSay" ) );
         }
 
-        array<MKEHook@> Callables;
-    }
-
-    // Base class for any hook's arguments
-    class IHookInfo
-    {
-        HookCode code = HookCode::Continue;
-
-        IHookInfo() { }
-    }
-
-    class IExtensionInit : IHookInfo
-    {
-        private uint __ExtensionIndex__;
-
-        uint ExtensionIndex {
-            get const { return this.__ExtensionIndex__; }
-        }
-
-        IExtensionInit( uint _ExtensionIndex )
+        HookReturnCode ClientSay( SayParameters@ pParams )
         {
-            this.__ExtensionIndex__ = _ExtensionIndex;
+            Hooks::IPlayerSay@ info = Hooks::IPlayerSay(pParams);
+            g_MKExtensionManager.CallHook( "OnPlayerSay", @info );
+
+            if( info.code & HookCode::Handle != 0 )
+                return HOOK_HANDLED;
+
+            return HOOK_CONTINUE;
         }
     }
 }
