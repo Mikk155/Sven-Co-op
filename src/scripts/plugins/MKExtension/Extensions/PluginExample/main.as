@@ -64,5 +64,10 @@ namespace Extensions
             Logger.info( "Called OnMapChange for \"" + GetName() + "\" to \"" + info.NextMap + "\"" );
         }
         */
+
+        void OnClientSay( Hooks::InfoClientSay@ info )
+        {
+            Logger.info( "Called OnClientSay for \"" + GetName() + "\" to \"" + info.params.GetArguments()[0] + "\"" );
+        }
     }
 }

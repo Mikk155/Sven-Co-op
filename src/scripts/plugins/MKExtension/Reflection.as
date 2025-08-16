@@ -324,6 +324,10 @@ final class MKExtensionManager : Reflection
         {
             this.__OnThinkEnabled__ = true;
         }
+        if( RegisterOrRemoveHook( "OnClientSay" ) )
+        {
+            g_Hooks.RegisterHook( Hooks::Player::ClientSay, @Hooks::OnClientSay );
+        }
         /*
         if( RegisterOrRemoveHook( "OnMapChange" ) )
         {

@@ -68,6 +68,22 @@ namespace Hooks
     }
     */
 
+    class InfoClientSay : Info
+    {
+        SayParameters@ params;
+    }
+
+    HookReturnCode OnClientSay( SayParameters@ pParams )
+    {
+        Hooks::InfoClientSay@ info = Hooks::InfoClientSay();
+        @info.params = pParams;
+        g_MKExtensionManager.CallHook( "OnClientSay", @info );
+
+        if( info.code & HookCode::Handle != 0 )
+            return HOOK_HANDLED;
+        return HOOK_CONTINUE;
+    }
+
     namespace Garbage
     {
         class MKExtensionThinker : ScriptBaseEntity
