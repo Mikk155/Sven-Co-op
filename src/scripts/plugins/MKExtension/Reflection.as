@@ -328,12 +328,10 @@ final class MKExtensionManager : Reflection
         {
             g_Hooks.RegisterHook( Hooks::Player::ClientSay, @Hooks::OnClientSay );
         }
-        /*
         if( RegisterOrRemoveHook( "OnMapChange" ) )
         {
             g_Hooks.RegisterHook( Hooks::Game::MapChange, @Hooks::OnMapChange );
         }
-        */
     }
 
     int CallHook( const string&in HookName, Hooks::Info@ info )

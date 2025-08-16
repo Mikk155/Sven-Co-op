@@ -41,7 +41,6 @@ namespace Hooks
         int NumberOfEntities;
     }
 
-    /* This fucking game i swear is a fucking shit with the "unexpected crash" with no fucking debuggers not even a fucking proper message
     class InfoMapChange : Info
     {
         private string __NextMap__;
@@ -58,15 +57,13 @@ namespace Hooks
 
     HookReturnCode OnMapChange( const string& in szNextMap )
     {
-        Hooks::InfoMapChange@ info = Hooks::InfoMapChange;
-        info.NextMap = szNextMap;
+        Hooks::InfoMapChange@ info = Hooks::InfoMapChange(szNextMap);
         g_MKExtensionManager.CallHook( "OnMapChange", @info );
 
         if( info.code & HookCode::Handle != 0 )
             return HOOK_HANDLED;
         return HOOK_CONTINUE;
     }
-    */
 
     class InfoClientSay : Info
     {
