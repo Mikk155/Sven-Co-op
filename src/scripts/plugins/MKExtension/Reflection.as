@@ -119,6 +119,7 @@ final class MKExtensionManager : Reflection
         RegisterHookName( "OnMapActivate" );
         RegisterHookName( "OnMapStart" );
         RegisterHookName( "OnMapInit" );
+        RegisterHookName( "OnThink" );
 
         for( uint fnIndex = 0; fnIndex < MaxMethods; fnIndex++ )
         {
@@ -310,8 +311,19 @@ final class MKExtensionManager : Reflection
         return false;
     }
 
+    private bool __OnThinkEnabled__;
+    
+    const bool HookOnThinkEnabled
+    {
+        get const { return this.__OnThinkEnabled__; }
+    }
+
     private void InitializeRequiredHooks()
     {
+        if( RegisterOrRemoveHook( "OnThink" ) )
+        {
+            this.__OnThinkEnabled__ = true;
+        }
         /*
         if( RegisterOrRemoveHook( "OnMapChange" ) )
         {
@@ -331,7 +343,7 @@ final class MKExtensionManager : Reflection
 
         if( pHook is null )
         {
-            g_Logger.critical( "Unknown hook \"" + HookName + "\"" );
+            g_Logger.warn( "Unknown hook \"" + HookName + "\"" );
             return -1;
         }
 

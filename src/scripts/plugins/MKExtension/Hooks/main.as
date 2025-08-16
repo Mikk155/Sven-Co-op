@@ -67,4 +67,47 @@ namespace Hooks
         return HOOK_CONTINUE;
     }
     */
+
+    namespace Garbage
+    {
+        class MKExtensionThinker : ScriptBaseEntity
+        {
+            void Spawn()
+            {
+                self.pev.solid = SOLID_NOT;
+                self.pev.movetype = MOVETYPE_NONE;
+
+                SetThink( ThinkFunction( this.Think ) );
+                self.pev.nextthink = g_Engine.time;
+            }
+
+            void Think()
+            {
+                g_MKExtensionManager.CallHook( "OnThink", @Info() );
+                self.pev.nextthink = g_Engine.time;
+            }
+        }
+
+        void MapInit()
+        {
+            if( g_MKExtensionManager.HookOnThinkEnabled )
+            {
+                g_CustomEntityFuncs.RegisterCustomEntity( "Hooks::Garbage::MKExtensionThinker", "MKExtensionThinker" );
+            }
+
+            g_MKExtensionManager.CallHook( "OnMapInit", @Info() );
+        }
+
+        void MapActivate()
+        {
+            InfoMapActivate@ info = InfoMapActivate();
+            info.NumberOfEntities = g_EngineFuncs.NumberOfEntities();
+            g_MKExtensionManager.CallHook( "OnMapActivate", @info );
+
+            if( g_MKExtensionManager.HookOnThinkEnabled )
+            {
+                g_EntityFuncs.CreateEntity( "MKExtensionThinker", null, true );
+            }
+        }
+    }
 }

@@ -38,7 +38,7 @@ namespace Extensions
         }
 
         /**
-        *   Called whenall extensions has been initialized. this is the last action in the plugin's PluginInit method.
+        *   Called when all extensions has been initialized. this is the last action in the plugin's PluginInit method.
         **/
         void OnPluginInit( Hooks::Info@ info )
         {
@@ -48,6 +48,15 @@ namespace Extensions
         void OnMapActivate( Hooks::InfoMapActivate@ info )
         {
         }
+
+        /**
+        *   Called every server frame only after MapActivate and before MapChange
+        **/
+        /*
+        void OnThink( Hooks::Info@ info )
+        {
+        }
+        */
 
         /*
         void OnMapChange( Hooks::InfoMapChange@ info )
