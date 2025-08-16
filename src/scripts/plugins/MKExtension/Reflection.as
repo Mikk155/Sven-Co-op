@@ -365,7 +365,7 @@ final class MKExtensionManager : Reflection
             if( Func is null )
                 continue;
 
-            Func.Call( info );
+            Func.Call( @info );
 
             if( info.code == HookCode::Continue )
             {
