@@ -1,0 +1,13 @@
+{
+    "$schema": "../../../../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/MKExtension/Extensions/PluginExample/main.as"
+    ],
+
+    "includes":
+    [
+        "scripts/plugins/MKExtension/assets.json"
+    ]
+}
