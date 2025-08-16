@@ -76,7 +76,7 @@ namespace Hooks
 
             void Think()
             {
-                g_MKExtensionManager.CallHook( "OnThink", @IHookInfo() );
+                g_MKExtensionManager.CallHook( "OnMapThink", @IHookInfo() );
                 self.pev.nextthink = g_Engine.time;
             }
         }
