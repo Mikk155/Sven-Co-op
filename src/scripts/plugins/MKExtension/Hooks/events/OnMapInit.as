@@ -36,6 +36,7 @@ namespace Hooks
 void MapInit()
 {
     Hooks::OnMapThink::MapInit();
+    Hooks::OnMapChange::MapInit();
 
     g_MKExtensionManager.CallHook( "OnMapInit", @Hooks::IHookInfo() );
 }

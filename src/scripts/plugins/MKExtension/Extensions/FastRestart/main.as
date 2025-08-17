@@ -109,7 +109,7 @@ namespace Extensions
             g_EntityFuncs.DispatchKeyValue( loadsave.edict(), "loadtime", RELOAD_TIME );
 
             loadsave.Use( null, null, USE_ON, 0.0f );
-            // -TODO Update MapChange type
+            OnMapChange::g_MapChangeType = MapChangeType::MKExtensionHandled;
         }
     }
 }

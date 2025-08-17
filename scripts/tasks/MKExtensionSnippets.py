@@ -86,6 +86,19 @@ void OnMapChange( Hooks::IMapChange@ info )
 {
     // map name the game is changing to
     string map = info.NextMap;
+
+    /**
+        Type of level change
+
+        Hooks::MapChangeType::Unknown
+        Hooks::MapChangeType::SurvivalRoundEnd
+        Hooks::MapChangeType::TriggerChangelevel
+        Hooks::MapChangeType::PlayerLoadSaved
+        Hooks::MapChangeType::GameEnd
+        Hooks::MapChangeType::MapCycleTimeOut
+        Hooks::MapChangeType::FragsLimitReached
+    **/
+    Hooks::MapChangeType type = info.Type;
     ${1:}
 }""",
 "Called when the map is changing"

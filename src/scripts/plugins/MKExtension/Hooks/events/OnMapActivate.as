@@ -52,6 +52,7 @@ void MapActivate()
     Hooks::IMapActivate@ info = Hooks::IMapActivate( g_EngineFuncs.NumberOfEntities() );
 
     // Don't count our entities
+    Hooks::OnMapChange::MapActivate();
     Hooks::OnMapThink::MapActivate();
 
     g_MKExtensionManager.CallHook( "OnMapActivate", @info );

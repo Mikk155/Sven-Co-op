@@ -85,7 +85,7 @@
             "OnMapChange"
         ],
         "description": "[MKExtension plugin] Called when the map is changing",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnMapChange( Hooks::IMapChange@ info )\n{\n    // map name the game is changing to\n    string map = info.NextMap;\n    ${1:}\n}"
+        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnMapChange( Hooks::IMapChange@ info )\n{\n    // map name the game is changing to\n    string map = info.NextMap;\n\n    /**\n        Type of level change\n\n        Hooks::MapChangeType::Unknown\n        Hooks::MapChangeType::SurvivalRoundEnd\n        Hooks::MapChangeType::TriggerChangelevel\n        Hooks::MapChangeType::PlayerLoadSaved\n        Hooks::MapChangeType::GameEnd\n        Hooks::MapChangeType::MapCycleTimeOut\n        Hooks::MapChangeType::FragsLimitReached\n    **/\n    Hooks::MapChangeType type = info.Type;\n    ${1:}\n}"
     },
     "OnMapInit": {
         "scope": "angelscript",
