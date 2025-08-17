@@ -31,6 +31,8 @@
 #include <algorithm>
 #include <mutex>
 
+#include <fmt/core.h>
+
 #pragma once
 
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
@@ -79,13 +81,11 @@ class SocketClient
             RecBufferSize = std::clamp( _RecBufferSize, 1, SO_MAX_MSG_SIZE );
             RecCallback = _RecCallback;
 
-            char buffer[128];
-            sprintf( buffer, "Setup at %s:%i with incoming buffer of %i", Address.c_str(), Port, RecBufferSize );
-            print( buffer );
+            fmt::print( "[SocketClient] Setup at {}:{} with incoming buffer of {}\n", Address.c_str(), Port, RecBufferSize );
 
             if( !RecCallback.has_value() )
             {
-                print( "No external callback method set. this client won't receive messages." );
+                fmt::print( "[SocketClient] No external callback method set. this client won't receive messages.\n" );
             }
 
             TryConnect();
@@ -100,7 +100,7 @@ class SocketClient
 
             if( WSAStartup( MAKEWORD( 2, 2 ), &wsa ) != 0 )
             {
-                print( "WSAStartup failed." );
+                fmt::print( "[SocketClient] WSAStartup failed.\n" );
                 return;
             }
             _SOCKET_ONLINE = true;
@@ -181,12 +181,7 @@ class SocketClient
             if( result == SOCKET_ERROR )
             {
                 int error = WSAGetLastError();
-
-                char buffer[48];
-                sprintf( buffer, "Error sending string: %i for message:", error );
-                print( buffer );
-                print( message );
-
+                fmt::print( "[SocketClient] Error sending string: {} for message:\n{}\n", error, message );
                 Disconnect();
             }
         }
@@ -213,7 +208,7 @@ class SocketClient
 
             if( !IsActive() )
             {
-                print( "Socket creation failed." );
+                fmt::print( "[SocketClient] Socket creation failed.\n" );
                 Disconnect();
                 return;
             }
@@ -225,13 +220,12 @@ class SocketClient
 
             if( int result = connect( m_Socket, (sockaddr*)&server, sizeof( server ) ); result < 0 )
             {
-                char buffer[48];
-                sprintf( buffer, "Failed to connect to a server: %i", result );
-                print( buffer );
+                fmt::print( "[SocketClient] Failed to connect to a server: {}\n", result );
                 Disconnect();
                 return;
             }
-            print( "Connected to a server" );
+
+            fmt::print( "[SocketClient] Connected to a server\n" );
 
             if( RecCallback.has_value() )
             {
@@ -266,18 +260,10 @@ class SocketClient
                 }
                 else
                 {
-                    print( "recv() failed" );
+                    fmt::print( "[SocketClient] recv() failed\n" );
                     Disconnect();
                     break;
                 }
             }
-        }
-
-        /**
-         * @brief Print a message to console, overide method to print to the game message system
-         */
-        virtual void print( const char* message )
-        {
-            std::cout << "[SocketClient] " << message << std::endl;
         }
 };

@@ -25,7 +25,9 @@
 #include "SocketClient.h"
 
 #include <csignal>
+
 #include <nlohmann/json.hpp>
+#include <fmt/core.h>
 
 using json = nlohmann::json;
 
@@ -56,17 +58,17 @@ void MyMessageHandler( const std::string& message )
 
             if( input.contains( "error" ) )
             {
-                std::cerr << "Socket server error: " << input[ "error" ].get<std::string>() << std::endl;
+                fmt::print( "Socket server error: {}\n", input[ "error" ].get<std::string>() );
             }
         }
         catch( const json::parse_error& e )
         {
-            std::cerr << "Parse error: " << e.what() << std::endl;
+            fmt::print( "Parse error: {}\n", e.what() );
         }
     }
     else
     {
-        std::cout << message << std::endl;
+        fmt::print( message );
     }
 }
 
@@ -93,7 +95,7 @@ int main()
     // Have a thread for testing a simulation of game messages
     std::thread WaitForUserInputToExit( []()
     {
-        std::cout << "Type 'quit' and press Enter to exit the program at any moment.\n";
+        fmt::print( "Type 'quit' and press Enter to exit the program at any moment.\n" );
 
         std::string line;
 
