@@ -171,7 +171,7 @@ class MKManagerSnippets( Task ):
 
             description: str = msnippet[ "description" ];
 
-            msnippet[ "body" ] = "/**\n\t" + description + "\n**/" + gsnippet[1];
+            msnippet[ "body" ] = "/**\n*\t" + gsnippet[2] + "\n**/" + gsnippet[1];
 
             description += gsnippet[2];
             msnippet[ "description" ] = description;

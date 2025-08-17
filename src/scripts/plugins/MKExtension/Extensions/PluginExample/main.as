@@ -14,9 +14,5 @@ namespace Extensions
             @Logger = CLogger( "Plugin Example" );
             Logger.info( "Registered \"" + GetName() + "\" at index \"" + info.ExtensionIndex + "\"" );
         }
-
-        void OnMapChange( Hooks::IMapChange@ info )
-        {
-        }
     }
 }

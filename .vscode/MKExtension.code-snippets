@@ -8,7 +8,7 @@
             "Extension"
         ],
         "description": "[MKExtension plugin] Extension workspace",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nnamespace Extensions\n{\n    namespace ${1:Extension name}\n    {\n        // You can register your own logger but idealy do after the plugin is being propertly registered.\n        CLogger@ Logger;\n\n        /**\n        *   This is obligatory and must be the namespace in string form.\n        **/\n        string GetName()\n        {\n            return \"${2:Extension name}\";\n        }\n\n        /**\n        *   Called when the extension is initialized\n        *   @info\n        *       ExtensionIndex: Contains the index for the current extension if needed to notice server ops to update the installation hierarchy.\n        **/\n        void OnExtensionInit( Hooks::IExtensionInit@ info )\n        {\n            @Logger = CLogger( \"${3:Logger name}\" );\n            Logger.info( \"Registered \\\"\" + GetName() + \"\\\" at index \\\"\" + info.ExtensionIndex + \"\\\"\" );\n        }\n    }\n}"
+        "body": "/**\n\tExtension workspace\n**/\nnamespace Extensions\n{\n    namespace ${1:Extension name}\n    {\n        // You can register your own logger but idealy do after the plugin is being propertly registered.\n        CLogger@ Logger;\n\n        /**\n        *   This is obligatory and must be the namespace in string form.\n        **/\n        string GetName()\n        {\n            return \"${2:Extension name}\";\n        }\n\n        /**\n        *   Called when the extension is initialized\n        *   @info\n        *       ExtensionIndex: Contains the index for the current extension if needed to notice server ops to update the installation hierarchy.\n        **/\n        void OnExtensionInit( Hooks::IExtensionInit@ info )\n        {\n            @Logger = CLogger( \"${3:Logger name}\" );\n            Logger.info( \"Registered \\\"\" + GetName() + \"\\\" at index \\\"\" + info.ExtensionIndex + \"\\\"\" );\n        }\n    }\n}"
     },
     "HookCode::Continue": {
         "scope": "angelscript",
@@ -19,7 +19,7 @@
             "HookCode::Continue"
         ],
         "description": "[MKExtension plugin] Continue calling other hooks",
-        "body": "/**\n\t[MKExtension plugin] \n**/HookCode::Continue"
+        "body": "/**\n\tContinue calling other hooks\n**/HookCode::Continue"
     },
     "HookCode::Break": {
         "scope": "angelscript",
@@ -30,7 +30,7 @@
             "HookCode::Break"
         ],
         "description": "[MKExtension plugin] Stop iteration to prevent subsequent extension's hooks from being called",
-        "body": "/**\n\t[MKExtension plugin] \n**/HookCode::Break"
+        "body": "/**\n\tStop iteration to prevent subsequent extension's hooks from being called\n**/HookCode::Break"
     },
     "HookCode::Handle": {
         "scope": "angelscript",
@@ -41,7 +41,7 @@
             "HookCode::Handle"
         ],
         "description": "[MKExtension plugin] Handle vanilla and metamod plugins. equivalent to HOOK_HANDLED",
-        "body": "/**\n\t[MKExtension plugin] \n**/HookCode::Handle"
+        "body": "/**\n\tHandle vanilla and metamod plugins. equivalent to HOOK_HANDLED\n**/HookCode::Handle"
     },
     "HookCode::Supercede": {
         "scope": "angelscript",
@@ -52,7 +52,7 @@
             "HookCode::Supercede"
         ],
         "description": "[MKExtension plugin] Handle the original game's call (metamod API only)",
-        "body": "/**\n\t[MKExtension plugin] \n**/HookCode::Supercede"
+        "body": "/**\n\tHandle the original game's call (metamod API only)\n**/HookCode::Supercede"
     },
     "OnPluginInit": {
         "scope": "angelscript",
@@ -63,7 +63,7 @@
             "OnPluginInit"
         ],
         "description": "[MKExtension plugin] Called when all extensions has been initialized. this is the last action in the plugin's PluginInit method.",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnPluginInit( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
+        "body": "/**\n\tCalled when all extensions has been initialized. this is the last action in the plugin's PluginInit method.\n**/\nvoid OnPluginInit( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
     },
     "OnMapActivate": {
         "scope": "angelscript",
@@ -74,7 +74,7 @@
             "OnMapActivate"
         ],
         "description": "[MKExtension plugin] Called by MapActivate.",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnMapActivate( Hooks::IMapActivate@ info )\n{\n    // Number of entities in the world (only BSP)\n    int numb_ents = info.NumberOfEntities;\n    ${1:}\n}"
+        "body": "/**\n\tCalled by MapActivate.\n**/\nvoid OnMapActivate( Hooks::IMapActivate@ info )\n{\n    // Number of entities in the world (only BSP)\n    int numb_ents = info.NumberOfEntities;\n    ${1:}\n}"
     },
     "OnMapChange": {
         "scope": "angelscript",
@@ -85,7 +85,7 @@
             "OnMapChange"
         ],
         "description": "[MKExtension plugin] Called when the map is changing",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnMapChange( Hooks::IMapChange@ info )\n{\n    // map name the game is changing to\n    string map = info.NextMap;\n\n    /**\n        Type of level change\n\n        Hooks::MapChangeType::Unknown\n        Hooks::MapChangeType::SurvivalRoundEnd\n        Hooks::MapChangeType::TriggerChangelevel\n        Hooks::MapChangeType::PlayerLoadSaved\n        Hooks::MapChangeType::GameEnd\n        Hooks::MapChangeType::MapCycleTimeOut\n        Hooks::MapChangeType::FragsLimitReached\n    **/\n    Hooks::MapChangeType type = info.Type;\n    ${1:}\n}"
+        "body": "/**\n\tCalled when the map is changing\n**/\nvoid OnMapChange( Hooks::IMapChange@ info )\n{\n    // map name the game is changing to\n    string map = info.NextMap;\n\n    /**\n        Type of level change\n\n        Hooks::MapChangeType::Unknown\n        Hooks::MapChangeType::SurvivalRoundEnd\n        Hooks::MapChangeType::TriggerChangelevel\n        Hooks::MapChangeType::PlayerLoadSaved\n        Hooks::MapChangeType::GameEnd\n        Hooks::MapChangeType::MapCycleTimeOut\n        Hooks::MapChangeType::FragsLimitReached\n    **/\n    Hooks::MapChangeType type = info.Type;\n    ${1:}\n}"
     },
     "OnMapInit": {
         "scope": "angelscript",
@@ -96,7 +96,7 @@
             "OnMapInit"
         ],
         "description": "[MKExtension plugin] Called by MapInit.",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnMapInit( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
+        "body": "/**\n\tCalled by MapInit.\n**/\nvoid OnMapInit( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
     },
     "OnMapStart": {
         "scope": "angelscript",
@@ -107,7 +107,7 @@
             "OnMapStart"
         ],
         "description": "[MKExtension plugin] Called by MapStart.",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnMapStart( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
+        "body": "/**\n\tCalled by MapStart.\n**/\nvoid OnMapStart( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
     },
     "OnMapThink": {
         "scope": "angelscript",
@@ -118,7 +118,7 @@
             "OnMapThink"
         ],
         "description": "[MKExtension plugin] Called every server frame starting after MapActivate until the map is changing.",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnMapThink( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
+        "body": "/**\n\tCalled every server frame starting after MapActivate until the map is changing.\n**/\nvoid OnMapThink( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
     },
     "OnPluginExit": {
         "scope": "angelscript",
@@ -129,6 +129,6 @@
             "OnPluginExit"
         ],
         "description": "[MKExtension plugin] Called by PluginExit.",
-        "body": "/**\n\t[MKExtension plugin] \n**/\nvoid OnPluginExit( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
+        "body": "/**\n\tCalled by PluginExit.\n**/\nvoid OnPluginExit( Hooks::IHookInfo@ info )\n{\n    ${1:}\n}"
     }
 }
