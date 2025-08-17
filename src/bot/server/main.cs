@@ -22,15 +22,10 @@
 *    SOFTWARE.
 **/
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-class Program
+class CServerSocket
 {
-    static void Main(string[] args)
+    public CServerSocket()
     {
-        Console.WriteLine("Hello, World!");
-        CServerSocket socket = new CServerSocket();
-        Bot bot = new Bot( socket );
+        Console.WriteLine($"Constructed CServerSocket");
     }
 }
