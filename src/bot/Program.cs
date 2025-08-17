@@ -1,4 +1,8 @@
-﻿namespace bot;
+﻿
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace bot;
 
 class Program
 {
