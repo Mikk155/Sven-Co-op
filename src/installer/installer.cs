@@ -26,17 +26,31 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-class Installer
-{
-    static async Task Main()
-    {
 #if DEBUG
-        string PackageRaw = File.ReadAllText( Path.Combine( Directory.GetCurrentDirectory(), "..", "..", "package.json" ) );
-#else
-        using HttpClient http = new HttpClient();
-        string PackageRaw = await http.GetStringAsync( "https://raw.githubusercontent.com/Mikk155/Sven-Co-op/main/package.json" );
+#pragma warning disable CS1998
 #endif
 
+class Installer
+{
+    private static readonly string Repository = "https://raw.githubusercontent.com/Mikk155/Sven-Co-op/main/";
+
+#if DEBUG
+    private static readonly string Workspace = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );
+#endif
+
+    private static async Task<string> GetFile( string FilePath )
+    {
+#if DEBUG
+        return File.ReadAllText( Path.Combine( Path.Combine( Workspace, FilePath ) ) );
+#else
+        using HttpClient http = new HttpClient();
+        return await http.GetStringAsync( $"{Repository}{FilePath}" );
+#endif
+    }
+
+    static async Task Main()
+    {
+        string PackageRaw = await GetFile( "package.json" );
         Console.WriteLine( PackageRaw );
     }
 }

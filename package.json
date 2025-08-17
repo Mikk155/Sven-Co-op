@@ -1,0 +1,12 @@
+{
+    "$schema": "schemas/package.json",
+
+    "projects":
+    {
+        "as.extension.manager":
+        {
+            "name": "MKExtension Manager",
+            "assets": "scripts/plugins/MKExtension/assets.json"
+        }
+    }
+}
