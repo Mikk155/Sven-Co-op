@@ -1,3 +1,6 @@
 [submodule "scripts/utils"]
 	path = scripts/utils
 	url = https://github.com/Mikk155/Python-Utilities
+[submodule "external/json"]
+	path = external/json
+	url = https://github.com/nlohmann/json
