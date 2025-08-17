@@ -125,8 +125,20 @@ namespace Hooks
             g_MKExtensionManager.RegisterHook( @HookMapChange( "OnMapChange" ) );
         }
 
+        // Stupid ass game
+        float FIX_FUCKING_LISTEN_SERVERS;
+
         HookReturnCode MapChange( const string& in szNextMap )
         {
+            if( !g_EngineFuncs.IsDedicatedServer() )
+            {
+                // could be longer, idk another way to avoid this shit
+                if( FIX_FUCKING_LISTEN_SERVERS + 5.0f > g_Engine.time )
+                {
+                    return HOOK_CONTINUE;
+                }
+            }
+
             Hooks::IMapChange@ info = Hooks::IMapChange(szNextMap);
             g_MKExtensionManager.CallHook( "OnMapChange", @info );
 

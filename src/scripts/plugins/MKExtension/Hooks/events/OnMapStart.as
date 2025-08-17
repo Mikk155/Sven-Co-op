@@ -35,5 +35,7 @@ namespace Hooks
 
 void MapStart()
 {
+    Hooks::OnMapChange::FIX_FUCKING_LISTEN_SERVERS = g_Engine.time;
+
     g_MKExtensionManager.CallHook( "OnMapStart", @Hooks::IHookInfo() );
 }
