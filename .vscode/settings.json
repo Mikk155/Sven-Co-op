@@ -22,6 +22,16 @@
     "editor.formatOnType": false,
     "editor.codeLens": false,
 
+    // Somehow C# overrided the aboves
+    "[csharp]":
+    {
+        "editor.indentSize": 4,
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": false,
+        "editor.formatOnType": false,
+        "editor.codeLens": false,
+    },
+
     // File excludes
     "files.exclude":
     {
