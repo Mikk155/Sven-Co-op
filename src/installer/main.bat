@@ -1,6 +1,8 @@
 @echo off
 
-dotnet build installer.sln
+set APPNAME=MKAssetInstaller
+
+dotnet build installer.sln -p:AssemblyName=%APPNAME%
 
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR
@@ -13,6 +15,6 @@ cd ..
 cd build
 cd installer
 
-MKInstaller.exe
+%APPNAME%.exe
 
 @pause

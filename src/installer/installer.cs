@@ -71,7 +71,7 @@ class Installer
 
             Console.WriteLine( $"Something went wrong fetching the package.\nPlease notify this in a github issue {Repository}/issues\nException: {e}" );
 
-            string title = Uri.EscapeDataString( "[MKInstaller] Package fetch error" );
+            string title = Uri.EscapeDataString( "[Asset Installer] Package fetch error" );
 
             string body = Uri.EscapeDataString( $"Something went wrong fetching the package:\n> {e.Message}\n## Exception:\n```\n{e}`\n```\n" );
 

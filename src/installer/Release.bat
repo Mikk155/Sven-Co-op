@@ -1,7 +1,10 @@
 @echo off
 
 echo Compiling...
-dotnet build installer.sln -c Release
+
+set APPNAME=MKAssetInstaller
+
+dotnet build installer.sln -p:AssemblyName=%APPNAME% -c Release
 
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR
