@@ -22,6 +22,10 @@
 *    SOFTWARE.
 **/
 
+#if VSC_EXTENSION
+#include "main"
+#endif
+
 enum HookCode
 {
     // Continue calling other extensions normally

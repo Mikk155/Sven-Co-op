@@ -22,6 +22,10 @@
 *    SOFTWARE.
 **/
 
+#if VSC_EXTENSION
+#include "main"
+#endif
+
 // Represents an extension's method.
 final class MKEHook : NameGetter
 {

@@ -8,6 +8,10 @@
 *   The order of addition of plugins is important for priority. plugins added first will have priority over later ones.
 **/
 
+#if VSC_EXTENSION
+#include "../main"
+#endif
+
 #include "PluginExample/main"
 
 namespace Extensions

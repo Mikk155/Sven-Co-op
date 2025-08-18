@@ -22,6 +22,10 @@
 *    SOFTWARE.
 **/
 
+#if VSC_EXTENSION
+#include "../../main"
+#endif
+
 namespace Hooks
 {
     namespace OnMapStart

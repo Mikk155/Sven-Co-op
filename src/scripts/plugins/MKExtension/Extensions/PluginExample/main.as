@@ -1,3 +1,7 @@
+#if VSC_EXTENSION
+#include "../../main"
+#endif
+
 namespace Extensions
 {
     namespace PluginExample

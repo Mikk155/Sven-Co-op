@@ -22,6 +22,10 @@
 *    SOFTWARE.
 **/
 
+#if VSC_EXTENSION
+#include "../main"
+#endif
+
 #include "events/OnMapActivate"
 #include "events/OnMapChange"
 #include "events/OnMapInit"

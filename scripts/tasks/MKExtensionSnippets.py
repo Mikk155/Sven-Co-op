@@ -10,6 +10,12 @@ g_Snippets: list[tuple[str]] = [
 (
 "Extension",
 """
+// This Preproccesor is in here for the Angelscript extension to be context aware
+// This is not compiled by the game at all.
+#if VSC_EXTENSION
+#include "../../main"
+#endif
+
 namespace Extensions
 {
     namespace ${1:Extension name}
