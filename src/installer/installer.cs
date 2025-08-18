@@ -33,7 +33,9 @@ class Installer
 {
     private static readonly Version version = new Version( 1, 0, 0 );
 
-    private static Package? package;
+#pragma warning disable CS8618
+    private static Package package;
+#pragma warning restore CS8618
 
     private static readonly string GithubUser = "Mikk155";
     private static readonly string GithubRepository = "Sven-Co-op";
@@ -98,8 +100,52 @@ class Installer
         }
     }
 
+    private static async Task OpenUpdatedLink()
+    {
+    }
+
+    /// <summary>
+    /// Check for updates.
+    /// If we're in a old Major or Minor update the program exists.
+    /// If we're in a old Patch the program just prints a warning.
+    /// </summary>
+    private static async Task CheckForUpdates()
+    {
+        if( package.version.Major > version.Major || package.version.Minor > version.Minor )
+        {
+            Console.Beep();
+
+            Console.WriteLine( "There is a newer version of this program available and may be required." );
+
+            Console.WriteLine( $"Current version: {version.ToString()}" );
+            Console.WriteLine( $"Updated version: {package.version.ToString()}" );
+
+            Console.WriteLine( "Press enter to exit" );
+
+            await OpenUpdatedLink();
+
+            Console.ReadLine();
+            Environment.Exit(1);
+        }
+        else
+        {
+            Console.WriteLine( "There is patch available for this program." );
+
+            Console.WriteLine( $"Current version: {version.ToString()}" );
+            Console.WriteLine( $"Updated version: {package.version.ToString()}" );
+
+            Console.WriteLine( "Write \"u\" to update." );
+
+            if( Console.Read() == 'u' )
+            {
+                await OpenUpdatedLink();
+            }
+        }
+    }
+
     static async Task Main()
     {
         await GetPackage();
+        await CheckForUpdates();
     }
 }

@@ -39,7 +39,7 @@ internal class Package
 
     public Package( JObject? package )
     {
-        Version VersionInJson = new Version(0,0,0);
+        Version VersionInJson = new Version(1,0,0);
 
         // Read version---
 

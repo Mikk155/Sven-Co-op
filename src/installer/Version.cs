@@ -39,22 +39,4 @@ internal class Version
     {
         return $"{Major}.{Minor}.{Patch}";
     }
-
-    /// <summary>
-    /// Check for version
-    /// </summary>
-    /// <param name="other"></param>
-    /// <returns>Returns whatever this instance is major or equal to the given other instance</returns>
-    public bool IsMajorThan( Version other )
-    {
-        if( Major == other.Major )
-        {
-            if( Minor > other.Minor )
-                return true;
-
-            if( Minor == other.Minor )
-                return ( Patch >= other.Patch );
-        }
-        return ( Major > other.Major );
-    }
 }
