@@ -1,32 +1,8 @@
 {
-    "files.exclude":
-    {
-        "**/__pycache__": true,
-        "**/obj": true,
-        "**/bin": true
-    },
-
-    "search.exclude":
-    {
-        "**/__pycache__": true,
-        "**/obj": true,
-        "**/bin": true
-    },
-
-    "[csharp]":
-    {
-        "editor.indentSize": 4,
-        "editor.formatOnPaste": false,
-        "editor.formatOnSave": false,
-        "editor.formatOnType": false,
-        "editor.codeLens": false
-    },
-
     "code-runner.executorMapByFileExtension":
     {
         ".as": "python scripts/code-runner.py -file \"$fullFileName\""
     },
-
     "code-runner.runInTerminal": true,
 
     "emeraldwalk.runonsave":
@@ -40,7 +16,53 @@
         ]
     },
 
-    "files.associations": {
+    "editor.indentSize": 4,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.codeLens": false,
+
+    // File excludes
+    "files.exclude":
+    {
+        "**/__pycache__": true,
+        "**/obj": true,
+        "**/bin": true
+    },
+
+    "search.exclude":
+    {
+        "build": true,
+        "**/__pycache__": true,
+        "**/obj": true,
+        "**/bin": true
+    },
+
+    "C_Cpp.codeAnalysis.exclude":
+    {
+        "build": true,
+        "**/__pycache__": true,
+        "**/obj": true,
+        "**/bin": true
+    },
+
+    "C_Cpp.files.exclude":
+    {
+        "build": true,
+        "**/__pycache__": true,
+        "**/obj": true,
+        "**/bin": true
+    },
+
+    "python.analysis.exclude": [
+        "build",
+        "**/__pycache__",
+        "**/obj",
+        "**/bin"
+    ],
+
+    "files.associations":
+    {
         "*.json": "jsonc",
         "xstring": "cpp",
         "iostream": "cpp",
