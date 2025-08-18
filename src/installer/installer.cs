@@ -58,6 +58,40 @@ class Installer
 #endif
     }
 
+    private static void ReportGithubIssue( string title, string body, Exception exception, bool critical )
+    {
+        Console.Beep();
+
+        Console.WriteLine( $"There was an error\nPlease notify this in a github issue {GithubFullRepository}/issues" );
+        Console.WriteLine( title );
+        Console.WriteLine( $"Exception: {exception.Message}\n{exception}" );
+
+        title = Uri.EscapeDataString( $"[Installer] {title}" );
+
+        body = Uri.EscapeDataString( $"{body}\n> {exception.Message}\n## Exception:\n```\n{exception}`\n```\n" );
+
+        string labels = Uri.EscapeDataString( "installer" );
+
+        string url = $"{GithubFullRepository}/issues/new?title={title}&body={body}&labels={labels}";
+
+        try
+        {
+            System.Diagnostics.Process.Start( new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            } );
+        }
+        catch { }
+
+        if( critical )
+        {
+            Console.WriteLine( "Press enter to exit" );
+            Console.ReadLine();
+            Environment.Exit(1);
+        }
+    }
+
     /// <summary>
     /// Read the package from github or from the local repository if in debug mode
     /// </summary>
@@ -70,33 +104,9 @@ class Installer
             JObject? PackageJson = JsonConvert.DeserializeObject<JObject>( PackageRaw );
             package = new Package( PackageJson );
         }
-        catch( Exception e )
+        catch( Exception exception )
         {
-            Console.Beep();
-
-            Console.WriteLine( $"Something went wrong fetching the package.\nPlease notify this in a github issue {GithubFullRepository}/issues\nException: {e}" );
-
-            string title = Uri.EscapeDataString( "[Asset Installer] Package fetch error" );
-
-            string body = Uri.EscapeDataString( $"Something went wrong fetching the package:\n> {e.Message}\n## Exception:\n```\n{e}`\n```\n" );
-
-            string labels = Uri.EscapeDataString( "installer" );
-
-            string url = $"{GithubFullRepository}/issues/new?title={title}&body={body}&labels={labels}";
-
-            try
-            {
-                System.Diagnostics.Process.Start( new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                } );
-            }
-            catch { }
-
-            Console.WriteLine( "Press enter to exit" );
-            Console.ReadLine();
-            Environment.Exit(1);
+            ReportGithubIssue( "Failed to fetch package", "Json deserialization error", exception, true );
         }
     }
 
