@@ -33,6 +33,8 @@ class Installer
 {
     private static readonly Version version = new Version( 1, 0, 0 );
 
+    private static Package? package;
+
     private static readonly string GithubUser = "Mikk155";
     private static readonly string GithubRepository = "Sven-Co-op";
     private static readonly string GithubBranch = "main";
@@ -54,16 +56,17 @@ class Installer
 #endif
     }
 
-    static async Task Main()
+    /// <summary>
+    /// Read the package from github or from the local repository if in debug mode
+    /// </summary>
+    private static async Task GetPackage()
     {
-        // Read package
         string PackageRaw = await GetFile( "package.json" );
-
-        JObject? Package;
 
         try
         {
-            Package = JsonConvert.DeserializeObject<JObject>( PackageRaw );
+            JObject? PackageJson = JsonConvert.DeserializeObject<JObject>( PackageRaw );
+            package = new Package( PackageJson );
         }
         catch( Exception e )
         {
@@ -93,5 +96,10 @@ class Installer
             Console.ReadLine();
             Environment.Exit(1);
         }
+    }
+
+    static async Task Main()
+    {
+        await GetPackage();
     }
 }

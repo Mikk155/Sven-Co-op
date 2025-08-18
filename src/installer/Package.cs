@@ -22,39 +22,33 @@
 *    SOFTWARE.
 **/
 
-internal class Version
+using Newtonsoft.Json.Linq;
+
+internal class Project( string Name, string Title, string Description, string AssetFile )
 {
-    public readonly uint Major;
-    public readonly uint Minor;
-    public readonly uint Patch;
+    public readonly string Name = Name;
+    public readonly string Title = Title;
+    public readonly string Description = Description;
+    public readonly string AssetFile = AssetFile;
+}
 
-    public Version( uint _Major, uint _Minor, uint _Patch )
+internal class Package
+{
+    public readonly Version version;
+    public readonly List<Project> Projects;
+
+    public Package( JObject? package )
     {
-        Major = _Major;
-        Minor = _Minor;
-        Patch = _Patch;
-    }
+        Version VersionInJson = new Version(0,0,0);
 
-    public override string ToString()
-    {
-        return $"{Major}.{Minor}.{Patch}";
-    }
+        // Read version---
 
-    /// <summary>
-    /// Check for version
-    /// </summary>
-    /// <param name="other"></param>
-    /// <returns>Returns whatever this instance is major or equal to the given other instance</returns>
-    public bool IsMajorThan( Version other )
-    {
-        if( Major == other.Major )
-        {
-            if( Minor > other.Minor )
-                return true;
+        version = VersionInJson;
 
-            if( Minor == other.Minor )
-                return ( Patch >= other.Patch );
-        }
-        return ( Major > other.Major );
+        List<Project> ProjectsInJson = new List<Project>();
+
+        // Read all projects---
+
+        Projects = ProjectsInJson;
     }
 }
