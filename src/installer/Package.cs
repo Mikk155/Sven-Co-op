@@ -37,18 +37,28 @@ internal class Package
     public readonly Version version;
     public readonly List<Project> Projects;
 
+#pragma warning disable CS8602, CS8600
     public Package( JObject? package )
     {
-        Version VersionInJson = new Version(1,0,0);
+        JArray semantic = (JArray)package.GetValue( "version" );
 
-        // Read version---
-
-        version = VersionInJson;
+        version = new Version( (uint)semantic[0], (uint)semantic[1], (uint)semantic[2] );
 
         List<Project> ProjectsInJson = new List<Project>();
 
-        // Read all projects---
+        JObject projects = (JObject)package.GetValue( "projects" );
+
+        foreach( KeyValuePair<string, JToken?> project in projects )
+        {
+            ProjectsInJson.Add( new Project(
+                Name: project.Key.ToString(),
+                Title: project.Value["name"].ToString(),
+                Description: project.Value["description"]?.ToString() ?? "",
+                AssetFile: project.Value["assets"].ToString()
+            ) );
+        }
 
         Projects = ProjectsInJson;
     }
+#pragma warning restore CS8602, CS8600
 }
