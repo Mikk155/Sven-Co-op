@@ -30,7 +30,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 #if DEBUG
-#pragma warning disable CS1998
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 #endif
 
 class Installer
