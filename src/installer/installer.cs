@@ -26,6 +26,9 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 #if DEBUG
 #pragma warning disable CS1998
 #endif
@@ -34,19 +37,20 @@ class Installer
 {
     private static readonly Version version = new Version( 1, 2, 1 );
 
-    private static readonly string Repository = "https://raw.githubusercontent.com/Mikk155/Sven-Co-op/main/";
+    private static readonly string Branch = "main";
+    private static readonly string Repository = "https://github.com/Mikk155/Sven-Co-op";
 
 #if DEBUG
-    private static readonly string Workspace = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );
+    private static readonly string LocalRepository = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );
 #endif
 
     private static async Task<string> GetFile( string FilePath )
     {
 #if DEBUG
-        return File.ReadAllText( Path.Combine( Path.Combine( Workspace, FilePath ) ) );
+        return File.ReadAllText( Path.Combine( Path.Combine( LocalRepository, FilePath ) ) );
 #else
         using HttpClient http = new HttpClient();
-        return await http.GetStringAsync( $"{Repository}{FilePath}" );
+        return await http.GetStringAsync( $"{Repository}/{Branch}/{FilePath}" );
 #endif
     }
 
@@ -54,5 +58,40 @@ class Installer
     {
         // Read package
         string PackageRaw = await GetFile( "package.json" );
+
+        JObject? Package;
+
+        try
+        {
+            Package = JsonConvert.DeserializeObject<JObject>( PackageRaw );
+        }
+        catch( Exception e )
+        {
+            Console.Beep();
+
+            Console.WriteLine( $"Something went wrong fetching the package.\nPlease notify this in a github issue {Repository}/issues\nException: {e}" );
+
+            string title = Uri.EscapeDataString( "[MKInstaller] Package fetch error" );
+
+            string body = Uri.EscapeDataString( $"Something went wrong fetching the package:\n> {e.Message}\n## Exception:\n```\n{e}`\n```\n" );
+
+            string labels = Uri.EscapeDataString( "installer" );
+
+            string url = $"{Repository}/issues/new?title={title}&body={body}&labels={labels}";
+
+            try
+            {
+                System.Diagnostics.Process.Start( new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                } );
+            }
+            catch { }
+
+            Console.WriteLine( "Press enter to exit" );
+            Console.ReadLine();
+            Environment.Exit(1);
+        }
     }
 }
