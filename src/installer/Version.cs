@@ -1,4 +1,8 @@
-﻿/**
+
+
+using System.Diagnostics.CodeAnalysis;
+
+/**
 *    MIT License
 *
 *    Copyright (c) 2025 Mikk155
@@ -22,37 +26,39 @@
 *    SOFTWARE.
 **/
 
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-#if DEBUG
-#pragma warning disable CS1998
-#endif
-
-class Installer
+internal class Version
 {
-    private static readonly Version version = new Version( 1, 2, 1 );
+    public readonly uint Major;
+    public readonly uint Minor;
+    public readonly uint Patch;
 
-    private static readonly string Repository = "https://raw.githubusercontent.com/Mikk155/Sven-Co-op/main/";
-
-#if DEBUG
-    private static readonly string Workspace = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );
-#endif
-
-    private static async Task<string> GetFile( string FilePath )
+    public Version( uint _Major, uint _Minor, uint _Patch )
     {
-#if DEBUG
-        return File.ReadAllText( Path.Combine( Path.Combine( Workspace, FilePath ) ) );
-#else
-        using HttpClient http = new HttpClient();
-        return await http.GetStringAsync( $"{Repository}{FilePath}" );
-#endif
+        Major = _Major;
+        Minor = _Minor;
+        Patch = _Patch;
     }
 
-    static async Task Main()
+    public override string ToString()
     {
-        // Read package
-        string PackageRaw = await GetFile( "package.json" );
+        return $"{Major}.{Minor}.{Patch}";
+    }
+
+    /// <summary>
+    /// Check for version
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns>Returns whatever this instance is major or equal to the given other instance</returns>
+    public bool IsMajorThan( Version other )
+    {
+        if( Major == other.Major )
+        {
+            if( Minor > other.Minor )
+                return true;
+
+            if( Minor == other.Minor )
+                return ( Patch >= other.Patch );
+        }
+        return ( Major > other.Major );
     }
 }

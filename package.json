@@ -1,6 +1,8 @@
 {
     "$schema": "schemas/package.json",
 
+    "version": [ 1, 0, 0 ],
+
     "projects":
     {
         "as.extension.manager":
