@@ -2,7 +2,7 @@
     "recommendations":
     [
         "formulahendry.code-runner",
-        "renesackers.angelscript",
+        "sashi0034.angel-lsp",
         "emeraldwalk.RunOnSave"
     ]
 }
