@@ -164,7 +164,7 @@ class Installer
             Console.ReadLine();
             Environment.Exit(1);
         }
-        else
+        else if( package.version.Patch > version.Patch )
         {
             Console.WriteLine( "There is patch available for this program." );
 
