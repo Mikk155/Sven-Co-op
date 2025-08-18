@@ -37,8 +37,12 @@ class Installer
 {
     private static readonly Version version = new Version( 1, 2, 1 );
 
-    private static readonly string Branch = "main";
-    private static readonly string Repository = "https://github.com/Mikk155/Sven-Co-op";
+    private static readonly string GithubUser = "Mikk155";
+    private static readonly string GithubRepository = "Sven-Co-op";
+    private static readonly string GithubBranch = "main";
+
+    private static string GithubFullRepository =>
+        $"https://github.com/{GithubUser}/{GithubRepository}";
 
 #if DEBUG
     private static readonly string LocalRepository = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );
@@ -50,7 +54,7 @@ class Installer
         return File.ReadAllText( Path.Combine( Path.Combine( LocalRepository, FilePath ) ) );
 #else
         using HttpClient http = new HttpClient();
-        return await http.GetStringAsync( $"{Repository}/{Branch}/{FilePath}" );
+        return await http.GetStringAsync( $"{GithubFullRepository}/{GithubBranch}/{FilePath}" );
 #endif
     }
 
@@ -69,7 +73,7 @@ class Installer
         {
             Console.Beep();
 
-            Console.WriteLine( $"Something went wrong fetching the package.\nPlease notify this in a github issue {Repository}/issues\nException: {e}" );
+            Console.WriteLine( $"Something went wrong fetching the package.\nPlease notify this in a github issue {GithubFullRepository}/issues\nException: {e}" );
 
             string title = Uri.EscapeDataString( "[Asset Installer] Package fetch error" );
 
@@ -77,7 +81,7 @@ class Installer
 
             string labels = Uri.EscapeDataString( "installer" );
 
-            string url = $"{Repository}/issues/new?title={title}&body={body}&labels={labels}";
+            string url = $"{GithubFullRepository}/issues/new?title={title}&body={body}&labels={labels}";
 
             try
             {
