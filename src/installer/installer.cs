@@ -35,7 +35,7 @@ using Newtonsoft.Json.Linq;
 
 class Installer
 {
-    private static readonly Version version = new Version( 1, 2, 1 );
+    private static readonly Version version = new Version( 1, 0, 0 );
 
     private static readonly string GithubUser = "Mikk155";
     private static readonly string GithubRepository = "Sven-Co-op";
