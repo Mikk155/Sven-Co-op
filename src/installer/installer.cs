@@ -112,6 +112,33 @@ class Installer
 
     private static async Task OpenUpdatedLink()
     {
+//
+        using HttpClient http = new HttpClient();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd( "AssetInstaller" );
+
+        try
+        {
+            string GithubData = await http.GetStringAsync( $"https://api.github.com/repos/{GithubUser}/{GithubRepository}/releases/tags/installer-{package.version.ToString()}" );
+
+            JObject? ReleaseData = JsonConvert.DeserializeObject<JObject>( GithubData );
+
+            // string? url = ReleaseData?[ "html_url" ]?.ToString();
+            // Assume is valid to get the proper exception
+#pragma warning disable CS8602
+            string url = ReleaseData[ "html_url" ].ToString();
+#pragma warning restore CS8602
+
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            } );
+        }
+        catch( Exception exception )
+        {
+            Console.WriteLine( $"Error getting the Github release. Open the link manually. {GithubFullRepository}/releases" );
+            ReportGithubIssue( "Failed to fetch release tag", $"unexistent version {package.version.ToString()}", exception, true );
+        }
     }
 
     /// <summary>
