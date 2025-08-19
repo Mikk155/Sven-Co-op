@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\source\angelscript.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\CASBinaryStringBuilder.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\CASBaseObject.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\dllapi.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\CASSQLite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\engine_api.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\dllmain.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\h_export.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\meta_api.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\sdk_util.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\vftable.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\CASSQLItem.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\CASSQLGrid.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\dll_hook.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\engine_hook.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\CASJson.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="header">
+      <UniqueIdentifier>{0ad5ce2c-b288-4136-b836-b05aa30e54c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{f47401e1-9492-4ea2-9248-3653ba782be5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\header\angelscript.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\angelscript\angelscriptlib.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\CASBaseObject.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\CASBinaryStringBuilder.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\CASSQLite.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\dlldef.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\enginedef.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\info_name.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\signatures.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\utility.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\vftable.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\CASSQLItem.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\CASSQLGrid.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\extern_hook.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\header\CASJson.h">
+      <Filter>header</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
