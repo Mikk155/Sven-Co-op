@@ -22,6 +22,7 @@
 *    SOFTWARE.
 **/
 
+using Spectre.Console;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -62,9 +63,9 @@ class Installer
     {
         Console.Beep();
 
-        Console.WriteLine( $"There was an error\nPlease notify this in a github issue {GithubFullRepository}/issues" );
-        Console.WriteLine( title );
-        Console.WriteLine( $"Exception: {exception.Message}\n{exception}" );
+        AnsiConsole.MarkupLine( $"[##486088]There was an error\nPlease notify this in a github issue [#00ff00]{GithubFullRepository}/issues[/][/]" );
+        AnsiConsole.MarkupLine( $"[#f00]{title}[/]" );
+        AnsiConsole.MarkupLine( $"[#486088][#00ff00]Exception[/]: [#f85]{exception.Message}[/]\n[#f00]{exception}[/][/]" );
 
         title = Uri.EscapeDataString( $"[Installer] {title}" );
 
@@ -86,7 +87,7 @@ class Installer
 
         if( critical )
         {
-            Console.WriteLine( "Press enter to exit" );
+            AnsiConsole.MarkupLine( "[#f00]Press enter to exit[/]" );
             Console.ReadLine();
             Environment.Exit(1);
         }
@@ -136,7 +137,7 @@ class Installer
         }
         catch( Exception exception )
         {
-            Console.WriteLine( $"Error getting the Github release. Open the link manually. {GithubFullRepository}/releases" );
+            AnsiConsole.MarkupLine( $"[#486088]Error getting the Github release. Open the link manually. [#00ff00]{GithubFullRepository}/releases[/][/]" );
             ReportGithubIssue( "Failed to fetch release tag", $"unexistent version {Packages.version.ToString()}", exception, true );
         }
     }
@@ -152,12 +153,12 @@ class Installer
         {
             Console.Beep();
 
-            Console.WriteLine( "There is a newer version of this program available and may be required." );
+            AnsiConsole.MarkupLine( "[#486088]There is a newer version of this program available and may be required.[/]" );
 
-            Console.WriteLine( $"Current version: {version.ToString()}" );
-            Console.WriteLine( $"Updated version: {Packages.version.ToString()}" );
+            AnsiConsole.MarkupLine( $"[#486088]Current version: [#00ff00]{version.ToString()}[/][/]" );
+            AnsiConsole.MarkupLine( $"[#486088]Updated version: [#00ff00]{Packages.version.ToString()}[/][/]" );
 
-            Console.WriteLine( "Press enter to exit" );
+            AnsiConsole.MarkupLine( "[#f00]Press enter to exit[/]" );
 
             await OpenUpdatedLink();
 
@@ -166,12 +167,12 @@ class Installer
         }
         else if( Packages.version.Patch > version.Patch )
         {
-            Console.WriteLine( "There is patch available for this program." );
+            AnsiConsole.MarkupLine( "[#486088]There is patch available for this program.[/]" );
 
-            Console.WriteLine( $"Current version: {version.ToString()}" );
-            Console.WriteLine( $"Updated version: {Packages.version.ToString()}" );
+            AnsiConsole.MarkupLine( $"[#486088]Current version: [#00ff00]{version.ToString()}[/][/]" );
+            AnsiConsole.MarkupLine( $"[#486088]Updated version: [#00ff00]{Packages.version.ToString()}[/][/]" );
 
-            Console.WriteLine( "Write \"u\" to update." );
+            AnsiConsole.MarkupLine( "[#486088]Write \"[#00ff00]u[/]\" to update.[/]" );
 
             if( Console.Read() == 'u' )
             {
@@ -182,16 +183,18 @@ class Installer
 
     static async Task InstallProject( Project project )
     {
-        Console.WriteLine( $"Installing project {project.Name}" );
-        Console.WriteLine( $"Project installed! Press Enter to continue." );
+        AnsiConsole.MarkupLine( $"[#486088]Installing project [#00ff00]{project.Name}[/][/]" );
+        AnsiConsole.MarkupLine( $"[#486088]Project installed![/]" );
+        AnsiConsole.MarkupLine( "[#00ff00]Press enter to continue[/]" );
         Console.ReadLine();
     }
 
     static void RestoreConsole()
     {
         Console.Clear();
-        Console.WriteLine(
+        AnsiConsole.MarkupLine(
 """
+[#486088]
                #**************               
           %%###*************####***          
         ######*********** ####*******        
@@ -216,6 +219,7 @@ class Installer
         *********###***********####%%        
           ******##************###%%          
                ##***********##               
+[/]
 """ );
     }
 
@@ -233,7 +237,7 @@ class Installer
             {
                 RestoreConsole();
 
-                Console.WriteLine( "=== Select a category ===" );
+                AnsiConsole.MarkupLine( "[#f00]=== [#486088]Select a category[/] ===[/]" );
 
                 List<Package> NonEmptyPackages = new List<Package>();
 
@@ -258,10 +262,10 @@ class Installer
                 {
                     Package pkg = NonEmptyPackages[i-1];
 
-                    Console.WriteLine( $"\n {i}: {pkg.Name}\n   {pkg.Description}\n" );
+                    AnsiConsole.MarkupLine( $"\n [#f00]{i}[/]: [#00ff00]{pkg.Name}[/]\n   [#486088]{pkg.Description}[/]\n" );
                 }
 
-                Console.WriteLine( " 0: Exit\n" );
+                AnsiConsole.MarkupLine( " [#f00]0[/]: [#f00]Exit[/]\n" );
 
                 input = Console.ReadLine();
 
@@ -304,7 +308,7 @@ class Installer
             {
                 RestoreConsole();
 
-                Console.WriteLine( "=== Select a project to download ===" );
+                AnsiConsole.MarkupLine( "[#f00]=== [#486088]Select a project to download[/] ===[/]" );
 
                 List<Project> CurrentPageProjects = PagedProjects[CurrentPage - 1];
                 int CurrentSizeOfProjects = CurrentPageProjects.Count;
@@ -313,22 +317,22 @@ class Installer
                 {
                     Project project = CurrentPageProjects[i];
 
-                    Console.WriteLine( $"\n {i + 1}: {project.Title}" );
+                    AnsiConsole.MarkupLine( $"\n [#f00]{i + 1}[/]: [#00ff00]{project.Title}[/]" );
 
                     if( !string.IsNullOrEmpty( project.Description ) )
                     {
-                        Console.WriteLine( $"   {project.Description}" );
+                        AnsiConsole.MarkupLine( $"   [#486088]{project.Description}[/]" );
                     }
                 }
 
                 Console.WriteLine( "\n" );
 
-                Console.WriteLine( ( CurrentPage == 1 ) ? "" : " 8: Previus page\n" );
-                Console.WriteLine( ( CurrentPage == MaxPages ) ? "" : " 9: Next page\n" );
+                AnsiConsole.MarkupLine( ( CurrentPage == 1 ) ? "" : " [#f00]8[/]: [#f50]Previus page[/]\n" );
+                AnsiConsole.MarkupLine( ( CurrentPage == MaxPages ) ? "" : " [#f00]9[/]: [#f50]Next page[/]\n" );
 
-                Console.WriteLine( " 0: Back\n" );
+                AnsiConsole.MarkupLine( " [#f00]0[/]: [#f50]Back[/]\n" );
 
-                Console.WriteLine( $"=== current page {CurrentPage}/{MaxPages} ===" );
+                AnsiConsole.MarkupLine( $"[#f00]=== [#486088]current page [#00ff00]{CurrentPage}[/][#f00]/[/][#00ff00]{MaxPages}[/][/] ===[/]" );
 
                 input = Console.ReadLine();
 
