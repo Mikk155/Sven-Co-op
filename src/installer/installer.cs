@@ -189,12 +189,9 @@ class Installer
         Console.ReadLine();
     }
 
-    static void RestoreConsole()
-    {
-        Console.Clear();
-        AnsiConsole.MarkupLine(
+    static string? FormatedAsciArt;
+    static string AsciArt = 
 """
-[#486088]
                #**************               
           %%###*************####***          
         ######*********** ####*******        
@@ -219,8 +216,45 @@ class Installer
         *********###***********####%%        
           ******##************###%%          
                ##***********##               
-[/]
-""" );
+""";
+
+    static string GetAsciArt()
+    {
+        if( FormatedAsciArt is null )
+        {
+            char? currentSymbol = null;
+            FormatedAsciArt = "";
+
+            foreach( char c in AsciArt )
+            {
+                if( c == '#' || c == '%' || c == '*' )
+                {
+                    if( currentSymbol != c )
+                    {
+                        if( currentSymbol != null )
+                            FormatedAsciArt += "[/]";
+                        if( c == '#' )
+                            FormatedAsciArt += "[#ae18f1]";
+                        else if( c == '%' )
+                            FormatedAsciArt += "[#ae05b1]";
+                        else if( c == '*' )
+                            FormatedAsciArt += "[#ae18b2]";
+                        currentSymbol = c;
+                    }
+                }
+
+                FormatedAsciArt += c;
+            }
+            FormatedAsciArt += "[/]";
+            AsciArt = string.Empty;
+        }
+        return FormatedAsciArt;
+    }
+
+    static void RestoreConsole()
+    {
+        Console.Clear();
+        AnsiConsole.MarkupLine( GetAsciArt() );
     }
 
     // Garbage code ahead but i ain't doing a UI yet!
