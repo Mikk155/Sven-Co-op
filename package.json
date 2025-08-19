@@ -3,12 +3,54 @@
 
     "version": [ 1, 0, 0 ],
 
-    "projects":
+    "map.scripts":
     {
-        "as.extension.manager":
+        "name": "Map Scripts",
+        "description": "Map scripts for mappers",
+
+        "projects":
         {
-            "name": "MKExtension Manager",
-            "assets": "scripts/plugins/MKExtension/assets.json"
+        }
+    },
+
+    "plugins":
+    {
+        "name": "Plugins",
+        "description": "Plugins for server operators",
+
+        "projects":
+        {
+            "as.extension.manager":
+            {
+                "name": "MKExtension Manager",
+                "description": "Base plugin for any of the previous extensions",
+                "assets": "scripts/plugins/MKExtension/assets.json"
+            }
+        }
+    },
+
+    "tools":
+    {
+        "name": "Tools",
+        "description": "Various tools",
+
+        "projects":
+        {
+        }
+    },
+
+    "scripting":
+    {
+        "name": "Script utilities",
+        "description": "Script utilities used for scripters",
+
+        "projects":
+        {
+            "as.extension.manager":
+            {
+                "name": "Angelscript utilities",
+                "assets": "scripts/Mikk155/assets.json"
+            }
         }
     }
 }

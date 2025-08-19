@@ -32,23 +32,38 @@ internal class Project( string Name, string Title, string Description, string As
     public readonly string AssetFile = AssetFile;
 }
 
-internal class Package
+internal class Package( string Name, string Description, List<Project> Projects )
 {
+    public readonly string Name = Name;
+    public readonly string Description = Description;
+    public readonly List<Project> Projects = Projects;
+}
+
+internal class Category
+{
+    /// <summary>
+    /// Current version on the repository's package
+    /// </summary>
     public readonly Version version;
-    public readonly List<Project> Projects;
+
+    /// <summary>
+    /// Package containing installable angelscript server plugins
+    /// </summary>
+    public readonly Package Plugins;
+    public readonly Package MapScripts;
+    public readonly Package Tools;
+    public readonly Package UtilityScripts;
 
 #pragma warning disable CS8602, CS8600
-    public Package( JObject? package )
+
+    /// <summary>
+    /// Format a JToken into a list of Project
+    /// </summary>
+    private Package GetPackages( JToken? token )
     {
-        JArray semantic = (JArray)package.GetValue( "version" );
-
-        version = new Version( (uint)semantic[0], (uint)semantic[1], (uint)semantic[2] );
-
         List<Project> ProjectsInJson = new List<Project>();
 
-        JObject projects = (JObject)package.GetValue( "projects" );
-
-        foreach( KeyValuePair<string, JToken?> project in projects )
+        foreach( KeyValuePair<string, JToken?> project in (JObject)token[ "projects" ] )
         {
             ProjectsInJson.Add( new Project(
                 Name: project.Key.ToString(),
@@ -58,7 +73,18 @@ internal class Package
             ) );
         }
 
-        Projects = ProjectsInJson;
+        return new Package( token["name"].ToString(), token["description"].ToString(), ProjectsInJson );
+    }
+
+    public Category( JObject? package )
+    {
+        JArray semantic = (JArray)package.GetValue( "version" );
+        version = new Version( (uint)semantic[0], (uint)semantic[1], (uint)semantic[2] );
+
+        Plugins = GetPackages( package.GetValue( "plugins" ) );
+        MapScripts = GetPackages( package.GetValue( "map.scripts" ) );
+        Tools = GetPackages( package.GetValue( "tools" ) );
+        UtilityScripts = GetPackages( package.GetValue( "scripting" ) );
     }
 #pragma warning restore CS8602, CS8600
 }

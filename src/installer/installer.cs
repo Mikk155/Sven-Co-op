@@ -34,7 +34,7 @@ class Installer
     private static readonly Version version = new Version( 1, 0, 0 );
 
 #pragma warning disable CS8618
-    private static Package package;
+    private static Category Packages;
 #pragma warning restore CS8618
 
     private static readonly string GithubUser = "Mikk155";
@@ -102,7 +102,7 @@ class Installer
         try
         {
             JObject? PackageJson = JsonConvert.DeserializeObject<JObject>( PackageRaw );
-            package = new Package( PackageJson );
+            Packages = new Category( PackageJson );
         }
         catch( Exception exception )
         {
@@ -118,7 +118,7 @@ class Installer
 
         try
         {
-            string GithubData = await http.GetStringAsync( $"https://api.github.com/repos/{GithubUser}/{GithubRepository}/releases/tags/installer-{package.version.ToString()}" );
+            string GithubData = await http.GetStringAsync( $"https://api.github.com/repos/{GithubUser}/{GithubRepository}/releases/tags/installer-{Packages.version.ToString()}" );
 
             JObject? ReleaseData = JsonConvert.DeserializeObject<JObject>( GithubData );
 
@@ -137,7 +137,7 @@ class Installer
         catch( Exception exception )
         {
             Console.WriteLine( $"Error getting the Github release. Open the link manually. {GithubFullRepository}/releases" );
-            ReportGithubIssue( "Failed to fetch release tag", $"unexistent version {package.version.ToString()}", exception, true );
+            ReportGithubIssue( "Failed to fetch release tag", $"unexistent version {Packages.version.ToString()}", exception, true );
         }
     }
 
@@ -148,14 +148,14 @@ class Installer
     /// </summary>
     private static async Task CheckForUpdates()
     {
-        if( package.version.Major > version.Major || package.version.Minor > version.Minor )
+        if( Packages.version.Major > version.Major || Packages.version.Minor > version.Minor )
         {
             Console.Beep();
 
             Console.WriteLine( "There is a newer version of this program available and may be required." );
 
             Console.WriteLine( $"Current version: {version.ToString()}" );
-            Console.WriteLine( $"Updated version: {package.version.ToString()}" );
+            Console.WriteLine( $"Updated version: {Packages.version.ToString()}" );
 
             Console.WriteLine( "Press enter to exit" );
 
@@ -164,12 +164,12 @@ class Installer
             Console.ReadLine();
             Environment.Exit(1);
         }
-        else if( package.version.Patch > version.Patch )
+        else if( Packages.version.Patch > version.Patch )
         {
             Console.WriteLine( "There is patch available for this program." );
 
             Console.WriteLine( $"Current version: {version.ToString()}" );
-            Console.WriteLine( $"Updated version: {package.version.ToString()}" );
+            Console.WriteLine( $"Updated version: {Packages.version.ToString()}" );
 
             Console.WriteLine( "Write \"u\" to update." );
 
@@ -183,86 +183,99 @@ class Installer
     static async Task InstallProject( Project project )
     {
         Console.WriteLine( $"Installing project {project.Name}" );
+        Console.WriteLine( $"Project installed! Press Enter to continue." );
+        Console.ReadLine();
     }
 
+    static void RestoreConsole()
+    {
+        Console.Clear();
+    }
+
+    // Garbage code ahead but i ain't doing a UI yet!
     static async Task OpenMenu()
     {
-        List<List<Project>> PagedProjects = [[]];
+        // If null assume we're in the category section
+        Package? SelectedPackage = null;
 
-        int iCount = 0;
-        int ListIndex = 0;
+        string? input;
 
-        foreach( Project p in package.Projects )
+        while( true )
         {
-            iCount++;
-
-            if( iCount > 7 )
+            if( SelectedPackage is null )
             {
-                iCount = 1;
-                PagedProjects.Add( new List<Project>() );
-                ListIndex++;
+                RestoreConsole();
+
+                Console.WriteLine( "=== Select a category ===" );
+
+                List<Package> NonEmptyPackages = new List<Package>();
+
+                if( Packages.Plugins.Projects.Count > 0 )
+                {
+                    NonEmptyPackages.Add( Packages.Plugins );
+                }
+                if( Packages.MapScripts.Projects.Count > 0 )
+                {
+                    NonEmptyPackages.Add( Packages.MapScripts );
+                }
+                if( Packages.Tools.Projects.Count > 0 )
+                {
+                    NonEmptyPackages.Add( Packages.Tools );
+                }
+                if( Packages.UtilityScripts.Projects.Count > 0 )
+                {
+                    NonEmptyPackages.Add( Packages.UtilityScripts );
+                }
+
+                for( int i = 1; i <= NonEmptyPackages.Count; i++ )
+                {
+                    Package pkg = NonEmptyPackages[i-1];
+
+                    Console.WriteLine( $"\n {i}: {pkg.Name}\n   {pkg.Description}\n" );
+                }
+
+                Console.WriteLine( " 0: Exit\n" );
+
+                input = Console.ReadLine();
+
+                if ( !string.IsNullOrEmpty( input ) && int.TryParse( input, out int CatResult ) )
+                {
+                    if( CatResult == 0 )
+                    {
+                        Environment.Exit(0);
+                    }
+                    else if( CatResult <= NonEmptyPackages.Count )
+                    {
+                        SelectedPackage = NonEmptyPackages[CatResult-1];
+                    }
+                }
+                continue;
             }
-            PagedProjects[ListIndex].Add(p);
-        }
 
-        int CurrentPage = 1;
-        int MaxPages = PagedProjects.Count;
+            List<List<Project>> PagedProjects = [[]];
 
-        bool OnMenu = true;
+            int iCount = 0;
+            int ListIndex = 0;
 
-        while( OnMenu )
-        {
-            string? input;
-            int result = -1;
-
-            while( result == -1 )
+            foreach( Project p in SelectedPackage.Projects )
             {
-                Console.Clear();
-                Console.WriteLine(
-"""
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@+===-::::==========@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@%+======-::::-===============+%@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@+=========:::::======================@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@+==========-::::-==========================%@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@#===========-::=#@@@========@@@@%*===============@@@@@@@@@@@@@@
-@@@@@@@@@@@@*============#@@@@@@@@========@@@@@@@@@%=============@@@@@@@@@@@@
-@@@@@@@@@@*===========%@@@@@@@@@@@========@@@@@@@@@@@@@============@@@@@@@@@@
-@@@@@@@@%=============:::::=====================================-:::*@@@@@@@@
-@@@@@@@*============-::::-====================================-:::-===@@@@@@@
-@@@@@@============-::::-=====================================-:::-====+@@@@@@
-@@@@@=========%==:::::===========+=========================-:=%-========@@@@@
-@@@@=========@@@#-::-=======@@@@@@*=======@@@@@@%========-:-%@@@=========%@@@
-@@@+=======+@@@@@@+==========#@@@@*=======@@@@@========-::=@@@@@@#========@@@
-@@*========@@@@@@@@@===========%@@*=======@@@=========-:=@@@@@@@@@+========@@
-@@========@@@@@@@@@@@@==========+@========@=========-:=@@@@@@@@@@@@=======:%@
-@=======-%@@@@@@@@@@@@@@==========================-:=%@@@@@@@@@@@@@%=====::.@
-%======-=@@@@@@@@@@@@@@@@%=======================--#@@@@@@@@@@@@@@@@====::::+
-*=====::*@@@@@@@@@@@@@@@@@@%===================-:+@@@@@@@@@@@@@@@@@@*=-::::-=
-====-::.===========+******+===================-=@@@@@@@@@@@@@@@@@@@@@:::::-==
-===::::-======================================@@@@@@@@@@@@@@@@@@@@@@@::::====
-=-::::-====================================-@@@@@@@@@@@@@@@@@@@@@@@@@=:-=====
-:::::=====================================-::=@@@@@@@@@@@@@@@@@@@@@@@--======
-.::-=====================================::::--#@@@@@@@@@@@@@@@@@@@@@-=======
--:======*===========%@@@@@@@@@@@@@=====-::::-====@@@@@@@@@@@@@@@@@@@%========
-========#@*===========@@@@@@@@@@@@====-:::-=======*@@@@@@@@@@@@@@@@@*=======*
-#=======+@@@*===========@@@@@@@@@@===-:::-===========@@@@@@@@@@@@@@@========%
-@========*@@@@============@@@@@@@@=--::-==@*==========+@@@@@@@@@@@@*========@
-@@========@@@@@#===========*@@@@@@=-:--===@@@*==========#@@@@@@@@@@========@@
-@@*========@@@@@@============%@@@@=:-=====@@@@@=========--%@@@@@@@========*@@
-@@@+========@@@@@@@============@@@=-======@@@@@@@======::::=@@@@@========+@@@
-@@@@=========%@@@@@@@==========-=@========@@@@@@@@+==-::::-==+@@=========@@@@
-@@@@@==========@@@@@@@%=======---=========@@@@@@@@@@=::::===============@@@@@
-@@@@@@==========#@@@@@@@*===---===========@@@@@@@@@@@@=-==============+@@@@@@
-@@@@@@@===========%@@@@@@@=---============@@@@@@@@@@@@@%=============*@@@@@@@
-@@@@@@@@*===========+@@@@@@@==============@@@@@@@@@@@@@@#===========%@@@@@@@@
-@@@@@@@@@@=============*@@@@@@============@@@@@@@@@@@#============*@@@@@@@@@@
-@@@@@@@@@@@@===============#@@@@==========@@@@@@@#==============*@@@@@@@@@@@@
-@@@@@@@@@@@@@@=================+*+========#==-::-=============*@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@%=========================-::::============+@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@%====================-::::-==========+@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@#===============-::::-=======+#@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*========::::-====+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-""" );
+                iCount++;
+
+                if( iCount > 7 )
+                {
+                    iCount = 1;
+                    PagedProjects.Add( new List<Project>() );
+                    ListIndex++;
+                }
+                PagedProjects[ListIndex].Add(p);
+            }
+
+            int CurrentPage = 1;
+            int MaxPages = PagedProjects.Count;
+
+            while( SelectedPackage is not null )
+            {
+                RestoreConsole();
 
                 Console.WriteLine( "=== Select a project to download ===" );
 
@@ -286,7 +299,7 @@ class Installer
                 Console.WriteLine( ( CurrentPage == 1 ) ? "" : " 8: Previus page\n" );
                 Console.WriteLine( ( CurrentPage == MaxPages ) ? "" : " 9: Next page\n" );
 
-                Console.WriteLine( " 0: Exit\n" );
+                Console.WriteLine( " 0: Back\n" );
 
                 Console.WriteLine( $"=== current page {CurrentPage}/{MaxPages} ===" );
 
@@ -294,13 +307,13 @@ class Installer
 
                 if( !string.IsNullOrEmpty( input ) )
                 {
-                    if( int.TryParse( input, out result ) )
+                    if( int.TryParse( input, out int result ) )
                     {
                         switch( result )
                         {
                             case 0:
                             {
-                                Environment.Exit(0);
+                                SelectedPackage = null;
                                 break;
                             }
                             case 8:
@@ -320,7 +333,6 @@ class Installer
                                 if( result <= CurrentSizeOfProjects )
                                 {
                                     await InstallProject( CurrentPageProjects[result - 1] );
-                                    OnMenu = false;
                                 }
                                 break;
                             }

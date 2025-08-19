@@ -1,5 +1,82 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
+    
+    "$defs":
+    {
+        "Label":
+        {
+            "name":
+            {
+                "type": "string",
+                "description": "Name to display in the installer"
+            },
+            "description":
+            {
+                "type": "string",
+                "description": "Description to display in the installer"
+            },
+            "required":
+            [
+                "name"
+            ]
+        },
+
+        "Package":
+        {
+            "$ref": "#/$defs/Label",
+
+            "properties":
+            {
+                "projects":
+                {
+                    "type": "object",
+                    "description": "Include extra assets json",
+
+                    "patternProperties":
+                    {
+                        "^[A-Za-z.]+$":
+                        {
+                            "type": "object",
+                            "properties":
+                            {
+                                "assets":
+                                {
+                                    "type": "string",
+                                    "description": "Assets file to lookup for"
+                                },
+                                "additionalProperties": false,
+                                "name":
+                                {
+                                    "type": "string",
+                                    "description": "Name to display in the installer"
+                                },
+                                "description":
+                                {
+                                    "type": "string",
+                                    "description": "Description to display in the installer"
+                                }
+                            },
+                            "$ref": "#/$defs/Label",
+                            "$comment": "Somehow $ref is not working so we have duplicated name and description here.",
+                            "required":
+                            [
+                                "name",
+                                "assets"
+                            ],
+                            "description": "Project definition",
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "required":
+            [
+                "projects"
+            ]
+        }
+    },
+
     "type": "object",
     "properties":
     {
@@ -20,46 +97,27 @@
                 "type": "integer"
             }
         },
-        "projects":
+        "map.scripts":
         {
-            "type": "object",
-            "description": "Include extra assets json",
-
-            "patternProperties":
-            {
-                "^[A-Za-z.]+$":
-                {
-                    "type": "object",
-                    "properties":
-                    {
-                        "name":
-                        {
-                            "type": "string",
-                            "description": "Name to display in the installer"
-                        },
-                        "assets":
-                        {
-                            "type": "string",
-                            "description": "Assets file to lookup for"
-                        },
-                        "additionalProperties": false
-                    },
-                    "required":
-                    [
-                        "name",
-                        "assets"
-                    ],
-                    "description": "Project definition",
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": false
+            "$ref": "#/$defs/Package"
+        },
+        "plugins":
+        {
+            "$ref": "#/$defs/Package"
+        },
+        "tools":
+        {
+            "$ref": "#/$defs/Package"
+        },
+        "scripting":
+        {
+            "$ref": "#/$defs/Package"
         },
         "additionalProperties": false
     },
+    "additionalProperties": false,
     "required":
     [
-        "version",
-        "projects"
+        "version"
     ]
 }
