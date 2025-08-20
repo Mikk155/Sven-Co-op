@@ -35,7 +35,7 @@ class Program
         PyEn = new PyEngine( @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll" );
 
         Console.WriteLine( $"Hello world from CSharp!" );
-        PyEn.Run( "HelloWorld" );
+        PyEn.Run( "rp_c00", "rp_c00" );
         PyEn.Shutdown();
         Console.WriteLine( $"All done" );
     }

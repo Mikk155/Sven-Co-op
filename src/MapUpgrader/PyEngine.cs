@@ -32,6 +32,18 @@
 
 using Python.Runtime;
 
+public class Entity
+{
+    public string classname { get; set; }
+
+    public Entity(string classname)
+    {
+        this.classname = classname;
+    }
+
+    public override string ToString() => $"Entity({classname})";
+}
+
 class PyEngine
 {
     public PyEngine( string PythonDLL )
@@ -56,7 +68,7 @@ class PyEngine
         catch {}
     }
 
-    public void Run( string file, string? folder = null )
+    public void Run( string file, string mapname, string? folder = null )
     {
         string ScriptPath = "Upgrades";
 
@@ -67,14 +79,22 @@ class PyEngine
 
         Console.WriteLine( $"Loading module {ScriptPath}.py" );
 
+        var entities = new List<Entity>
+        {
+            new Entity("info_player_start"),
+            new Entity("worldspawn")
+        };
+
         using ( Py.GIL() )
         {
             dynamic sys = Py.Import( "sys" );
             sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), ScriptPath ) );
 
-            PyObject Script = Py.Import( file );
-            PyObject result = Script.InvokeMethod( "main" );
+            dynamic Script = Py.Import( file );
+            PyObject result = Script.main( mapname, entities );
             Console.WriteLine( result );
+            foreach( var e in entities )
+                Console.WriteLine(e);
         }
     }
 }
