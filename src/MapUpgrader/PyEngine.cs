@@ -1,7 +1,8 @@
-﻿/**
+/**
 *    MIT License
 *
 *    Copyright (c) 2025 Mikk155
+*    Copyright (c) 2006-2017 the contributors of the "Python for .NET" project
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a copy
 *    of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +23,44 @@
 *    SOFTWARE.
 **/
 
-class Program
+/**
+*   Special thanks to Nick Proud for introduction
+*       https://www.youtube.com/watch?v=1sOTTXlIhZo
+*
+*   https://github.com/pythonnet/pythonnet
+**/
+
+using Python.Runtime;
+
+class PyEngine
 {
-#pragma warning disable CS8618
-    static PyEngine PyEn;
-#pragma warning restore CS8618
-
-    static void Main()
+    public PyEngine( string PythonDLL )
     {
-        // -TODO Ask user
-        PyEn = new PyEngine( @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll" );
+        Runtime.PythonDLL = @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll";
 
-        Console.WriteLine( $"Hello world from CSharp!" );
-        PyEn.Run( "HelloWorld" );
+        PythonEngine.Initialize();
+    }
+
+    public void Run( string file, string? folder = null )
+    {
+        string ScriptPath = "Upgrades";
+
+        if( folder is not null )
+        {
+            ScriptPath = Path.Combine( ScriptPath, folder );
+        }
+
+        Console.WriteLine( $"Loading module {ScriptPath}.py" );
+
+        using ( Py.GIL() )
+        {
+            dynamic sys = Py.Import( "sys" );
+            sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), ScriptPath ) );
+
+            PyObject Script = Py.Import( file );
+            dynamic main = Script.GetAttr( "main" );
+            PyObject result = main.Invoke();
+            Console.WriteLine( result );
+        }
     }
 }
