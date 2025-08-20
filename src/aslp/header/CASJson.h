@@ -3,24 +3,13 @@
 #pragma once
 #include <vector>
 #include "CASBaseObject.h"
-
-// --- INICIO DE LA SOLUCIï¿½N DEFINITIVA PARA SNPRINTF ---
-
-#include <cstdio> // 1. Incluir para tener _snprintf disponible en el namespace global
-
-// 2. "Inyectamos" el nombre _snprintf en el namespace std.
-//    Esto le dice al compilador que cuando vea "std::_snprintf", debe usar
-//    la funciï¿½n global "::_snprintf" que sï¿½ existe.
+#include <cstdio> 
 namespace std {
     using ::_snprintf;
 }
 
 #include <nlohmann/json.hpp>
-
-// --- FIN DE LA SOLUCIï¿½N ---
-
-
-typedef std::string jsonKey_t;
+typedef CString jsonKey_t;
 using json = nlohmann::json;
 
 enum CASJsonType
@@ -37,56 +26,56 @@ enum CASJsonType
 class CASJson : public CASBaseGCObject
 {
 public:
-    // Factory functions adaptadas al estilo del proyecto
+    // Factory functions
     static CASJson* Factory();
-    static CASJson* Factory(json js);
+    static CASJson* Factory(const json& js);
 
-    // AddRef y Release son heredados de CASBaseGCObject
-
-    // Operadores de asignaciï¿½n
+    // Reasignación del objeto JSON
     CASJson& operator=(bool other);
     CASJson& operator=(asINT64 other);
     CASJson& operator=(double other);
-    CASJson& operator=(const std::string& other);
+    CASJson& operator=(const CString& other);
     CASJson& operator=(const CScriptArray& other);
     CASJson& operator=(const CASJson& other);
 
-    // Mï¿½todos Set para modificar el objeto JSON
+    // Métodos para establecer valores (key/value)
     void Set(const jsonKey_t& key, bool value);
     void Set(const jsonKey_t& key, asINT64 value);
     void Set(const jsonKey_t& key, double value);
-    void Set(const jsonKey_t& key, const std::string& value);
+    void Set(const jsonKey_t& key, const CString& value);
     void Set(const jsonKey_t& key, const CScriptArray& value);
 
-    // Mï¿½todos Get para obtener valores
+    // Métodos para obtener valores
     bool Get(const jsonKey_t& key, bool& value) const;
     bool Get(const jsonKey_t& key, asINT64& value) const;
     bool Get(const jsonKey_t& key, double& value) const;
-    bool Get(CString& key, CString& value) const;
+    bool Get(const jsonKey_t& key, CString& value) const;
     bool Get(const jsonKey_t& key, CScriptArray& value) const;
 
-    // Conversores de tipo para el script
-    bool        GetBool() const;
-    std::string GetString() const;
-    int         GetNumber() const;
-    double      GetReal() const;
+    // Conversores de tipo para AngelScript
+    bool GetBool() const;
+    CString& GetString() const;
+    int GetNumber() const;
+    double GetReal() const;
     CScriptArray* GetArray() const;
 
-    // Acceso por ï¿½ndice
+    // Acceso por índice
     CASJson* opIndex(const jsonKey_t& key);
     const CASJson* opIndex_const(const jsonKey_t& key) const;
 
-    // Mï¿½todos de utilidad
+    // Otros métodos útiles
     bool Exists(const jsonKey_t& key) const;
     bool IsEmpty() const;
     asUINT GetSize() const;
     void Clear();
     CASJsonType Type() const;
 
-    // Puntero al objeto nlohmann::json
     json* js_info = nullptr;
 
 private:
     CASJson();
     ~CASJson();
+
+    asIScriptEngine* engine;
+    asITypeInfo* m_pJsonValueInfo;
 };
