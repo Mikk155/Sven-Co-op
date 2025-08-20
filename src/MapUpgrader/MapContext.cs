@@ -1,4 +1,4 @@
-﻿/**
+/**
 *    MIT License
 *
 *    Copyright (c) 2025 Mikk155
@@ -22,20 +22,24 @@
 *    SOFTWARE.
 **/
 
-using Python.Runtime;
-class Program
+public class MapContext
 {
-#pragma warning disable CS8618
-    static PyEngine PyEn;
-#pragma warning restore CS8618
+    public readonly string Name;
+    public readonly string BSPFile;
 
-    static void Main()
+    public List<Entity> Entities = new List<Entity>();
+
+    public MapContext( string mapname )
     {
-        // -TODO Ask user
-        PyEn = new PyEngine( @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll" );
+        this.Name = mapname;
 
-        PyEn.Run( "rp_c00", "rp_c00" );
-        PyEn.Shutdown();
-        Console.WriteLine( $"[CSharp] All done" );
+        this.BSPFile = Path.Combine( Directory.GetCurrentDirectory(), "maps", mapname );
+
+        if( !Path.Exists( this.BSPFile ) )
+        {
+            throw new FileNotFoundException( $"BSP File not found at \"{this.BSPFile}\"" );
+        }
+
+        // -TODO Read entity lump
     }
 }

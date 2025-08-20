@@ -32,18 +32,6 @@
 
 using Python.Runtime;
 
-public class Entity
-{
-    public string classname { get; set; }
-
-    public Entity(string classname)
-    {
-        this.classname = classname;
-    }
-
-    public override string ToString() => $"Entity({classname})";
-}
-
 class PyEngine
 {
     public PyEngine( string PythonDLL )
@@ -77,7 +65,7 @@ class PyEngine
             ScriptPath = Path.Combine( ScriptPath, folder );
         }
 
-        Console.WriteLine( $"Loading module {ScriptPath}.py" );
+        Console.WriteLine( $"[CSharp] Loading module {ScriptPath}.py" );
 
         var entities = new List<Entity>
         {
@@ -92,9 +80,9 @@ class PyEngine
 
             dynamic Script = Py.Import( file );
             PyObject result = Script.main( mapname, entities );
-            Console.WriteLine( result );
+            Console.WriteLine( $"[CSharp] {result}" );
             foreach( var e in entities )
-                Console.WriteLine(e);
+                Console.WriteLine( $"[CSharp] {e}" );
         }
     }
 }

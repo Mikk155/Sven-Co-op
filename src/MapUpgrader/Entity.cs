@@ -1,4 +1,4 @@
-﻿/**
+/**
 *    MIT License
 *
 *    Copyright (c) 2025 Mikk155
@@ -22,20 +22,14 @@
 *    SOFTWARE.
 **/
 
-using Python.Runtime;
-class Program
+public class Entity
 {
-#pragma warning disable CS8618
-    static PyEngine PyEn;
-#pragma warning restore CS8618
+    public string classname { get; set; }
 
-    static void Main()
+    public Entity(string classname)
     {
-        // -TODO Ask user
-        PyEn = new PyEngine( @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll" );
-
-        PyEn.Run( "rp_c00", "rp_c00" );
-        PyEn.Shutdown();
-        Console.WriteLine( $"[CSharp] All done" );
+        this.classname = classname;
     }
+
+    public override string ToString() => $"Entity({classname})";
 }
