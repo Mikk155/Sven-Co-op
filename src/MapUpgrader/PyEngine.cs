@@ -41,6 +41,21 @@ class PyEngine
         PythonEngine.Initialize();
     }
 
+    ~PyEngine()
+    {
+        Shutdown();
+    }
+
+    public void Shutdown()
+    {
+        try
+        {
+            PythonEngine.Shutdown();
+            PythonEngine.InteropConfiguration = Python.Runtime.InteropConfiguration.MakeDefault();
+        } // Runtime.Shutdown(); raises exception. find updates later or fork my own
+        catch {}
+    }
+
     public void Run( string file, string? folder = null )
     {
         string ScriptPath = "Upgrades";
@@ -58,8 +73,7 @@ class PyEngine
             sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), ScriptPath ) );
 
             PyObject Script = Py.Import( file );
-            dynamic main = Script.GetAttr( "main" );
-            PyObject result = main.Invoke();
+            PyObject result = Script.InvokeMethod( "main" );
             Console.WriteLine( result );
         }
     }

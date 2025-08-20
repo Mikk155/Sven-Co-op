@@ -22,6 +22,7 @@
 *    SOFTWARE.
 **/
 
+using Python.Runtime;
 class Program
 {
 #pragma warning disable CS8618
@@ -35,5 +36,7 @@ class Program
 
         Console.WriteLine( $"Hello world from CSharp!" );
         PyEn.Run( "HelloWorld" );
+        PyEn.Shutdown();
+        Console.WriteLine( $"All done" );
     }
 }
