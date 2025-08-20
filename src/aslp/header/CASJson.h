@@ -15,7 +15,7 @@ namespace std {
     using ::_snprintf;
 }
 
-#include "nlohmann/json.hpp" // 3. Ahora incluir la librer�a JSON
+#include <nlohmann/json.hpp>
 
 // --- FIN DE LA SOLUCI�N ---
 
