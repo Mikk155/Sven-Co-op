@@ -67,11 +67,10 @@ class PyEngine
 
         Console.WriteLine( $"[CSharp] Loading module {ScriptPath}.py" );
 
-        var entities = new List<Entity>
-        {
-            new Entity("info_player_start"),
-            new Entity("worldspawn")
-        };
+        MapContext context = new MapContext( mapname );
+
+        foreach( var e in context.Entities ) // debug
+            Console.WriteLine( $"[CSharp] {e}" );
 
         using ( Py.GIL() )
         {
@@ -79,9 +78,10 @@ class PyEngine
             sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), ScriptPath ) );
 
             dynamic Script = Py.Import( file );
-            PyObject result = Script.main( mapname, entities );
-            Console.WriteLine( $"[CSharp] {result}" );
-            foreach( var e in entities )
+            PyObject result = Script.main( context.Name, context.Entities );
+
+            Console.WriteLine( $"[CSharp] {result}" ); // debug
+            foreach( var e in context.Entities )
                 Console.WriteLine( $"[CSharp] {e}" );
         }
     }

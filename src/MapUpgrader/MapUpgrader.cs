@@ -1,28 +1,27 @@
-﻿/**
-*    MIT License
-*
-*    Copyright (c) 2025 Mikk155
-*
-*    Permission is hereby granted, free of charge, to any person obtaining a copy
-*    of this software and associated documentation files (the "Software"), to deal
-*    in the Software without restriction, including without limitation the rights
-*    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*    copies of the Software, and to permit persons to whom the Software is
-*    furnished to do so, subject to the following conditions:
-*
-*    The above copyright notice and this permission notice shall be included in all
-*    copies or substantial portions of the Software.
-*
-*    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-*    SOFTWARE.
-**/
+﻿public class MapUpgrader
+{
+    public static class Folders
+    {
+        /// <summary>
+        /// Current directory of the executable
+        /// </summary>
+        public static string Workspace =>
+            Directory.GetCurrentDirectory();
 
-using Python.Runtime;
+        /// <summary>
+        /// Directory containing Python upgrade scripts
+        /// </summary>
+        public static string Upgrades =>
+            Path.Combine( Workspace, "Upgrades" );
+
+        /// <summary>
+        /// Directory where the Python API is generated
+        /// </summary>
+        public static string PythonAPI =>
+            Path.Combine( Workspace, "Upgrades", "netapi" );
+    }
+}
+
 class Program
 {
 #pragma warning disable CS8618
@@ -31,6 +30,12 @@ class Program
 
     static void Main()
     {
+#if DEBUG // Generate docs for python Type hints
+        PyExportAPI PyAPI = new PyExportAPI();
+//        PyAPI.Generate( typeof(MapContext), "MapContext" );
+        PyAPI.Generate( typeof(Entity), "Entity" );
+#endif
+
         // -TODO Ask user
         PyEn = new PyEngine( @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll" );
 
