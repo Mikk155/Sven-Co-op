@@ -90,7 +90,7 @@ class PyExportAPI
 
             if( !string.IsNullOrEmpty( doc ) )
             {
-                f.AppendLine($"\tdef {method.Name}(self{args}) -> {MapType(method.ReturnType)}: \t'''{doc}'''" );
+                f.AppendLine($"\tdef {method.Name}(self{args}) -> {MapType(method.ReturnType)}: '''{doc}'''" );
             }
             else
             {
