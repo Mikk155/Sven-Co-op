@@ -4,7 +4,7 @@ class PyEngine
 {
     public PyEngine( string PythonDLL )
     {
-        Runtime.PythonDLL = @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll";
+        Runtime.PythonDLL = PythonDLL;
 
         PythonEngine.Initialize();
     }

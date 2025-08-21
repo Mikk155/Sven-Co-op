@@ -36,8 +36,13 @@ class Program
         PyAPI.Generate( typeof(Entity), "Entity" );
 #endif
 
-        // -TODO Ask user
-        PyEn = new PyEngine( @"C:\Users\Usuario\AppData\Local\Programs\Python\Python311\python311.dll" );
+        ConfigContext config = new ConfigContext();
+
+        config.Get( "python_dll", value =>
+        {
+            PyEn = new PyEngine( value );
+            return true; // No exception raised. break the loop
+        }, "Absolute path to your Python dll, it usually looks like \"C:\\Users\Usuario\\AppData\\Local\\Programs\\Python\\Python311\\python311.dll\" You can drag and drop the dll too." );
 
         PyEn.Run( "rp_c00", "rp_c00" );
         PyEn.Shutdown();

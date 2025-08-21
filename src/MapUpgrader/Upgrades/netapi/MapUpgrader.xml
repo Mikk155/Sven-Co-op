@@ -4,6 +4,11 @@
         <name>MapUpgrader</name>
     </assembly>
     <members>
+        <member name="P:ConfigContext.FilePath">
+            <summary>
+            Get the config.json absulote path
+            </summary>
+        </member>
         <member name="T:Entity">
             <summary>
             Represents a entity in the BSP
