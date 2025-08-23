@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 class PyExportAPI
 {
-    private Dictionary<string, string> Summary;
+    private readonly Dictionary<string, string> Summary;
 
     private string? MemberSummary( MemberInfo member )
     {
