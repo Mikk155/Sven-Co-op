@@ -38,7 +38,19 @@ public class MapContext
         */
 
         // -TODO Read entity lump
-        Entities.Add( new Entity( "worldspawn" ) );
-        Entities.Add( new Entity( "info_player_start" ) );
+        Entity worldspawn = new Entity(0);
+        worldspawn.classname = "worldspawn";
+        Entities.Add( worldspawn );
+        Entity info_player_start = new Entity(1);
+        info_player_start.classname = "info_player_start";
+        Entities.Add( info_player_start );
+
+        // -Apply C# specific upgrades
+
+        // -Call python context
+
+        // -Merge if provided
+
+        // -If merged, call C# and Python post proccessing
     }
 }
