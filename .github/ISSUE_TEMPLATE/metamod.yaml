@@ -1,0 +1,14 @@
+name: Metamod plugin
+description: Issue or suggestion related to metamod's plugin "aslp"
+title: "[Metamod] "
+labels: [ "Metamod", "ASEXT" ]
+assignees: [ "Gaftherman" ]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the issue/suggestion
+  - type: textarea
+    attributes:
+      label: "Describe the issue/suggestion"
