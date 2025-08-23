@@ -107,6 +107,8 @@ class PyExportAPI
             return "str";
         if( type == typeof( int ) )
             return "int";
+        if( type == typeof( float ) )
+            return "float";
         if( type == typeof( void ) )
             return "None";
         if( type == typeof( bool ) )
