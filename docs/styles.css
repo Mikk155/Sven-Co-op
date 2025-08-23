@@ -3,13 +3,13 @@ body
 {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #afafaf;
+    background: #486088;
 }
 
 header, footer
 {
     background: #333;
-    color: #919191;
+    color: #486088;
     text-align: center;
     padding: 10px;
 }
