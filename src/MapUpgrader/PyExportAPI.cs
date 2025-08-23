@@ -38,7 +38,7 @@ class PyExportAPI
     {
         Console.WriteLine( $"Generating API for python scripting Type Hints" );
 
-        Summary = XDocument.Load( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", "MapUpgrader.xml" ) ).Descendants( "member" )
+        Summary = XDocument.Load( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) ).Descendants( "member" )
             .Where( m => m.Attribute( "name" ) != null )
             .ToDictionary( m => m.Attribute( "name" )!.Value, m => (string?)m.Element( "summary" ) ?? ""
         );
