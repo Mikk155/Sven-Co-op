@@ -24,7 +24,7 @@ class PyExportAPI
 
     public PyExportAPI()
     {
-        string XMLDestination = Path.Combine( MapUpgrader.Folders.PythonAPI, "MapUpgrader.xml" );
+        string XMLDestination = Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", "MapUpgrader.xml" );
 
         File.Copy( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ), XMLDestination, true );
 
@@ -98,7 +98,7 @@ class PyExportAPI
             }
         }
 
-        File.WriteAllText( Path.Combine( MapUpgrader.Folders.PythonAPI, $"{PythonScript}.py" ), f.ToString() );
+        File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{PythonScript}.py" ), f.ToString() );
     }
 
     private string MapType( Type type )
@@ -111,8 +111,6 @@ class PyExportAPI
             return "None";
         if( type == typeof( bool ) )
             return "bool";
-        if( type == typeof( List<Entity> ) )
-            return "list[Entity]";
         return "Any";
     }
 }
