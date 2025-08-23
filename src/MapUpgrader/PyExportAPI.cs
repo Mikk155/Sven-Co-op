@@ -8,13 +8,25 @@ class PyExportAPI
 {
     private readonly Dictionary<string, string> Summary;
 
+    private string MemberParameters( MethodInfo member )
+    {
+        var parameters = member.GetParameters().Select( p => p.ParameterType.FullName );
+
+        if( parameters is not null && parameters.Count() > 0 )
+        {
+            return $"M:{member.DeclaringType?.FullName}.{member.Name}({string.Join( ",", parameters ).Trim()})";
+        }
+
+        return $"M:{member.DeclaringType?.FullName}.{member.Name}";
+    }
+
     private string? MemberSummary( MemberInfo member )
     {
         string key = member.MemberType switch
         {
             System.Reflection.MemberTypes.TypeInfo => $"T:{member.DeclaringType?.FullName}",
             System.Reflection.MemberTypes.Property => $"P:{member.DeclaringType?.FullName}.{member.Name}",
-            System.Reflection.MemberTypes.Method => $"M:{member.DeclaringType?.FullName}.{member.Name}",
+            System.Reflection.MemberTypes.Method => MemberParameters((MethodInfo)member),
             System.Reflection.MemberTypes.Field => $"F:{member.DeclaringType?.FullName}.{member.Name}",
             _ => ""
         };
