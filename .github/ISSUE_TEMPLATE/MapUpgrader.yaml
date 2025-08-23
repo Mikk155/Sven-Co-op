@@ -9,3 +9,6 @@ body:
     attributes:
       value: |
         Describe the issue/suggestion
+  - type: textarea
+    attributes:
+      label: "Describe the issue/suggestion"
