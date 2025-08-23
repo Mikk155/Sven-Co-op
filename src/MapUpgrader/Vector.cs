@@ -4,9 +4,9 @@
 /// </summary>
 public class Vector
 {
-    public float x;
-    public float y;
-    public float z;
+    public float x { get; set; }
+    public float y { get; set; }
+    public float z { get; set; }
 
     public static Vector vecZero = new Vector( 0, 0, 0 );
 

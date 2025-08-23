@@ -8,6 +8,7 @@
         PyExportAPI PyAPI = new PyExportAPI();
 
         PyAPI.Generate( typeof(Entity), "Entity" );
+        PyAPI.Generate( typeof(Vector), "Vector" );
 #endif
 
         ConfigContext config = new ConfigContext();
