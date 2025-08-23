@@ -3,3 +3,9 @@ description: Issue or suggestion related to MapUpgrader
 title: "[MapUpgrader] "
 labels: [ "Tools", "MapUpgrader" ]
 assignees: [ "mikk155" ]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the issue/suggestion
