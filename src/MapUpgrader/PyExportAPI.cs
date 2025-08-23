@@ -36,13 +36,9 @@ class PyExportAPI
 
     public PyExportAPI()
     {
-        string XMLDestination = Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", "MapUpgrader.xml" );
-
-        File.Copy( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ), XMLDestination, true );
-
         Console.WriteLine( $"Generating API for python scripting Type Hints" );
 
-        Summary = XDocument.Load( XMLDestination ).Descendants( "member" )
+        Summary = XDocument.Load( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", "MapUpgrader.xml" ) ).Descendants( "member" )
             .Where( m => m.Attribute( "name" ) != null )
             .ToDictionary( m => m.Attribute( "name" )!.Value, m => (string?)m.Element( "summary" ) ?? ""
         );
