@@ -9,6 +9,7 @@ set( CMAKE_CXX_EXTENSIONS OFF )
 if( MSVC )
     add_compile_options( /wd4302 )
     add_compile_options( /wd4311 )
+    set( CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" )
 endif()
 
 set( SOURCES
@@ -64,6 +65,14 @@ target_include_directories( ${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/metamod
 
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/asext/include
+)
+
+target_compile_definitions( ${PROJECT_NAME} PRIVATE
+    WIN32
+    _WINDOWS
+    _USRDLL
+    PLATFORM_WINDOWS
+    _CRT_SECURE_NO_WARNINGS
 )
 
 add_subdirectory(
