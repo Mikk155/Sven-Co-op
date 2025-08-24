@@ -92,3 +92,9 @@ add_subdirectory(
 target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}" )
+
+install( TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION .   # Windows (.dll)
+    LIBRARY DESTINATION .   # Linux (.so)
+    ARCHIVE DESTINATION .   # Static libs (.lib / .a)
+)
