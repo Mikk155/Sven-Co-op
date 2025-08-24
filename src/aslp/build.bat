@@ -5,7 +5,7 @@ setlocal
 if not exist bin (
     mkdir bin
     cd bin
-    cmake ..
+    cmake -A Win32 ..
     cd ..
 )
 

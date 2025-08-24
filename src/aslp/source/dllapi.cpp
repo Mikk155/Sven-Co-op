@@ -70,6 +70,13 @@ static void ClientCommand(edict_t* pEntity) {
 		SET_META_RESULT(MRES_HANDLED);
 		return;
 	}
+	else if (!strncmp(pcmd, "generate_as", 11))
+	{
+		extern void GenerateScriptPredefined(const asIScriptEngine * engine);
+		GenerateScriptPredefined(ASEXT_GetServerManager()->scriptEngine);
+		SET_META_RESULT(MRES_HANDLED);
+		return;
+	}
 	SET_META_RESULT(MRES_IGNORED);
 }
 static void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer) {

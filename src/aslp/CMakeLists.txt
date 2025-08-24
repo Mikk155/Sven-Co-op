@@ -7,8 +7,11 @@ set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF )
 
 if( MSVC )
-    add_compile_options( /wd4302 )
-    add_compile_options( /wd4311 )
+    add_compile_options(/wd4302)
+    add_compile_options(/wd4311)
+    add_compile_options(/wd4267)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    set( CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" )
 endif()
 
 set( SOURCES
@@ -66,6 +69,14 @@ target_include_directories( ${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/asext/include
 )
 
+target_compile_definitions( ${PROJECT_NAME} PRIVATE
+    WIN32
+    _WINDOWS
+    _USRDLL
+    PLATFORM_WINDOWS
+    _CRT_SECURE_NO_WARNINGS
+)
+
 add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/json
     ${CMAKE_CURRENT_BINARY_DIR}/external/json
@@ -77,6 +88,10 @@ add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt
     ${CMAKE_CURRENT_BINARY_DIR}/external/fmt
 )
+
+if(MSVC)
+    target_compile_options(fmt PRIVATE /wd4244)
+endif()
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
 

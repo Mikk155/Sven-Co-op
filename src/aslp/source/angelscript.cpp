@@ -13,14 +13,16 @@
 
 angelhook_t g_AngelHook;
 
-uint32 SC_SERVER_DECL CASEngineFuncs_CRC32(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer){
+uint32 SC_SERVER_DECL CASEngineFuncs_CRC32(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer)
+{
 	CRC32_t crc;
 	CRC32_INIT(&crc);
 	CRC32_PROCESS_BUFFER(&crc, (void*)szBuffer->c_str(), szBuffer->length());
 	return CRC32_FINAL(crc);
 }
 
-bool SC_SERVER_DECL CASEngineFuncs_ClassMemcpy(void* pthis, SC_SERVER_DUMMYARG void* _src, int srctypeid, void* _dst, int dsttypeid) {
+bool SC_SERVER_DECL CASEngineFuncs_ClassMemcpy(void* pthis, SC_SERVER_DUMMYARG void* _src, int srctypeid, void* _dst, int dsttypeid) 
+{
 	if (srctypeid != dsttypeid)
 		return false;
 	asIScriptObject* src = *static_cast<asIScriptObject**>(_src);
@@ -32,7 +34,8 @@ bool SC_SERVER_DECL CASEngineFuncs_ClassMemcpy(void* pthis, SC_SERVER_DUMMYARG v
 }
 
 template <typename T>
-void RegisteRefObject(CASDocumentation* pASDoc, const char* szName) {
+void RegisteRefObject(CASDocumentation* pASDoc, const char* szName) 
+{
 	asSFuncPtr reg;
 	reg = asMETHOD(T, AddRef);
 	ASEXT_RegisterObjectBehaviourEx(pASDoc, "AddRef", szName, asBEHAVE_ADDREF, "void AddRef()", &reg, asCALL_THISCALL);
@@ -40,7 +43,8 @@ void RegisteRefObject(CASDocumentation* pASDoc, const char* szName) {
 	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Release", szName, asBEHAVE_RELEASE, "void Release()", &reg, asCALL_THISCALL);
 }
 template <typename T>
-void RegisteGCObject(CASDocumentation* pASDoc, const char* szName) {
+void RegisteGCObject(CASDocumentation* pASDoc, const char* szName) 
+{
 	RegisteRefObject<T>(pASDoc, szName);
 	asSFuncPtr reg;
 	reg = asMETHOD(T, SetGCFlag);
@@ -74,15 +78,19 @@ std::string SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& 
 /// </summary>
 #define REGISTE_OBJMETHODEX(r, d, e, c, m, cc, mm, call) r=asMETHOD(cc,mm);ASEXT_RegisterObjectMethodEx(d,e,c,m,&r,call)
 #define REGISTE_OBJMETHODPREX(r, d, e, c, m, cc, mm, pp, rr, call) r=asMETHODPR(cc,mm, pp, rr);ASEXT_RegisterObjectMethodEx(d,e,c,m,&r,call)
-void RegisterAngelScriptMethods(){
+void RegisterAngelScriptMethods() 
+{
 	CASSQLite::LoadSQLite3DLL();
-	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) {
+
+	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
+	{
 		//Regist HealthInfo type
 		ASEXT_RegisterObjectType(pASDoc, "Entity takehealth info", "HealthInfo", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		ASEXT_RegisterObjectProperty(pASDoc, "Who get healing?", "HealthInfo", "CBaseEntity@ pEntity", offsetof(healthinfo_t, pEntity));
 		ASEXT_RegisterObjectProperty(pASDoc, "Recover amount.", "HealthInfo", "float flHealth", offsetof(healthinfo_t, flHealth));
 		ASEXT_RegisterObjectProperty(pASDoc, "Recover dmg type.", "HealthInfo", "int bitsDamageType", offsetof(healthinfo_t, bitsDamageType));
 		ASEXT_RegisterObjectProperty(pASDoc, "If health_cap is non-zero, won't add more than health_cap. Returns true if it took damage, false otherwise.", "HealthInfo", "int health_cap", offsetof(healthinfo_t, health_cap));
+		
 		//CBinaryStringBuilder
 		asSFuncPtr reg;
 		ASEXT_RegisterObjectType(pASDoc, "Binary String Builder", "CBinaryStringBuilder", 0, asOBJ_REF | asOBJ_GC);
@@ -211,50 +219,50 @@ void RegisterAngelScriptMethods(){
 		ASEXT_RegisterEnumValue(pASDoc, "Null", "JsonType", "NULL_VALUE", NULL_VALUE);
 
 		//Class
-		ASEXT_RegisterObjectType(pASDoc, "JSON Value Object", "JsonValue", 0, asOBJ_REF | asOBJ_GC);
+		ASEXT_RegisterObjectType(pASDoc, "JSON Value Object", "json", 0, asOBJ_REF | asOBJ_GC);
 		reg = asFUNCTIONPR(CASJson::Factory, (), CASJson*);
-		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "JsonValue", asBEHAVE_FACTORY, "JsonValue@ f()", &reg, asCALL_CDECL);
-		RegisteGCObject<CASJson>(pASDoc, "JsonValue");
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a boolean", "JsonValue", "JsonValue& opAssign(bool)", CASJson, operator=, (bool), CASJson&, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign an integer", "JsonValue", "JsonValue& opAssign(int64)", CASJson, operator=, (asINT64), CASJson&, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a real number", "JsonValue", "JsonValue& opAssign(double)", CASJson, operator=, (double), CASJson&, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a string", "JsonValue", "JsonValue& opAssign(const string&in)", CASJson, operator=, (const CString&), CASJson&, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign another JsonValue", "JsonValue", "JsonValue& opAssign(const JsonValue&in)", CASJson, operator=, (const CASJson&), CASJson&, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a array of JsonValue", "JsonValue", "JsonValue& opAssign(const array<JsonValue@>&in)", CASJson, operator=, (const CScriptArray&), CASJson&, asCALL_THISCALL);
+		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "json", asBEHAVE_FACTORY, "json@ f()", &reg, asCALL_CDECL);
+		RegisteGCObject<CASJson>(pASDoc, "json");
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a boolean", "json", "json& opAssign(bool)", CASJson, operator=, (bool), CASJson&, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign an integer", "json", "json& opAssign(int64)", CASJson, operator=, (asINT64), CASJson&, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a real number", "json", "json& opAssign(double)", CASJson, operator=, (double), CASJson&, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a string", "json", "json& opAssign(const string&in)", CASJson, operator=, (const CString&), CASJson&, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign another json", "json", "json& opAssign(const json&in)", CASJson, operator=, (const CASJson&), CASJson&, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a array of json", "json", "json& opAssign(const array<json@>&in)", CASJson, operator=, (const CScriptArray&), CASJson&, asCALL_THISCALL);
 
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "JsonValue", "void Set(const string&in, bool)", CASJson, Set, (const jsonKey_t&, bool), void, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "JsonValue", "void Set(const string&in, int64)", CASJson, Set, (const jsonKey_t&, asINT64), void, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "JsonValue", "void Set(const string&in, double)", CASJson, Set, (const jsonKey_t&, double), void, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "JsonValue", "void Set(const string&in, const string&in)", CASJson, Set, (const jsonKey_t&, const CString&), void, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "JsonValue", "void Set(const string&in, array<JsonValue@>&in)", CASJson, Set, (const jsonKey_t&, const CScriptArray&), void, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "json", "void Set(const string&in, bool)", CASJson, Set, (const jsonKey_t&, bool), void, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "json", "void Set(const string&in, int64)", CASJson, Set, (const jsonKey_t&, asINT64), void, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "json", "void Set(const string&in, double)", CASJson, Set, (const jsonKey_t&, double), void, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "json", "void Set(const string&in, const string&in)", CASJson, Set, (const jsonKey_t&, const CString&), void, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Set a key/value pair", "json", "void Set(const string&in, array<json@>&in)", CASJson, Set, (const jsonKey_t&, const CScriptArray&), void, asCALL_THISCALL);
 
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "JsonValue", "bool Get(const string&in, bool&out) const", CASJson, Get, (const jsonKey_t&, bool&) const, bool, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "JsonValue", "bool Get(const string&in, int64&out) const", CASJson, Get, (const jsonKey_t&, asINT64&) const, bool, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "JsonValue", "bool Get(const string&in, double&out) const", CASJson, Get, (const jsonKey_t&, double&) const, bool, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "JsonValue", "bool Get(string&in, string&out) const", CASJson, Get, (const jsonKey_t&, CString&) const, bool, asCALL_THISCALL);
-		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "JsonValue", "bool Get(string&in, array<JsonValue@>@ const) const", CASJson, Get, (const jsonKey_t&, CScriptArray&) const, bool, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "json", "bool Get(const string&in, bool&out) const", CASJson, Get, (const jsonKey_t&, bool&) const, bool, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "json", "bool Get(const string&in, int64&out) const", CASJson, Get, (const jsonKey_t&, asINT64&) const, bool, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "json", "bool Get(const string&in, double&out) const", CASJson, Get, (const jsonKey_t&, double&) const, bool, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "json", "bool Get(string&in, string&out) const", CASJson, Get, (const jsonKey_t&, CString&) const, bool, asCALL_THISCALL);
+		REGISTE_OBJMETHODPREX(reg, pASDoc, "Get a value by key", "json", "bool Get(string&in, array<json@>@ const) const", CASJson, Get, (const jsonKey_t&, CScriptArray&) const, bool, asCALL_THISCALL);
 
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to boolean", "JsonValue", "bool opConv()", CASJson, GetBool, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to string", "JsonValue", "string& opConv()", CASJson, GetString, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to integer", "JsonValue", "int opConv()", CASJson, GetNumber, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to real number", "JsonValue", "double opConv()", CASJson, GetReal, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to array", "JsonValue", "array<JsonValue@>@ opConv()", CASJson, GetArray, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to boolean", "json", "bool opConv()", CASJson, GetBool, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to string", "json", "string& opConv()", CASJson, GetString, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to integer", "json", "int opConv()", CASJson, GetNumber, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to real number", "json", "double opConv()", CASJson, GetReal, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Convert to array", "json", "array<json@>@ opConv()", CASJson, GetArray, asCALL_THISCALL);
 
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Access value by key", "JsonValue", "JsonValue& opIndex(const string&in)", CASJson, opIndex, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Access value by key (const)", "JsonValue", "const JsonValue& opIndex(const string&in) const", CASJson, opIndex_const, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Access value by key", "json", "json& opIndex(const string&in)", CASJson, opIndex, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Access value by key (const)", "json", "const json& opIndex(const string&in) const", CASJson, opIndex_const, asCALL_THISCALL);
 
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Check if a key exists", "JsonValue", "bool Exists(const string&in) const", CASJson, Exists, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Check if the object is empty", "JsonValue", "bool IsEmpty() const", CASJson, IsEmpty, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get the number of elements", "JsonValue", "uint GetSize() const", CASJson, GetSize, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Clear all elements", "JsonValue", "void Clear()", CASJson, Clear, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get the value type", "JsonValue", "JsonType Type() const", CASJson, Type, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Check if a key exists", "json", "bool Exists(const string&in) const", CASJson, Exists, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Check if the object is empty", "json", "bool IsEmpty() const", CASJson, IsEmpty, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Get the number of elements", "json", "uint GetSize() const", CASJson, GetSize, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Clear all elements", "json", "void Clear()", CASJson, Clear, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Get the value type", "json", "JsonType Type() const", CASJson, Type, asCALL_THISCALL);
 
 		//Regist New Method
 		ASEXT_RegisterObjectMethod(pASDoc,
-			"", "CEngineFuncs", "JsonValue@ JsonParse(const string& in szBuffer)",
+			"", "CEngineFuncs", "json@ JsonParse(const string& in szBuffer)",
 			(void*)CASEngineFuncs_JsonParse, asCALL_THISCALL);
 		ASEXT_RegisterObjectMethod(pASDoc,
-			"", "CEngineFuncs", "string JsonWrite(const JsonValue&in)",
+			"", "CEngineFuncs", "string JsonWrite(const json&in)",
 			(void*)CASEngineFuncs_JsonWrite, asCALL_THISCALL);
 
 		ASEXT_RegisterObjectMethod(pASDoc,
@@ -292,6 +300,7 @@ void RegisterAngelScriptHooks(){
 }
 #undef CREATE_AS_HOOK
 
-void CloseAngelScriptsItem() {
+void CloseAngelScriptsItem() 
+{
 	CASSQLite::CloseSQLite3DLL();
 }
