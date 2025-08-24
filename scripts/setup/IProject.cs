@@ -8,7 +8,7 @@ public interface IProject
     public void Setup();
 
 #pragma warning disable CS8601
-    private static Dictionary<string, string> cache = JsonSerializer.Deserialize<Dictionary<string, string>>( File.ReadAllText( GetConfigPath() ) );
+    public static Dictionary<string, string> cache = JsonSerializer.Deserialize<Dictionary<string, string>>( File.ReadAllText( GetConfigPath() ) );
 #pragma warning restore CS8601
 
     private static string? ConfigFile = null;
