@@ -1,7 +1,8 @@
 ﻿class Setup
 {
     private static readonly List<IProject> Projects = new List<IProject>(){
-        new Metamod()
+        new Metamod(),
+        new AngelScript(),
     };
 
     public static void Main()
