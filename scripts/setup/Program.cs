@@ -9,7 +9,7 @@
         Console.BackgroundColor = ConsoleColor.Black;
         Console.ForegroundColor = ConsoleColor.Cyan;
 
-        IProject.Config( "svencoop_exe", value =>
+        IProject.Config( "svencoop", value =>
         {
             if( !Directory.Exists( Path.Combine( value, "svencoop" ) ) )
             {
