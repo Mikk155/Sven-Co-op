@@ -1,0 +1,14 @@
+name: MapUpgrader Tool
+description: Issue or suggestion related to MapUpgrader
+title: "[MapUpgrader] "
+labels: [ "Tools", "MapUpgrader" ]
+assignees: [ "mikk155" ]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the issue/suggestion
+  - type: textarea
+    attributes:
+      label: "Describe the issue/suggestion"

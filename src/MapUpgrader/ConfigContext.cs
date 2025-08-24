@@ -16,18 +16,7 @@ class ConfigContext
 
     private string GetConfigPath()
     {
-        string ConfigFolder;
-
-        if( OperatingSystem.IsWindows() )
-        {
-            ConfigFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        }
-        else
-        {
-            ConfigFolder = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ), ".config" );
-        }
-
-        string AppFolder = Path.Combine( ConfigFolder, "MapUpgrader" );
+        string AppFolder = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "MapUpgrader" );
 
         if( !Directory.Exists( AppFolder ) )
         {

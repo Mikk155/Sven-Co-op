@@ -1,1 +1,22 @@
+*.bat linguist-vendored
+*.res  linguist-vendored
+
+CMakeLists.txt linguist-language=C++
+*.c linguist-language=C++
+*.cpp linguist-language=C++
+*.h linguist-language=C++
+*.hpp linguist-language=C++
+
+*.py linguist-language=Python
+
+*.cs linguist-language=C#
+*.csproj linguist-language=C#
+
 *.as linguist-language=AngelScript
+
+*.json linguist-language=JSON
+
+*.html linguist-language=HTML
+*.js linguist-language=HTML
+*.css linguist-language=HTML
+*.md linguist-language=HTML

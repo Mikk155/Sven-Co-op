@@ -56,4 +56,96 @@ namespace fmt
 
         return list;
     }
+
+#if 0
+    // Converts the given string (.ent/.json format) to a list of entity key-value pairs
+    array<dictionary> EntityData( string data )
+    {
+        array<dictionary> EntityList;
+
+        dictionary Entity;
+
+        bool OnEntity = false;
+        bool OnKey = false;
+        bool OnValue = false;
+        bool ReadValue = false;
+        bool LastWasEscape = false;
+
+        string Key = "";
+        string Value = "";
+
+        while( data.Length() > 0 )
+        {
+            char C = data[0];
+
+            if( C == '\\' )
+            {
+                LastWasEscape = true;
+            }
+
+            if( !OnEntity )
+            {
+                if( C == '{' )
+                {
+                    OnEntity = true;
+                }
+            }
+            else if( OnKey )
+            {
+                if( C == '"' && !LastWasEscape )
+                {
+                    ReadValue = true;
+                    OnKey = false;
+                }
+                else
+                {
+                    Key += C;
+                }
+            }
+            else if( OnValue )
+            {
+                if( C == '"' && !LastWasEscape )
+                {
+                    if( !Key.IsEmpty() && !Value.IsEmpty() )
+                    {
+                        Entity[ Key ] = Value;
+                    }
+
+                    OnValue = false;
+                    Value = "";
+                    Key = "";
+                }
+                else
+                {
+                    Value += C;
+                }
+            }
+            else if( ReadValue )
+            {
+                if( C == '"' && !LastWasEscape )
+                {
+                    ReadValue = false;
+                    OnValue = true;
+                }
+            }
+            else if( C == '"' && !LastWasEscape )
+            {
+                OnKey = true;
+            }
+            else if( !OnKey || OnValue && C == '}' )
+            {
+                if( Entity.getSize() > 0 )
+                {
+                    EntityList.insertLast( Entity );
+                }
+
+                Entity = dictionary();
+                OnEntity = false;
+            }
+            LastWasEscape = false;
+        }
+
+        return EntityList;
+    }
+#endif
 }

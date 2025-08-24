@@ -1,0 +1,88 @@
+
+body
+{
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #486088;
+}
+
+header, footer
+{
+  background: #333;
+  color: #486088;
+  text-align: center;
+  padding: 10px;
+}
+
+#content
+{
+  max-width: 800px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#content h1, #content h2, p
+{
+  color: #007acc;
+}
+
+a
+{
+  color: #cb00b0;
+}
+
+.code-block {
+  position: relative;
+  background: #1e1e1e;
+  color: #dcdcdc;
+  padding: 1em;
+  border-radius: 8px;
+  font-family: monospace;
+  overflow: auto;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border: none;
+  background: #2d2d2d;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+
+.copy-btn:hover {
+  background: #444;
+}
+
+.table-wrap
+{
+  overflow-x: auto;
+}
+
+table.markdown
+{
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+
+table.markdown th
+{
+  text-align: left;
+  border-bottom: 2px solid #333;
+  padding: 8px;
+}
+
+table.markdown td
+{
+  border-bottom: 1px solid #ccc;
+  padding: 8px;
+}

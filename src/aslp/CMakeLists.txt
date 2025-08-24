@@ -5,12 +5,12 @@ project( aslp LANGUAGES CXX )
 set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32" )
+set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32" )
 
 if( MSVC )
-    add_compile_options(/wd4302)
-    add_compile_options(/wd4311)
-    add_compile_options(/wd4267)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_options( /wd4302 )
+    add_compile_options( /wd4311 )
     set( CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" )
 endif()
 
@@ -84,15 +84,19 @@ add_subdirectory(
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json )
 
+set( FMT_INSTALL OFF CACHE BOOL "" FORCE )
+
 add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt
     ${CMAKE_CURRENT_BINARY_DIR}/external/fmt
 )
 
-if(MSVC)
-    target_compile_options(fmt PRIVATE /wd4244)
-endif()
-
 target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}" )
+
+install( TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION .   # Windows (.dll)
+    LIBRARY DESTINATION .   # Linux (.so)
+    ARCHIVE DESTINATION .   # Static libs (.lib / .a)
+)

@@ -1,15 +1,15 @@
 using Python.Runtime;
 
-class PyEngine
+class ScriptEngine
 {
-    public PyEngine( string PythonDLL )
+    public ScriptEngine( string PythonDLL )
     {
         Runtime.PythonDLL = PythonDLL;
 
         PythonEngine.Initialize();
     }
 
-    ~PyEngine()
+    ~ScriptEngine()
     {
         Shutdown();
     }
