@@ -31,6 +31,7 @@ set( SOURCES
     source/meta_api.cpp
     source/sdk_util.cpp
     source/vftable.cpp
+    source/generate_as_predefined.cpp
 )
 
 set( HEADERS
