@@ -1,6 +1,7 @@
 ﻿class Setup
 {
     private static readonly List<IProject> Projects = new List<IProject>(){
+        new Metamod()
     };
 
     public static void Main()
