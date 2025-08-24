@@ -8,7 +8,35 @@
 </head>
 <body>
 
-<div id="content">--content--</div>
+<div id="content">
+
+  <h1>Contributing:</h1>
+
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'git-clone' )" title="Copy">📋</button>
+    <pre>
+      <code id="git-clone">
+git clone https://github.com/Mikk155/Sven-Co-op.git
+cd Sven-Co-op
+git submodule update --init --remote scripts/utils
+      </code>
+    </pre>
+  </div>
+
+  <h1>Metamod:</h1>
+
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'git-submodule-metamod' )" title="Copy">📋</button>
+    <pre>
+      <code id="git-submodule-metamod">
+git submodule update --init --remote external/fmt
+git submodule update --init --remote external/json
+git submodule update --init --remote external/metamod
+      </code>
+    </pre>
+  </div>
+
+</div>
 
 </body>
 </html>

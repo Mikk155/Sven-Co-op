@@ -29,19 +29,30 @@ header, footer
     color: #007acc;
 }
 
-#content code
-{
-    background: #383838;
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-family: monospace;
+.code-block {
+  position: relative;
+  background: #1e1e1e;
+  color: #dcdcdc;
+  padding: 1em;
+  border-radius: 8px;
+  font-family: monospace;
+  overflow: auto;
 }
 
-#content pre
-{
-    background: #272822;
-    color: #717171;
-    padding: 10px;
-    border-radius: 6px;
-    overflow-x: auto;
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border: none;
+  background: #2d2d2d;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+
+.copy-btn:hover {
+  background: #444;
 }

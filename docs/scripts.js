@@ -35,6 +35,38 @@ async function UpdateElementWithTemplate( tag, file )
     }
     catch( exception )
     {
-        console.error( "Couldn't load ${file}:", exception );
+        console.error( "Couldn't load ${file}: ", exception );
+    }
+}
+
+async function ClipboardCopy( id )
+{
+    const element = document.getElementById( id );
+
+    if( !element )
+    {
+        console.error( "Couldn't find element with ID: ", id );
+        return;
+    }
+
+    const text = element.innerText.trim();
+
+    try
+    {
+        await navigator.clipboard.writeText(text);
+
+        const Button = document.querySelector( `[onclick*="${id}"]` );
+
+        if( Button )
+        {
+            const oldText = Button.textContent;
+            Button.textContent = "✅ Copied";
+            setTimeout( () => ( Button.textContent = oldText ), 1500 );
+        }
+
+    }
+    catch( exception )
+    {
+        console.error( "Error copying to clipboard: ", exception );
     }
 }
