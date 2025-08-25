@@ -44,5 +44,13 @@ public class AngelScript : IProject
             int IndexEnd = Content.LastIndexOf( '}' );
             File.WriteAllText( DefaultPlugins, Content.Substring( 0, IndexEnd - 1 ) + MKExtensionHeader + Content.Substring( IndexEnd ) );
         }
+
+        Console.WriteLine( "Setting up AngelScript code-runner..." );
+
+        IProject.RunCommand(
+            "dotnet",
+            $"dotnet build code-runner.sln",
+            Path.Combine( Directory.GetCurrentDirectory(), "..", "code-runner" )
+        );
     }
 }
