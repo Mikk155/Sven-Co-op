@@ -1,7 +1,7 @@
 {
     "code-runner.executorMapByFileExtension":
     {
-        ".as": "python scripts/code-runner.py -file \"$fullFileName\""
+        ".as": ".\\code-runner $fullFileName"
     },
     "code-runner.runInTerminal": true,
 
@@ -11,7 +11,7 @@
         [
             {
                 "match": "\\assets.json$",
-                "cmd": "start cmd /c python scripts/code-runner.py -file \"${file}\""
+                "cmd": "start cmd /c code-runner ${file}"
             }
         ]
     },
@@ -41,7 +41,8 @@
     {
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true
+        "**/bin": true,
+        "code-runner.*": true
     },
 
     "search.exclude":
@@ -49,7 +50,8 @@
         "build": true,
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true
+        "**/bin": true,
+        "code-runner.*": true
     },
 
     "C_Cpp.codeAnalysis.exclude":
@@ -57,7 +59,8 @@
         "build": true,
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true
+        "**/bin": true,
+        "code-runner.*": true
     },
 
     "C_Cpp.files.exclude":
@@ -65,14 +68,16 @@
         "build": true,
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true
+        "**/bin": true,
+        "code-runner.*": true
     },
 
     "python.analysis.exclude": [
         "build",
         "**/__pycache__",
         "**/obj",
-        "**/bin"
+        "**/bin",
+        "code-runner.*"
     ],
 
     "files.associations":
