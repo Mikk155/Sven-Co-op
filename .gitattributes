@@ -16,6 +16,7 @@ CMakeLists.txt linguist-language=C++
 
 *.json linguist-language=JSON
 
+docs/* linguist-documentation=false
 *.html linguist-language=HTML
 *.js linguist-language=HTML
 *.css linguist-language=HTML
