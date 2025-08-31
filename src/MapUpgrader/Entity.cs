@@ -53,6 +53,19 @@ public class Entity( int index )
         }
     }
 
+    /// <summary>Entity absolute position in world</summary>
+    public Vector origin
+    {
+        get
+        {
+            return GetVector( "origin" );
+        }
+        set
+        {
+            keyvalues[ "origin" ] = value.ToString();
+        }
+    }
+
     /// <summary>Get a key's value in string form</summary>
     public string GetString( string key )
     {

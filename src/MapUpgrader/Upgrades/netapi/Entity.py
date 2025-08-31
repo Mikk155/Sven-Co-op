@@ -6,6 +6,8 @@ class Entity:
 	'''Represents the current index of this entity in the BSP entity data'''
 	classname: str
 	'''Classname of the entity. if this is not a valid entity in the FGD the program will only warn.'''
+	origin: Vector
+	'''Entity absolute position in world'''
 	def GetString(self, key: str) -> str: '''Get a key's value in string form'''
 	def SetString(self, key: str, value: str) -> None: '''Set a key's value in string form'''
 	def GetInteger(self, key: str) -> int: '''Get a key's value in integer form'''
