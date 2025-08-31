@@ -38,8 +38,6 @@ public class ScriptEngine
         { ".py", new PythonLanguage() }
     };
 
-    public Dictionary<string, List<string>> Scripts = new Dictionary<string, List<string>>();
-
     public ScriptEngine()
     {
         // Get all script files
@@ -49,35 +47,12 @@ public class ScriptEngine
             .Where( file => this.Languages.ContainsKey( Path.GetExtension( file ) ) )
             .ToList();
 
-        string[]? ScriptModule = null;
-
         foreach( string file in ScriptFiles )
         {
             string FileExtension = Path.GetExtension( file );
 
-            List<string>? OrganizedScriptFiles;
-
-            // Organize scripts to their languages
-            if( Scripts.TryGetValue( FileExtension, out OrganizedScriptFiles ) && OrganizedScriptFiles is not null )
-            {
-                OrganizedScriptFiles.Add( file );
-            }
-            else
-            {
-                OrganizedScriptFiles = new List<string>(){ file };
-                Scripts[ FileExtension ] = OrganizedScriptFiles;
-            }
-
-            // -TODO Add a contextual menu for the user to choose what to install
-            // In the meanwhile use the last file found for testing
-            ScriptModule = [ FileExtension, file ];
-            break;
-        }
-
-        if( ScriptModule is not null )
-        {
-            ILanguageEngine lang = Languages[ ScriptModule[0] ];
-            UpgradeContext? context = lang.Initialize( ScriptModule[1] );
+            ILanguageEngine lang = Languages[ FileExtension ];
+            UpgradeContext? context = lang.Initialize( file );
 
             if( context is not null )
             {
@@ -85,7 +60,7 @@ public class ScriptEngine
             }
             else
             {
-                throw new Exception( $"Got an empty context from {ScriptModule[0]} {ScriptModule[1]}" );
+                throw new Exception( $"Got an empty context from {FileExtension} {file}" );
             }
         }
     }
