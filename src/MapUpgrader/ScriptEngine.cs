@@ -31,6 +31,8 @@ public interface ILanguageEngine
 
 public class ScriptEngine
 {
+    public readonly Logger logger = new Logger( "Script Engine", ConsoleColor.Green );
+
     public readonly List<UpgradeContext> Mods = new List<UpgradeContext>();
 
     public readonly Dictionary<string, ILanguageEngine> Languages = new Dictionary<string, ILanguageEngine>()
@@ -52,6 +54,9 @@ public class ScriptEngine
             string FileExtension = Path.GetExtension( file );
 
             ILanguageEngine lang = Languages[ FileExtension ];
+
+            logger.info( $"Initializing language engine {lang.GetName()} for file {Path.GetFileName(file)}" );
+
             UpgradeContext? context = lang.Initialize( file );
 
             if( context is not null )
@@ -60,7 +65,7 @@ public class ScriptEngine
             }
             else
             {
-                throw new Exception( $"Got an empty context from {FileExtension} {file}" );
+                logger.error( $"Got an empty context from {lang.GetName()} for {file}" );
             }
         }
     }
@@ -72,6 +77,8 @@ public class ScriptEngine
 
     public void Shutdown()
     {
+        logger.info( "Shutting down" );
+
         foreach( KeyValuePair<string, ILanguageEngine> e in Languages )
         {
             if( e.Value is not null )

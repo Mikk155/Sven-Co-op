@@ -77,6 +77,7 @@ public class MapUpgrader
 
     public void Shutdown()
     {
+        logger.info( "Shutting down" );
         this.ScriptEngine.Shutdown();
     }
 }
