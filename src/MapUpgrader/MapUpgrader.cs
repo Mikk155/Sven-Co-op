@@ -31,11 +31,7 @@ public class MapUpgrader
     public MapUpgrader()
     {
 #if DEBUG // Generate docs for python Type hints
-        PyExportAPI PyAPI = new PyExportAPI();
-
-        PyAPI.Generate( typeof(Entity), "Entity" );
-        PyAPI.Generate( typeof(Vector), "Vector" );
-        PyAPI.Generate( typeof(UpgradeContext), "UpgradeContext" );
+        new PyExportAPI();
 #endif
 
         ScriptEngine = new ScriptEngine();
