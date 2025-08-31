@@ -24,6 +24,8 @@ DEALINGS IN THE SOFTWARE.
 
 public class MapUpgrader
 {
+    public readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.Magenta );
+
     public readonly ScriptEngine ScriptEngine;
 
     public MapUpgrader()
@@ -43,8 +45,8 @@ public class MapUpgrader
     {
         if( ScriptEngine.Mods.Count <= 0 )
         {
-            Console.WriteLine( $"No scripts detected in the directory \"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"" );
-            Console.ReadLine();
+            logger.error( $"No scripts detected in the directory \"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"" );
+            logger.pause(1);
             return;
         }
 
@@ -57,17 +59,17 @@ public class MapUpgrader
 
     private void InstallContext( UpgradeContext context )
     {
-        Console.WriteLine( $"=================================================================" );
-        Console.WriteLine( $"Name {context.Name}" );
-        Console.WriteLine( $"Title {context.Title}" );
-        Console.WriteLine( $"Description {context.Description}" );
-        Console.WriteLine( $"Mod {context.Mod}" );
-        Console.WriteLine( $"urls {string.Join( " ", context.urls )}" );
+        logger.info( $"=================================================================" );
+        logger.info( $"Name {context.Name}" );
+        logger.info( $"Title {context.Title}" );
+        logger.info( $"Description {context.Description}" );
+        logger.info( $"Mod {context.Mod}" );
+        logger.info( $"urls {string.Join( " ", context.urls )}" );
 
         if( context.maps is not null )
-            Console.WriteLine( $"maps {string.Join( " ", context.maps )}" );
+            logger.info( $"maps {string.Join( " ", context.maps )}" );
 
-        Console.WriteLine( $"=================================================================" );
+        logger.info( $"=================================================================" );
 
         context.Language.Shutdown();
     }

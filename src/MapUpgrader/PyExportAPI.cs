@@ -30,6 +30,8 @@ using System.Xml.Linq;
 
 public class PyExportAPI
 {
+    public readonly Logger logger = new Logger( "Python API", ConsoleColor.Blue );
+
     private readonly Dictionary<string, string> Summary;
 
     private string MemberParameters( MethodInfo member )
@@ -60,7 +62,7 @@ public class PyExportAPI
 
     public PyExportAPI()
     {
-        Console.WriteLine( $"Generating API for python scripting Type Hints" );
+        logger.info( $"Generating API for python scripting Type Hints" );
 
         Summary = XDocument.Load( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) ).Descendants( "member" )
             .Where( m => m.Attribute( "name" ) != null )
@@ -137,7 +139,9 @@ public class PyExportAPI
             }
         }
 
-        File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{PythonScript}.py" ), f.ToString() );
+        string PyAPI = Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{PythonScript}.py" );
+        logger.info( $"Generated {PyAPI}" );
+        File.WriteAllText( PyAPI, f.ToString() );
     }
 
     private string MapType( Type type )

@@ -26,6 +26,8 @@ using Python.Runtime;
 
 public class PythonLanguage : ILanguageEngine
 {
+    public readonly Logger logger = new Logger( "Python", ConsoleColor.Yellow );
+
     public string GetName() => "Python";
 
     public void Shutdown()
@@ -97,14 +99,7 @@ public class PythonLanguage : ILanguageEngine
             }
             catch( Exception exception )
             {
-                Console.WriteLine( $"[Python Engine] Exception thrown by the script \"{Path.GetFileName( script )}\"" );
-                Console.WriteLine( $"Error: {exception.Message}" );
-
-                if( exception.StackTrace is not null )
-                {
-                    Console.WriteLine( "Trace:" );
-                    Console.WriteLine( exception.StackTrace );
-                }
+                logger.error( $"[Python Engine] Exception thrown by the script \"{Path.GetFileName( script )}\"\nError: {exception.Message}\n{exception.StackTrace}" );
             }
             return null;
         }
