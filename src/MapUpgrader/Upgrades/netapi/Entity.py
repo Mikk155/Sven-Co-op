@@ -1,4 +1,5 @@
 from typing import Any
+from Vector import Vector
 
 class Entity:
 	EntIndex: int
@@ -13,6 +14,6 @@ class Entity:
 	def SetFloat(self, key: str, value: float) -> None: '''Set a key's value in float form'''
 	def GetBool(self, key: str) -> bool: '''Get a key's value in bool form (0/1)'''
 	def SetBool(self, key: str, value: bool) -> None: '''Set a key's value in bool form (0/1)'''
-	def GetVector(self, key: str) -> Any: '''Get a key's value in bool form (0/1)'''
-	def SetVector(self, key: str, value: Any) -> None: '''Set a key's value in bool form (0/1)'''
+	def GetVector(self, key: str) -> Vector: '''Get a key's value in bool form (0/1)'''
+	def SetVector(self, key: str, value: Vector) -> None: '''Set a key's value in bool form (0/1)'''
 	def ToString(self) -> str: '''Return the entity in the .ent format'''

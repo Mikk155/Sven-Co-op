@@ -30,20 +30,33 @@ public class MapContext
 
         this.__BSPFile__ = Path.Combine( Directory.GetCurrentDirectory(), "maps", mapname );
 
-        /*
         if( !Path.Exists( this.BSPFile ) )
         {
             throw new FileNotFoundException( $"BSP File not found at \"{this.BSPFile}\"" );
         }
-        */
 
         // -TODO Read entity lump
-        Entity worldspawn = new Entity(0);
-        worldspawn.classname = "worldspawn";
-        Entities.Add( worldspawn );
-        Entity info_player_start = new Entity(1);
-        info_player_start.classname = "info_player_start";
-        Entities.Add( info_player_start );
+        string[] lines = File.ReadAllLines( this.BSPFile );
+        int index = 0;
+        Entity? entity = null;
+        foreach( string line in lines )
+        {
+            if( entity is null ) {
+                if( line[0] == '{' ) {
+                    entity = new Entity(index);
+                    index++;
+                }
+                continue;
+            }
+            if( line[0] == '}' )
+            {
+                entity = null;
+                continue;
+            }
+
+            string[] keyvalues = line.Substring( 1, line.Length - 1 ).Split( "\" \"" );
+            entity.SetString( keyvalues[0], keyvalues[1] );
+        }
 
         // -Apply C# specific upgrades
 

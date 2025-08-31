@@ -49,7 +49,14 @@ public class PyExportAPI
         StringBuilder f = new StringBuilder();
 
         f.AppendLine( "from typing import Any" );
+
+        if( t.Name == "Entity" )
+        {
+            f.AppendLine( "from Vector import Vector" );
+        }
+
         f.AppendLine();
+
         f.AppendLine( $"class {t.Name}:" );
 
         string? class_doc = MemberSummary( t );
@@ -121,6 +128,10 @@ public class PyExportAPI
             return "None";
         if( type == typeof( bool ) )
             return "bool";
+        if( type == typeof( string[] ) )
+            return "list[str]";
+        if( type == typeof( Vector ) )
+            return "Vector";
         return "Any";
     }
 }

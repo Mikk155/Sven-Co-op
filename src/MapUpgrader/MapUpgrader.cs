@@ -1,6 +1,6 @@
 ﻿public class MapUpgrader
 {
-    public ScriptEngine ScriptEngine = null!;
+    public readonly ScriptEngine ScriptEngine = new ScriptEngine()!;
 
     public MapUpgrader()
     {
@@ -9,20 +9,16 @@
 
         PyAPI.Generate( typeof(Entity), "Entity" );
         PyAPI.Generate( typeof(Vector), "Vector" );
+        PyAPI.Generate( typeof(UpgradeContext), "UpgradeContext" );
 #endif
-
-        ConfigContext config = new ConfigContext();
-
-        config.Get( "python_dll", value =>
-        {
-            this.ScriptEngine = new ScriptEngine( value );
-            return true; // No exception raised. break the loop
-        }, "Absolute path to your Python dll, it usually looks like \"C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python311\\python311.dll\" You can drag and drop the dll too." );
-
-        this.ScriptEngine.Run( "rp_c00", "rp_c00" );
     }
 
     ~MapUpgrader()
+    {
+        this.Shutdown();
+    }
+
+    public void Shutdown()
     {
         this.ScriptEngine.Shutdown();
     }
