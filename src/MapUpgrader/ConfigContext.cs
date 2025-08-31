@@ -27,7 +27,7 @@ using Newtonsoft.Json.Linq;
 
 public class ConfigContext
 {
-    public readonly Logger logger = new Logger( "Configuration", ConsoleColor.Red );
+    public readonly Logger logger = new Logger( "Configuration", ConsoleColor.DarkRed );
 
     public JObject cache;
 

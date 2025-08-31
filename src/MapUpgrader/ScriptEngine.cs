@@ -31,7 +31,7 @@ public interface ILanguageEngine
 
 public class ScriptEngine
 {
-    public readonly Logger logger = new Logger( "Script Engine", ConsoleColor.Green );
+    public readonly Logger logger = new Logger( "Script Engine", ConsoleColor.DarkGreen );
 
     public readonly List<UpgradeContext> Mods = new List<UpgradeContext>();
 

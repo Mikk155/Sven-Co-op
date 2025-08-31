@@ -32,7 +32,7 @@ using System.Xml.Linq;
 
 public class PythonLanguage : ILanguageEngine
 {
-    public readonly Logger logger = new Logger( "Python", ConsoleColor.Yellow );
+    public readonly Logger logger = new Logger( "Python", ConsoleColor.DarkYellow );
 
     public string GetName() => "Python";
 

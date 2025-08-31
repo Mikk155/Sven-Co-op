@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 public class MapUpgrader
 {
-    public readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.Magenta );
+    public readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
 
     public readonly ScriptEngine ScriptEngine;
 
