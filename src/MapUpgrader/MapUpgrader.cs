@@ -39,9 +39,20 @@ public class MapUpgrader
         ScriptEngine = new ScriptEngine();
     }
 
-    public void Initialize( ILanguageEngine Language, UpgradeContext context )
+    public void Initialize()
     {
+        // -TODO Display a menu with all the available UpgradeContext in ScriptEngine.Mods and get a choice from the user
+        foreach( UpgradeContext context in ScriptEngine.Mods )
+        {
+            InstallContext( context );
+        }
+    }
+
+    private void InstallContext( UpgradeContext context )
+    {
+        Console.WriteLine( $"=================================================================" );
         Console.WriteLine( $"Name {context.Name}" );
+        Console.WriteLine( $"Title {context.Title}" );
         Console.WriteLine( $"Description {context.Description}" );
         Console.WriteLine( $"Mod {context.Mod}" );
         Console.WriteLine( $"urls {string.Join( " ", context.urls )}" );
@@ -49,7 +60,9 @@ public class MapUpgrader
         if( context.maps is not null )
             Console.WriteLine( $"maps {string.Join( " ", context.maps )}" );
 
-        Language.Shutdown();
+        Console.WriteLine( $"=================================================================" );
+
+        context.Language.Shutdown();
     }
 
     ~MapUpgrader()

@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 using Python.Runtime;
 
-public class PythonLanguage() : ILanguageEngine
+public class PythonLanguage : ILanguageEngine
 {
     public string GetName() => "Python";
 
@@ -55,7 +55,7 @@ public class PythonLanguage() : ILanguageEngine
         return SharpList;
     }
 
-    public UpgradeContext? Initialize( string script )
+    public PythonLanguage()
     {
         ConfigContext config = new ConfigContext();
 
@@ -66,12 +66,14 @@ public class PythonLanguage() : ILanguageEngine
         }, "Absolute path to your Python dll, it usually looks like \"C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python311\\python311.dll\" You can drag and drop the dll too." );
 
         PythonEngine.Initialize();
+    }
 
+    public UpgradeContext? Initialize( string script )
+    {
         using ( Py.GIL() )
         {
             dynamic sys = Py.Import( "sys" );
             sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ) );
-            sys.path.append( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi" ) );
 
             dynamic Script = Py.Import( Path.GetFileNameWithoutExtension( script ) );
 
@@ -82,8 +84,8 @@ public class PythonLanguage() : ILanguageEngine
                 PyList ListDownloadURLs = new PyList( result.GetAttr( "urls" ) );
 
 #pragma warning disable CS8601 // Possible null reference assignment.
-                UpgradeContext context = new UpgradeContext(){
-                    Name = result.GetAttr( "Name" ).ToString(),
+                UpgradeContext context = new UpgradeContext( this, Path.GetFileName( script ) ){
+                    Title = result.GetAttr( "Title" ).ToString(),
                     Description = result.GetAttr( "Description" ).ToString(),
                     Mod = result.GetAttr( "Mod" ).ToString(),
                     urls = PythonList( new PyList( result.GetAttr( "urls" ) ) ),

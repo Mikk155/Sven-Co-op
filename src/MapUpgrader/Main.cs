@@ -28,7 +28,7 @@ class Program
 
     public static void Main()
     {
-        Upgrader.Initialize( Upgrader.ScriptEngine.ContextLanguage, Upgrader.ScriptEngine.ContextModule );
+        Upgrader.Initialize();
         Upgrader.Shutdown();
     }
 }

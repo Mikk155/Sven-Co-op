@@ -31,8 +31,7 @@ public interface ILanguageEngine
 
 public class ScriptEngine
 {
-    public readonly ILanguageEngine ContextLanguage = null!;
-    public readonly UpgradeContext ContextModule = null!;
+    public readonly List<UpgradeContext> Mods = new List<UpgradeContext>();
 
     public readonly Dictionary<string, ILanguageEngine> Languages = new Dictionary<string, ILanguageEngine>()
     {
@@ -82,8 +81,7 @@ public class ScriptEngine
 
             if( context is not null )
             {
-                ContextLanguage = lang;
-                ContextModule = context;
+                Mods.Add( context );
             }
             else
             {

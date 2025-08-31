@@ -1,5 +1,5 @@
 from typing import Any
-from Vector import Vector
+from netapi.Vector import Vector
 
 class Entity:
 	EntIndex: int

@@ -76,7 +76,7 @@ public class PyExportAPI
 
         if( t.Name == "Entity" )
         {
-            f.AppendLine( "from Vector import Vector" );
+            f.AppendLine( "from netapi.Vector import Vector" );
         }
 
         f.AppendLine();

@@ -1,7 +1,7 @@
 from typing import Any
 
 class UpgradeContext:
-	Name: str
+	Title: str
 	'''Title to display as an option'''
 	Description: str
 	'''Description to display as an option'''

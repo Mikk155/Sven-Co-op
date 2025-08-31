@@ -5,7 +5,7 @@ def context() -> UpgradeContext:
     opfor: UpgradeContext = UpgradeContext();
 
     UpgradeContext.Mod = "gearbox";
-    UpgradeContext.Name = "Opposing Force";
+    UpgradeContext.Title = "Opposing Force";
     UpgradeContext.Description = "Half-Life: Opposing-Force expansion";
     UpgradeContext.urls = [ "https://store.steampowered.com/app/50/HalfLife_Opposing_Force/" ];
     UpgradeContext.maps = [
