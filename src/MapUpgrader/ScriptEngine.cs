@@ -31,6 +31,9 @@ public interface ILanguageEngine
 
 public class ScriptEngine
 {
+    public readonly ILanguageEngine ContextLanguage = null!;
+    public readonly UpgradeContext ContextModule = null!;
+
     public readonly Dictionary<string, ILanguageEngine> Languages = new Dictionary<string, ILanguageEngine>()
     {
         { ".py", new PythonLanguage() }
@@ -79,15 +82,13 @@ public class ScriptEngine
 
             if( context is not null )
             {
-                Console.WriteLine( $"Name {context.Name}" );
-                Console.WriteLine( $"Description {context.Description}" );
-                Console.WriteLine( $"Mod {context.Mod}" );
-                Console.WriteLine( $"urls {string.Join( " ", context.urls )}" );
-                if( context.maps is not null )
-                    Console.WriteLine( $"maps {string.Join( " ", context.maps )}" );
+                ContextLanguage = lang;
+                ContextModule = context;
             }
-
-            lang.Shutdown();
+            else
+            {
+                throw new Exception( $"Got an empty context from {ScriptModule[0]} {ScriptModule[1]}" );
+            }
         }
     }
 

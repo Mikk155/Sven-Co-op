@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 public class MapUpgrader
 {
-    public readonly ScriptEngine ScriptEngine = new ScriptEngine()!;
+    public readonly ScriptEngine ScriptEngine;
 
     public MapUpgrader()
     {
@@ -35,6 +35,21 @@ public class MapUpgrader
         PyAPI.Generate( typeof(Vector), "Vector" );
         PyAPI.Generate( typeof(UpgradeContext), "UpgradeContext" );
 #endif
+
+        ScriptEngine = new ScriptEngine();
+    }
+
+    public void Initialize( ILanguageEngine Language, UpgradeContext context )
+    {
+        Console.WriteLine( $"Name {context.Name}" );
+        Console.WriteLine( $"Description {context.Description}" );
+        Console.WriteLine( $"Mod {context.Mod}" );
+        Console.WriteLine( $"urls {string.Join( " ", context.urls )}" );
+
+        if( context.maps is not null )
+            Console.WriteLine( $"maps {string.Join( " ", context.maps )}" );
+
+        Language.Shutdown();
     }
 
     ~MapUpgrader()
