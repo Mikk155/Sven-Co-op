@@ -41,6 +41,13 @@ public class MapUpgrader
 
     public void Initialize()
     {
+        if( ScriptEngine.Mods.Count <= 0 )
+        {
+            Console.WriteLine( $"No scripts detected in the directory \"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"" );
+            Console.ReadLine();
+            return;
+        }
+
         // -TODO Display a menu with all the available UpgradeContext in ScriptEngine.Mods and get a choice from the user
         foreach( UpgradeContext context in ScriptEngine.Mods )
         {
