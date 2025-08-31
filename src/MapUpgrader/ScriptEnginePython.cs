@@ -38,7 +38,7 @@ public class PythonLanguage() : ILanguageEngine
         catch {}
     }
 
-    private string[]? PythonList( PyList list )
+    private static string[]? PythonList( PyList list )
     {
         long Length = list.Length();
 
