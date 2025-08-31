@@ -1,4 +1,4 @@
-﻿class MapUpgrader
+﻿public class MapUpgrader
 {
     public ScriptEngine ScriptEngine = null!;
 
@@ -25,15 +25,5 @@
     ~MapUpgrader()
     {
         this.ScriptEngine.Shutdown();
-    }
-}
-
-class Program
-{
-    static readonly MapUpgrader Upgrader = new MapUpgrader();
-
-    static void Main()
-    {
-        Upgrader.ScriptEngine.Shutdown();
     }
 }

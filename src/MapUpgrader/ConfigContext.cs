@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-class ConfigContext
+public class ConfigContext
 {
     public JObject cache;
 

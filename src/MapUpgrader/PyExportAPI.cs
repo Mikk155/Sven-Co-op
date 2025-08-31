@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
-class PyExportAPI
+public class PyExportAPI
 {
     private readonly Dictionary<string, string> Summary;
 

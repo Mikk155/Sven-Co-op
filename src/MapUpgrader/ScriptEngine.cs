@@ -1,6 +1,6 @@
 using Python.Runtime;
 
-class ScriptEngine
+public class ScriptEngine
 {
     public ScriptEngine( string PythonDLL )
     {
