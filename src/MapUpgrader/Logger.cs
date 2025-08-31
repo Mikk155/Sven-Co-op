@@ -66,6 +66,12 @@ public class Logger( string name, ConsoleColor color = ConsoleColor.Black )
 
         if( exit >= 0 )
         {
+            // Shutdown everything on chain
+            if( Program.Upgrader is not null )
+            {
+                Program.Upgrader.Shutdown();
+            }
+
             Environment.Exit( exit );
         }
     }
