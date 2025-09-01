@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sven Co-op</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js"></script>
+</head>
+<body>
+
+<div id="content">
+
+  <h1>MapUpgrader</h1>
+  <p>The MapUpgrader tool is a CSharp program on the <a href="https://dotnet.microsoft.com/en-us/download" target="_blank">.NET</a> framework that aims to port Half-Life mods to Sven Co-op and <a href="https://github.com/wootguy/SevenKewp" target="_blank">Seven Kewp</a> by extension</p>
+  <br>
+
+  <h1>Scripting</h1>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+
+  <p>The MapUpgrader tool currently supports only Python and is not embedable so the user requires to have a Python installation for it to work.</p>
+  <p>We'll be using Python for the introduction.</p>
+
+  <script>
+    hljs.highlightAll();
+  </script>
+
+  <h1>First script</h1>
+  <p>Create your first .py script in Upgrades/ and give it a proper name.</p>
+  <br>
+
+  <h1>Type Hints</h1>
+  <p>Python is dynamic typing so the C# program is passing on the real class to python without any kind of wrapper.</p>
+  <p>When running the program on debug mode it will generate some scripts in Upgrades/netapi which contains some classes for type hints</p>
+  <pre>
+    <code class="language-python">
+from netapi.NET import *
+    </code>
+  </pre>
+
+  <h1>Registering context</h1>
+  <p>Unlikely the other generated API. the UpgradeContext class is used in python and passed on to the program.</p>
+  <p>When the program is loaded it will call the method named "context" which should return a class "UpgradeContext"</p>
+  <pre>
+    <code class="language-python">
+def context() -> UpgradeContext:
+
+    opfor: UpgradeContext = UpgradeContext();
+
+    UpgradeContext.Mod = "gearbox";
+
+    UpgradeContext.Title = "Opposing Force";
+
+    UpgradeContext.Description = "Half-Life: Opposing-Force expansion";
+
+    UpgradeContext.urls = [
+        "https://store.steampowered.com/app/50/HalfLife_Opposing_Force/"
+    ];
+
+    return opfor;
+    </code>
+  </pre>
+
+  <br>
+  <p>In future updates it will support other scripting languages. this program could have been pure C# but i did it this way for the sake of learning.</p>
+  <h2>Considered languages:</h2>
+  <li>AngelScript</li>
+  <li>C# itself as scripting</li>
+  <li>Lua</li>
+  <li>JavaScript</li>
+  <p>As pointed previously i just want to learn and experiment. you can just pick your favorite and go for it</p>
+
+</div>
+
+</body>
+</html>
