@@ -92,7 +92,7 @@ public class PythonLanguage : ILanguageEngine
                 PyList ListDownloadURLs = new PyList( result.GetAttr( "urls" ) );
 
 #pragma warning disable CS8601 // Possible null reference assignment.
-                UpgradeContext context = new UpgradeContext( this, Path.GetFileName( script ) ){
+                UpgradeContext context = new UpgradeContext( this, script ){
                     Title = result.GetAttr( "Title" ).ToString(),
                     Description = result.GetAttr( "Description" ).ToString(),
                     Mod = result.GetAttr( "Mod" ).ToString(),

@@ -24,10 +24,11 @@ DEALINGS IN THE SOFTWARE.
 
 #pragma warning disable IDE1006 // Naming Styles
 /// <summary>Represents a context for upgrading</summary>
-public class UpgradeContext( ILanguageEngine Language, string Name )
+public class UpgradeContext( ILanguageEngine Language, string script )
 {
     public readonly ILanguageEngine Language = Language;
-    public readonly string Name = Name;
+    public readonly string Name = Path.GetFileName( script );
+    public readonly string Script = script;
 
     /// <summary>
     /// Title to display as an option
