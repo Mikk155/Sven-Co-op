@@ -67,6 +67,10 @@ public class PythonLanguage : ILanguageEngine
     {
         ConfigContext config = new ConfigContext();
 
+#if DEBUG // Generate docs for python Type hints
+        new PyExportAPI();
+#endif
+
         config.Get( "python_dll", value =>
         {
             Runtime.PythonDLL = value;

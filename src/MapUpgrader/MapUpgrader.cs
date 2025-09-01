@@ -30,10 +30,6 @@ public class MapUpgrader
 
     public MapUpgrader()
     {
-#if DEBUG // Generate docs for python Type hints
-        new PyExportAPI();
-#endif
-
         ScriptEngine = new ScriptEngine();
     }
 
