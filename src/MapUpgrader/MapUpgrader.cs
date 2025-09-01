@@ -46,8 +46,9 @@ public class MapUpgrader
             return;
         }
 
-        // -TODO Display a menu with all the available UpgradeContext in ScriptEngine.Mods and get a choice from the user
-        foreach( UpgradeContext context in ScriptEngine.Mods )
+        List<UpgradeContext> mods = ContextSelector.GetContexts();
+
+        foreach( UpgradeContext context in mods )
         {
             InstallContext( context );
         }
