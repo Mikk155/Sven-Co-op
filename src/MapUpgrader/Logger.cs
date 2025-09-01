@@ -29,24 +29,27 @@ public class Logger( string name, ConsoleColor color = ConsoleColor.Black )
 
     public void warn( string msg )
     {
-        Console.BackgroundColor = this.color;
-        Console.ForegroundColor = ( this.color != ConsoleColor.Yellow ) ? ConsoleColor.Yellow : ConsoleColor.DarkYellow;
+//        Console.BackgroundColor = this.color;
+//        Console.ForegroundColor = ( this.color != ConsoleColor.Yellow ) ? ConsoleColor.Yellow : ConsoleColor.DarkYellow;
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine( $"[{this.name}] [Warning] {msg}" );
         Console.ResetColor();
     }
 
     public void info( string msg )
     {
-        Console.BackgroundColor = this.color;
-        Console.ForegroundColor = ( this.color != ConsoleColor.Cyan ) ? ConsoleColor.Cyan : ConsoleColor.DarkCyan;
+//        Console.BackgroundColor = this.color;
+//        Console.ForegroundColor = ( this.color != ConsoleColor.Cyan ) ? ConsoleColor.Cyan : ConsoleColor.DarkCyan;
+        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine( $"[{this.name}] [Info] {msg}" );
         Console.ResetColor();
     }
 
     public void error( string msg )
     {
-        Console.BackgroundColor = this.color;
-        Console.ForegroundColor = ( this.color != ConsoleColor.Red ) ? ConsoleColor.Red : ConsoleColor.DarkRed;
+//        Console.BackgroundColor = this.color;
+//        Console.ForegroundColor = ( this.color != ConsoleColor.Red ) ? ConsoleColor.Red : ConsoleColor.DarkRed;
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine( $"[{this.name}] [Error] {msg}" );
         Console.ResetColor();
     }
@@ -57,8 +60,9 @@ public class Logger( string name, ConsoleColor color = ConsoleColor.Black )
     /// <param name="exit">Exit code error</param>
     public void pause( int exit = -1 )
     {
-        Console.BackgroundColor = this.color;
-        Console.ForegroundColor = ( this.color != ConsoleColor.Green ) ? ConsoleColor.Green : ConsoleColor.DarkGreen;
+//        Console.BackgroundColor = this.color;
+//        Console.ForegroundColor = ( this.color != ConsoleColor.Green ) ? ConsoleColor.Green : ConsoleColor.DarkGreen;
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine( "Press Enter to continue." );
         Console.ResetColor();
         Console.Beep();

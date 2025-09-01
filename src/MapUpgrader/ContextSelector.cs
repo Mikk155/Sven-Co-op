@@ -74,7 +74,7 @@ public class ContextSelector
         // Split into pages of 7 contexts each
         List<List<UpgradeContext>> Pages = ContextSelector.SplitIntoPages();
 
-        Console.BackgroundColor = ConsoleColor.DarkGray;
+//        Console.BackgroundColor = ConsoleColor.DarkGray;
 
         ( int Left, int Top ) = Console.GetCursorPosition();
         ContextSelector.menu = [ Left, Top ];
