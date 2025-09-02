@@ -30,6 +30,13 @@ public class MapUpgrader
 
     public MapUpgrader()
     {
+#if false
+        Console.CancelKeyPress += ( sender, args ) =>
+        {
+            this.Shutdown();
+        };
+#endif
+
         ScriptEngine = new ScriptEngine();
     }
 
@@ -76,5 +83,7 @@ public class MapUpgrader
     {
         logger.info( "Shutting down" );
         this.ScriptEngine.Shutdown();
+        Console.ResetColor();
+        Console.Beep();
     }
 }
