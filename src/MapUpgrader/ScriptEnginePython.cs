@@ -46,23 +46,6 @@ public class PythonLanguage : ILanguageEngine
         catch {}
     }
 
-    private static string[]? PythonList( PyList list )
-    {
-        long Length = list.Length();
-
-        if( Length <= 0 )
-            return null;
-
-        string[] SharpList = new string[ Length ];
-
-        for( int i = 0; i < Length; i++ )
-        {
-            SharpList[i] = list[i].As<string>();
-        }
-
-        return SharpList;
-    }
-
     public PythonLanguage()
     {
         ConfigContext config = new ConfigContext();
@@ -87,23 +70,30 @@ public class PythonLanguage : ILanguageEngine
             dynamic sys = Py.Import( "sys" );
             sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ) );
 
-            dynamic Script = Py.Import( Path.GetFileNameWithoutExtension( script ) );
+            PyObject Script = Py.Import( Path.GetFileNameWithoutExtension( script ) );
 
             try
             {
-                PyObject result = Script.context();
+                if( !Script.HasAttr( ILanguageEngine.InitializationMethod ) )
+                {
+                    throw new MissingMemberException( $"Script {Path.GetFileName( script )} doesn't implements the \"{ILanguageEngine.InitializationMethod}\" method" );
+                }
 
-                PyList ListDownloadURLs = new PyList( result.GetAttr( "urls" ) );
+                PyObject OnRegister = Script.GetAttr( ILanguageEngine.InitializationMethod );
 
-#pragma warning disable CS8601 // Possible null reference assignment.
-                UpgradeContext context = new UpgradeContext( this, script ){
-                    Title = result.GetAttr( "Title" ).ToString(),
-                    Description = result.GetAttr( "Description" ).ToString(),
-                    Mod = result.GetAttr( "Mod" ).ToString(),
-                    urls = PythonList( new PyList( result.GetAttr( "urls" ) ) ),
-                    maps = PythonList( new PyList( result.GetAttr( "maps" ) ) )
-                };
-#pragma warning restore CS8601 // Possible null reference assignment.
+                if( !OnRegister.IsCallable() )
+                {
+                    throw new InvalidDataException( $"Method \"{ILanguageEngine.InitializationMethod}\" is not a callable method" );
+                }
+
+                PyObject? result = OnRegister.Invoke();
+
+                if( result is null || result.IsNone() )
+                {
+                    throw new InvalidDataException( $"Method \"{ILanguageEngine.InitializationMethod}\" has no return type of \"str\"" );
+                }
+
+                UpgradeContext context = new UpgradeContext( this, script, result.ToString() );
 
                 return context;
             }
@@ -191,6 +181,20 @@ public class PyExportAPI
         if( !string.IsNullOrEmpty( classDoc ) )
         {
             f.AppendLine( $"\t'''{classDoc}'''" );
+        }
+
+        if( t.Name == "UpgradeContext" )
+        {
+            f.AppendLine( "\t@property" );
+            f.AppendLine( "\tdef Serialize( self ) -> str:" );
+            f.AppendLine( "\t\timport json;" );
+            f.AppendLine( "\t\treturn json.dumps( {" );
+            f.AppendLine( "\t\t\t\"title\": self.Title," );
+            f.AppendLine( "\t\t\t\"description\": self.Description," );
+            f.AppendLine( "\t\t\t\"mod\": self.Mod," );
+            f.AppendLine( "\t\t\t\"urls\": self.urls," );
+            f.AppendLine( "\t\t\t\"maps\": self.maps" );
+            f.AppendLine( "\t\t} );" );
         }
 
         foreach( PropertyInfo prop in t.GetProperties() )

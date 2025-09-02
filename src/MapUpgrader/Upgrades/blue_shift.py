@@ -1,6 +1,6 @@
 from netapi.NET import *
 
-def context() -> UpgradeContext:
+def OnRegister() -> str:
 
     bshift: UpgradeContext = UpgradeContext();
 
@@ -10,4 +10,4 @@ def context() -> UpgradeContext:
     UpgradeContext.urls = [ "https://store.steampowered.com/app/130/HalfLife_Blue_Shift/" ];
     UpgradeContext.maps = [];
 
-    return bshift;
+    return bshift.Serialize;

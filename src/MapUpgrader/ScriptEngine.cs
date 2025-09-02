@@ -24,6 +24,9 @@ DEALINGS IN THE SOFTWARE.
 
 public interface ILanguageEngine
 {
+    public static string InitializationMethod =>
+        "OnRegister";
+
     public string GetName();
     public void Shutdown();
     public UpgradeContext? Initialize( string script );

@@ -22,36 +22,77 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 #pragma warning disable IDE1006 // Naming Styles
 /// <summary>Represents a context for upgrading</summary>
-public class UpgradeContext( ILanguageEngine Language, string script )
+public class UpgradeContext
 {
-    public readonly ILanguageEngine Language = Language;
-    public readonly string Name = Path.GetFileName( script );
-    public readonly string Script = script;
-
     /// <summary>
-    /// Title to display as an option
+    /// The scripting engine interface used for this upgrade.
     /// </summary>
-    public required string Title { get; set; }
+    public readonly ILanguageEngine Language;
 
     /// <summary>
-    /// Description to display as an option
+    /// The absolute file path for the script for this upgrade.
     /// </summary>
-    public required string Description { get; set; }
+    public readonly string Script;
 
     /// <summary>
-    /// Mod folder to install assets
+    /// The script filename without extension for this upgrade.
     /// </summary>
-    public required string Mod { get; set; }
+    public string Name =>
+        Path.GetFileNameWithoutExtension( this.Script );
+
+    public UpgradeContext( ILanguageEngine _Language, string _Script, string? data )
+    {
+        this.Language = _Language;
+        this.Script = _Script;
+
+        if( data is null )
+        {
+            throw new InvalidDataException( $"Invalid data from method {ILanguageEngine.InitializationMethod} for script {_Script}" );
+        }
+
+        JObject? JsonData = JsonConvert.DeserializeObject<JObject>( data );
+
+        if( JsonData is null )
+        {
+            throw new InvalidDataException( $"Invalid data from method {ILanguageEngine.InitializationMethod} for script {_Script}" );
+        }
+
+        this.Title = JsonData.GetValue( "title" )?.ToString() ?? this.Name;
+        this.Description = JsonData.GetValue( "title" )?.ToString() ?? "";
+
+        this.Mod = JsonData[ "mod" ]?.ToString()!;
+        this.urls = JsonData.GetValue( "urls" )?.Select( a => a.ToString() )?.ToArray()!;
+
+        this.maps = JsonData.GetValue( "maps" )?.Select( a => a.ToString() )?.ToArray();
+    }
 
     /// <summary>
-    /// Mod download URL or multiple url for mirroring
+    /// Title to display as an option.
     /// </summary>
-    public required string[] urls { get; set; }
+    public string Title { get; set; }
 
     /// <summary>
-    /// Maps to upgrade. Leave empty to upgrade all maps
+    /// Description to display as an option.
+    /// </summary>
+    public string Description { get; set; }
+
+    /// <summary>
+    /// Mod folder to install assets. This is required.
+    /// </summary>
+    public string Mod { get; set; }
+
+    /// <summary>
+    /// Mod download URL or multiple url for mirroring. This is required.
+    /// </summary>
+    public string[] urls { get; set; }
+
+    /// <summary>
+    /// Maps to upgrade. Leave empty to upgrade all maps.
     /// </summary>
     public string[]? maps { get; set; }
 }
