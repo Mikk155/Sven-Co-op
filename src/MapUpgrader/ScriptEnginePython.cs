@@ -176,8 +176,15 @@ public class PyExportAPI
             f.AppendLine($"\t'''{class_doc}'''");
         }
 
+        f.AppendLine();
+
         if( t.Name == "UpgradeContext" )
         {
+            f.AppendLine( "\tdef __init__( self ):" );
+            f.AppendLine( "\t\tself.Title = None;" );
+            f.AppendLine( "\t\tself.Description = None;" );
+            f.AppendLine( "\t\tself.maps = None;" );
+            f.AppendLine();
             f.AppendLine( "\t@property" );
             f.AppendLine( "\tdef Serialize( self ) -> str:" );
             f.AppendLine( "\t\timport json;" );
@@ -188,6 +195,7 @@ public class PyExportAPI
             f.AppendLine( "\t\t\t\"urls\": self.urls," );
             f.AppendLine( "\t\t\t\"maps\": self.maps" );
             f.AppendLine( "\t\t} );" );
+            f.AppendLine();
         }
 
         foreach( PropertyInfo prop in t.GetProperties() )

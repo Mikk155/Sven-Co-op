@@ -2,6 +2,7 @@ from typing import Any
 from netapi.Vector import Vector
 
 class Entity:
+
 	EntIndex: int
 	'''Represents the current index of this entity in the BSP entity data'''
 	classname: str

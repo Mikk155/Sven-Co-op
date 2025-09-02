@@ -62,8 +62,10 @@ public class UpgradeContext
             throw new InvalidDataException( $"Invalid data from method {ILanguageEngine.InitializationMethod} for script {_Script}" );
         }
 
-        this.Title = JsonData.GetValue( "title" )?.ToString() ?? this.Name;
-        this.Description = JsonData.GetValue( "title" )?.ToString() ?? "";
+        string? _Title = JsonData.GetValue( "title" )?.ToString();
+
+        this.Title = string.IsNullOrEmpty( _Title ) ? Path.GetFileNameWithoutExtension( this.Name ) : _Title;
+        this.Description = JsonData.GetValue( "description" )?.ToString() ?? "";
 
         this.Mod = JsonData[ "mod" ]?.ToString()!;
         this.urls = JsonData.GetValue( "urls" )?.Select( a => a.ToString() )?.ToArray()!;

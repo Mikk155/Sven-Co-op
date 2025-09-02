@@ -1,6 +1,7 @@
 from typing import Any
 
 class Vector:
+
 	x: float
 	y: float
 	z: float

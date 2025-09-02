@@ -1,6 +1,12 @@
 from typing import Any
 
 class UpgradeContext:
+
+	def __init__( self ):
+		self.Title = None;
+		self.Description = None;
+		self.maps = None;
+
 	@property
 	def Serialize( self ) -> str:
 		import json;
@@ -11,6 +17,7 @@ class UpgradeContext:
 			"urls": self.urls,
 			"maps": self.maps
 		} );
+
 	Name: str
 	'''The script filename without extension for this upgrade.'''
 	Title: str
