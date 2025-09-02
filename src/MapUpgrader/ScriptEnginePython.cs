@@ -176,13 +176,6 @@ public class PyExportAPI
             f.AppendLine($"\t'''{class_doc}'''");
         }
 
-        string? classDoc = MemberSummary(t);
-
-        if( !string.IsNullOrEmpty( classDoc ) )
-        {
-            f.AppendLine( $"\t'''{classDoc}'''" );
-        }
-
         if( t.Name == "UpgradeContext" )
         {
             f.AppendLine( "\t@property" );
