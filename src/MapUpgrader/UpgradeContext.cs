@@ -43,7 +43,7 @@ public class UpgradeContext
     /// The script filename without extension for this upgrade.
     /// </summary>
     public string Name =>
-        Path.GetFileNameWithoutExtension( this.Script );
+        Path.GetFileName( this.Script );
 
     public UpgradeContext( ILanguageEngine _Language, string _Script, string? data )
     {

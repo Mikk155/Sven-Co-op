@@ -112,20 +112,28 @@ public class ContextSelector
                 }
 
                 Console.WriteLine( $"   {uc.Title}" );
-                Console.WriteLine( $"      {uc.Description}" );
+
+                if( !string.IsNullOrEmpty( uc.Description ) )
+                {
+                    Console.WriteLine( $"      {uc.Description}" );
+                }
             }
 
             Console.WriteLine();
 
             if( CurrentPage > 1 )
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine( " 8: Previus page" );
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine();
             }
 
             if( CurrentPage != MaxPages )
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine( " 9: Next page" );
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine();
             }
 
@@ -139,7 +147,9 @@ public class ContextSelector
 
             if( UserSelected.Count > 0 )
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine( " 0: All Done" );
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine();
             }
 
