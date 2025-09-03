@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2006-2017 the contributors of the "Python for .NET" project
+Copyright (c) 2025 Mikk155
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -140,6 +140,23 @@ public class PyExportAPI
         return Summary.TryGetValue( key, out var summary ) ? summary.Trim() : null;
     }
 
+    private static IEnumerable<MethodInfo> ExtensionMethods( Type extype )
+    {
+        return from type in Assembly.GetExecutingAssembly().GetTypes()
+
+            where type.IsSealed && type.IsAbstract && !type.IsGenericType && !type.IsNested
+
+            from method in type.GetMethods( BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic )
+
+            where method.IsDefined( typeof( System.Runtime.CompilerServices.ExtensionAttribute ), false )
+
+            let parameters = method.GetParameters()
+
+            where parameters.Length > 0 && parameters[0].ParameterType == extype
+
+            select method;
+    }
+
     public PyExportAPI()
     {
         logger.info( $"Generating API for python scripting Type Hints" );
@@ -149,7 +166,7 @@ public class PyExportAPI
             .ToDictionary( m => m.Attribute( "name" )!.Value, m => (string?)m.Element( "summary" ) ?? ""
         );
 
-        this.Generate( typeof(Entity), "Entity" );
+        this.Generate( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity" );
         this.Generate( typeof(Vector), "Vector" );
         this.Generate( typeof(UpgradeContext), "UpgradeContext" );
     }
@@ -202,40 +219,28 @@ public class PyExportAPI
         {
             string? doc = MemberSummary( prop );
 
-            f.AppendLine( $"\t{prop.Name}: {MapType(prop.PropertyType)}" );
-
-            if( !string.IsNullOrEmpty( doc ) )
-            {
-                f.AppendLine($"\t'''{doc}'''");
-            }
-        }
-
-        foreach( var method in t.GetMethods( BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly ) )
-        {
-            if( method.IsSpecialName )
+            if( string.IsNullOrEmpty( doc ) )
             {
                 continue;
             }
 
-            string args = string.Join( ", ", method.GetParameters()
-                .Select( p => $"{p.Name}: {MapType(p.ParameterType)}" )
-            );
+            f.AppendLine( $"\t{prop.Name}: {MapType(prop.PropertyType, t)}" );
+            f.AppendLine($"\t'''{doc}'''");
+        }
 
-            if( !string.IsNullOrEmpty( args ) )
-            {
-                args = ", " + args;
-            }
+        foreach( MethodInfo m in ExtensionMethods(t) )
+        {
+            WriteMethods( f, m, t );
+        }
 
-            string? doc = MemberSummary(method);
-
-            if( !string.IsNullOrEmpty( doc ) )
-            {
-                f.AppendLine($"\tdef {method.Name}(self{args}) -> {MapType(method.ReturnType)}: '''{doc}'''" );
-            }
-            else
-            {
-                f.AppendLine($"\tdef {method.Name}(self{args}) -> {MapType(method.ReturnType)}: ..." );
-            }
+        foreach( MethodInfo m in t.GetMethods(
+            BindingFlags.Public |
+            BindingFlags.Instance |
+            BindingFlags.DeclaredOnly |
+            BindingFlags.Static
+        ) )
+        {
+            WriteMethods( f, m, t );
         }
 
         string PyAPI = Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{PythonScript}.py" );
@@ -243,8 +248,51 @@ public class PyExportAPI
         File.WriteAllText( PyAPI, f.ToString() );
     }
 
-    private string MapType( Type type )
+    private void WriteMethods( StringBuilder f, MethodInfo m, Type member )
     {
+        if( m.IsSpecialName )
+        {
+            return;
+        }
+
+        string? doc = MemberSummary(m);
+
+        if( string.IsNullOrEmpty(doc) )
+        {
+            return;
+        }
+
+        ParameterInfo[] parameters = m.GetParameters();
+
+        if( parameters.Length <= 0 )
+        {
+//            return;
+        }
+
+        string args;
+
+        if( m.IsDefined( typeof( System.Runtime.CompilerServices.ExtensionAttribute ), false ) )
+        {
+            args = string.Join( ", ", parameters.Skip(1).Select( p => $"{p.Name}: {MapType(p.ParameterType, member)}" ) );
+        }
+        else
+        {
+            args = string.Join( ", ", m.GetParameters().Select( p => $"{p.Name}: {MapType(p.ParameterType, member)}" ) );
+        }
+
+        if( !string.IsNullOrEmpty( args ) )
+        {
+            args = ", " + args;
+        }
+
+        f.AppendLine($"\tdef {m.Name}(self{args}) -> {MapType(m.ReturnType, member)}:");
+        f.AppendLine($"\t\t'''{doc}'''");
+    }
+
+    private string MapType( Type type, Type member )
+    {
+        if( type == member )
+            return "Any";
         if( type == typeof( string ) )
             return "str";
         if( type == typeof( int ) )
@@ -255,8 +303,6 @@ public class PyExportAPI
             return "None";
         if( type == typeof( bool ) )
             return "bool";
-        if( type == typeof( string[] ) )
-            return "list[str]";
         if( type == typeof( Vector ) )
             return "Vector";
         return "Any";

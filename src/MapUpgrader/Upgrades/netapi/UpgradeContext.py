@@ -26,7 +26,7 @@ class UpgradeContext:
 	'''Description to display as an option.'''
 	Mod: str
 	'''Mod folder to install assets. This is required.'''
-	urls: list[str]
+	urls: Any
 	'''Mod download URL or multiple url for mirroring. This is required.'''
-	maps: list[str]
+	maps: Any
 	'''Maps to upgrade. Leave empty to upgrade all maps.'''

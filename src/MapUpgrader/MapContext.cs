@@ -46,7 +46,7 @@ public class MapContext
     /// <summary>
     /// List of entities in the current BSP
     /// </summary>
-    public List<Entity> Entities = new List<Entity>();
+    public List<Sledge.Formats.Bsp.Lumps.Entities> Entities = null!;
 
     public MapContext( string mapname )
     {
@@ -59,32 +59,21 @@ public class MapContext
             throw new FileNotFoundException( $"BSP File not found at \"{this.BSPFile}\"" );
         }
 
-        // -TODO Read entity lump
-        string[] lines = File.ReadAllLines( this.BSPFile );
-        int index = 0;
-        Entity? entity = null;
-        foreach( string line in lines )
-        {
-            if( entity is null ) {
-                if( line[0] == '{' ) {
-                    entity = new Entity(index);
-                    index++;
-                }
-                continue;
-            }
-            if( line[0] == '}' )
-            {
-                entity = null;
-                continue;
-            }
+        using FileStream fs = File.OpenRead( this.BSPFile );
 
-            string[] keyvalues = line.Substring( 1, line.Length - 1 ).Split( "\" \"" );
-            entity.SetString( keyvalues[0], keyvalues[1] );
-        }
+        Sledge.Formats.Bsp.BspFile BSP = new Sledge.Formats.Bsp.BspFile( fs );
+
+        Sledge.Formats.Bsp.Lumps.Entities EntityLump = BSP.GetLump<Sledge.Formats.Bsp.Lumps.Entities>();
 
         // -Apply C# specific upgrades
+        foreach( var ent in EntityLump.Where( e => e.GetString( "classname" ) == "info_player_start" ) )
+        {
+            ent.SetString( "classname", "info_player_deathmatch" );
+        }
 
         // -Call python context
+
+        BSP.WriteToStream( fs, BSP.Version );
 
         // -Merge if provided
 

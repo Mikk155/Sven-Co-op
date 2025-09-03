@@ -3,9 +3,12 @@ from typing import Any
 class Vector:
 
 	x: float
+	'''X position [0]'''
 	y: float
+	'''Y position [1]'''
 	z: float
-	Item: float
-	def ToString(self) -> str: ...
-	def Equals(self, obj: Any) -> bool: ...
-	def GetHashCode(self) -> int: ...
+	'''Z position [2]'''
+	vecZero: Any
+	'''Get a Vector whose all values are zero'''
+	def ToString(self) -> str:
+		'''Return a string representing the x y z separated by a single space'''
