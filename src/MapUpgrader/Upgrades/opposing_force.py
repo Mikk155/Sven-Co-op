@@ -1,24 +1,22 @@
 from netapi.NET import *
 
-def OnRegister() -> str:
+def OnRegister( context: UpgradeContext ) -> None:
 
-    opfor: UpgradeContext = UpgradeContext();
+    context.Mod = "gearbox";
 
-    UpgradeContext.Mod = "gearbox";
+    context.Title = "Opposing Force";
 
-    UpgradeContext.Title = "Opposing Force";
+    context.Description = "Half-Life: Opposing-Force expansion";
 
-    UpgradeContext.Description = "Half-Life: Opposing-Force expansion";
-
-    UpgradeContext.urls = [
+    context.urls = [
         "https://store.steampowered.com/app/50/HalfLife_Opposing_Force/"
     ];
 
-    UpgradeContext.Assets = {
+    context.Assets = {
         "Key": "Value"
     };
 
-    UpgradeContext.maps = [
+    context.maps = [
         # Boot camp
         "ofboot0",
         "ofboot1",
@@ -80,5 +78,3 @@ def OnRegister() -> str:
         #
         "of7a0"
     ];
-
-    return opfor.Serialize;

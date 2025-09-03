@@ -1,12 +1,9 @@
 from netapi.NET import *
 
-def OnRegister() -> str:
+def OnRegister( context: UpgradeContext ) -> None:
 
-    bshift: UpgradeContext = UpgradeContext();
+    context.Mod = "bshift";
+    context.Title = "Blue Shift";
+    context.Description = "Half-Life: Blue-Shift expansion";
+    context.urls = [ "https://store.steampowered.com/app/130/HalfLife_Blue_Shift/" ];
 
-    UpgradeContext.Mod = "bshift";
-    UpgradeContext.Title = "Blue Shift";
-    UpgradeContext.Description = "Half-Life: Blue-Shift expansion";
-    UpgradeContext.urls = [ "https://store.steampowered.com/app/130/HalfLife_Blue_Shift/" ];
-
-    return bshift.Serialize;

@@ -86,14 +86,9 @@ public class PythonLanguage : ILanguageEngine
                     throw new InvalidDataException( $"Method \"{ILanguageEngine.InitializationMethod}\" is not a callable method" );
                 }
 
-                PyObject? result = OnRegister.Invoke();
+                UpgradeContext context = new UpgradeContext( this, script );
 
-                if( result is null || result.IsNone() )
-                {
-                    throw new InvalidDataException( $"Method \"{ILanguageEngine.InitializationMethod}\" has no return type of \"str\"" );
-                }
-
-                UpgradeContext context = new UpgradeContext( this, script, result.ToString() );
+                PyObject? result = OnRegister.Invoke( context.ToPython() );
 
                 return context;
             }
@@ -194,26 +189,6 @@ public class PyExportAPI
         }
 
         f.AppendLine();
-
-        if( t.Name == "UpgradeContext" )
-        {
-            f.AppendLine( "\tdef __init__( self ):" );
-            f.AppendLine( "\t\tself.Title = None;" );
-            f.AppendLine( "\t\tself.Description = None;" );
-            f.AppendLine( "\t\tself.maps = None;" );
-            f.AppendLine();
-            f.AppendLine( "\t@property" );
-            f.AppendLine( "\tdef Serialize( self ) -> str:" );
-            f.AppendLine( "\t\timport json;" );
-            f.AppendLine( "\t\treturn json.dumps( {" );
-            f.AppendLine( "\t\t\t\"title\": self.Title," );
-            f.AppendLine( "\t\t\t\"description\": self.Description," );
-            f.AppendLine( "\t\t\t\"mod\": self.Mod," );
-            f.AppendLine( "\t\t\t\"urls\": self.urls," );
-            f.AppendLine( "\t\t\t\"maps\": self.maps" );
-            f.AppendLine( "\t\t} );" );
-            f.AppendLine();
-        }
 
         foreach( PropertyInfo prop in t.GetProperties() )
         {
