@@ -27,11 +27,21 @@ DEALINGS IN THE SOFTWARE.
 /// </summary>
 public class Vector
 {
+    /// <summary>X position [0]</summary>
     public float x { get; set; }
+
+    /// <summary>Y position [1]</summary>
     public float y { get; set; }
+
+    /// <summary>Z position [2]</summary>
     public float z { get; set; }
 
-    public static Vector vecZero = new Vector( 0, 0, 0 );
+    public static readonly Vector g_VecZero = new Vector( 0, 0, 0 );
+
+    /// <summary>
+    /// Get a Vector whose all values are zero
+    /// </summary>
+    public Vector vecZero => g_VecZero;
 
     public Vector( string vec )
     {
@@ -67,6 +77,7 @@ public class Vector
         z = vz;
     }
 
+    /// <summary>Return a string representing the x y z separated by a single space</summary>
     public override string ToString() => $"{x} {y} {z}";
 
     public float this[ int index ]
