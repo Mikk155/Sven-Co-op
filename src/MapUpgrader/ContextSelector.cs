@@ -111,11 +111,11 @@ public class ContextSelector
                     Console.WriteLine( $" { i + 1 }: {uc.Name}" );
                 }
 
-                Console.WriteLine( $"   {uc.Title}" );
+                Console.WriteLine( $"   {uc.title}" );
 
-                if( !string.IsNullOrEmpty( uc.Description ) )
+                if( !string.IsNullOrEmpty( uc.description ) )
                 {
-                    Console.WriteLine( $"      {uc.Description}" );
+                    Console.WriteLine( $"      {uc.description}" );
                 }
             }
 

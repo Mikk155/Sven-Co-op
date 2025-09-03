@@ -2,11 +2,11 @@ from netapi.NET import *
 
 def OnRegister( context: UpgradeContext ) -> None:
 
-    context.Mod = "gearbox";
+    context.mod = "gearbox";
 
-    context.Title = "Opposing Force";
+    context.title = "Opposing Force";
 
-    context.Description = "Half-Life: Opposing-Force expansion";
+    context.description = "Half-Life: Opposing-Force expansion";
 
     context.urls = [
         "https://store.steampowered.com/app/50/HalfLife_Opposing_Force/"

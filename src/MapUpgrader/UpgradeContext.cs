@@ -37,16 +37,16 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
         Path.GetFileName( this.Script );
 
     /// <summary>Title to display as an option.</summary>
-    public string? Title { get; set; }
+    public string title = null!;
 
-    /// <summary>Description to display as an option.</summary>
-    public string? Description { get; set; }
+    /// <summary>Mod folder to install assets.</summary>
+    public string mod = null!;
 
-    /// <summary>Mod folder to install assets. This is required.</summary>
-    public string? Mod { get; set; }
+    /// <summary>Mod download URL or multiple url for mirroring..</summary>
+    public string[] urls = null!;
 
-    /// <summary>Mod download URL or multiple url for mirroring. This is required.</summary>
-    public string[]? urls { get; set; }
+    /// <summary>Optional description to display as an option.</summary>
+    public string? description { get; set; }
 
     /// <summary>Maps to upgrade. Leave empty to upgrade all maps.</summary>
     public string[]? maps { get; set; }

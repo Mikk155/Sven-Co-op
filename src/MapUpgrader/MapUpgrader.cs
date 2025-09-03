@@ -61,9 +61,9 @@ public class MapUpgrader
     {
         logger.info( $"=================================================================" );
         logger.info( $"Name {context.Name}" );
-        logger.info( $"Title {context.Title}" );
-        logger.info( $"Description {context.Description}" );
-        logger.info( $"Mod {context.Mod}" );
+        logger.info( $"Title {context.title}" );
+        logger.info( $"Description {context.description}" );
+        logger.info( $"Mod {context.mod}" );
         logger.info( $"urls {string.Join( " ", context.urls )}" );
 
         if( context.maps is not null )
