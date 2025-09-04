@@ -50,5 +50,30 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
 
     /// <summary>Maps to upgrade. Leave empty to upgrade all maps.</summary>
     public string[]? maps { get; set; }
+
+    /// <summary>
+    /// Get the mod's installation absolute path
+    /// </summary>
+    /// <returns>The absolute path directory to the mod installation</returns>
+    public string GetModPath()
+    {
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Get the list of defined maps or all the maps in the mod installation if the script left it empty.
+    /// </summary>
+    /// <returns></returns>
+    public string[] GetMaps()
+    {
+        if( this.maps is null || this.maps.Length <= 0 )
+        {
+            this.maps = Directory.GetFiles( Path.Combine( this.GetModPath(), "maps" ) )
+                .Select( m => Path.GetFileNameWithoutExtension( m ) )
+                .ToArray();
+        }
+
+        return this.maps;
+    }
 }
 #pragma warning restore IDE1006 // Naming Styles
