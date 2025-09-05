@@ -130,10 +130,7 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
             }
         }
 
-        // Why didn't i make this static? -TODO
-        ConfigContext config = new ConfigContext();
-
-        if( !config.cache.ContainsKey( "halflife_installation" ) )
+        if( !ConfigContext.cache.ContainsKey( "halflife_installation" ) )
         {
             Console.WriteLine( $"Detected Half-Life installation at \"{HalfLifePath}\"" );
             Console.WriteLine( $"Want to override with a custom path? Y/N" );
@@ -151,7 +148,7 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
 
         if( string.IsNullOrEmpty( HalfLifePath ) )
         {
-            config.Get( "halflife_installation", value =>
+            ConfigContext.Get( "halflife_installation", value =>
             {
                 HalfLifePath = value;
 

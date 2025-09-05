@@ -25,22 +25,15 @@ DEALINGS IN THE SOFTWARE.
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class ConfigContext
+public static class ConfigContext
 {
     public static readonly Logger logger = new Logger( "Configuration", ConsoleColor.DarkRed );
 
-    public JObject cache;
-
 #pragma warning disable CS8601 // Possible null reference assignment.
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    public ConfigContext()
-    {
-        cache = (JObject?)JsonConvert.DeserializeObject( File.ReadAllText( FilePath ) );
-    }
-#pragma warning restore CS8618
+    public static JObject cache = (JObject?)JsonConvert.DeserializeObject( File.ReadAllText( ConfigContext.FilePath ) );
 #pragma warning restore CS8601
 
-    private string GetConfigPath()
+    private static string GetConfigPath()
     {
         string AppFolder = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "MapUpgrader" );
 
@@ -62,21 +55,21 @@ public class ConfigContext
     /// <summary>
     /// Get the config.json absulote path
     /// </summary>
-    public string FilePath =>
-        GetConfigPath();
+    public static string FilePath =>
+        ConfigContext.GetConfigPath();
 
-    public void Get( string key, Func<string, bool> validator, string? additional_info = null )
+    public static void Get( string key, Func<string, bool> validator, string? additional_info = null )
     {
         while( true )
         {
             // Try to use the cached one
-            string? value = cache[ key ]?.ToString();
+            string? value = ConfigContext.cache[ key ]?.ToString();
 
             try
             {
                 if( !string.IsNullOrEmpty( value ) && validator( value ) )
                 {
-                    File.WriteAllText( FilePath, JsonConvert.SerializeObject( cache, Formatting.Indented ) );
+                    File.WriteAllText( ConfigContext.FilePath, JsonConvert.SerializeObject( ConfigContext.cache, Formatting.Indented ) );
                     break;
                 }
             }
@@ -93,7 +86,7 @@ public class ConfigContext
 
             if( !string.IsNullOrEmpty( input ) )
             {
-                cache[ key ] = input;
+                ConfigContext.cache[ key ] = input;
             }
         }
     }
