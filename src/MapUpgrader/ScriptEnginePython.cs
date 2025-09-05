@@ -32,7 +32,7 @@ using System.Xml.Linq;
 
 public class PythonLanguage : ILanguageEngine
 {
-    public readonly Logger logger = new Logger( "Python", ConsoleColor.DarkYellow );
+    public static readonly Logger logger = new Logger( "Python", ConsoleColor.DarkYellow );
 
     public string GetName() => "Python";
 
@@ -98,7 +98,7 @@ public class PythonLanguage : ILanguageEngine
             }
             catch( Exception exception )
             {
-                logger.error( $"[Python Engine] Exception thrown by the script \"{Path.GetFileName( script )}\"\nError: {exception.Message}\n{exception.StackTrace}" );
+                PythonLanguage.logger.error( $"[Python Engine] Exception thrown by the script \"{Path.GetFileName( script )}\"\nError: {exception.Message}\n{exception.StackTrace}" );
             }
             return null;
         }
@@ -109,7 +109,7 @@ public class PythonLanguage : ILanguageEngine
 
 public class PyExportAPI
 {
-    public readonly Logger logger = new Logger( "Python API", ConsoleColor.Blue );
+    public static readonly Logger logger = new Logger( "Python API", ConsoleColor.Blue );
 
     private readonly Dictionary<string, string> Summary;
 
@@ -158,7 +158,7 @@ public class PyExportAPI
 
     public PyExportAPI()
     {
-        logger.info( $"Generating API for python scripting Type Hints" );
+        PyExportAPI.logger.info( $"Generating API for python scripting Type Hints" );
 
         Summary = XDocument.Load( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) ).Descendants( "member" )
             .Where( m => m.Attribute( "name" ) != null )
@@ -223,7 +223,7 @@ public class PyExportAPI
         }
 
         string PyAPI = Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{PythonScript}.py" );
-        logger.info( $"Generated {PyAPI}" );
+        PyExportAPI.logger.info( $"Generated {PyAPI}" );
         File.WriteAllText( PyAPI, f.ToString() );
     }
 

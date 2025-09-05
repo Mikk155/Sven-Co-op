@@ -27,7 +27,7 @@ using Newtonsoft.Json.Linq;
 
 public class ConfigContext
 {
-    public readonly Logger logger = new Logger( "Configuration", ConsoleColor.DarkRed );
+    public static readonly Logger logger = new Logger( "Configuration", ConsoleColor.DarkRed );
 
     public JObject cache;
 
@@ -82,11 +82,11 @@ public class ConfigContext
             }
             catch { }
 
-            logger.warn( $"Invalid configuration '{key}'. Please input a valid value:" );
+            ConfigContext.logger.warn( $"Invalid configuration '{key}'. Please input a valid value:" );
 
             if( additional_info is not null )
             {
-                logger.info( additional_info );
+                ConfigContext.logger.info( additional_info );
             }
 
             string? input = Console.ReadLine();

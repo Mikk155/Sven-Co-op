@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 public class MapUpgrader
 {
-    public readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
+    public static readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
 
     public readonly ScriptEngine ScriptEngine;
 
@@ -44,8 +44,8 @@ public class MapUpgrader
     {
         if( ScriptEngine.Mods.Count <= 0 )
         {
-            logger.error( $"No scripts detected in the directory \"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"" );
-            logger.pause(1);
+            MapUpgrader.logger.error( $"No scripts detected in the directory \"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"" );
+            MapUpgrader.logger.pause(1);
             return;
         }
 
@@ -59,19 +59,19 @@ public class MapUpgrader
 
     private void InstallContext( UpgradeContext context )
     {
-        logger.info( $"=================================================================" );
-        logger.info( $"Name {context.Name}" );
-        logger.info( $"Title {context.title}" );
-        logger.info( $"Description {context.description}" );
-        logger.info( $"Mod {context.mod}" );
-        logger.info( $"urls {string.Join( " ", context.urls )}" );
+        MapUpgrader.logger.info( $"=================================================================" );
+        MapUpgrader.logger.info( $"Name {context.Name}" );
+        MapUpgrader.logger.info( $"Title {context.title}" );
+        MapUpgrader.logger.info( $"Description {context.description}" );
+        MapUpgrader.logger.info( $"Mod {context.mod}" );
+        MapUpgrader.logger.info( $"urls {string.Join( " ", context.urls )}" );
 
         if( context.maps is not null )
-            logger.info( $"maps {string.Join( " ", context.maps )}" );
+            MapUpgrader.logger.info( $"maps {string.Join( " ", context.maps )}" );
 
-        logger.warn( context.GetHalfLifeInstallation() );
+        MapUpgrader.logger.warn( context.GetHalfLifeInstallation() );
 
-        logger.info( $"=================================================================" );
+        MapUpgrader.logger.info( $"=================================================================" );
 
         context.Language.Shutdown();
     }
@@ -83,7 +83,7 @@ public class MapUpgrader
 
     public void Shutdown()
     {
-        logger.info( "Shutting down" );
+        MapUpgrader.logger.info( "Shutting down" );
         this.ScriptEngine.Shutdown();
         Console.ResetColor();
         Console.Beep();

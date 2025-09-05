@@ -36,6 +36,7 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
     public string Name =>
         Path.GetFileName( this.Script );
 
+    // -TODO These members aren't exported to python API
     /// <summary>Title to display as an option.</summary>
     public string title = null!;
 
@@ -106,7 +107,7 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
             }
         }
 
-        Program.Upgrader.logger.error( "Failed to find Steam installation." );
+        MapUpgrader.logger.error( "Failed to find Steam installation." );
 
         return null;
     }
