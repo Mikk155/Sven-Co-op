@@ -69,6 +69,8 @@ public class MapUpgrader
         if( context.maps is not null )
             logger.info( $"maps {string.Join( " ", context.maps )}" );
 
+        logger.warn( context.GetHalfLifeInstallation() );
+
         logger.info( $"=================================================================" );
 
         context.Language.Shutdown();

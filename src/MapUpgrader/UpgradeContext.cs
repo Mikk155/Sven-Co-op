@@ -75,5 +75,100 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
 
         return this.maps;
     }
+
+    /// <summary>
+    /// Get the absolute path to a Steam installation
+    /// </summary>
+    /// <returns>The absolute path directory to Steam</returns>
+    public string? SteamInstallation()
+    {
+        if( OperatingSystem.IsWindows() )
+        {
+            using Microsoft.Win32.RegistryKey? key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey( @"Software\Valve\Steam" );
+            return key?.GetValue( "SteamPath" )?.ToString();
+        }
+        else if( OperatingSystem.IsLinux() )
+        {
+            string SteamPath, UserProfile = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
+
+            SteamPath = Path.Combine( UserProfile, ".steam/steam" );
+
+            if( Directory.Exists( SteamPath ) )
+            {
+                return SteamPath;
+            }
+
+            SteamPath = Path.Combine( UserProfile, ".local/share/Steam" );
+
+            if( Directory.Exists( SteamPath ) )
+            {
+                return SteamPath;
+            }
+        }
+
+        Program.Upgrader.logger.error( "Failed to find Steam installation." );
+
+        return null;
+    }
+
+    /// <summary>
+    /// Get the path to the Half-Life installation
+    /// </summary>
+    /// <returns>The absolute path to the Half-Life folder</returns>
+    public string GetHalfLifeInstallation()
+    {
+        string? HalfLifePath = null, SteamPath = this.SteamInstallation();
+
+        if( SteamPath is not null )
+        {
+            HalfLifePath = Path.Combine( SteamPath, "steamapps", "common", "Half-Life" );
+
+            if( !Directory.Exists( HalfLifePath ) || !Directory.Exists( Path.Combine( HalfLifePath, "valve" ) ) )
+            {
+                HalfLifePath = null;
+            }
+        }
+
+        // Why didn't i make this static? -TODO
+        ConfigContext config = new ConfigContext();
+
+        if( !config.cache.ContainsKey( "halflife_installation" ) )
+        {
+            Console.WriteLine( $"Detected Half-Life installation at \"{HalfLifePath}\"" );
+            Console.WriteLine( $"Want to override with a custom path? Y/N" );
+            string? input = Console.ReadLine();
+
+            if( !string.IsNullOrEmpty( input ) && input.ToLower()[0] == 'y' )
+            {
+                HalfLifePath = null;
+            }
+        }
+        else
+        {
+            HalfLifePath = null;
+        }
+
+        if( string.IsNullOrEmpty( HalfLifePath ) )
+        {
+            config.Get( "halflife_installation", value =>
+            {
+                HalfLifePath = value;
+
+                if( !Directory.Exists( HalfLifePath ) )
+                {
+                    throw new DirectoryNotFoundException( $"Unexistent directory \"{HalfLifePath}\"" );
+                }
+
+                if( !Directory.Exists( Path.Combine( HalfLifePath, "valve" ) ) )
+                {
+                    throw new DirectoryNotFoundException( $"Invalid Half-Life directory at \"{HalfLifePath}\"" );
+                }
+
+                return true; // No exception raised. break the loop
+            }, "Absolute path to your Half-Life installation, it usually looks like \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Half-Life\"" );
+        }
+
+        return HalfLifePath!;
+    }
 }
 #pragma warning restore IDE1006 // Naming Styles
