@@ -7,3 +7,6 @@
 [submodule "external/metamod"]
     path = external/metamod
     url = https://github.com/hzqst/metamod-fallguys
+[submodule "external/MikkNET"]
+	path = external/MikkNET
+	url = https://github.com/Mikk155/MikkNET.git
