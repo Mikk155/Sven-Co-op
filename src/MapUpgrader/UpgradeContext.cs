@@ -107,7 +107,7 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
             }
         }
 
-        MapUpgrader.logger.error( "Failed to find Steam installation." );
+        MapUpgrader.logger.error.Write( "Failed to find Steam installation." );
 
         return null;
     }

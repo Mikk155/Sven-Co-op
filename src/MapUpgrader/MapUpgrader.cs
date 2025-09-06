@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 public class MapUpgrader
 {
-    public static readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
+    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
 
     public readonly ScriptEngine ScriptEngine;
 
@@ -44,8 +44,12 @@ public class MapUpgrader
     {
         if( ScriptEngine.Mods.Count <= 0 )
         {
-            MapUpgrader.logger.error( $"No scripts detected in the directory \"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"" );
-            MapUpgrader.logger.pause(1);
+            MapUpgrader.logger.error
+                .Write( "No scripts detected in the directory " )
+                .Write( $"\"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"", ConsoleColor.Cyan )
+                .Beep()
+                .Pause()
+                .Exit();
             return;
         }
 
@@ -59,19 +63,19 @@ public class MapUpgrader
 
     private void InstallContext( UpgradeContext context )
     {
-        MapUpgrader.logger.info( $"=================================================================" );
-        MapUpgrader.logger.info( $"Name {context.Name}" );
-        MapUpgrader.logger.info( $"Title {context.title}" );
-        MapUpgrader.logger.info( $"Description {context.description}" );
-        MapUpgrader.logger.info( $"Mod {context.mod}" );
-        MapUpgrader.logger.info( $"urls {string.Join( " ", context.urls )}" );
+        MapUpgrader.logger.info.Write( $"=================================================================" );
+        MapUpgrader.logger.info.Write( $"Name {context.Name}" );
+        MapUpgrader.logger.info.Write( $"Title {context.title}" );
+        MapUpgrader.logger.info.Write( $"Description {context.description}" );
+        MapUpgrader.logger.info.Write( $"Mod {context.mod}" );
+        MapUpgrader.logger.info.Write( $"urls {string.Join( " ", context.urls )}" );
 
         if( context.maps is not null )
-            MapUpgrader.logger.info( $"maps {string.Join( " ", context.maps )}" );
+            MapUpgrader.logger.info.Write( $"maps {string.Join( " ", context.maps )}" );
 
-        MapUpgrader.logger.warn( context.GetHalfLifeInstallation() );
+        MapUpgrader.logger.warn.Write( context.GetHalfLifeInstallation() );
 
-        MapUpgrader.logger.info( $"=================================================================" );
+        MapUpgrader.logger.info.Write( $"=================================================================" );
 
         context.Language.Shutdown();
     }
@@ -83,7 +87,7 @@ public class MapUpgrader
 
     public void Shutdown()
     {
-        MapUpgrader.logger.info( "Shutting down" );
+        MapUpgrader.logger.info.Write( "Shutting down" );
         this.ScriptEngine.Shutdown();
         Console.ResetColor();
         Console.Beep();

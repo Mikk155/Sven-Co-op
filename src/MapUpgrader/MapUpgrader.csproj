@@ -15,4 +15,8 @@
     <PackageReference Include="Sledge.Formats.Bsp" Version="1.0.17" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\external\MikkNET\Mikk.Logger\Mikk.Logger.csproj" />
+  </ItemGroup>
+
 </Project>
