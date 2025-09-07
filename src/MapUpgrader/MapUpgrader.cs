@@ -24,26 +24,16 @@ DEALINGS IN THE SOFTWARE.
 
 using Mikk.Logger;
 
-public class MapUpgrader
+public class MapUpgrader()
 {
     public static readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
 
-    public readonly ScriptEngine ScriptEngine;
-
-    public MapUpgrader()
-    {
-#if false
-        Console.CancelKeyPress += ( sender, args ) =>
-        {
-            this.Shutdown();
-        };
-#endif
-
-        ScriptEngine = new ScriptEngine();
-    }
+    public readonly ScriptEngine ScriptEngine = new ScriptEngine();
 
     public void Initialize()
     {
+        ScriptEngine.Initialize();
+
         if( ScriptEngine.Mods.Count <= 0 )
         {
             MapUpgrader.logger.error

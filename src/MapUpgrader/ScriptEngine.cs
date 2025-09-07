@@ -34,7 +34,7 @@ public interface ILanguageEngine
     public UpgradeContext? Initialize( string script );
 }
 
-public class ScriptEngine
+public class ScriptEngine()
 {
     public static readonly Logger logger = new Logger( "Script Engine", ConsoleColor.DarkGreen );
 
@@ -45,7 +45,7 @@ public class ScriptEngine
         { ".py", new PythonLanguage() }
     };
 
-    public ScriptEngine()
+    public void Initialize()
     {
         // Get all script files
         List<string> ScriptFiles = Directory.GetFiles(
