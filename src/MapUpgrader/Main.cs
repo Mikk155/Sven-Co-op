@@ -28,6 +28,16 @@ class Program
 
     public static void Main()
     {
+        Console.CancelKeyPress += (p, e) =>
+        {
+            Upgrader.Shutdown();
+        };
+
+        AppDomain.CurrentDomain.ProcessExit += (p, e) =>
+        {
+            Upgrader.Shutdown();
+        };
+
         Upgrader.Initialize();
         Upgrader.Shutdown();
     }
