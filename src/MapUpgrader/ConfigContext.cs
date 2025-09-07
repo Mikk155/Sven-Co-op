@@ -22,12 +22,13 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+using Mikk.Logger;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 public static class ConfigContext
 {
-    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "Configuration", ConsoleColor.DarkRed );
+    public static readonly Logger logger = new Logger( "Configuration", ConsoleColor.DarkRed );
 
 #pragma warning disable CS8601 // Possible null reference assignment.
     public static JObject cache = (JObject?)JsonConvert.DeserializeObject( File.ReadAllText( ConfigContext.FilePath ) );

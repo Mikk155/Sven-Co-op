@@ -22,6 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+using Mikk.Logger;
 using Python.Runtime;
 
 #if DEBUG
@@ -32,7 +33,7 @@ using System.Xml.Linq;
 
 public class PythonLanguage : ILanguageEngine
 {
-    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "Python", ConsoleColor.DarkYellow );
+    public static readonly Logger logger = new Logger( "Python", ConsoleColor.DarkYellow );
 
     public string GetName() => "Python";
 
@@ -116,7 +117,7 @@ public class PythonLanguage : ILanguageEngine
 
 public class PyExportAPI
 {
-    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "Python API", ConsoleColor.Blue );
+    public static readonly Logger logger = new Logger( "Python API", ConsoleColor.Blue );
 
     private readonly Dictionary<string, string> Summary;
 

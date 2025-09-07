@@ -22,6 +22,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+using Mikk.Logger;
+
 public interface ILanguageEngine
 {
     public static string InitializationMethod =>
@@ -34,7 +36,7 @@ public interface ILanguageEngine
 
 public class ScriptEngine
 {
-    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "Script Engine", ConsoleColor.DarkGreen );
+    public static readonly Logger logger = new Logger( "Script Engine", ConsoleColor.DarkGreen );
 
     public readonly List<UpgradeContext> Mods = new List<UpgradeContext>();
 

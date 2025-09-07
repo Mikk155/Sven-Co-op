@@ -22,9 +22,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+using Mikk.Logger;
+
 public class MapUpgrader
 {
-    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
+    public static readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
 
     public readonly ScriptEngine ScriptEngine;
 
