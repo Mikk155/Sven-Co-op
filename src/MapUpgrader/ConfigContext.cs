@@ -27,7 +27,7 @@ using Newtonsoft.Json.Linq;
 
 public static class ConfigContext
 {
-    public static readonly Logger logger = new Logger( "Configuration", ConsoleColor.DarkRed );
+    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "Configuration", ConsoleColor.DarkRed );
 
 #pragma warning disable CS8601 // Possible null reference assignment.
     public static JObject cache = (JObject?)JsonConvert.DeserializeObject( File.ReadAllText( ConfigContext.FilePath ) );
@@ -75,11 +75,15 @@ public static class ConfigContext
             }
             catch { }
 
-            ConfigContext.logger.warn( $"Invalid configuration '{key}'. Please input a valid value:" );
+            ConfigContext.logger.warn
+                .Write( "Invalid configuration '" )
+                .Write( key, ConsoleColor.Green )
+                .Write( "'. Please input a valid value:" )
+                .NewLine();
 
             if( additional_info is not null )
             {
-                ConfigContext.logger.info( additional_info );
+                ConfigContext.logger.info.Write( additional_info ).NewLine();
             }
 
             string? input = Console.ReadLine();

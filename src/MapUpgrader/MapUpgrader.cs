@@ -45,8 +45,10 @@ public class MapUpgrader
         if( ScriptEngine.Mods.Count <= 0 )
         {
             MapUpgrader.logger.error
-                .Write( "No scripts detected in the directory " )
-                .Write( $"\"{Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )}\"", ConsoleColor.Cyan )
+                .Write( "No scripts detected in the directory \"" )
+                .Write( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ), ConsoleColor.Cyan )
+                .Write( "\"" )
+                .NewLine()
                 .Beep()
                 .Pause()
                 .Exit();
@@ -63,19 +65,19 @@ public class MapUpgrader
 
     private void InstallContext( UpgradeContext context )
     {
-        MapUpgrader.logger.info.Write( $"=================================================================" );
-        MapUpgrader.logger.info.Write( $"Name {context.Name}" );
-        MapUpgrader.logger.info.Write( $"Title {context.title}" );
-        MapUpgrader.logger.info.Write( $"Description {context.description}" );
-        MapUpgrader.logger.info.Write( $"Mod {context.mod}" );
-        MapUpgrader.logger.info.Write( $"urls {string.Join( " ", context.urls )}" );
+        MapUpgrader.logger.info.WriteLine( $"=================================================================" );
+        MapUpgrader.logger.info.WriteLine( $"Name {context.Name}" );
+        MapUpgrader.logger.info.WriteLine( $"Title {context.title}" );
+        MapUpgrader.logger.info.WriteLine( $"Description {context.description}" );
+        MapUpgrader.logger.info.WriteLine( $"Mod {context.mod}" );
+        MapUpgrader.logger.info.WriteLine( $"urls {string.Join( " ", context.urls )}" );
 
         if( context.maps is not null )
-            MapUpgrader.logger.info.Write( $"maps {string.Join( " ", context.maps )}" );
+            MapUpgrader.logger.info.WriteLine( $"maps {string.Join( " ", context.maps )}" );
 
-        MapUpgrader.logger.warn.Write( context.GetHalfLifeInstallation() );
+        MapUpgrader.logger.warn.WriteLine( context.GetHalfLifeInstallation() );
 
-        MapUpgrader.logger.info.Write( $"=================================================================" );
+        MapUpgrader.logger.info.WriteLine( $"=================================================================" );
 
         context.Language.Shutdown();
     }
@@ -87,7 +89,7 @@ public class MapUpgrader
 
     public void Shutdown()
     {
-        MapUpgrader.logger.info.Write( "Shutting down" );
+        MapUpgrader.logger.info.WriteLine( "Shutting down" );
         this.ScriptEngine.Shutdown();
         Console.ResetColor();
         Console.Beep();

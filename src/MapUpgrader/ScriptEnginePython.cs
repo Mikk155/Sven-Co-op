@@ -32,7 +32,7 @@ using System.Xml.Linq;
 
 public class PythonLanguage : ILanguageEngine
 {
-    public static readonly Logger logger = new Logger( "Python", ConsoleColor.DarkYellow );
+    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "Python", ConsoleColor.DarkYellow );
 
     public string GetName() => "Python";
 
@@ -96,7 +96,16 @@ public class PythonLanguage : ILanguageEngine
             }
             catch( Exception exception )
             {
-                PythonLanguage.logger.error( $"[Python Engine] Exception thrown by the script \"{Path.GetFileName( script )}\"\nError: {exception.Message}\n{exception.StackTrace}" );
+                PythonLanguage.logger.error
+                    .Write( "Exception thrown by the script \"" )
+                    .Write( Path.GetFileName( script ) )
+                    .Write( "\"" )
+                    .NewLine()
+                    .Write( "Error: " )
+                    .Write( exception.Message, ConsoleColor.Red )
+                    .NewLine()
+                    .Write( exception.StackTrace, ConsoleColor.Yellow )
+                    .NewLine();
             }
             return null;
         }
@@ -107,7 +116,7 @@ public class PythonLanguage : ILanguageEngine
 
 public class PyExportAPI
 {
-    public static readonly Logger logger = new Logger( "Python API", ConsoleColor.Blue );
+    public static readonly Mikk.Logger.Logger logger = new Mikk.Logger.Logger( "Python API", ConsoleColor.Blue );
 
     private readonly Dictionary<string, string> Summary;
 
@@ -156,7 +165,7 @@ public class PyExportAPI
 
     public PyExportAPI()
     {
-        PyExportAPI.logger.info( $"Generating API for python scripting Type Hints" );
+        PyExportAPI.logger.info.WriteLine( "Generating API for python scripting Type Hints" );
 
         Summary = XDocument.Load( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) ).Descendants( "member" )
             .Where( m => m.Attribute( "name" ) != null )
@@ -221,7 +230,12 @@ public class PyExportAPI
         }
 
         string PyAPI = Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{PythonScript}.py" );
-        PyExportAPI.logger.info( $"Generated {PyAPI}" );
+
+        PyExportAPI.logger.info
+            .Write( "Generated " )
+            .Write( PyAPI, ConsoleColor.Green )
+            .NewLine();
+
         File.WriteAllText( PyAPI, f.ToString() );
     }
 
