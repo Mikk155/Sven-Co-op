@@ -49,6 +49,11 @@ public class MapUpgrader()
 
         List<UpgradeContext> mods = ContextSelector.GetContexts();
 
+        if( mods.Count <= 0 )
+        {
+            return;
+        }
+
         foreach( UpgradeContext context in mods )
         {
             InstallContext( context );

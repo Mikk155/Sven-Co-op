@@ -150,8 +150,15 @@ public class ContextSelector
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine( " 0: All Done" );
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine();
             }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine( " 0: Exit" );
+                Console.ForegroundColor = ConsoleColor.Cyan;
+            }
+
+            Console.WriteLine();
 
             input = Console.ReadLine();
 
@@ -163,10 +170,7 @@ public class ContextSelector
                     {
                         case 0:
                         {
-                            if( UserSelected.Count > 0 )
-                            {
-                                DoneSelecting = true;
-                            }
+                            DoneSelecting = true;
                             break;
                         }
                         case 8:
