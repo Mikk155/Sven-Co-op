@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\external\MikkNET\Mikk.Logger\Mikk.Logger.csproj" />
+    <ProjectReference Include="..\..\external\MikkNET\Mikk.PythonNET\Mikk.PythonNET.csproj" />
   </ItemGroup>
 
 </Project>

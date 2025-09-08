@@ -26,9 +26,29 @@ using Mikk.Logger;
 using Python.Runtime;
 
 #if DEBUG
-using System.Reflection;
-using System.Text;
-using System.Xml.Linq;
+public static class PythonNET
+{
+    /// <summary>Get a key's value in string form</summary>
+    public static void GenerateFile( this Mikk.PythonNET.TypeHint typehint, Type type, string filename, System.Text.StringBuilder? StringBuilder = null )
+    {
+        Mikk.PythonNET.TypeHint.logger.info
+            .Write( "Generating API class " )
+            .Write( type.Name, ConsoleColor.Green )
+            .Write( " for file " )
+            .Write( filename, ConsoleColor.Cyan )
+            .NewLine();
+
+        if( StringBuilder is null )
+        {
+            StringBuilder = new System.Text.StringBuilder();
+        }
+
+        StringBuilder.AppendLine( "from typing import Any, Optional;" );
+
+        File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{filename}.py" ),
+            typehint.Generate( type, StringBuilder ) );
+    }
+}
 #endif
 
 public class PythonLanguage : ILanguageEngine
@@ -50,7 +70,12 @@ public class PythonLanguage : ILanguageEngine
     public PythonLanguage()
     {
 #if DEBUG // Generate docs for python Type hints
-        new PyExportAPI();
+        Mikk.PythonNET.TypeHint PythonAPIGen = new Mikk.PythonNET.TypeHint( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) );
+        File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "output.txt" ), PythonAPIGen.GetPairs() );
+
+        PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext" );
+        PythonAPIGen.GenerateFile( typeof(System.Numerics.Vector3), "Vector3" );
+        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new System.Text.StringBuilder().AppendLine( "from netapi.Vector3 import Vector3;" ) );
 #endif
 
         ConfigContext.Get( "python_dll", value =>
@@ -112,193 +137,3 @@ public class PythonLanguage : ILanguageEngine
         }
     }
 }
-
-#if DEBUG
-
-public class PyExportAPI
-{
-    public static readonly Logger logger = new Logger( "Python API", ConsoleColor.Blue );
-
-    private readonly Dictionary<string, string> Summary;
-
-    private string MemberParameters( MethodInfo member )
-    {
-        var parameters = member.GetParameters().Select( p => p.ParameterType.FullName );
-
-        if( parameters is not null && parameters.Count() > 0 )
-        {
-            return $"M:{member.DeclaringType?.FullName}.{member.Name}({string.Join( ",", parameters ).Trim()})";
-        }
-
-        return $"M:{member.DeclaringType?.FullName}.{member.Name}";
-    }
-
-    private string? MemberSummary( MemberInfo member )
-    {
-        string key = member.MemberType switch
-        {
-            System.Reflection.MemberTypes.TypeInfo => $"T:{member.DeclaringType?.FullName}",
-            System.Reflection.MemberTypes.Property => $"P:{member.DeclaringType?.FullName}.{member.Name}",
-            System.Reflection.MemberTypes.Method => MemberParameters((MethodInfo)member),
-            System.Reflection.MemberTypes.Field => $"F:{member.DeclaringType?.FullName}.{member.Name}",
-            _ => ""
-        };
-
-        return Summary.TryGetValue( key, out var summary ) ? summary.Trim() : null;
-    }
-
-    private static IEnumerable<MethodInfo> ExtensionMethods( Type extype )
-    {
-        return from type in Assembly.GetExecutingAssembly().GetTypes()
-
-            where type.IsSealed && type.IsAbstract && !type.IsGenericType && !type.IsNested
-
-            from method in type.GetMethods( BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic )
-
-            where method.IsDefined( typeof( System.Runtime.CompilerServices.ExtensionAttribute ), false )
-
-            let parameters = method.GetParameters()
-
-            where parameters.Length > 0 && parameters[0].ParameterType == extype
-
-            select method;
-    }
-
-    public PyExportAPI()
-    {
-        PyExportAPI.logger.info.WriteLine( "Generating API for python scripting Type Hints" );
-
-        Summary = XDocument.Load( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) ).Descendants( "member" )
-            .Where( m => m.Attribute( "name" ) != null )
-            .ToDictionary( m => m.Attribute( "name" )!.Value, m => (string?)m.Element( "summary" ) ?? ""
-        );
-
-        this.Generate( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity" );
-        this.Generate( typeof(Vector), "Vector" );
-        this.Generate( typeof(UpgradeContext), "UpgradeContext" );
-    }
-
-    public void Generate( Type t, string PythonScript )
-    {
-        StringBuilder f = new StringBuilder();
-
-        f.AppendLine( "from typing import Any" );
-
-        if( t.Name == "Entity" )
-        {
-            f.AppendLine( "from netapi.Vector import Vector" );
-        }
-
-        f.AppendLine();
-
-        f.AppendLine( $"class {t.Name}:" );
-
-        string? class_doc = MemberSummary( t );
-
-        if( !string.IsNullOrEmpty( class_doc ) )
-        {
-            f.AppendLine($"\t'''{class_doc}'''");
-        }
-
-        f.AppendLine();
-
-        foreach( PropertyInfo prop in t.GetProperties() )
-        {
-            string? doc = MemberSummary( prop );
-
-            if( string.IsNullOrEmpty( doc ) )
-            {
-                continue;
-            }
-
-            f.AppendLine( $"\t{prop.Name}: {MapType(prop.PropertyType, t)}" );
-            f.AppendLine($"\t'''{doc}'''");
-        }
-
-        foreach( MethodInfo m in ExtensionMethods(t) )
-        {
-            WriteMethods( f, m, t );
-        }
-
-        foreach( MethodInfo m in t.GetMethods(
-            BindingFlags.Public |
-            BindingFlags.Instance |
-            BindingFlags.DeclaredOnly |
-            BindingFlags.Static
-        ) )
-        {
-            WriteMethods( f, m, t );
-        }
-
-        string PyAPI = Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{PythonScript}.py" );
-
-        PyExportAPI.logger.info
-            .Write( "Generated " )
-            .Write( PyAPI, ConsoleColor.Green )
-            .NewLine();
-
-        File.WriteAllText( PyAPI, f.ToString() );
-    }
-
-    private void WriteMethods( StringBuilder f, MethodInfo m, Type member )
-    {
-        if( m.IsSpecialName )
-        {
-            return;
-        }
-
-        string? doc = MemberSummary(m);
-
-        if( string.IsNullOrEmpty(doc) )
-        {
-            return;
-        }
-
-        ParameterInfo[] parameters = m.GetParameters();
-
-        if( parameters.Length <= 0 )
-        {
-//            return;
-        }
-
-        string args;
-
-        if( m.IsDefined( typeof( System.Runtime.CompilerServices.ExtensionAttribute ), false ) )
-        {
-            args = string.Join( ", ", parameters.Skip(1).Select( p => $"{p.Name}: {MapType(p.ParameterType, member)}" ) );
-        }
-        else
-        {
-            args = string.Join( ", ", m.GetParameters().Select( p => $"{p.Name}: {MapType(p.ParameterType, member)}" ) );
-        }
-
-        if( !string.IsNullOrEmpty( args ) )
-        {
-            args = ", " + args;
-        }
-
-        f.AppendLine($"\tdef {m.Name}(self{args}) -> {MapType(m.ReturnType, member)}:");
-        f.AppendLine($"\t\t'''{doc}'''");
-    }
-
-    private string MapType( Type type, Type member )
-    {
-        if( type == member )
-            return "Any";
-        if( type == typeof( string ) )
-            return "str";
-        if( type == typeof( int ) )
-            return "int";
-        if( type == typeof( float ) )
-            return "float";
-        if( type == typeof( void ) )
-            return "None";
-        if( type == typeof( bool ) )
-            return "bool";
-        if( type == typeof( Vector ) )
-            return "Vector";
-        return "Any";
-    }
-}
-
-#endif
