@@ -26,12 +26,17 @@ using Mikk.Logger;
 using Python.Runtime;
 
 #if DEBUG
+using Mikk.PythonNET;
+using System.Text;
+#endif
+
+#if DEBUG
 public static class PythonNET
 {
     /// <summary>Get a key's value in string form</summary>
-    public static void GenerateFile( this Mikk.PythonNET.TypeHint typehint, Type type, string filename, System.Text.StringBuilder? StringBuilder = null )
+    public static void GenerateFile( this TypeHint typehint, Type type, string filename, StringBuilder? StringBuilder = null )
     {
-        Mikk.PythonNET.TypeHint.logger.info
+        TypeHint.logger.info
             .Write( "Generating API class " )
             .Write( type.Name, ConsoleColor.Green )
             .Write( " for file " )
@@ -40,7 +45,7 @@ public static class PythonNET
 
         if( StringBuilder is null )
         {
-            StringBuilder = new System.Text.StringBuilder();
+            StringBuilder = new StringBuilder();
         }
 
         StringBuilder.Insert( 0, $"'''\n{File.ReadAllText( Path.Combine( Directory.GetCurrentDirectory(), "LICENSE_MAPUPGRADER" ) )}\n'''\n\n" );
@@ -49,6 +54,36 @@ public static class PythonNET
 
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{filename}.py" ),
             typehint.Generate( type, StringBuilder ) );
+    }
+
+    /// <summary>
+    /// Maps a C# type to a Python type
+    /// </summary>
+    public static string MapType( this TypeHint typehint, Type type, Type member )
+    {
+        if( type == member )
+            return "Any"; // Pythonism, can't make classes return their own type
+        if( type == typeof( string ) )
+            return "str";
+        if( type == typeof( string[] ) || type == typeof( List<string> ))
+            return "list[str]";
+        if( type == typeof( int ) )
+            return "int";
+        if( type == typeof( float ) )
+            return "float";
+        if( type == typeof( void ) )
+            return "None";
+        if( type == typeof( bool ) )
+            return "bool";
+        if( type == typeof( System.Numerics.Vector3 ) )
+            return "Vector3";
+
+        TypeHint.logger.warn
+            .Write( "Undefined python type conversion for CSharp's " )
+            .Write( type.Name, ConsoleColor.Green )
+            .NewLine();
+
+        return "Any";
     }
 }
 #endif
@@ -72,12 +107,12 @@ public class PythonLanguage : ILanguageEngine
     public PythonLanguage()
     {
 #if DEBUG // Generate docs for python Type hints
-        Mikk.PythonNET.TypeHint PythonAPIGen = new Mikk.PythonNET.TypeHint( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) );
+        TypeHint PythonAPIGen = new TypeHint( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) );
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "output.txt" ), PythonAPIGen.GetPairs() );
 
         PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext" );
         PythonAPIGen.GenerateFile( typeof(System.Numerics.Vector3), "Vector3" );
-        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new System.Text.StringBuilder().AppendLine( "from netapi.Vector3 import Vector3;" ) );
+        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder().AppendLine( "from netapi.Vector3 import Vector3;" ) );
 #endif
 
         ConfigContext.Get( "python_dll", value =>
