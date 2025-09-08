@@ -24,6 +24,12 @@ header, footer
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+#discord
+{
+  width: 800px;
+  height: 500px;
+}
+
 #content h1, #content h2, p
 {
   color: #007acc;
