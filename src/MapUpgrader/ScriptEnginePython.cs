@@ -43,6 +43,8 @@ public static class PythonNET
             StringBuilder = new System.Text.StringBuilder();
         }
 
+        StringBuilder.Insert( 0, $"'''\n{File.ReadAllText( Path.Combine( Directory.GetCurrentDirectory(), "LICENSE_MAPUPGRADER" ) )}\n'''\n\n" );
+
         StringBuilder.AppendLine( "from typing import Any, Optional;" );
 
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{filename}.py" ),
