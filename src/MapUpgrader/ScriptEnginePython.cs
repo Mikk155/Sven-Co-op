@@ -55,36 +55,6 @@ public static class PythonNET
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{filename}.py" ),
             typehint.Generate( type, StringBuilder ) );
     }
-
-    /// <summary>
-    /// Maps a C# type to a Python type
-    /// </summary>
-    public static string MapType( this TypeHint typehint, Type type, Type member )
-    {
-        if( type == member )
-            return "Any"; // Pythonism, can't make classes return their own type
-        if( type == typeof( string ) )
-            return "str";
-        if( type == typeof( string[] ) || type == typeof( List<string> ))
-            return "list[str]";
-        if( type == typeof( int ) )
-            return "int";
-        if( type == typeof( float ) )
-            return "float";
-        if( type == typeof( void ) )
-            return "None";
-        if( type == typeof( bool ) )
-            return "bool";
-        if( type == typeof( System.Numerics.Vector3 ) )
-            return "Vector3";
-
-        TypeHint.logger.warn
-            .Write( "Undefined python type conversion for CSharp's " )
-            .Write( type.Name, ConsoleColor.Green )
-            .NewLine();
-
-        return "Any";
-    }
 }
 #endif
 
@@ -108,6 +78,7 @@ public class PythonLanguage : ILanguageEngine
     {
 #if DEBUG // Generate docs for python Type hints
         TypeHint PythonAPIGen = new TypeHint( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) );
+
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "output.txt" ), PythonAPIGen.GetPairs() );
 
         PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext" );
