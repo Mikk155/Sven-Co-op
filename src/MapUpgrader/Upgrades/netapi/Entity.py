@@ -31,3 +31,11 @@ class Entity:
 	ClassName: str
 	SortedKeyValues: list[list[str, str]]
 	KeyValues: dict[str, str]
+	def GetVector3( self, name: str, defaultValue: Vector3 ) -> Vector3:
+		pass;
+	def Get( self, name: str, defaultValue: Any ) -> Any:
+		pass;
+	def Set( self, name: str, value: Any ) -> None:
+		pass;
+	def Unset( self, name: str ) -> None:
+		pass;

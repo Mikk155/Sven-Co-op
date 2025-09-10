@@ -40,3 +40,27 @@ class Vector3:
 	UnitZ: Any
 	Zero: Any
 	Item: float
+	def CopyTo( self, array: Any ) -> None:
+		pass;
+	def CopyTo( self, array: Any, index: int ) -> None:
+		pass;
+	def CopyTo( self, destination: Any ) -> None:
+		pass;
+	def TryCopyTo( self, destination: Any ) -> bool:
+		pass;
+	def Equals( self, obj: Any ) -> bool:
+		pass;
+	def Equals( self, other: Any ) -> bool:
+		pass;
+	def GetHashCode( self ) -> int:
+		pass;
+	def Length( self ) -> float:
+		pass;
+	def LengthSquared( self ) -> float:
+		pass;
+	def ToString( self ) -> str:
+		pass;
+	def ToString( self, format: str ) -> str:
+		pass;
+	def ToString( self, format: str, formatProvider: Any ) -> str:
+		pass;
