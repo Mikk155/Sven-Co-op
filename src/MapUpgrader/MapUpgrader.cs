@@ -36,6 +36,7 @@ public class MapUpgrader()
 
         if( ScriptEngine.Mods.Count <= 0 )
         {
+            this.Shutdown();
             MapUpgrader.logger.error
                 .Write( "No scripts detected in the directory \"" )
                 .Write( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ), ConsoleColor.Cyan )
@@ -51,6 +52,7 @@ public class MapUpgrader()
 
         if( mods.Count <= 0 )
         {
+            this.Shutdown();
             return;
         }
 
