@@ -24,9 +24,19 @@ SOFTWARE.
 
 from typing import Any, Optional;
 
-class UpgradeContext:
-	'''Represents a context for upgrading'''
+class Vector3:
 
-	Name: str
-	description: str
-	maps: list[str]
+	E: Any
+	Epsilon: Any
+	NaN: Any
+	NegativeInfinity: Any
+	NegativeZero: Any
+	One: Any
+	Pi: Any
+	PositiveInfinity: Any
+	Tau: Any
+	UnitX: Any
+	UnitY: Any
+	UnitZ: Any
+	Zero: Any
+	Item: float

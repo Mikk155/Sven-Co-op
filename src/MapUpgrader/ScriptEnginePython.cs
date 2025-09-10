@@ -81,9 +81,21 @@ public class PythonLanguage : ILanguageEngine
 
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "output.txt" ), PythonAPIGen.GetPairs() );
 
+        PythonAPIGen.AddTypeConversion( typeof( System.Numerics.Vector3 ), "Vector3" );
+
+        // UpgradeContext.py
         PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext" );
+
+        // Vector3.py
         PythonAPIGen.GenerateFile( typeof(System.Numerics.Vector3), "Vector3" );
-        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder().AppendLine( "from netapi.Vector3 import Vector3;" ) );
+
+        // Entity.py
+        PythonAPIGen.AddTypeConversion( typeof( List<KeyValuePair<string, string>> ), "list[list[str, str]]" );
+        PythonAPIGen.AddTypeConversion( typeof( IDictionary<string, string> ), "dict[str, str]" );
+
+        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder()
+            .AppendLine( "from netapi.Vector3 import Vector3;" )
+        );
 #endif
 
         ConfigContext.Get( "python_dll", value =>
