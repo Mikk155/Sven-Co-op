@@ -55,10 +55,10 @@ class Entity:
 		'''Set a key's value in bool form (0/1)'''
 		pass;
 	def GetVector( self, entity: Any, key: str ) -> Vector:
-		'''Get a key's value in bool form (0/1)'''
+		'''Get a key's value in Vector form (0/1)'''
 		pass;
 	def SetVector( self, entity: Any, key: str, value: Vector ) -> None:
-		'''Set a key's value in bool form (0/1)'''
+		'''Set a key's value in Vector form (0/1)'''
 		pass;
 	def ToString( self,  ) -> str:
 		'''Return the entity in the .ent format'''
