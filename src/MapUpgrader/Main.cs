@@ -30,7 +30,22 @@ class Program
     /// .NET version to retrieve xml files from
     /// </summary>
     public const string FrameworkVersion = "net9.0";
-    
+
+    /// <summary>
+    /// Workspace directory
+    /// </summary>
+    public static string WorkSpace = Getworkspace();
+
+    private static string Getworkspace()
+    {
+        string dir = Path.Combine( Directory.GetCurrentDirectory(), "workspace" );
+
+        if( !Directory.Exists( dir ) )
+            Directory.CreateDirectory( dir );
+
+        return dir;
+    }
+
     public static readonly MapUpgrader Upgrader = new MapUpgrader();
 
     public static void Main()
