@@ -66,6 +66,8 @@ public class PythonLanguage : ILanguageEngine
 
     public void Shutdown()
     {
+        PythonLanguage.logger.debug.WriteLine( "Shutting down" );
+
         try
         {
             PythonEngine.Shutdown();

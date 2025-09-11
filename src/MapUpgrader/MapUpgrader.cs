@@ -93,9 +93,9 @@ public class MapUpgrader()
     {
         if( this._ShutDown )
             return;
-        
+
         this._ShutDown = true;
-        MapUpgrader.logger.info.WriteLine( "Shutting down" );
+        MapUpgrader.logger.debug.WriteLine( "Shutting down" );
         this.ScriptEngine.Shutdown();
         Console.ResetColor();
         Console.Beep();

@@ -92,7 +92,7 @@ public class ScriptEngine()
 
     public void Shutdown()
     {
-        ScriptEngine.logger.info.WriteLine( "Shutting down" );
+        ScriptEngine.logger.debug.WriteLine( "Shutting down" );
 
         foreach( KeyValuePair<string, ILanguageEngine> e in Languages )
         {
