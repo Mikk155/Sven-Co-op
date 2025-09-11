@@ -26,7 +26,6 @@ from typing import Any, Optional;
 
 class Vector:
 	'''3D Vector representing x/y/z'''
-
 	x: float
 	'''X position [0]'''
 	y: float
