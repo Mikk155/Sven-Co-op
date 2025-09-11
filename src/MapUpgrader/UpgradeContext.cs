@@ -51,6 +51,11 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
     /// <summary>Optional description to display as an option.</summary>
     public string? description { get; set; }
 
+    /// <summary>
+    /// Assets to copy over from the mod directory
+    /// </summary>
+    public Assets assets = new Assets();
+
     /// <summary>Maps to upgrade. Leave empty to upgrade all maps.</summary>
     public string[]? maps { get; set; }
 
