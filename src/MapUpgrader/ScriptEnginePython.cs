@@ -128,6 +128,11 @@ public class PythonLanguage : ILanguageEngine
         PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
         PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
 
+        // Assets.py
+        PythonAPIGen.MapTypeList[ typeof(List<string>) ] = "list[str]";
+        PythonAPIGen.MapTypeList[ typeof(Dictionary<string, string>) ] = "dict[str, str]";
+        PythonAPIGen.GenerateFile( typeof(Assets), "Assets" );
+
         // Entity.py
         sb.AppendLine( "from netapi.Vector import Vector;" );
         PythonAPIGen.MapTypeList[ typeof(List<KeyValuePair<string, string>>) ] = "list[list[str, str]]";
