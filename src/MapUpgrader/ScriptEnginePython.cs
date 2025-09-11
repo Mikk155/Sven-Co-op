@@ -79,23 +79,25 @@ public class PythonLanguage : ILanguageEngine
     public PythonLanguage()
     {
 #if DEBUG // Generate docs for python Type hints
-        TypeHint PythonAPIGen = new TypeHint( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) );
+        StringBuilder sb = new StringBuilder();
 
-        PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
+        TypeHint PythonAPIGen = new TypeHint(
+            Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", Program.FrameworkVersion, "MapUpgrader.xml" )
+        );
 
         // UpgradeContext.py
         PythonAPIGen.MapTypeList[ typeof(UpgradeContext) ] = "UpgradeContext";
 
         // Vector.py
+        PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
         PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
 
         // Entity.py
+        sb.AppendLine( "from netapi.Vector import Vector;" );
         PythonAPIGen.MapTypeList[ typeof(List<KeyValuePair<string, string>>) ] = "list[list[str, str]]";
         PythonAPIGen.MapTypeList[ typeof(IDictionary<string, string>) ] = "dict[str, str]";
+        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", sb );
 
-        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder()
-            .AppendLine( "from netapi.Vector import Vector;" )
-        );
 #endif
 
         ConfigContext.Get( "python_dll", value =>

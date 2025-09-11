@@ -22,8 +22,15 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+using System.Runtime.Versioning;
+
 class Program
 {
+    /// <summary>
+    /// .NET version to retrieve xml files from
+    /// </summary>
+    public const string FrameworkVersion = "net9.0";
+    
     public static readonly MapUpgrader Upgrader = new MapUpgrader();
 
     public static void Main()
