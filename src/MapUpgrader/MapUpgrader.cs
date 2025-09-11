@@ -42,8 +42,9 @@ public class MapUpgrader()
                 .Write( "\"" )
                 .NewLine()
                 .Beep()
+                .Call( this.Shutdown )
                 .Pause()
-                .Exit( this.Shutdown );
+                .Exit();
         }
 
         List<UpgradeContext> mods = ContextSelector.GetContexts();
@@ -54,7 +55,9 @@ public class MapUpgrader()
                 .Write( "No upgrades selected." )
                 .NewLine()
                 .Beep()
-                .Exit( this.Shutdown );
+                .Call( this.Shutdown )
+                .Pause()
+                .Exit();
         }
 
         foreach( UpgradeContext context in mods )
