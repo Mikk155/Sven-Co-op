@@ -28,7 +28,9 @@ using Python.Runtime;
 #if DEBUG
 using Mikk.PythonNET;
 using System.Text;
-#endif
+using System.Diagnostics;
+using System.IO;
+#endif // DEBUG
 
 #if DEBUG
 public static class PythonNET
@@ -55,8 +57,42 @@ public static class PythonNET
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{filename}.py" ),
             typehint.Generate( type, StringBuilder ) );
     }
+
+    public static void UpdateThirdPartyDocument( this TypeHint typehint, string projectName, string projectPath )
+    {
+        string CSProjPath = Path.Combine( projectPath, $"{projectName}.csproj" );
+
+        if( !File.Exists( CSProjPath ) )
+        {
+            TypeHint.logger.error
+                .Write( "Invalid csproj at " )
+                .Write( CSProjPath, ConsoleColor.Green )
+                .NewLine();
+            return;
+        }
+
+        TypeHint.logger.info
+            .Write( "Compiling " )
+            .Write( projectName, ConsoleColor.Green )
+            .Write( " to generate a XML document" )
+            .Write( CSProjPath, ConsoleColor.Cyan )
+            .NewLine();
+
+        ProcessStartInfo terminal = new ProcessStartInfo
+        {
+            FileName = "dotnet",
+            Arguments = $"build \"{CSProjPath}\" -c Debug /p:GenerateDocumentationFile=true",
+            UseShellExecute = true
+        };
+
+        using Process proc = Process.Start( terminal )!;
+
+        proc.WaitForExit();
+
+        typehint.LoadDocument( Path.Combine( projectPath, "bin", "Debug", Program.FrameworkVersion, $"{projectName}.xml" ) );
+    }
 }
-#endif
+#endif // DEBUG
 
 public class PythonLanguage : ILanguageEngine
 {
@@ -98,7 +134,14 @@ public class PythonLanguage : ILanguageEngine
         PythonAPIGen.MapTypeList[ typeof(IDictionary<string, string>) ] = "dict[str, str]";
         PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", sb );
 
-#endif
+#if APIGEN_PROTOTYPE_EXTERNAL
+        string workspace = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );
+
+        // Logger.py
+        PythonAPIGen.UpdateThirdPartyDocument( "Mikk.Logger", Path.Combine( workspace ,"external", "MikkNET", "Mikk.Logger" ) );
+        PythonAPIGen.GenerateFile( typeof(Logger), "Logger" );
+#endif // APIGEN_PROTOTYPE_EXTERNAL
+#endif // DEBUG
 
         ConfigContext.Get( "python_dll", value =>
         {
