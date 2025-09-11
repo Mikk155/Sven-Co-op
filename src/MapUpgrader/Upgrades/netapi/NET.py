@@ -1,3 +1,3 @@
 from netapi.Entity import Entity;
-from netapi.Vector3 import Vector3;
+from netapi.Vector import Vector;
 from netapi.UpgradeContext import UpgradeContext;

@@ -24,43 +24,22 @@ SOFTWARE.
 
 from typing import Any, Optional;
 
-class Vector3:
+class Vector:
+	'''3D Vector representing x/y/z'''
 
-	E: Any
-	Epsilon: Any
-	NaN: Any
-	NegativeInfinity: Any
-	NegativeZero: Any
-	One: Any
-	Pi: Any
-	PositiveInfinity: Any
-	Tau: Any
-	UnitX: Any
-	UnitY: Any
-	UnitZ: Any
-	Zero: Any
+	x: float
+	'''X position [0]'''
+	y: float
+	'''Y position [1]'''
+	z: float
+	'''Z position [2]'''
+	vecZero: Any
+	'''Get a Vector whose all values are zero'''
 	Item: float
-	def CopyTo( self, array: Any ) -> None:
-		pass;
-	def CopyTo( self, array: Any, index: int ) -> None:
-		pass;
-	def CopyTo( self, destination: Any ) -> None:
-		pass;
-	def TryCopyTo( self, destination: Any ) -> bool:
+	def ToString( self ) -> str:
+		'''Return a string representing the x y z separated by a single space'''
 		pass;
 	def Equals( self, obj: Any ) -> bool:
 		pass;
-	def Equals( self, other: Any ) -> bool:
-		pass;
 	def GetHashCode( self ) -> int:
-		pass;
-	def Length( self ) -> float:
-		pass;
-	def LengthSquared( self ) -> float:
-		pass;
-	def ToString( self ) -> str:
-		pass;
-	def ToString( self, format: str ) -> str:
-		pass;
-	def ToString( self, format: str, formatProvider: Any ) -> str:
 		pass;

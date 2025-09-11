@@ -22,16 +22,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-from netapi.Vector3 import Vector3;
+from netapi.Vector import Vector;
 from typing import Any, Optional;
 
 class Entity:
 
 	Model: int
 	ClassName: str
-	SortedKeyValues: list[list[str, str]]
-	KeyValues: dict[str, str]
-	def GetVector3( self, name: str, defaultValue: Vector3 ) -> Vector3:
+	SortedKeyValues: list[Any]
+	KeyValues: Any
+	def GetString( self, entity: Any, key: str ) -> str:
+		pass;
+	def SetString( self, entity: Any, key: str, value: str ) -> None:
+		pass;
+	def GetInteger( self, entity: Any, key: str ) -> int:
+		pass;
+	def SetInteger( self, entity: Any, key: str, value: int ) -> None:
+		pass;
+	def GetFloat( self, entity: Any, key: str ) -> float:
+		pass;
+	def SetFloat( self, entity: Any, key: str, value: float ) -> None:
+		pass;
+	def GetBool( self, entity: Any, key: str ) -> bool:
+		pass;
+	def SetBool( self, entity: Any, key: str, value: bool ) -> None:
+		pass;
+	def GetVector( self, entity: Any, key: str ) -> Vector:
+		pass;
+	def SetVector( self, entity: Any, key: str, value: Vector ) -> None:
+		pass;
+	def ToString( self,  ) -> str:
+		pass;
+	def GetVector3( self, name: str, defaultValue: Any ) -> Any:
 		pass;
 	def Get( self, name: str, defaultValue: Any ) -> Any:
 		pass;
