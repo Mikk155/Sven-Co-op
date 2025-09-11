@@ -36,7 +36,6 @@ public class MapUpgrader()
 
         if( ScriptEngine.Mods.Count <= 0 )
         {
-            this.Shutdown();
             MapUpgrader.logger.error
                 .Write( "No scripts detected in the directory \"" )
                 .Write( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ), ConsoleColor.Cyan )
@@ -44,16 +43,18 @@ public class MapUpgrader()
                 .NewLine()
                 .Beep()
                 .Pause()
-                .Exit();
-            return;
+                .Exit( this.Shutdown );
         }
 
         List<UpgradeContext> mods = ContextSelector.GetContexts();
 
         if( mods.Count <= 0 )
         {
-            this.Shutdown();
-            return;
+            MapUpgrader.logger.error
+                .Write( "No upgrades selected." )
+                .NewLine()
+                .Beep()
+                .Exit( this.Shutdown );
         }
 
         foreach( UpgradeContext context in mods )
