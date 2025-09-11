@@ -72,13 +72,13 @@ public static class Entity
         entity.KeyValues[ key ] = value.ToString();
     }
 
-    /// <summary>Get a key's value in bool form (0/1)</summary>
+    /// <summary>Get a key's value in Vector form (0/1)</summary>
     public static Vector GetVector( this Sledge.Formats.Bsp.Objects.Entity entity, string key )
     {
         return entity.KeyValues.TryGetValue( key, out string? value ) ? new Vector( value ) : Vector.g_VecZero;
     }
 
-    /// <summary>Set a key's value in bool form (0/1)</summary>
+    /// <summary>Set a key's value in Vector form (0/1)</summary>
     public static void SetVector( this Sledge.Formats.Bsp.Objects.Entity entity, string key, Vector value )
     {
         entity.KeyValues[ key ] = value.ToString();
