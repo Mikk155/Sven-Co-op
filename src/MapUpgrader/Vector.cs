@@ -63,6 +63,13 @@ public class Vector
         }
     }
 
+    public Vector()
+    {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+
     public Vector( Vector vec )
     {
         x = vec.x;
