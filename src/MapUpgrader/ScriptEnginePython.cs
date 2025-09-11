@@ -83,17 +83,17 @@ public class PythonLanguage : ILanguageEngine
 
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "output.txt" ), PythonAPIGen.GetPairs() );
 
-        PythonAPIGen.AddTypeConversion( typeof(Vector), "Vector" );
+        PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
 
         // UpgradeContext.py
-        PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext" );
+        PythonAPIGen.MapTypeList[ typeof(UpgradeContext) ] = "UpgradeContext";
 
         // Vector.py
         PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
 
         // Entity.py
-        PythonAPIGen.AddTypeConversion( typeof( List<KeyValuePair<string, string>> ), "list[list[str, str]]" );
-        PythonAPIGen.AddTypeConversion( typeof( IDictionary<string, string> ), "dict[str, str]" );
+        PythonAPIGen.MapTypeList[ typeof(List<KeyValuePair<string, string>>) ] = "list[list[str, str]]";
+        PythonAPIGen.MapTypeList[ typeof(IDictionary<string, string>) ] = "dict[str, str]";
 
         PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder()
             .AppendLine( "from netapi.Vector import Vector;" )
