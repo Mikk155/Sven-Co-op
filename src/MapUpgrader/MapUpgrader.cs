@@ -74,6 +74,7 @@ public class MapUpgrader()
         MapUpgrader.logger.info.WriteLine( $"Description {context.description}" );
         MapUpgrader.logger.info.WriteLine( $"Mod {context.mod}" );
         MapUpgrader.logger.info.WriteLine( $"urls {string.Join( " ", context.urls )}" );
+        MapUpgrader.logger.info.WriteLine( $"Directory {context.GetModPath()}" );
 
         if( context.maps is not null )
             MapUpgrader.logger.info.WriteLine( $"maps {string.Join( " ", context.maps )}" );

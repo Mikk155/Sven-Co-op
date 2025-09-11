@@ -22,6 +22,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+using Mikk.Logger;
+
 #pragma warning disable IDE1006 // Naming Styles
 /// <summary>Represents a context for upgrading</summary>
 public class UpgradeContext( ILanguageEngine Language, string Script )
@@ -52,12 +54,36 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
     /// <summary>Maps to upgrade. Leave empty to upgrade all maps.</summary>
     public string[]? maps { get; set; }
 
+    private string _ModDirectory => Path.Combine( this.GetHalfLifeInstallation(), this.mod );
+
     /// <summary>
     /// Get the mod's installation absolute path
     /// </summary>
     /// <returns>The absolute path directory to the mod installation</returns>
     public string GetModPath()
     {
+        string dir = this._ModDirectory;
+
+        if( Directory.Exists( dir ) )
+            return dir;
+
+        Logger log = MapUpgrader.logger.error
+            .Write( "The mod \"" )
+            .Write( this.mod, ConsoleColor.Green )
+            .Write( "\" doesn't exists in the directory \"" )
+            .Write( dir, ConsoleColor.Cyan )
+            .Write( "\"" )
+            .NewLine()
+            .Write( "Are you sure it is installed? Try one of the following mirrors:" )
+            .NewLine();
+
+        foreach( string url in urls )
+        {
+            log.WriteLine( url, ConsoleColor.Yellow );
+        }
+
+        log.Call( Program.Upgrader.Shutdown ).Beep().Pause().Exit();
+
         return string.Empty;
     }
 
