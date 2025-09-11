@@ -83,20 +83,20 @@ public class PythonLanguage : ILanguageEngine
 
         File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "output.txt" ), PythonAPIGen.GetPairs() );
 
-        PythonAPIGen.AddTypeConversion( typeof( System.Numerics.Vector3 ), "Vector3" );
+        PythonAPIGen.AddTypeConversion( typeof(Vector), "Vector" );
 
         // UpgradeContext.py
         PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext" );
 
-        // Vector3.py
-        PythonAPIGen.GenerateFile( typeof(System.Numerics.Vector3), "Vector3" );
+        // Vector.py
+        PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
 
         // Entity.py
         PythonAPIGen.AddTypeConversion( typeof( List<KeyValuePair<string, string>> ), "list[list[str, str]]" );
         PythonAPIGen.AddTypeConversion( typeof( IDictionary<string, string> ), "dict[str, str]" );
 
         PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder()
-            .AppendLine( "from netapi.Vector3 import Vector3;" )
+            .AppendLine( "from netapi.Vector import Vector;" )
         );
 #endif
 
