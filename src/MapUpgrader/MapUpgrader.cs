@@ -87,8 +87,14 @@ public class MapUpgrader()
         this.Shutdown();
     }
 
+    private bool _ShutDown = false;
+
     public void Shutdown()
     {
+        if( this._ShutDown )
+            return;
+        
+        this._ShutDown = true;
         MapUpgrader.logger.info.WriteLine( "Shutting down" );
         this.ScriptEngine.Shutdown();
         Console.ResetColor();
