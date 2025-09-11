@@ -81,8 +81,6 @@ public class PythonLanguage : ILanguageEngine
 #if DEBUG // Generate docs for python Type hints
         TypeHint PythonAPIGen = new TypeHint( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "net9.0", "MapUpgrader.xml" ) );
 
-        File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "output.txt" ), PythonAPIGen.GetPairs() );
-
         PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
 
         // UpgradeContext.py
