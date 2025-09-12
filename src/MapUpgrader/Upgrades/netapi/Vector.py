@@ -38,7 +38,7 @@ class Vector:
 	def ToString( self ) -> str:
 		'''Return a string representing the x y z separated by a single space'''
 		pass;
-	def Equals( self, obj: Any ) -> bool:
+	def Equals( self, obj: Optional[Any] = None ) -> bool:
 		pass;
 	def GetHashCode( self ) -> int:
 		pass;

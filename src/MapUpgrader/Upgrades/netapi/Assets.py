@@ -25,6 +25,8 @@ SOFTWARE.
 from typing import Any, Optional;
 
 class Assets:
+	AssetList: list[str]
+	AssetDict: dict[str, str]
 	def Copy( self, src: str, target: Optional[str] = None ) -> None:
 		'''Copy over an asset to the workspace directory, if target is provided the relative path will be overriden'''
 		pass;

@@ -28,8 +28,8 @@ from typing import Any, Optional;
 class Entity:
 	Model: int
 	ClassName: str
-	SortedKeyValues: list[Any]
-	KeyValues: Any
+	SortedKeyValues: list[list[str, str]]
+	KeyValues: dict[str, str]
 	def GetString( self, key: str ) -> str:
 		'''Get a key's value in string form'''
 		pass;
