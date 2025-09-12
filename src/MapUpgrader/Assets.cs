@@ -28,8 +28,8 @@ public class Assets()
 {
     public static readonly Logger logger = new Logger( "Assets" );
 
-    public List<string> m_list = new List<string>();
-    public Dictionary<string, string> m_dict = new Dictionary<string, string>();
+    public List<string> AssetList = new List<string>();
+    public Dictionary<string, string> AssetDict = new Dictionary<string, string>();
 
     /// <summary>Copy over an asset to the workspace directory, if target is provided the relative path will be overriden</summary>
     public void Copy( string src, string? target = null )
@@ -42,7 +42,7 @@ public class Assets()
                 .Write( "\"" )
                 .NewLine();
 
-            m_list.Add( src );
+            AssetList.Add( src );
         }
         else
         {
@@ -54,7 +54,7 @@ public class Assets()
                 .Write( "\"" )
                 .NewLine();
 
-            m_dict[ src ] = target;
+            AssetDict[ src ] = target;
         }
     }
 }
