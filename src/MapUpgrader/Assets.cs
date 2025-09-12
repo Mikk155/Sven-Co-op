@@ -26,6 +26,8 @@ using Mikk.Logger;
 
 public class Assets()
 {
+    public UpgradeContext? _owner;
+
     public static readonly Logger logger = new Logger( "Assets" );
 
     public List<string> AssetList = new List<string>();
@@ -34,6 +36,8 @@ public class Assets()
     /// <summary>Copy over an asset to the workspace directory, if target is provided the relative path will be overriden</summary>
     public void Copy( string src, string? target = null )
     {
+        ArgumentNullException.ThrowIfNull( this._owner );
+
         if( string.IsNullOrWhiteSpace( target ) )
         {
             Assets.logger.trace
