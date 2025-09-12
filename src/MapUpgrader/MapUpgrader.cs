@@ -83,7 +83,7 @@ public class MapUpgrader()
 
         MapUpgrader.logger.info.WriteLine( $"=================================================================" );
 
-        context.Language.Shutdown();
+        context._Language.Shutdown();
     }
 
     ~MapUpgrader()

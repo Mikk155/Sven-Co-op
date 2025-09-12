@@ -26,13 +26,19 @@ using Mikk.Logger;
 
 #pragma warning disable IDE1006 // Naming Styles
 /// <summary>Represents a context for upgrading</summary>
-public class UpgradeContext( ILanguageEngine Language, string Script )
+public class UpgradeContext
 {
+    public UpgradeContext( ILanguageEngine lang, string src )
+    {
+        this._Language = lang;
+        this.Script = src;
+    }
+
     /// <summary>The scripting engine interface used for this upgrade.</summary>
-    public readonly ILanguageEngine Language = Language;
+    public readonly ILanguageEngine _Language;
 
     /// <summary>The absolute file path for the script for this upgrade.</summary>
-    public readonly string Script = Script;
+    public readonly string Script;
 
     /// <summary>The script filename without extension for this upgrade.</summary>
     public string Name =>
