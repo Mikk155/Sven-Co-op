@@ -61,4 +61,9 @@ public class Assets()
             AssetDict[ src ] = target;
         }
     }
+
+    ~Assets()
+    {
+        this._owner = null;
+    }
 }

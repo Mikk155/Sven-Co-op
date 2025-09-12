@@ -218,5 +218,15 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
         // Early exit if uninstalled
         this.GetModPath();
     }
+
+    ~UpgradeContext()
+    {
+        this.Shutdown();
+    }
+
+    public void Shutdown()
+    {
+        this.assets = null!;
+    }
 }
 #pragma warning restore IDE1006 // Naming Styles
