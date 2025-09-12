@@ -199,5 +199,24 @@ public class UpgradeContext( ILanguageEngine Language, string Script )
 
         return HalfLifePath!;
     }
+
+    private bool _Initialized;
+
+    public void Initialize()
+    {
+        if( this._Initialized )
+            return;
+
+        this._Initialized = true;
+
+        this.assets._owner = this;
+
+        ArgumentNullException.ThrowIfNull( this.mod );
+        ArgumentNullException.ThrowIfNull( this.urls );
+        ArgumentNullException.ThrowIfNull( this.title );
+
+        // Early exit if uninstalled
+        this.GetModPath();
+    }
 }
 #pragma warning restore IDE1006 // Naming Styles

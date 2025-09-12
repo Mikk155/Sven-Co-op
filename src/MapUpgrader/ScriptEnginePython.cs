@@ -184,9 +184,7 @@ public class PythonLanguage : ILanguageEngine
 
                 PyObject? result = OnRegister.Invoke( context.ToPython() );
 
-                ArgumentNullException.ThrowIfNull( context.mod );
-                ArgumentNullException.ThrowIfNull( context.urls );
-                ArgumentNullException.ThrowIfNull( context.title );
+                context.Initialize();
 
                 return context;
             }
