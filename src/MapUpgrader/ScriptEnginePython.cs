@@ -115,29 +115,33 @@ public class PythonLanguage : ILanguageEngine
     public PythonLanguage()
     {
 #if DEBUG // Generate docs for python Type hints
-        StringBuilder sb = new StringBuilder();
-
         TypeHint PythonAPIGen = new TypeHint(
             Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", Program.FrameworkVersion, "MapUpgrader.xml" )
         );
 
-        // UpgradeContext.py
-        PythonAPIGen.MapTypeList[ typeof(UpgradeContext) ] = "UpgradeContext";
-
-        // Vector.py
-        PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
-        PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
-
         // Assets.py
         PythonAPIGen.MapTypeList[ typeof(List<string>) ] = "list[str]";
         PythonAPIGen.MapTypeList[ typeof(Dictionary<string, string>) ] = "dict[str, str]";
-        PythonAPIGen.GenerateFile( typeof(Assets), "Assets" );
+
+        // UpgradeContext.py
+        PythonAPIGen.MapTypeList[ typeof(Assets) ] = "Assets";
+
+        // Vector.py
+        PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
 
         // Entity.py
-        sb.AppendLine( "from netapi.Vector import Vector;" );
         PythonAPIGen.MapTypeList[ typeof(List<KeyValuePair<string, string>>) ] = "list[list[str, str]]";
         PythonAPIGen.MapTypeList[ typeof(IDictionary<string, string>) ] = "dict[str, str]";
-        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", sb );
+
+        PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext",
+            new StringBuilder().AppendLine( "from netapi.Assets import Assets;" ) );
+
+        PythonAPIGen.GenerateFile( typeof(Assets), "Assets" );
+
+        PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
+
+        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity",
+            new StringBuilder().AppendLine( "from netapi.Vector import Vector;" ) );
 
 #if APIGEN_PROTOTYPE_EXTERNAL
         string workspace = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );

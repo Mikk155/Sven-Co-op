@@ -22,11 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
+from netapi.Assets import Assets;
 from typing import Any, Optional;
 
 class UpgradeContext:
 	'''Represents a context for upgrading'''
-
+	Language: Any
+	'''The scripting engine interface used for this upgrade.'''
+	Script: str
+	'''The absolute file path for the script for this upgrade.'''
+	title: str
+	'''Title to display as an option.'''
+	mod: str
+	'''Mod folder to install assets.'''
+	urls: list[str]
+	'''Mod download URL or multiple url for mirroring..'''
+	assets: Assets
+	'''Assets to copy over from the mod directory'''
 	Name: str
 	'''The script filename without extension for this upgrade.'''
 	description: str
@@ -44,4 +56,8 @@ class UpgradeContext:
 		pass;
 	def GetHalfLifeInstallation( self ) -> str:
 		'''Get the path to the Half-Life installation'''
+		pass;
+	def Initialize( self ) -> None:
+		pass;
+	def Shutdown( self ) -> None:
 		pass;
