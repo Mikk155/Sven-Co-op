@@ -172,16 +172,16 @@ public class PythonLanguage : ILanguageEngine
 
             try
             {
-                if( !Script.HasAttr( ILanguageEngine.InitializationMethod ) )
+                if( !Script.HasAttr( Program.HookName_Init ) )
                 {
-                    throw new MissingMemberException( $"Script {Path.GetFileName( script )} doesn't implements the \"{ILanguageEngine.InitializationMethod}\" method" );
+                    throw new MissingMemberException( $"Script {Path.GetFileName( script )} doesn't implements the \"{Program.HookName_Init}\" method" );
                 }
 
-                PyObject OnRegister = Script.GetAttr( ILanguageEngine.InitializationMethod );
+                PyObject OnRegister = Script.GetAttr( Program.HookName_Init );
 
                 if( !OnRegister.IsCallable() )
                 {
-                    throw new InvalidDataException( $"Method \"{ILanguageEngine.InitializationMethod}\" is not a callable method" );
+                    throw new InvalidDataException( $"Method \"{Program.HookName_Init}\" is not a callable method" );
                 }
 
                 UpgradeContext context = new UpgradeContext( this, script );

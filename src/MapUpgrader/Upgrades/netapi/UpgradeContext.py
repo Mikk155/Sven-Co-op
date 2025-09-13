@@ -27,8 +27,6 @@ from typing import Any, Optional;
 
 class UpgradeContext:
 	'''Represents a context for upgrading'''
-	Language: Any
-	'''The scripting engine interface used for this upgrade.'''
 	Script: str
 	'''The absolute file path for the script for this upgrade.'''
 	title: str
