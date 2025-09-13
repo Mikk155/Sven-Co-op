@@ -168,10 +168,10 @@ public class PythonLanguage : ILanguageEngine
             dynamic sys = Py.Import( "sys" );
             sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ) );
 
-            PyObject Script = Py.Import( Path.GetFileNameWithoutExtension( script ) );
-
             try
             {
+                PyObject Script = Py.Import( Path.GetFileNameWithoutExtension( script ) );
+
                 if( !Script.HasAttr( ScriptEngine.HookName_Init ) )
                 {
                     throw new MissingMemberException( $"Script {Path.GetFileName( script )} doesn't implements the \"{ScriptEngine.HookName_Init}\" method" );
