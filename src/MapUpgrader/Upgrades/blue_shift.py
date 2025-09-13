@@ -1,6 +1,6 @@
 from netapi.NET import *
 
-def OnRegister( context: UpgradeContext ) -> None:
+def register( context: UpgradeContext ) -> None:
 
     context.mod = "bshift";
     context.title = "Blue Shift";

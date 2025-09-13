@@ -42,7 +42,7 @@ public class ScriptEngine()
         { ".py", new PythonLanguage() }
     };
 
-    public static string HookName_Init = "OnRegister";
+    public static string HookName_Init = "register";
     public static string ScriptingFolder = "Upgrades";
 
     public void Initialize()
