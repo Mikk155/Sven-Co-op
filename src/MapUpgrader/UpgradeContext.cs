@@ -34,7 +34,7 @@ public class UpgradeContext
     {
         this._Language = lang;
         this.Script = src;
-        this.logger = new Logger( this.Name, ConsoleColor.DarkMagenta );
+        this.logger = new Logger( this.Name, ConsoleColor.DarkGreen );
     }
 
     /// <summary>The scripting engine interface used for this upgrade.</summary>
