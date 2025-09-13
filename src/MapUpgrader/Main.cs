@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 using System.Runtime.Versioning;
 
-class Program
+public static class Program
 {
     /// <summary>
     /// .NET version to retrieve xml files from
@@ -46,10 +46,18 @@ class Program
         return dir;
     }
 
-    public static readonly MapUpgrader Upgrader = new MapUpgrader();
+    private static MapUpgrader _upgrader_ = null!;
+    public static MapUpgrader Upgrader => Program._upgrader_;
 
-    public static void Main()
+    private static string[] _args_ = [];
+    public static string[] Arguments = Program._args_;
+
+    public static void Main( params string[] args )
     {
+        Program._args_ = args;
+
+        Program._upgrader_ = new MapUpgrader();
+
         Console.CancelKeyPress += (p, e) =>
         {
             Upgrader.Shutdown();
