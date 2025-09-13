@@ -25,8 +25,15 @@ SOFTWARE.
 from typing import Any, Optional;
 
 class Assets:
-	AssetList: list[str]
-	AssetDict: dict[str, str]
+	AssetsList: dict[str, str]
 	def Copy( self, src: str, target: Optional[str] ) -> None:
-		'''Copy over an asset to the workspace directory, if target is provided the relative path will be overriden'''
+		'''Copy over an asset to the workspace directory.
+            
+            if target is provided the destination path will be overriden
+            
+            Supports wildcard "*" for a whole folder's files or a partial match for files starting with a prefix
+            
+            When using wildcarding, the destination target must be a folder only
+            
+            For entering folders use "/"'''
 		pass;

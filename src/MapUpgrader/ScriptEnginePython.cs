@@ -116,7 +116,7 @@ public class PythonLanguage : ILanguageEngine
     {
 #if DEBUG
         // Generate docs for python Type hints
-        if( App.Arguments.FirstOrDefault( "-docs" ) is not null )
+        if( string.IsNullOrWhiteSpace( App.Arguments.FirstOrDefault( "-docs" ) ) )
         {
             TypeHint PythonAPIGen = new TypeHint(
                 Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", App.NETVersion, "MapUpgrader.xml" )
@@ -194,6 +194,25 @@ public class PythonLanguage : ILanguageEngine
                 PyError( exception, script );
             }
             return null;
+        }
+    }
+
+    public void GetAssets( UpgradeContext context )
+    {
+        using ( Py.GIL() )
+        {
+            dynamic sys = Py.Import( "sys" );
+            sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), ScriptEngine.ScriptingFolder ) );
+
+            try
+            {
+                PyObject Script = Py.Import( Path.GetFileNameWithoutExtension( context.Script ) );
+                Script.GetAttr( ScriptEngine.HookName_Assets ).Invoke( context.assets.ToPython() );
+            }
+            catch( Exception exception )
+            {
+                PyError( exception, context.Script );
+            }
         }
     }
 

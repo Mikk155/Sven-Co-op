@@ -68,22 +68,16 @@ public class MapUpgrader()
 
     private void InstallContext( UpgradeContext context )
     {
-        MapUpgrader.logger.info.WriteLine( $"=================================================================" );
-        MapUpgrader.logger.info.WriteLine( $"Name {context.Name}" );
-        MapUpgrader.logger.info.WriteLine( $"Title {context.title}" );
-        MapUpgrader.logger.info.WriteLine( $"Description {context.description}" );
-        MapUpgrader.logger.info.WriteLine( $"Mod {context.mod}" );
-        MapUpgrader.logger.info.WriteLine( $"urls {string.Join( " ", context.urls )}" );
-        MapUpgrader.logger.info.WriteLine( $"Directory {context.GetModPath()}" );
+        context.logger.info
+            .Write( "Installing " )
+            .Write( context.Name, ConsoleColor.Green )
+            .Write( " (" )
+            .Write( context.title, ConsoleColor.Cyan )
+            .WriteLine( ")" );
 
-        if( context.maps is not null )
-            MapUpgrader.logger.info.WriteLine( $"maps {string.Join( " ", context.maps )}" );
+        context._Language.GetAssets( context );
 
-        MapUpgrader.logger.warn.WriteLine( context.GetHalfLifeInstallation() );
-
-        MapUpgrader.logger.info.WriteLine( $"=================================================================" );
-
-        context._Language.Shutdown();
+        context.Shutdown();
     }
 
     ~MapUpgrader()

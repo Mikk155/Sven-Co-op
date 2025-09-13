@@ -1,6 +1,7 @@
 build/*
 as.predefined
 /code-runner.*
+src/MapUpgrader/workspace/*
 
 # Python https://github.com/github/gitignore/blob/main/Python.gitignore
 # Byte-compiled / optimized / DLL files
