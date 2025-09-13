@@ -98,13 +98,22 @@ public class Assets()
             return;
         }
 
-        this._owner!.logger.trace
-            .Write( "Copying asset \"" )
-            .Write( Path.GetRelativePath( this._owner.GetModPath(), src ), ConsoleColor.Cyan )
-            .Write( "\" -> \"" )
-            .Write( Path.GetRelativePath( App.WorkSpace, destination ), ConsoleColor.Cyan )
-            .Write( "\"" )
-            .NewLine();
+        Mikk.Logger.Logger log = this._owner!.logger.trace;
+
+        if( log.IsLevelActive )
+        {
+            string log_src = Path.GetRelativePath( this._owner.GetModPath(), src );
+            string log_dest = Path.GetRelativePath( App.WorkSpace, destination );
+
+            log.Write( "Copying asset \"" ).Write( log_src, ConsoleColor.Green );
+
+            if( log_src != log_dest )
+            {
+                log.Write( "\" -> \"" ).Write( log_dest, ConsoleColor.Cyan );
+            }
+
+            log.WriteLine( "\"" );
+        }
 
         string? folder = Path.GetDirectoryName( destination );
 
