@@ -42,6 +42,8 @@ public class ScriptEngine()
         { ".py", new PythonLanguage() }
     };
 
+    public static string HookName_Init = "OnRegister";
+
     public void Initialize()
     {
         // Get all script files

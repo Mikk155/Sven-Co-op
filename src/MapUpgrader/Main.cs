@@ -36,9 +36,6 @@ class Program
     /// </summary>
     public static string WorkSpace = Getworkspace();
 
-    // Constant variables defined here in case of updating
-    public static string HookName_Init = "OnRegister";
-
     private static string Getworkspace()
     {
         string dir = Path.Combine( Directory.GetCurrentDirectory(), "workspace" );
