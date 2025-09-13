@@ -54,7 +54,7 @@ public static class PythonNET
 
         StringBuilder.AppendLine( "from typing import Any, Optional;" );
 
-        File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades", "netapi", $"{filename}.py" ),
+        File.WriteAllText( Path.Combine( Directory.GetCurrentDirectory(), ScriptEngine.ScriptingFolder, "netapi", $"{filename}.py" ),
             typehint.Generate( type, StringBuilder ) );
     }
 
@@ -166,7 +166,7 @@ public class PythonLanguage : ILanguageEngine
         using ( Py.GIL() )
         {
             dynamic sys = Py.Import( "sys" );
-            sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ) );
+            sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), ScriptEngine.ScriptingFolder ) );
 
             try
             {

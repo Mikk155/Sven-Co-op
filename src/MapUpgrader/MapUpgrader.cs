@@ -38,7 +38,7 @@ public class MapUpgrader()
         {
             MapUpgrader.logger.error
                 .Write( "No scripts detected in the directory \"" )
-                .Write( Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" ), ConsoleColor.Cyan )
+                .Write( Path.Combine( Directory.GetCurrentDirectory(), ScriptEngine.ScriptingFolder ), ConsoleColor.Cyan )
                 .Write( "\"" )
                 .NewLine()
                 .Beep()

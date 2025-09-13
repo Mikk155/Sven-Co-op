@@ -43,12 +43,13 @@ public class ScriptEngine()
     };
 
     public static string HookName_Init = "OnRegister";
+    public static string ScriptingFolder = "Upgrades";
 
     public void Initialize()
     {
         // Get all script files
         List<string> ScriptFiles = Directory.GetFiles(
-                Path.Combine( Directory.GetCurrentDirectory(), "Upgrades" )
+                Path.Combine( Directory.GetCurrentDirectory(), ScriptEngine.ScriptingFolder )
             )
             .Where( file => this.Languages.ContainsKey( Path.GetExtension( file ) ) )
             .ToList();
