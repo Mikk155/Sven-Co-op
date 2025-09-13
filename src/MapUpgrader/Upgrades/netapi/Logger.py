@@ -24,9 +24,35 @@ SOFTWARE.
 
 from typing import Any, Optional;
 
-class Assets:
-	AssetList: list[str]
-	AssetDict: dict[str, str]
-	def Copy( self, src: str, target: Optional[str] ) -> None:
-		'''Copy over an asset to the workspace directory, if target is provided the relative path will be overriden'''
+class Logger:
+	Name: str
+	Color: Any
+	LogLevels: Any
+	Level: Any
+	IsLevelActive: bool
+	trace: 'Logger'
+	debug: 'Logger'
+	info: 'Logger'
+	warn: 'Logger'
+	error: 'Logger'
+	critical: 'Logger'
+	def SetLogger( self, level: Any ) -> None:
+		pass;
+	def ClearLogger( self, level: Any ) -> None:
+		pass;
+	def ToggleLogger( self, level: Any ) -> None:
+		pass;
+	def Write( self, text: Optional[str], color: Any = None ) -> 'Logger':
+		pass;
+	def WriteLine( self, text: Optional[str], color: Any = None ) -> 'Logger':
+		pass;
+	def NewLine( self ) -> 'Logger':
+		pass;
+	def Beep( self ) -> 'Logger':
+		pass;
+	def Pause( self ) -> 'Logger':
+		pass;
+	def Call( self, fnCallback: Any ) -> 'Logger':
+		pass;
+	def Exit( self, fnCallback: Optional[Any] ) -> None:
 		pass;

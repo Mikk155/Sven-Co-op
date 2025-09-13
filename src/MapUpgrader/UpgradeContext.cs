@@ -28,10 +28,13 @@ using Mikk.Logger;
 /// <summary>Represents a context for upgrading</summary>
 public class UpgradeContext
 {
+    public readonly Logger logger;
+
     public UpgradeContext( ILanguageEngine lang, string src )
     {
         this._Language = lang;
         this.Script = src;
+        this.logger = new Logger( this.Name, ConsoleColor.DarkMagenta );
     }
 
     /// <summary>The scripting engine interface used for this upgrade.</summary>

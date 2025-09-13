@@ -23,10 +23,12 @@ SOFTWARE.
 '''
 
 from netapi.Assets import Assets;
+from netapi.Logger import Logger;
 from typing import Any, Optional;
 
 class UpgradeContext:
 	'''Represents a context for upgrading'''
+	logger: Logger
 	Script: str
 	'''The absolute file path for the script for this upgrade.'''
 	title: str

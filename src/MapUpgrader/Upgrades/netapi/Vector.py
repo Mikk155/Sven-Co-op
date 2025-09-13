@@ -32,13 +32,13 @@ class Vector:
 	'''Y position [1]'''
 	z: float
 	'''Z position [2]'''
-	vecZero: Any
+	vecZero: 'Vector'
 	'''Get a Vector whose all values are zero'''
 	Item: float
 	def ToString( self ) -> str:
 		'''Return a string representing the x y z separated by a single space'''
 		pass;
-	def Equals( self, obj: Optional[Any] = None ) -> bool:
+	def Equals( self, obj: Optional[Any] ) -> bool:
 		pass;
 	def GetHashCode( self ) -> int:
 		pass;

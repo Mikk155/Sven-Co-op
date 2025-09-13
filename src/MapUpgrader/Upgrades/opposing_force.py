@@ -4,6 +4,8 @@ def OnRegister( context: UpgradeContext ) -> None:
 
     context.mod = "gearbox";
 
+    context.logger.critical.WriteLine( "Hello from Python. we're using the C# logger class!")
+
     context.title = "Opposing Force";
 
     context.description = "Half-Life: Opposing-Force expansion";

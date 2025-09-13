@@ -125,6 +125,7 @@ public class PythonLanguage : ILanguageEngine
 
         // UpgradeContext.py
         PythonAPIGen.MapTypeList[ typeof(Assets) ] = "Assets";
+        PythonAPIGen.MapTypeList[ typeof(Logger) ] = "Logger";
 
         // Vector.py
         PythonAPIGen.MapTypeList[ typeof(Vector) ] = "Vector";
@@ -133,23 +134,27 @@ public class PythonLanguage : ILanguageEngine
         PythonAPIGen.MapTypeList[ typeof(List<KeyValuePair<string, string>>) ] = "list[list[str, str]]";
         PythonAPIGen.MapTypeList[ typeof(IDictionary<string, string>) ] = "dict[str, str]";
 
-        PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext",
-            new StringBuilder().AppendLine( "from netapi.Assets import Assets;" ) );
+#if APIGEN_PROTOTYPE_EXTERNAL
+        // Logger.py
+        PythonAPIGen.UpdateThirdPartyDocument( "Mikk.Logger",
+            Path.Combine( Directory.GetCurrentDirectory(), "..", "..","external", "MikkNET", "Mikk.Logger" )
+        );
+#endif // APIGEN_PROTOTYPE_EXTERNAL
+
+        PythonAPIGen.GenerateFile( typeof(UpgradeContext), "UpgradeContext", new StringBuilder()
+            .AppendLine( "from netapi.Assets import Assets;" )
+            .AppendLine( "from netapi.Logger import Logger;" )
+        );
 
         PythonAPIGen.GenerateFile( typeof(Assets), "Assets" );
 
         PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
 
-        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity",
-            new StringBuilder().AppendLine( "from netapi.Vector import Vector;" ) );
+        PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder()
+            .AppendLine( "from netapi.Vector import Vector;" )
+        );
 
-#if APIGEN_PROTOTYPE_EXTERNAL
-        string workspace = Path.Combine( Directory.GetCurrentDirectory(), "..", ".." );
-
-        // Logger.py
-        PythonAPIGen.UpdateThirdPartyDocument( "Mikk.Logger", Path.Combine( workspace ,"external", "MikkNET", "Mikk.Logger" ) );
         PythonAPIGen.GenerateFile( typeof(Logger), "Logger" );
-#endif // APIGEN_PROTOTYPE_EXTERNAL
 #endif // DEBUG
 
         ConfigContext.Get( "python_dll", value =>
