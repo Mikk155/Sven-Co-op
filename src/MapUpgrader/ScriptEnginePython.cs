@@ -181,21 +181,9 @@ public class PythonLanguage : ILanguageEngine
             {
                 PyObject Script = Py.Import( Path.GetFileNameWithoutExtension( script ) );
 
-                if( !Script.HasAttr( ScriptEngine.HookName_Init ) )
-                {
-                    throw new MissingMemberException( $"Script {Path.GetFileName( script )} doesn't implements the \"{ScriptEngine.HookName_Init}\" method" );
-                }
-
-                PyObject OnRegister = Script.GetAttr( ScriptEngine.HookName_Init );
-
-                if( !OnRegister.IsCallable() )
-                {
-                    throw new InvalidDataException( $"Method \"{ScriptEngine.HookName_Init}\" is not a callable method" );
-                }
-
                 UpgradeContext context = new UpgradeContext( this, script );
 
-                PyObject? result = OnRegister.Invoke( context.ToPython() );
+                PyObject? result = Script.GetAttr( ScriptEngine.HookName_Init ).Invoke( context.ToPython() );
 
                 context.Initialize();
 
@@ -203,18 +191,23 @@ public class PythonLanguage : ILanguageEngine
             }
             catch( Exception exception )
             {
-                PythonLanguage.logger.error
-                    .Write( "Exception thrown by the script \"" )
-                    .Write( Path.GetFileName( script ) )
-                    .Write( "\"" )
-                    .NewLine()
-                    .Write( "Error: " )
-                    .Write( exception.Message, ConsoleColor.Red )
-                    .NewLine()
-                    .Write( exception.StackTrace, ConsoleColor.Yellow )
-                    .NewLine();
+                PyError( exception, script );
             }
             return null;
         }
+    }
+
+    private void PyError( Exception exception, string path )
+    {
+        PythonLanguage.logger.error
+            .Write( "Exception thrown by the script \"" )
+            .Write( Path.GetFileName( path ) )
+            .Write( "\"" )
+            .NewLine()
+            .Write( "Error: " )
+            .Write( exception.Message, ConsoleColor.Red )
+            .NewLine()
+            .Write( exception.StackTrace, ConsoleColor.Yellow )
+            .NewLine();
     }
 }
