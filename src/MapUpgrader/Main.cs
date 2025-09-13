@@ -22,21 +22,19 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-using System.Runtime.Versioning;
-
-public static class Program
+public static class App
 {
     /// <summary>
     /// .NET version to retrieve xml files from
     /// </summary>
-    public const string FrameworkVersion = "net9.0";
+    public const string NETVersion = "net9.0";
 
     /// <summary>
     /// Workspace directory
     /// </summary>
-    public static string WorkSpace = Getworkspace();
+    public static string WorkSpace = App._Getworkspace_();
 
-    private static string Getworkspace()
+    private static string _Getworkspace_()
     {
         string dir = Path.Combine( Directory.GetCurrentDirectory(), "workspace" );
 
@@ -47,28 +45,36 @@ public static class Program
     }
 
     private static MapUpgrader _upgrader_ = null!;
-    public static MapUpgrader Upgrader => Program._upgrader_;
+
+    /// <summary>
+    /// Program itself
+    /// </summary>
+    public static MapUpgrader Upgrader => App._upgrader_;
 
     private static string[] _args_ = [];
-    public static string[] Arguments = Program._args_;
+
+    /// <summary>
+    /// launch parameters
+    /// </summary>
+    public static string[] Arguments = App._args_;
 
     public static void Main( params string[] args )
     {
-        Program._args_ = args;
+        App._args_ = args;
 
-        Program._upgrader_ = new MapUpgrader();
+        App._upgrader_ = new MapUpgrader();
 
         Console.CancelKeyPress += (p, e) =>
         {
-            Upgrader.Shutdown();
+            App.Upgrader.Shutdown();
         };
 
         AppDomain.CurrentDomain.ProcessExit += (p, e) =>
         {
-            Upgrader.Shutdown();
+            App.Upgrader.Shutdown();
         };
 
-        Upgrader.Initialize();
-        Upgrader.Shutdown();
+        App.Upgrader.Initialize();
+        App.Upgrader.Shutdown();
     }
 }

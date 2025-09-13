@@ -96,7 +96,7 @@ public class UpgradeContext
             log.WriteLine( url, ConsoleColor.Yellow );
         }
 
-        log.Call( Program.Upgrader.Shutdown ).Beep().Pause().Exit();
+        log.Call( App.Upgrader.Shutdown ).Beep().Pause().Exit();
 
         return string.Empty;
     }

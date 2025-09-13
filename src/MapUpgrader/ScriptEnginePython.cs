@@ -89,7 +89,7 @@ public static class PythonNET
 
         proc.WaitForExit();
 
-        typehint.LoadDocument( Path.Combine( projectPath, "bin", "Debug", Program.FrameworkVersion, $"{projectName}.xml" ) );
+        typehint.LoadDocument( Path.Combine( projectPath, "bin", "Debug", App.NETVersion, $"{projectName}.xml" ) );
     }
 }
 #endif // DEBUG
@@ -116,10 +116,10 @@ public class PythonLanguage : ILanguageEngine
     {
 #if DEBUG
         // Generate docs for python Type hints
-        if( Program.Arguments.FirstOrDefault( "-docs" ) is not null )
+        if( App.Arguments.FirstOrDefault( "-docs" ) is not null )
         {
             TypeHint PythonAPIGen = new TypeHint(
-                Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", Program.FrameworkVersion, "MapUpgrader.xml" )
+                Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", App.NETVersion, "MapUpgrader.xml" )
             );
 
             // Assets.py

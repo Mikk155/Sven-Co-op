@@ -33,7 +33,7 @@ public class ContextSelector
         int iCount = 0;
         int ListIndex = 0;
 
-        foreach( UpgradeContext context in Program.Upgrader.ScriptEngine.Mods )
+        foreach( UpgradeContext context in App.Upgrader.ScriptEngine.Mods )
         {
             iCount++;
 
