@@ -139,7 +139,7 @@ public class PythonLanguage : ILanguageEngine
 
             // MapContext.py
             PythonAPIGen.MapTypeList[ typeof(Entity) ] = "Entity";
-            PythonAPIGen.MapTypeList[ typeof(Sledge.Formats.Bsp.Lumps.Entities) ] = "list[Entity]";
+            PythonAPIGen.MapTypeList[ typeof(List<Entity>) ] = "list[Entity]";
             PythonAPIGen.MapTypeList[ typeof(UpgradeContext) ] = "UpgradeContext";
 
     #if APIGEN_PROTOTYPE_EXTERNAL
