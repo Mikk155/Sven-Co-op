@@ -22,11 +22,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-namespace MapUpgrader.Context;
+namespace GoldSrc2Sven.Context;
 
 using Mikk.Logger;
 
-using MapUpgrader.engine;
+using GoldSrc2Sven.engine;
 
 #pragma warning disable IDE1006 // Naming Styles
 /// <summary>Represents a context for upgrading</summary>

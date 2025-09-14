@@ -22,7 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-namespace MapUpgrader.engine.python;
+namespace GoldSrc2Sven.engine.python;
 
 using Mikk.Logger;
 using Python.Runtime;

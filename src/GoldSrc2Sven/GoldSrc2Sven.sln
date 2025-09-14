@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapUpgrader", "MapUpgrader.csproj", "{EECB6178-6270-4FCD-99ED-10CC37297E15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldSrc2Sven", "GoldSrc2Sven.csproj", "{EECB6178-6270-4FCD-99ED-10CC37297E15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikk.Logger", "..\..\external\MikkNET\Mikk.Logger\Mikk.Logger.csproj", "{258CC456-EF6D-43C5-9D05-36C0898F3E40}"
 EndProject

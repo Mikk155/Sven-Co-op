@@ -22,7 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-namespace MapUpgrader.engine.python;
+namespace GoldSrc2Sven.engine.python;
 
 #if DEBUG
 using System.Text;
@@ -32,7 +32,7 @@ using System.Reflection;
 
 using Mikk.Logger;
 
-using MapUpgrader.BSP;
+using GoldSrc2Sven.BSP;
 
 public class PythonNET
 {
@@ -336,7 +336,7 @@ public class PythonNET
             return;
         }
 
-        this.LoadDocument( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "MapUpgrader.xml" ) );
+        this.LoadDocument( Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", "GoldSrc2Sven.xml" ) );
 
 #if APIGEN_PROTOTYPE_EXTERNAL
         // Logger.py
@@ -381,7 +381,7 @@ public class PythonNET
             StringBuilder = new StringBuilder();
         }
 
-        StringBuilder.Insert( 0, $"'''\n{File.ReadAllText( Path.Combine( Directory.GetCurrentDirectory(), "LICENSE", "LICENSE_MAPUPGRADER" ) )}\n'''\n\n" );
+        StringBuilder.Insert( 0, $"'''\n{File.ReadAllText( Path.Combine( Directory.GetCurrentDirectory(), "LICENSE", "LICENSE_GOLDSRC2SVEN" ) )}\n'''\n\n" );
 
         StringBuilder.AppendLine( "from typing import Any, Optional;" );
 

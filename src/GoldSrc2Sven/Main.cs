@@ -22,14 +22,14 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-namespace MapUpgrader;
+namespace GoldSrc2Sven;
 
 using Mikk.Logger;
 using Mikk.Arguments;
 
 public static class App
 {
-    public static readonly Logger logger = new Logger( "MapUpgrader", ConsoleColor.DarkMagenta );
+    public static readonly Logger logger = new Logger( "GoldSrc2Sven", ConsoleColor.DarkMagenta );
 
     /// <summary>
     /// Arguments provided on the App's execution

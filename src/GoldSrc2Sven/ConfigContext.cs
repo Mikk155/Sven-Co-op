@@ -36,7 +36,7 @@ public static class ConfigContext
 
     private static string GetConfigPath()
     {
-        string AppFolder = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "MapUpgrader" );
+        string AppFolder = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "GoldSrc2Sven" );
 
         if( !Directory.Exists( AppFolder ) )
         {

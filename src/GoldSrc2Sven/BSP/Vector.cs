@@ -22,7 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-namespace MapUpgrader.BSP;
+namespace GoldSrc2Sven.BSP;
 
 /// <summary>
 /// 3D Vector representing x/y/z

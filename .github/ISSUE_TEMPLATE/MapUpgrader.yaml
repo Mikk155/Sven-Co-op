@@ -1,7 +1,7 @@
-name: MapUpgrader Tool
-description: Issue or suggestion related to MapUpgrader
-title: "[MapUpgrader] "
-labels: [ "Tools", "MapUpgrader" ]
+name: GoldSrc2Sven Tool
+description: Issue or suggestion related to GoldSrc2Sven
+title: "[GoldSrc2Sven] "
+labels: [ "Tools", "GoldSrc2Sven" ]
 assignees: [ "mikk155" ]
 
 body:
