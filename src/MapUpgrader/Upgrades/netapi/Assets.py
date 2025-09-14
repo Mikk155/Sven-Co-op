@@ -26,7 +26,7 @@ from typing import Any, Optional;
 
 class Assets:
 	AssetsList: dict[str, str]
-	def Copy( self, src: str, target: Optional[str] ) -> None:
+	def install( self, src: str, target: Optional[str] ) -> None:
 		'''Copy over an asset to the workspace directory.
             
             if target is provided the destination path will be overriden

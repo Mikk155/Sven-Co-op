@@ -20,17 +20,17 @@ def assets( assets: Assets ) -> None:
     global assets_directory;
 
     # Textures
-    assets.Copy( "OPFOR.WAD", "opfor.wad" );
+    assets.install( "OPFOR.WAD", "opfor.wad" );
     # Decals are hardcoded so the game itself must support these texture entries in their decals.wad
-    # assets.Copy( "DECALS.WAD", "decals.wad" );
+    # assets.install( "DECALS.WAD", "decals.wad" );
 
     # Skyboxes
-    assets.Copy( "gfx/env/*.tga", f"gfx/env/{assets_directory}/" );
+    assets.install( "gfx/env/*.tga", f"gfx/env/{assets_directory}/" );
 
     # Maps
-    assets.Copy( "maps/of*.bsp" );
+    assets.install( "maps/of*.bsp" );
 
     # Music
-    assets.Copy( "media/*.mp3", f"sound/{assets_directory}/music/" );
+    assets.install( "media/*.mp3", f"sound/{assets_directory}/music/" );
     # -TODO If the target game is Seven Kewp this script or either the program should detect it
     # And so to update mp3 files to wav as lack of client fmod?

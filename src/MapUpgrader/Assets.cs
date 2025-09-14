@@ -39,7 +39,7 @@ public class Assets()
     /// 
     /// For entering folders use "/"
     /// </summary>
-    public void Copy( string src, string? target = null )
+    public void install( string src, string? target = null )
     {
         ArgumentNullException.ThrowIfNull( this._owner );
 
@@ -98,23 +98,6 @@ public class Assets()
             return;
         }
 
-        Mikk.Logger.Logger log = this._owner!.logger.trace;
-
-        if( log.IsLevelActive )
-        {
-            string log_src = Path.GetRelativePath( this._owner.GetModPath(), src );
-            string log_dest = Path.GetRelativePath( App.WorkSpace, destination );
-
-            log.Write( "Copying asset \"" ).Write( log_src, ConsoleColor.Green );
-
-            if( log_src != log_dest )
-            {
-                log.Write( "\" -> \"" ).Write( log_dest, ConsoleColor.Cyan );
-            }
-
-            log.WriteLine( "\"" );
-        }
-
         string? folder = Path.GetDirectoryName( destination );
 
         if( !string.IsNullOrEmpty( folder ) && !Directory.Exists( folder ) )
@@ -122,7 +105,37 @@ public class Assets()
             Directory.CreateDirectory( folder );
         }
 
-        File.Copy( src, destination, true );
+        FileInfo isrc = new FileInfo( src );
+        FileInfo idest = new FileInfo( destination );
+
+        if( !File.Exists( destination ) || isrc.Length != idest.Length || isrc.LastWriteTimeUtc != idest.LastWriteTimeUtc )
+        {
+            Mikk.Logger.Logger log = this._owner!.logger.info;
+
+            if( log.IsLevelActive )
+            {
+                string log_src = Path.GetRelativePath( this._owner.GetModPath(), src );
+                string log_dest = Path.GetRelativePath( App.WorkSpace, destination );
+
+                log.Write( "Copying asset \"" ).Write( log_src, ConsoleColor.Green );
+
+                if( log_src != log_dest )
+                {
+                    log.Write( "\" -> \"" ).Write( log_dest, ConsoleColor.Cyan );
+                }
+
+                log.WriteLine( "\"" );
+            }
+
+            File.Copy( src, destination, true );
+        }
+        else
+        {
+            this._owner!.logger.trace
+                .Write( "File \"" )
+                .Write( Path.GetRelativePath( App.WorkSpace, destination ), ConsoleColor.Yellow )
+                .WriteLine( "\" Up-to-date" );
+        }
     }
 
     ~Assets()

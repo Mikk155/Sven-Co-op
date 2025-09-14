@@ -15,13 +15,13 @@ def assets( assets: Assets ) -> None:
     global assets_directory;
 
     # Textures
-    assets.Copy( "barney.wad" );
+    assets.install( "barney.wad" );
 
     # Skyboxes
-    assets.Copy( "gfx/env/*.tga", f"gfx/env/{assets_directory}/" );
+    assets.install( "gfx/env/*.tga", f"gfx/env/{assets_directory}/" );
 
     # Maps
-    assets.Copy( "maps/*.bsp" );
+    assets.install( "maps/*.bsp" );
 
     # Music
-    assets.Copy( "media/*.mp3", f"sound/{assets_directory}/music/" );
+    assets.install( "media/*.mp3", f"sound/{assets_directory}/music/" );
