@@ -28,6 +28,11 @@
 
   <ItemGroup>
 
+    <None Include="Upgrades\**" Exclude="Upgrades\**\__pycache__\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Upgrades\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+
     <None Include="readme.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
