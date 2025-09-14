@@ -66,7 +66,7 @@ public class Assets()
         {
             CopyAssetToWorkspace( directory, target ?? src );
         }
-        else if( wildcard[0] == '*' )
+        else if( wildcard == "*" )
         {
             foreach( string asset in Directory.GetFiles( directory ) )
             {
