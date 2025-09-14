@@ -109,7 +109,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// <summary>
     /// Return the entity in the .ent format
     /// </summary>
-    public string ToString()
+    public override string ToString()
     {
         System.Text.StringBuilder s = new System.Text.StringBuilder();
 
