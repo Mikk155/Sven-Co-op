@@ -138,7 +138,7 @@ public class PythonLanguage : ILanguageEngine
             PythonAPIGen.MapTypeList[ typeof(IDictionary<string, string>) ] = "dict[str, str]";
 
             // MapContext.py
-            PythonAPIGen.MapTypeList[ typeof(Sledge.Formats.Bsp.Objects.Entity) ] = "Entity";
+            PythonAPIGen.MapTypeList[ typeof(Entity) ] = "Entity";
             PythonAPIGen.MapTypeList[ typeof(Sledge.Formats.Bsp.Lumps.Entities) ] = "list[Entity]";
             PythonAPIGen.MapTypeList[ typeof(UpgradeContext) ] = "UpgradeContext";
 
