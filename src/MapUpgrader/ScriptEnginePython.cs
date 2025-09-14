@@ -137,6 +137,11 @@ public class PythonLanguage : ILanguageEngine
             PythonAPIGen.MapTypeList[ typeof(List<KeyValuePair<string, string>>) ] = "list[list[str, str]]";
             PythonAPIGen.MapTypeList[ typeof(IDictionary<string, string>) ] = "dict[str, str]";
 
+            // MapContext.py
+            PythonAPIGen.MapTypeList[ typeof(Sledge.Formats.Bsp.Objects.Entity) ] = "Entity";
+            PythonAPIGen.MapTypeList[ typeof(Sledge.Formats.Bsp.Lumps.Entities) ] = "list[Entity]";
+            PythonAPIGen.MapTypeList[ typeof(UpgradeContext) ] = "UpgradeContext";
+
     #if APIGEN_PROTOTYPE_EXTERNAL
             // Logger.py
             PythonAPIGen.UpdateThirdPartyDocument( "Mikk.Logger",
@@ -153,7 +158,12 @@ public class PythonLanguage : ILanguageEngine
 
             PythonAPIGen.GenerateFile( typeof(Vector), "Vector" );
 
-            PythonAPIGen.GenerateFile( typeof(Sledge.Formats.Bsp.Objects.Entity), "Entity", new StringBuilder()
+            PythonAPIGen.GenerateFile( typeof(MapContext), "MapContext", new StringBuilder()
+                .AppendLine( "from netapi.Entity import Entity;" )
+                .AppendLine( "from netapi.UpgradeContext import UpgradeContext;" )
+            );
+
+            PythonAPIGen.GenerateFile( typeof(Entity), "Entity", new StringBuilder()
                 .AppendLine( "from netapi.Vector import Vector;" )
             );
 
@@ -212,6 +222,25 @@ public class PythonLanguage : ILanguageEngine
             catch( Exception exception )
             {
                 PyError( exception, context.Script );
+            }
+        }
+    }
+
+    public void UpgradeMap( MapContext context )
+    {
+        using ( Py.GIL() )
+        {
+            dynamic sys = Py.Import( "sys" );
+            sys.path.insert( 0, Path.Combine( Directory.GetCurrentDirectory(), ScriptEngine.ScriptingFolder ) );
+
+            try
+            {
+                PyObject Script = Py.Import( Path.GetFileNameWithoutExtension( context.owner.Script ) );
+                Script.GetAttr( ScriptEngine.HookName_Upgrades ).Invoke( context.ToPython() );
+            }
+            catch( Exception exception )
+            {
+                PyError( exception, context.owner.Script );
             }
         }
     }

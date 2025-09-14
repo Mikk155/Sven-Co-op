@@ -77,6 +77,37 @@ public class MapUpgrader()
 
         context._Language.GetAssets( context );
 
+        foreach( string map in Directory.GetFiles( Path.Combine( App.WorkSpace, "maps" ), "*.bsp" ) )
+        {
+            context.logger.info.Write( "Updating map " ).WriteLine( map, ConsoleColor.Cyan );
+
+            MapContext map_context = new MapContext( map, context );
+
+            context.maps.Add( map_context );
+
+            using FileStream fs = File.OpenRead( map_context.filepath );
+
+            Sledge.Formats.Bsp.BspFile BSP = new Sledge.Formats.Bsp.BspFile( fs );
+
+            Sledge.Formats.Bsp.Lumps.Entities BSPEntities = BSP.GetLump<Sledge.Formats.Bsp.Lumps.Entities>();
+
+            foreach( Sledge.Formats.Bsp.Objects.Entity entity in BSPEntities )
+            {
+                map_context.entities.Add( new Entity( entity ) );
+            }
+
+            BSPEntities.Clear();
+
+            foreach( Entity entity in map_context.entities )
+            {
+                BSPEntities.Add( entity.entity );
+            }
+
+            map_context.owner._Language.UpgradeMap( map_context );
+
+            BSP.WriteToStream( fs, BSP.Version );
+        }
+
         context.Shutdown();
     }
 

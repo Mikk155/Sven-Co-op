@@ -26,10 +26,7 @@ from netapi.Vector import Vector;
 from typing import Any, Optional;
 
 class Entity:
-	Model: int
-	ClassName: str
-	SortedKeyValues: list[list[str, str]]
-	KeyValues: dict[str, str]
+	entity: Any
 	def GetString( self, key: str ) -> str:
 		'''Get a key's value in string form'''
 		pass;
@@ -62,12 +59,4 @@ class Entity:
 		pass;
 	def ToString( self ) -> str:
 		'''Return the entity in the .ent format'''
-		pass;
-	def GetVector3( self, name: str, defaultValue: Any ) -> Any:
-		pass;
-	def Get( self, name: str, defaultValue: Any ) -> Any:
-		pass;
-	def Set( self, name: str, value: Any ) -> None:
-		pass;
-	def Unset( self, name: str ) -> None:
 		pass;

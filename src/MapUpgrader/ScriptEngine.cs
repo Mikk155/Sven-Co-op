@@ -30,6 +30,7 @@ public interface ILanguageEngine
     public void Shutdown();
     public UpgradeContext? Initialize( string script );
     public void GetAssets( UpgradeContext context );
+    public void UpgradeMap( MapContext context );
 }
 
 public class ScriptEngine()
@@ -45,6 +46,7 @@ public class ScriptEngine()
 
     public static string HookName_Init = "register";
     public static string HookName_Assets = "assets";
+    public static string HookName_Upgrades = "upgrades";
     public static string ScriptingFolder = "Upgrades";
 
     public void Initialize()

@@ -25,3 +25,13 @@ def assets( assets: Assets ) -> None:
 
     # Music
     assets.install( "media/*.mp3", f"sound/{assets_directory}/music/" );
+
+def upgrades( context: MapContext ) -> None:
+
+    for entity in context.entities:
+        
+        match entity.GetString( "classname" ):
+
+            case "info_player_start":
+
+                entity.SetString( "classname", "info_player_deathmatch" );

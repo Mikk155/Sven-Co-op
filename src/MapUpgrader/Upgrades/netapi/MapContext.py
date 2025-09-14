@@ -22,38 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-from netapi.Assets import Assets;
-from netapi.Logger import Logger;
+from netapi.Entity import Entity;
+from netapi.UpgradeContext import UpgradeContext;
 from typing import Any, Optional;
 
-class UpgradeContext:
-	'''Represents a context for upgrading'''
-	logger: Logger
-	Script: str
-	'''The absolute file path for the script for this upgrade.'''
-	title: str
-	'''Title to display as an option.'''
-	mod: str
-	'''Mod folder to install assets.'''
-	urls: list[str]
-	'''Mod download URL or multiple url for mirroring..'''
-	assets: Assets
-	'''Assets to copy over from the mod directory'''
-	maps: list[Any]
-	Name: str
-	'''The script filename without extension for this upgrade.'''
-	description: str
-	'''Optional description to display as an option.'''
-	def GetModPath( self ) -> str:
-		'''Get the mod's installation absolute path'''
-		pass;
-	def SteamInstallation( self ) -> str:
-		'''Get the absolute path to a Steam installation'''
-		pass;
-	def GetHalfLifeInstallation( self ) -> str:
-		'''Get the path to the Half-Life installation'''
-		pass;
-	def Initialize( self ) -> None:
-		pass;
-	def Shutdown( self ) -> None:
-		pass;
+class MapContext:
+	'''Represents a BSP'''
+	name: str
+	'''This BSP file name'''
+	filename: str
+	'''This BSP file name'''
+	filepath: str
+	'''Absolute path to this BSP file'''
+	owner: UpgradeContext
+	entities: list[Entity]
+	'''List of entities in the current BSP'''

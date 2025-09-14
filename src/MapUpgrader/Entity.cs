@@ -22,70 +22,94 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-public static class Entity
+public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
 {
-    /// <summary>Get a key's value in string form</summary>
-    public static string GetString( this Sledge.Formats.Bsp.Objects.Entity entity, string key )
+    public readonly Sledge.Formats.Bsp.Objects.Entity entity = entity;
+
+    /// <summary>
+    /// Get a key's value in string form
+    /// </summary>
+    public string GetString( string key )
     {
-        return entity.KeyValues.TryGetValue( key, out string? value ) ? value.ToString() : "";
+        return entity.KeyValues.TryGetValue( key, out string? value ) ? value : "";
     }
 
-    /// <summary>Set a key's value in string form</summary>
-    public static void SetString( this Sledge.Formats.Bsp.Objects.Entity entity, string key, string value )
+    /// <summary>
+    /// Set a key's value in string form
+    /// </summary>
+    public void SetString( string key, string value )
     {
         entity.KeyValues[ key ] = value;
     }
 
-    /// <summary>Get a key's value in integer form</summary>
-    public static int GetInteger( this Sledge.Formats.Bsp.Objects.Entity entity, string key )
+    /// <summary>
+    /// Get a key's value in integer form
+    /// </summary>
+    public int GetInteger( string key )
     {
         return entity.KeyValues.TryGetValue( key, out string? value ) ? int.TryParse( value.ToString(), out int ivalue ) ? ivalue : 0 : 0;
     }
 
-    /// <summary>Set a key's value in integer form</summary>
-    public static void SetInteger( this Sledge.Formats.Bsp.Objects.Entity entity, string key, int value )
+    /// <summary>
+    /// Set a key's value in integer form
+    /// </summary>
+    public void SetInteger( string key, int value )
     {
         entity.KeyValues[ key ] = value.ToString();
     }
 
-    /// <summary>Get a key's value in float form</summary>
-    public static float GetFloat( this Sledge.Formats.Bsp.Objects.Entity entity, string key )
+    /// <summary>
+    /// Get a key's value in float form
+    /// </summary>
+    public float GetFloat( string key )
     {
         return entity.KeyValues.TryGetValue( key, out string? value ) ? float.TryParse( value.ToString(), out float ivalue ) ? ivalue : 0.0f : 0.0f;
     }
 
-    /// <summary>Set a key's value in float form</summary>
-    public static void SetFloat( this Sledge.Formats.Bsp.Objects.Entity entity, string key, float value )
+    /// <summary>
+    /// Set a key's value in float form
+    /// </summary>
+    public void SetFloat( string key, float value )
     {
         entity.KeyValues[ key ] = value.ToString();
     }
 
-    /// <summary>Get a key's value in bool form (0/1)</summary>
-    public static bool GetBool( this Sledge.Formats.Bsp.Objects.Entity entity, string key )
+    /// <summary>
+    /// Get a key's value in bool form (0/1)
+    /// </summary>
+    public bool GetBool( string key )
     {
         return entity.KeyValues.TryGetValue( key, out string? value ) ? int.TryParse( value.ToString(), out int ivalue ) ? ivalue != 0 : false : false;
     }
 
-    /// <summary>Set a key's value in bool form (0/1)</summary>
-    public static void SetBool( this Sledge.Formats.Bsp.Objects.Entity entity, string key, bool value )
+    /// <summary>
+    /// Set a key's value in bool form (0/1)
+    /// </summary>
+    public void SetBool( string key, bool value )
     {
         entity.KeyValues[ key ] = value.ToString();
     }
 
-    /// <summary>Get a key's value in Vector form (0/1)</summary>
-    public static Vector GetVector( this Sledge.Formats.Bsp.Objects.Entity entity, string key )
+    /// <summary>
+    /// Get a key's value in Vector form (0/1)
+    /// </summary>
+    public Vector GetVector( string key )
     {
         return entity.KeyValues.TryGetValue( key, out string? value ) ? new Vector( value ) : Vector.g_VecZero;
     }
 
-    /// <summary>Set a key's value in Vector form (0/1)</summary>
-    public static void SetVector( this Sledge.Formats.Bsp.Objects.Entity entity, string key, Vector value )
+    /// <summary>
+    /// Set a key's value in Vector form (0/1)
+    /// </summary>
+    public void SetVector( string key, Vector value )
     {
         entity.KeyValues[ key ] = value.ToString();
     }
 
-    /// <summary>Return the entity in the .ent format</summary>
-    public static string ToString( this Sledge.Formats.Bsp.Objects.Entity entity )
+    /// <summary>
+    /// Return the entity in the .ent format
+    /// </summary>
+    public string ToString()
     {
         System.Text.StringBuilder s = new System.Text.StringBuilder();
 

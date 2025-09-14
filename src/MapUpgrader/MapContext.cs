@@ -27,56 +27,33 @@ DEALINGS IN THE SOFTWARE.
 /// </summary>
 public class MapContext
 {
-    private readonly string __Name__;
+    /// <summary>
+    /// This BSP file name
+    /// </summary>
+    public string name;
 
     /// <summary>
     /// This BSP file name
     /// </summary>
-    public string Name =>
-        __Name__;
-
-    private readonly string __BSPFile__;
+    public readonly string filename;
 
     /// <summary>
     /// Absolute path to this BSP file
     /// </summary>
-    public string BSPFile =>
-        __BSPFile__;
+    public readonly string filepath;
+
+    public readonly UpgradeContext owner;
 
     /// <summary>
     /// List of entities in the current BSP
     /// </summary>
-    public List<Sledge.Formats.Bsp.Lumps.Entities> Entities = null!;
+    public List<Entity> entities = new List<Entity>();
 
-    public MapContext( string mapname )
+    public MapContext( string map, UpgradeContext _owner )
     {
-        this.__Name__ = mapname;
+        this.filename = this.name = Path.GetFileNameWithoutExtension( map );
 
-        this.__BSPFile__ = Path.Combine( Directory.GetCurrentDirectory(), "maps", mapname );
-
-        if( !Path.Exists( this.BSPFile ) )
-        {
-            throw new FileNotFoundException( $"BSP File not found at \"{this.BSPFile}\"" );
-        }
-
-        using FileStream fs = File.OpenRead( this.BSPFile );
-
-        Sledge.Formats.Bsp.BspFile BSP = new Sledge.Formats.Bsp.BspFile( fs );
-
-        Sledge.Formats.Bsp.Lumps.Entities EntityLump = BSP.GetLump<Sledge.Formats.Bsp.Lumps.Entities>();
-
-        // -Apply C# specific upgrades
-        foreach( var ent in EntityLump.Where( e => e.GetString( "classname" ) == "info_player_start" ) )
-        {
-            ent.SetString( "classname", "info_player_deathmatch" );
-        }
-
-        // -Call python context
-
-        BSP.WriteToStream( fs, BSP.Version );
-
-        // -Merge if provided
-
-        // -If merged, call C# and Python post proccessing
+        this.filepath = map;
+        this.owner = _owner;
     }
 }

@@ -65,9 +65,6 @@ public class UpgradeContext
     /// </summary>
     public Assets assets = new Assets();
 
-    /// <summary>Maps to upgrade. Leave empty to upgrade all maps.</summary>
-    public string[]? maps { get; set; }
-
     private string _ModDirectory => Path.Combine( this.GetHalfLifeInstallation(), this.mod );
 
     /// <summary>
@@ -101,21 +98,7 @@ public class UpgradeContext
         return string.Empty;
     }
 
-    /// <summary>
-    /// Get the list of defined maps or all the maps in the mod installation if the script left it empty.
-    /// </summary>
-    /// <returns></returns>
-    public string[] GetMaps()
-    {
-        if( this.maps is null || this.maps.Length <= 0 )
-        {
-            this.maps = Directory.GetFiles( Path.Combine( this.GetModPath(), "maps" ) )
-                .Select( m => Path.GetFileNameWithoutExtension( m ) )
-                .ToArray();
-        }
-
-        return this.maps;
-    }
+    public List<MapContext> maps = new List<MapContext>()!;
 
     /// <summary>
     /// Get the absolute path to a Steam installation
