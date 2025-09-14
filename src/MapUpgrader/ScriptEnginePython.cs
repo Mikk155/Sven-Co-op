@@ -116,7 +116,7 @@ public class PythonLanguage : ILanguageEngine
     {
 #if DEBUG
         // Generate docs for python Type hints
-        if( string.IsNullOrWhiteSpace( App.Arguments.FirstOrDefault( "-docs" ) ) )
+        if( !string.IsNullOrWhiteSpace( App.Arguments.FirstOrDefault( "-docs" ) ) )
         {
             TypeHint PythonAPIGen = new TypeHint(
                 Path.Combine( Directory.GetCurrentDirectory(), "bin", "Debug", App.NETVersion, "MapUpgrader.xml" )
