@@ -58,6 +58,36 @@ public static class App
     /// </summary>
     public static string[] Arguments = App._args_;
 
+    /// <summary>
+    /// Try get a launch parameter (Starting with -)
+    /// </summary>
+    /// <param name="arg">Whatever the argument exists</param>
+    /// <returns></returns>
+    public static bool TryGetArgument( string arg )
+    {
+        return !string.IsNullOrWhiteSpace( App.Arguments.FirstOrDefault( arg ) );
+    }
+
+    /// <summary>
+    /// Try get a launch parameter's value (Starting with --)
+    /// </summary>
+    /// <param name="arg">Whatever value it contains, null if none</param>
+    /// <returns></returns>
+    public static string? TryGetArgumentValue( string arg )
+    {
+        if( arg.StartsWith( "--" ) )
+        {
+            int index = Array.IndexOf( App.Arguments, arg );
+
+            if( index >= 0 && index < App.Arguments.Length - 1 )
+            {
+                return App.Arguments[ index + 1 ];
+            }
+        }
+
+        return null;
+    }
+
     public static void Main( params string[] args )
     {
         App._args_ = args;
