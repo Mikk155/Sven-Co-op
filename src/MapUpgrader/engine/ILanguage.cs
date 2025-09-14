@@ -22,38 +22,39 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-/// <summary>
-/// Represents a BSP
-/// </summary>
-public class MapContext
+namespace MapUpgrader.engine;
+
+public interface ILanguage
 {
     /// <summary>
-    /// This BSP file name
+    /// Script files extension
     /// </summary>
-    public string name;
+    /// <returns>".py" for example</returns>
+    public string ScriptsExtension();
 
     /// <summary>
-    /// This BSP file name
+    /// Name of the language
     /// </summary>
-    public readonly string filename;
+    /// <returns></returns>
+    public string GetName();
 
     /// <summary>
-    /// Absolute path to this BSP file
+    /// Shutdown event called when all the language's scripts are released
     /// </summary>
-    public readonly string filepath;
-
-    public readonly UpgradeContext owner;
+    public void Shutdown();
 
     /// <summary>
-    /// List of entities in the current BSP
+    /// Registration event called when script file should be called for a context
     /// </summary>
-    public List<Entity> entities = new List<Entity>();
+    public Context.Upgrade? register_context( string script );
 
-    public MapContext( string map, UpgradeContext _owner )
-    {
-        this.filename = this.name = Path.GetFileNameWithoutExtension( map );
+    /// <summary>
+    /// Called when it's time to copy mod assets
+    /// </summary>
+    public void install_assets( Context.Upgrade context );
 
-        this.filepath = map;
-        this.owner = _owner;
-    }
+    /// <summary>
+    /// Called when it's time to update the maps
+    /// </summary>
+    public void upgrade_map( Context.Map context );
 }

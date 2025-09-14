@@ -22,25 +22,27 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+namespace MapUpgrader;
+
 using System.Linq.Expressions;
 
 public class ContextSelector
 {
-    private static List<List<UpgradeContext>> SplitIntoPages()
+    private static List<List<Context.Upgrade>> SplitIntoPages()
     {
-        List<List<UpgradeContext>> Pages = new List<List<UpgradeContext>>(){ new List<UpgradeContext>() };
+        List<List<Context.Upgrade>> Pages = new List<List<Context.Upgrade>>(){ new List<Context.Upgrade>() };
 
         int iCount = 0;
         int ListIndex = 0;
 
-        foreach( UpgradeContext context in App.Upgrader.ScriptEngine.Mods )
+        foreach( Context.Upgrade context in App.engine.Mods )
         {
             iCount++;
 
             if( iCount > 7 )
             {
                 iCount = 1;
-                Pages.Add( new List<UpgradeContext>() );
+                Pages.Add( new List<Context.Upgrade>() );
                 ListIndex++;
             }
             Pages[ ListIndex ].Add( context );
@@ -66,13 +68,13 @@ public class ContextSelector
 
     private static int[] menu = null!;
 
-    public static List<UpgradeContext> GetContexts()
+    public static List<Context.Upgrade> GetContexts()
     {
         // List containing the user's selection
-        List<UpgradeContext> UserSelected = new List<UpgradeContext>();
+        List<Context.Upgrade> UserSelected = new List<Context.Upgrade>();
 
         // Split into pages of 7 contexts each
-        List<List<UpgradeContext>> Pages = ContextSelector.SplitIntoPages();
+        List<List<Context.Upgrade>> Pages = ContextSelector.SplitIntoPages();
 
 //        Console.BackgroundColor = ConsoleColor.DarkGray;
 
@@ -91,13 +93,13 @@ public class ContextSelector
             Console.WriteLine( "=== Select the mods you want to install ===" );
             Console.ForegroundColor = ConsoleColor.Cyan;
 
-            List<UpgradeContext> Page = Pages[ CurrentPage - 1 ];
+            List<Context.Upgrade> Page = Pages[ CurrentPage - 1 ];
 
             int CurrentSizeOfProjects = Page.Count;
 
             for( int i = 0; i < Page.Count; i++ )
             {
-                UpgradeContext uc = Page[i];
+                Context.Upgrade uc = Page[i];
                 Console.WriteLine();
 
                 if( UserSelected.Contains( uc ) )
@@ -189,7 +191,7 @@ public class ContextSelector
                         {
                             if( result <= CurrentSizeOfProjects )
                             {
-                                UpgradeContext Selection = Page[ result - 1 ];
+                                Context.Upgrade Selection = Page[ result - 1 ];
                                 if( !UserSelected.Contains( Selection ) )
                                 {
                                     UserSelected.Add( Selection );

@@ -22,16 +22,18 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
+namespace MapUpgrader.BSP;
+
+public class Entity( Dictionary<string, string> keyvalues )
 {
-    public readonly Sledge.Formats.Bsp.Objects.Entity entity = entity;
+    public readonly Dictionary<string, string> keyvalues = keyvalues;
 
     /// <summary>
     /// Get a key's value in string form
     /// </summary>
     public string GetString( string key )
     {
-        return entity.KeyValues.TryGetValue( key, out string? value ) ? value : "";
+        return this.keyvalues.TryGetValue( key, out string? value ) ? value : "";
     }
 
     /// <summary>
@@ -39,7 +41,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public void SetString( string key, string value )
     {
-        entity.KeyValues[ key ] = value;
+        this.keyvalues[ key ] = value;
     }
 
     /// <summary>
@@ -47,7 +49,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public int GetInteger( string key )
     {
-        return entity.KeyValues.TryGetValue( key, out string? value ) ? int.TryParse( value.ToString(), out int ivalue ) ? ivalue : 0 : 0;
+        return this.keyvalues.TryGetValue( key, out string? value ) ? int.TryParse( value.ToString(), out int ivalue ) ? ivalue : 0 : 0;
     }
 
     /// <summary>
@@ -55,7 +57,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public void SetInteger( string key, int value )
     {
-        entity.KeyValues[ key ] = value.ToString();
+        this.keyvalues[ key ] = value.ToString();
     }
 
     /// <summary>
@@ -63,7 +65,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public float GetFloat( string key )
     {
-        return entity.KeyValues.TryGetValue( key, out string? value ) ? float.TryParse( value.ToString(), out float ivalue ) ? ivalue : 0.0f : 0.0f;
+        return this.keyvalues.TryGetValue( key, out string? value ) ? float.TryParse( value.ToString(), out float ivalue ) ? ivalue : 0.0f : 0.0f;
     }
 
     /// <summary>
@@ -71,7 +73,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public void SetFloat( string key, float value )
     {
-        entity.KeyValues[ key ] = value.ToString();
+        this.keyvalues[ key ] = value.ToString();
     }
 
     /// <summary>
@@ -79,7 +81,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public bool GetBool( string key )
     {
-        return entity.KeyValues.TryGetValue( key, out string? value ) ? int.TryParse( value.ToString(), out int ivalue ) ? ivalue != 0 : false : false;
+        return this.keyvalues.TryGetValue( key, out string? value ) ? int.TryParse( value.ToString(), out int ivalue ) ? ivalue != 0 : false : false;
     }
 
     /// <summary>
@@ -87,7 +89,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public void SetBool( string key, bool value )
     {
-        entity.KeyValues[ key ] = value.ToString();
+        this.keyvalues[ key ] = value.ToString();
     }
 
     /// <summary>
@@ -95,7 +97,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public Vector GetVector( string key )
     {
-        return entity.KeyValues.TryGetValue( key, out string? value ) ? new Vector( value ) : Vector.g_VecZero;
+        return this.keyvalues.TryGetValue( key, out string? value ) ? new Vector( value ) : Vector.g_VecZero;
     }
 
     /// <summary>
@@ -103,7 +105,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
     /// </summary>
     public void SetVector( string key, Vector value )
     {
-        entity.KeyValues[ key ] = value.ToString();
+        this.keyvalues[ key ] = value.ToString();
     }
 
     /// <summary>
@@ -115,7 +117,7 @@ public class Entity( Sledge.Formats.Bsp.Objects.Entity entity )
 
         s.AppendLine( "{" );
 
-        foreach( KeyValuePair<string, string> keyvalue in entity.KeyValues )
+        foreach( KeyValuePair<string, string> keyvalue in this.keyvalues )
         {
             s.AppendLine( $"\"{keyvalue.Key}\" \"{keyvalue.Value}\"" );
         }

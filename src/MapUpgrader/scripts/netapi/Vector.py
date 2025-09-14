@@ -22,18 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-from netapi.Entity import Entity;
-from netapi.UpgradeContext import UpgradeContext;
 from typing import Any, Optional;
 
-class MapContext:
-	'''Represents a BSP'''
-	name: str
-	'''This BSP file name'''
-	filename: str
-	'''This BSP file name'''
-	filepath: str
-	'''Absolute path to this BSP file'''
-	owner: UpgradeContext
-	entities: list[Entity]
-	'''List of entities in the current BSP'''
+class Vector:
+	x: float
+	y: float
+	z: float
+	vecZero: 'Vector'
+	Item: float
+	def ToString( self ) -> str:
+		pass;
+	def Equals( self, obj: Optional[Any] ) -> bool:
+		pass;
+	def GetHashCode( self ) -> int:
+		pass;

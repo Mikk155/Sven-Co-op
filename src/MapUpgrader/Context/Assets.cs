@@ -22,9 +22,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+namespace MapUpgrader.Context;
+
 public class Assets()
 {
-    public UpgradeContext? _owner;
+    public Upgrade? owner;
 
     public Dictionary<string, string> AssetsList = new Dictionary<string, string>();
 
@@ -41,7 +43,7 @@ public class Assets()
     /// </summary>
     public void install( string src, string? target = null )
     {
-        ArgumentNullException.ThrowIfNull( this._owner );
+        ArgumentNullException.ThrowIfNull( this.owner );
 
         string? wildcard = null;
 
@@ -49,7 +51,7 @@ public class Assets()
 
         string[] src_folders = src.Split( "/" );
 
-        string directory = this._owner.GetModPath();
+        string directory = this.owner.GetModPath();
 
         foreach( string folder in src_folders )
         {
@@ -70,7 +72,7 @@ public class Assets()
         {
             foreach( string asset in Directory.GetFiles( directory ) )
             {
-                string relative = Path.GetRelativePath( this._owner.GetModPath(), asset );
+                string relative = Path.GetRelativePath( this.owner.GetModPath(), asset );
                 CopyAssetToWorkspace( asset, target is not null ? Path.Combine( target, Path.GetFileName( relative ) ) : relative );
             }
         }
@@ -78,7 +80,7 @@ public class Assets()
         {
             foreach( string asset in Directory.GetFiles( directory, wildcard ) )
             {
-                string relative = Path.GetRelativePath( this._owner.GetModPath(), asset );
+                string relative = Path.GetRelativePath( this.owner.GetModPath(), asset );
                 CopyAssetToWorkspace( asset, target is not null ? Path.Combine( target, Path.GetFileName( relative ) ) : relative );
             }
         }
@@ -90,7 +92,7 @@ public class Assets()
 
         if( !File.Exists( src ) )
         {
-            this._owner!.logger.warn
+            this.owner!.logger.warn
                 .Write( "Unknown asset file at \"" )
                 .Write( src, ConsoleColor.Cyan )
                 .Write( "\"" )
@@ -110,11 +112,11 @@ public class Assets()
 
         if( !File.Exists( destination ) || isrc.Length != idest.Length || isrc.LastWriteTimeUtc != idest.LastWriteTimeUtc )
         {
-            Mikk.Logger.Logger log = this._owner!.logger.info;
+            Mikk.Logger.Logger log = this.owner!.logger.info;
 
             if( log.IsLevelActive )
             {
-                string log_src = Path.GetRelativePath( this._owner.GetModPath(), src );
+                string log_src = Path.GetRelativePath( this.owner.GetModPath(), src );
                 string log_dest = Path.GetRelativePath( App.WorkSpace, destination );
 
                 log.Write( "Copying asset \"" ).Write( log_src, ConsoleColor.Green );
@@ -131,7 +133,7 @@ public class Assets()
         }
         else
         {
-            this._owner!.logger.trace
+            this.owner!.logger.trace
                 .Write( "File \"" )
                 .Write( Path.GetRelativePath( App.WorkSpace, destination ), ConsoleColor.Yellow )
                 .WriteLine( "\" Up-to-date" );
@@ -140,6 +142,6 @@ public class Assets()
 
     ~Assets()
     {
-        this._owner = null;
+        this.owner = null;
     }
 }

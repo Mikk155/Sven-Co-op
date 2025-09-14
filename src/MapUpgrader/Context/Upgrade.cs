@@ -22,15 +22,19 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+namespace MapUpgrader.Context;
+
 using Mikk.Logger;
+
+using MapUpgrader.engine;
 
 #pragma warning disable IDE1006 // Naming Styles
 /// <summary>Represents a context for upgrading</summary>
-public class UpgradeContext
+public class Upgrade
 {
     public readonly Logger logger;
 
-    public UpgradeContext( ILanguageEngine lang, string src )
+    public Upgrade( ILanguage lang, string src )
     {
         this._Language = lang;
         this.Script = src;
@@ -38,7 +42,7 @@ public class UpgradeContext
     }
 
     /// <summary>The scripting engine interface used for this upgrade.</summary>
-    public readonly ILanguageEngine _Language;
+    public readonly ILanguage _Language;
 
     /// <summary>The absolute file path for the script for this upgrade.</summary>
     public readonly string Script;
@@ -63,7 +67,7 @@ public class UpgradeContext
     /// <summary>
     /// Assets to copy over from the mod directory
     /// </summary>
-    public Assets assets = new Assets();
+    public Context.Assets assets = new Context.Assets();
 
     private string _ModDirectory => Path.Combine( this.GetHalfLifeInstallation(), this.mod );
 
@@ -78,7 +82,7 @@ public class UpgradeContext
         if( Directory.Exists( dir ) )
             return dir;
 
-        Logger log = MapUpgrader.logger.error
+        Logger log = App.logger.error
             .Write( "The mod \"" )
             .Write( this.mod, ConsoleColor.Green )
             .Write( "\" doesn't exists in the directory \"" )
@@ -93,12 +97,12 @@ public class UpgradeContext
             log.WriteLine( url, ConsoleColor.Yellow );
         }
 
-        log.Call( App.Upgrader.Shutdown ).Beep().Pause().Exit();
+        log.Call( App.Shutdown ).Pause().Exit();
 
         return string.Empty;
     }
 
-    public List<MapContext> maps = new List<MapContext>()!;
+    public List<Context.Map> maps = new List<Context.Map>()!;
 
     /// <summary>
     /// Get the absolute path to a Steam installation
@@ -130,7 +134,7 @@ public class UpgradeContext
             }
         }
 
-        MapUpgrader.logger.error.WriteLine( "Failed to find Steam installation." );
+        App.logger.error.WriteLine( "Failed to find Steam installation." );
 
         return null;
     }
@@ -201,7 +205,7 @@ public class UpgradeContext
 
         this._Initialized = true;
 
-        this.assets._owner = this;
+        this.assets.owner = this;
 
         ArgumentNullException.ThrowIfNull( this.mod );
         ArgumentNullException.ThrowIfNull( this.urls );
@@ -211,7 +215,7 @@ public class UpgradeContext
         this.GetModPath();
     }
 
-    ~UpgradeContext()
+    ~Upgrade()
     {
         this.Shutdown();
     }

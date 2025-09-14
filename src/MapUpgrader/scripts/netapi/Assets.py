@@ -22,23 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
+from netapi.Upgrade import Upgrade;
 from typing import Any, Optional;
 
-class Vector:
-	'''3D Vector representing x/y/z'''
-	x: float
-	'''X position [0]'''
-	y: float
-	'''Y position [1]'''
-	z: float
-	'''Z position [2]'''
-	vecZero: 'Vector'
-	'''Get a Vector whose all values are zero'''
-	Item: float
-	def ToString( self ) -> str:
-		'''Return a string representing the x y z separated by a single space'''
-		pass;
-	def Equals( self, obj: Optional[Any] ) -> bool:
-		pass;
-	def GetHashCode( self ) -> int:
+class Assets:
+	owner: Upgrade
+	AssetsList: dict[str, str]
+	def install( self, src: str, target: Optional[str] ) -> None:
 		pass;

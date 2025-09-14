@@ -3,9 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <NoWarn>1591</NoWarn>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,10 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\external\MikkNET\Mikk.Logger\Mikk.Logger.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\..\external\MikkNET\Mikk.PythonNET\Mikk.PythonNET.csproj" />
+    <ProjectReference Include="..\..\external\MikkNET\Mikk.Arguments\Mikk.Arguments.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -28,14 +28,19 @@
 
   <ItemGroup>
 
-    <None Include="Upgrades\**" Exclude="Upgrades\**\__pycache__\**">
+    <None Include="scripts\**" Exclude="scripts\**\__pycache__\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Upgrades\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Link>scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
 
     <None Include="readme.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+
+    <None Include="LICENSE\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(RecursiveDir)%(Filename).txt</Link>
     </None>
 
   </ItemGroup>

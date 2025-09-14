@@ -1,6 +1,8 @@
 from netapi.NET import *
 
-def register( context: UpgradeContext ) -> None:
+def register_context( context: Upgrade ) -> None:
+
+    context.logger.info.WriteLine( "Called register_context" );
 
     context.mod = "bshift";
     context.title = "Blue Shift";
@@ -10,23 +12,27 @@ def register( context: UpgradeContext ) -> None:
 global assets_directory;
 assets_directory: str = "mikk/bshift";
 
-def assets( assets: Assets ) -> None:
+def install_assets( context: Assets ) -> None:
 
     global assets_directory;
 
+    context.owner.logger.info.WriteLine( "Called install_assets" );
+
     # Textures
-    assets.install( "barney.wad" );
+    context.install( "barney.wad" );
 
     # Skyboxes
-    assets.install( "gfx/env/*.tga", f"gfx/env/{assets_directory}/" );
+    context.install( "gfx/env/*.tga", f"gfx/env/{assets_directory}/" );
 
     # Maps
-    assets.install( "maps/*.bsp" );
+    context.install( "maps/*.bsp" );
 
     # Music
-    assets.install( "media/*.mp3", f"sound/{assets_directory}/music/" );
+    context.install( "media/*.mp3", f"sound/{assets_directory}/music/" );
 
-def upgrades( context: MapContext ) -> None:
+def upgrade_map( context: Map ) -> None:
+
+    context.owner.logger.info.WriteLine( "Called upgrade_map" );
 
     for entity in context.entities:
         

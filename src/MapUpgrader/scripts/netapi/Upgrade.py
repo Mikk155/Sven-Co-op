@@ -22,18 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
+from netapi.Logger import Logger;
 from typing import Any, Optional;
 
-class Assets:
-	AssetsList: dict[str, str]
-	def install( self, src: str, target: Optional[str] ) -> None:
-		'''Copy over an asset to the workspace directory.
-            
-            if target is provided the destination path will be overriden
-            
-            Supports wildcard "*" for a whole folder's files or a partial match for files starting with a prefix
-            
-            When using wildcarding, the destination target must be a folder only
-            
-            For entering folders use "/"'''
+class Upgrade:
+	logger: Logger
+	Script: str
+	title: str
+	mod: str
+	urls: list[str]
+	assets: Any
+	maps: list[Any]
+	Name: str
+	description: str
+	def GetModPath( self ) -> str:
+		pass;
+	def SteamInstallation( self ) -> str:
+		pass;
+	def GetHalfLifeInstallation( self ) -> str:
+		pass;
+	def Initialize( self ) -> None:
+		pass;
+	def Shutdown( self ) -> None:
 		pass;

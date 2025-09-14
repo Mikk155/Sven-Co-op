@@ -1,6 +1,6 @@
 from netapi.NET import *
 
-def register( context: UpgradeContext ) -> None:
+def register_context( context: UpgradeContext ) -> None:
 
     context.mod = "gearbox";
 
@@ -15,7 +15,7 @@ def register( context: UpgradeContext ) -> None:
 global assets_directory;
 assets_directory: str = "mikk/opfor";
 
-def assets( assets: Assets ) -> None:
+def install_assets( assets: Assets ) -> None:
 
     global assets_directory;
 

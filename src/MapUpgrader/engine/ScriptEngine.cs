@@ -22,56 +22,58 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+namespace MapUpgrader.engine;
+
 using Mikk.Logger;
 
-public interface ILanguageEngine
-{
-    public string GetName();
-    public void Shutdown();
-    public UpgradeContext? Initialize( string script );
-    public void GetAssets( UpgradeContext context );
-    public void UpgradeMap( MapContext context );
-}
-
-public class ScriptEngine()
+public class ScriptEngine
 {
     public static readonly Logger logger = new Logger( "Script Engine", ConsoleColor.DarkGreen );
 
-    public readonly List<UpgradeContext> Mods = new List<UpgradeContext>();
+    /// <summary>
+    /// List containing all the supported scripting languages
+    /// </summary>
+    public readonly List<ILanguage> Languages = new List<ILanguage>();
 
-    public readonly Dictionary<string, ILanguageEngine> Languages = new Dictionary<string, ILanguageEngine>()
+    /// <summary>
+    /// List containing all the available script files
+    /// </summary>
+    public readonly List<Context.Upgrade> Mods = new List<Context.Upgrade>();
+
+    public ScriptEngine()
     {
-        { ".py", new PythonLanguage() }
-    };
+        // Initialize languages by Reflection on ILanguage
+        foreach( Type type in System.Reflection.Assembly.GetExecutingAssembly().GetTypes() )
+        {
+            if( typeof(ILanguage).IsAssignableFrom( type ) && type.IsClass && !type.IsAbstract )
+            {
+                ILanguage language = (ILanguage)Activator.CreateInstance( type )!;
 
-    public static string HookName_Init = "register";
-    public static string HookName_Assets = "assets";
-    public static string HookName_Upgrades = "upgrades";
-    public static string ScriptingFolder = "Upgrades";
+                ScriptEngine.logger.info
+                    .Write( "Initializing scripting language \"" )
+                    .Write( language.GetName(), ConsoleColor.Green )
+                    .WriteLine( "\" " );
 
-    public void Initialize()
-    {
-        // Get all script files
-        List<string> ScriptFiles = Directory.GetFiles(
-                Path.Combine( Directory.GetCurrentDirectory(), ScriptEngine.ScriptingFolder )
-            )
-            .Where( file => this.Languages.ContainsKey( Path.GetExtension( file ) ) )
-            .ToList();
+                this.Languages.Add( language );
+            }
+        }
 
-        foreach( string file in ScriptFiles )
+        // Get all the script files
+        foreach( string file in Directory.GetFiles( App.FullScriptingFolder ) )
         {
             string FileExtension = Path.GetExtension( file );
 
-            ILanguageEngine lang = Languages[ FileExtension ];
+            ILanguage? lang = this.Languages.Find( e => e.ScriptsExtension() == FileExtension );
+
+            if( lang is null )
+                continue;
 
             ScriptEngine.logger.info
-                .Write( "Initializing language engine " )
-                .Write( lang.GetName(), ConsoleColor.Green )
-                .Write( " for file " )
+                .Write( "Initializing script " )
                 .Write( Path.GetFileName(file), ConsoleColor.Cyan )
                 .NewLine();
 
-            UpgradeContext? context = lang.Initialize( file );
+            Context.Upgrade? context = lang.register_context( file );
 
             if( context is not null )
             {
@@ -89,21 +91,9 @@ public class ScriptEngine()
         }
     }
 
-    ~ScriptEngine()
-    {
-        Shutdown();
-    }
-
     public void Shutdown()
     {
         ScriptEngine.logger.debug.WriteLine( "Shutting down" );
-
-        foreach( KeyValuePair<string, ILanguageEngine> e in Languages )
-        {
-            if( e.Value is not null )
-            {
-                e.Value.Shutdown();
-            }
-        }
+        this.Languages.ForEach( a => a.Shutdown() );
     }
 }
