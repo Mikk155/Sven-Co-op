@@ -43,6 +43,10 @@ def upgrade_map( context: Map ) -> None:
 
     context.owner.logger.info.WriteLine( "Called upgrade_map", ConsoleColor.Blue );
 
+    # -TODO These are momentarly and will be made in C# later.
+    from shared.FixAmbientGeneric import FixAmbientGeneric;
+    FixAmbientGeneric( context );
+
     for entity in context.entities:
         
         match entity.GetString( "classname" ):
