@@ -32,8 +32,10 @@ class Upgrade:
 	mod: str
 	urls: list[str]
 	assets: Any
-	maps: list[Any]
+	maps_context: list[Any]
 	Name: str
+	Workspace: str
+	maps: list[str]
 	description: str
 	def GetModPath( self ) -> str:
 		pass;

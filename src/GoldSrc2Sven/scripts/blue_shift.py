@@ -30,6 +30,12 @@ def install_assets( context: Assets ) -> None:
     # Music
     context.install( "media/*.mp3", f"sound/{assets_directory}/music/" );
 
+    from shared.BlueShiftBSPConverter import FixBSP;
+
+    for BSP in context.owner.maps:
+        context.owner.logger.info.WriteLine( f"Updating offsets of map \"{BSP}\"" );
+        FixBSP( BSP );
+
 def upgrade_map( context: Map ) -> None:
 
     context.owner.logger.info.WriteLine( "Called upgrade_map" );
