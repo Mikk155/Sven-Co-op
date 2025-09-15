@@ -8,6 +8,6 @@ def FixAmbientGeneric( context: Map ) -> None:
 
     for entity in context.entities:
 
-        if entity.GetString( "classname" ) == "" and not entity.HasFlag( "spawnflags", 16 ):
+        if entity.GetString( "classname" ) == "ambient_generic" and not entity.HasFlag( "spawnflags", 16 ):
 
             entity.SetInteger( "playmode", 2 );
