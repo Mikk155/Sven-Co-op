@@ -5,3 +5,4 @@ from netapi.Assets import Assets;
 from netapi.Map import Map;
 from netapi.Logger import Logger;
 from netapi.ConsoleColor import ConsoleColor;
+from netapi.CFG import CFG;

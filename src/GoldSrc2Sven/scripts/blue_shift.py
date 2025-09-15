@@ -50,3 +50,9 @@ def upgrade_map( context: Map ) -> None:
             case "info_player_start":
 
                 entity.SetString( "classname", "info_player_deathmatch" );
+
+            case "trigger_changelevel":
+
+                context.cfg.pairs[ "mp_survival_nextmap" ] = entity.GetString( "map" );
+
+    context.cfg.Generate( True );

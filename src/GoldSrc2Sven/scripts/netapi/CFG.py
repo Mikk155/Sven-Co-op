@@ -22,15 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-from netapi.Entity import Entity;
-from netapi.Upgrade import Upgrade;
-from netapi.CFG import CFG;
 from typing import Any, Optional;
 
-class Map:
-	name: str
-	filename: str
+class CFG:
 	filepath: str
-	owner: Upgrade
-	entities: list[Entity]
-	cfg: CFG
+	pairs: dict[str, str]
+	def Generate( self, template: bool = None ) -> None:
+		pass;

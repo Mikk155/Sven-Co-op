@@ -53,11 +53,14 @@ public class Map
     /// </summary>
     public List<Entity> entities = new List<Entity>();
 
+    public readonly CFG cfg;
+
     public Map( string map, Context.Upgrade _owner )
     {
         this.filename = this.name = Path.GetFileNameWithoutExtension( map );
 
         this.filepath = map;
         this.owner = _owner;
+        this.cfg = new CFG( this );
     }
 }

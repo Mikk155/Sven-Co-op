@@ -45,7 +45,11 @@ class Logger:
 		pass;
 	def Write( self, text: Optional[str], color: ConsoleColor = None ) -> 'Logger':
 		pass;
+	def Write( self, text: Optional[str], color: int ) -> 'Logger':
+		pass;
 	def WriteLine( self, text: Optional[str], color: ConsoleColor = None ) -> 'Logger':
+		pass;
+	def WriteLine( self, text: Optional[str], color: int ) -> 'Logger':
 		pass;
 	def NewLine( self ) -> 'Logger':
 		pass;
