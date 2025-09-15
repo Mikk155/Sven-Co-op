@@ -59,6 +59,7 @@ public class PythonNET
         { typeof(Context.Map), "Map" },
 
         { typeof(Logger), "Logger" },
+        { typeof(ConsoleColor), "ConsoleColor" },
 
         { typeof(Vector), "Vector" },
 
@@ -136,6 +137,21 @@ public class PythonNET
         else
         {
             strbuild.AppendLine();
+        }
+
+        if( type.IsEnum )
+        {
+            strbuild.AppendLine( "from enum import IntEnum;" );
+            strbuild.AppendLine();
+
+            strbuild.AppendLine($"class {type.Name}( IntEnum ):");
+
+            foreach( string name in Enum.GetNames( type ) )
+            {
+                strbuild.AppendLine( $"\t{name} = {Convert.ToInt32( Enum.Parse( type, name ) )}" );
+            }
+
+            return strbuild.ToString();
         }
 
         strbuild.AppendLine( $"class {type.Name}:" );
@@ -364,7 +380,11 @@ public class PythonNET
             .AppendLine( "from netapi.Vector import Vector;" )
         );
 
-        this.GenerateFile( typeof(Logger), "Logger" );
+        this.GenerateFile( typeof(Logger), "Logger", new StringBuilder()
+            .AppendLine( "from netapi.ConsoleColor import ConsoleColor;" )
+        );
+
+        this.GenerateFile( typeof(ConsoleColor), "ConsoleColor" );
     }
 
     public void GenerateFile( Type type, string filename, StringBuilder? StringBuilder = null )

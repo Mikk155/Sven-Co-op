@@ -2,7 +2,7 @@ from netapi.NET import *
 
 def register_context( context: Upgrade ) -> None:
 
-    context.logger.info.WriteLine( "Called register_context" );
+    context.logger.info.WriteLine( "Called register_context", ConsoleColor.Blue );
 
     context.mod = "bshift";
     context.title = "Blue Shift";
@@ -16,7 +16,7 @@ def install_assets( context: Assets ) -> None:
 
     global assets_directory;
 
-    context.owner.logger.info.WriteLine( "Called install_assets" );
+    context.owner.logger.info.WriteLine( "Called install_assets", ConsoleColor.Blue );
 
     # Textures
     context.install( "barney.wad" );
@@ -33,12 +33,15 @@ def install_assets( context: Assets ) -> None:
     from shared.BlueShiftBSPConverter import FixBSP;
 
     for BSP in context.owner.maps:
-        context.owner.logger.info.WriteLine( f"Updating offsets of map \"{BSP}\"" );
+        context.owner.logger.info \
+            .Write( f"Updating offsets of map \"", ConsoleColor.Blue ) \
+            .Write( BSP, ConsoleColor.Green ) \
+            .WriteLine( "\"", ConsoleColor.Blue );
         FixBSP( BSP );
 
 def upgrade_map( context: Map ) -> None:
 
-    context.owner.logger.info.WriteLine( "Called upgrade_map" );
+    context.owner.logger.info.WriteLine( "Called upgrade_map", ConsoleColor.Blue );
 
     for entity in context.entities:
         

@@ -22,38 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-from netapi.ConsoleColor import ConsoleColor;
 from typing import Any, Optional;
 
-class Logger:
-	Name: str
-	Color: ConsoleColor
-	LogLevels: Any
-	Level: Any
-	IsLevelActive: bool
-	trace: 'Logger'
-	debug: 'Logger'
-	info: 'Logger'
-	warn: 'Logger'
-	error: 'Logger'
-	critical: 'Logger'
-	def SetLogger( self, level: Any ) -> None:
-		pass;
-	def ClearLogger( self, level: Any ) -> None:
-		pass;
-	def ToggleLogger( self, level: Any ) -> None:
-		pass;
-	def Write( self, text: Optional[str], color: ConsoleColor = None ) -> 'Logger':
-		pass;
-	def WriteLine( self, text: Optional[str], color: ConsoleColor = None ) -> 'Logger':
-		pass;
-	def NewLine( self ) -> 'Logger':
-		pass;
-	def Beep( self ) -> 'Logger':
-		pass;
-	def Pause( self ) -> 'Logger':
-		pass;
-	def Call( self, fnCallback: Any ) -> 'Logger':
-		pass;
-	def Exit( self, fnCallback: Optional[Any] ) -> None:
-		pass;
+from enum import IntEnum;
+
+class ConsoleColor( IntEnum ):
+	Black = 0
+	DarkBlue = 1
+	DarkGreen = 2
+	DarkCyan = 3
+	DarkRed = 4
+	DarkMagenta = 5
+	DarkYellow = 6
+	Gray = 7
+	DarkGray = 8
+	Blue = 9
+	Green = 10
+	Cyan = 11
+	Red = 12
+	Magenta = 13
+	Yellow = 14
+	White = 15
