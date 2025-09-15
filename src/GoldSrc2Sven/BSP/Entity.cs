@@ -101,6 +101,43 @@ public class Entity( Dictionary<string, string> keyvalues )
     }
 
     /// <summary>
+    /// Whatever a bit-type key-value has this flag value
+    /// </summary>
+    public bool HasFlag( string key, int flag )
+    {
+        if( this.keyvalues.TryGetValue( key, out string? value ) && int.TryParse( value.ToString(), out int flags ) )
+        {
+            return ( flags & flag ) != 0;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Clears a flag from a bit-type key-value
+    /// </summary>
+    public void ClearFlag( string key, int flag )
+    {
+        if( this.keyvalues.TryGetValue( key, out string? value ) && int.TryParse( value.ToString(), out int flags ) && ( flags & flag ) != 0 )
+        {
+            flags &= ~flag;
+            keyvalues[ key ] = flags.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Adds a flag on a bit-type key-value
+    /// </summary>
+    public void SetFlag( string key, int flag )
+    {
+        if( this.keyvalues.TryGetValue( key, out string? value ) && int.TryParse( value.ToString(), out int flags ) && ( flags & flag ) == 0 )
+        {
+            flags |= flag;
+            keyvalues[ key ] = flags.ToString();
+        }
+    }
+
+    /// <summary>
     /// Set a key's value in Vector form (0/1)
     /// </summary>
     public void SetVector( string key, Vector value )
