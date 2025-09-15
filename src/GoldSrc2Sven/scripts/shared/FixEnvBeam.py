@@ -2,7 +2,7 @@
 
 from netapi.NET import *
 
-def FixAmbientGeneric( context: Map ) -> None:
+def FixEnvBeam( context: Map ) -> None:
 
     '''Fix env_beam with bad striketime on a negative value causing massive cpu usage in Sven Co-op.'''
 

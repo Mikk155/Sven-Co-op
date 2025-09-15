@@ -1,6 +1,6 @@
 #-TODO C# auto detect update
 
-def FixBSP( BSPPath : str ) -> None:
+def BlueShiftBSPConverter( BSPPath : str ) -> None:
     '''
         Converts a Blue-Shift BSP
     '''

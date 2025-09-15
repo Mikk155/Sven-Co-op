@@ -30,14 +30,14 @@ def install_assets( context: Assets ) -> None:
     # Music
     context.install( "media/*.mp3", f"sound/{assets_directory}/music/" );
 
-    from shared.BlueShiftBSPConverter import FixBSP;
+    from shared.BlueShiftBSPConverter import BlueShiftBSPConverter;
 
     for BSP in context.owner.maps:
         context.owner.logger.info \
             .Write( f"Updating offsets of map \"", ConsoleColor.Blue ) \
             .Write( BSP, ConsoleColor.Green ) \
             .WriteLine( "\"", ConsoleColor.Blue );
-        FixBSP( BSP );
+        BlueShiftBSPConverter( BSP );
 
 def upgrade_map( context: Map ) -> None:
 
@@ -46,14 +46,18 @@ def upgrade_map( context: Map ) -> None:
     # -TODO These are momentarly and will be made in C# later.
     from shared.FixAmbientGeneric import FixAmbientGeneric;
     FixAmbientGeneric( context );
+    from shared.FixEnvBeam import FixEnvBeam;
+    FixEnvBeam( context );
+    from shared.FixTriggerChangelevel import FixTriggerChangelevel;
+    FixTriggerChangelevel( context );
+    from shared.RemapEntities import RemapEntities;
+    RemapEntities( context );
+    from shared.RemoveGlobalName import RemoveGlobalName;
+    RemoveGlobalName( context );
 
     for entity in context.entities:
-        
+
         match entity.GetString( "classname" ):
-
-            case "info_player_start":
-
-                entity.SetString( "classname", "info_player_deathmatch" );
 
             case "trigger_changelevel":
 

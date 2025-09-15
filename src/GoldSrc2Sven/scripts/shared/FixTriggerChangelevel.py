@@ -2,7 +2,7 @@
 
 from netapi.NET import *
 
-def FixAmbientGeneric( context: Map ) -> None:
+def FixTriggerChangelevel( context: Map ) -> None:
 
     '''Fix trigger_changelevel'''
 
