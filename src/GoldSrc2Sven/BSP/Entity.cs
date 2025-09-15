@@ -24,8 +24,17 @@ DEALINGS IN THE SOFTWARE.
 
 namespace GoldSrc2Sven.BSP;
 
-public class Entity( Dictionary<string, string> keyvalues )
+using GoldSrc2Sven.Context;
+
+public class Entity( Dictionary<string, string> keyvalues, int index, Map owner )
 {
+    private readonly Map owner = owner;
+
+    /// <summary>
+    /// Index in the .ent file
+    /// </summary>
+    public readonly int index = index;
+
     public readonly Dictionary<string, string> keyvalues = keyvalues;
 
     /// <summary>
@@ -151,6 +160,14 @@ public class Entity( Dictionary<string, string> keyvalues )
     public void RemoveKeyValue( string key )
     {
         this.keyvalues.Remove( key );
+    }
+
+    /// <summary>
+    /// Remove the entity from the entity data
+    /// </summary>
+    public void RemoveEntity()
+    {
+        this.owner._RemovedEntities.Add( this.index );
     }
 
     /// <summary>

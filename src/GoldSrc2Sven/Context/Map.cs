@@ -61,6 +61,19 @@ public class Map
 
     public void _WriteBSP()
     {
+        // -TODO Isn't reverse-for loop removing matches better?
+        List<Entity> NewEntities = new List<Entity>();
+
+        foreach( Entity entity in this.entities )
+        {
+            if( !this._RemovedEntities.Contains( entity.index ) )
+            {
+                NewEntities.Add( entity );
+            }
+        }
+
+        this.entities = NewEntities;
+
         using FileStream stream = File.OpenRead( this.filepath );
         BspFile bsp = new BspFile( stream );
         stream.Close();
@@ -101,9 +114,10 @@ public class Map
         BspFile bsp = new BspFile( stream );
         stream.Close();
 
+        int i = 0;
         foreach( Sledge.Formats.Bsp.Objects.Entity entity in bsp.Entities )
         {
-            this.entities.Add( new Entity( entity.KeyValues.ToDictionary( kvp => kvp.Key, kvp => kvp.Value ) ) );
+            this.entities.Add( new Entity( entity.KeyValues.ToDictionary( kvp => kvp.Key, kvp => kvp.Value ), i++, this ) );
         }
     }
 }

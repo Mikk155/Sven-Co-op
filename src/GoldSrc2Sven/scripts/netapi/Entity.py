@@ -26,6 +26,7 @@ from netapi.Vector import Vector;
 from typing import Any, Optional;
 
 class Entity:
+	index: int
 	keyvalues: dict[str, str]
 	def GetString( self, key: str ) -> str:
 		pass;
@@ -54,6 +55,8 @@ class Entity:
 	def SetFlag( self, key: str, flag: int ) -> None:
 		pass;
 	def RemoveKeyValue( self, key: str ) -> None:
+		pass;
+	def RemoveEntity( self ) -> None:
 		pass;
 	def ToString( self ) -> str:
 		pass;
