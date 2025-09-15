@@ -27,6 +27,9 @@ namespace GoldSrc2Sven.engine.python;
 using Mikk.Logger;
 using Python.Runtime;
 
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
 public class Language : ILanguage
 {
     public string ScriptsExtension() {
@@ -55,13 +58,50 @@ public class Language : ILanguage
         new PythonNET(); // Generate docs for python Type hints
 #endif // DEBUG
 
-        ConfigContext.Get( "python_dll", value =>
+        // Momentary while is not embeded
+        if( RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
+        {
+            Language.logger.info.WriteLine( "Attempting to automatically detect a Python installation..." );
+
+            try
+            {
+                ProcessStartInfo py = new ProcessStartInfo
+                {
+                    FileName = "python",
+                    Arguments = "-c \"import sys; print(sys.executable)\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                ArgumentNullException.ThrowIfNull( py );
+
+                using Process? process = Process.Start( py );
+
+                ArgumentNullException.ThrowIfNull( process );
+
+                string PythonPath = Path.GetDirectoryName( process.StandardOutput.ReadLine() )!;
+
+                process.WaitForExit();
+
+                string[] dll = Directory.GetFiles( PythonPath, "python3*.dll" )
+                    .Where( dll => System.Text.RegularExpressions.Regex.IsMatch(Path.GetFileName(dll), @"^python3\d+\.dll$") )
+                    .ToArray();
+
+                if( dll.Length > 0 )
+                {
+                    ConfigContext.cache[ "python_binary" ] = dll[0];
+                }
+            }
+            catch {}
+        }
+
+        ConfigContext.Get( "python_binary", value =>
         {
             Runtime.PythonDLL = value;
+            PythonEngine.Initialize();
             return true; // No exception raised. break the loop
         }, "Absolute path to your Python dll, it usually looks like \"C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python311\\python311.dll\" You can drag and drop the dll too." );
-
-        PythonEngine.Initialize();
     }
 
     public Context.Upgrade? register_context( string script )
