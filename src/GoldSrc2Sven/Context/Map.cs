@@ -26,6 +26,8 @@ namespace GoldSrc2Sven.Context;
 
 using GoldSrc2Sven.BSP;
 
+using Sledge.Formats.Bsp;
+
 /// <summary>
 /// Represents a BSP
 /// </summary>
@@ -55,6 +57,38 @@ public class Map
 
     public readonly CFG cfg;
 
+    public List<int> _RemovedEntities = new List<int>();
+
+    public void _WriteBSP()
+    {
+        using FileStream stream = File.OpenRead( this.filepath );
+        BspFile bsp = new BspFile( stream );
+        stream.Close();
+
+        var sledge_entities = this.entities.Select( e =>
+        {
+            var sledge_entity = new Sledge.Formats.Bsp.Objects.Entity();
+
+            foreach( var kv in e.keyvalues )
+            {
+                sledge_entity.KeyValues[kv.Key] = kv.Value;
+            }
+
+            return sledge_entity;
+        } ).ToList();
+
+        bsp.Entities.Clear();
+
+        foreach( var entity in sledge_entities )
+        {
+            bsp.Entities.Add( entity );
+        }
+
+        using FileStream write_stream = File.Create( this.filepath );
+        bsp.WriteToStream( write_stream, bsp.Version );
+        stream.Close();
+    }
+
     public Map( string map, Context.Upgrade _owner )
     {
         this.filename = this.name = Path.GetFileNameWithoutExtension( map );
@@ -62,5 +96,14 @@ public class Map
         this.filepath = map;
         this.owner = _owner;
         this.cfg = new CFG( this );
+
+        using FileStream stream = File.OpenRead( this.filepath );
+        BspFile bsp = new BspFile( stream );
+        stream.Close();
+
+        foreach( Sledge.Formats.Bsp.Objects.Entity entity in bsp.Entities )
+        {
+            this.entities.Add( new Entity( entity.KeyValues.ToDictionary( kvp => kvp.Key, kvp => kvp.Value ) ) );
+        }
     }
 }

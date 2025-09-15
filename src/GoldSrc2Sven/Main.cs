@@ -103,6 +103,10 @@ public static class App
                 context.maps_context.Add( map_context );
 
                 map_context.owner._Language.upgrade_map( map_context );
+
+                context.logger.info.Write( "Writing map " ).WriteLine( map, ConsoleColor.Cyan );
+
+                map_context._WriteBSP();
             }
 
             context.Shutdown();
