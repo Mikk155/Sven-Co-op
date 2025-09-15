@@ -100,7 +100,7 @@ public static class App
 
                 Context.Map map_context = new Context.Map( map, context );
 
-                context.maps.Add( map_context );
+                context.maps_context.Add( map_context );
 
                 map_context.owner._Language.upgrade_map( map_context );
             }

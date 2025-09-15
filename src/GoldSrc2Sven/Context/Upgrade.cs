@@ -51,6 +51,18 @@ public class Upgrade
     public string Name =>
         Path.GetFileName( this.Script );
 
+    /// <summary>
+    /// Absolute path to the port workspace
+    /// </summary>
+    public string Workspace =>
+        App.WorkSpace;
+
+    /// <summary>
+    /// List of maps in the workspace
+    /// </summary>
+    public string[] maps =>
+        Directory.GetFiles( Path.Combine( App.WorkSpace, "maps" ), "*.bsp" );
+
     // -TODO These members aren't exported to python API
     /// <summary>Title to display as an option.</summary>
     public string title = null!;
@@ -102,7 +114,7 @@ public class Upgrade
         return string.Empty;
     }
 
-    public List<Context.Map> maps = new List<Context.Map>()!;
+    public List<Context.Map> maps_context = new List<Context.Map>()!;
 
     /// <summary>
     /// Get the absolute path to a Steam installation
