@@ -101,6 +101,14 @@ public class Entity( Dictionary<string, string> keyvalues )
     }
 
     /// <summary>
+    /// Set a key's value in Vector form (0/1)
+    /// </summary>
+    public void SetVector( string key, Vector value )
+    {
+        this.keyvalues[ key ] = value.ToString();
+    }
+
+    /// <summary>
     /// Whatever a bit-type key-value has this flag value
     /// </summary>
     public bool HasFlag( string key, int flag )
@@ -138,11 +146,11 @@ public class Entity( Dictionary<string, string> keyvalues )
     }
 
     /// <summary>
-    /// Set a key's value in Vector form (0/1)
+    /// Remove the given key and value
     /// </summary>
-    public void SetVector( string key, Vector value )
+    public void RemoveKeyValue( string key )
     {
-        this.keyvalues[ key ] = value.ToString();
+        this.keyvalues.Remove( key );
     }
 
     /// <summary>

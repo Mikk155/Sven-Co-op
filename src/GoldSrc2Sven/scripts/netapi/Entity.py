@@ -45,13 +45,15 @@ class Entity:
 		pass;
 	def GetVector( self, key: str ) -> Vector:
 		pass;
+	def SetVector( self, key: str, value: Vector ) -> None:
+		pass;
 	def HasFlag( self, key: str, flag: int ) -> bool:
 		pass;
 	def ClearFlag( self, key: str, flag: int ) -> None:
 		pass;
 	def SetFlag( self, key: str, flag: int ) -> None:
 		pass;
-	def SetVector( self, key: str, value: Vector ) -> None:
+	def RemoveKeyValue( self, key: str ) -> None:
 		pass;
 	def ToString( self ) -> str:
 		pass;
