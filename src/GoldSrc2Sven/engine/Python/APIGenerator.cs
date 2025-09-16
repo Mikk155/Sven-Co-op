@@ -58,6 +58,8 @@ public class PythonNET
         { typeof(Context.Upgrade), "Upgrade" },
         { typeof(Context.Map), "Map" },
         { typeof(Context.CFG), "CFG" },
+        { typeof(Context.MapUpgrades), "MapUpgrades" },
+        { typeof(Context.IMapUpgrade), "IMapUpgrade" },
 
         { typeof(Logger), "Logger" },
         { typeof(ConsoleColor), "ConsoleColor" },
@@ -376,9 +378,18 @@ public class PythonNET
             .AppendLine( "from netapi.Entity import Entity;" )
             .AppendLine( "from netapi.Upgrade import Upgrade;" )
             .AppendLine( "from netapi.CFG import CFG;" )
+            .AppendLine( "from netapi.MapUpgrades import MapUpgrades;" )
         );
 
         this.GenerateFile( typeof(Context.CFG), "CFG" );
+
+//        this.GenerateFile( typeof(Context.IMapUpgrade), "IMapUpgrade" );
+
+        this.GenerateFile( typeof(Context.MapUpgrades), "MapUpgrades", new StringBuilder()
+            .AppendLine( "from netapi.Logger import Logger;" )
+            .AppendLine( "from netapi.Entity import Entity;" )
+            .AppendLine( "from netapi.IMapUpgrade import IMapUpgrade;" )
+        );
 
         this.GenerateFile( typeof(Entity), "Entity", new StringBuilder()
             .AppendLine( "from netapi.Vector import Vector;" )

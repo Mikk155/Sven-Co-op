@@ -55,7 +55,15 @@ public class Map
     /// </summary>
     public List<Entity> entities = new List<Entity>();
 
+    /// <summary>
+    /// CFG file
+    /// </summary>
     public readonly CFG cfg;
+
+    /// <summary>
+    /// Contains generic map upgrades you can apply to your map
+    /// </summary>
+    public readonly MapUpgrades upgrade;
 
     public List<int> _RemovedEntities = new List<int>();
 
@@ -109,6 +117,8 @@ public class Map
         this.filepath = map;
         this.owner = _owner;
         this.cfg = new CFG( this );
+
+        this.upgrade = new MapUpgrades( this );
 
         using FileStream stream = File.OpenRead( this.filepath );
         BspFile bsp = new BspFile( stream );

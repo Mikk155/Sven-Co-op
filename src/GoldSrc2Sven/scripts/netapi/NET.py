@@ -6,3 +6,5 @@ from netapi.Map import Map;
 from netapi.Logger import Logger;
 from netapi.ConsoleColor import ConsoleColor;
 from netapi.CFG import CFG;
+from netapi.MapUpgrades import MapUpgrades;
+from netapi.IMapUpgrade import IMapUpgrade;
