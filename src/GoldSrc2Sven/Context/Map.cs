@@ -67,21 +67,25 @@ public class Map
 
     public List<int> _RemovedEntities = new List<int>();
 
-    public void _WriteBSP()
+    private void _RemoveDeletedEntities()
     {
-        // -TODO Isn't reverse-for loop removing matches better?
-        List<Entity> NewEntities = new List<Entity>();
+        this._RemovedEntities.Sort();
+        this._RemovedEntities.Reverse();
 
-        foreach( Entity entity in this.entities )
+        foreach( int index in this._RemovedEntities )
         {
-            if( !this._RemovedEntities.Contains( entity.index ) )
+            Entity? entity = this.entities.FirstOrDefault( e => e.index == index );
+
+            if( entity is not null )
             {
-                NewEntities.Add( entity );
+                this.entities.Remove( entity );
             }
         }
+    }
 
-        this.entities = NewEntities;
-
+    public void _WriteBSP()
+    {
+        this._RemoveDeletedEntities();
         using FileStream stream = File.OpenRead( this.filepath );
         BspFile bsp = new BspFile( stream );
         stream.Close();
