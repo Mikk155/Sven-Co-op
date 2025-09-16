@@ -1,10 +1,11 @@
-'''Fix Half-Life "loop" type ambient_generic not looping in Sven Co-op.'''
+'''**deprecated** Fix Half-Life "loop" type ambient_generic not looping in Sven Co-op.'''
 
 from netapi.NET import *
 
+@deprecated( "context.upgrade.FixAmbientGenericNonLooping", True, False )
 def FixAmbientGeneric( context: Map ) -> None:
 
-    '''Fix Half-Life "loop" type ambient_generic not looping in Sven Co-op.'''
+    '''**deprecated** Fix Half-Life "loop" type ambient_generic not looping in Sven Co-op.'''
 
     for entity in context.entities:
 

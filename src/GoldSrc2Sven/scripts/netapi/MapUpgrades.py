@@ -30,3 +30,4 @@ from typing import Any, Optional;
 class MapUpgrades:
     logger: Logger
     entities: list[Entity]
+    FixAmbientGenericNonLooping: IMapUpgrade

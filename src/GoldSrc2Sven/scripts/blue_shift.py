@@ -55,6 +55,8 @@ def upgrade_map( context: Map ) -> None:
     from shared.RemoveGlobalName import RemoveGlobalName;
     RemoveGlobalName( context );
 
+    context.upgrade.FixAmbientGenericNonLooping;
+
     for entity in context.entities:
 
         match entity.GetString( "classname" ):
