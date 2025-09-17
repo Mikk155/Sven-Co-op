@@ -27,6 +27,8 @@ namespace GoldSrc2Sven.Context;
 using GoldSrc2Sven.BSP;
 
 using Sledge.Formats.Bsp;
+using Sledge.Formats.GameData;
+using Sledge.Formats.GameData.Objects;
 
 /// <summary>
 /// Represents a BSP
@@ -86,17 +88,34 @@ public class Map
     public void _WriteBSP()
     {
         this._RemoveDeletedEntities();
+
         using FileStream stream = File.OpenRead( this.filepath );
         BspFile bsp = new BspFile( stream );
         stream.Close();
 
-        var sledge_entities = this.entities.Select( e =>
-        {
-            var sledge_entity = new Sledge.Formats.Bsp.Objects.Entity();
+        List<EntityGroup> fgd_entities = FgdFormatter.ReadFile( Path.Combine( this.owner.GetSvenCoopInstallation(), "svencoop", "sven-coop.fgd" ) ).EntityGroups;
 
-            foreach( var kv in e.keyvalues )
+        List<Sledge.Formats.Bsp.Objects.Entity> sledge_entities = this.entities.Select( e =>
+        {
+            string classname = e.GetString( "classname" );
+
+            if( string.IsNullOrWhiteSpace( classname ) )
             {
-                sledge_entity.KeyValues[kv.Key] = kv.Value;
+                string index = e.index >= 0 ? $"Index: {e.index}" : "";
+                this.owner.logger.error
+                    .WriteLine( $"Got a entity with no classname! Removing {index}" );
+            }
+            else if( fgd_entities.FirstOrDefault( e => e.Name == classname ) is null )
+            {
+                this.owner.logger.error
+                    .WriteLine( $"Got a entity with classname \"{classname}\" that doesn't exists in the FGD!" );
+            }
+
+            Sledge.Formats.Bsp.Objects.Entity sledge_entity = new Sledge.Formats.Bsp.Objects.Entity();
+
+            foreach( KeyValuePair<string, string> kv in e.keyvalues )
+            {
+                sledge_entity.KeyValues[ kv.Key ] = kv.Value;
             }
 
             return sledge_entity;
@@ -104,7 +123,7 @@ public class Map
 
         bsp.Entities.Clear();
 
-        foreach( var entity in sledge_entities )
+        foreach( Sledge.Formats.Bsp.Objects.Entity entity in sledge_entities )
         {
             bsp.Entities.Add( entity );
         }
