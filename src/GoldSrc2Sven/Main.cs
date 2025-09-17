@@ -79,7 +79,10 @@ public static class App
                 .NewLine()
                 .Beep()
                 .Call( App.Shutdown )
+#if DEBUG
+#else
                 .Pause()
+#endif
                 .Exit();
         }
 
