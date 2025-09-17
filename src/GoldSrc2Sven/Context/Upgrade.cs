@@ -151,61 +151,75 @@ public class Upgrade
         return null;
     }
 
+    private string _GetSteamGameInstallation( string folder_name, string unique_name, string game_name, string env_name )
+    {
+        string? GameInstallationPath = null, SteamPath = this.SteamInstallation();
+
+        if( SteamPath is not null )
+        {
+            GameInstallationPath = Path.Combine( SteamPath, "steamapps", "common", folder_name );
+
+            if( !Directory.Exists( GameInstallationPath ) || !Directory.Exists( Path.Combine( GameInstallationPath, unique_name ) ) )
+            {
+                GameInstallationPath = null;
+            }
+        }
+
+        if( GameInstallationPath is not null && !ConfigContext.cache.ContainsKey( env_name ) )
+        {
+            Console.WriteLine( $"Detected {game_name} installation at \"{GameInstallationPath}\"" );
+            Console.WriteLine( $"Want to override with a custom path? Y/N" );
+            string? input = Console.ReadLine();
+
+            if( !string.IsNullOrEmpty( input ) && input.ToLower()[0] == 'y' )
+            {
+                GameInstallationPath = null;
+            }
+            else
+            {
+                ConfigContext.Write();
+            }
+        }
+
+        if( string.IsNullOrEmpty( GameInstallationPath ) )
+        {
+            ConfigContext.Get( env_name, value =>
+            {
+                GameInstallationPath = value;
+
+                if( !Directory.Exists( GameInstallationPath ) )
+                {
+                    throw new DirectoryNotFoundException( $"Unexistent directory \"{GameInstallationPath}\"" );
+                }
+
+                if( !Directory.Exists( Path.Combine( GameInstallationPath, unique_name ) ) )
+                {
+                    throw new DirectoryNotFoundException( $"Invalid {game_name} directory at \"{GameInstallationPath}\"" );
+                }
+
+                return true; // No exception raised. break the loop
+            }, $"Absolute path to your {game_name} installation, it usually looks like \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\{folder_name}\"" );
+        }
+
+        return GameInstallationPath!;
+    }
+
     /// <summary>
     /// Get the path to the Half-Life installation
     /// </summary>
     /// <returns>The absolute path to the Half-Life folder</returns>
     public string GetHalfLifeInstallation()
     {
-        string? HalfLifePath = null, SteamPath = this.SteamInstallation();
+        return _GetSteamGameInstallation( "Half-Life", "valve", "Half-Life", "halflife_installation" );
+    }
 
-        if( SteamPath is not null )
-        {
-            HalfLifePath = Path.Combine( SteamPath, "steamapps", "common", "Half-Life" );
-
-            if( !Directory.Exists( HalfLifePath ) || !Directory.Exists( Path.Combine( HalfLifePath, "valve" ) ) )
-            {
-                HalfLifePath = null;
-            }
-        }
-
-        if( !ConfigContext.cache.ContainsKey( "halflife_installation" ) )
-        {
-            Console.WriteLine( $"Detected Half-Life installation at \"{HalfLifePath}\"" );
-            Console.WriteLine( $"Want to override with a custom path? Y/N" );
-            string? input = Console.ReadLine();
-
-            if( !string.IsNullOrEmpty( input ) && input.ToLower()[0] == 'y' )
-            {
-                HalfLifePath = null;
-            }
-        }
-        else
-        {
-            HalfLifePath = null;
-        }
-
-        if( string.IsNullOrEmpty( HalfLifePath ) )
-        {
-            ConfigContext.Get( "halflife_installation", value =>
-            {
-                HalfLifePath = value;
-
-                if( !Directory.Exists( HalfLifePath ) )
-                {
-                    throw new DirectoryNotFoundException( $"Unexistent directory \"{HalfLifePath}\"" );
-                }
-
-                if( !Directory.Exists( Path.Combine( HalfLifePath, "valve" ) ) )
-                {
-                    throw new DirectoryNotFoundException( $"Invalid Half-Life directory at \"{HalfLifePath}\"" );
-                }
-
-                return true; // No exception raised. break the loop
-            }, "Absolute path to your Half-Life installation, it usually looks like \"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Half-Life\"" );
-        }
-
-        return HalfLifePath!;
+    /// <summary>
+    /// Get the path to the Sven Co-op installation
+    /// </summary>
+    /// <returns>The absolute path to the Sven Co-op folder</returns>
+    public string GetSvenCoopInstallation()
+    {
+        return _GetSteamGameInstallation( "Sven Co-op", "svencoop", "Sven Co-op", "svencoop_installation" );
     }
 
     private bool _Initialized;
