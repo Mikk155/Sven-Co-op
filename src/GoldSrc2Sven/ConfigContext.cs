@@ -59,6 +59,11 @@ public static class ConfigContext
     public static string FilePath =>
         ConfigContext.GetConfigPath();
 
+    public static void Write()
+    {
+        File.WriteAllText( ConfigContext.FilePath, JsonConvert.SerializeObject( ConfigContext.cache, Formatting.Indented ) );
+    }
+
     public static void Get( string key, Func<string, bool> validator, string? additional_info = null )
     {
         while( true )
@@ -70,7 +75,7 @@ public static class ConfigContext
             {
                 if( !string.IsNullOrEmpty( value ) && validator( value ) )
                 {
-                    File.WriteAllText( ConfigContext.FilePath, JsonConvert.SerializeObject( ConfigContext.cache, Formatting.Indented ) );
+                    ConfigContext.Write();
                     break;
                 }
             }
