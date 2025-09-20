@@ -27,8 +27,10 @@ namespace GoldSrc2Sven.Context;
 using GoldSrc2Sven.BSP;
 
 using Sledge.Formats.Bsp;
+#if false
 using Sledge.Formats.GameData;
 using Sledge.Formats.GameData.Objects;
+#endif
 
 /// <summary>
 /// Represents a BSP
@@ -99,7 +101,9 @@ public class Map
             bsp = new BspFile( stream );
         }
 
+#if false
         List<EntityGroup> fgd_entities = FgdFormatter.ReadFile( Path.Combine( this.owner.GetSvenCoopInstallation(), "svencoop", "sven-coop.fgd" ) ).EntityGroups;
+#endif
 
         List<Sledge.Formats.Bsp.Objects.Entity> sledge_entities = this.entities.Select( e =>
         {
@@ -111,11 +115,13 @@ public class Map
                 this.owner.logger.error
                     .WriteLine( $"Got a entity with no classname! Removing {index}" );
             }
+#if false
             else if( fgd_entities.FirstOrDefault( e => e.Name == classname ) is null )
             {
                 this.owner.logger.error
                     .WriteLine( $"Got a entity with classname \"{classname}\" that doesn't exists in the FGD!" );
             }
+#endif
 
             Sledge.Formats.Bsp.Objects.Entity sledge_entity = new Sledge.Formats.Bsp.Objects.Entity();
 
