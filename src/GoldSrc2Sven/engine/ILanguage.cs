@@ -39,6 +39,12 @@ public interface ILanguage
     public string GetName();
 
     /// <summary>
+    /// Called if at least one file is detected to use this language. Return false to dispose of the language.
+    /// </summary>
+    /// <returns></returns>
+    public bool Initialize();
+
+    /// <summary>
     /// Shutdown event called when all the language's scripts are released
     /// </summary>
     public void Shutdown();

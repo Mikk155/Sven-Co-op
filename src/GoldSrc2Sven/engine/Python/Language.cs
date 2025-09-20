@@ -58,7 +58,10 @@ public class Language : ILanguage
 #if DEBUG
         new PythonNET(); // Generate docs for python Type hints
 #endif // DEBUG
+    }
 
+    public bool Initialize()
+    {
         string? autodetect_dll = null;
         
         // Momentary while is not embeded
@@ -115,6 +118,8 @@ public class Language : ILanguage
             "Absolute path to your Python dll, it usually looks like \"C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python311\\python311.dll\" You can drag and drop the dll too.",
             autodetect_dll
         );
+
+        return true;
     }
 
     public Context.Upgrade? register_context( string script )

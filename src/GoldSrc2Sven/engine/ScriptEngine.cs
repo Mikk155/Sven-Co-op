@@ -35,6 +35,8 @@ public class ScriptEngine
     /// </summary>
     public readonly List<ILanguage> Languages = new List<ILanguage>();
 
+    private List<string>? InitializedLanguages = new List<string>();
+
     /// <summary>
     /// List containing all the available script files
     /// </summary>
@@ -68,6 +70,23 @@ public class ScriptEngine
             if( lang is null )
                 continue;
 
+            if( !InitializedLanguages.Contains( FileExtension ) )
+            {
+                InitializedLanguages.Add( FileExtension );
+
+                ScriptEngine.logger.info
+                    .Write( "Detected " )
+                    .Write( lang.GetName(), ConsoleColor.Cyan )
+                    .Write( " scripts. Initializing Engine..." )
+                    .NewLine();
+
+                if( !lang.Initialize() )
+                {
+                    Languages.Remove( lang );
+                    return;
+                }
+            }
+
             ScriptEngine.logger.info
                 .Write( "Initializing script " )
                 .Write( Path.GetFileName(file), ConsoleColor.Cyan )
@@ -89,6 +108,8 @@ public class ScriptEngine
                     .NewLine();
             }
         }
+
+        InitializedLanguages = null;
     }
 
     public void Shutdown()
