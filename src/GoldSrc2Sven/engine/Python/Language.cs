@@ -62,7 +62,7 @@ public class Language : ILanguage
         string? autodetect_dll = null;
         
         // Momentary while is not embeded
-        if( !App.cache.data.ContainsKey( "python_binary" ) && RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
+        if( !App.cache.Exists( "python_binary" ) && RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
         {
             Language.logger.info.WriteLine( "Attempting to automatically detect a Python installation..." );
 
