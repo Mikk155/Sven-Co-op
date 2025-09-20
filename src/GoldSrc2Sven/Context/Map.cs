@@ -71,6 +71,9 @@ public class Map
 
     private void _RemoveDeletedEntities()
     {
+        if( this._RemovedEntities.Count <= 0 )
+            return;
+
         this._RemovedEntities.Sort();
         this._RemovedEntities.Reverse();
 
