@@ -92,9 +92,12 @@ public class Map
     {
         this._RemoveDeletedEntities();
 
-        using FileStream stream = File.OpenRead( this.filepath );
-        BspFile bsp = new BspFile( stream );
-        stream.Close();
+        BspFile bsp;
+
+        using( FileStream stream = File.OpenRead( this.filepath ))
+        {
+            bsp = new BspFile( stream );
+        }
 
         List<EntityGroup> fgd_entities = FgdFormatter.ReadFile( Path.Combine( this.owner.GetSvenCoopInstallation(), "svencoop", "sven-coop.fgd" ) ).EntityGroups;
 
@@ -131,9 +134,10 @@ public class Map
             bsp.Entities.Add( entity );
         }
 
-        using FileStream write_stream = File.Create( this.filepath );
-        bsp.WriteToStream( write_stream, bsp.Version );
-        stream.Close();
+        using( FileStream stream = File.Create( this.filepath ))
+        {
+            bsp.WriteToStream( stream, bsp.Version );
+        }
     }
 
     public Map( string map, Context.Upgrade _owner )
