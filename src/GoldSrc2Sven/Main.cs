@@ -49,8 +49,7 @@ public static class App
 
     public static void Main( params string[] args )
     {
-        App.cache = new Cache( Path.Combine(
-            Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "GoldSrc2Sven", "cache.json" ) );
+        App.cache = new Cache( Path.Combine( Directory.GetCurrentDirectory(), "cache.json" ) );
 
         App.arguments = new Arguments( args );
 

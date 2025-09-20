@@ -1,6 +1,7 @@
 build/*
 as.predefined
 /code-runner.*
+src/GoldSrc2Sven/cache.json
 src/GoldSrc2Sven/workspace/*
 
 # Python https://github.com/github/gitignore/blob/main/Python.gitignore
