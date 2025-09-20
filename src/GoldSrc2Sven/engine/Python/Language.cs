@@ -24,6 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 namespace GoldSrc2Sven.engine.python;
 
+using GoldSrc2Sven.Config;
 using Mikk.Logger;
 using Python.Runtime;
 
@@ -97,7 +98,7 @@ public class Language : ILanguage
             catch {}
         }
 
-        ConfigContext.Get( "python_binary", value =>
+        App.cache.UserConfig( "python_binary", value =>
         {
             Runtime.PythonDLL = value;
             PythonEngine.Initialize();
