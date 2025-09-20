@@ -22,35 +22,30 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-namespace GoldSrc2Sven.Context;
+namespace GoldSrc2Sven.Upgrades;
 
+using GoldSrc2Sven.Context;
 using GoldSrc2Sven.BSP;
-using Mikk.Logger;
 
-/// <summary>
-/// Base class for generic map upgrades
-/// </summary>
-public interface IMapUpgrade
+public class FixEnvBeamStrikeTime : IMapUpgrade
 {
-}
+    public FixEnvBeamStrikeTime( MapUpgrades upgrader )
+    {
+        int fixes = 0;
 
-/// <summary>
-/// Contains generic map upgrades you can apply to your map
-/// </summary>
-public class MapUpgrades( Map owner )
-{
-    // -TODO Maybe we should create a own logger for each Map where the BSP file name is the logger name?
-    public readonly Logger logger = owner.owner.logger;
-    public readonly Map _owner = owner;
-    public readonly List<Entity> entities = owner.entities;
+        foreach( Entity entity in upgrader.entities
+            .Where( e => e.GetString( "classname" ) == "env_beam" && e.GetFloat( "striketime" ) < 0 ) )
+        {
+            fixes++;
+            entity.SetInteger( "striketime", 0 );
+        }
 
-    /// <summary>
-    /// Fix Half-Life loop-type ambient_generic not looping in Sven Co-op.
-    /// </summary>
-    public IMapUpgrade FixAmbientGenericNonLooping => new Upgrades.FixAmbientGenericNonLooping( this );
-
-    /// <summary>
-    /// Fix env_beam with bad striketime on a negative value causing massive cpu usage in Sven Co-op.
-    /// </summary>
-    public IMapUpgrade FixEnvBeamStrikeTime => new Upgrades.FixEnvBeamStrikeTime( this );
+        if( fixes > 0 )
+        {
+            upgrader.logger.trace
+                .Write( "Fixed " )
+                .Write( fixes.ToString(), ConsoleColor.Green )
+                .WriteLine( " ambient_generic entities that should be on loop" );
+        }
+    }
 }

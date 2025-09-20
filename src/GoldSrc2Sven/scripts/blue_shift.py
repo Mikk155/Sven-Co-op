@@ -44,10 +44,6 @@ def upgrade_map( context: Map ) -> None:
     context.owner.logger.info.WriteLine( "Called upgrade_map", ConsoleColor.Blue );
 
     # -TODO These are momentarly and will be made in C# later.
-    from shared.FixAmbientGeneric import FixAmbientGeneric;
-    FixAmbientGeneric( context );
-    from shared.FixEnvBeam import FixEnvBeam;
-    FixEnvBeam( context );
     from shared.FixTriggerChangelevel import FixTriggerChangelevel;
     FixTriggerChangelevel( context );
     from shared.RemapEntities import RemapEntities;
@@ -56,6 +52,7 @@ def upgrade_map( context: Map ) -> None:
     RemoveGlobalName( context );
 
     context.upgrade.FixAmbientGenericNonLooping;
+    context.upgrade.FixEnvBeamStrikeTime;
 
     for entity in context.entities:
 

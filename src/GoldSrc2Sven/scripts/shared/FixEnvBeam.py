@@ -1,10 +1,11 @@
-'''Fix env_beam with bad striketime on a negative value causing massive cpu usage in Sven Co-op.'''
+'''**deprecated** Fix env_beam with bad striketime on a negative value causing massive cpu usage in Sven Co-op.'''
 
 from netapi.NET import *
 
+@deprecated( "context.upgrade.FixEnvBeamStrikeTime", True, False )
 def FixEnvBeam( context: Map ) -> None:
 
-    '''Fix env_beam with bad striketime on a negative value causing massive cpu usage in Sven Co-op.'''
+    '''**deprecated** Fix env_beam with bad striketime on a negative value causing massive cpu usage in Sven Co-op.'''
 
     for entity in context.entities:
 
