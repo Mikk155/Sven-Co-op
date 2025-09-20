@@ -22,60 +22,26 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+namespace GoldSrc2Sven;
+
 using Mikk.Logger;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 public static class ConfigContext
 {
     public static readonly Logger logger = new Logger( "Configuration", ConsoleColor.DarkRed );
-
-#pragma warning disable CS8601 // Possible null reference assignment.
-    public static JObject cache = (JObject?)JsonConvert.DeserializeObject( File.ReadAllText( ConfigContext.FilePath ) );
-#pragma warning restore CS8601
-
-    private static string GetConfigPath()
-    {
-        string AppFolder = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "GoldSrc2Sven" );
-
-        if( !Directory.Exists( AppFolder ) )
-        {
-            Directory.CreateDirectory( AppFolder );
-        }
-
-        string ConfigFile = Path.Combine( AppFolder, "config.json" );
-
-        if( !File.Exists( ConfigFile ) )
-        {
-            File.WriteAllText( ConfigFile, "{}" );
-        }
-
-        return ConfigFile;
-    }
-
-    /// <summary>
-    /// Get the config.json absulote path
-    /// </summary>
-    public static string FilePath =>
-        ConfigContext.GetConfigPath();
-
-    public static void Write()
-    {
-        File.WriteAllText( ConfigContext.FilePath, JsonConvert.SerializeObject( ConfigContext.cache, Formatting.Indented ) );
-    }
 
     public static void Get( string key, Func<string, bool> validator, string? additional_info = null )
     {
         while( true )
         {
             // Try to use the cached one
-            string? value = ConfigContext.cache[ key ]?.ToString();
+            string? value = App.cache.Get<string>( key );
 
             try
             {
                 if( !string.IsNullOrEmpty( value ) && validator( value ) )
                 {
-                    ConfigContext.Write();
+                    App.cache.Write();
                     break;
                 }
             }
@@ -96,7 +62,7 @@ public static class ConfigContext
 
             if( !string.IsNullOrEmpty( input ) )
             {
-                ConfigContext.cache[ key ] = input;
+                App.cache.data[ key ] = input;
             }
         }
     }

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\external\MikkNET\Mikk.Logger\Mikk.Logger.csproj" />
     <ProjectReference Include="..\..\external\MikkNET\Mikk.Arguments\Mikk.Arguments.csproj" />
+    <ProjectReference Include="..\..\external\MikkNET\Mikk.Cache\Mikk.Cache.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">

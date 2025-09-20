@@ -165,7 +165,7 @@ public class Upgrade
             }
         }
 
-        if( GameInstallationPath is not null && !ConfigContext.cache.ContainsKey( env_name ) )
+        if( GameInstallationPath is not null && !App.cache.data.ContainsKey( env_name ) )
         {
             Console.WriteLine( $"Detected {game_name} installation at \"{GameInstallationPath}\"" );
             Console.WriteLine( $"Want to override with a custom path? Y/N" );
@@ -177,7 +177,7 @@ public class Upgrade
             }
             else
             {
-                ConfigContext.Write();
+                App.cache.Write();
             }
         }
 

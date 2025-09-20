@@ -26,6 +26,7 @@ namespace GoldSrc2Sven;
 
 using Mikk.Logger;
 using Mikk.Arguments;
+using Mikk.Cache;
 
 public static class App
 {
@@ -41,8 +42,16 @@ public static class App
     /// </summary>
     public static engine.ScriptEngine engine = null!;
 
+    /// <summary>
+    /// Cache object
+    /// </summary>
+    public static Cache cache = null!;
+
     public static void Main( params string[] args )
     {
+        App.cache = new Cache( Path.Combine(
+            Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), "GoldSrc2Sven", "cache.json" ) );
+
         App.arguments = new Arguments( args );
 
         App.engine = new engine.ScriptEngine();

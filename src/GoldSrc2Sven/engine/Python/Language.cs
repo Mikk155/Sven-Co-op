@@ -59,7 +59,7 @@ public class Language : ILanguage
 #endif // DEBUG
 
         // Momentary while is not embeded
-        if( !ConfigContext.cache.ContainsKey( "python_binary" ) && RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
+        if( !App.cache.data.ContainsKey( "python_binary" ) && RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
         {
             Language.logger.info.WriteLine( "Attempting to automatically detect a Python installation..." );
 
@@ -90,7 +90,8 @@ public class Language : ILanguage
 
                 if( dll.Length > 0 )
                 {
-                    ConfigContext.cache[ "python_binary" ] = dll[0];
+                    App.cache.data[ "python_binary" ] = dll[0];
+                    App.cache.Write();
                 }
             }
             catch {}
