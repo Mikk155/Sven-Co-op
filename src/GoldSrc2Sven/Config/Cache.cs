@@ -58,8 +58,7 @@ public static class ConfigContext
                 // If validator didn't throw an exception then is safe to assume everything has been setup propertly.
                 if( !string.IsNullOrWhiteSpace( value ) && validator( value ) )
                 {
-                    cache.data[ key ] = value;
-                    cache.Write();
+                    cache[ key ] = value;
                     break;
                 }
             }

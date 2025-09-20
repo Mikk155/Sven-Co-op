@@ -178,8 +178,7 @@ public class Upgrade
             }
             else
             {
-                App.cache.data[ env_name ] = GameInstallationPath;
-                App.cache.Write();
+                App.cache[ env_name ] = GameInstallationPath;
             }
         }
 
