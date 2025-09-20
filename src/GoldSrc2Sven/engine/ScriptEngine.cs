@@ -51,8 +51,8 @@ public class ScriptEngine
             {
                 ILanguage language = (ILanguage)Activator.CreateInstance( type )!;
 
-                ScriptEngine.logger.info
-                    .Write( "Initializing scripting language \"" )
+                ScriptEngine.logger.trace
+                    .Write( "Constructing scripting language \"" )
                     .Write( language.GetName(), ConsoleColor.Green )
                     .WriteLine( "\" " );
 
