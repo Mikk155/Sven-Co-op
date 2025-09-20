@@ -1,0 +1,32 @@
+GoldSrc4Sven
+Copyright (c) 2025 Mikk155. All rights reserved.
+
+This software is provided "as is", without warranty of any kind.  
+Use of this program is at your own risk.  
+The authors and contributors are not responsible for any misuse or damages arising from the use of this software.
+
+--- LICENSE TERMS ---
+
+1. SOURCE CODE
+   - The source code of this project is made available under a permissive license.
+   - The original MIT-licensed components included in this project retain their licenses and copyright notices.
+   - Any distribution of modified versions of this software must:
+     1) Preserve references to the original project (GoldSrc4Sven).
+     2) Retain all third-party licenses located in the LICENSE/ directory intact.
+
+2. PROGRAM USAGE
+   - You may use this program for personal or server administration purposes.
+   - You are prohibited from publishing or redistributing updated game content produced by this tool without:
+     1) The explicit approval of the original content authors.
+     2) The explicit approval of the GoldSrc4Sven maintainer(s).
+   - Exceptions: isolated redistribution for server fast-download is allowed.
+
+3. LEGAL NOTICE
+   - This software modifies content from commercial and/or free games.
+   - The user is solely responsible for ensuring they hold the legal rights to use, convert, or distribute such content.
+   - The authors of GoldSrc4Sven disclaim any liability for the legality of such use.
+
+4. SECURITY WARNING
+   - This program supports scripting to automate asset upgrades.
+   - Third-party scripts can potentially be malicious or harmful.
+   - Users are solely responsible for verifying the safety and trustworthiness of any third-party script they execute with this software.
