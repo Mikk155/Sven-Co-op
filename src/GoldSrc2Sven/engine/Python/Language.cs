@@ -94,6 +94,11 @@ public class Language : ILanguage
                 if( dll.Length > 0 )
                 {
                     autodetect_dll = dll[0];
+
+                    Language.logger.info
+                        .Write( "Python installation detected at \"" )
+                        .Write( autodetect_dll, ConsoleColor.Green )
+                        .WriteLine( "\"" );
                 }
             }
             catch {}
