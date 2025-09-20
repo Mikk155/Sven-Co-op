@@ -31,10 +31,10 @@ public static class ConfigContext
     /// <summary>
     /// Gets a value for the given key. if it doesn't exists we'll ask the user in a loop until validator doesn't throw any exception
     /// </summary>
-    public static void UserConfig( this Cache cache, string key, Func<string, bool> validator, string title )
+    public static void UserConfig( this Cache cache, string key, Func<string, bool> validator, string title, string? default_value = null )
     {
         // Try first to use the defined if any
-        string? value = cache.Get<string>( key );
+        string? value = default_value is null ? cache.Get<string>( key ) : cache.Get<string>( key, default_value );
 
         if( value is null )
         {

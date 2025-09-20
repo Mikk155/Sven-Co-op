@@ -59,6 +59,8 @@ public class Language : ILanguage
         new PythonNET(); // Generate docs for python Type hints
 #endif // DEBUG
 
+        string? autodetect_dll = null;
+        
         // Momentary while is not embeded
         if( !App.cache.data.ContainsKey( "python_binary" ) && RuntimeInformation.IsOSPlatform( OSPlatform.Windows ) )
         {
@@ -91,19 +93,23 @@ public class Language : ILanguage
 
                 if( dll.Length > 0 )
                 {
-                    App.cache.data[ "python_binary" ] = dll[0];
-                    App.cache.Write();
+                    autodetect_dll = dll[0];
                 }
             }
             catch {}
         }
 
-        App.cache.UserConfig( "python_binary", value =>
-        {
-            Runtime.PythonDLL = value;
-            PythonEngine.Initialize();
-            return true; // No exception raised. break the loop
-        }, "Absolute path to your Python dll, it usually looks like \"C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python311\\python311.dll\" You can drag and drop the dll too." );
+        App.cache.UserConfig(
+            "python_binary",
+            value =>
+            {
+                Runtime.PythonDLL = value;
+                PythonEngine.Initialize();
+                return true; // No exception raised. break the loop
+            },
+            "Absolute path to your Python dll, it usually looks like \"C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python311\\python311.dll\" You can drag and drop the dll too.",
+            autodetect_dll
+        );
     }
 
     public Context.Upgrade? register_context( string script )
