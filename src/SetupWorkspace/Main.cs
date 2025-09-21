@@ -12,6 +12,9 @@ public static class App
         public static string GitDirectory => Path.Combine( Directory.GetCurrentDirectory(), App.Github.Repository );
     }
 
+    public static readonly Cache cache = new Cache( Path.Combine(
+        Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData ), App.Github.Repository, "cache.json" ) );
+
     private static List<IProject> Projects = new List<IProject>()
     {
         new CloneRepository()
