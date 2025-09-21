@@ -32,7 +32,7 @@ public static class App
 
                 proj.Initialize( log );
             }
-            else if( UserInstall( proj ) )
+            else if( UserAccept( proj.GetHeader() ) )
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Write( "Setting up " );
@@ -45,9 +45,9 @@ public static class App
         }
     }
 
-    private static bool UserInstall( IProject proj )
+    private static bool UserAccept( string Title )
     {
-        Console.WriteLine( proj.GetHeader() );
+        Console.WriteLine( Title );
 
         Console.WriteLine( " 1: Yes" );
         Console.WriteLine( " 2: No" );
