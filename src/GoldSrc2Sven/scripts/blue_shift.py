@@ -46,13 +46,12 @@ def upgrade_map( context: Map ) -> None:
     # -TODO These are momentarly and will be made in C# later.
     from shared.FixTriggerChangelevel import FixTriggerChangelevel;
     FixTriggerChangelevel( context );
-    from shared.RemapEntities import RemapEntities;
-    RemapEntities( context );
     from shared.RemoveGlobalName import RemoveGlobalName;
     RemoveGlobalName( context );
 
     context.upgrade.FixAmbientGenericNonLooping;
     context.upgrade.FixEnvBeamStrikeTime;
+    context.upgrade.RemapEntities;
 
     for entity in context.entities:
 

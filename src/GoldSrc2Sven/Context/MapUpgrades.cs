@@ -53,4 +53,9 @@ public class MapUpgrades( Map owner )
     /// Fix env_beam with bad striketime on a negative value causing massive cpu usage in Sven Co-op.
     /// </summary>
     public IMapUpgrade FixEnvBeamStrikeTime => new Upgrades.FixEnvBeamStrikeTime( this );
+
+    /// <summary>
+    /// Remap some entities to match Sven Co-op and MP
+    /// </summary>
+    public IMapUpgrade RemapEntities => new Upgrades.RemapEntities( this );
 }
