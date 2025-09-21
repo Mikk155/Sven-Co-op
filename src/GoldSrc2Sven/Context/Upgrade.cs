@@ -27,7 +27,6 @@ namespace GoldSrc2Sven.Context;
 using Mikk.Logger;
 
 using GoldSrc2Sven.engine;
-using GoldSrc2Sven.Config;
 
 #pragma warning disable IDE1006 // Naming Styles
 /// <summary>Represents a context for upgrading</summary>

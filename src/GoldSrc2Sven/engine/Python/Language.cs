@@ -24,7 +24,6 @@ DEALINGS IN THE SOFTWARE.
 
 namespace GoldSrc2Sven.engine.python;
 
-using GoldSrc2Sven.Config;
 using Mikk.Logger;
 using Python.Runtime;
 
