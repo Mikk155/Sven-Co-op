@@ -4,6 +4,14 @@ using Newtonsoft.Json;
 
 public static class App
 {
+    public static class Github
+    {
+        public const string User = "Mikk155";
+        public const string Repository = "Sven-Co-op";
+        public static string Url => $"https://github.com/{App.Github.User}/{App.Github.Repository}";
+        public static string GitDirectory => Path.Combine( Directory.GetCurrentDirectory(), App.Github.Repository );
+    }
+
     private static List<IProject> Projects = new List<IProject>()
     {
         new CloneRepository()
