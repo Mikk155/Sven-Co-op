@@ -6,7 +6,7 @@ public static class App
 {
     private static List<IProject> Projects = new List<IProject>()
     {
-        new AngelScript()
+        new CloneRepository()
     };
 
     public static void Main()
@@ -15,26 +15,69 @@ public static class App
 
         foreach( IProject proj in Projects )
         {
-            string name = proj.GetName();
+            if( proj.Exists() )
+                continue;
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write( "Setting up " );
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine( name );
-            Console.ResetColor();
+            string name = proj.GetName();
 
             Logger log = new Logger( name );
 
             if( proj.Required() )
             {
-                proj.Initialize( log );
-            }
-            else
-            {
-                proj.Initialize( log );
-            }
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write( "Setting up " );
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine( name );
+                Console.ResetColor();
 
-            proj.Shutdown( log );
+                proj.Initialize( log );
+            }
+            else if( UserInstall( proj ) )
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write( "Setting up " );
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine( name );
+                Console.ResetColor();
+
+                proj.Initialize( log );
+            }
         }
+    }
+
+    private static bool UserInstall( IProject proj )
+    {
+        Console.WriteLine( proj.GetHeader() );
+
+        Console.WriteLine( " 1: Yes" );
+        Console.WriteLine( " 2: No" );
+
+        string? input;
+        int option = 0;
+
+        (int left, int right) = Console.GetCursorPosition();
+
+        while( option != 1 && option != 2 )
+        {
+            input = Console.ReadLine();
+
+            Console.SetCursorPosition( left, right );
+
+            if( string.IsNullOrEmpty( input ) )
+                continue;
+
+            if( int.TryParse( input, out option ) )
+            {
+                if( option == 2 )
+                {
+                    return false;
+                }
+                if( option == 1 )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
