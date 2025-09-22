@@ -10,29 +10,99 @@
 
 <div id="content">
 
-  <h1>Dependancy</h1>
-  <p>This repository relies on <a href="https://dotnet.microsoft.com/download/dotnet/9.0" target="_blank">.NET 9.0</a> and is required for easy-setup.</p>
-  <a href="https://dotnet.microsoft.com/download/dotnet/9.0" target="_blank"><img src="assets/images/csharp_dotnet.png" width="450"></a>
-  <p>You can still set up stuff manually but is recomended to just use the provided program once.</p>
-
   <h1>Setup</h1>
   <div class="code-block">
     <button onclick="ClipboardCopy( 'git-clone' )" title="Copy">📋</button>
-    <pre>
       <code id="git-clone">
 git clone https://github.com/Mikk155/Sven-Co-op.git
-cd Sven-Co-op
-cd scripts
-cd setup
-dotnet run
       </code>
-    </pre>
   </div>
-  <br>
 
-  <h1>GoldSrc2Sven</h1>
-  <p>Documentation on how to use the C# <a href="https://dotnet.microsoft.com/download/dotnet/9.0" target="_blank">.NET</a> GoldSrc2Sven tool can be found in <a href="GoldSrc2Sven.html">here</a>.</p>
-  <br>
+  <h1>Metamod</h1>
+  <p>If you want to contribute to the metamod plugin aslp you'll need additional dependancies</p>
+  <p>Enter the repository directory and install the dependancies</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'metamod-submodules' )" title="Copy">📋</button>
+      <code id="metamod-submodules">
+git submodule update --init --remote external/fmt
+<br>
+git submodule update --init --remote external/json
+<br>
+git submodule update --init --remote external/metamod
+      </code>
+  </div>
+  <p>Generate the project solution from CMakeLists.</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'metamod-build' )" title="Copy">📋</button>
+      <code id="metamod-build">
+mkdir build\aslp
+      </code>
+  </div>
+  <p>Add your absolute path to the dlls folder for copying the binaries post compile.</p>
+  <p>Windows</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'metamod-build' )" title="Copy">📋</button>
+      <code id="metamod-build">
+cmake -A Win32 -S "src/aslp" -B "build/aslp" -DCMAKE_INSTALL_PREFIX="C:\Program Files (x86)\Steam\steamapps\common\Sven Co-op\svencoop\addons\metamod\dlls"
+      </code>
+  </div>
+  <p>Test compile</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'metamod-test' )" title="Copy">📋</button>
+      <code id="metamod-test">
+cmake --build "build\aslp" --config Debug --clean-first --target install
+      </code>
+  </div>
+  <p>plugins.ini</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'metamod-plugins' )" title="Copy">📋</button>
+      <code id="metamod-plugins">
+win32 addons/metamod/dlls/aslp.dll
+<br>
+linux addons/metamod/dlls/aslp.so
+      </code>
+  </div>
+  <!--This is for myself as i rarely launch VS lol-->
+  <p>You can create a .bat file in build/aslp/</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'metamod-bat' )" title="Copy">📋</button>
+      <code id="metamod-bat">
+@echo off
+<br>
+cmake --build . --config Debug --clean-first --target install
+<br>
+if %ERRORLEVEL% NEQ 0 (
+<br>
+    pause
+<br>
+    exit /b %ERRORLEVEL%
+<br>
+)
+      </code>
+  </div>
+
+  <h1>C# tools</h1>
+  <p>Any C# program will most likely require the MikkNET submodule (Lack of imagination for a proper name lol)</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'NET-submodules' )" title="Copy">📋</button>
+      <code id="NET-submodules">
+git submodule update --init --remote external/MikkNET
+      </code>
+  </div>
+
+  <h1>AngelScript</h1>
+  <p>I wrote the code-runner C# program for myself but you're free to compile and use it</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'code-runner' )" title="Copy">📋</button>
+      <code id="code-runner">
+cd src
+<br>
+cd code-runner
+<br>
+dotnet build code-runner.sln
+      </code>
+  </div>
+  <p>Install the extension "Code Runner" linked bellow and it should install required assets into Sven Co-op
 
   <h1><img src="assets/images/vscode.png" width="25"> Visual Studio Code recomended extensions</h1>
   <div class="table-wrap">
@@ -58,7 +128,6 @@ dotnet run
       </tbody>
     </table>
   </div>
-  <br>
 
 </div>
 
