@@ -1,7 +1,7 @@
 {
     "code-runner.executorMapByFileExtension":
     {
-        ".as": ".\\code-runner $fullFileName"
+        ".as": ".\\build/code-runner/code-runner $fullFileName"
     },
     "code-runner.runInTerminal": true,
 
@@ -11,7 +11,7 @@
         [
             {
                 "match": "\\assets.json$",
-                "cmd": "start cmd /c code-runner ${file}"
+                "cmd": "start cmd /c build/code-runner/code-runner ${file}"
             }
         ]
     },
