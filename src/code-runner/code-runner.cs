@@ -86,7 +86,14 @@ class AngelScriptAssets( string AbsoluteDirectory )
 
 class App
 {
-    public static string Workspace => Path.Combine( Directory.GetCurrentDirectory(), "..", "..", "src" );
+    public static string AppDirectory = null!;
+
+    public static string Workspace {
+        get {
+            return Path.Combine( App.AppDirectory, "..", "..", "src" );
+        }
+    }
+
     public static string SvenCoop => App.m_SvenCoopPath;
 
     private static Dictionary<string, string> Config = null!;
@@ -99,6 +106,13 @@ class App
 
     public static void Main( string[] Arguments )
     {
+        App.AppDirectory = Directory.GetCurrentDirectory();
+
+        if( !App.AppDirectory.EndsWith( "code-runner" ) )
+        {
+            App.AppDirectory = Path.Combine( App.AppDirectory, "build", "code-runner" );
+        }
+
         App.GetConfig();
 
         AngelScriptAssets ASFile = new AngelScriptAssets( Arguments[0] );
@@ -108,8 +122,8 @@ class App
 
     private static void GetConfig()
     {
-        m_SettingsPath = Path.Combine( Directory.GetCurrentDirectory(), "settings.json" );
-        m_PackagePath = Path.Combine( Directory.GetCurrentDirectory(), "package.json" );
+        m_SettingsPath = Path.Combine( App.AppDirectory, "settings.json" );
+        m_PackagePath = Path.Combine( App.AppDirectory, "package.json" );
 
         if( !File.Exists( m_SettingsPath ) )
         {
