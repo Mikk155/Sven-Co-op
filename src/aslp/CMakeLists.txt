@@ -85,14 +85,14 @@ add_subdirectory(
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json )
 
-set( FMT_INSTALL OFF CACHE BOOL "" FORCE )
+# set( FMT_INSTALL OFF CACHE BOOL "" FORCE )
 
-add_subdirectory(
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt
-    ${CMAKE_CURRENT_BINARY_DIR}/external/fmt
-)
+# add_subdirectory(
+#     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt
+#     ${CMAKE_CURRENT_BINARY_DIR}/external/fmt
+# )
 
-target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
+# target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}" )
 
