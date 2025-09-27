@@ -58,4 +58,9 @@ public class MapUpgrades( Map owner )
     /// Remap some entities to match Sven Co-op and MP
     /// </summary>
     public IMapUpgrade RemapEntities => new Upgrades.RemapEntities( this );
+
+    /// <summary>
+    /// Multiple fixes and upgrades for Counter-Strike 1.6 maps
+    /// </summary>
+    public IMapUpgrade CS16Upgrades => new Upgrades.CS16Upgrades( this );
 }
