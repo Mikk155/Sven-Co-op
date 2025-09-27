@@ -50,7 +50,7 @@ cmake -A Win32 -S "src/aslp" -B "build/aslp" -DCMAKE_INSTALL_PREFIX="C:\Program 
   <div class="code-block">
     <button onclick="ClipboardCopy( 'metamod-test' )" title="Copy">📋</button>
       <code id="metamod-test">
-cmake --build "build\aslp" --config Debug --clean-first --target install
+cmake --build "build\aslp" --config Release --clean-first --target install
       </code>
   </div>
   <p>plugins.ini</p>
@@ -69,7 +69,7 @@ linux addons/metamod/dlls/aslp.so
       <code id="metamod-bat">
 @echo off
 <br>
-cmake --build . --config Debug --clean-first --target install
+cmake --build . --config Release --clean-first --target install
 <br>
 if %ERRORLEVEL% NEQ 0 (
 <br>
