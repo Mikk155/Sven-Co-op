@@ -25,7 +25,6 @@ DEALINGS IN THE SOFTWARE.
 namespace GoldSrc2Sven;
 
 using Mikk.Logger;
-using Mikk.Arguments;
 using Mikk.Cache;
 
 public static class App
@@ -35,7 +34,7 @@ public static class App
     /// <summary>
     /// Arguments provided on the App's execution
     /// </summary>
-    public static Arguments arguments = null!;
+    public static string[] arguments = null!;
 
     /// <summary>
     /// Scripting engine and all the supported languages
@@ -51,7 +50,7 @@ public static class App
     {
         App.cache = new Cache( Path.Combine( Directory.GetCurrentDirectory(), "cache.json" ) );
 
-        App.arguments = new Arguments( args );
+        App.arguments = args;
 
         App.engine = new engine.ScriptEngine();
 

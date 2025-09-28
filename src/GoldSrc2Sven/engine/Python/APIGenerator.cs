@@ -350,7 +350,7 @@ public class PythonNET
 
     public PythonNET()
     {
-        if( !App.arguments.HasArgument( "-docs" ) )
+        if( !App.arguments.Contains( "-docs" ) )
         {
             return;
         }
