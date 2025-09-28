@@ -61,7 +61,7 @@ public class Upgrade
     /// List of maps in the workspace
     /// </summary>
     public string[] maps =>
-        Directory.GetFiles( Path.Combine( App.WorkSpace, "maps" ), "*.bsp" );
+        this.assets.AssetsList.Keys.Where( key => key.EndsWith( ".bsp" ) ).ToArray();
 
     // -TODO These members aren't exported to python API
     /// <summary>Title to display as an option.</summary>
