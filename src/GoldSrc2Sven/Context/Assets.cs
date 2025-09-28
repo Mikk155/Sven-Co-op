@@ -139,9 +139,4 @@ public class Assets()
                 .WriteLine( "\" Up-to-date" );
         }
     }
-
-    ~Assets()
-    {
-        this.owner = null;
-    }
 }

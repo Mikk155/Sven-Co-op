@@ -248,7 +248,6 @@ public class Upgrade
 
     public void Shutdown()
     {
-        this.assets = null!;
     }
 }
 #pragma warning restore IDE1006 // Naming Styles
