@@ -47,8 +47,6 @@ public class Assets()
 
         string? wildcard = null;
 
-        Dictionary<string, string> assets = new Dictionary<string, string>();
-
         string[] src_folders = src.Split( "/" );
 
         string directory = this.owner.GetModPath();
@@ -99,6 +97,8 @@ public class Assets()
                 .NewLine();
             return;
         }
+
+        AssetsList[ src ] = destination;
 
         string? folder = Path.GetDirectoryName( destination );
 
