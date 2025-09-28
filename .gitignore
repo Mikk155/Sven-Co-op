@@ -4,6 +4,9 @@ as.predefined
 src/GoldSrc2Sven/cache.json
 src/GoldSrc2Sven/workspace/*
 
+src/Titles2GameText/titles.json
+src/Titles2GameText/titles.ent
+
 # Python https://github.com/github/gitignore/blob/main/Python.gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
