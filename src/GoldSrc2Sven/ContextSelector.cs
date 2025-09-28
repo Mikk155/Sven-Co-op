@@ -78,8 +78,10 @@ public class ContextSelector
 
 //        Console.BackgroundColor = ConsoleColor.DarkGray;
 
+#if false // somehow this throws exception
         ( int Left, int Top ) = Console.GetCursorPosition();
         ContextSelector.menu = [ Left, Top ];
+#endif
 
         string? input;
 

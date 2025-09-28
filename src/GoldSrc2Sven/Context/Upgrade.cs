@@ -109,8 +109,6 @@ public class Upgrade
             log.WriteLine( url, ConsoleColor.Yellow );
         }
 
-        log.Call( App.Shutdown ).Pause().Exit();
-
         return string.Empty;
     }
 
@@ -222,32 +220,15 @@ public class Upgrade
         return _GetSteamGameInstallation( "Sven Co-op", "svencoop", "Sven Co-op", "svencoop_installation" );
     }
 
-    private bool _Initialized;
-
-    public void Initialize()
+    public bool Initialize()
     {
-        if( this._Initialized )
-            return;
-
-        this._Initialized = true;
-
         this.assets.owner = this;
 
         ArgumentNullException.ThrowIfNull( this.mod );
         ArgumentNullException.ThrowIfNull( this.urls );
         ArgumentNullException.ThrowIfNull( this.title );
 
-        // Early exit if uninstalled
-        this.GetModPath();
-    }
-
-    ~Upgrade()
-    {
-        this.Shutdown();
-    }
-
-    public void Shutdown()
-    {
+        return !string.IsNullOrWhiteSpace( this.GetModPath() );
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

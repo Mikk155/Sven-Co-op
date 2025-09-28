@@ -136,9 +136,8 @@ public class Language : ILanguage
 
                 PyObject? result = Script.GetAttr( "register_context" ).Invoke( context.ToPython() );
 
-                context.Initialize();
-
-                return context;
+                if( context.Initialize() )
+                    return context;
             }
             catch( Exception exception )
             {

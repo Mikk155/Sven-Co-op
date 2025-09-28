@@ -65,7 +65,6 @@ public static class App
             App.Shutdown();
         };
 
-
         if( App.engine.Mods.Count <= 0 )
         {
             App.logger.error
@@ -105,7 +104,7 @@ public static class App
 
             context._Language.install_assets( context );
 
-            foreach( string map in Directory.GetFiles( Path.Combine( App.WorkSpace, "maps" ), "*.bsp" ) )
+            foreach( string map in context.maps )
             {
                 context.logger.info.Write( "Updating map " ).WriteLine( map, ConsoleColor.Cyan );
 
@@ -119,8 +118,6 @@ public static class App
 
                 map_context._WriteBSP();
             }
-
-            context.Shutdown();
         }
 
         App.Shutdown();
@@ -162,6 +159,9 @@ public static class App
         App.logger.debug.WriteLine( "Shutting down" );
 
         App.engine.Shutdown();
+
+        App.engine = null!;
+        App.cache = null!;
 
         Console.ResetColor();
         Console.Beep();
