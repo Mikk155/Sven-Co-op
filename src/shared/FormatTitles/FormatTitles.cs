@@ -30,14 +30,22 @@ namespace FormatTitles;
 /// </summary>
 public static class FormatTitles
 {
+    /// <summary>
+    /// Max buffer of characters in the game's Server dll that is transfered to the clients in game_text
+    /// </summary>
     public static int MaxBufferSize = 512;
+
+    /// <summary>
+    /// Set to false to supress Exceptions breaking the loop
+    /// </summary>
+    public static bool Sensitive = true;
 
     /// <summary>
     /// Return a .json like formated game_text entries
     /// </summary>
-    public static string ToJson( string[] input, bool Sensitive = false )
+    public static string ToJson( string[] input )
     {
-        List<Dictionary<string, string>> list = FormatTitles.ToList( input, Sensitive );
+        List<Dictionary<string, string>> list = FormatTitles.ToList( input );
 
         return System.Text.Json.JsonSerializer.Serialize( list,
             new System.Text.Json.JsonSerializerOptions(){
@@ -51,9 +59,9 @@ public static class FormatTitles
     /// <summary>
     /// Return a .ent like formated game_text entries
     /// </summary>
-    public static string ToEnt( string[] input, bool Sensitive = false )
+    public static string ToEnt( string[] input )
     {
-        List<Dictionary<string, string>> list = FormatTitles.ToList( input, Sensitive );
+        List<Dictionary<string, string>> list = FormatTitles.ToList( input );
 
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
@@ -82,7 +90,7 @@ public static class FormatTitles
     /// <summary>
     /// Return a list of key-value pairs representing each game_text
     /// </summary>
-    public static List<Dictionary<string, string>> ToList( string[] input, bool Sensitive = false )
+    public static List<Dictionary<string, string>> ToList( string[] input )
     {
         List<Dictionary<string, string>> entries = new List<Dictionary<string, string>>();
 
@@ -221,7 +229,7 @@ public static class FormatTitles
                             }
                             default:
                             {
-                                if( Sensitive )
+                                if( FormatTitles.Sensitive )
                                 {
 #if DEBUG
                                     throw new FormatException( $"Unknown token: {items[0]} at line \"{line}\"" );
@@ -252,7 +260,7 @@ public static class FormatTitles
                     {
                         mode = MSGType.Name;
 
-                        if( Sensitive )
+                        if( FormatTitles.Sensitive )
                         {
 #if DEBUG
                             if( string.IsNullOrWhiteSpace( entry[ "targetname" ] ) )
