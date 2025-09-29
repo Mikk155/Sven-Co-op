@@ -41,6 +41,13 @@ public static class FormatTitles
     public static bool Sensitive = true;
 
     /// <summary>
+    /// Game's titles to read and compare when trying to read a third party titles.txt so this skips already-defined titles
+    /// For example when reading a opposing force mod's titles you'll want to skip existent titles in Sven Co-op that references them and are exactly the same with the exact same values.
+    /// NOTE: This is not cleared by this class. make sure to clean up after retrieving.
+    /// </summary>
+    public static List<Dictionary<string, string>>? ExistentTitles = null;
+
+    /// <summary>
     /// Return a .json like formated game_text entries
     /// </summary>
     public static string ToJson( string[] input )
@@ -276,12 +283,13 @@ public static class FormatTitles
 
                         entry[ "message" ] = message;
 
-                        Dictionary<string, string> new_entry = new Dictionary<string, string>( entry );
+                        if( !TitleAlreadyDefined( entry ) )
+                        {
+                            entries.Add( new Dictionary<string, string>( entry ) );
+                        }
 
                         entry[ "message" ] = string.Empty;
                         entry[ "targetname" ] = string.Empty;
-
-                        entries.Add( new_entry );
 
                         break;
                     }
@@ -296,6 +304,35 @@ public static class FormatTitles
         }
 
         return entries;
+    }
+
+    // Lazy comparition
+    private static bool TitleAlreadyDefined( Dictionary<string, string> entry )
+    {
+        if( FormatTitles.ExistentTitles is null )
+            return false;
+
+        // Do this label exists in the user defined titles?
+        foreach( Dictionary<string, string> existent in FormatTitles.ExistentTitles
+            .Where( e => e[ "targetname" ] == entry[ "targetname" ] ) )
+        {
+            // Do we have the same key-value-pair count?
+            if( entry.Count != existent.Count )
+                return false;
+
+            foreach( KeyValuePair<string, string> kv in existent )
+            {
+                // Do we have the sames keys?
+                if( !entry.TryGetValue( kv.Key, out string? s_value ) )
+                    return false;
+
+                // Do we have the same values?
+                if( kv.Value != s_value )
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     private enum MSGType

@@ -32,8 +32,19 @@ public static class App
 
             if( File.Exists( file_path ) )
             {
+                // We want exceptions to be thrown with this program
+                FormatTitles.FormatTitles.Sensitive = true;
+                // Does this buffer has been updated in sven?
+                FormatTitles.FormatTitles.MaxBufferSize = 512;
+
                 try
                 {
+                    // Did the user provided a sven titles?
+                    if( args.Length > 1 )
+                    {
+                        FormatTitles.FormatTitles.ExistentTitles = FormatTitles.FormatTitles.ToList( File.ReadAllLines( args[1] ) );
+                    }
+
                     string[] content = File.ReadAllLines( file_path );
 
                     string file_name = Path.GetFileNameWithoutExtension( file_path );
@@ -44,11 +55,13 @@ public static class App
 
                     string ent_path = Path.Combine( Directory.GetCurrentDirectory(), $"{file_name}.ent" );
                     Console.WriteLine( ent_path );
-                    File.WriteAllText( ent_path, FormatTitles.FormatTitles.ToEnt( content, true ) );
+                    File.WriteAllText( ent_path, FormatTitles.FormatTitles.ToEnt( content ) );
 
                     string json_path = Path.Combine( Directory.GetCurrentDirectory(), $"{file_name}.json" );
                     Console.WriteLine( json_path );
-                    File.WriteAllText( json_path, FormatTitles.FormatTitles.ToJson( content, true ) );
+                    File.WriteAllText( json_path, FormatTitles.FormatTitles.ToJson( content ) );
+
+                    FormatTitles.FormatTitles.ExistentTitles = null;
                 }
                 catch( Exception exception )
                 {
