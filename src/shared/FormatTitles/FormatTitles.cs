@@ -26,17 +26,16 @@ namespace FormatTitles;
 
 /// <summary>
 /// Format a string representing titles.txt into game_text entities for Sven Co-op as they don't allow cool stuff x[
+/// Ref: https://github.com/FWGS/xash3d-fwgs/blob/master/engine/client/titles.c
 /// </summary>
 public static class FormatTitles
 {
-    private static void Reset()
-    {
-    }
+    public static int MaxBufferSize = 512;
 
     /// <summary>
     /// Return a .json like formated game_text entries
     /// </summary>
-    public static string ToJson( string input )
+    public static string ToJson( string[] input )
     {
         List<Dictionary<string, string>> list = FormatTitles.ToList( input );
 
@@ -52,7 +51,7 @@ public static class FormatTitles
     /// <summary>
     /// Return a .ent like formated game_text entries
     /// </summary>
-    public static string ToEnt( string input )
+    public static string ToEnt( string[] input )
     {
         List<Dictionary<string, string>> list = FormatTitles.ToList( input );
 
@@ -83,18 +82,212 @@ public static class FormatTitles
     /// <summary>
     /// Return a list of key-value pairs representing each game_text
     /// </summary>
-    public static List<Dictionary<string, string>> ToList( string input )
+    public static List<Dictionary<string, string>> ToList( string[] input )
     {
-        List<Dictionary<string, string>> entities = new List<Dictionary<string, string>>();
+        List<Dictionary<string, string>> entries = new List<Dictionary<string, string>>();
 
-        Dictionary<string, string> entity = new Dictionary<string, string>();
+        Dictionary<string, string> entry = new Dictionary<string, string>();
 
-        entity[ "classname" ] = "game_text";
+        entry[ "classname" ] = "game_text";
 
-        entities.Add( entity );
+        MSGType mode = MSGType.Name;
 
-        FormatTitles.Reset();
+//        string[] lines = input.Split( '\n', StringSplitOptions.RemoveEmptyEntries  | StringSplitOptions.TrimEntries );
 
-        return entities;
+#if DEBUG
+        int i = 0;
+#endif
+
+        string message = string.Empty;
+
+        foreach( string line in input )
+        {
+            if( string.IsNullOrWhiteSpace( line ) )
+                continue;
+
+            switch( mode )
+            {
+                case MSGType.Name:
+                {
+                    if( line.StartsWith( "//" ) )
+                        break;
+
+                    // Is this a directive "$command"?, if so parse it and break
+                    if( line[0] == '$' )
+                    {
+                        string[] items = line.Split( ' ' );
+
+                        switch( items[0] )
+                        {
+                            case "$position":
+                            {
+                                if( items.Length > 1 && int.TryParse( items[1], out int x ) )
+                                {
+                                    entry[ "x" ] = x.ToString();
+                                }
+
+                                if( items.Length > 2 && int.TryParse( items[2], out int y ) )
+                                {
+                                    entry[ "y" ] = y.ToString();
+                                }
+
+                                break;
+                            }
+                            case "$effect":
+                            {
+                                if( items.Length > 1 && int.TryParse( items[1], out int effect ) )
+                                {
+                                    entry[ "effect" ] = effect.ToString();
+                                }
+                                break;
+                            }
+                            case "$fxtime":
+                            {
+                                if( items.Length > 1 && float.TryParse( items[1], out float fxtime ) )
+                                {
+                                    entry[ "fxtime" ] = fxtime.ToString();
+                                }
+                                break;
+                            }
+                            case "$color":
+                            {
+                                List<int> color = new List<int>(){ 0, 0, 0 };
+
+                                if( items.Length > 1 && int.TryParse( items[1], out int r ) )
+                                {
+                                    color[0] = r;
+                                }
+
+                                if( items.Length > 2 && int.TryParse( items[2], out int g ) )
+                                {
+                                    color[0] = g;
+                                }
+
+                                if( items.Length > 3 && int.TryParse( items[3], out int b ) )
+                                {
+                                    color[0] = b;
+                                }
+
+                                entry[ "color" ] = string.Join( ' ', color );
+
+                                break;
+                            }
+                            case "$color2":
+                            {
+                                List<int> color = new List<int>(){ 0, 0, 0 };
+
+                                if( items.Length > 1 && int.TryParse( items[1], out int r ) )
+                                {
+                                    color[0] = r;
+                                }
+
+                                if( items.Length > 2 && int.TryParse( items[2], out int g ) )
+                                {
+                                    color[0] = g;
+                                }
+
+                                if( items.Length > 3 && int.TryParse( items[3], out int b ) )
+                                {
+                                    color[0] = b;
+                                }
+
+                                entry[ "color2" ] = string.Join( ' ', color );
+
+                                break;
+                            }
+                            case "$fadein":
+                            {
+                                if( items.Length > 1 && float.TryParse( items[1], out float fadein ) )
+                                {
+                                    entry[ "fadein" ] = fadein.ToString();
+                                }
+                                break;
+                            }
+                            case "$fadeout":
+                            {
+                                if( items.Length > 1 && float.TryParse( items[1], out float fadeout ) )
+                                {
+                                    entry[ "fadeout" ] = fadeout.ToString();
+                                }
+                                break;
+                            }
+                            case "$holdtime":
+                            {
+                                if( items.Length > 1 && float.TryParse( items[1], out float holdtime ) )
+                                {
+                                    entry[ "holdtime" ] = holdtime.ToString();
+                                }
+                                break;
+                            }
+                            default:
+                            {
+#if DEBUG
+                                throw new FormatException( $"Unknown token: {items[0]} at line \"{line}\"" );
+#else
+                                throw new FormatException( $"Unknown token: {items[0]} at line {i} \"{line}\"" );
+#endif
+                            }
+                        }
+                        break;
+                    }
+
+                    if( line[0] == '{' )
+                    {
+                        mode = MSGType.Content;
+                        message = string.Empty;
+                        break;
+                    }
+
+                    entry[ "targetname" ] = line;
+
+                    break;
+                }
+                case MSGType.Content:
+                {
+                    if( line[0] == '}' )
+                    {
+                        mode = MSGType.Name;
+
+#if DEBUG
+                        if( string.IsNullOrWhiteSpace( entry[ "targetname" ] ) )
+                        {
+                            throw new OverflowException( $"Got an empty label for message {message}" );
+                        }
+#endif
+                        if( message.Length > FormatTitles.MaxBufferSize )
+                        {
+                            throw new OverflowException( $"Message for label {entry[ "targetname" ]} is too large! 512 is the maximun set. See FormatTitles.MaxBufferSize" );
+                        }
+
+                        entry[ "message" ] = message;
+
+                        Dictionary<string, string> new_entry = new Dictionary<string, string>( entry );
+
+                        entry[ "message" ] = string.Empty;
+                        entry[ "targetname" ] = string.Empty;
+
+                        entries.Add( new_entry );
+
+                        break;
+                    }
+
+                    message += line;
+                    break;
+                }
+            }
+#if DEBUG
+            i++;
+#endif
+        }
+
+        return entries;
     }
+
+    private enum MSGType
+    {
+        // Looking for a message name
+        Name = 0,
+        // Looking for the actual message content
+        Content
+    };
 }

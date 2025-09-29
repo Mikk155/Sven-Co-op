@@ -34,7 +34,7 @@ public static class App
             {
                 try
                 {
-                    string content = File.ReadAllText( file_path );
+                    string[] content = File.ReadAllLines( file_path );
 
                     string file_name = Path.GetFileNameWithoutExtension( file_path );
 
@@ -57,6 +57,9 @@ public static class App
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write( exception.Message );
+
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write( exception.StackTrace );
                 }
 
                 Console.ResetColor();
