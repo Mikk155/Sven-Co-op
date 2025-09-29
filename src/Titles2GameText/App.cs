@@ -44,11 +44,11 @@ public static class App
 
                     string ent_path = Path.Combine( Directory.GetCurrentDirectory(), $"{file_name}.ent" );
                     Console.WriteLine( ent_path );
-                    File.WriteAllText( ent_path, FormatTitles.FormatTitles.ToEnt( content ) );
+                    File.WriteAllText( ent_path, FormatTitles.FormatTitles.ToEnt( content, true ) );
 
                     string json_path = Path.Combine( Directory.GetCurrentDirectory(), $"{file_name}.json" );
                     Console.WriteLine( json_path );
-                    File.WriteAllText( json_path, FormatTitles.FormatTitles.ToJson( content ) );
+                    File.WriteAllText( json_path, FormatTitles.FormatTitles.ToJson( content, true ) );
                 }
                 catch( Exception exception )
                 {

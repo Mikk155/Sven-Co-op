@@ -35,9 +35,9 @@ public static class FormatTitles
     /// <summary>
     /// Return a .json like formated game_text entries
     /// </summary>
-    public static string ToJson( string[] input )
+    public static string ToJson( string[] input, bool Sensitive = false )
     {
-        List<Dictionary<string, string>> list = FormatTitles.ToList( input );
+        List<Dictionary<string, string>> list = FormatTitles.ToList( input, Sensitive );
 
         return System.Text.Json.JsonSerializer.Serialize( list,
             new System.Text.Json.JsonSerializerOptions(){
@@ -51,9 +51,9 @@ public static class FormatTitles
     /// <summary>
     /// Return a .ent like formated game_text entries
     /// </summary>
-    public static string ToEnt( string[] input )
+    public static string ToEnt( string[] input, bool Sensitive = false )
     {
-        List<Dictionary<string, string>> list = FormatTitles.ToList( input );
+        List<Dictionary<string, string>> list = FormatTitles.ToList( input, Sensitive );
 
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
@@ -82,7 +82,7 @@ public static class FormatTitles
     /// <summary>
     /// Return a list of key-value pairs representing each game_text
     /// </summary>
-    public static List<Dictionary<string, string>> ToList( string[] input )
+    public static List<Dictionary<string, string>> ToList( string[] input, bool Sensitive = false )
     {
         List<Dictionary<string, string>> entries = new List<Dictionary<string, string>>();
 
@@ -221,11 +221,15 @@ public static class FormatTitles
                             }
                             default:
                             {
+                                if( Sensitive )
+                                {
 #if DEBUG
-                                throw new FormatException( $"Unknown token: {items[0]} at line \"{line}\"" );
+                                    throw new FormatException( $"Unknown token: {items[0]} at line \"{line}\"" );
 #else
-                                throw new FormatException( $"Unknown token: {items[0]} at line {i} \"{line}\"" );
+                                    throw new FormatException( $"Unknown token: {items[0]} at line {i} \"{line}\"" );
 #endif
+                                }
+                                break;
                             }
                         }
                         break;
@@ -248,15 +252,18 @@ public static class FormatTitles
                     {
                         mode = MSGType.Name;
 
+                        if( Sensitive )
+                        {
 #if DEBUG
-                        if( string.IsNullOrWhiteSpace( entry[ "targetname" ] ) )
-                        {
-                            throw new OverflowException( $"Got an empty label for message {message}" );
-                        }
+                            if( string.IsNullOrWhiteSpace( entry[ "targetname" ] ) )
+                            {
+                                throw new OverflowException( $"Got an empty label for message {message}" );
+                            }
 #endif
-                        if( message.Length > FormatTitles.MaxBufferSize )
-                        {
-                            throw new OverflowException( $"Message for label {entry[ "targetname" ]} is too large! 512 is the maximun set. See FormatTitles.MaxBufferSize" );
+                            if( message.Length > FormatTitles.MaxBufferSize )
+                            {
+                                throw new OverflowException( $"Message for label {entry[ "targetname" ]} is too large! 512 is the maximun set. See FormatTitles.MaxBufferSize" );
+                            }
                         }
 
                         entry[ "message" ] = message;
