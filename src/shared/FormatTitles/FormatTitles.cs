@@ -239,9 +239,9 @@ public static class FormatTitles
                                 if( FormatTitles.Sensitive )
                                 {
 #if DEBUG
-                                    throw new FormatException( $"Unknown token: {items[0]} at line \"{line}\"" );
-#else
                                     throw new FormatException( $"Unknown token: {items[0]} at line {i} \"{line}\"" );
+#else
+                                    throw new FormatException( $"Unknown token: {items[0]} at line \"{line}\"" );
 #endif
                                 }
                                 break;

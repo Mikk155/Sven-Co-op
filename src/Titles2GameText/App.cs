@@ -109,6 +109,11 @@ public static class App
 
 #if DEBUG
 #else
+        Console.WriteLine( "Usage:" );
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine( "Titles2GameText.exe <FullPath/To/Your/titles.txt> <FullPath/To/Your/Sven Co-op/svencoop/titles.txt>" );
+        Console.ResetColor();
+        Console.WriteLine( "The second argument is optional and will be used to prevent the creation of game_text entities that already exists in the game's titles.txt" );
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine( "Press enter to exit" );
         Console.ResetColor();
