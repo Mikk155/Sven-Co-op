@@ -117,14 +117,11 @@ public static class FormatTitles
 
         foreach( string line in input )
         {
-            if( string.IsNullOrWhiteSpace( line ) )
-                continue;
-
             switch( mode )
             {
                 case MSGType.Name:
                 {
-                    if( line.StartsWith( "//" ) )
+                    if( string.IsNullOrWhiteSpace( line ) || line.StartsWith( "//" ) )
                         break;
 
                     // Is this a directive "$command"?, if so parse it and break
@@ -263,6 +260,12 @@ public static class FormatTitles
                 }
                 case MSGType.Content:
                 {
+                    if( string.IsNullOrWhiteSpace( line ) )
+                    {
+                        message += "\\n";
+                        break;
+                    }
+
                     if( line[0] == '}' )
                     {
                         mode = MSGType.Name;
@@ -294,7 +297,13 @@ public static class FormatTitles
                         break;
                     }
 
+                    if( !string.IsNullOrEmpty( message ) )
+                    {
+                        message += "\\n";
+                    }
+
                     message += line;
+
                     break;
                 }
             }
