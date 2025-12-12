@@ -68,11 +68,11 @@ static META_FUNCTIONS gMetaFunctionTable = {
 // Description of plugin
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,	// ifvers
-	"AngelScriptHookExt",	// name
-	"Alpha9",	// version
-	"2024",	// date
-	"Dr.Abc",	// author
-	"https://github.com/DrAbcOfficial/asexthook",	// url
+	"AngelScript Limitless Potential API",	// name
+	"1.0",	// version
+	"2025",	// date
+	"Dr.Abc, Gaftherman, Mikk",	// author
+	"https://github.com/DrAbcOfficial/asexthook | https://github.com/Mikk155/Sven-Co-op",	// url
 	"ASHEXT",	// logtag, all caps please
 	PT_ANYTIME,	// (when) loadable
 	PT_STARTUP,	// (when) unloadable
