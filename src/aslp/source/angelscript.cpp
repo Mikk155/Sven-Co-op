@@ -82,6 +82,12 @@ void RegisterAngelScriptMethods()
 {
 	CASSQLite::LoadSQLite3DLL();
 
+	ASEXT_RegisterScriptBuilderDefineCallback([](CScriptBuilder* pScriptBuilder) {
+
+		ASEXT_CScriptBuilder_DefineWord(pScriptBuilder, "METAMOD_PLUGIN_ASLP");
+
+	});
+
 	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
 	{
 		//Regist HealthInfo type
