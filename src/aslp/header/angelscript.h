@@ -40,5 +40,9 @@ typedef struct angelhook_s {
 	//void* pSendScoreInfo = nullptr;
 
 	void* pEntityIRelationship = nullptr;
+
+	void* pPM_Move = nullptr;
+	void* pAddToFullPack = nullptr;
+	void* pAddToFullPack_Post = nullptr;
 }angelhook_t;
 extern angelhook_t g_AngelHook;

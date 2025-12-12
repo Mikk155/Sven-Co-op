@@ -35,6 +35,7 @@
 #include "angelscript.h"
 
 #include "dlldef.h"
+#include <pm_defs.h>
 
 #define CALL_ANGELSCRIPT(pfn, ...) if (ASEXT_CallHook){(*ASEXT_CallHook)(g_AngelHook.pfn, 0, __VA_ARGS__);}
 
@@ -91,6 +92,34 @@ static void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer) {
 	else
 		SET_META_RESULT(MRES_HANDLED);
 }
+
+void PM_Move(playermove_t* pmove, int server)
+{
+	if (!pmove)
+	{
+		SET_META_RESULT(META_RES::MRES_IGNORED);
+		return;
+	}
+
+	META_RES meta_result = META_RES::MRES_IGNORED;
+	CALL_ANGELSCRIPT(pPM_Move, &pmove, server, &meta_result);
+	RETURN_META(meta_result);
+}
+
+int AddToFullPack(struct entity_state_s* state, int entindex, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet)
+{
+	if (!ent->pvPrivateData || !host->pvPrivateData || !state || !player)
+	{
+		SET_META_RESULT(META_RES::MRES_IGNORED);
+		return 0;
+	}
+
+	META_RES meta_result = META_RES::MRES_IGNORED;
+	int result = 0;
+	CALL_ANGELSCRIPT(pAddToFullPack, &state, entindex, ent, host, hostflags, player, &meta_result, &result);
+	RETURN_META_VALUE(meta_result, result);
+}
+
 static DLL_FUNCTIONS gFunctionTable = {
 	NULL,					// pfnGameInit
 	NULL,					// pfnSpawn
@@ -135,13 +164,13 @@ static DLL_FUNCTIONS gFunctionTable = {
 
 	NULL,					// pfnSys_Error
 
-	NULL,					// pfnPM_Move
+	PM_Move,			  // pfnPM_Move
 	NULL,					// pfnPM_Init
 	NULL,					// pfnPM_FindTextureType
 
 	NULL,					// pfnSetupVisibility
 	NULL,					// pfnUpdateClientData
-	NULL,					// pfnAddToFullPack
+	AddToFullPack,		 // pfnAddToFullPack
 	NULL,					// pfnCreateBaseline
 	NULL,					// pfnRegisterEncoders
 	NULL,					// pfnGetWeaponData
@@ -190,6 +219,21 @@ static int Spawn_Post(edict_t* pent) {
 	SET_META_RESULT(MRES_HANDLED);
 	return 1919810;
 }
+
+int AddToFullPack_Post(struct entity_state_s* state, int entindex, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet)
+{
+	if (!ent->pvPrivateData || !host->pvPrivateData || !state || !player)
+	{
+		SET_META_RESULT(META_RES::MRES_IGNORED);
+		return 0;
+	}
+
+	META_RES meta_result = META_RES::MRES_IGNORED;
+	int result = 0;
+	CALL_ANGELSCRIPT(pAddToFullPack_Post, &state, entindex, ent, host, hostflags, player, &meta_result, &result);
+	RETURN_META_VALUE(meta_result, result);
+}
+
 static DLL_FUNCTIONS gFunctionTable_Post = {
 	GameInitPost,			// pfnGameInit
 	Spawn_Post,				// pfnSpawn
@@ -240,7 +284,7 @@ static DLL_FUNCTIONS gFunctionTable_Post = {
 
 	NULL,					// pfnSetupVisibility
 	NULL,					// pfnUpdateClientData
-	NULL,					// pfnAddToFullPack
+	AddToFullPack_Post,	// pfnAddToFullPack
 	NULL,					// pfnCreateBaseline
 	NULL,					// pfnRegisterEncoders
 	NULL,					// pfnGetWeaponData
