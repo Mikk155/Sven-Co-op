@@ -9,7 +9,7 @@ if not exist bin (
     cd ..
 )
 
-cmake --build bin --config Debug --clean-first
+cmake --build bin --config Release --clean-first
 
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR
