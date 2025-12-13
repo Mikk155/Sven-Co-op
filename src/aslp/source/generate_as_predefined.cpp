@@ -37,6 +37,20 @@ namespace
         }
     }
 
+    std::string FixString( const std::string& str )
+    {
+        std::string result = str;
+
+        size_t pos = 0;
+        while( ( pos = result.find( "\n", pos ) ) != std::string::npos )
+        {
+            result.replace( pos, 1, "\\n" );
+            pos += 2;
+        }
+
+        return result;
+    }
+
     void printClassTypeList(const asIScriptEngine* engine, Stream& stream)
     {
         for (asUINT i = 0; i < engine->GetObjectTypeCount(); i++)
@@ -75,7 +89,7 @@ namespace
             for (asUINT j = 0; j < t->GetMethodCount(); ++j)
             {
                 const auto m = t->GetMethodByIndex(j);
-                stream << "\t" << m->GetDeclaration(false, true, true) << ";\n";
+                stream << "\t" << FixString( m->GetDeclaration(false, true, true)) << ";\n";
             }
             for (asUINT j = 0; j < t->GetPropertyCount(); ++j)
             {
