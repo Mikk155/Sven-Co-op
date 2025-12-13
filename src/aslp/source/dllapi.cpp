@@ -71,11 +71,11 @@ static void ClientCommand(edict_t* pEntity) {
 		SET_META_RESULT(MRES_HANDLED);
 		return;
 	}
-	else if (!strncmp(pcmd, "generate_as", 11))
+	else if (!strncmp(pcmd, "aslp_generate_docs", 11))
 	{
 		extern void GenerateScriptPredefined(const asIScriptEngine * engine);
 		GenerateScriptPredefined(ASEXT_GetServerManager()->scriptEngine);
-		SET_META_RESULT(MRES_HANDLED);
+		SET_META_RESULT(MRES_SUPERCEDE);
 		return;
 	}
 	SET_META_RESULT(MRES_IGNORED);

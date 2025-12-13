@@ -100,6 +100,7 @@ void RegisterAngelScriptMethods()
 
 	});
 
+	// -TODO How to get the const char doc* in the generate_as_predefined.cpp
 	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
 	{
 		//Regist HealthInfo type
@@ -108,7 +109,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "Recover amount.", "HealthInfo", "float flHealth", offsetof(healthinfo_t, flHealth));
 		ASEXT_RegisterObjectProperty(pASDoc, "Recover dmg type.", "HealthInfo", "int bitsDamageType", offsetof(healthinfo_t, bitsDamageType));
 		ASEXT_RegisterObjectProperty(pASDoc, "If health_cap is non-zero, won't add more than health_cap. Returns true if it took damage, false otherwise.", "HealthInfo", "int health_cap", offsetof(healthinfo_t, health_cap));
-		
+
 		//CBinaryStringBuilder
 		asSFuncPtr reg;
 		ASEXT_RegisterObjectType(pASDoc, "Binary String Builder", "CBinaryStringBuilder", 0, asOBJ_REF | asOBJ_GC);
@@ -291,7 +292,7 @@ void RegisterAngelScriptMethods()
 			(void*)CASEngineFuncs_ClassMemcpy, asCALL_THISCALL);
 
 		/* entity_state_t */
-		ASEXT_RegisterObjectType(pASDoc, "Estados de la entidad que se transmiten al jugador", "entity_state_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
+		ASEXT_RegisterObjectType(pASDoc, "Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.", "entity_state_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int entityType", offsetof(entity_state_t, entityType));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int number", offsetof(entity_state_t, number));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float msg_time", offsetof(entity_state_t, msg_time));
@@ -353,7 +354,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser4", offsetof(entity_state_t, vuser4));
 
 		/* physent_t */
-		ASEXT_RegisterObjectType(pASDoc, "Informacion de las fisicas", "physent_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
+		ASEXT_RegisterObjectType(pASDoc, "Physics data", "physent_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		//ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "array<char>@ name", offsetof(physent_t, name));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "int player", offsetof(physent_t, player));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "Vector origin", offsetof(physent_t, origin));
@@ -389,7 +390,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "Vector vuser4", offsetof(physent_t, vuser4));
 
 		/* playermove_t */
-		ASEXT_RegisterObjectType(pASDoc, "Estados de la entidad que se transmiten al jugador", "playermove_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
+		ASEXT_RegisterObjectType(pASDoc, "Player movement data", "playermove_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		ASEXT_RegisterObjectProperty(pASDoc, "", "playermove_t", "int player_index", offsetof(playermove_t, player_index));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "playermove_t", "int server", offsetof(playermove_t, server));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "playermove_t", "int multiplayer", offsetof(playermove_t, multiplayer));
@@ -449,14 +450,16 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectMethod(pASDoc, "", "playermove_t", "void SetPhysEntByIndex(physent_t@ pPhyEnt, int newindex)", (void*)CASPlayerMove__SetPhysEntByIndex, asCALL_THISCALL);
 		//ASEXT_RegisterObjectProperty(pASDoc, "", "playermove_t", "array<physent_t@>@ physents", offsetof(playermove_t, physents));
 
-		/*META_RES*/
-		ASEXT_RegisterEnum(pASDoc, "Prioridad del plugin", "META_RES", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "MRES_UNSET", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "MRES_IGNORED", 1);
-		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "MRES_HANDLED", 2);
-		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "MRES_OVERRIDE", 3);
-		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "MRES_SUPERCEDE", 4);
-	});
+		/**
+		*	META_RES
+		**/
+		ASEXT_RegisterEnum(pASDoc, "Flags returned by a plugin's api function.", "META_RES", 0);
+		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "Unset", 0);
+		ASEXT_RegisterEnumValue(pASDoc, "Plugin didn't take any action", "META_RES", "Ignored", 1);
+		ASEXT_RegisterEnumValue(pASDoc, "Plugin did something, but real function should still be called", "META_RES", "Handled", 2);
+		ASEXT_RegisterEnumValue(pASDoc, "Call real function, but use my return value", "META_RES", "Override", 3);
+		ASEXT_RegisterEnumValue(pASDoc, "Skip real function; use my return value", "META_RES", "Supercede", 4);
+	} );
 }
 #undef REGISTE_OBJMETHODEX
 #undef REGISTE_OBJMETHODPREX
