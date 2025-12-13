@@ -5,17 +5,6 @@
     },
     "code-runner.runInTerminal": true,
 
-    "emeraldwalk.runonsave":
-    {
-        "commands":
-        [
-            {
-                "match": "\\assets.json$",
-                "cmd": "start cmd /c build/code-runner/code-runner ${file}"
-            }
-        ]
-    },
-
     "remove-tabs-on-save.ignoreFileExtensions": [
         "*.cpp",
         "*.h"

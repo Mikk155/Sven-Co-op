@@ -3,7 +3,6 @@
     [
         "formulahendry.code-runner",
         "sashi0034.angel-lsp",
-        "emeraldwalk.RunOnSave",
 
         "naumovs.color-highlight",
         "redlin.remove-tabs-on-save",
