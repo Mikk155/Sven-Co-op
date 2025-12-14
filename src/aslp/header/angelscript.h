@@ -3,6 +3,16 @@ void RegisterAngelScriptMethods();
 void RegisterAngelScriptHooks();
 void CloseAngelScriptsItem();
 
+typedef struct addtofullpack_s{
+	entity_state_s* state;
+	int entityIndex;
+	edict_t* entity;
+	edict_t* host;
+	int hostFlags;
+	int playerIndex;
+	bool Result;
+}addtofullpack_t;
+
 typedef struct damageinfo_s{
 	void* pVictim;
 	void* pInflictor;

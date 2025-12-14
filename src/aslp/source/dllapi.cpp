@@ -108,14 +108,20 @@ static int PreAddToFullPack( struct entity_state_s* state, int entindex, edict_t
 {
 	META_RES meta_result = META_RES::MRES_IGNORED;
 
-	int result = 0;
-
 	if( ent->pvPrivateData && host->pvPrivateData && state && player )
 	{
-		CALL_ANGELSCRIPT( pPreAddToFullPack, &state, entindex, ent, host, hostflags, player, &meta_result, &result );
+		addtofullpack_t data = { state, entindex, ent, host, hostflags, player };
+
+		CALL_ANGELSCRIPT( pPreAddToFullPack, &data, &meta_result );
+
+		// Skip packet
+		if( data.Result )
+		{
+			RETURN_META_VALUE( META_RES::MRES_SUPERCEDE, 0 );
+		}
 	}
 
-	RETURN_META_VALUE(meta_result, result);
+	RETURN_META_VALUE(meta_result, 0);
 }
 
 static DLL_FUNCTIONS gFunctionTable = {
@@ -267,14 +273,20 @@ int PostAddToFullPack(struct entity_state_s* state, int entindex, edict_t* ent, 
 {
 	META_RES meta_result = META_RES::MRES_IGNORED;
 
-	int result = 0;
-
 	if( ent->pvPrivateData && host->pvPrivateData && state && player )
 	{
-		CALL_ANGELSCRIPT( pPostAddToFullPack, &state, entindex, ent, host, hostflags, player, &meta_result, &result );
+		addtofullpack_t data = { state, entindex, ent, host, hostflags, player };
+
+		CALL_ANGELSCRIPT( pPostAddToFullPack, &data, &meta_result );
+
+		// Skip packet
+		if( data.Result )
+		{
+			RETURN_META_VALUE( META_RES::MRES_SUPERCEDE, 0 );
+		}
 	}
 
-	RETURN_META_VALUE(meta_result, result);
+	RETURN_META_VALUE(meta_result, 0);
 }
 
 void PostPM_Move( playermove_t* pmove, int server )

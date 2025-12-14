@@ -464,6 +464,16 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterEnumValue(pASDoc, "Plugin did something, but real function should still be called", "META_RES", "Handled", (int)MRES_HANDLED);
 		ASEXT_RegisterEnumValue(pASDoc, "Call real function, but use my return value", "META_RES", "Override", (int)MRES_OVERRIDE);
 		ASEXT_RegisterEnumValue(pASDoc, "Skip real function; use my return value", "META_RES", "Supercede", (int)MRES_SUPERCEDE);
+
+		/* addtofullpack_t */
+		ASEXT_RegisterObjectType(pASDoc, "AddToFulPack data", "ClientPacket", 0, asOBJ_REF | asOBJ_NOCOUNT);
+		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "entity_state_t@ state", offsetof(addtofullpack_t, state));
+		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int entityIndex", offsetof(addtofullpack_t, entityIndex));
+		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "edict_t@ entity", offsetof(addtofullpack_t, entity));
+		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "edict_t@ host", offsetof(addtofullpack_t, host));
+		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int hostFlags", offsetof(addtofullpack_t, hostFlags));
+		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int playerIndex", offsetof(addtofullpack_t, playerIndex));
+		ASEXT_RegisterObjectProperty(pASDoc, "If set to true, the entity is not sent to the host", "ClientPacket", "bool SkipPacket", offsetof(addtofullpack_t, Result));
 	} );
 }
 #undef REGISTE_OBJMETHODEX
@@ -501,13 +511,13 @@ void RegisterAngelScriptHooks()
 		"Pre call of gEntityInterface.pfnAddToFullPack",
 		ASLP_NAMESPACE( Engine ),
 		"PreAddToFullPack",
-		"entity_state_t@ &out state, int entindex, edict_t@ ent, edict_t@ host, int hostflags, int player, META_RES &out meta_result, int& out result"
+		"ClientPacket@ packet, META_RES &out meta_result"
 	);
 	CREATE_AS_HOOK( pPostAddToFullPack,
 		"Post call of gEntityInterface.pfnAddToFullPack",
 		ASLP_NAMESPACE( Engine ),
 		"PostAddToFullPack",
-		"entity_state_t@ &out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES &out meta_result, int& out result"
+		"ClientPacket@ packet, META_RES &out meta_result"
 	);
 	CREATE_AS_HOOK( pPostEntitySpawn,
 		"Post call after a Entity spawn",
