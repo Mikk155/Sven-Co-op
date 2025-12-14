@@ -15,6 +15,11 @@
 
 angelhook_t g_AngelHook;
 
+/**
+ * @brief Append the plugin's namespace string to *a*
+ */
+#define ASLP_NAMESPACE(a) "aslp::" #a
+
 uint32 SC_SERVER_DECL CASEngineFuncs_CRC32(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer)
 {
 	CRC32_t crc;
@@ -222,7 +227,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CSQLite", asBEHAVE_FACTORY, "CSQLite@ CSQLite(string&in path, SQLiteMode iMode)", &reg, asCALL_CDECL);
 		RegisteGCObject<CASSQLite>(pASDoc, "CSQLite");
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, string&out errMsg)", CASSQLite, Exec, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL In Sync", "CSQLite", "SQLiteResult Exec(string&in sql, CSQLGrid@&out aryResult, string&out errMsg)", CASSQLite, ExecSync, asCALL_THISCALL);
+		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL In Sync", "CSQLite", "SQLiteResult Exec(string&in sql, CSQLGrid@ &out aryResult, string&out errMsg)", CASSQLite, ExecSync, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, fnSQLiteCallback@ pCallback, any@ pCallBackparam, string&out errMsg)", CASSQLite, ExecWithCallBack, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Close SQL", "CSQLite", "void Close()", CASSQLite, Close, asCALL_THISCALL);
 
@@ -465,17 +470,57 @@ void RegisterAngelScriptMethods()
 #undef REGISTE_OBJMETHODPREX
 
 #define CREATE_AS_HOOK(item, des, tag, name, arg) g_AngelHook.item=ASEXT_RegisterHook(des,StopMode_CALL_ALL,2,ASFlag_MapScript|ASFlag_Plugin,tag,name,arg)
-void RegisterAngelScriptHooks(){
-	CREATE_AS_HOOK(pPlayerUserInfoChanged, "Pre call before a player info changed", "Player", "PlayerUserInfoChanged", "CBasePlayer@ pClient, string szInfoBuffer, uint&out uiFlag");
+
+void RegisterAngelScriptHooks()
+{
+	CREATE_AS_HOOK( pCientCommandHook,
+		"Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
+		ASLP_NAMESPACE( Player ),
+		"ClientCommand",
+		"CBasePlayer@ player, META_RES &out meta_result"
+	);
+	CREATE_AS_HOOK( pPlayerUserInfoChanged,
+		"Pre call before a player info changed",
+		ASLP_NAMESPACE( Player ),
+		"UserInfoChanged",
+		"CBasePlayer@ player, string buffer, META_RES &out meta_result"
+	);
+	CREATE_AS_HOOK( pPreMovement,
+		"Pre call of gEntityInterface.pfnPM_Move",
+		ASLP_NAMESPACE( Engine ),
+		"PreMovement",
+		"playermove_t@ &out pmove, META_RES &out meta_result"
+	);
+	CREATE_AS_HOOK( pPostMovement,
+		"Pre call of gEntityInterface.pfnPM_Move",
+		ASLP_NAMESPACE( Engine ),
+		"PostMovement",
+		"playermove_t@ &out pmove, META_RES &out meta_result"
+	);
+	CREATE_AS_HOOK( pPreAddToFullPack,
+		"Pre call of gEntityInterface.pfnAddToFullPack",
+		ASLP_NAMESPACE( Engine ),
+		"PreAddToFullPack",
+		"entity_state_t@ &out state, int entindex, edict_t@ ent, edict_t@ host, int hostflags, int player, META_RES &out meta_result, int& out result"
+	);
+	CREATE_AS_HOOK( pPostAddToFullPack,
+		"Post call of gEntityInterface.pfnAddToFullPack",
+		ASLP_NAMESPACE( Engine ),
+		"PostAddToFullPack",
+		"entity_state_t@ &out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES &out meta_result, int& out result"
+	);
+	CREATE_AS_HOOK( pPostEntitySpawn,
+		"Post call after a Entity spawn",
+		ASLP_NAMESPACE( Entity ),
+		"PostEntitySpawn",
+		"edict_t@ pEntity"
+	);
+
 	CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "Player", "PlayerPostTakeDamage", "DamageInfo@ info");
 	CREATE_AS_HOOK(pPlayerTakeHealth, "Pre call before a player took health", "Player", "PlayerTakeHealth", "HealthInfo@ info");
-	CREATE_AS_HOOK(pPlayerCallMedic, "Pre call before a player call medic", "Player", "PlayerCallMedic", "CBasePlayer@ pPlayer");
-	CREATE_AS_HOOK(pPlayerCallGrenade, "Pre call before a player call grenade", "Player", "PlayerCallGrenade", "CBasePlayer@ pPlayer");
 
-	CREATE_AS_HOOK(pEntitySpawn, "Post call after a Entity spawn", "Entity", "EntitySpawn", "CBaseEntity@ pEntity");
 	CREATE_AS_HOOK(pEntityIRelationship, "Pre call before checking relation", "Entity", "IRelationship", "CBaseEntity@ pEntity, CBaseEntity@ pOther, bool param, int& out newValue");
 
-	CREATE_AS_HOOK(pMonsterSpawn, "Post call after a monster spawn", "Monster", "MonsterSpawn", "CBaseMonster@ pEntity");
 	CREATE_AS_HOOK(pMonsterTraceAttack, "Pre call before a monster trace attack", "Monster", "MonsterTraceAttack", "CBaseMonster@ pMonster, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType");
 	CREATE_AS_HOOK(pMonsterPostTakeDamage, "Post call after a monster took damage", "Monster", "MonsterPostTakeDamage", "DamageInfo@ info");
 
@@ -485,10 +530,6 @@ void RegisterAngelScriptHooks(){
 
 	CREATE_AS_HOOK(pGrappleCheckMonsterType, "Pre call before Weapon Grapple checking monster type", "Weapon", "GrappleGetMonsterType", "CBaseEntity@ pThis, CBaseEntity@ pEntity, uint& out flag");
 	//CREATE_AS_HOOK(pSendScoreInfo, "Pre call before sending hud info to edict", "Player", "SendScoreInfo", "CBasePlayer@ pPlayer, edict_t@ pTarget, int iTeamID, string szTeamName, uint& out flag");
-
-	CREATE_AS_HOOK(pPM_Move, "Pre call of gEntityInterface.pfnPM_Move", "Engine", "PM_Move", "playermove_t@& out pmove, int server, META_RES& out meta_result");
-	CREATE_AS_HOOK(pAddToFullPack, "Pre call of gEntityInterface.pfnAddToFullPack", "Engine", "AddToFullPack", "entity_state_t@& out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES& out meta_result, int& out result");
-	CREATE_AS_HOOK(pAddToFullPack_Post, "Post call of gEntityInterface.pfnAddToFullPack", "Engine", "AddToFullPackPost", "entity_state_t@& out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES& out meta_result, int& out result");
 }
 #undef CREATE_AS_HOOK
 

@@ -19,18 +19,18 @@ typedef struct healthinfo_s {
 }healthinfo_t;
 
 typedef struct angelhook_s {
+	void* pCientCommandHook = nullptr;
 	void* pPlayerUserInfoChanged = nullptr;
+	void* pPreMovement = nullptr;
+	void* pPostMovement = nullptr;
+	void* pPreAddToFullPack = nullptr;
+	void* pPostAddToFullPack = nullptr;
+	void* pPostEntitySpawn = nullptr;
+
 	void* pPlayerPostTakeDamage = nullptr;
 	void* pPlayerTakeHealth = nullptr;
-	void* pPlayerCallMedic = nullptr;
-	void* pPlayerCallGrenade = nullptr;
-
-	void* pEntitySpawn = nullptr;
-	
-	void* pMonsterSpawn = nullptr;
 	void* pMonsterTraceAttack = nullptr;
 	void* pMonsterPostTakeDamage = nullptr;
-
 	void* pBreakableTraceAttack = nullptr;
 	void* pBreakableKilled = nullptr;
 	void* pBreakableTakeDamage = nullptr;
@@ -41,8 +41,5 @@ typedef struct angelhook_s {
 
 	void* pEntityIRelationship = nullptr;
 
-	void* pPM_Move = nullptr;
-	void* pAddToFullPack = nullptr;
-	void* pAddToFullPack_Post = nullptr;
 }angelhook_t;
 extern angelhook_t g_AngelHook;
