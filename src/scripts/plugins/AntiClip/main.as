@@ -44,9 +44,29 @@ void MapStart()
     }
 }
 
+#if METAMOD_PLUGIN_ASLP
+
+class CAntiClipConfig
+{
+    // Completelly hide intersecting players
+    bool DontDrawPlayers = false;
+
+    // Above 0 is the render settings to set. leave to 0 to not use AddToFullPack hook.
+    uint8 RenderMode = 4;
+    uint8 RenderAmt = 100;
+
+    bool ShouldPacketFilter {
+        get {
+            return ( this.DontDrawPlayers || g_Config.RenderMode > 0 );
+        }
+    }
+}
+
+CAntiClipConfig g_Config;
+
 bool g_State;
 
-void ToggleState( int state )
+void ToggleState( bool state )
 {
     if( state == g_State )
         return;
@@ -55,13 +75,17 @@ void ToggleState( int state )
 
     if( state )
     {
-        g_Hooks.RegisterHook( Hooks::Engine::PM_Move, @PM_Move );
-        g_Hooks.RegisterHook( Hooks::Engine::AddToFullPackPost, @AddToFullPackPost );
+        if( g_Config.ShouldPacketFilter )
+        {
+            g_Hooks.RegisterHook( Hooks::aslp::Engine::PostAddToFullPack, @PostAddToFullPack );
+        }
+
+        g_Hooks.RegisterHook( Hooks::aslp::Engine::PreMovement, @PreMovement );
     }
     else
     {
-        g_Hooks.RemoveHook( Hooks::Engine::PM_Move, @PM_Move );
-        g_Hooks.RemoveHook( Hooks::Engine::AddToFullPackPost, @AddToFullPackPost );
+        g_Hooks.RemoveHook( Hooks::aslp::Engine::PreMovement, @PreMovement );
+        g_Hooks.RemoveHook( Hooks::aslp::Engine::PostAddToFullPack, @PostAddToFullPack );
     }
 }
 
@@ -87,47 +111,70 @@ void Command( const CCommand@ args )
 
 CClientCommand CMD( "anticlip", "Toggle AntiClip, on/off | 1/0", @Command, ConCommandFlag::AdminOnly );
 
-#if METAMOD_PLUGIN_ASLP
-HookReturnCode PM_Move(playermove_t@& out pmove, int server, META_RES& out meta_result)
+HookReturnCode PreMovement( playermove_t@& out pmove, META_RES& out meta_result )
 {
-    if (pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO)
+    if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
     {
-        meta_result = MRES_IGNORED;
         return HOOK_CONTINUE;
     }
 
     int numphysent = -1;
 
-    for (int j = numphysent; j < pmove.numphysent; j++)
+    for( int j = numphysent; j < pmove.numphysent; j++ )
     {
-        if (pmove.GetPhysEntByIndex(j) !is null && pmove.GetPhysEntByIndex(j).player == 0)
+        auto physent = pmove.GetPhysEntByIndex(j);
+
+        if( physent is null )
+            continue;
+
+        // Is this a player?
+        if( physent.player != 0 )
         {
-            pmove.SetPhysEntByIndex(pmove.GetPhysEntByIndex(j), numphysent++);
+            // Don't skip if we're "Boosting" onto another player.
+            if( pmove.origin.z < physent.origin.z + 54 )
+                continue;
         }
+
+        pmove.SetPhysEntByIndex( physent, numphysent++ );
     }
 
+    // Set updated list.
     pmove.numphysent = numphysent;
 
     return HOOK_CONTINUE;
 }
 
-HookReturnCode AddToFullPackPost(entity_state_t@& out state, int entindex, edict_t @ent, edict_t@ host, int hostflags, int player, META_RES& out meta_result, int& out result)
+HookReturnCode PostAddToFullPack( ClientPacket@ packet, META_RES& out meta_result )
 {
-    if( host is null || ent is null || ent is host )
+    if( packet.host is null || packet.entity is null )
+
+    // Skip if the packet is the host
+    if( packet.entity is packet.host )
         return HOOK_CONTINUE;
 
-    auto playerHost = g_EntityFuncs.Instance( host );
-    auto playerPacket = g_EntityFuncs.Instance( ent );
+    auto playerHost = g_EntityFuncs.Instance( packet.host );
+    auto playerPacket = g_EntityFuncs.Instance( packet.entity );
 
-    if( host is null || ent is null )
+    if( playerHost is null || playerPacket is null )
         return HOOK_CONTINUE;
 
+    // Skip if the packet is not a player
+    if( !playerPacket.IsPlayer() )
+        return HOOK_CONTINUE;
+
+    // Is the host intersecting the packet?
     if( playerHost.Intersects( playerPacket ) )
     {
-        state.rendermode = 4;
-        state.renderamt = 100;
+        if( g_Config.DontDrawPlayers )
+        {
+            packet.state.effects |= EF_NODRAW;
+        }
+        else if( g_Config.RenderMode > 0 )
+        {
+            packet.state.rendermode = g_Config.RenderMode;
+            packet.state.renderamt = g_Config.RenderAmt;
+        }
     }
 
     return HOOK_CONTINUE;
 }
-#endif

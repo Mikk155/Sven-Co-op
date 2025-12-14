@@ -20,6 +20,12 @@
 
         "projects":
         {
+            "as.anticlip":
+            {
+                "name": "AntiClip",
+                "description": "Disable player-to-player colissions",
+                "assets": "scripts/plugins/AntiClip/assets.json"
+            },
             "as.extension.manager":
             {
                 "name": "MKExtension Manager",
