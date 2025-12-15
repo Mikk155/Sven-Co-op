@@ -108,7 +108,7 @@ static int PreAddToFullPack( struct entity_state_s* state, int entindex, edict_t
 {
 	META_RES meta_result = META_RES::MRES_IGNORED;
 
-	if( ent->pvPrivateData && host->pvPrivateData && state && player )
+	if( ent->pvPrivateData && host->pvPrivateData && state )
 	{
 		addtofullpack_t data = { state, entindex, ent, host, hostflags, player };
 
@@ -273,7 +273,7 @@ int PostAddToFullPack(struct entity_state_s* state, int entindex, edict_t* ent, 
 {
 	META_RES meta_result = META_RES::MRES_IGNORED;
 
-	if( ent->pvPrivateData && host->pvPrivateData && state && player )
+	if( ent->pvPrivateData && host->pvPrivateData && state )
 	{
 		addtofullpack_t data = { state, entindex, ent, host, hostflags, player };
 
