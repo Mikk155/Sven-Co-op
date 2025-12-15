@@ -22,7 +22,29 @@
 *    SOFTWARE.
 **/
 
-bool g_Metamod;
+namespace utils
+{
+    // True if ASLP is installed in the server.
+    const bool HasMetamod = __CheckMetamod__();
+
+    bool __CheckMetamod__()
+    {
+#if METAMOD_PLUGIN_ASLP
+        if( true ) // Fix Unreachable code error
+            return true;
+#endif
+        string buffer;
+        snprintf( buffer, "[Error] %1 requires metamod plugin \"ASLP\" to work.\n", g_Module.GetModuleName() );
+        g_EngineFuncs.ServerPrint( buffer );
+        g_EngineFuncs.ServerPrint( "Some features may work poorly or not work at all.\n" );
+        g_EngineFuncs.ServerPrint( "Install metamod at: https://github.com/Mikk155/Sven-Co-op\n" );
+        return false;
+    }
+}
+void MapInit()
+{
+    g_Game.PrecacheOther( "monster_barney" );
+}
 
 void PluginInit()
 {
@@ -30,34 +52,29 @@ void PluginInit()
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
 #if METAMOD_PLUGIN_ASLP
-    g_Metamod = true;
     ToggleState(true);
 #endif
 }
 
-void MapStart()
-{
-    if( !g_Metamod )
-    {
-        g_Game.AlertMessage( at_console, "[Error] Plugin AntiClip.as requires metamod aslp.dll to work.\n" );
-        g_Game.AlertMessage( at_console, "https://github.com/Mikk155/Sven-Co-op\n" );
-    }
-}
-
 #if METAMOD_PLUGIN_ASLP
-
 class CAntiClipConfig
 {
+    // Set to false to disallow ally npcs clipping
+    bool NPCClipping = false;
+
+    // Allow boosting by jumping over a player
+    bool AllowBoosting = true;
+
     // Completelly hide intersecting players
     bool DontDrawPlayers = false;
 
     // Above 0 is the render settings to set. leave to 0 to not use AddToFullPack hook.
-    uint8 RenderMode = 4;
+    uint8 RenderMode = kRenderTransTexture;
     uint8 RenderAmt = 100;
 
     bool ShouldPacketFilter {
         get {
-            return ( this.DontDrawPlayers || g_Config.RenderMode > 0 );
+            return ( this.DontDrawPlayers || this.RenderMode > kRenderNormal  );
         }
     }
 }
@@ -118,21 +135,59 @@ HookReturnCode PreMovement( playermove_t@& out pmove, META_RES& out meta_result 
         return HOOK_CONTINUE;
     }
 
+    // 0 is worldspawn so increase one
+    CBasePlayer@ player = g_PlayerFuncs.FindPlayerByIndex( pmove.player_index + 1 );
+
     int numphysent = -1;
 
-    for( int j = numphysent; j < pmove.numphysent; j++ )
+    for( int j = numphysent; j <= pmove.numphysent; j++ )
     {
-        auto physent = pmove.GetPhysEntByIndex(j);
+        physent_t@ physent = pmove.GetPhysEntByIndex(j);
 
         if( physent is null )
             continue;
 
-        // Is this a player?
+        // This is a player
         if( physent.player != 0 )
         {
-            // Don't skip if we're "Boosting" onto another player.
+            // No boosting? Skip immediatelly
+            if( !g_Config.AllowBoosting )
+                continue;
+
+            if( ( player.pev.button & IN_DUCK ) != 0 )
+                continue;
+
+            CBasePlayer@ other = g_PlayerFuncs.FindPlayerByIndex( physent.info );
+
+            if( other is null )
+                continue;
+
+            // Standing player
+            if( ( other.pev.button & IN_DUCK ) == 0 && pmove.origin.z < physent.origin.z + 72 )
+                continue;
+
+            // Crouching player
             if( pmove.origin.z < physent.origin.z + 54 )
                 continue;
+        }
+        else if( !g_Config.NPCClipping )
+        {
+            CBaseEntity@ entity = g_EntityFuncs.Instance( physent.info );
+
+            if( entity !is null )
+            {
+                // Do not clip on ally monsters
+                if( player.IRelationship( entity ) == R_AL )
+                {
+#if BAD_OFFSET_LAZY
+                    if( !g_Config.AllowBoosting )
+                        continue;
+
+                    if( pmove.origin.z < physent.origin.z + physent.maxs.z )
+#endif
+                        continue;
+                }
+            }
         }
 
         pmove.SetPhysEntByIndex( physent, numphysent++ );
@@ -146,30 +201,35 @@ HookReturnCode PreMovement( playermove_t@& out pmove, META_RES& out meta_result 
 
 HookReturnCode PostAddToFullPack( ClientPacket@ packet, META_RES& out meta_result )
 {
+    // If npc is clipping then we don't care about non-player entities.
+    if( g_Config.NPCClipping && packet.playerIndex == 0 )
+        return HOOK_CONTINUE;
+
     if( packet.host is null || packet.entity is null )
+        return HOOK_CONTINUE;
 
     // Skip if the packet is the host
     if( packet.entity is packet.host )
         return HOOK_CONTINUE;
 
     auto playerHost = g_EntityFuncs.Instance( packet.host );
-    auto playerPacket = g_EntityFuncs.Instance( packet.entity );
+    auto entityPacket = g_EntityFuncs.Instance( packet.entity );
 
-    if( playerHost is null || playerPacket is null )
+    if( playerHost is null || entityPacket is null )
         return HOOK_CONTINUE;
 
-    // Skip if the packet is not a player
-    if( !playerPacket.IsPlayer() )
+    // Skip if the packet is not a player and we're not checking for NPCs
+    if( g_Config.NPCClipping && !entityPacket.IsPlayer() )
         return HOOK_CONTINUE;
 
     // Is the host intersecting the packet?
-    if( playerHost.Intersects( playerPacket ) )
+    if( playerHost.IRelationship( entityPacket ) == R_AL && playerHost.Intersects( entityPacket ) )
     {
         if( g_Config.DontDrawPlayers )
         {
             packet.state.effects |= EF_NODRAW;
         }
-        else if( g_Config.RenderMode > 0 )
+        else
         {
             packet.state.rendermode = g_Config.RenderMode;
             packet.state.renderamt = g_Config.RenderAmt;
