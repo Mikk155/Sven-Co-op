@@ -250,8 +250,8 @@ CASJsonType CASJson::Type() const
         case json::value_t::string: return STRING_VALUE;
         case json::value_t::boolean: return BOOLEAN_VALUE;
         case json::value_t::number_integer:
-        case json::value_t::number_unsigned: return NUMBER_VALUE;
-        case json::value_t::number_float: return REAL_VALUE;
+        case json::value_t::number_unsigned: return INTEGER_VALUE;
+        case json::value_t::number_float: return FLOAT_VALUE;
         default: return NULL_VALUE;
     }
 }

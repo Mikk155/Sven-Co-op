@@ -232,14 +232,14 @@ void RegisterAngelScriptMethods()
 
 		//CASJson
 		//Enum
-		ASEXT_RegisterEnum(pASDoc, "JSON Value Type", "JsonType", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "Object", "JsonType", "OBJECT_VALUE", OBJECT_VALUE);
-		ASEXT_RegisterEnumValue(pASDoc, "Array", "JsonType", "ARRAY_VALUE", ARRAY_VALUE);
-		ASEXT_RegisterEnumValue(pASDoc, "Boolean", "JsonType", "BOOLEAN_VALUE", BOOLEAN_VALUE);
-		ASEXT_RegisterEnumValue(pASDoc, "String", "JsonType", "STRING_VALUE", STRING_VALUE);
-		ASEXT_RegisterEnumValue(pASDoc, "Integer Number", "JsonType", "NUMBER_VALUE", NUMBER_VALUE);
-		ASEXT_RegisterEnumValue(pASDoc, "Real Number", "JsonType", "REAL_VALUE", REAL_VALUE);
-		ASEXT_RegisterEnumValue(pASDoc, "Null", "JsonType", "NULL_VALUE", NULL_VALUE);
+		ASEXT_RegisterEnum( pASDoc, "JSON Value Type", "JsonType", 0 );
+		ASEXT_RegisterEnumValue( pASDoc, "Object", "JsonType", "Object", CASJsonType::OBJECT_VALUE );
+		ASEXT_RegisterEnumValue( pASDoc, "Array", "JsonType", "Array", CASJsonType::ARRAY_VALUE );
+		ASEXT_RegisterEnumValue( pASDoc, "Boolean", "JsonType", "Boolean", CASJsonType::BOOLEAN_VALUE );
+		ASEXT_RegisterEnumValue( pASDoc, "String", "JsonType", "String",CASJsonType::STRING_VALUE );
+		ASEXT_RegisterEnumValue( pASDoc, "Integer", "JsonType", "Integer", CASJsonType::INTEGER_VALUE );
+		ASEXT_RegisterEnumValue( pASDoc, "Float", "JsonType", "Float", CASJsonType::FLOAT_VALUE );
+		ASEXT_RegisterEnumValue( pASDoc, "Null", "JsonType", "Null", CASJsonType::NULL_VALUE );
 
 		//Class
 		ASEXT_RegisterObjectType( pASDoc, "JSON Object", "CJson", 0, asOBJ_REF | asOBJ_GC );
