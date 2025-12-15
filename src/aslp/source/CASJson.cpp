@@ -7,8 +7,8 @@ CASJson::CASJson()
 {
     js_info = new json();
     engine = ASEXT_GetServerManager()->scriptEngine;
-    m_pJsonInfo = engine->GetTypeInfoByName("json");
-    m_pArrJsonInfo = engine->GetTypeInfoByName("array<json@>");
+    m_pJsonInfo = engine->GetTypeInfoByName("CJson");
+    m_pArrJsonInfo = engine->GetTypeInfoByName("array<CJson@>");
 }
 CASJson::~CASJson() 
 {
@@ -262,10 +262,17 @@ CASJson* SC_SERVER_DECL CASEngineFuncs_JsonParse(void* pthis, SC_SERVER_DUMMYARG
 	return CASJson::Factory(js_data);;
 }
 
-std::string SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node)
+CString& SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node)
 {
+    std::string source;
+
 	if (node.js_info) {
-		return node.js_info->dump(4, '\t', true, nlohmann::json::error_handler_t::ignore );
+		source = node.js_info->dump(4, '\t', true, nlohmann::json::error_handler_t::ignore );
 	}
-	return "";
+
+    CString* result = new CString();
+
+    result->assign(source.c_str(), source.length());
+
+	return *result;
 }

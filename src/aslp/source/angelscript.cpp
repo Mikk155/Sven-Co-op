@@ -271,7 +271,7 @@ void RegisterAngelScriptMethods()
 			"", "CEngineFuncs", "CJson@ JsonParse(const string& in szBuffer)",
 			(void*)CASEngineFuncs_JsonParse, asCALL_THISCALL);
 
-		extern std::string SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node);
+		extern CString& SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node);
 		ASEXT_RegisterObjectMethod(pASDoc,
 			"", "CEngineFuncs", "string JsonWrite(const CJson&in)",
 			(void*)CASEngineFuncs_JsonWrite, asCALL_THISCALL);
