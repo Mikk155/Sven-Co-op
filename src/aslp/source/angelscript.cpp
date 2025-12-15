@@ -102,19 +102,20 @@ void RegisterAngelScriptMethods()
 	ASEXT_RegisterScriptBuilderDefineCallback([](CScriptBuilder* pScriptBuilder) {
 
 		ASEXT_CScriptBuilder_DefineWord(pScriptBuilder, "METAMOD_PLUGIN_ASLP");
-	});
+	} );
 
 	// -TODO How to get the const char doc* in the generate_as_predefined.cpp
 	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
 	{
+#pragma region HealthInfo
 		//Regist HealthInfo type
 		ASEXT_RegisterObjectType(pASDoc, "Entity takehealth info", "HealthInfo", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		ASEXT_RegisterObjectProperty(pASDoc, "Who get healing?", "HealthInfo", "CBaseEntity@ pEntity", offsetof(healthinfo_t, pEntity));
 		ASEXT_RegisterObjectProperty(pASDoc, "Recover amount.", "HealthInfo", "float flHealth", offsetof(healthinfo_t, flHealth));
 		ASEXT_RegisterObjectProperty(pASDoc, "Recover dmg type.", "HealthInfo", "int bitsDamageType", offsetof(healthinfo_t, bitsDamageType));
 		ASEXT_RegisterObjectProperty(pASDoc, "If health_cap is non-zero, won't add more than health_cap. Returns true if it took damage, false otherwise.", "HealthInfo", "int health_cap", offsetof(healthinfo_t, health_cap));
-
-		//CBinaryStringBuilder
+#pragma endregion
+#pragma region CBinaryStringBuilder
 		asSFuncPtr reg;
 		ASEXT_RegisterObjectType(pASDoc, "Binary String Builder", "CBinaryStringBuilder", 0, asOBJ_REF | asOBJ_GC);
 		reg = asFUNCTION(CBinaryStringBuilder::Factory);
@@ -139,8 +140,8 @@ void RegisterAngelScriptMethods()
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "double ReadDouble()", CBinaryStringBuilder, ReadDouble, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "Vector ReadVector()", CBinaryStringBuilder, ReadVector, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "string ReadString()", CBinaryStringBuilder, ReadString, asCALL_THISCALL);
-
-		//CSQLite
+#pragma endregion
+#pragma region CSQLite
 		//Enum
 		ASEXT_RegisterEnum(pASDoc, "SQLite Return Value", "SQLiteResult", 0);
 		ASEXT_RegisterEnumValue(pASDoc, "Successful result ", "SQLiteResult", "SQLITE_OK", 0);
@@ -229,9 +230,8 @@ void RegisterAngelScriptMethods()
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL In Sync", "CSQLite", "SQLiteResult Exec(string&in sql, CSQLGrid@ &out aryResult, string&out errMsg)", CASSQLite, ExecSync, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, fnSQLiteCallback@ pCallback, any@ pCallBackparam, string&out errMsg)", CASSQLite, ExecWithCallBack, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Close SQL", "CSQLite", "void Close()", CASSQLite, Close, asCALL_THISCALL);
-
-		//CASJson
-		//Enum
+#pragma endregion
+#pragma region Json
 		ASEXT_RegisterEnum( pASDoc, "JSON Value Type", "JsonType", 0 );
 		ASEXT_RegisterEnumValue( pASDoc, "Object", "JsonType", "Object", CASJsonType::OBJECT_VALUE );
 		ASEXT_RegisterEnumValue( pASDoc, "Array", "JsonType", "Array", CASJsonType::ARRAY_VALUE );
@@ -241,7 +241,6 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterEnumValue( pASDoc, "Float", "JsonType", "Float", CASJsonType::FLOAT_VALUE );
 		ASEXT_RegisterEnumValue( pASDoc, "Null", "JsonType", "Null", CASJsonType::NULL_VALUE );
 
-		//Class
 		ASEXT_RegisterObjectType( pASDoc, "JSON Object", "CJson", 0, asOBJ_REF | asOBJ_GC );
 		reg = asFUNCTIONPR( CASJson::Factory, (), CASJson* );
 		ASEXT_RegisterObjectBehaviourEx( pASDoc, "Factory", "CJson", asBEHAVE_FACTORY, "CJson@ f()", &reg, asCALL_CDECL);
@@ -294,8 +293,8 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectMethod(pASDoc,
 			"copy class, If src and dst are different type, return false.\nIf not class ref, crash game.", "CEngineFuncs", "bool ClassMemcpy(?& in src, ?& in dst)",
 			(void*)CASEngineFuncs_ClassMemcpy, asCALL_THISCALL);
-
-		/* entity_state_t */
+#pragma endregion
+#pragma region entity_state_t
 		ASEXT_RegisterObjectType(pASDoc, "Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.", "entity_state_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int entityType", offsetof(entity_state_t, entityType));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int number", offsetof(entity_state_t, number));
@@ -356,8 +355,8 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser2", offsetof(entity_state_t, vuser2));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser3", offsetof(entity_state_t, vuser3));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser4", offsetof(entity_state_t, vuser4));
-
-		/* physent_t */
+#pragma endregion
+#pragma region physent_t
 		ASEXT_RegisterObjectType(pASDoc, "Physics data", "physent_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		//ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "array<char>@ name", offsetof(physent_t, name));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "int player", offsetof(physent_t, player));
@@ -392,8 +391,8 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "Vector vuser2", offsetof(physent_t, vuser2));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "Vector vuser3", offsetof(physent_t, vuser3));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "Vector vuser4", offsetof(physent_t, vuser4));
-
-		/* playermove_t */
+#pragma endregion
+#pragma region playermove_t
 		ASEXT_RegisterObjectType(pASDoc, "Player movement data", "playermove_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		ASEXT_RegisterObjectProperty(pASDoc, "", "playermove_t", "int player_index", offsetof(playermove_t, player_index));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "playermove_t", "int server", offsetof(playermove_t, server));
@@ -453,17 +452,16 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectMethod(pASDoc, "", "playermove_t", "physent_t@ GetPhysEntByIndex(int index)", (void*)CASPlayerMove__GetPhysEntByIndex, asCALL_THISCALL);
 		ASEXT_RegisterObjectMethod(pASDoc, "", "playermove_t", "void SetPhysEntByIndex(physent_t@ pPhyEnt, int newindex)", (void*)CASPlayerMove__SetPhysEntByIndex, asCALL_THISCALL);
 		//ASEXT_RegisterObjectProperty(pASDoc, "", "playermove_t", "array<physent_t@>@ physents", offsetof(playermove_t, physents));
-
-		/**
-		*	META_RES
-		**/
+#pragma endregion
+#pragma region META_RES
 		ASEXT_RegisterEnum(pASDoc, "Flags returned by a plugin's api function.", "META_RES", 0);
 		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "Unset", (int)MRES_UNSET);
 		ASEXT_RegisterEnumValue(pASDoc, "Plugin didn't take any action", "META_RES", "Ignored",(int) MRES_IGNORED);
 		ASEXT_RegisterEnumValue(pASDoc, "Plugin did something, but real function should still be called", "META_RES", "Handled", (int)MRES_HANDLED);
 		ASEXT_RegisterEnumValue(pASDoc, "Call real function, but use my return value", "META_RES", "Override", (int)MRES_OVERRIDE);
 		ASEXT_RegisterEnumValue(pASDoc, "Skip real function; use my return value", "META_RES", "Supercede", (int)MRES_SUPERCEDE);
-
+#pragma endregion
+#pragma region addtofullpack_t
 		/* addtofullpack_t */
 		ASEXT_RegisterObjectType(pASDoc, "AddToFulPack data", "ClientPacket", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "entity_state_t@ state", offsetof(addtofullpack_t, state));
@@ -473,6 +471,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int hostFlags", offsetof(addtofullpack_t, hostFlags));
 		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int playerIndex", offsetof(addtofullpack_t, playerIndex));
 		ASEXT_RegisterObjectProperty(pASDoc, "If set to true, the entity is not sent to the host", "ClientPacket", "bool SkipPacket", offsetof(addtofullpack_t, Result));
+#pragma endregion
 	} );
 }
 #undef REGISTE_OBJMETHODEX
