@@ -66,20 +66,6 @@ void RegisteGCObject(CASDocumentation* pASDoc, const char* szName)
 	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Release all references held by this class", szName, asBEHAVE_RELEASEREFS, "void ReleaseReferences(int& in)", &reg, asCALL_THISCALL);
 }
 
-CASJson* SC_SERVER_DECL CASEngineFuncs_JsonParse(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer)
-{
-	json js_data = json::parse((char*)szBuffer->c_str());
-	return CASJson::Factory(js_data);;
-}
-
-std::string SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node)
-{
-	if (node.js_info) {
-		return node.js_info->dump(1, '\t');
-	}
-	return "";
-}
-
 physent_t* SC_SERVER_DECL CASPlayerMove__GetPhysEntByIndex(playermove_t* pthis, SC_SERVER_DUMMYARG int index)
 {
 	return &pthis->physents[index];
@@ -280,9 +266,12 @@ void RegisterAngelScriptMethods()
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get the value type", "CJson", "JsonType Type() const", CASJson, Type, asCALL_THISCALL);
 
 		//Regist New Method
+		extern CASJson* SC_SERVER_DECL CASEngineFuncs_JsonParse(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer);
 		ASEXT_RegisterObjectMethod(pASDoc,
 			"", "CEngineFuncs", "CJson@ JsonParse(const string& in szBuffer)",
 			(void*)CASEngineFuncs_JsonParse, asCALL_THISCALL);
+
+		extern std::string SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node);
 		ASEXT_RegisterObjectMethod(pASDoc,
 			"", "CEngineFuncs", "string JsonWrite(const CJson&in)",
 			(void*)CASEngineFuncs_JsonWrite, asCALL_THISCALL);

@@ -255,3 +255,17 @@ CASJsonType CASJson::Type() const
         default: return NULL_VALUE;
     }
 }
+
+CASJson* SC_SERVER_DECL CASEngineFuncs_JsonParse(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer)
+{
+	json js_data = json::parse((char*)szBuffer->c_str());
+	return CASJson::Factory(js_data);;
+}
+
+std::string SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node)
+{
+	if (node.js_info) {
+		return node.js_info->dump(4, '\t', true, nlohmann::json::error_handler_t::ignore );
+	}
+	return "";
+}
