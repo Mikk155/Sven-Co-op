@@ -133,11 +133,11 @@ void ToggleState( bool state )
     {
         if( g_Config.ShouldPacketFilter )
         {
-            g_Hooks.RegisterHook( Hooks::aslp::Engine::PostAddToFullPack, @PostAddToFullPack );
+            g_Hooks.RegisterHook( Hooks::aslp::Player::PostAddToFullPack, @PostAddToFullPack );
         }
 
-        g_Hooks.RegisterHook( Hooks::aslp::Engine::PreMovement, @PreMovement );
-        g_Hooks.RegisterHook( Hooks::aslp::Engine::ShouldCollide, @ShouldCollide );
+        g_Hooks.RegisterHook( Hooks::aslp::Player::PreMovement, @PreMovement );
+        g_Hooks.RegisterHook( Hooks::aslp::Entity::ShouldCollide, @ShouldCollide );
 
         uint Size = _LastUpdatedClientVars_.length();
 
@@ -150,9 +150,9 @@ void ToggleState( bool state )
     }
     else
     {
-        g_Hooks.RemoveHook( Hooks::aslp::Engine::PreMovement, @PreMovement );
-        g_Hooks.RemoveHook( Hooks::aslp::Engine::ShouldCollide, @ShouldCollide );
-        g_Hooks.RemoveHook( Hooks::aslp::Engine::PostAddToFullPack, @PostAddToFullPack );
+        g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @PreMovement );
+        g_Hooks.RemoveHook( Hooks::aslp::Entity::ShouldCollide, @ShouldCollide );
+        g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @PostAddToFullPack );
     }
 }
 
@@ -281,6 +281,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, META_RES
 
     return HOOK_CONTINUE;
 }
+
 HookReturnCode PostAddToFullPack( ClientPacket@ packet, META_RES &out meta_result )
 {
     // If npc is clipping then we don't care about non-player entities.

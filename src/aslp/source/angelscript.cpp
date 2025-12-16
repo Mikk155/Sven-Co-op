@@ -496,13 +496,13 @@ void RegisterAngelScriptHooks()
 	);
 	CREATE_AS_HOOK( pPreAddToFullPack,
 		"Pre call of gEntityInterface.pfnAddToFullPack",
-		ASLP_NAMESPACE( Engine ),
+		ASLP_NAMESPACE( Player ),
 		"PreAddToFullPack",
 		"ClientPacket@ packet, META_RES &out meta_result"
 	);
 	CREATE_AS_HOOK( pPostAddToFullPack,
 		"Post call of gEntityInterface.pfnAddToFullPack",
-		ASLP_NAMESPACE( Engine ),
+		ASLP_NAMESPACE( Player ),
 		"PostAddToFullPack",
 		"ClientPacket@ packet, META_RES &out meta_result"
 	);
@@ -514,7 +514,7 @@ void RegisterAngelScriptHooks()
 	);
 	CREATE_AS_HOOK( pShouldCollide,
 		"Pre call of gEntityInterface.pfnShouldCollide",
-		ASLP_NAMESPACE( Engine ),
+		ASLP_NAMESPACE( Entity ),
 		"ShouldCollide",
 		"CBaseEntity@ touched, CBaseEntity@ other, META_RES &out meta_result, bool &out Collide"
 	);
