@@ -40,6 +40,40 @@
 #define CALL_ANGELSCRIPT(pfn, ...) if (ASEXT_CallHook){(*ASEXT_CallHook)(g_AngelHook.pfn, 0, __VA_ARGS__);}
 
 #pragma region PreHooks
+static NEW_DLL_FUNCTIONS gNewDllFunctionTable =
+{
+	// Called right before the object's memory is freed. 
+	// Calls its destructor.
+	NULL,
+	NULL,
+	NULL,
+
+	// Added 2005/08/11 (no SDK update):
+	NULL,//void(*pfnCvarValue)(const edict_t *pEnt, const char *value);
+
+	// Added 2005/11/21 (no SDK update):
+	//    value is "Bad CVAR request" on failure (i.e that user is not connected or the cvar does not exist).
+	//    value is "Bad Player" if invalid player edict.
+	NULL,//void(*pfnCvarValue2)(const edict_t *pEnt, int requestID, const char *cvarName, const char *value);
+};
+
+C_DLLEXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS* pNewDllFunctionTable, int* interfaceVersion )
+{
+	if( !pNewDllFunctionTable )
+	{
+		LOG_ERROR( PLID, "GetNewDLLFunctions called with null pFunctionTable" );
+		return(FALSE);
+	}
+	else if( *interfaceVersion != NEW_DLL_FUNCTIONS_VERSION )
+	{
+		LOG_ERROR( PLID, "GetNewDLLFunctions version mismatch; requested=%d ours=%d", *interfaceVersion, NEW_DLL_FUNCTIONS_VERSION );
+		// Tell metamod what version we had, so it can figure out who is out of date.
+		*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
+		return(FALSE);
+	}
+	memcpy(pNewDllFunctionTable, &gNewDllFunctionTable, sizeof(NEW_DLL_FUNCTIONS));
+	return(TRUE);
+}
 
 static void ServerActivate( edict_t* pEdictList, int edictCount, int clientMax )
 {
@@ -244,11 +278,8 @@ C_DLLEXPORT int GetEntityAPI2( DLL_FUNCTIONS* pFunctionTable, int* interfaceVers
 	memcpy( pFunctionTable, &gFunctionTable, sizeof(DLL_FUNCTIONS) );
 	return(TRUE);
 }
-
 #pragma endregion
-
 #pragma region PostHook
-
 static void GameInitPost()
 {
 	static cvar_t fixgmr = { const_cast<char*>( "sv_fixgmr" ),const_cast<char*>( "1" ), FCVAR_SERVER };
@@ -421,5 +452,4 @@ C_DLLEXPORT int GetEntityAPI2_Post( DLL_FUNCTIONS* pFunctionTable, int* interfac
 	memcpy(pFunctionTable, &gFunctionTable_Post, sizeof(DLL_FUNCTIONS));
 	return(TRUE);
 }
-
 #pragma endregion
