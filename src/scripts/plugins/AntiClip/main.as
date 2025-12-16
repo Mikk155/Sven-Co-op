@@ -98,7 +98,6 @@ void Think()
         if( desiredValue != _LastUpdatedClientVars_[ui] )
         {
             auto player = g_PlayerFuncs.FindPlayerByIndex(ui+1);
-                g_Game.AlertMessage( at_console, 'ui: ' + ui + ' val: ' + desiredValue+'\n' );
 
             if( player !is null )
             {
@@ -108,7 +107,6 @@ void Think()
                 NetworkMessage message( MSG_ONE, NetworkMessages::SVC_STUFFTEXT, player.edict() );
                     message.WriteString( buffer );
                 message.End();
-                g_Game.AlertMessage( at_console, buffer );
             }
         }
     }
@@ -139,6 +137,7 @@ void ToggleState( bool state )
         }
 
         g_Hooks.RegisterHook( Hooks::aslp::Engine::PreMovement, @PreMovement );
+        g_Hooks.RegisterHook( Hooks::aslp::Engine::ShouldCollide, @ShouldCollide );
 
         uint Size = _LastUpdatedClientVars_.length();
 
@@ -152,6 +151,7 @@ void ToggleState( bool state )
     else
     {
         g_Hooks.RemoveHook( Hooks::aslp::Engine::PreMovement, @PreMovement );
+        g_Hooks.RemoveHook( Hooks::aslp::Engine::ShouldCollide, @ShouldCollide );
         g_Hooks.RemoveHook( Hooks::aslp::Engine::PostAddToFullPack, @PostAddToFullPack );
     }
 }
@@ -178,7 +178,7 @@ void Command( const CCommand@ args )
 
 CClientCommand CMD( "anticlip", "Toggle AntiClip, on/off | 1/0", @Command, ConCommandFlag::AdminOnly );
 
-HookReturnCode PreMovement( playermove_t@& out pmove, META_RES& out meta_result )
+HookReturnCode PreMovement( playermove_t@& out pmove, META_RES &out meta_result )
 {
     if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
     {
@@ -248,13 +248,40 @@ HookReturnCode PreMovement( playermove_t@& out pmove, META_RES& out meta_result 
         pmove.SetPhysEntByIndex( physent, numphysent++ );
     }
 
-    // Set updated list.
     pmove.numphysent = numphysent;
 
     return HOOK_CONTINUE;
 }
 
-HookReturnCode PostAddToFullPack( ClientPacket@ packet, META_RES& out meta_result )
+HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, META_RES &out meta_resut, bool&out Collide )
+{
+    if( toucher is null || other is null )
+        return HOOK_CONTINUE;
+
+    if( toucher.IsPlayer() && other.IsPlayer() )
+    {
+        // Player can melee while inside another player and hit something else
+        if( other.Intersects( toucher ) )
+        {
+            Collide = false;
+            meta_resut = META_RES::Supercede;
+        }
+        return HOOK_HANDLED;
+    }
+
+    auto owner = g_EntityFuncs.Instance( other.pev.owner );
+
+    // Don't touch allied projectiles
+    if( owner !is null && toucher.IRelationship( owner ) == R_AL )
+    {
+        Collide = false;
+        meta_resut = META_RES::Supercede;
+        return HOOK_HANDLED;
+    }
+
+    return HOOK_CONTINUE;
+}
+HookReturnCode PostAddToFullPack( ClientPacket@ packet, META_RES &out meta_result )
 {
     // If npc is clipping then we don't care about non-player entities.
     if( g_Config.NPCClipping && packet.playerIndex == 0 )
@@ -293,3 +320,4 @@ HookReturnCode PostAddToFullPack( ClientPacket@ packet, META_RES& out meta_resul
 
     return HOOK_CONTINUE;
 }
+#endif
