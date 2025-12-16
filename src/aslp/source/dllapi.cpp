@@ -40,13 +40,27 @@
 #define CALL_ANGELSCRIPT(pfn, ...) if (ASEXT_CallHook){(*ASEXT_CallHook)(g_AngelHook.pfn, 0, __VA_ARGS__);}
 
 #pragma region PreHooks
+int ShouldCollide( edict_t* pentTouched, edict_t* pentOther )
+{
+	bool Collide = true;
+	META_RES meta_result = META_RES::MRES_IGNORED;
+
+	CALL_ANGELSCRIPT( pShouldCollide,
+		( pentTouched != nullptr ? pentTouched->pvPrivateData : nullptr ),
+		( pentOther != nullptr ? pentOther->pvPrivateData : nullptr ),
+		&meta_result, &Collide
+	);
+
+	RETURN_META_VALUE(meta_result, Collide ? 1 : 0 );
+}
+
 static NEW_DLL_FUNCTIONS gNewDllFunctionTable =
 {
 	// Called right before the object's memory is freed. 
 	// Calls its destructor.
 	NULL,
 	NULL,
-	NULL,
+	ShouldCollide,
 
 	// Added 2005/08/11 (no SDK update):
 	NULL,//void(*pfnCvarValue)(const edict_t *pEnt, const char *value);

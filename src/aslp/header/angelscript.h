@@ -36,6 +36,7 @@ typedef struct angelhook_s {
 	void* pPreAddToFullPack = nullptr;
 	void* pPostAddToFullPack = nullptr;
 	void* pPostEntitySpawn = nullptr;
+	void* pShouldCollide = nullptr;
 
 	void* pPlayerPostTakeDamage = nullptr;
 	void* pPlayerTakeHealth = nullptr;

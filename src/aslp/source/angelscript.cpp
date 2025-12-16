@@ -484,13 +484,13 @@ void RegisterAngelScriptHooks()
 	);
 	CREATE_AS_HOOK( pPreMovement,
 		"Pre call of gEntityInterface.pfnPM_Move",
-		ASLP_NAMESPACE( Engine ),
+		ASLP_NAMESPACE( Player ),
 		"PreMovement",
 		"playermove_t@ &out pmove, META_RES &out meta_result"
 	);
 	CREATE_AS_HOOK( pPostMovement,
 		"Pre call of gEntityInterface.pfnPM_Move",
-		ASLP_NAMESPACE( Engine ),
+		ASLP_NAMESPACE( Player ),
 		"PostMovement",
 		"playermove_t@ &out pmove, META_RES &out meta_result"
 	);
@@ -511,6 +511,12 @@ void RegisterAngelScriptHooks()
 		ASLP_NAMESPACE( Entity ),
 		"PostEntitySpawn",
 		"edict_t@ pEntity"
+	);
+	CREATE_AS_HOOK( pShouldCollide,
+		"Pre call of gEntityInterface.pfnShouldCollide",
+		ASLP_NAMESPACE( Engine ),
+		"ShouldCollide",
+		"CBaseEntity@ touched, CBaseEntity@ other, META_RES &out meta_result, bool &out Collide"
 	);
 
 	CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "Player", "PlayerPostTakeDamage", "DamageInfo@ info");
