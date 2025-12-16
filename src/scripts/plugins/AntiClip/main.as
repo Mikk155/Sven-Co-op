@@ -41,6 +41,7 @@ namespace utils
         return false;
     }
 }
+
 void MapInit()
 {
     g_Game.PrecacheOther( "monster_barney" );
@@ -81,6 +82,40 @@ class CAntiClipConfig
 
 CAntiClipConfig g_Config;
 
+array<int> UpdateClientVar(g_Engine.maxClients);
+array<int> _LastUpdatedClientVars_(g_Engine.maxClients);
+
+CScheduledFunction@ fnThink;
+
+void Think()
+{
+    uint Size = UpdateClientVar.length();
+
+    for( uint ui = 0; ui < Size; ui++ )
+    {
+        int desiredValue = UpdateClientVar[ui];
+
+        if( desiredValue != _LastUpdatedClientVars_[ui] )
+        {
+            auto player = g_PlayerFuncs.FindPlayerByIndex(ui+1);
+                g_Game.AlertMessage( at_console, 'ui: ' + ui + ' val: ' + desiredValue+'\n' );
+
+            if( player !is null )
+            {
+                string buffer;
+                snprintf( buffer, ";cl_solid_players %1;\n", desiredValue );
+
+                NetworkMessage message( MSG_ONE, NetworkMessages::SVC_STUFFTEXT, player.edict() );
+                    message.WriteString( buffer );
+                message.End();
+                g_Game.AlertMessage( at_console, buffer );
+            }
+        }
+    }
+
+    _LastUpdatedClientVars_ = UpdateClientVar;
+}
+
 bool g_State;
 
 void ToggleState( bool state )
@@ -90,6 +125,12 @@ void ToggleState( bool state )
 
     g_State = state;
 
+    if( fnThink !is null )
+    {
+        g_Scheduler.RemoveTimer( @fnThink );
+        @fnThink = null;
+    }
+
     if( state )
     {
         if( g_Config.ShouldPacketFilter )
@@ -98,6 +139,15 @@ void ToggleState( bool state )
         }
 
         g_Hooks.RegisterHook( Hooks::aslp::Engine::PreMovement, @PreMovement );
+
+        uint Size = _LastUpdatedClientVars_.length();
+
+        for( uint ui = 0; ui < Size; ui++ )
+        {
+            _LastUpdatedClientVars_[ui] = -1;
+        }
+
+        @fnThink = g_Scheduler.SetInterval( "Think", 0.1f, g_Scheduler.REPEAT_INFINITE_TIMES );
     }
     else
     {
@@ -132,8 +182,11 @@ HookReturnCode PreMovement( playermove_t@& out pmove, META_RES& out meta_result 
 {
     if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
     {
+        UpdateClientVar[ pmove.player_index ] = 1;
         return HOOK_CONTINUE;
     }
+
+    UpdateClientVar[ pmove.player_index ] = 0;
 
     // 0 is worldspawn so increase one
     CBasePlayer@ player = g_PlayerFuncs.FindPlayerByIndex( pmove.player_index + 1 );
@@ -169,6 +222,8 @@ HookReturnCode PreMovement( playermove_t@& out pmove, META_RES& out meta_result 
             // Crouching player
             if( pmove.origin.z < physent.origin.z + 54 )
                 continue;
+
+            UpdateClientVar[ pmove.player_index ] = 1;
         }
         else if( !g_Config.NPCClipping )
         {
