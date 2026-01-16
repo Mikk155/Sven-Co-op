@@ -55,6 +55,99 @@ static int SV_ModelIndex(const char* m) {
 	SET_META_RESULT(MRES_IGNORED);
 	return 0;
 }
+
+#ifndef FUCKSVENCOOP
+#define FUCKSVENCOOP 1
+#endif
+
+#if FUCKSVENCOOP
+#include "CASJson.h"
+static json g_SentNetworkMessages = json::object();
+static json* g_SendingNetworkMessage = nullptr;
+static bool g_SendingNetworkTempEntity = false;
+
+void GenerateNetworkingMessages()
+{
+	char networkMessageFilename[256] = { 0 };
+	GET_GAME_DIR( networkMessageFilename );
+	strcat( networkMessageFilename, "/scripts" );
+	CreateDirectory(networkMessageFilename, NULL);
+	strcat( networkMessageFilename, "/network_messages.json" );
+
+	FILE* file = fopen( networkMessageFilename, "w" );
+
+	if( !file )
+	{
+		ALERT( at_console, "[Error] Couldn't create file \"%s\"\n", networkMessageFilename );
+		return;
+	}
+
+	std::string fileContent = g_SentNetworkMessages.dump(4).c_str();
+
+	fwrite(fileContent.c_str(), 1, fileContent.length(), file);
+	fclose(file);
+
+	ALERT( at_console, "File \"%s\" Generated suscessfully.\n", networkMessageFilename );
+}
+
+static void MSG_Begin( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL )
+{
+	auto MessageName = std::to_string( msg_type );
+
+	// Temp entity
+	if( msg_type == 23 )
+	{
+		g_SendingNetworkTempEntity = true;
+	}
+	else if( !g_SentNetworkMessages.contains( MessageName ) )
+	{
+		g_SentNetworkMessages[ MessageName ] = json::array();
+		g_SendingNetworkMessage = &g_SentNetworkMessages[ MessageName ];
+	}
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_WriteType( const std::string& input )
+{
+	if( g_SendingNetworkMessage != nullptr )
+	{
+		g_SendingNetworkMessage->push_back( std::move( input ) );
+	}
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Byte( int input )
+{
+	if( g_SendingNetworkTempEntity )
+	{
+		std::string tempEntityIndex( "tempent_" );
+		tempEntityIndex += std::to_string( input );
+
+		if( !g_SentNetworkMessages.contains( tempEntityIndex ) )
+		{
+			g_SentNetworkMessages[ tempEntityIndex ] = json::array();
+			g_SendingNetworkMessage = &g_SentNetworkMessages[ tempEntityIndex ];
+		}
+		g_SendingNetworkTempEntity = false;
+		return;
+	}
+	MSG_WriteType( "byte" );
+}
+
+static void MSG_End() {
+	g_SendingNetworkMessage = nullptr;
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Char( int input ) { MSG_WriteType( "char" ); }
+static void MSG_Short( int input ) { MSG_WriteType( "short" ); }
+static void MSG_Long( int input ) { MSG_WriteType( "long" ); }
+static void MSG_Angle( float input ) { MSG_WriteType( "angle" ); }
+static void MSG_Coord( float input ) { MSG_WriteType( "coord" ); }
+static void MSG_String( const char* input ) { MSG_WriteType( "string" ); }
+static void MSG_Entity( int input ) { MSG_WriteType( "entity" ); }
+#endif
+
 enginefuncs_t meta_engfuncs = {
 	NULL,						// pfnPrecacheModel()
 	NULL,						// pfnPrecacheSound()
@@ -114,6 +207,19 @@ enginefuncs_t meta_engfuncs = {
 	NULL,						// pfnDecalIndex()
 	NULL,						// pfnPointContents()
 
+#if FUCKSVENCOOP
+	MSG_Begin,						// pfnMessageBegin()
+	MSG_End,						// pfnMessageEnd()
+
+	MSG_Byte,						// pfnWriteByte()
+	MSG_Char,						// pfnWriteChar()
+	MSG_Short,						// pfnWriteShort()
+	MSG_Long,						// pfnWriteLong()
+	MSG_Angle,						// pfnWriteAngle()
+	MSG_Coord,						// pfnWriteCoord()
+	MSG_String,						// pfnWriteString()
+	MSG_Entity,						// pfnWriteEntity()
+#else
 	NULL,						// pfnMessageBegin()
 	NULL,						// pfnMessageEnd()
 
@@ -125,7 +231,7 @@ enginefuncs_t meta_engfuncs = {
 	NULL,						// pfnWriteCoord()
 	NULL,						// pfnWriteString()
 	NULL,						// pfnWriteEntity()
-
+#endif
 	NULL,						// pfnCVarRegister()
 	NULL,						// pfnCVarGetFloat()
 	NULL,						// pfnCVarGetString()

@@ -120,12 +120,22 @@ static void ClientCommand( edict_t* pEntity )
 
 		const char* pcmd = CMD_ARGV(0);
 
-		if( !strncmp( pcmd, "aslp_generate_docs", 11 ) )
+		if( !strncmp( pcmd, "aslp_generate_docs", 18 ) )
 		{
 			extern void GenerateScriptPredefined( const asIScriptEngine * engine );
 			GenerateScriptPredefined( ASEXT_GetServerManager()->scriptEngine );
 			meta_result = MRES_SUPERCEDE;
 		}
+#ifndef FUCKSVENCOOP
+#define FUCKSVENCOOP 1
+#endif
+#if FUCKSVENCOOP
+		else if( !strncmp( pcmd, "aslp_networkmsg", 15 ) )
+		{
+			extern void GenerateNetworkingMessages();
+			GenerateNetworkingMessages();
+		}
+#endif
 	}
 
 	SET_META_RESULT(meta_result);
