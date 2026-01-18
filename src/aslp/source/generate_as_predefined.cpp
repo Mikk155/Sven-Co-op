@@ -152,27 +152,17 @@ namespace
     }
 }
 
+#include "CFile.h"
+
 void GenerateScriptPredefined(const asIScriptEngine* engine)
 {
-    static bool g_ASDocsGenerated = false;
+    CFile file( "scripts/aslp.predefined", CFile::Mode::Write );
 
-    if( g_ASDocsGenerated )
+    if( !file.IsOpen() )
     {
-        ALERT( at_console, "AngelScript predefined file generated at scripts/aslp.predefined\n" );
+        ALERT( at_console, "[Error] Couldn't create file \"scripts/aslp.predefined\"\n" );
         return;
     }
-
-    if (!engine) 
-    {
-        ALERT(at_console, "[Error] Couldn't detect the AngelScript Engine.\n");
-        return;
-    }
-
-    char szPredefinedFilename[256] = { 0 };
-    GET_GAME_DIR(szPredefinedFilename);
-    strcat(szPredefinedFilename, "/scripts");
-    CreateDirectory(szPredefinedFilename, NULL);
-    strcat(szPredefinedFilename, "/aslp.predefined");
 
     std::stringstream contentStream;
     printEnumList(engine, contentStream);
@@ -182,16 +172,8 @@ void GenerateScriptPredefined(const asIScriptEngine* engine)
     printGlobalTypedef(engine, contentStream);
     std::string fileContent = contentStream.str();
 
-    FILE* file = fopen(szPredefinedFilename, "w");
-    if (!file)
+    if( file.Write( fileContent ) )
     {
-        ALERT(at_console, "[Error] Couldn't create file \"%s\"\n", szPredefinedFilename);
-        return;
+        ALERT(at_console, "File \"scripts/aslp.predefined\" Generated suscessfully.\n" );
     }
-
-    g_ASDocsGenerated = true;
-
-    fwrite(fileContent.c_str(), 1, fileContent.length(), file);
-    fclose(file);
-    ALERT(at_console, "File \"%s\" Generated suscessfully.\n", szPredefinedFilename);
 }

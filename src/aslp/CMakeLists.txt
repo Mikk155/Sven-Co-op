@@ -22,6 +22,7 @@ set( SOURCES
     source/CASSQLGrid.cpp
     source/CASSQLite.cpp
     source/CASSQLItem.cpp
+    source/CFile.cpp
     source/dll_hook.cpp
     source/dllapi.cpp
     source/dllmain.cpp
@@ -44,6 +45,7 @@ set( HEADERS
     header/CASSQLGrid.h
     header/CASSQLite.h
     header/CASSQLItem.h
+    header/CFile.h
     header/dlldef.h
     header/enginedef.h
     header/extern_hook.h
