@@ -38,7 +38,6 @@
 #include <extdll.h>
 #include <meta_api.h>
 
-
 #include "enginedef.h"
 
 #pragma region PreHooks
@@ -56,97 +55,63 @@ static int SV_ModelIndex(const char* m) {
 	return 0;
 }
 
-#ifndef FUCKSVENCOOP
-#define FUCKSVENCOOP 1
-#endif
-
-#if FUCKSVENCOOP
-#include "CASJson.h"
-static json g_SentNetworkMessages = json::object();
-static json* g_SendingNetworkMessage = nullptr;
-static bool g_SendingNetworkTempEntity = false;
-
-void GenerateNetworkingMessages()
-{
-	char networkMessageFilename[256] = { 0 };
-	GET_GAME_DIR( networkMessageFilename );
-	strcat( networkMessageFilename, "/scripts" );
-	CreateDirectory(networkMessageFilename, NULL);
-	strcat( networkMessageFilename, "/network_messages.json" );
-
-	FILE* file = fopen( networkMessageFilename, "w" );
-
-	if( !file )
-	{
-		ALERT( at_console, "[Error] Couldn't create file \"%s\"\n", networkMessageFilename );
-		return;
-	}
-
-	std::string fileContent = g_SentNetworkMessages.dump(4).c_str();
-
-	fwrite(fileContent.c_str(), 1, fileContent.length(), file);
-	fclose(file);
-
-	ALERT( at_console, "File \"%s\" Generated suscessfully.\n", networkMessageFilename );
-}
+#include "generate_as_networking.h"
+extern CGenerateNetworkMessageAPI* g_NetworkMessageAPI;
 
 static void MSG_Begin( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL )
 {
-	auto MessageName = std::to_string( msg_type );
+	if( g_NetworkMessageAPI != nullptr )
+	{
+		g_NetworkMessageAPI->Begin( msg_dest, msg_type, pOrigin, ed );
+	}
 
-	// Temp entity
-	if( msg_type == 23 )
-	{
-		g_SendingNetworkTempEntity = true;
-	}
-	else if( !g_SentNetworkMessages.contains( MessageName ) )
-	{
-		g_SentNetworkMessages[ MessageName ] = json::array();
-		g_SendingNetworkMessage = &g_SentNetworkMessages[ MessageName ];
-	}
-	SET_META_RESULT(META_RES::MRES_IGNORED);
-}
-
-static void MSG_WriteType( const std::string& input )
-{
-	if( g_SendingNetworkMessage != nullptr )
-	{
-		g_SendingNetworkMessage->push_back( std::move( input ) );
-	}
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Byte( int input )
 {
-	if( g_SendingNetworkTempEntity )
-	{
-		std::string tempEntityIndex( "tempent_" );
-		tempEntityIndex += std::to_string( input );
-
-		if( !g_SentNetworkMessages.contains( tempEntityIndex ) )
-		{
-			g_SentNetworkMessages[ tempEntityIndex ] = json::array();
-			g_SendingNetworkMessage = &g_SentNetworkMessages[ tempEntityIndex ];
-		}
-		g_SendingNetworkTempEntity = false;
-		return;
-	}
-	MSG_WriteType( "byte" );
-}
-
-static void MSG_End() {
-	g_SendingNetworkMessage = nullptr;
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
-static void MSG_Char( int input ) { MSG_WriteType( "char" ); }
-static void MSG_Short( int input ) { MSG_WriteType( "short" ); }
-static void MSG_Long( int input ) { MSG_WriteType( "long" ); }
-static void MSG_Angle( float input ) { MSG_WriteType( "angle" ); }
-static void MSG_Coord( float input ) { MSG_WriteType( "coord" ); }
-static void MSG_String( const char* input ) { MSG_WriteType( "string" ); }
-static void MSG_Entity( int input ) { MSG_WriteType( "entity" ); }
-#endif
+static void MSG_End()
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Char( int input )
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Short( int input )
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Long( int input )
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Angle( float input )
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Coord( float input )
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_String( const char* input )
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
+static void MSG_Entity( int input )
+{
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
 
 enginefuncs_t meta_engfuncs = {
 	NULL,						// pfnPrecacheModel()
@@ -207,7 +172,6 @@ enginefuncs_t meta_engfuncs = {
 	NULL,						// pfnDecalIndex()
 	NULL,						// pfnPointContents()
 
-#if FUCKSVENCOOP
 	MSG_Begin,						// pfnMessageBegin()
 	MSG_End,						// pfnMessageEnd()
 
@@ -219,19 +183,7 @@ enginefuncs_t meta_engfuncs = {
 	MSG_Coord,						// pfnWriteCoord()
 	MSG_String,						// pfnWriteString()
 	MSG_Entity,						// pfnWriteEntity()
-#else
-	NULL,						// pfnMessageBegin()
-	NULL,						// pfnMessageEnd()
 
-	NULL,						// pfnWriteByte()
-	NULL,						// pfnWriteChar()
-	NULL,						// pfnWriteShort()
-	NULL,						// pfnWriteLong()
-	NULL,						// pfnWriteAngle()
-	NULL,						// pfnWriteCoord()
-	NULL,						// pfnWriteString()
-	NULL,						// pfnWriteEntity()
-#endif
 	NULL,						// pfnCVarRegister()
 	NULL,						// pfnCVarGetFloat()
 	NULL,						// pfnCVarGetString()

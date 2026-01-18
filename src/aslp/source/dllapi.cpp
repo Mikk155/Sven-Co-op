@@ -126,16 +126,6 @@ static void ClientCommand( edict_t* pEntity )
 			GenerateScriptPredefined( ASEXT_GetServerManager()->scriptEngine );
 			meta_result = MRES_SUPERCEDE;
 		}
-#ifndef FUCKSVENCOOP
-#define FUCKSVENCOOP 1
-#endif
-#if FUCKSVENCOOP
-		else if( !strncmp( pcmd, "aslp_networkmsg", 15 ) )
-		{
-			extern void GenerateNetworkingMessages();
-			GenerateNetworkingMessages();
-		}
-#endif
 	}
 
 	SET_META_RESULT(meta_result);
@@ -308,6 +298,10 @@ static void GameInitPost()
 {
 	static cvar_t fixgmr = { const_cast<char*>( "sv_fixgmr" ),const_cast<char*>( "1" ), FCVAR_SERVER };
 	CVAR_REGISTER(&fixgmr);
+
+	// Generates angelscript API/Documentation for network messages.
+	extern void GenerateScriptNetworking( const asIScriptEngine *engine );
+	GenerateScriptNetworking( ASEXT_GetServerManager()->scriptEngine );
 
 	SET_META_RESULT(MRES_HANDLED);
 }

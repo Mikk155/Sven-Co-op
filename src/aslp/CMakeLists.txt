@@ -32,6 +32,7 @@ set( SOURCES
     source/meta_api.cpp
     source/sdk_util.cpp
     source/vftable.cpp
+    source/generate_as_networking.cpp
     source/generate_as_predefined.cpp
 )
 
@@ -49,6 +50,7 @@ set( HEADERS
     header/dlldef.h
     header/enginedef.h
     header/extern_hook.h
+    header/generate_as_networking.h
     header/info_name.h
     header/signatures.h
     header/utility.h
