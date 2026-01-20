@@ -58,18 +58,33 @@ static int SV_ModelIndex(const char* m) {
 #include "generate_as_networking.h"
 extern CGenerateNetworkMessageAPI* g_NetworkMessageAPI;
 
+static int MSG_Register( const char* name, int bytes )
+{
+	// Avoid re-call
+	static bool registeringMessage = false;
+
+	if( registeringMessage == true )
+	{
+		RETURN_META_VALUE(META_RES::MRES_IGNORED, 0);
+	}
+
+	registeringMessage = true;
+	int messageID = REG_USER_MSG( name, bytes );
+	registeringMessage = false;
+
+	if( g_NetworkMessageAPI == nullptr )
+		g_NetworkMessageAPI = new CGenerateNetworkMessageAPI();
+
+	g_NetworkMessageAPI->Register( name, bytes, messageID );
+
+	RETURN_META_VALUE(META_RES::MRES_SUPERCEDE, messageID);
+}
+
 static void MSG_Begin( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL )
 {
 	if( g_NetworkMessageAPI != nullptr )
-	{
 		g_NetworkMessageAPI->Begin( msg_dest, msg_type, pOrigin, ed );
-	}
 
-	SET_META_RESULT(META_RES::MRES_IGNORED);
-}
-
-static void MSG_Byte( int input )
-{
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
@@ -78,38 +93,67 @@ static void MSG_End()
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
+static void MSG_Byte( int input )
+{
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Byte );
+
+	SET_META_RESULT(META_RES::MRES_IGNORED);
+}
+
 static void MSG_Char( int input )
 {
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Char );
+
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Short( int input )
 {
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Short );
+
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Long( int input )
 {
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Long );
+
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Angle( float input )
 {
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Angle );
+
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Coord( float input )
 {
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Coord );
+
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_String( const char* input )
 {
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::String );
+
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Entity( int input )
 {
+	if( g_NetworkMessageAPI != nullptr )
+		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Entity );
+
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
@@ -208,7 +252,7 @@ enginefuncs_t meta_engfuncs = {
 	NULL,						// pfnFindEntityByVars()
 	NULL,						// pfnGetModelPtr()
 
-	NULL,						// pfnRegUserMsg()
+	MSG_Register,						// pfnRegUserMsg()
 
 	NULL,						// pfnAnimationAutomove()
 	NULL,						// pfnGetBonePosition()

@@ -37,6 +37,9 @@
 #include "dlldef.h"
 #include <pm_defs.h>
 
+#include "generate_as_networking.h"
+extern CGenerateNetworkMessageAPI* g_NetworkMessageAPI;
+
 #define CALL_ANGELSCRIPT(pfn, ...) if (ASEXT_CallHook){(*ASEXT_CallHook)(g_AngelHook.pfn, 0, __VA_ARGS__);}
 
 #pragma region PreHooks
@@ -124,6 +127,16 @@ static void ClientCommand( edict_t* pEntity )
 		{
 			extern void GenerateScriptPredefined( const asIScriptEngine * engine );
 			GenerateScriptPredefined( ASEXT_GetServerManager()->scriptEngine );
+			meta_result = MRES_SUPERCEDE;
+		}
+		else if( !strncmp( pcmd, "aslp", 4 ) )
+		{
+			if( g_NetworkMessageAPI != nullptr )
+			{
+				g_NetworkMessageAPI->Initialize( ASEXT_GetServerManager()->scriptEngine );
+				delete g_NetworkMessageAPI;
+				g_NetworkMessageAPI = nullptr;
+			}
 			meta_result = MRES_SUPERCEDE;
 		}
 	}
@@ -298,10 +311,6 @@ static void GameInitPost()
 {
 	static cvar_t fixgmr = { const_cast<char*>( "sv_fixgmr" ),const_cast<char*>( "1" ), FCVAR_SERVER };
 	CVAR_REGISTER(&fixgmr);
-
-	// Generates angelscript API/Documentation for network messages.
-	extern void GenerateScriptNetworking( const asIScriptEngine *engine );
-	GenerateScriptNetworking( ASEXT_GetServerManager()->scriptEngine );
 
 	SET_META_RESULT(MRES_HANDLED);
 }

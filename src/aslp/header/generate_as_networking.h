@@ -20,14 +20,38 @@ class CGenerateNetworkMessageAPI
         json m_NetworkData = json::object();
 
         // Current message that is being send.
-        json* m_CurrentMessage;
+        json* m_CurrentMessage = nullptr;
+
+        struct NetworkMessage
+        {
+            std::string Name;
+            int Bytes;
+            int Id;
+        };
+
+        std::vector<NetworkMessage> m_NetworkMessages = {};
 
     public:
 
         CGenerateNetworkMessageAPI() {};
-        ~CGenerateNetworkMessageAPI() {};
+        ~CGenerateNetworkMessageAPI();
 
         void Initialize( const asIScriptEngine* engine );
 
+        void Register( const char* name, int bytes, int id );
         void Begin( int msg_dest, int msg_type, const float *origin = nullptr, edict_t *edict = nullptr );
+
+        enum class Type
+        {
+            Byte,
+            Char,
+            Short,
+            Long,
+            Angle,
+            Coord,
+            String,
+            Entity
+        };
+
+        void Write( Type type );
 };
