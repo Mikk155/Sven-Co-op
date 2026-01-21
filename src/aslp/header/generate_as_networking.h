@@ -10,6 +10,13 @@ namespace std { using ::_snprintf; }
 
 using json = nlohmann::json;
 
+struct NetworkMessage
+{
+    std::string Name;
+    int Bytes;
+    int Id;
+};
+
 class CGenerateNetworkMessageAPI
 {
     private:
@@ -22,19 +29,14 @@ class CGenerateNetworkMessageAPI
         // Current message that is being send.
         json* m_CurrentMessage = nullptr;
 
-        struct NetworkMessage
-        {
-            std::string Name;
-            int Bytes;
-            int Id;
-        };
-
         std::vector<NetworkMessage> m_NetworkMessages = {};
 
     public:
 
         CGenerateNetworkMessageAPI() {};
         ~CGenerateNetworkMessageAPI();
+
+        NetworkMessage* GetMessageData( const std::string& name );
 
         void Initialize( const asIScriptEngine* engine );
 

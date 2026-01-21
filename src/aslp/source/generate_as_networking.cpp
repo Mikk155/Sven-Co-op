@@ -33,15 +33,15 @@ void CGenerateNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
     std::string fileContent;
     fileContent.reserve(1024);
 
-    fmt::format_to( std::back_inserter( fileContent ), "namespace NetworkMessages\n{{\n" );
+    fmt::format_to( std::back_inserter( fileContent ), "namespace NetworkMessages\n{{\n\t// Network messages IDs\n\tenum Message\n\t{{\n" );
 
     for( const auto& networkMessage : m_NetworkMessages )
     {
         fmt::format_to( std::back_inserter( fileContent ),
-            "\t// {} Bytes.\n\tconst int gmsg{} = {};\n", networkMessage.Bytes, networkMessage.Name, networkMessage.Id );
+            "\t\t{} = {}, // {} Bytes.\n", networkMessage.Name, networkMessage.Id, networkMessage.Bytes );
     }
 
-    fmt::format_to( std::back_inserter( fileContent ), "}}\n" );
+    fmt::format_to( std::back_inserter( fileContent ), "\t}}\n}}\n" );
 
     if( file.Write( fileContent ) )
     {
@@ -49,9 +49,36 @@ void CGenerateNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
     }
 }
 
+NetworkMessage* CGenerateNetworkMessageAPI :: GetMessageData( const std::string& name )
+{
+    auto listStart = m_NetworkMessages.begin();
+    auto listEnd = m_NetworkMessages.end();
+
+    auto it = std::find_if( listStart, listEnd, [&]( const auto& msg ){ return msg.Name == name; } );
+
+    if( it != listEnd )
+    {
+        return &(*it);
+    }
+
+    return nullptr;
+}
+
 void CGenerateNetworkMessageAPI :: Register( const char* name, int bytes, int id )
 {
-    m_NetworkMessages.push_back( { std::string( name ), bytes, id } );
+    std::string msgName = std::string( name );
+
+    NetworkMessage* msg = GetMessageData( msgName );
+
+    if( msg != nullptr )
+    {
+        msg->Id = id;
+        msg->Bytes = bytes;
+    }
+    else
+    {
+        m_NetworkMessages.push_back( { std::string( name ), bytes, id } );
+    }
 }
 
 void CGenerateNetworkMessageAPI :: Write( Type type )
