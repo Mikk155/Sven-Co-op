@@ -77,7 +77,13 @@ void CGenerateNetworkMessageAPI :: Register( const char* name, int bytes, int id
     }
     else
     {
-        m_NetworkMessages.push_back( { std::string( name ), bytes, id } );
+        NetworkMessage data{
+            .Name = std::move( msgName ),
+            .Bytes = bytes,
+            .Id = id
+        };
+
+        m_NetworkMessages.push_back( std::move( data ) );
     }
 }
 
