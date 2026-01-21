@@ -82,6 +82,7 @@ target_compile_definitions( ${PROJECT_NAME} PRIVATE
     _CRT_SECURE_NO_WARNINGS
 )
 
+# JSON
 add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/json
     ${CMAKE_CURRENT_BINARY_DIR}/external/json
@@ -89,14 +90,22 @@ add_subdirectory(
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json )
 
-# set( FMT_INSTALL OFF CACHE BOOL "" FORCE )
+# FMT
+set( FMT_INSTALL OFF CACHE BOOL "" FORCE )
 
-# add_subdirectory(
-#     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt
-#     ${CMAKE_CURRENT_BINARY_DIR}/external/fmt
-# )
+add_subdirectory(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt
+    ${CMAKE_CURRENT_BINARY_DIR}/external/fmt
+)
 
-# target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
+if( MSVC )
+    target_compile_options( fmt PRIVATE
+        /wd4244  # conversion from uint64 to size_t
+        /wd4267  # size_t conversion
+    )
+endif()
+
+target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}" )
 
