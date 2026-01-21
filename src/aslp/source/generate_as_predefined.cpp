@@ -156,7 +156,7 @@ namespace
 
 void GenerateScriptPredefined(const asIScriptEngine* engine)
 {
-    CFile file( "scripts/aslp.predefined", CFile::Mode::Write );
+    CFile file( "scripts/mikk/as.predefined", CFile::Mode::Write );
 
     if( !file.IsOpen() )
     {

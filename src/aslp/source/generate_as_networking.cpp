@@ -5,7 +5,7 @@
 
 void CNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
 {
-    CFile file( "scripts/NetworkMessages.as", CFile::Mode::Write );
+    CFile file( "scripts/mikk/NetworkMessages.as", CFile::Mode::Write );
 
     if( !file.IsOpen() )
     {
