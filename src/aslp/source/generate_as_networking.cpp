@@ -17,11 +17,35 @@ CGenerateNetworkMessageAPI::~CGenerateNetworkMessageAPI()
     m_NetworkMessages.clear();
 }
 
+#include "CFile.h"
+#include <fmt/format.h>
+
 void CGenerateNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
 {
+    CFile file( "scripts/NetworkMessages.as", CFile::Mode::Write );
+
+    if( !file.IsOpen() )
+    {
+        ALERT( at_console, "[Error] Couldn't create file \"scripts/NetworkMessages.as\"\n" );
+        return;
+    }
+
+    std::string fileContent;
+    fileContent.reserve(1024);
+
+    fmt::format_to( std::back_inserter( fileContent ), "namespace NetworkMessages\n{{\n" );
+
     for( const auto& networkMessage : m_NetworkMessages )
     {
-        ALERT( at_console, "Registered %s with %i bytes at ID %i.\n", networkMessage.Name.c_str(), networkMessage.Bytes, networkMessage.Id );
+        fmt::format_to( std::back_inserter( fileContent ),
+            "\t// {} Bytes.\n\tconst int gmsg{} = {};\n", networkMessage.Bytes, networkMessage.Name, networkMessage.Id );
+    }
+
+    fmt::format_to( std::back_inserter( fileContent ), "}}\n" );
+
+    if( file.Write( fileContent ) )
+    {
+        ALERT(at_console, "File \"scripts/NetworkMessages.as\" Generated suscessfully. writted %i network message's IDs\n", m_NetworkMessages.size() );
     }
 }
 
