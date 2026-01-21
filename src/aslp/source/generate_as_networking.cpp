@@ -81,30 +81,30 @@ void CGenerateNetworkMessageAPI :: Register( const char* name, int bytes, int id
     }
 }
 
-void CGenerateNetworkMessageAPI :: Write( Type type )
+void CGenerateNetworkMessageAPI :: Write( NetworkMessageByteType type )
 {
     std::string typeName;
 
     switch( type )
     {
-        case Type::Byte:
+        case NetworkMessageByteType::Byte:
         {
             typeName = "byte";
             break;
         }
-        case Type::Char:
-        case Type::Short:
-        case Type::Long:
-        case Type::Entity:
+        case NetworkMessageByteType::Char:
+        case NetworkMessageByteType::Short:
+        case NetworkMessageByteType::Long:
+        case NetworkMessageByteType::Entity:
         {
             // Int
         }
-        case Type::Angle:
-        case Type::Coord:
+        case NetworkMessageByteType::Angle:
+        case NetworkMessageByteType::Coord:
         {
             // float
         }
-        case Type::String:
+        case NetworkMessageByteType::String:
         {
             // const char*
         }

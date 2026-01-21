@@ -10,11 +10,24 @@ namespace std { using ::_snprintf; }
 
 using json = nlohmann::json;
 
+enum class NetworkMessageByteType
+{
+    Byte,
+    Char,
+    Short,
+    Long,
+    Angle,
+    Coord,
+    String,
+    Entity
+};
+
 struct NetworkMessage
 {
     std::string Name;
     int Bytes;
     int Id;
+    std::string Info;
 };
 
 class CGenerateNetworkMessageAPI
@@ -42,18 +55,5 @@ class CGenerateNetworkMessageAPI
 
         void Register( const char* name, int bytes, int id );
         void Begin( int msg_dest, int msg_type, const float *origin = nullptr, edict_t *edict = nullptr );
-
-        enum class Type
-        {
-            Byte,
-            Char,
-            Short,
-            Long,
-            Angle,
-            Coord,
-            String,
-            Entity
-        };
-
-        void Write( Type type );
+        void Write( NetworkMessageByteType type );
 };

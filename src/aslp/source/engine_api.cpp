@@ -96,7 +96,7 @@ static void MSG_End()
 static void MSG_Byte( int input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Byte );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::Byte );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
@@ -104,7 +104,7 @@ static void MSG_Byte( int input )
 static void MSG_Char( int input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Char );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::Char );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
@@ -112,7 +112,7 @@ static void MSG_Char( int input )
 static void MSG_Short( int input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Short );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::Short );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
@@ -120,7 +120,7 @@ static void MSG_Short( int input )
 static void MSG_Long( int input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Long );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::Long );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
@@ -128,7 +128,7 @@ static void MSG_Long( int input )
 static void MSG_Angle( float input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Angle );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::Angle );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
@@ -136,7 +136,7 @@ static void MSG_Angle( float input )
 static void MSG_Coord( float input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Coord );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::Coord );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
@@ -144,7 +144,7 @@ static void MSG_Coord( float input )
 static void MSG_String( const char* input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::String );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::String );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
@@ -152,7 +152,7 @@ static void MSG_String( const char* input )
 static void MSG_Entity( int input )
 {
 	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( CGenerateNetworkMessageAPI::Type::Entity );
+		g_NetworkMessageAPI->Write( NetworkMessageByteType::Entity );
 
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
