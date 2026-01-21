@@ -27,3 +27,5 @@ echo "Installed to %SourceFile%"
 "C:\Users\Usuario\Desktop\Sven Co-op.url"
 
 pause
+
+taskkill /F /IM "svencoop.exe"
