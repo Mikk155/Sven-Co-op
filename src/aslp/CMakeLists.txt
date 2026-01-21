@@ -18,6 +18,7 @@ set( SOURCES
     source/CASBaseObject.cpp
     source/CASBinaryStringBuilder.cpp
     source/CASJson.cpp
+    source/CASNetworkMessage.cpp
     source/CASSQLGrid.cpp
     source/CASSQLite.cpp
     source/CASSQLItem.cpp
@@ -42,6 +43,7 @@ set( HEADERS
     header/CASBaseObject.h
     header/CASBinaryStringBuilder.h
     header/CASJson.h
+    header/CASNetworkMessage.h
     header/CASSQLGrid.h
     header/CASSQLite.h
     header/CASSQLItem.h

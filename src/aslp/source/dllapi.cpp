@@ -38,7 +38,6 @@
 #include <pm_defs.h>
 
 #include "generate_as_networking.h"
-extern CGenerateNetworkMessageAPI* g_NetworkMessageAPI;
 
 #define CALL_ANGELSCRIPT(pfn, ...) if (ASEXT_CallHook){(*ASEXT_CallHook)(g_AngelHook.pfn, 0, __VA_ARGS__);}
 
@@ -131,12 +130,7 @@ static void ClientCommand( edict_t* pEntity )
 		}
 		else if( !strncmp( pcmd, "aslp", 4 ) )
 		{
-			if( g_NetworkMessageAPI != nullptr )
-			{
-				g_NetworkMessageAPI->Initialize( ASEXT_GetServerManager()->scriptEngine );
-				delete g_NetworkMessageAPI;
-				g_NetworkMessageAPI = nullptr;
-			}
+			g_NetworkMessageAPI.Initialize( ASEXT_GetServerManager()->scriptEngine );
 			meta_result = MRES_SUPERCEDE;
 		}
 	}

@@ -2,58 +2,48 @@
 #include <meta_api.h>
 #include <asext_api.h>
 #include <angelscriptlib.h>
+#include "CASNetworkMessage.h"
 
 #pragma once
 
-namespace std { using ::_snprintf; }
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
-
-enum class NetworkMessageByteType
+class CNetworkMessageAPI
 {
-    Byte,
-    Char,
-    Short,
-    Long,
-    Angle,
-    Coord,
-    String,
-    Entity
-};
+    public:
 
-struct NetworkMessage
-{
-    std::string Name;
-    int Bytes;
-    int Id;
-    std::string Info;
-};
+        // Registered network message information
+        struct MessageData
+        {
+            // String name in the client side.
+            std::string Name;
 
-class CGenerateNetworkMessageAPI
-{
+            // Number of bytes sent.
+            int Bytes;
+
+            // ID in the server side.
+            int Id;
+
+            // Byte types and ordering to sent.
+            std::vector<CASNetworkMessageByteType> Data = {};
+
+            // Information string (Cleared after documentation is writted)
+            std::string Info;
+        };
+
     private:
 
-        // Are we sending a temporal entity?
-        bool m_SendingTempEntity = false;
-
-        json m_NetworkData = json::object();
-
-        // Current message that is being send.
-        json* m_CurrentMessage = nullptr;
-
-        std::vector<NetworkMessage> m_NetworkMessages = {};
+        // Every Network Message registered.
+        std::vector<MessageData> m_RegisteredNetworkMessages = {
+            { .Name = "SVC_BAD", .Id = 0 }
+        };
 
     public:
 
-        CGenerateNetworkMessageAPI() {};
-        ~CGenerateNetworkMessageAPI();
-
-        NetworkMessage* GetMessageData( const std::string& name );
+        MessageData* GetMessageData( const std::string& name );
+        MessageData* GetMessageData( int id );
 
         void Initialize( const asIScriptEngine* engine );
 
         void Register( const char* name, int bytes, int id );
-        void Begin( int msg_dest, int msg_type, const float *origin = nullptr, edict_t *edict = nullptr );
-        void Write( NetworkMessageByteType type );
 };
+
+inline CNetworkMessageAPI g_NetworkMessageAPI;

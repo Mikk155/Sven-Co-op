@@ -40,6 +40,8 @@
 
 #include "enginedef.h"
 
+#include "generate_as_networking.h"
+
 #pragma region PreHooks
 static int SV_ModelIndex(const char* m) {
 	if (CVAR_GET_FLOAT("sv_fixgmr") > 0) {
@@ -55,9 +57,6 @@ static int SV_ModelIndex(const char* m) {
 	return 0;
 }
 
-#include "generate_as_networking.h"
-extern CGenerateNetworkMessageAPI* g_NetworkMessageAPI;
-
 static int MSG_Register( const char* name, int bytes )
 {
 	// Avoid re-call
@@ -72,19 +71,13 @@ static int MSG_Register( const char* name, int bytes )
 	int messageID = REG_USER_MSG( name, bytes );
 	registeringMessage = false;
 
-	if( g_NetworkMessageAPI == nullptr )
-		g_NetworkMessageAPI = new CGenerateNetworkMessageAPI();
-
-	g_NetworkMessageAPI->Register( name, bytes, messageID );
+	g_NetworkMessageAPI.Register( name, bytes, messageID );
 
 	RETURN_META_VALUE(META_RES::MRES_SUPERCEDE, messageID);
 }
 
 static void MSG_Begin( int msg_dest, int msg_type, const float *pOrigin = NULL, edict_t *ed = NULL )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Begin( msg_dest, msg_type, pOrigin, ed );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
@@ -95,65 +88,41 @@ static void MSG_End()
 
 static void MSG_Byte( int input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::Byte );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Char( int input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::Char );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Short( int input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::Short );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Long( int input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::Long );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Angle( float input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::Angle );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Coord( float input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::Coord );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_String( const char* input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::String );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
 static void MSG_Entity( int input )
 {
-	if( g_NetworkMessageAPI != nullptr )
-		g_NetworkMessageAPI->Write( NetworkMessageByteType::Entity );
-
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
