@@ -14,40 +14,38 @@ void CNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
 	}
 
 	std::string fileContent;
-	fileContent.reserve(2048);
+	fileContent.reserve(16000); // -TODO Approximate a lesser number
 
 	fmt::format_to( std::back_inserter( fileContent ), "namespace NetworkMessages\n{{\n\t// Network messages IDs\n\tenum Message\n\t{{\n" );
 
 	for( MessageData& networkMessage : m_RegisteredNetworkMessages )
 	{
-		if( !networkMessage.Info.empty() )
+		auto GetBytesDescription = [&]() -> const std::string
 		{
-			fmt::format_to( std::back_inserter( fileContent ), fmt::runtime( networkMessage.Info ), networkMessage.Bytes );
- 
-			// Already documented. these string aren't needed anymore.
-			networkMessage.Info.clear();
-		}
-        else
-        {
-            switch( networkMessage.Bytes )
-            {
-                case -1:
-    			    fmt::format_to( std::back_inserter( fileContent ), "\n\t\t/**\n\t\t*\tDynamic number of bytes.\n\t\t**/\n" );
-                break;
-                case 0:
-    			    fmt::format_to( std::back_inserter( fileContent ), "\n\t\t/**\n\t\t*\tNo bytes expected.\n\t\t**/\n" );
-                break;
-                case 1:
-    			    fmt::format_to( std::back_inserter( fileContent ), "\n\t\t/**\n\t\t*\tExpected 1 Byte.\n\t\t**/\n" );
-                break;
-                default:
-    			    fmt::format_to( std::back_inserter( fileContent ), "\n\t\t/**\n\t\t*\tExpected {} Bytes.\n\t\t**/\n", networkMessage.Bytes );
-                break;
-            }
-        }
+			switch( networkMessage.Bytes )
+			{
+				case -2:
+					return "Unknown number of bytes.";
+				case -1:
+					return "Dynamic number of bytes.";
+				break;
+				case 0:
+					return"No bytes expected.";
+				break;
+				case 1:
+					return "Expected 1 Byte.";
+				break;
+				default:
+					return fmt::format( "Expected {} Bytes.", networkMessage.Bytes );
+				break;
+			}
+		};
 
 		fmt::format_to( std::back_inserter( fileContent ),
-			"\t\t{} = {}\n", networkMessage.Name, networkMessage.Id  );
+			"{}\t\t{} = {}, // {}\n", networkMessage.Info, networkMessage.Name, networkMessage.Id, GetBytesDescription() );
+
+		// Already documented. these string aren't needed anymore.
+		networkMessage.Info.clear();
 	}
 
 	fmt::format_to( std::back_inserter( fileContent ), "\t}}\n}}\n" );
