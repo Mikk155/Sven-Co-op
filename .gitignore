@@ -1,3 +1,5 @@
+.vscode/c_cpp_properties.json
+
 build/*
 as.predefined
 /code-runner.*
