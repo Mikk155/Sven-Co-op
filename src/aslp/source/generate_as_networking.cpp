@@ -82,21 +82,31 @@ void CNetworkMessageAPI :: Register( const char* name, int bytes, int id )
 {
 	std::string msgName = std::string( name );
 
-	MessageData* msg = GetMessageData( id );
-
-	if( msg != nullptr )
+	// Double check because breaking API is the sven's sloggan
+	auto GetMessageByNameOrID = [&]( MessageData* message ) -> bool
 	{
-		msg->Id = id;
-		msg->Bytes = bytes;
-	}
-	else
-	{
-		MessageData data{
-			.Name = std::string( name ),
-			.Id = id,
-			.Bytes = bytes
-		};
+		if( message != nullptr )
+		{
+			message->Name = msgName;
+			message->Id = id;
+			message->Bytes = bytes;
+			return true;
+		}
+		return false;
+	};
 
-		m_RegisteredNetworkMessages.push_back( std::move( data ) );
-	}
+	// Name first because changing ID may be more common than names? Idk what sane person would update the registry ordering but whatever.
+	if( GetMessageByNameOrID( GetMessageData( msgName ) ) )
+		return;
+
+	if( GetMessageByNameOrID( GetMessageData( id ) ) )
+		return;
+
+	MessageData data{
+		.Name = std::move( msgName ),
+		.Id = id,
+		.Bytes = bytes
+	};
+
+	m_RegisteredNetworkMessages.push_back( std::move( data ) );
 }
