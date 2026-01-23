@@ -16,7 +16,7 @@ void CNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
 	std::string fileContent;
 	fileContent.reserve(16000); // -TODO Approximate a lesser number
 
-	fmt::format_to( std::back_inserter( fileContent ), "namespace NetworkMessages\n{{\n\t// Network messages IDs\n\tenum Message\n\t{{\n" );
+	fmt::format_to( std::back_inserter( fileContent ), "namespace NetworkMessages\n{{\n\t// Network messages IDs\n\tenum MessageID\n\t{{\n" );
 
 	for( MessageData& networkMessage : m_RegisteredNetworkMessages )
 	{
