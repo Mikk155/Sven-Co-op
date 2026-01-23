@@ -69,7 +69,7 @@ bool InstallEngineHook() {
 #define SendScoreInfo_Signature "_ZN11CBasePlayer26SendScoreInfoToOtherPlayerEP7edict_siPKc"
 #endif
 	// Fill and Hook
-	FILL_AND_HOOK(Server, GrappleGetMonsterType);
+	//FILL_AND_HOOK(Server, GrappleGetMonsterType);
 	//FILL_AND_HOOK(Server, SendScoreInfo);
 	// Fill and Engine Hook
 	return true;
