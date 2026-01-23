@@ -678,7 +678,7 @@ class CNetworkMessageAPI
 		*	long	SpawnCount
 		*	long	0
 		**/
-)"  },
+)" },
 			{ .Name = "Customization", .Id = 46, .Info = R"(
 		/**
 		*	@brief Notifies the client that a new customization is avaliable for download.
@@ -802,9 +802,58 @@ class CNetworkMessageAPI
 		*	long	RequestID
 		*	string	Name
 		**/
-)" }
+)" },
+		// Information for these above has been taken from https://wiki.alliedmods.net/Half-Life_1_Engine_Messages
+
+			{ .Name = "CurWeapon", .Bytes = 3 },
+			{ .Name = "Geiger", .Bytes = 1 },
+			{ .Name = "Flashlight", .Bytes = 2 },
+			{ .Name = "FlashBat", .Bytes = 1 },
+			{ .Name = "Health", .Bytes = 1 },
+			{ .Name = "Damage", .Bytes = 12 },
+			{ .Name = "Battery", .Bytes = 2 },
+			{ .Name = "Train", .Bytes = 1 },
+			{ .Name = "HudText", .Bytes = -1 },
+			{ .Name = "SayText", .Bytes = -1 },
+			{ .Name = "TextMsg", .Bytes = -1 },
+			{ .Name = "WeaponList", .Bytes = -1 },
+			{ .Name = "ResetHUD", .Bytes = 1, .Info = R"(
+		/**
+		*	@brief called every respawn
+		**/
+)" },
+			{ .Name = "InitHUD", .Bytes = 0, .Info = R"(
+		/**
+		*	@brief called every time a new player joins the server
+		**/
+)" },
+			{ .Name = "GameTitle", .Bytes = 1 },
+			{ .Name = "DeathMsg", .Bytes = -1 },
+			{ .Name = "ScoreInfo", .Bytes = 9 },
+			{ .Name = "TeamInfo", .Bytes = -1, .Info = R"(
+		/**
+		*	@brief sets the name of a player's team
+		**/
+)" },
+			{ .Name = "TeamScore", .Bytes = -1, .Info = R"(
+		/**
+		*	@brief sets the score of a team on the scoreboard
+		**/
+)" },
+			{ .Name = "GameMode", .Bytes = 1 },
+			{ .Name = "MOTD", .Bytes = -1 },
+			{ .Name = "ServerName", .Bytes = -1 },
+			{ .Name = "AmmoPickup", .Bytes = 2 },
+			{ .Name = "WeapPickup", .Bytes = 1 },
+			{ .Name = "ItemPickup", .Bytes = -1 },
+			{ .Name = "HideWeapon", .Bytes = 1 },
+			{ .Name = "SetFOV", .Bytes = 1 },
+			{ .Name = "ShowMenu", .Bytes = -1 },
+			{ .Name = "AmmoX", .Bytes = 2 },
+			{ .Name = "TeamNames", .Bytes = -1 },
+			{ .Name = "StatusText", .Bytes = -1 },
+			{ .Name = "StatusValue", .Bytes = 3 }
 		};
-		// Information for these has been taken from https://wiki.alliedmods.net/Half-Life_1_Engine_Messages
 
 	public:
 
