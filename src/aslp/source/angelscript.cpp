@@ -445,7 +445,7 @@ void RegisterAngelScriptMethods()
 #pragma region META_RES
 		ASEXT_RegisterEnum(pASDoc, "Flags returned by a plugin's api function.", "META_RES", 0);
 		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "Unset", (int)MRES_UNSET);
-		ASEXT_RegisterEnumValue(pASDoc, "Plugin didn't take any action", "META_RES", "Ignored",(int) MRES_IGNORED);
+		ASEXT_RegisterEnumValue(pASDoc, "Plugin didn't take any action", "META_RES", "Ignored",(int)MRES_IGNORED);
 		ASEXT_RegisterEnumValue(pASDoc, "Plugin did something, but real function should still be called", "META_RES", "Handled", (int)MRES_HANDLED);
 		ASEXT_RegisterEnumValue(pASDoc, "Call real function, but use my return value", "META_RES", "Override", (int)MRES_OVERRIDE);
 		ASEXT_RegisterEnumValue(pASDoc, "Skip real function; use my return value", "META_RES", "Supercede", (int)MRES_SUPERCEDE);

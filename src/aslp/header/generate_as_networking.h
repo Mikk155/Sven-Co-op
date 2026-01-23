@@ -23,7 +23,7 @@ class CNetworkMessageAPI
 			int Bytes = -2;
 
 			// Byte types and ordering to sent.
-			std::vector<CASNetworkMessageByteType> Data = {};
+			std::vector<NetworkMessages::ByteType> Data = {};
 
 			// Information string (Cleared after documentation is writted)
 			std::string Info;
