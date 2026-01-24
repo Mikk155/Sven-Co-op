@@ -256,14 +256,38 @@ CASJsonType CASJson::Type() const
     }
 }
 
-void SC_SERVER_DECL CASEngineFuncs_JsonDeserialize(void* pthis, SC_SERVER_DUMMYARG const CString* str, CScriptDictionary* obj )
+bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMYARG const CString& str, CScriptDictionary& obj )
 {
-    // -TODO Try catch error to console if developer 0, if greater then post exception details
-//	json js_data = json::parse((char*)str->c_str());
-//	ALERT(at_console, "Called CASEngineFuncs_JsonSerialize( %s )\n", str->c_str() );
+    json js_data;
+
+    try {
+        js_data = json::parse((char*)str.c_str());
+    }
+    catch( json::parse_error& exception ) {
+	    ALERT(at_console, "JSON Error parsing data at %i\n%s\n", exception.byte, exception.what() );
+        return false;
+    }
+
+    return true;
 }
 
-void SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString* str )
+bool SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString& str, int indents = -1 )
 {
-//	ALERT(at_console, "Called CASEngineFuncs_JsonSerialize\n" );
+    json js_data = json::object();
+
+    // -TODO Iterate over obj to get all the keyvalue pairs and convert them into json
+
+    std::string serializedObject;
+
+    try {
+        serializedObject = js_data.dump( indents/*, (char)32, false, json::error_handler_t::ignore*/ );
+        js_data = json::parse((char*)str.c_str());
+    }
+    catch( json::type_error& exception ) {
+        return false;
+    }
+
+    str.assign( serializedObject.c_str(), serializedObject.length() );
+
+    return true;
 }
