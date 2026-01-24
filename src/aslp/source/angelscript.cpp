@@ -266,15 +266,11 @@ void RegisterAngelScriptMethods()
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get the value type", "CJson", "JsonType Type() const", CASJson, Type, asCALL_THISCALL);
 
 		//Regist New Method
-		extern CASJson* SC_SERVER_DECL CASEngineFuncs_JsonParse(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer);
-		ASEXT_RegisterObjectMethod(pASDoc,
-			"", "CEngineFuncs", "CJson@ JsonParse(const string& in szBuffer)",
-			(void*)CASEngineFuncs_JsonParse, asCALL_THISCALL);
+		extern void SC_SERVER_DECL CASEngineFuncs_JsonDeserialize(void* pthis, SC_SERVER_DUMMYARG const CString* str, CScriptDictionary* obj);
+		ASEXT_RegisterObjectMethod(pASDoc, "", "CEngineFuncs", "void JsonDeserialize(const string &in str, dictionary@ &out obj)", (void*)CASEngineFuncs_JsonDeserialize, asCALL_THISCALL);
 
-		extern CString& SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node);
-		ASEXT_RegisterObjectMethod(pASDoc,
-			"", "CEngineFuncs", "string JsonWrite(const CJson&in)",
-			(void*)CASEngineFuncs_JsonWrite, asCALL_THISCALL);
+		extern void SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString* str);
+		ASEXT_RegisterObjectMethod(pASDoc, "", "CEngineFuncs", "void JsonSerialize(const dictionary@ obj, string &out str)", (void*)CASEngineFuncs_JsonSerialize, asCALL_THISCALL );
 
 		ASEXT_RegisterObjectMethod(pASDoc,
 			"Caculate CRC32 for a string", "CEngineFuncs", "uint32 CRC32(const string& in szBuffer)",

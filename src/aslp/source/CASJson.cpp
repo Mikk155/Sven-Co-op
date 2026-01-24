@@ -256,23 +256,14 @@ CASJsonType CASJson::Type() const
     }
 }
 
-CASJson* SC_SERVER_DECL CASEngineFuncs_JsonParse(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer)
+void SC_SERVER_DECL CASEngineFuncs_JsonDeserialize(void* pthis, SC_SERVER_DUMMYARG const CString* str, CScriptDictionary* obj )
 {
-	json js_data = json::parse((char*)szBuffer->c_str());
-	return CASJson::Factory(js_data);;
+    // -TODO Try catch error to console if developer 0, if greater then post exception details
+//	json js_data = json::parse((char*)str->c_str());
+//	ALERT(at_console, "Called CASEngineFuncs_JsonSerialize( %s )\n", str->c_str() );
 }
 
-CString& SC_SERVER_DECL CASEngineFuncs_JsonWrite(void* pthis, const CASJson& node)
+void SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString* str )
 {
-    std::string source;
-
-	if (node.js_info) {
-		source = node.js_info->dump(4, '\t', true, nlohmann::json::error_handler_t::ignore );
-	}
-
-    CString* result = new CString();
-
-    result->assign(source.c_str(), source.length());
-
-	return *result;
+//	ALERT(at_console, "Called CASEngineFuncs_JsonSerialize\n" );
 }
