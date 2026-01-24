@@ -50,7 +50,7 @@ void RegisteRefObject(CASDocumentation* pASDoc, const char* szName)
 	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Release", szName, asBEHAVE_RELEASE, "void Release()", &reg, asCALL_THISCALL);
 }
 template <typename T>
-void RegisteGCObject(CASDocumentation* pASDoc, const char* szName) 
+void RegisterGCObject(CASDocumentation* pASDoc, const char* szName) 
 {
 	RegisteRefObject<T>(pASDoc, szName);
 	asSFuncPtr reg;
@@ -108,7 +108,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CBinaryStringBuilder", asBEHAVE_FACTORY, "CBinaryStringBuilder@ CBinaryStringBuilder()", &reg, asCALL_CDECL);
 		reg = asFUNCTION(CBinaryStringBuilder::ParamFactory);
 		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CBinaryStringBuilder", asBEHAVE_FACTORY, "CBinaryStringBuilder@ CBinaryStringBuilder(string&in buffer)", &reg, asCALL_CDECL);
-		RegisteGCObject<CBinaryStringBuilder>(pASDoc, "CBinaryStringBuilder");
+		RegisterGCObject<CBinaryStringBuilder>(pASDoc, "CBinaryStringBuilder");
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Is Read to end?", "CBinaryStringBuilder", "bool IsReadToEnd()", CBinaryStringBuilder, IsReadToEnd, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get output to a string", "CBinaryStringBuilder", "string Get()", CBinaryStringBuilder, Get, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Set a read buffer", "CBinaryStringBuilder", "bool Set(string&in buffer)", CBinaryStringBuilder, Set, asCALL_THISCALL);
@@ -189,7 +189,7 @@ void RegisterAngelScriptMethods()
 
 		//Class
 		ASEXT_RegisterObjectType(pASDoc, "SQL Item", "CSQLItem", 0, asOBJ_REF | asOBJ_GC);
-		RegisteGCObject<CASSQLItem>(pASDoc, "CSQLItem");
+		RegisterGCObject<CASSQLItem>(pASDoc, "CSQLItem");
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get string", "CSQLItem", "void Get(string&out buffer)", CASSQLItem, Get, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get int64", "CSQLItem", "int64 GetLong()", CASSQLItem, GetInt64, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get int", "CSQLItem", "int GetInt()", CASSQLItem, GetInt, asCALL_THISCALL);
@@ -200,7 +200,7 @@ void RegisterAngelScriptMethods()
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Is null", "CSQLItem", "bool IsNull()", CASSQLItem, IsNull, asCALL_THISCALL);
 
 		ASEXT_RegisterObjectType(pASDoc, "SQL Grid", "CSQLGrid", 0, asOBJ_REF | asOBJ_GC);
-		RegisteGCObject<CASSQLGrid>(pASDoc, "CSQLGrid");
+		RegisterGCObject<CASSQLGrid>(pASDoc, "CSQLGrid");
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get CSQLItem", "CSQLGrid", "CSQLItem@ Get(uint row, uint column)", CASSQLGrid, Get, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get CSQLItem", "CSQLGrid", "CSQLItem@ opIndex(uint row, uint column)", CASSQLGrid, Get, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Get Rows", "CSQLGrid", "uint Rows()", CASSQLGrid, Rows, asCALL_THISCALL);
@@ -211,7 +211,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectType(pASDoc, "SQLite", "CSQLite", 0, asOBJ_REF | asOBJ_GC);
 		reg = asFUNCTION(CASSQLite::Factory);
 		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CSQLite", asBEHAVE_FACTORY, "CSQLite@ CSQLite(string&in path, SQLiteMode iMode)", &reg, asCALL_CDECL);
-		RegisteGCObject<CASSQLite>(pASDoc, "CSQLite");
+		RegisterGCObject<CASSQLite>(pASDoc, "CSQLite");
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, string&out errMsg)", CASSQLite, Exec, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL In Sync", "CSQLite", "SQLiteResult Exec(string&in sql, CSQLGrid@ &out aryResult, string&out errMsg)", CASSQLite, ExecSync, asCALL_THISCALL);
 		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, fnSQLiteCallback@ pCallback, any@ pCallBackparam, string&out errMsg)", CASSQLite, ExecWithCallBack, asCALL_THISCALL);
@@ -230,7 +230,7 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectType( pASDoc, "JSON Object", "CJson", 0, asOBJ_REF | asOBJ_GC );
 		reg = asFUNCTIONPR( CASJson::Factory, (), CASJson* );
 		ASEXT_RegisterObjectBehaviourEx( pASDoc, "Factory", "CJson", asBEHAVE_FACTORY, "CJson@ f()", &reg, asCALL_CDECL);
-		RegisteGCObject<CASJson>( pASDoc, "CJson" );
+		RegisterGCObject<CASJson>( pASDoc, "CJson" );
 		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a boolean", "CJson", "CJson& opAssign(bool)", CASJson, operator=, (bool), CASJson&, asCALL_THISCALL);
 		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign an integer", "CJson", "CJson& opAssign(int64)", CASJson, operator=, (asINT64), CASJson&, asCALL_THISCALL);
 		REGISTE_OBJMETHODPREX(reg, pASDoc, "Assign a real number", "CJson", "CJson& opAssign(double)", CASJson, operator=, (double), CASJson&, asCALL_THISCALL);
