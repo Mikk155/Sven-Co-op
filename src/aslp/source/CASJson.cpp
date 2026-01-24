@@ -256,6 +256,79 @@ CASJsonType CASJson::Type() const
     }
 }
 
+void JsonIntoDictionary( const json& from, CScriptDictionary& at )
+{
+    for( const auto& js : from.items() )
+    {
+        const std::string& keyName = js.key();
+        CString keyNameAS = { 0 };
+        keyNameAS.assign( keyName.c_str(), keyName.length() );
+
+        auto jsValue = js.value();
+
+        switch( jsValue.type() )
+        {
+            case json::value_t::null:
+            {
+                ASEXT_CScriptDictionary_Delete( &at, &keyNameAS );
+                break;
+            }
+            case json::value_t::string:
+            {
+                const std::string& strValue = jsValue.get<std::string>();
+                CString ASValue = { 0 };
+                ASValue.assign( strValue.c_str(), strValue.length() );
+                ASEXT_CScriptDictionary_Set( &at, &keyNameAS, &ASValue, asTYPEID_VOID );
+                break;
+            }
+/*
+            case json::value_t::array:
+            {
+                // Same as above? May need to qualify items for iteration
+                break;
+            }
+*/
+            case json::value_t::number_unsigned:
+            {
+                int ASValue = jsValue.get<int>();
+                ASEXT_CScriptDictionary_Set( &at, &keyNameAS, &ASValue, asTYPEID_INT32 );
+                break;
+            }
+            case json::value_t::number_integer:
+            {
+                unsigned int ASValue = jsValue.get<unsigned int>();
+                ASEXT_CScriptDictionary_Set( &at, &keyNameAS, &ASValue, asTYPEID_UINT32 );
+                break;
+            }
+            case json::value_t::number_float:
+            {
+                float ASValue = jsValue.get<float>();
+                ASEXT_CScriptDictionary_Set( &at, &keyNameAS, &ASValue, asTYPEID_FLOAT );
+                break;
+            }
+            case json::value_t::boolean:
+            {
+                bool ASValue = jsValue.get<bool>();
+                ASEXT_CScriptDictionary_Set( &at, &keyNameAS, &ASValue, asTYPEID_BOOL );
+                break;
+            }
+            case json::value_t::object:
+            {
+                asIScriptEngine* scriptEngine = ASEXT_GetServerManager()->scriptEngine;
+                CScriptDictionary* newDictionary = ASEXT_CScriptDictionary_Create( scriptEngine );
+                JsonIntoDictionary( jsValue, *newDictionary );
+                ASEXT_CScriptDictionary_Set( &at, &keyNameAS, &newDictionary, asTYPEID_OBJHANDLE );
+                break;
+            }
+            default:
+            {
+	            ALERT(at_console, "JSON Error Unsupported translation of type \"%i\" with name \"%s\"\n", jsValue.type(), keyName.c_str() );
+                break;
+            }
+        }
+    }
+}
+
 bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMYARG const CString& str, CScriptDictionary& obj )
 {
     json js_data;
@@ -264,26 +337,28 @@ bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMY
         js_data = json::parse((char*)str.c_str());
     }
     catch( json::parse_error& exception ) {
-	    ALERT(at_console, "JSON Error parsing data at %i\n%s\n", exception.byte, exception.what() );
+	    ALERT(at_console, "JSON Error deserializing data at %i\n%s\n", exception.byte, exception.what() );
         return false;
     }
+
+    JsonIntoDictionary( js_data, obj );
 
     return true;
 }
 
-bool SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString& str, int indents = -1 )
+bool SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary& obj, CString& str, int indents = -1 )
 {
     json js_data = json::object();
 
     // -TODO Iterate over obj to get all the keyvalue pairs and convert them into json
 
-    std::string serializedObject;
+    std::string serializedObject = "{}";
 
     try {
         serializedObject = js_data.dump( indents/*, (char)32, false, json::error_handler_t::ignore*/ );
-        js_data = json::parse((char*)str.c_str());
     }
     catch( json::type_error& exception ) {
+	    ALERT(at_console, "JSON Error serializing data\n%s\n", exception.what() );
         return false;
     }
 

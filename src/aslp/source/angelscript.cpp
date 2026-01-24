@@ -269,8 +269,8 @@ void RegisterAngelScriptMethods()
 		extern bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize(void* pthis, SC_SERVER_DUMMYARG const CString& str, CScriptDictionary& obj);
 		ASEXT_RegisterObjectMethod(pASDoc, "", "CEngineFuncs", "bool JsonDeserialize(const string &in str, dictionary &out obj)", (void*)CASEngineFuncs_JsonDeserialize, asCALL_THISCALL);
 
-		extern bool SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString& str, int indents = -1);
-		ASEXT_RegisterObjectMethod(pASDoc, "", "CEngineFuncs", "bool JsonSerialize(const dictionary@ obj, string &out str, int indents = -1)", (void*)CASEngineFuncs_JsonSerialize, asCALL_THISCALL );
+		extern bool SC_SERVER_DECL CASEngineFuncs_JsonSerialize(void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary& obj, CString& str, int indents = -1);
+		ASEXT_RegisterObjectMethod(pASDoc, "", "CEngineFuncs", "bool JsonSerialize(const dictionary &in obj, string &out str, int indents = -1)", (void*)CASEngineFuncs_JsonSerialize, asCALL_THISCALL );
 
 		ASEXT_RegisterObjectMethod(pASDoc,
 			"Caculate CRC32 for a string", "CEngineFuncs", "uint32 CRC32(const string& in szBuffer)",
