@@ -22,7 +22,7 @@ if %ERRORLEVEL% NEQ 0 (
 set "SourceFile=C:\Users\Usuario\Documents\GitHub\Sven-Co-op\src\aslp\bin\Release\aslp.dll"
 set "DestinationDir=C:\Program Files (x86)\Steam\steamapps\common\Sven Co-op\svencoop\addons\metamod\dlls\aslp.dll"
 copy "%SourceFile%" "%DestinationDir%" /Y
-echo "Installed to %SourceFile%"
+echo "Installed to %DestinationDir%"
 
 "C:\Users\Usuario\Desktop\Sven Co-op.url"
 
