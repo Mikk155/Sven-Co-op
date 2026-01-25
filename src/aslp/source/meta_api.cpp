@@ -47,6 +47,10 @@
 
 #include "extern_hook.h"
 
+#include <fmt/format.h>
+
+using namespace std::literals::string_view_literals;
+
 mBOOL dlclose_handle_invalid;
 
 IMPORT_ASEXT_API_DEFINE()
@@ -138,17 +142,31 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 		return FALSE;
 	}
 
-	void* asextHandle = nullptr;
-#ifdef _WIN32
-	LOAD_PLUGIN(PLID, "addons/metamod/dlls/asext.dll", PLUG_LOADTIME::PT_ANYTIME, &asextHandle);
-#else
-	LOAD_PLUGIN(PLID, "addons/metamod/dlls/asext.so", PLUG_LOADTIME::PT_ANYTIME, &asextHandle);
-#endif
-	if (!asextHandle)
+	auto loadLibrary = []( std::string_view libName ) -> void*
 	{
-		LOG_ERROR(PLID, "asext dll handle not found!");
+		std::string libPath;
+		void* libraryPointer = nullptr;
+
+		#ifdef _WIN32
+			libPath = fmt::format( "addons/metamod/dlls/{}.dll", libName );
+		#else
+			libPath = fmt::format( "addons/metamod/dlls/{}.so", libName );
+		#endif
+
+		LOAD_PLUGIN( PLID, libPath.c_str(), PLUG_LOADTIME::PT_ANYTIME, &libraryPointer);
+
+		if( !libraryPointer )
+		{
+			LOG_ERROR( PLID, fmt::format( "{} not found!", libPath ).c_str() );
+		}
+
+		return libraryPointer;
+	};
+
+	void* asextHandle = loadLibrary( "asext"sv );
+
+	if( !asextHandle )
 		return FALSE;
-	}
 
 	IMPORT_ASEXT_API(asext);
 
