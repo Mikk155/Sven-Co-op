@@ -2,7 +2,7 @@
 #include <bit>
 
 #include <extdll.h>
-#include "angelscript.h"
+#include "aslp.h"
 
 #include <meta_api.h>
 #include "CASBinaryStringBuilder.h"

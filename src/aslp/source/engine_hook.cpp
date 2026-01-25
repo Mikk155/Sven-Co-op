@@ -8,7 +8,7 @@
 #include "signatures.h"
 #include "asext_api.h"
 
-#include "angelscript.h"
+#include "aslp.h"
 #include "utility.h"
 
 #pragma region Function Def

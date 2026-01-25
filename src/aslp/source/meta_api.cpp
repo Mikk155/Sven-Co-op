@@ -42,7 +42,7 @@
 #include <meta_api.h>		// of course
 
 #include "signatures.h"
-#include "angelscript.h"
+#include "aslp.h"
 #include "asext_api.h"
 
 #include "extern_hook.h"
@@ -69,7 +69,7 @@ static META_FUNCTIONS gMetaFunctionTable = {
 plugin_info_t Plugin_info = {
 	META_INTERFACE_VERSION,	// ifvers
 	"AngelScript Limitless Potential API",	// name
-	"1.0",	// version
+	"2.0",	// version
 	"2025",	// date
 	"Dr.Abc, Gaftherman, Mikk",	// author
 	"https://github.com/DrAbcOfficial/asexthook | https://github.com/Mikk155/Sven-Co-op",	// url

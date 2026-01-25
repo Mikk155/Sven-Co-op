@@ -1,4 +1,8 @@
+#include "entity_state.h"
+#include "const.h"
+
 #pragma once
+
 void RegisterAngelScriptMethods();
 void RegisterAngelScriptHooks();
 void CloseAngelScriptsItem();

@@ -1,6 +1,6 @@
 #include <extdll.h>
 
-#include "angelscript.h"
+#include "aslp.h"
 #include "asext_api.h"
 #include "angelscriptlib.h"
 

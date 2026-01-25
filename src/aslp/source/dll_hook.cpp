@@ -6,7 +6,7 @@
 #include <meta_api.h>
 
 #include "asext_api.h"
-#include "angelscript.h"
+#include "aslp.h"
 #include "vftable.h"
 
 #include "utility.h"

@@ -39,7 +39,7 @@ set( SOURCES
 set( HEADERS
     angelscript/angelscriptlib.h
 
-    header/angelscript.h
+    header/aslp.h
     header/CASBaseObject.h
     header/CASBinaryStringBuilder.h
     header/CASJson.h
@@ -83,15 +83,16 @@ target_compile_definitions( ${PROJECT_NAME} PRIVATE
     _CRT_SECURE_NO_WARNINGS
 )
 
-# JSON
+# Start JSON
 add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/json
     ${CMAKE_CURRENT_BINARY_DIR}/external/json
 )
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json )
+# End JSON
 
-# FMT
+# Start FMT
 set( FMT_INSTALL OFF CACHE BOOL "" FORCE )
 
 add_subdirectory(
@@ -107,6 +108,7 @@ if( MSVC )
 endif()
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE fmt )
+# End FMT
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}" )
 
