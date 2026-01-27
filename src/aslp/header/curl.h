@@ -54,7 +54,7 @@ namespace curl
         return size * nmemb;
     }
 
-    struct CurlRequest
+    struct Request
     {
         std::string url;
         std::string response;
