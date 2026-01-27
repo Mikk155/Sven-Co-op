@@ -23,6 +23,7 @@ set( SOURCES
     source/CASSQLite.cpp
     source/CASSQLItem.cpp
     source/CFile.cpp
+    source/curl.cpp
     source/dll_hook.cpp
     source/dllapi.cpp
     source/dllmain.cpp
@@ -48,6 +49,7 @@ set( HEADERS
     header/CASSQLite.h
     header/CASSQLItem.h
     header/CFile.h
+    header/curl.h
     header/dlldef.h
     header/enginedef.h
     header/extern_hook.h

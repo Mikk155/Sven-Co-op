@@ -43,6 +43,7 @@
 
 #include "signatures.h"
 #include "aslp.h"
+#include "curl.h"
 #include "asext_api.h"
 
 #include "extern_hook.h"
@@ -172,6 +173,8 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 
 	RegisterAngelScriptMethods();
 	RegisterAngelScriptHooks();
+
+	g_Curl.Init();
 
 	return TRUE;
 }
