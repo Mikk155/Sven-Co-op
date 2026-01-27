@@ -4,11 +4,36 @@
 
 #pragma once
 
+#ifndef DISCORD_CURL_TEST
 #include <extdll.h>
 #include <meta_api.h>
 #include "enginedef.h"
 
 extern mutil_funcs_t* gpMetaUtilFuncs;
+#endif
+
+#if DISCORD_CURL_TEST
+#include <windows.h>
+using DLHANDLE = HMODULE;
+
+namespace dynlib
+{
+    inline DLHANDLE Open( const char* name )
+    {
+        return LoadLibraryA( name );
+    }
+
+    inline void* GetSymbol( DLHANDLE lib, const char* name )
+    {
+        return reinterpret_cast<void*>( GetProcAddress( lib, name ) );
+    }
+
+    inline void Close( DLHANDLE lib )
+    {
+        FreeLibrary( lib );
+    }
+}
+#endif
 
 namespace curl
 {
@@ -49,6 +74,7 @@ namespace curl
             if( curl_library != nullptr )
                 return true;
 
+#ifndef DISCORD_CURL_TEST
             curl_library = gpMetaUtilFuncs->pfnGetModuleHandle(
 #ifdef _WIN32
                 "libcurl.dll"
@@ -56,15 +82,25 @@ namespace curl
                 "libcurl.so.4"
 #endif
             );
+#else
+            curl_library = dynlib::Open( "libcurl.dll" );
+#endif
 
             if( !curl_library )
             {
+#if DISCORD_CURL_TEST
+                fmt::print( "Failed to load libcurl library! Make sure it is in within the .exe directory and both are 32 bits!\n" );
+#endif
                 return false;
             }
 
             auto get = [&]( const char* name )
             {
+#ifndef DISCORD_CURL_TEST
                 return gpMetaUtilFuncs->pfnGetProcAddress( curl_library, name );
+#else
+                return dynlib::GetSymbol( curl_library, name );
+#endif
             };
 
             easy_init = ( curl_easy_init_fn )get( "curl_easy_init" );
