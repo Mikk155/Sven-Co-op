@@ -10,7 +10,7 @@ CFile::CFile( const std::filesystem::path& relativePath, Mode mode )
 
     GET_GAME_DIR( gameDir );
 
-    std::filesystem::path fullPath = std::filesystem::path( gameDir ) / relativePath;
+    std::filesystem::path fullPath = std::filesystem::current_path() / std::filesystem::path( gameDir ) / relativePath;
 
     std::filesystem::create_directories( fullPath.parent_path() );
 
