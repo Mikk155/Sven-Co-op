@@ -24,6 +24,7 @@ set( SOURCES
     source/CASSQLItem.cpp
     source/CFile.cpp
     source/curl.cpp
+    source/discord.cpp
     source/dll_hook.cpp
     source/dllapi.cpp
     source/dllmain.cpp
@@ -50,6 +51,7 @@ set( HEADERS
     header/CASSQLItem.h
     header/CFile.h
     header/curl.h
+    header/discord.h
     header/dlldef.h
     header/enginedef.h
     header/extern_hook.h

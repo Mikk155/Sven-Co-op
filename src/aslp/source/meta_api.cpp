@@ -50,6 +50,8 @@
 
 #include <fmt/format.h>
 
+#include "discord.h"
+
 using namespace std::literals::string_view_literals;
 
 mBOOL dlclose_handle_invalid;
@@ -175,6 +177,9 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	RegisterAngelScriptHooks();
 
 	g_Curl.Init();
+
+    Discord::SetBotToken( "" );
+    Discord::Send( "1465504428357320816", "Hello from metamod" );
 
 	return TRUE;
 }
