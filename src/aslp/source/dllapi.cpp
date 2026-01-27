@@ -353,6 +353,16 @@ void PostPM_Move( playermove_t* pmove, int server )
 	RETURN_META(meta_result);
 }
 
+void PostStartFrame()
+{
+	META_RES meta_result = META_RES::MRES_IGNORED;
+
+	extern void CheckFileSystemWatcher();
+	CheckFileSystemWatcher();
+
+	RETURN_META(meta_result);
+}
+
 static DLL_FUNCTIONS gFunctionTable_Post = {
 	// pfnGameInit
 	GameInitPost,
@@ -405,7 +415,7 @@ static DLL_FUNCTIONS gFunctionTable_Post = {
 	// pfnPlayerPostThink
 	NULL,
 	// pfnStartFrame
-	NULL,
+	PostStartFrame,
 	// pfnParmsNewLevel
 	NULL,
 	// pfnParmsChangeLevel

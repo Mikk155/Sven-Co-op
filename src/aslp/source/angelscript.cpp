@@ -458,6 +458,11 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int playerIndex", offsetof(addtofullpack_t, playerIndex));
 		ASEXT_RegisterObjectProperty(pASDoc, "If set to true, the entity is not sent to the host", "ClientPacket", "bool SkipPacket", offsetof(addtofullpack_t, Result));
 #pragma endregion
+#pragma region FileSystem
+		ASEXT_RegisterFuncDef(pASDoc, "callback for CVirtualFileSystem::WatchFile when a file has been modified", "void FileModifiedCallback( const string&in filename )");
+		extern bool SC_SERVER_DECL CASFileSystem_WatchFile( void* pthis, SC_SERVER_DUMMYARG const CString& filename, aslScriptFunction* callback );
+		ASEXT_RegisterObjectMethod(pASDoc, "", "CVirtualFileSystem", "bool WatchFile( const string &in filename, FileModifiedCallback@ callback)", (void*)CASEngineFuncs_JsonSerialize, asCALL_THISCALL );
+#pragma endregion
 	} );
 }
 #undef REGISTE_OBJMETHODEX
