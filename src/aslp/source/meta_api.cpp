@@ -42,14 +42,15 @@
 #include <meta_api.h>		// of course
 
 #include "signatures.h"
-#include "aslp.h"
-#include "curl.h"
-#include "asext_api.h"
-
 #include "extern_hook.h"
 
 #include <fmt/format.h>
 #include <filesystem>
+
+#include "aslp.h"
+#include "asext_api.h"
+
+#include "Discord.h"
 
 using namespace std::literals::string_view_literals;
 
@@ -175,14 +176,16 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	RegisterAngelScriptMethods();
 	RegisterAngelScriptHooks();
 
-	g_Curl.Init();
-
     // Delete svencoop_assert_*.mdmp files. they're useless and only takes up space on the virtual machine.
 	std::error_code ec; namespace fs = std::filesystem;
 	for( const auto& e : fs::directory_iterator( fs::current_path(), ec ) ) {
 		if( e.is_regular_file() && e.path().filename().string().starts_with( "svencoop_assert_" ) ) {
 			fs::remove( e.path(), ec );
 	} }
+
+	Discord::SetBotToken( ".." );
+
+	Discord::Send( "Server DLL Initialized." );
 
 	return TRUE;
 }
