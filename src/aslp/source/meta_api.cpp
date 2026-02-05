@@ -43,7 +43,6 @@
 
 #include "signatures.h"
 #include "aslp.h"
-#include "curl.h"
 #include "asext_api.h"
 
 #include "extern_hook.h"
@@ -174,8 +173,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 
 	RegisterAngelScriptMethods();
 	RegisterAngelScriptHooks();
-
-	g_Curl.Init();
 
     // Delete svencoop_assert_*.mdmp files. they're useless and only takes up space on the virtual machine.
 	std::error_code ec; namespace fs = std::filesystem;
