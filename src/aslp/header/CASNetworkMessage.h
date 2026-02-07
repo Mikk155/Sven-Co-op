@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <variant>
 
 #pragma once
 
@@ -38,24 +39,50 @@ namespace NetworkMessages
         Entity
     };
 
-    class ByteData
+    class ByteData : public CASBaseGCObject
     {
-        private:
-
-            ByteType m_Type;
+        #define WriteType( type, var ) ByteData* Write##type( ##var value ) { m_Value = value; return this; }
+        #define ReadType( type, var ) bool Read##type( ##var & value ) { \
+            if( const auto* pval = std::get_if<##var>(&m_Value) ) { \
+                value = *pval; return true; } return false; }
 
         public:
-
-            ByteData( ByteType type ) {
+            ByteData( ByteType type ) const {
                 m_Type = type;
             }
 
+        private:
+            ByteType m_Type;
+        public:
             ByteType GetType() {
                 return m_Type;
             }
+
+        private:
+            std::variant<int, float, CString> m_Value;
+
+        public:
+
+            ReadType(Byte, int)
+            ReadType(Char, int)
+            ReadType(Short, int)
+            ReadType(Long, int)
+            ReadType(Angle, float)
+            ReadType(Coord, float)
+            ReadType(String, CString)
+            ReadType(Entity, int)
+
+            WriteType(Byte, int)
+            WriteType(Char, int)
+            WriteType(Short, int)
+            WriteType(Long, int)
+            WriteType(Angle, float)
+            WriteType(Coord, float)
+            WriteType(String, const CString&)
+            WriteType(Entity, int)
     };
 
-    class CASNetworkMessage : CASBaseGCObject
+    class CASNetworkMessage : public CASBaseGCObject
     {
         public:
 
@@ -63,7 +90,7 @@ namespace NetworkMessages
             Destination Target;
 
             // String name in the client side.
-            std::string Name;
+            CString Name;
 
             // Number of bytes sent.
             int Bytes;
@@ -71,7 +98,16 @@ namespace NetworkMessages
             // ID in the server side.
             int Id;
 
-            // Byte types and ordering to sent.
-            std::vector<ByteData> Data = {};
+            // Bytes sent (Arguments)
+            CScriptArray* Arguments;
+
+            void AddArgument( ByteData* argument );
+
+        private:
+
+            asIScriptEngine* m_ASEngine;
+
+            asITypeInfo* m_ArrayInfo;
+            asIScriptFunction* m_ArrayinsertLast;
     };
 };
