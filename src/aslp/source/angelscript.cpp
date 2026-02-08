@@ -460,42 +460,56 @@ void RegisterAngelScriptMethods()
 		ASEXT_RegisterObjectProperty(pASDoc, "If set to true, the entity is not sent to the host", "ClientPacket", "bool SkipPacket", offsetof(addtofullpack_t, Result));
 #pragma endregion
 #pragma region NetworkMessages
+		using namespace NetworkMessages;
+
 		// -TODO BeginNamespace "NetworkMessage"
 		/* Message destination */
-		ASEXT_RegisterEnum(pASDoc, "Network message destination", "NetworkMessageDestination", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "ReliableToAll", NetworkMessages::Destination::ReliableToAll);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "UnreliableToAll", NetworkMessages::Destination::UnreliableToAll);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "ReliableToTarget", NetworkMessages::Destination::ReliableToTarget);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "UnreliableToTarget", NetworkMessages::Destination::UnreliableToTarget);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "InitString", NetworkMessages::Destination::InitString);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "UnreliableToPVS", NetworkMessages::Destination::UnreliableToPVS);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "UnreliableToPAS", NetworkMessages::Destination::UnreliableToPAS);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "ReliableToPVS", NetworkMessages::Destination::ReliableToPVS);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "ReliableToPAS", NetworkMessages::Destination::ReliableToPAS);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageDestination", "Spectators", NetworkMessages::Destination::Spectators);
+		#define NETMSG_DEST "NetworkDestination"
+		ASEXT_RegisterEnum(pASDoc, "Network message destination", NETMSG_DEST, 0);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "ReliableToAll", Destination::ReliableToAll);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "UnreliableToAll", Destination::UnreliableToAll);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "ReliableToTarget", Destination::ReliableToTarget);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "UnreliableToTarget", Destination::UnreliableToTarget);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "InitString", Destination::InitString);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "UnreliableToPVS", Destination::UnreliableToPVS);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "UnreliableToPAS", Destination::UnreliableToPAS);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "ReliableToPVS", Destination::ReliableToPVS);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "ReliableToPAS", Destination::ReliableToPAS);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_DEST, "Spectators", Destination::Spectators);
 
 		/* Message argument type */
-		ASEXT_RegisterEnum(pASDoc, "Network message argument type", "NetworkMessageByteType", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "Byte", NetworkMessages::ByteType::Byte);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "Char", NetworkMessages::ByteType::Char);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "Short", NetworkMessages::ByteType::Short);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "Long", NetworkMessages::ByteType::Long);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "Angle", NetworkMessages::ByteType::Angle);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "Coord", NetworkMessages::ByteType::Coord);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "String", NetworkMessages::ByteType::String);
-		ASEXT_RegisterEnumValue(pASDoc, "", "NetworkMessageByteType", "Entity", NetworkMessages::ByteType::Entity);
+		#define NETMSG_TYPE "NetworkByteType"
+		ASEXT_RegisterEnum(pASDoc, "Network message argument type", NETMSG_TYPE, 0);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "None", ByteType::None);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "Byte", ByteType::Byte);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "Char", ByteType::Char);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "Short", ByteType::Short);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "Long", ByteType::Long);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "Angle", ByteType::Angle);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "Coord", ByteType::Coord);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "String", ByteType::String);
+		ASEXT_RegisterEnumValue(pASDoc, "", NETMSG_TYPE, "Entity", ByteType::Entity);
 
-		/* ByteData */
-		ASEXT_RegisterObjectType(pASDoc, "Network message's byte data", "NetworkMessageByteData", 0, asOBJ_REF | asOBJ_NOCOUNT);
-		REGISTE_OBJMETHODEX(pASDoc, "Type of byte", "NetworkMessageByteData", "NetworkMessageByteType GetType() const", offsetof(NetworkMessages::ByteData, GetType));
+		/* NetworkMessage */
+		ASEXT_RegisterObjectType(pASDoc, "Network message's byte data", "NetworkMessage", 0, asOBJ_REF | asOBJ_NOCOUNT);
+		ASEXT_RegisterObjectProperty(pASDoc, "Number of bytes wroten", "NetworkMessage", "const int Bytes", offsetof(NetworkMessage_t, Bytes));
+		ASEXT_RegisterObjectProperty(pASDoc, "Name in the client library", "NetworkMessage", "const string& Name", offsetof(NetworkMessage_t, Name));
+		ASEXT_RegisterObjectProperty(pASDoc, "ID in the server library", "NetworkMessage", "const int Id", offsetof(NetworkMessage_t, Id));
+		ASEXT_RegisterObjectProperty(pASDoc, "Destination client/s", "NetworkMessage", "const " NETMSG_DEST " Target", offsetof(NetworkMessage_t, Target));
 
-		/* CASNetworkMessage */
-		ASEXT_RegisterObjectType(pASDoc, "Network message", "NetworkMessageNetworkMessage", 0, asOBJ_REF | asOBJ_NOCOUNT);
-		REGISTE_OBJMETHODEX(pASDoc, "Target client", "NetworkMessageNetworkMessage", "NetworkMessageDestination Target", offsetof(NetworkMessages::CASNetworkMessage, Target));
-		REGISTE_OBJMETHODEX(pASDoc, "Name in client library", "NetworkMessageNetworkMessage", "const string& Name", offsetof(NetworkMessages::CASNetworkMessage, Name));
-		REGISTE_OBJMETHODEX(pASDoc, "Number of bytes wroten", "NetworkMessageNetworkMessage", "int Bytes", offsetof(NetworkMessages::CASNetworkMessage, Bytes));
-		REGISTE_OBJMETHODEX(pASDoc, "Id in server library", "NetworkMessageNetworkMessage", "int Id", offsetof(NetworkMessages::CASNetworkMessage, Bytes));
-		REGISTE_OBJMETHODEX(pASDoc, "Id in server library", "NetworkMessageNetworkMessage", "array<NetworkMessageByteType@> Arguments", offsetof(NetworkMessages::CASNetworkMessage, Arguments));
+		extern ByteType SC_SERVER_DECL CASNetworkMessage_TypeOf( NetworkMessage_t* pthis SC_SERVER_DUMMYARG_NOCOMMA, unsigned int index );
+		ASEXT_RegisterObjectMethod(pASDoc,
+			"Type of byte at the given index",
+			"NetworkMessage",
+			"const " NETMSG_TYPE " TypeOf( uint index )",
+			(void*)CASNetworkMessage_TypeOf, asCALL_THISCALL);
+
+		extern unsigned int SC_SERVER_DECL CASNetworkMessage_Length( NetworkMessage_t* pthis SC_SERVER_DUMMYARG_NOCOMMA );
+		ASEXT_RegisterObjectMethod(pASDoc,
+			"The size of the byte array data",
+			"NetworkMessage",
+			"const uint Length()",
+			(void*)CASNetworkMessage_Length, asCALL_THISCALL);
 #pragma endregion
 	} );
 }
