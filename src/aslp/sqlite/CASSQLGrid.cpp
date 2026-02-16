@@ -1,4 +1,4 @@
-#include "CASBinaryStringBuilder.h"
+#include "../string/CASBinaryStringBuilder.h"
 #include "CASSQLGrid.h"
 
 CASSQLGrid::CASSQLGrid(){

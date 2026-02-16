@@ -1,6 +1,6 @@
 #include "generate_as_networking.h"
 
-#include "CFile.h"
+#include "../utils/CFile.h"
 #include <fmt/format.h>
 
 void CNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )

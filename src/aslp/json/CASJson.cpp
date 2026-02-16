@@ -1,7 +1,7 @@
 #include <extdll.h>
 #include <meta_api.h>
 
-#include "CASJson.h"
+#include "json/CASJson.h"
 
 CASJson::CASJson()
 {

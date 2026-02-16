@@ -1,11 +1,11 @@
-// Contenido de CASJson.h
-
-#pragma once
 #include <vector>
 #include <cstdio> 
 #include "CASBaseObject.h"
+
 namespace std { using ::_snprintf; }
 #include <nlohmann/json.hpp>
+
+#pragma once
 
 typedef CString jsonKey_t;
 using json = nlohmann::json;

@@ -1,17 +1,19 @@
 #include <extdll.h>
+#include <pm_defs.h>
+#include <entity_state.h>
+#include <meta_api.h>
 
 #include "aslp.h"
 #include "asext_api.h"
 #include "angelscriptlib.h"
 
-#include <meta_api.h>
-#include "CASBinaryStringBuilder.h"
-#include "CASSQLItem.h"
-#include "CASSQLGrid.h"
-#include "CASSQLite.h"
-#include "CASJson.h"
-#include <pm_defs.h>
-#include <entity_state.h>
+#include "json/CASJson.h"
+
+#include "sqlite/CASSQLItem.h"
+#include "sqlite/CASSQLGrid.h"
+#include "sqlite/CASSQLite.h"
+
+#include "string/CASBinaryStringBuilder.h"
 
 angelhook_t g_AngelHook;
 

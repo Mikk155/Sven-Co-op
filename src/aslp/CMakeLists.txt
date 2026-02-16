@@ -60,7 +60,7 @@ include_directories(
 target_include_directories( ${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/angelscript
-    ${CMAKE_CURRENT_SOURCE_DIR}/header
+    ${CMAKE_CURRENT_SOURCE_DIR}/metamod
 )
 
 target_compile_definitions( ${PROJECT_NAME} PRIVATE

@@ -37,7 +37,7 @@
 #include "dlldef.h"
 #include <pm_defs.h>
 
-#include "generate_as_networking.h"
+#include "NetworkMessages/generate_as_networking.h"
 
 #define CALL_ANGELSCRIPT(pfn, ...) if (ASEXT_CallHook){(*ASEXT_CallHook)(g_AngelHook.pfn, 0, __VA_ARGS__);}
 

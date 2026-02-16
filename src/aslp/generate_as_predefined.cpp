@@ -152,7 +152,7 @@ namespace
     }
 }
 
-#include "CFile.h"
+#include "utils/CFile.h"
 
 void GenerateScriptPredefined(const asIScriptEngine* engine)
 {

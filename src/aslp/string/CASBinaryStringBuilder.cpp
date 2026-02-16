@@ -5,7 +5,7 @@
 #include "aslp.h"
 
 #include <meta_api.h>
-#include "CASBinaryStringBuilder.h"
+#include "../string/CASBinaryStringBuilder.h"
 
 CBinaryStringBuilder::CBinaryStringBuilder(){
 	refCount = 1;

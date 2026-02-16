@@ -3,7 +3,7 @@
 #include <extdll.h>
 #include <meta_api.h>
 
-#include "CASBinaryStringBuilder.h"
+#include "../string/CASBinaryStringBuilder.h"
 #include "CASSQLItem.h"
 #include "CASSQLGrid.h"
 #include "CASSQLite.h"

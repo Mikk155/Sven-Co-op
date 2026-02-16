@@ -1,4 +1,4 @@
-#include "CASBinaryStringBuilder.h"
+#include "../string/CASBinaryStringBuilder.h"
 #include "CASSQLItem.h"
 
 CASSQLItem::CASSQLItem(){

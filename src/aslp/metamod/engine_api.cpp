@@ -40,7 +40,7 @@
 
 #include "enginedef.h"
 
-#include "generate_as_networking.h"
+#include "NetworkMessages/generate_as_networking.h"
 
 #pragma region PreHooks
 static int SV_ModelIndex(const char* m) {
