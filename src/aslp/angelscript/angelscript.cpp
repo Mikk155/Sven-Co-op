@@ -15,6 +15,8 @@
 
 #include "string/CASBinaryStringBuilder.h"
 
+#include "hooks/AddToFullPack.hpp"
+
 angelhook_t g_AngelHook;
 
 /**
@@ -505,12 +507,6 @@ void RegisterAngelScriptHooks()
 		"PostAddToFullPack",
 		"ClientPacket@ packet, META_RES &out meta_result"
 	);
-	CREATE_AS_HOOK( pPostEntitySpawn,
-		"Post call after a Entity spawn",
-		ASLP_NAMESPACE( Entity ),
-		"PostEntitySpawn",
-		"edict_t@ pEntity"
-	);
 	CREATE_AS_HOOK( pShouldCollide,
 		"Pre call of gEntityInterface.pfnShouldCollide",
 		ASLP_NAMESPACE( Entity ),
@@ -531,7 +527,6 @@ void RegisterAngelScriptHooks()
 	CREATE_AS_HOOK(pBreakableTakeDamage, "Pre call before a breakable took damage", "Entity", "BreakableTakeDamage", "DamageInfo@ info");
 
 	CREATE_AS_HOOK(pGrappleCheckMonsterType, "Pre call before Weapon Grapple checking monster type", "Weapon", "GrappleGetMonsterType", "CBaseEntity@ pThis, CBaseEntity@ pEntity, uint& out flag");
-	//CREATE_AS_HOOK(pSendScoreInfo, "Pre call before sending hud info to edict", "Player", "SendScoreInfo", "CBasePlayer@ pPlayer, edict_t@ pTarget, int iTeamID, string szTeamName, uint& out flag");
 }
 #undef CREATE_AS_HOOK
 

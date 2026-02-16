@@ -1,12 +1,3 @@
-// vi: set ts=4 sw=4 :
-// vim: set tw=75 :
-
-// meta_api.cpp - minimal implementation of metamod's plugin interface
-
-// This is intended to illustrate the (more or less) bare minimum code
-// required for a valid metamod plugin, and is targeted at those who want
-// to port existing HL/SDK DLL code to run as a metamod plugin.
-
 /*
  * Copyright (c) 2001-2006 Will Day <willday@hpgx.net>
  *
@@ -38,14 +29,12 @@
  *
  */
 
-#include <extdll.h>			// always
-#include <meta_api.h>		// of course
+#include <extdll.h>
+#include <meta_api.h>
 
 #include "signatures.h"
 #include "aslp.h"
 #include "asext_api.h"
-
-#include "extern_hook.h"
 
 #include <fmt/format.h>
 #include <filesystem>
@@ -76,8 +65,8 @@ plugin_info_t Plugin_info = {
 	"AngelScript Limitless Potential API",	// name
 	"2.0",	// version
 	"2025",	// date
-	"Dr.Abc, Gaftherman, Mikk",	// author
-	"https://github.com/DrAbcOfficial/asexthook | https://github.com/Mikk155/Sven-Co-op",	// url
+	"Mikk, Gaftherman, hzqst, Dr.Abc",	// author
+	"https://github.com/Mikk155/Sven-Co-op",	// url
 	"ASHEXT",	// logtag, all caps please
 	PT_ANYTIME,	// (when) loadable
 	PT_STARTUP,	// (when) unloadable
@@ -108,9 +97,7 @@ C_DLLEXPORT int Meta_Query(const char* interfaceVersion, plugin_info_t** pPlugIn
 	return TRUE;
 }
 
-C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
-	META_FUNCTIONS* pFunctionTable, meta_globals_t* pMGlobals,
-	gamedll_funcs_t* pGamedllFuncs)
+C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_globals_t* pMGlobals, gamedll_funcs_t* pGamedllFuncs )
 {
 	if (!pMGlobals) {
 		LOG_ERROR(PLID, "Meta_Attach called with null pMGlobals");
@@ -184,12 +171,14 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME /* now */,
 	return TRUE;
 }
 
+extern void UninstallEngineHook();
+extern void VtableUnhook();
+
 // Metamod detaching plugin from the server.
 // now		(given) current phase, ie during map, etc
 // reason	(given) why detaching (refresh, console unload, forced unload, etc)
-C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME /* now */,
-	PL_UNLOAD_REASON /* reason */){
-
+C_DLLEXPORT int Meta_Detach( PLUG_LOADTIME, PL_UNLOAD_REASON  )
+{
 	UninstallEngineHook();
 	VtableUnhook();
 	CloseAngelScriptsItem();

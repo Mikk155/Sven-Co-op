@@ -1,21 +1,14 @@
+#include "asext_api.h"
 #include "entity_state.h"
 #include "const.h"
+
+#define CALL_ANGELSCRIPT(pfn, ...) if (ASEXT_CallHook){(*ASEXT_CallHook)(g_AngelHook.pfn, 0, __VA_ARGS__);}
 
 #pragma once
 
 void RegisterAngelScriptMethods();
 void RegisterAngelScriptHooks();
 void CloseAngelScriptsItem();
-
-typedef struct addtofullpack_s{
-	entity_state_s* state;
-	int entityIndex;
-	edict_t* entity;
-	edict_t* host;
-	int hostFlags;
-	int playerIndex;
-	bool Result;
-}addtofullpack_t;
 
 typedef struct damageinfo_s{
 	void* pVictim;

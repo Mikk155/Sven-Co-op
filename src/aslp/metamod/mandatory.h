@@ -4,7 +4,6 @@
 
 // Metamod
 #include <meta_api.h>
-#include "extern_hook.h"
 
 // Angelscript
 #include "aslp.h"

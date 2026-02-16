@@ -10,7 +10,7 @@ namespace Hooks
 {
     namespace Post
     {
-        void ServerDeactivate()
+        inline void ServerDeactivate()
         {
             g_StringPool.Clear();
             FixModelIndexGMR::GMR.clear();

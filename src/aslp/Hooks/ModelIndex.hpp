@@ -6,7 +6,7 @@
 
 namespace Hooks
 {
-    int ModelIndex( const char* model )
+    inline int ModelIndex( const char* model )
     {
         // Get a proper model index supporting GMR
         if( auto it = FixModelIndexGMR::GMR.find( model ); it != FixModelIndexGMR::GMR.end() ) {
