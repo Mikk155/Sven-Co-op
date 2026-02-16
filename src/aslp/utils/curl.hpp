@@ -6,7 +6,7 @@
 
 #include <extdll.h>
 #include <meta_api.h>
-#include "enginedef.h"
+#include "progdefs.h"
 
 extern mutil_funcs_t* gpMetaUtilFuncs;
 

@@ -37,7 +37,7 @@
 #include <extdll.h>
 #include <meta_api.h>
 
-#include "enginedef.h"
+#include "progdefs.h"
 
 #include "NetworkMessages/generate_as_networking.h"
 

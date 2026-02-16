@@ -1,6 +1,6 @@
 // HLSDK
 #include <extdll.h>
-#include "enginedef.h"
+#include "progdefs.h"
 
 // Metamod
 #include <meta_api.h>

@@ -34,7 +34,6 @@
 #include "asext_api.h"
 #include "aslp.h"
 
-#include "dlldef.h"
 #include <pm_defs.h>
 
 #include "NetworkMessages/generate_as_networking.h"
