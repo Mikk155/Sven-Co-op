@@ -16,7 +16,7 @@ class CFile
             Append
         };
 
-        CFile( const std::filesystem::path& relativePath, Mode mode );
+        CFile( const std::filesystem::path& relativePath, Mode mode, bool recursive = false );
 
         ~CFile();
 

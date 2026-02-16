@@ -4,30 +4,50 @@
 
 #include "CFile.h"
 
-CFile::CFile( const std::filesystem::path& relativePath, Mode mode )
+#include <optional>
+
+CFile::CFile( const std::filesystem::path& relativePath, Mode mode, bool recursive )
 {
-    char gameDir[256]{};
+    std::filesystem::path fullPath;
 
-    GET_GAME_DIR( gameDir );
+    if( recursive )
+    {
+	    auto FileExistsAt = [&]( const char* folder ) -> std::optional<std::filesystem::path>
+        {
+            std::filesystem::path myRecursivePath = std::filesystem::current_path() / folder / relativePath;
+            if( std::filesystem::exists( myRecursivePath ) )
+                return myRecursivePath;
+            return std::nullopt;
+        };
 
-    std::filesystem::path fullPath = std::filesystem::current_path() / std::filesystem::path( gameDir ) / relativePath;
-
-    std::filesystem::create_directories( fullPath.parent_path() );
+        if( auto folder = FileExistsAt( "svencoop_addon" ); folder.has_value() ) { fullPath = folder.value(); } else
+        if( auto folder = FileExistsAt( "svencoop_hd" ); folder.has_value() ) { fullPath = folder.value(); } else
+        if( auto folder = FileExistsAt( "svencoop" ); folder.has_value() ) { fullPath = folder.value(); } else
+        if( auto folder = FileExistsAt( "svencoop_downloads" ); folder.has_value() ) { fullPath = folder.value(); } else
+        if( mode == Mode::Write ) { fullPath = std::filesystem::current_path() / "svencoop" / relativePath; }
+    }
+    else
+    {
+        fullPath = std::filesystem::current_path() / "svencoop" / relativePath;
+    }
 
     const char* openMode = nullptr;
 
     switch( mode )
     {
-        case Mode::Read:
-            openMode = "rb";
-        break;
         case Mode::Write:
             openMode = "wb";
         break;
         case Mode::Append:
             openMode = "ab";
         break;
+        case Mode::Read:
+        default:
+            openMode = "rb";
+        break;
     }
+
+    std::filesystem::create_directories( fullPath.parent_path() );
 
     m_File = fopen( fullPath.string().c_str(), openMode );
 }
