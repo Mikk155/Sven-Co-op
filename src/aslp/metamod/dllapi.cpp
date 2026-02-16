@@ -160,6 +160,7 @@ static int PreAddToFullPack( struct entity_state_s* state, int entindex, edict_t
 
 #include "Hooks/ServerActivate.hpp"
 #include "Hooks/ServerDeactivate.hpp"
+#include "Hooks/KeyValue.hpp"
 
 static DLL_FUNCTIONS gFunctionTable = {
 	// pfnGameInit
@@ -175,7 +176,7 @@ static DLL_FUNCTIONS gFunctionTable = {
 	// pfnBlocked
 	NULL,
 	// pfnKeyValue
-	NULL,
+	Hooks::Pre::KeyValue,
 	// pfnSave
 	NULL,
 	// pfnRestore
@@ -205,7 +206,8 @@ static DLL_FUNCTIONS gFunctionTable = {
 	// pfnClientUserInfoChanged
 	ClientUserInfoChanged,
 	Hooks::Pre::ServerActivate, 
-	Hooks::Pre::ServerDeactivate,
+	// pfnServerDeactivate
+	NULL,
 	// pfnPlayerPreThink
 	NULL,
 	// pfnPlayerPostThink

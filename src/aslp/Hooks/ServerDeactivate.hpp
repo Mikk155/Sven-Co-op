@@ -8,13 +8,6 @@
 
 namespace Hooks
 {
-    namespace Pre
-    {
-        void ServerDeactivate()
-        {
-        }
-    }
-
     namespace Post
     {
         void ServerDeactivate()

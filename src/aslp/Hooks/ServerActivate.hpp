@@ -10,7 +10,7 @@ namespace Hooks
 {
     namespace Pre
     {
-        void ServerActivate( edict_t* edictList, int edictCount, int clientMax  )
+        void ServerActivate( edict_t* edictList, int edictCount, int clientMax )
         {
             if( auto gmrFile = FixModelIndexGMR::CFGHasReplacementList(); gmrFile.has_value() )
                 FixModelIndexGMR::LoadCFGFile( gmrFile.value() );
@@ -19,7 +19,7 @@ namespace Hooks
 
     namespace Post
     {
-        void ServerActivate( edict_t* edictList, int edictCount, int clientMax  )
+        void ServerActivate( edict_t* edictList, int edictCount, int clientMax )
         {
             VTableHook();
 
