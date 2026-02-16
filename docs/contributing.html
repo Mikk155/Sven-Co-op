@@ -32,52 +32,45 @@ git submodule update --init --remote external/metamod
       </code>
   </div>
   <p>Generate the project solution from CMakeLists.</p>
+  <p>You can either configure yourself by command line or using CMakeGui</p>
+  <p>Command line:</p>
   <div class="code-block">
     <button onclick="ClipboardCopy( 'metamod-build' )" title="Copy">📋</button>
       <code id="metamod-build">
 mkdir build\aslp
+<br>
+cmake -S src/aslp -B build/aslp -G "Visual Studio 17 2022" -A Win32 -DCMAKE_INSTALL_PREFIX="C:/Program Files (x86)/Steam/steamapps/common/Sven Co-op"
       </code>
   </div>
-  <p>Add your absolute path to the dlls folder for copying the binaries post compile.</p>
-  <p>Windows</p>
-  <div class="code-block">
-    <button onclick="ClipboardCopy( 'metamod-build' )" title="Copy">📋</button>
-      <code id="metamod-build">
-cmake -A Win32 -S "src/aslp" -B "build/aslp" -DCMAKE_INSTALL_PREFIX="C:\Program Files (x86)\Steam\steamapps\common\Sven Co-op\svencoop\addons\metamod\dlls"
-      </code>
-  </div>
-  <p>Test compile</p>
+  <p>CMakeGui setup:</p>
+  <p>Set the path to where the project is located and where to build the binaries.</p>
+  <p>Due to how aslp include files, it is not recommended to build the binaries in the same folder or sub-folders.</p>
+  <img src="assets/images/aslp/directory.png">
+  <p>Press the "Configure" button and select your project generator</p>
+  <img src="assets/images/aslp/generator.png">
+  <p>Select your platform and press finish (Note: Sven coop requires 32-bits build)</p>
+  <img src="assets/images/aslp/platform.png">
+  <p>You can now set the path to your "Sven Co-op" installation and modify some launch parameters for when debuging</p>
+  <img src="assets/images/aslp/generated.png">
+  <p>Press the "Generate" button and wait until is done, you can press then the "Open Project" to launch your IDE</p>
+  <img src="assets/images/aslp/project.png">
+  <p>Select the "aslp" project. right click and mark as "Startup project" so when you press F5 to debug it runs the game.</p>
+  <p>You may know be able to compile aslp and asext but to actually compile metamod you gonna need to go to the folder "external/metamod/scripts/" and run some dependancy scripts.</p>
+  <p>For instance you need the "build-capstone" Ideally both release and debug if you plan on building for both.</p>
+  <p>Go to the "svencoop/liblist.gam" file and modify the "gamedll" variable to load metamod</p>
   <div class="code-block">
     <button onclick="ClipboardCopy( 'metamod-test' )" title="Copy">📋</button>
       <code id="metamod-test">
-cmake --build "build\aslp" --config Release --clean-first --target install
+gamedll "addons/metamod/dlls/metamod.dll"
       </code>
   </div>
-  <p>plugins.ini</p>
+  <p>If you were running metamod previously go to "svencoop/addons/metamod/plugins.ini" and add the aslp entry. This is not necesary if the file didn't exists the project will generate it.</p>
   <div class="code-block">
     <button onclick="ClipboardCopy( 'metamod-plugins' )" title="Copy">📋</button>
       <code id="metamod-plugins">
 win32 addons/metamod/dlls/aslp.dll
 <br>
 linux addons/metamod/dlls/aslp.so
-      </code>
-  </div>
-  <!--This is for myself as i rarely launch VS lol-->
-  <p>You can create a .bat file in build/aslp/</p>
-  <div class="code-block">
-    <button onclick="ClipboardCopy( 'metamod-bat' )" title="Copy">📋</button>
-      <code id="metamod-bat">
-@echo off
-<br>
-cmake --build . --config Release --clean-first --target install
-<br>
-if %ERRORLEVEL% NEQ 0 (
-<br>
-    pause
-<br>
-    exit /b %ERRORLEVEL%
-<br>
-)
       </code>
   </div>
 
