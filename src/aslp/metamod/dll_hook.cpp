@@ -11,91 +11,6 @@
 
 #include "utility.h"
 
-#pragma region GMR
-std::map<std::string, std::string> g_dicGMRmap;
-void LoadGMRFromCFG() {
-	g_dicGMRmap.clear();
-	char mappath[MAX_PATH];
-	const char* mapname = STRING(gpGlobals->mapname);
-	sprintf_s(mappath, "maps/%s.cfg", mapname);
-	int filesize = 0;
-	byte* membuf = g_engfuncs.pfnLoadFileForMe(mappath, &filesize);
-	if (!membuf)
-		return;
-	std::string gmrpath;
-	const char* delim = "\n";
-	char* tokstarter = reinterpret_cast<char*>(membuf);
-	char* next_line = strtok(tokstarter, delim);
-	while (next_line != nullptr) {
-		if (!strncmp(next_line, "globalmodellist", 15)) {
-			next_line += 15;
-			while (isspace(*next_line) || *next_line == '\"') {
-				next_line++;
-			}
-			if (*next_line == '\0')
-				return;
-			char* end = next_line + strlen(next_line) - 1;
-			while (end > next_line && (isspace(*end) || *end == '\"')) {
-				end--;
-			}
-			*(end + 1) = '\0';
-			gmrpath = next_line;
-			break;
-		}
-		next_line = strtok(nullptr, delim);
-	}
-	g_engfuncs.pfnFreeFile(membuf);
-
-	//read gmr
-	if (gmrpath.size() == 0)
-		return;
-	gmrpath = "models/" + std::string(mapname) + "/" + gmrpath;
-	byte* gmrbuf = g_engfuncs.pfnLoadFileForMe(const_cast<char*>(gmrpath.c_str()), &filesize);
-	if (!gmrbuf)
-		return;
-	std::string key;
-	std::string value;
-	tokstarter = reinterpret_cast<char*>(gmrbuf);
-	next_line = strtok(tokstarter, delim);
-	while (next_line != nullptr) {
-		key.clear();
-		value.clear();
-
-		bool has_quote = false;
-		if (*next_line == '\"') {
-			next_line++;
-			has_quote = true;
-		}
-		if (has_quote) {
-			while (*next_line != '\"') {
-				key += *next_line;
-				next_line++;
-			}
-		}
-		else {
-			while (!isspace(*next_line)) {
-				key += *next_line;
-				next_line++;
-			}
-		}
-		while (isspace(*next_line) || *next_line == '\"') {
-			next_line++;
-		}
-		char* end = next_line + strlen(next_line) - 1;
-		while (end > next_line && (isspace(*end) || *end == '\"')) {
-			end--;
-		}
-		*(end + 1) = '\0';
-		value = next_line;
-		if (key.size() > 0 && value.size() > 0)
-			g_dicGMRmap.insert(std::make_pair(key, value));
-		next_line = strtok(nullptr, delim);
-	}
-	g_engfuncs.pfnFreeFile(gmrbuf);
-}
-
-#pragma endregion
-
 typedef struct hookitem_s {
 	hook_t* pHook;
 	void* pfnCall;
@@ -208,6 +123,7 @@ static int SC_SERVER_DECL IRelationship(CBasePlayer* pThis, SC_SERVER_DUMMYARG C
 
 #pragma region VTableHooks
 void VTableHook() {
+	if( static bool vtable_init = false; !vtable_init ) { vtable_init = true; } else { return; }
 #define ITEM_HOOK(item, type, table, newfunc) item.pfnOriginalCall=item.pfnCall=(void*)table->type;item.pVtable=table;item.pHook=gpMetaUtilFuncs->pfnInlineHook(item.pfnCall,(void*)newfunc,(void**)&item.pfnOriginalCall,false);gHooks.push_back(item.pHook)
 	vtable_base_t* vtable = AddEntityVTable("monster_apache");
 	ITEM_HOOK(gHookItems.ApacheTraceAttack, TraceAttack, vtable, ApacheTraceAttack);

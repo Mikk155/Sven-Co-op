@@ -31,7 +31,6 @@
  *    version.
  *
  */
-#include <map>
 #include "extern_hook.h"
 #include <string>
 
@@ -43,20 +42,6 @@
 #include "NetworkMessages/generate_as_networking.h"
 
 #pragma region PreHooks
-static int SV_ModelIndex(const char* m) {
-	if (CVAR_GET_FLOAT("sv_fixgmr") > 0) {
-		extern std::map<std::string, std::string> g_dicGMRmap;
-		for (auto iter = g_dicGMRmap.begin(); iter != g_dicGMRmap.end(); iter++) {
-			if (strcmp((*iter).first.c_str(), m) == 0) {
-				SET_META_RESULT(MRES_SUPERCEDE);
-				return MODEL_INDEX((*iter).second.c_str());
-			}
-		}
-	}
-	SET_META_RESULT(MRES_IGNORED);
-	return 0;
-}
-
 static int MSG_Register( const char* name, int bytes )
 {
 	// Avoid re-call
@@ -126,11 +111,13 @@ static void MSG_Entity( int input )
 	SET_META_RESULT(META_RES::MRES_IGNORED);
 }
 
+#include "Hooks/ModelIndex.hpp"
+
 enginefuncs_t meta_engfuncs = {
 	NULL,						// pfnPrecacheModel()
 	NULL,						// pfnPrecacheSound()
 	NULL,						// pfnSetModel()
-	SV_ModelIndex,						// pfnModelIndex()
+	Hooks::ModelIndex,
 	NULL,						// pfnModelFrames()
 
 	NULL,						// pfnSetSize()

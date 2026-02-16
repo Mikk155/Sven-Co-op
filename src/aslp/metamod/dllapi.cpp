@@ -91,27 +91,6 @@ C_DLLEXPORT int GetNewDLLFunctions( NEW_DLL_FUNCTIONS* pNewDllFunctionTable, int
 	return(TRUE);
 }
 
-static void ServerActivate( edict_t* pEdictList, int edictCount, int clientMax )
-{
-	extern void LoadGMRFromCFG();
-	LoadGMRFromCFG();
-
-	static bool s_HookedFlag = false;
-
-	if( s_HookedFlag )
-	{
-		SET_META_RESULT(MRES_IGNORED);
-		return;
-	}
-
-	extern void VTableHook();
-	VTableHook();
-
-	s_HookedFlag = true;
-
-	SET_META_RESULT(MRES_HANDLED);
-}
-
 static void ClientCommand( edict_t* pEntity )
 {
 	META_RES meta_result = META_RES::MRES_IGNORED;
@@ -179,6 +158,9 @@ static int PreAddToFullPack( struct entity_state_s* state, int entindex, edict_t
 	RETURN_META_VALUE(meta_result, 0);
 }
 
+#include "Hooks/ServerActivate.hpp"
+#include "Hooks/ServerDeactivate.hpp"
+
 static DLL_FUNCTIONS gFunctionTable = {
 	// pfnGameInit
 	NULL,
@@ -222,10 +204,8 @@ static DLL_FUNCTIONS gFunctionTable = {
 	ClientCommand, 
 	// pfnClientUserInfoChanged
 	ClientUserInfoChanged,
-	// pfnServerActivate
-	ServerActivate, 
-	// pfnServerDeactivate
-	NULL,
+	Hooks::Pre::ServerActivate, 
+	Hooks::Pre::ServerDeactivate,
 	// pfnPlayerPreThink
 	NULL,
 	// pfnPlayerPostThink
@@ -303,9 +283,6 @@ C_DLLEXPORT int GetEntityAPI2( DLL_FUNCTIONS* pFunctionTable, int* interfaceVers
 #pragma region PostHook
 static void GameInitPost()
 {
-	static cvar_t fixgmr = { const_cast<char*>( "sv_fixgmr" ),const_cast<char*>( "1" ), FCVAR_SERVER };
-	CVAR_REGISTER(&fixgmr);
-
 	SET_META_RESULT(MRES_HANDLED);
 }
 
@@ -396,10 +373,8 @@ static DLL_FUNCTIONS gFunctionTable_Post = {
 	NULL,
 	// pfnClientUserInfoChanged
 	NULL,
-	// pfnServerActivate
-	NULL,
-	// pfnServerDeactivate
-	NULL,
+	Hooks::Post::ServerActivate, 
+	Hooks::Post::ServerDeactivate,
 	// pfnPlayerPreThink
 	NULL,
 	// pfnPlayerPostThink
