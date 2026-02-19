@@ -299,68 +299,6 @@ ASEXT_RegisterObjectProperty( pASDoc,
 			"copy class, If src and dst are different type, return false.\nIf not class ref, crash game.", "CEngineFuncs", "bool ClassMemcpy(?& in src, ?& in dst)",
 			(void*)CASEngineFuncs_ClassMemcpy, asCALL_THISCALL);
 #pragma endregion
-#pragma region entity_state_t
-		ASEXT_RegisterObjectType(pASDoc, "Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.", "entity_state_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int entityType", offsetof(entity_state_t, entityType));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int number", offsetof(entity_state_t, number));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float msg_time", offsetof(entity_state_t, msg_time));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int messagenum", offsetof(entity_state_t, messagenum));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector origin", offsetof(entity_state_t, origin));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector angles", offsetof(entity_state_t, angles));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int modelindex", offsetof(entity_state_t, modelindex));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int sequence", offsetof(entity_state_t, sequence));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float frame", offsetof(entity_state_t, frame));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int colormap", offsetof(entity_state_t, colormap));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int16 skin", offsetof(entity_state_t, skin));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int16 solid", offsetof(entity_state_t, solid));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int effects", offsetof(entity_state_t, effects));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float scale", offsetof(entity_state_t, scale));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int8 eflags", offsetof(entity_state_t, eflags));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int rendermode", offsetof(entity_state_t, rendermode));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int renderamt", offsetof(entity_state_t, renderamt));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector rendercolor", offsetof(entity_state_t, rendercolor));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int r", offsetof(entity_state_t, rendercolor.r));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int g", offsetof(entity_state_t, rendercolor.g));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int b", offsetof(entity_state_t, rendercolor.b));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int renderfx", offsetof(entity_state_t, renderfx));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int movetype", offsetof(entity_state_t, movetype));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float animtime", offsetof(entity_state_t, animtime));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float framerate", offsetof(entity_state_t, framerate));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int body", offsetof(entity_state_t, body));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector velocity", offsetof(entity_state_t, velocity));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector mins", offsetof(entity_state_t, mins));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector maxs", offsetof(entity_state_t, maxs));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int aiment", offsetof(entity_state_t, aiment));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int owner", offsetof(entity_state_t, owner));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float friction", offsetof(entity_state_t, friction));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float gravity", offsetof(entity_state_t, gravity));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int team", offsetof(entity_state_t, team));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int playerclass", offsetof(entity_state_t, playerclass));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int health", offsetof(entity_state_t, health));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int spectator", offsetof(entity_state_t, spectator));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int weaponmodel", offsetof(entity_state_t, weaponmodel));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int gaitsequence", offsetof(entity_state_t, gaitsequence));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector basevelocity", offsetof(entity_state_t, basevelocity));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int usehull", offsetof(entity_state_t, usehull));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int oldbuttons", offsetof(entity_state_t, oldbuttons));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int onground", offsetof(entity_state_t, onground));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int iStepLeft", offsetof(entity_state_t, iStepLeft));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float flFallVelocity", offsetof(entity_state_t, flFallVelocity));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float fov", offsetof(entity_state_t, fov));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int weaponanim", offsetof(entity_state_t, weaponanim));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int iuser1", offsetof(entity_state_t, iuser1));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int iuser2", offsetof(entity_state_t, iuser2));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int iuser3", offsetof(entity_state_t, iuser3));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "int iuser4", offsetof(entity_state_t, iuser4));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float fuser1", offsetof(entity_state_t, fuser1));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float fuser2", offsetof(entity_state_t, fuser2));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float fuser3", offsetof(entity_state_t, fuser3));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "float fuser4", offsetof(entity_state_t, fuser4));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser1", offsetof(entity_state_t, vuser1));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser2", offsetof(entity_state_t, vuser2));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser3", offsetof(entity_state_t, vuser3));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "entity_state_t", "Vector vuser4", offsetof(entity_state_t, vuser4));
-#pragma endregion
 #pragma region physent_t
 		ASEXT_RegisterObjectType(pASDoc, "Physics data", "physent_t", 0, asOBJ_REF | asOBJ_NOCOUNT);
 		//ASEXT_RegisterObjectProperty(pASDoc, "", "physent_t", "array<char>@ name", offsetof(physent_t, name));
@@ -466,16 +404,264 @@ ASEXT_RegisterObjectProperty( pASDoc,
 		ASEXT_RegisterEnumValue(pASDoc, "Call real function, but use my return value", "META_RES", "Override", (int)MRES_OVERRIDE);
 		ASEXT_RegisterEnumValue(pASDoc, "Skip real function; use my return value", "META_RES", "Supercede", (int)MRES_SUPERCEDE);
 #pragma endregion
+
+#pragma region entity_state_t
+ASEXT_RegisterObjectType(pASDoc,
+	"Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.",
+	"entity_state_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Type classification used by the engine (normal entity, player, beam, etc.). Mostly internal; affects how the client interprets the state.",
+	"entity_state_t", "int entityType", offsetof( entity_state_t, entityType ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Entity index",
+	"entity_state_t", "int number", offsetof( entity_state_t, number ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Server time when this state was generated. Used for interpolation and networking.",
+	"entity_state_t", "float msg_time", offsetof( entity_state_t, msg_time ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Incrementing message sequence number. Helps delta compression determine differences.",
+	"entity_state_t", "int messagenum", offsetof( entity_state_t, messagenum ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Position in world",
+	"entity_state_t", "Vector origin", offsetof( entity_state_t, origin ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Entity angles",
+	"entity_state_t", "Vector angles", offsetof( entity_state_t, angles ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Index into the precached model table. Determines which .mdl, .spr, or brush model to render.",
+	"entity_state_t", "int modelindex", offsetof( entity_state_t, modelindex ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Model animation sequence number.",
+	"entity_state_t", "int sequence", offsetof( entity_state_t, sequence ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Current animation frame.",
+	"entity_state_t", "float frame", offsetof( entity_state_t, frame ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Color remap index",
+	"entity_state_t", "int colormap", offsetof( entity_state_t, colormap ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Skin index inside the model.",
+	"entity_state_t", "int16 skin", offsetof( entity_state_t, skin ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Bodygroup selection.",
+	"entity_state_t", "int body", offsetof( entity_state_t, body ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Solid mode (How the client interacts with this entity)",
+	"entity_state_t", "int16 solid", offsetof( entity_state_t, solid ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Rendering effects flag",
+	"entity_state_t", "int effects", offsetof( entity_state_t, effects ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Model/Sprite scale multiplier",
+	"entity_state_t", "float scale", offsetof( entity_state_t, scale ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int8 eflags", offsetof( entity_state_t, eflags ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Render mode",
+	"entity_state_t", "int rendermode", offsetof( entity_state_t, rendermode ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Render ammount",
+	"entity_state_t", "int renderamt", offsetof( entity_state_t, renderamt ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Render color",
+	"entity_state_t", "Vector rendercolor", offsetof( entity_state_t, rendercolor ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Render effect",
+	"entity_state_t", "int renderfx", offsetof( entity_state_t, renderfx ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Move type",
+	"entity_state_t", "int movetype", offsetof( entity_state_t, movetype ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float animtime", offsetof( entity_state_t, animtime ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float framerate", offsetof( entity_state_t, framerate ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector velocity", offsetof( entity_state_t, velocity ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector mins", offsetof( entity_state_t, mins ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector maxs", offsetof( entity_state_t, maxs ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int aiment", offsetof( entity_state_t, aiment ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int owner", offsetof( entity_state_t, owner ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float friction", offsetof( entity_state_t, friction ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float gravity", offsetof( entity_state_t, gravity ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int team", offsetof( entity_state_t, team ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Player-specific classification",
+	"entity_state_t", "int playerclass", offsetof( entity_state_t, playerclass ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int health", offsetof( entity_state_t, health ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Player-specific spectator. 0/1 false/true",
+	"entity_state_t", "int spectator", offsetof( entity_state_t, spectator ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int weaponmodel", offsetof( entity_state_t, weaponmodel ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int gaitsequence", offsetof( entity_state_t, gaitsequence ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector basevelocity", offsetof( entity_state_t, basevelocity ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int usehull", offsetof( entity_state_t, usehull ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int oldbuttons", offsetof( entity_state_t, oldbuttons ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int onground", offsetof( entity_state_t, onground ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int iStepLeft", offsetof( entity_state_t, iStepLeft ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float flFallVelocity", offsetof( entity_state_t, flFallVelocity ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float fov", offsetof( entity_state_t, fov ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int weaponanim", offsetof( entity_state_t, weaponanim ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int iuser1", offsetof( entity_state_t, iuser1 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int iuser2", offsetof( entity_state_t, iuser2 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int iuser3", offsetof( entity_state_t, iuser3 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "int iuser4", offsetof( entity_state_t, iuser4 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float fuser1", offsetof( entity_state_t, fuser1 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float fuser2", offsetof( entity_state_t, fuser2 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float fuser3", offsetof( entity_state_t, fuser3 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "float fuser4", offsetof( entity_state_t, fuser4 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector vuser1", offsetof( entity_state_t, vuser1 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector vuser2", offsetof( entity_state_t, vuser2 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector vuser3", offsetof( entity_state_t, vuser3 ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"",
+	"entity_state_t", "Vector vuser4", offsetof( entity_state_t, vuser4 ) );
+#pragma endregion
 #pragma region addtofullpack_t
-		/* addtofullpack_t */
-		ASEXT_RegisterObjectType(pASDoc, "AddToFulPack data", "ClientPacket", 0, asOBJ_REF | asOBJ_NOCOUNT);
-		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "entity_state_t@ state", offsetof(addtofullpack_t, state));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int entityIndex", offsetof(addtofullpack_t, entityIndex));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "edict_t@ entity", offsetof(addtofullpack_t, entity));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "edict_t@ host", offsetof(addtofullpack_t, host));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int hostFlags", offsetof(addtofullpack_t, hostFlags));
-		ASEXT_RegisterObjectProperty(pASDoc, "", "ClientPacket", "int playerIndex", offsetof(addtofullpack_t, playerIndex));
-		ASEXT_RegisterObjectProperty(pASDoc, "If set to true, the entity is not sent to the host", "ClientPacket", "bool SkipPacket", offsetof(addtofullpack_t, Result));
+ASEXT_RegisterObjectType( pASDoc,
+	"Entity networking packet.",
+	"ClientPacket", 0, asOBJ_REF | asOBJ_NOCOUNT );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Entity state being processed.",
+	"ClientPacket", "entity_state_t@ state", offsetof( addtofullpack_t, state ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"The index of the entity currently being considered for transmission.",
+	"ClientPacket", "int index", offsetof( addtofullpack_t, index ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"The entity currently being considered for transmission.",
+	"ClientPacket", "edict_t@ entity", offsetof( addtofullpack_t, entity ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"The client receiving this packet.",
+	"ClientPacket", "edict_t@ host", offsetof( addtofullpack_t, host ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Flags describing properties of the receiving client.",
+	"ClientPacket", "int hostFlags", offsetof( addtofullpack_t, hostFlags ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"The index of the client receiving this packet.",
+	"ClientPacket", "int playerIndex", offsetof( addtofullpack_t, playerIndex ) );
 #pragma endregion
 	} );
 }
@@ -510,18 +696,20 @@ void RegisterAngelScriptHooks()
 		"PostMovement",
 		"playermove_t@ &out pmove, META_RES &out meta_result"
 	);
-	CREATE_AS_HOOK( pPreAddToFullPack,
-		"Pre call of gEntityInterface.pfnAddToFullPack",
-		ASLP_NAMESPACE( Player ),
-		"PreAddToFullPack",
-		"ClientPacket@ packet, META_RES &out meta_result"
-	);
-	CREATE_AS_HOOK( pPostAddToFullPack,
-		"Post call of gEntityInterface.pfnAddToFullPack",
-		ASLP_NAMESPACE( Player ),
-		"PostAddToFullPack",
-		"ClientPacket@ packet, META_RES &out meta_result"
-	);
+
+CREATE_AS_HOOK( pPreAddToFullPack,
+	"Called when the server is about to network a entity to a client",
+	ASLP_NAMESPACE( Player ),
+	"PreAddToFullPack",
+	"ClientPacket@ packet, META_RES &out meta_result"
+);
+CREATE_AS_HOOK( pPostAddToFullPack,
+	"Called when the server is about to network a entity to a client",
+	ASLP_NAMESPACE( Player ),
+	"PostAddToFullPack",
+	"ClientPacket@ packet, META_RES &out meta_result"
+);
+
 	CREATE_AS_HOOK( pShouldCollide,
 		"Pre call of gEntityInterface.pfnShouldCollide",
 		ASLP_NAMESPACE( Entity ),
