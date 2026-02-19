@@ -52,6 +52,7 @@
 #include "Hooks/AddToFullPack.hpp"
 #include "Hooks/ClientCommand.hpp"
 #include "Hooks/ClientUserInfoChanged.hpp"
+#include "Hooks/GameInit.hpp"
 
 static NEW_DLL_FUNCTIONS gNewDllFunctionTable =
 {
@@ -120,7 +121,7 @@ static DLL_FUNCTIONS gFunctionTable = {
 };
 
 static DLL_FUNCTIONS gFunctionTable_Post = {
-	NULL, // pfnGameInit
+	Hooks::Post::GameInit,
 	NULL, // pfnSpawn
 	NULL, // pfnThink
 	NULL, // pfnUse
