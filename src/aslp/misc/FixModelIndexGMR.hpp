@@ -9,31 +9,11 @@
 #include <fmt/format.h>
 
 #include "../utils/StringPool.hpp"
+#include "../utils/StringViewComparePointer.h"
 
 namespace FixModelIndexGMR
 {
-    using namespace std::literals::string_view_literals;
-    using string_view = std::string_view;
-
-    struct TransparentHash
-    {
-        using is_transparent = void;
-        size_t operator()( string_view sv ) const noexcept
-        {
-            return std::hash<string_view>{}( sv );
-        }
-    };
-
-    struct TransparentEqual
-    {
-        using is_transparent = void;
-        bool operator()( string_view a, string_view b ) const noexcept
-        {
-            return a == b;
-        }
-    };
-
-    inline std::unordered_map<const char*, const char*, TransparentHash, TransparentEqual> GMR;
+    inline std::unordered_map<const char*, const char*, StringViewComparePointer::Hash, StringViewComparePointer::Equal> GMR;
 
     inline std::optional<std::string_view> CFGHasReplacementList()
     {
