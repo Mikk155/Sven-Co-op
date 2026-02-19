@@ -4,7 +4,8 @@
 
 #include "utils/StringPool.hpp"
 
-#include "misc/FixModelIndexGMR.hpp"
+#include "../misc/FixModelIndexGMR.hpp"
+#include "../misc/FixUnprecachedCrash.hpp"
 
 namespace Hooks
 {
@@ -14,6 +15,7 @@ namespace Hooks
         {
             g_StringPool.Clear();
             FixModelIndexGMR::GMR.clear();
+            FixUnprecachedCrash::g_PrecachedModels.clear();
             g_MapInitialized = false;
         }
     }
