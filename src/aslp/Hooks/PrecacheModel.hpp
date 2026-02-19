@@ -9,8 +9,10 @@ namespace Hooks
     inline int PrecacheModel( char* model )
     {
         // Do not precache too late. get an error model/sprite instead.
-        if( auto index = FixUnprecachedCrash::PrecacheModel( model ); index.has_value() )
-            RETURN_META_VALUE( MRES_SUPERCEDE, index.value() );
+        if( int index = FixUnprecachedCrash::PrecacheModel( model ); index != -1 )
+        {
+            RETURN_META_VALUE( MRES_SUPERCEDE, index );
+        }
 
         RETURN_META_VALUE( MRES_IGNORED, 0 );
     }
