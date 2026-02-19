@@ -24,6 +24,8 @@ namespace Hooks
             VTableHook();
 
             SET_META_RESULT( MRES_IGNORED );
+
+            g_MapInitialized = true;
         }
     }
 }

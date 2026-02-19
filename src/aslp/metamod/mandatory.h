@@ -11,3 +11,5 @@
 #include "angelscriptlib.h"
 
 #pragma once
+
+inline bool g_MapInitialized = false;

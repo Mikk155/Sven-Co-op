@@ -14,6 +14,7 @@ namespace Hooks
         {
             g_StringPool.Clear();
             FixModelIndexGMR::GMR.clear();
+            g_MapInitialized = false;
         }
     }
 }
