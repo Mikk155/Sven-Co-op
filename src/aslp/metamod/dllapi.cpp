@@ -43,8 +43,10 @@
 #include "Hooks/KeyValue.hpp"
 #include "Hooks/ModelIndex.hpp"
 #include "Hooks/PM_Move.hpp"
+#include "Hooks/PrecacheModel.hpp"
 #include "Hooks/ServerActivate.hpp"
 #include "Hooks/ServerDeactivate.hpp"
+#include "Hooks/SetModel.hpp"
 #include "Hooks/ShouldCollide.hpp"
 #include "Hooks/UserMessage.hpp"
 #include "Hooks/AddToFullPack.hpp"
@@ -169,10 +171,11 @@ static DLL_FUNCTIONS gFunctionTable_Post = {
 	NULL, // pfnInconsistentFile
 	NULL, // pfnAllowLagCompensation
 };
+
 enginefuncs_t meta_engfuncs = {
-	NULL, // pfnPrecacheModel()
+	Hooks::PrecacheModel,
 	NULL, // pfnPrecacheSound()
-	NULL, // pfnSetModel()
+	Hooks::SetModel,
 	Hooks::ModelIndex,
 	NULL, // pfnModelFrames()
 	NULL, // pfnSetSize()
