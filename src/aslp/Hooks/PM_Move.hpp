@@ -2,6 +2,16 @@
 
 #pragma once
 
+inline physent_t* SC_SERVER_DECL CASPlayerMove__GetPhysEntByIndex(playermove_t* pthis, SC_SERVER_DUMMYARG int index)
+{
+    return &pthis->physents[index];
+}
+
+inline void SC_SERVER_DECL CASPlayerMove__SetPhysEntByIndex(playermove_t* pthis, SC_SERVER_DUMMYARG physent_t* pPhyEnt, int oldindex)
+{
+    pthis->physents[oldindex] = *pPhyEnt;
+}
+
 namespace Hooks
 {
     namespace Pre
