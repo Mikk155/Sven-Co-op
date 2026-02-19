@@ -19,11 +19,11 @@ typedef struct damageinfo_s{
 }damageinfo_t;
 
 typedef struct healthinfo_s {
-	void* pEntity;
-	float flHealth;
-	int bitsDamageType;
-	int health_cap;
-}healthinfo_t;
+	void* player;
+	float health;
+	int bits;
+	int cap;
+} healthinfo_t;
 
 typedef struct angelhook_s {
 	void* pCientCommandHook = nullptr;
@@ -34,9 +34,9 @@ typedef struct angelhook_s {
 	void* pPostAddToFullPack = nullptr;
 	void* pPostEntitySpawn = nullptr;
 	void* pShouldCollide = nullptr;
+	void* pPlayerTakeHealth = nullptr;
 
 	void* pPlayerPostTakeDamage = nullptr;
-	void* pPlayerTakeHealth = nullptr;
 	void* pMonsterTraceAttack = nullptr;
 	void* pMonsterPostTakeDamage = nullptr;
 	void* pBreakableTraceAttack = nullptr;

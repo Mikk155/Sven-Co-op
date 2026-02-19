@@ -98,13 +98,28 @@ void RegisterAngelScriptMethods()
 	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
 	{
 #pragma region HealthInfo
-		//Regist HealthInfo type
-		ASEXT_RegisterObjectType(pASDoc, "Entity takehealth info", "HealthInfo", 0, asOBJ_REF | asOBJ_NOCOUNT);
-		ASEXT_RegisterObjectProperty(pASDoc, "Who get healing?", "HealthInfo", "CBaseEntity@ pEntity", offsetof(healthinfo_t, pEntity));
-		ASEXT_RegisterObjectProperty(pASDoc, "Recover amount.", "HealthInfo", "float flHealth", offsetof(healthinfo_t, flHealth));
-		ASEXT_RegisterObjectProperty(pASDoc, "Recover dmg type.", "HealthInfo", "int bitsDamageType", offsetof(healthinfo_t, bitsDamageType));
-		ASEXT_RegisterObjectProperty(pASDoc, "If health_cap is non-zero, won't add more than health_cap. Returns true if it took damage, false otherwise.", "HealthInfo", "int health_cap", offsetof(healthinfo_t, health_cap));
+ASEXT_RegisterObjectType( pASDoc,
+	"Arguments for when a player is getting healed",
+	"HealthInfo", 0, asOBJ_REF | asOBJ_NOCOUNT );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Player being healed",
+	"HealthInfo",
+	"CBasePlayer@ player", offsetof( healthinfo_t, player ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Health to recover.",
+	"HealthInfo", "float health", offsetof( healthinfo_t, health ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Damage type.",
+	"HealthInfo", "int bits", offsetof( healthinfo_t, bits ) );
+
+ASEXT_RegisterObjectProperty( pASDoc,
+	"Whatever to cap the max health capacity. Zero to not cap.",
+	"HealthInfo", "int cap", offsetof( healthinfo_t, cap ) );
 #pragma endregion
+
 #pragma region CBinaryStringBuilder
 		asSFuncPtr reg;
 		ASEXT_RegisterObjectType(pASDoc, "Binary String Builder", "CBinaryStringBuilder", 0, asOBJ_REF | asOBJ_GC);
@@ -515,7 +530,12 @@ void RegisterAngelScriptHooks()
 	);
 
 	CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "Player", "PlayerPostTakeDamage", "DamageInfo@ info");
-	CREATE_AS_HOOK(pPlayerTakeHealth, "Pre call before a player took health", "Player", "PlayerTakeHealth", "HealthInfo@ info");
+
+CREATE_AS_HOOK( pPlayerTakeHealth,
+	"Pre call before a player is healed",
+	ASLP_NAMESPACE( Player ),
+	"TakeHealth", "HealthInfo@ info"
+);
 
 	CREATE_AS_HOOK(pEntityIRelationship, "Pre call before checking relation", "Entity", "IRelationship", "CBaseEntity@ pEntity, CBaseEntity@ pOther, bool param, int& out newValue");
 

@@ -104,16 +104,24 @@ static int SC_SERVER_DECL PlayerPostTakeDamage(CBasePlayer* pThis, SC_SERVER_DUM
 	CALL_ANGELSCRIPT(pPlayerPostTakeDamage, &dmg);
 	return result;
 }
-static int SC_SERVER_DECL PlayerTakeHealth(CBasePlayer* pThis, SC_SERVER_DUMMYARG float flDamage, int bitsDamageType, int cap) {
+
+static int SC_SERVER_DECL PlayerTakeHealth( CBasePlayer* pThis, SC_SERVER_DUMMYARG float flDamage, int bitsDamageType, int cap )
+{
 	healthinfo_t dmg = {
 		pThis,
 		flDamage,
 		bitsDamageType,
 		cap
 	};
-	CALL_ANGELSCRIPT(pPlayerTakeHealth, &dmg);
-	return CALL_ORIGIN(gHookItems.PlayerTakeHealth, TakeHealth, dmg.flHealth, dmg.bitsDamageType, dmg.health_cap);
+
+	CALL_ANGELSCRIPT( pPlayerTakeHealth, &dmg );
+
+	if( dmg.health <= 0 )
+		return false;
+
+	return CALL_ORIGIN( gHookItems.PlayerTakeHealth, TakeHealth, dmg.health, dmg.bits, dmg.cap );
 }
+
 static int SC_SERVER_DECL IRelationship(CBasePlayer* pThis, SC_SERVER_DUMMYARG CBaseEntity* pOther, bool param_2) {
 	int iNewReturn = 114514;
 	CALL_ANGELSCRIPT(pEntityIRelationship, pThis, pOther, param_2, &iNewReturn);
