@@ -110,7 +110,6 @@ ASEXT_RegisterObjectProperty( pASDoc,
 	"Whatever to cap the max health capacity. Zero to not cap.",
 	"HealthInfo", "int cap", offsetof( healthinfo_t, cap ) );
 #pragma endregion
-
 #pragma region CBinaryStringBuilder
 		asSFuncPtr reg;
 		ASEXT_RegisterObjectType(pASDoc, "Binary String Builder", "CBinaryStringBuilder", 0, asOBJ_REF | asOBJ_GC);
@@ -646,14 +645,22 @@ ASEXT_RegisterObjectMethod( pASDoc,
 
 #pragma endregion
 #pragma region META_RES
-		ASEXT_RegisterEnum(pASDoc, "Flags returned by a plugin's api function.", "META_RES", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "", "META_RES", "Unset", (int)MRES_UNSET);
-		ASEXT_RegisterEnumValue(pASDoc, "Plugin didn't take any action", "META_RES", "Ignored",(int)MRES_IGNORED);
-		ASEXT_RegisterEnumValue(pASDoc, "Plugin did something, but real function should still be called", "META_RES", "Handled", (int)MRES_HANDLED);
-		ASEXT_RegisterEnumValue(pASDoc, "Call real function, but use my return value", "META_RES", "Override", (int)MRES_OVERRIDE);
-		ASEXT_RegisterEnumValue(pASDoc, "Skip real function; use my return value", "META_RES", "Supercede", (int)MRES_SUPERCEDE);
+ASEXT_RegisterEnum( pASDoc,
+	"Flags returned by a plugin's api function.",
+	"META_RES", 0 );
+ASEXT_RegisterEnumValue( pASDoc,
+	"Plugin didn't take any action",
+	"META_RES", "Ignored", static_cast<int>( META_RES::MRES_IGNORED ) );
+ASEXT_RegisterEnumValue( pASDoc,
+	"Plugin did something, but real function should still be called",
+	"META_RES", "Handled", static_cast<int>( META_RES::MRES_HANDLED ) );
+ASEXT_RegisterEnumValue( pASDoc,
+	"Call real function, but use my return value",
+	"META_RES", "Override", static_cast<int>( META_RES::MRES_OVERRIDE ) );
+ASEXT_RegisterEnumValue( pASDoc,
+	"Skip real function; use my return value",
+	"META_RES", "Supercede", static_cast<int>( META_RES::MRES_SUPERCEDE ) );
 #pragma endregion
-
 #pragma region entity_state_t
 ASEXT_RegisterObjectType(pASDoc,
 	"Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.",
@@ -921,18 +928,19 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 void RegisterAngelScriptHooks()
 {
-	CREATE_AS_HOOK( pCientCommandHook,
-		"Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
-		ASLP_NAMESPACE( Player ),
-		"ClientCommand",
-		"CBasePlayer@ player, META_RES &out meta_result"
-	);
-	CREATE_AS_HOOK( pPlayerUserInfoChanged,
-		"Pre call before a player info changed",
-		ASLP_NAMESPACE( Player ),
-		"UserInfoChanged",
-		"CBasePlayer@ player, string buffer, META_RES &out meta_result"
-	);
+CREATE_AS_HOOK( pCientCommandHook,
+	"Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
+	ASLP_NAMESPACE( Player ),
+	"ClientCommand",
+	"CBasePlayer@ player, META_RES &out meta_result"
+);
+
+CREATE_AS_HOOK( pPlayerUserInfoChanged,
+	"Pre call before a player info changed",
+	ASLP_NAMESPACE( Player ),
+	"UserInfoChanged",
+	"CBasePlayer@ player, string buffer, META_RES &out meta_result"
+);
 
 CREATE_AS_HOOK( pPreMovement,
 	"Called before the Server-side logic of the player movement.",
@@ -960,12 +968,12 @@ CREATE_AS_HOOK( pPostAddToFullPack,
 	"ClientPacket@ packet, META_RES &out meta_result"
 );
 
-	CREATE_AS_HOOK( pShouldCollide,
-		"Pre call of gEntityInterface.pfnShouldCollide",
-		ASLP_NAMESPACE( Entity ),
-		"ShouldCollide",
-		"CBaseEntity@ touched, CBaseEntity@ other, META_RES &out meta_result, bool &out Collide"
-	);
+CREATE_AS_HOOK( pShouldCollide,
+	"Called whatever a entity is touched by another. Set Collide to false to prevent the interaction.",
+	ASLP_NAMESPACE( Entity ),
+	"ShouldCollide",
+	"CBaseEntity@ touched, CBaseEntity@ other, META_RES &out meta_result, bool &out Collide"
+);
 
 	CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "Player", "PlayerPostTakeDamage", "DamageInfo@ info");
 
@@ -975,16 +983,35 @@ CREATE_AS_HOOK( pPlayerTakeHealth,
 	"TakeHealth", "HealthInfo@ info"
 );
 
-	CREATE_AS_HOOK(pEntityIRelationship, "Pre call before checking relation", "Entity", "IRelationship", "CBaseEntity@ pEntity, CBaseEntity@ pOther, bool param, int& out newValue");
+CREATE_AS_HOOK( pEntityIRelationship, "Pre call before checking relation", "Entity", "IRelationship", "CBaseEntity@ pEntity, CBaseEntity@ pOther, bool param, int& out newValue");
 
-	CREATE_AS_HOOK(pMonsterTraceAttack, "Pre call before a monster trace attack", "Monster", "MonsterTraceAttack", "CBaseMonster@ pMonster, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType");
-	CREATE_AS_HOOK(pMonsterPostTakeDamage, "Post call after a monster took damage", "Monster", "MonsterPostTakeDamage", "DamageInfo@ info");
+CREATE_AS_HOOK( pMonsterTraceAttack,
+	"Pre call before a monster trace attack",
+	"Monster", "MonsterTraceAttack", "CBaseMonster@ pMonster, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType");
+CREATE_AS_HOOK( pMonsterPostTakeDamage,
+	"Post call after a monster took damage",
+	"Monster", "MonsterPostTakeDamage", "DamageInfo@ info"
+);
 
-	CREATE_AS_HOOK(pBreakableTraceAttack, "Pre call before a breakable trace attack","Entity", "BreakableTraceAttack", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType");
-	CREATE_AS_HOOK(pBreakableKilled, "Pre call before a breakable died", "Entity", "BreakableDie", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, int iGib");
-	CREATE_AS_HOOK(pBreakableTakeDamage, "Pre call before a breakable took damage", "Entity", "BreakableTakeDamage", "DamageInfo@ info");
+CREATE_AS_HOOK( pBreakableTraceAttack,
+	"Pre call before a breakable trace attack",
+	"Entity", "BreakableTraceAttack", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType"
+);
 
-	CREATE_AS_HOOK(pGrappleCheckMonsterType, "Pre call before Weapon Grapple checking monster type", "Weapon", "GrappleGetMonsterType", "CBaseEntity@ pThis, CBaseEntity@ pEntity, uint& out flag");
+CREATE_AS_HOOK( pBreakableKilled,
+	"Pre call before a breakable died",
+	"Entity", "BreakableDie", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, int iGib"
+);
+
+CREATE_AS_HOOK( pBreakableTakeDamage,
+	"Pre call before a breakable took damage",
+	"Entity", "BreakableTakeDamage", "DamageInfo@ info"
+);
+
+CREATE_AS_HOOK( pGrappleCheckMonsterType,
+	"Pre call before Weapon Grapple checking monster type",
+	"Weapon", "GrappleGetMonsterType", "CBaseEntity@ pThis, CBaseEntity@ pEntity, uint& out flag"
+);
 }
 #undef CREATE_AS_HOOK
 
