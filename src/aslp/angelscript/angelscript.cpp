@@ -295,13 +295,13 @@ ASEXT_RegisterObjectType( pASDoc,
 	"Physics data",
 	"physent_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
-ASEXT_RegisterObjectProperty( pASDoc,
+ASEXT_RegisterObjectMethod( pASDoc,
 	"Classname of this entity",
-	"physent_t", "array<char>@ name", offsetof( physent_t, name ) );
+	"physent_t", "string get_name() property",  (void*)CASPlayerMove__GetPhysEntName, asCALL_THISCALL );
 
-ASEXT_RegisterObjectProperty( pASDoc,
-	"0/1 is this a player?",
-	"physent_t", "int player", offsetof( physent_t, player ) );
+ASEXT_RegisterObjectMethod( pASDoc,
+	"Is this entity a player?",
+	"physent_t", "bool IsPlayer() const",  (void*)CASPlayerMove__PhysEntIsPlayer, asCALL_THISCALL );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
@@ -424,21 +424,17 @@ ASEXT_RegisterObjectType( pASDoc,
 	"Player movement data",
 	"playermove_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
-ASEXT_RegisterObjectProperty( pASDoc,
-	"index of the player that is moving (Starts from zero)",
-	"playermove_t", "int player_index", offsetof( playermove_t, player_index ) );
+ASEXT_RegisterObjectMethod( pASDoc,
+	"index of the player that is moving",
+	"playermove_t", "int get_player() const property", (void*)CASPlayerMove__PlayerIndex, asCALL_THISCALL );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int multiplayer", offsetof( playermove_t, multiplayer ) );
+	"playermove_t", "const float time", offsetof( playermove_t, time ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "float time", offsetof( playermove_t, time ) );
-
-ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float frametime", offsetof( playermove_t, frametime ) );
+	"playermove_t", "const float frametime", offsetof( playermove_t, frametime ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
@@ -462,7 +458,7 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "Vector oldangles", offsetof( playermove_t, oldangles ) );
+	"playermove_t", "const Vector oldangles", offsetof( playermove_t, oldangles ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
@@ -534,7 +530,7 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int oldbuttons", offsetof( playermove_t, oldbuttons ) );
+	"playermove_t", "const int oldbuttons", offsetof( playermove_t, oldbuttons ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
@@ -542,15 +538,15 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int dead", offsetof( playermove_t, dead ) );
+	"playermove_t", "const int dead", offsetof( playermove_t, dead ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int deadflag", offsetof( playermove_t, deadflag ) );
+	"playermove_t", "const int deadflag", offsetof( playermove_t, deadflag ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int spectator", offsetof( playermove_t, spectator ) );
+	"playermove_t", "const int spectator", offsetof( playermove_t, spectator ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
@@ -558,27 +554,27 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"Entity index the player is standing on (-1 if none).",
-	"playermove_t", "int onground", offsetof( playermove_t, onground ) );
+	"playermove_t", "const int onground", offsetof( playermove_t, onground ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int waterlevel", offsetof( playermove_t, waterlevel ) );
+	"playermove_t", "const int waterlevel", offsetof( playermove_t, waterlevel ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int watertype", offsetof( playermove_t, watertype ) );
+	"playermove_t", "const int watertype", offsetof( playermove_t, watertype ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "int oldwaterlevel", offsetof( playermove_t, oldwaterlevel ) );
+	"playermove_t", "const int oldwaterlevel", offsetof( playermove_t, oldwaterlevel ) );
 
-ASEXT_RegisterObjectProperty( pASDoc,
+ASEXT_RegisterObjectMethod( pASDoc,
 	"Texture name the player is currently standing at",
-	"playermove_t", "array<char>@ sztexturename", offsetof( playermove_t, sztexturename ) );
+	"playermove_t", "string get_sztexturename() property",  (void*)CASPlayerMove__GetTextureName, asCALL_THISCALL );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"Texture type the player is currently standing at",
-	"playermove_t", "char chtexturetype", offsetof( playermove_t, chtexturetype ) );
+	"playermove_t", "const char chtexturetype", offsetof( playermove_t, chtexturetype ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
@@ -586,7 +582,7 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
-	"playermove_t", "float clientmaxspeed", offsetof( playermove_t, clientmaxspeed ) );
+	"playermove_t", "const float clientmaxspeed", offsetof( playermove_t, clientmaxspeed ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"",
@@ -641,11 +637,11 @@ ASEXT_RegisterObjectProperty( pASDoc,
 	"playermove_t", "int numphysent", offsetof( playermove_t, numphysent ) );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Get the physent_t for the given index",
+	"Get the physical entity in collision list for the given index.",
 	"playermove_t", "physent_t@ GetPhysEntByIndex( int index )", (void*)CASPlayerMove__GetPhysEntByIndex, asCALL_THISCALL );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Set the physent_t for the given index",
+	"Set the physical entity in collision list for the given index.",
 	"playermove_t", "void SetPhysEntByIndex( physent_t@ pPhyEnt, int newindex )", ( void* )CASPlayerMove__SetPhysEntByIndex, asCALL_THISCALL );
 
 #pragma endregion

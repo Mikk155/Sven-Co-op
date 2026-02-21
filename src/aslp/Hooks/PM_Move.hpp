@@ -2,14 +2,38 @@
 
 #pragma once
 
-inline physent_t* SC_SERVER_DECL CASPlayerMove__GetPhysEntByIndex(playermove_t* pthis, SC_SERVER_DUMMYARG int index)
+inline physent_t* SC_SERVER_DECL CASPlayerMove__GetPhysEntByIndex(playermove_t* pthis SC_SERVER_DUMMYARG_NOCOMMA, int index)
 {
     return &pthis->physents[index];
 }
 
-inline void SC_SERVER_DECL CASPlayerMove__SetPhysEntByIndex(playermove_t* pthis, SC_SERVER_DUMMYARG physent_t* pPhyEnt, int oldindex)
+inline void SC_SERVER_DECL CASPlayerMove__SetPhysEntByIndex(playermove_t* pthis SC_SERVER_DUMMYARG_NOCOMMA, physent_t* pPhyEnt, int oldindex)
 {
     pthis->physents[oldindex] = *pPhyEnt;
+}
+
+inline int SC_SERVER_DECL CASPlayerMove__PlayerIndex(playermove_t* pthis SC_SERVER_DUMMYARG_NOCOMMA )
+{
+    return pthis->player_index + 1; // player_index starts from zero. let's not confuse scripters.
+}
+
+inline CString SC_SERVER_DECL CASPlayerMove__GetTextureName(playermove_t* pthis SC_SERVER_DUMMYARG_NOCOMMA )
+{
+    CString result = CString();
+    result.assign( pthis->sztexturename, strlen( pthis->sztexturename ) );
+    return result;
+}
+
+inline CString SC_SERVER_DECL CASPlayerMove__GetPhysEntName(physent_t* pthis SC_SERVER_DUMMYARG_NOCOMMA )
+{
+    CString result = CString();
+    result.assign( pthis->name, strlen( pthis->name ) );
+    return result;
+}
+
+inline bool SC_SERVER_DECL CASPlayerMove__PhysEntIsPlayer(physent_t* pthis SC_SERVER_DUMMYARG_NOCOMMA )
+{
+    return ( pthis->player == 1 );
 }
 
 namespace Hooks
