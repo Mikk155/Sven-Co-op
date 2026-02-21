@@ -901,7 +901,7 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"The index of the entity currently being considered for transmission.",
-	"ClientPacket", "int index", offsetof( addtofullpack_t, index ) );
+	"ClientPacket", "const int index", offsetof( addtofullpack_t, index ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"The entity currently being considered for transmission.",
@@ -917,7 +917,7 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 ASEXT_RegisterObjectProperty( pASDoc,
 	"The index of the client receiving this packet.",
-	"ClientPacket", "int playerIndex", offsetof( addtofullpack_t, playerIndex ) );
+	"ClientPacket", "const int playerIndex", offsetof( addtofullpack_t, playerIndex ) );
 #pragma endregion
 	} );
 }
