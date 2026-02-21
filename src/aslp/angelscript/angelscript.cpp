@@ -644,22 +644,22 @@ ASEXT_RegisterObjectMethod( pASDoc,
 	"playermove_t", "void SetPhysEntByIndex( physent_t@ pPhyEnt, int newindex )", ( void* )CASPlayerMove__SetPhysEntByIndex, asCALL_THISCALL );
 
 #pragma endregion
-#pragma region META_RES
+#pragma region MetaResult
 ASEXT_RegisterEnum( pASDoc,
 	"Flags returned by a plugin's api function.",
-	"META_RES", 0 );
+	"MetaResult", 0 );
 ASEXT_RegisterEnumValue( pASDoc,
 	"Plugin didn't take any action",
-	"META_RES", "Ignored", static_cast<int>( META_RES::MRES_IGNORED ) );
+	"MetaResult", "Ignored", static_cast<int>( META_RES::MRES_IGNORED ) );
 ASEXT_RegisterEnumValue( pASDoc,
 	"Plugin did something, but real function should still be called",
-	"META_RES", "Handled", static_cast<int>( META_RES::MRES_HANDLED ) );
+	"MetaResult", "Handled", static_cast<int>( META_RES::MRES_HANDLED ) );
 ASEXT_RegisterEnumValue( pASDoc,
 	"Call real function, but use my return value",
-	"META_RES", "Override", static_cast<int>( META_RES::MRES_OVERRIDE ) );
+	"MetaResult", "Override", static_cast<int>( META_RES::MRES_OVERRIDE ) );
 ASEXT_RegisterEnumValue( pASDoc,
 	"Skip real function; use my return value",
-	"META_RES", "Supercede", static_cast<int>( META_RES::MRES_SUPERCEDE ) );
+	"MetaResult", "Supercede", static_cast<int>( META_RES::MRES_SUPERCEDE ) );
 #pragma endregion
 #pragma region entity_state_t
 ASEXT_RegisterObjectType(pASDoc,
@@ -932,47 +932,47 @@ CREATE_AS_HOOK( pCientCommandHook,
 	"Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
 	ASLP_NAMESPACE( Player ),
 	"ClientCommand",
-	"CBasePlayer@ player, META_RES &out meta_result"
+	"CBasePlayer@ player, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pPlayerUserInfoChanged,
 	"Pre call before a player info changed",
 	ASLP_NAMESPACE( Player ),
 	"UserInfoChanged",
-	"CBasePlayer@ player, string buffer, META_RES &out meta_result"
+	"CBasePlayer@ player, string buffer, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pPreMovement,
 	"Called before the Server-side logic of the player movement.",
 	ASLP_NAMESPACE( Player ),
 	"PreMovement",
-	"playermove_t@ &out pmove, META_RES &out meta_result"
+	"playermove_t@ &out pmove, MetaResult &out meta_result"
 );
 CREATE_AS_HOOK( pPostMovement,
 	"Called after the Server-side logic of the player movement.",
 	ASLP_NAMESPACE( Player ),
 	"PostMovement",
-	"playermove_t@ &out pmove, META_RES &out meta_result"
+	"playermove_t@ &out pmove, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pPreAddToFullPack,
 	"Called when the server is about to network a entity to a client",
 	ASLP_NAMESPACE( Player ),
 	"PreAddToFullPack",
-	"ClientPacket@ packet, META_RES &out meta_result"
+	"ClientPacket@ packet, MetaResult &out meta_result"
 );
 CREATE_AS_HOOK( pPostAddToFullPack,
 	"Called when the server is about to network a entity to a client",
 	ASLP_NAMESPACE( Player ),
 	"PostAddToFullPack",
-	"ClientPacket@ packet, META_RES &out meta_result"
+	"ClientPacket@ packet, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pShouldCollide,
 	"Called whatever a entity is touched by another. Set Collide to false to prevent the interaction.",
 	ASLP_NAMESPACE( Entity ),
 	"ShouldCollide",
-	"CBaseEntity@ touched, CBaseEntity@ other, META_RES &out meta_result, bool &out Collide"
+	"CBaseEntity@ touched, CBaseEntity@ other, MetaResult &out meta_result, bool &out Collide"
 );
 
 	CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "Player", "PlayerPostTakeDamage", "DamageInfo@ info");
