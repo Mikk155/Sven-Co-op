@@ -53,6 +53,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/metamod
 
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/asext/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/thirdparty/angelscript-sdk/angelscript/include
 
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/thirdparty/capstone_fork/include
 )
