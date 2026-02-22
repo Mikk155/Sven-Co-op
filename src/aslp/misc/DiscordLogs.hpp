@@ -14,9 +14,8 @@
 
 namespace DiscordLogs
 {
-    inline cvar_t g_LogID = { const_cast<char*>( "sv_discord_logs" ), const_cast<char*>( "" ), FCVAR_SERVER };
-    inline cvar_t g_LogID = { const_cast<char*>( "sv_discord_logs" ), const_cast<char*>( "" ), ( FCVAR_ARCHIVE | FCVAR_PROTECTED ) };
- 
+    inline cvar_t g_LogID = { const_cast<char*>( "sv_discord_logs" ), const_cast<char*>( "" ), FCVAR_PROTECTED };
+
     std::string g_CurrentValue;
     std::mutex mutex;
 
@@ -39,6 +38,32 @@ namespace DiscordLogs
 
     inline void AlertMessage( ALERT_TYPE type, const char* buffer )
     {
+        switch( type )
+        {
+            case ALERT_TYPE::at_notice:
+            {
+                break;
+            }
+            case ALERT_TYPE::at_console:
+            {
+                if( auto level = (int)CVAR_GET_FLOAT( "developer" ); level < 1 )
+                    return;
+                break;
+            }
+            case ALERT_TYPE::at_aiconsole:
+            {
+                if( auto level = (int)CVAR_GET_FLOAT( "developer" ); level < 2 )
+                    return;
+                break;
+            }
+            case ALERT_TYPE::at_warning:
+            case ALERT_TYPE::at_error:
+            case ALERT_TYPE::at_logged:
+            {
+                break;
+            }
+        }
+
         if( !buffer || !IsActive() )
             return;
 
