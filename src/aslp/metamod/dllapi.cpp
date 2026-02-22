@@ -50,6 +50,7 @@
 #include "Hooks/ShouldCollide.hpp"
 #include "Hooks/UserMessage.hpp"
 #include "Hooks/AddToFullPack.hpp"
+#include "Hooks/AlertMessage.hpp"
 #include "Hooks/ClientCommand.hpp"
 #include "Hooks/ClientUserInfoChanged.hpp"
 #include "Hooks/GameInit.hpp"
@@ -235,7 +236,7 @@ enginefuncs_t meta_engfuncs = {
 	NULL, // pfnCVarGetString()
 	NULL, // pfnCVarSetFloat()
 	NULL, // pfnCVarSetString()
-	NULL, // pfnAlertMessage()
+	Hooks::AlertMessage,
 	NULL, // pfnEngineFprintf()
 	NULL, // pfnPvAllocEntPrivateData()
 	NULL, // pfnPvEntPrivateData()
