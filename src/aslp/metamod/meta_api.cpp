@@ -39,6 +39,8 @@
 #include <fmt/format.h>
 #include <filesystem>
 
+#include "utils/curl.hpp"
+
 using namespace std::literals::string_view_literals;
 
 mBOOL dlclose_handle_invalid;
@@ -95,6 +97,11 @@ C_DLLEXPORT int Meta_Query(const char* interfaceVersion, plugin_info_t** pPlugIn
 	// Get metamod utility function table.
 	gpMetaUtilFuncs = pMetaUtilFuncs;
 	return TRUE;
+}
+
+namespace DiscordLogs {
+extern void Shutdown();
+extern void Initialize();
 }
 
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_globals_t* pMGlobals, gamedll_funcs_t* pGamedllFuncs )
@@ -168,6 +175,11 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_
 			fs::remove( e.path(), ec );
 	} }
 
+	if( g_Curl.Register() )
+	{
+		DiscordLogs::Initialize();
+	}
+
 	return TRUE;
 }
 
@@ -182,5 +194,6 @@ C_DLLEXPORT int Meta_Detach( PLUG_LOADTIME, PL_UNLOAD_REASON  )
 	UninstallEngineHook();
 	VtableUnhook();
 	CloseAngelScriptsItem();
+	DiscordLogs::Shutdown();
 	return TRUE;
 }

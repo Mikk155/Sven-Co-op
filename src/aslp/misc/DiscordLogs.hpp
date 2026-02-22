@@ -6,6 +6,10 @@
 #include <string>
 #include <thread>
 #include <mutex>
+#include <queue>
+#include <condition_variable>
+#include <atomic>
+#include <chrono>
 
 #include <fmt/format.h>
 #include <nlohmann/json.hpp>
@@ -16,28 +20,87 @@ namespace DiscordLogs
 {
     inline cvar_t g_LogID = { const_cast<char*>( "sv_discord_logs" ), const_cast<char*>( "" ), FCVAR_PROTECTED };
 
-    std::string g_CurrentValue;
+    std::string webhook;
+    std::queue<std::string> queue;
+    std::condition_variable conditional;
+    std::atomic<bool> running = false;
+    std::thread worker;
     std::mutex mutex;
 
-    bool IsActive()
+    void Shutdown()
     {
-        if( auto pCvar = CVAR_GET_STRING( "sv_discord_logs" ); pCvar != nullptr && pCvar[0] != '\0' )
+        if( running )
         {
-            if( auto url = std::string_view( pCvar ); g_CurrentValue != url )
+            running = false;
+            conditional.notify_all();
+
+            if( worker.joinable() )
             {
-                g_CurrentValue = url;
-
-                // Make a test on g_CurrentValue to be a valid webhook, if not then clear the string.
+                worker.join();
             }
-
-            CVAR_SET_STRING( "sv_discord_logs", "" );
         }
+    }
 
-        return !( g_CurrentValue.empty() );
+    void Worker()
+    {
+        while( running )
+        {
+            nlohmann::json object;
+
+            std::unique_lock lock( mutex );
+
+            conditional.wait( lock, []{ return !queue.empty() || !running; } );
+
+            if( !running || !g_Curl.Register() )
+                return;
+
+            object[ "content" ] = fmt::format( "-# {}", std::move( queue.front() ) );
+
+            queue.pop();
+            size_t size = queue.size();
+
+            lock.unlock();
+
+            curl::Request req;
+            req.url = webhook;
+            req.post = object.dump();
+            req.headers.push_back("Content-Type: application/json");
+
+            req.Perform();
+
+            auto dynamicSleepTime = [&]() -> std::chrono::milliseconds
+            {
+                constexpr int min_delay = 200;
+                constexpr int max_delay = 3000;
+
+                if( size == 0 )
+                    return std::chrono::milliseconds( max_delay );
+
+                if( size > 50 )
+                    return std::chrono::milliseconds( min_delay );
+
+//                return std::chrono::milliseconds( static_cast<int>( max_delay - std::min( size / 50.0, 1.0 ) * ( max_delay - min_delay ) ) );
+                return std::chrono::milliseconds( static_cast<int>( max_delay - min( size / 50.0, 1.0 ) * ( max_delay - min_delay ) ) );
+            };
+
+            std::this_thread::sleep_for( dynamicSleepTime() );
+        }
+    }
+
+    void Initialize()
+    {
+        if( !running && g_Curl.Register() )
+        {
+            running = true;
+            worker = std::thread( Worker );
+        }
     }
 
     inline void AlertMessage( ALERT_TYPE type, const char* buffer )
     {
+        if( !running || !buffer || !g_Curl.Register() )
+            return;
+
         switch( type )
         {
             case ALERT_TYPE::at_notice:
@@ -64,38 +127,27 @@ namespace DiscordLogs
             }
         }
 
-        if( !buffer || !IsActive() )
-            return;
-
-        using namespace curl;
-
-        if( !g_Curl.Register() )
-            return;
-
-        std::string message(buffer);
-        std::string webhook;
+        if( auto pCvar = CVAR_GET_STRING( "sv_discord_logs" ); pCvar != nullptr && pCvar[0] != '\0' )
         {
-            std::lock_guard lock(mutex);
-            webhook = g_CurrentValue;
+            if( auto url = std::string_view( pCvar ); webhook != url )
+            {
+                webhook = url;
+
+                // Make a test on webhook to be a valid webhook, if not then clear the string.
+            }
+
+            CVAR_SET_STRING( "sv_discord_logs", "" );
         }
 
-        std::thread( [message, webhook]()
+        if( webhook.empty() )
+            return;
+
+        std::string message = buffer;
         {
-            nlohmann::json j;
-            j[ "content" ] = message;
+            std::lock_guard lock( mutex );
+            queue.push( std::move( message ) );
+        }
 
-            Request req;
-            req.url =  webhook;
-            req.post = j.dump();
-
-            req.headers.push_back( "Content-Type: application/json" );
-
-            auto result = req.Perform();
-
-            if( result != Response::Ok )
-            {
-                //g_Curl.easy_strerror( (CURLcode)result );
-            }
-        } ).detach();
+        conditional.notify_one();
     }
 }

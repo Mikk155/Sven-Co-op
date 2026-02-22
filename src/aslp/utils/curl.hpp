@@ -46,7 +46,7 @@ namespace curl
 
         bool Register()
         {
-            if( curl_library != nullptr )
+            if(  IsValid() )
                 return true;
 
             curl_library = gpMetaUtilFuncs->pfnGetModuleHandle(
@@ -90,7 +90,7 @@ namespace curl
 
         bool IsValid()
         {
-            return easy_init && easy_setopt && easy_perform;
+            return curl_library != nullptr && easy_init && easy_setopt && easy_perform;
         }
     };
 
@@ -116,6 +116,9 @@ namespace curl
 
         Response Perform()
         {
+            if( !g_Curl.Register() )
+                return Response::NotInitialized;
+
             CURL* curl = g_Curl.easy_init();
 
             if( !curl )
