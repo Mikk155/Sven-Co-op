@@ -15,6 +15,8 @@ namespace Hooks
         vsnprintf(buffer, sizeof(buffer), szFmt, ap);
         va_end(ap);
 
+        DiscordLogs::AlertMessage( atype, buffer );
+
         RETURN_META(MRES_IGNORED);
     }
 }
