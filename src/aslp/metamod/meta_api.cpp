@@ -99,11 +99,6 @@ C_DLLEXPORT int Meta_Query(const char* interfaceVersion, plugin_info_t** pPlugIn
 	return TRUE;
 }
 
-namespace DiscordLogs {
-extern void Shutdown();
-extern void Initialize();
-}
-
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_globals_t* pMGlobals, gamedll_funcs_t* pGamedllFuncs )
 {
 	if (!pMGlobals) {
@@ -175,11 +170,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_
 			fs::remove( e.path(), ec );
 	} }
 
-	if( g_Curl.Register() )
-	{
-		DiscordLogs::Initialize();
-	}
-
 	return TRUE;
 }
 
@@ -194,6 +184,5 @@ C_DLLEXPORT int Meta_Detach( PLUG_LOADTIME, PL_UNLOAD_REASON  )
 	UninstallEngineHook();
 	VtableUnhook();
 	CloseAngelScriptsItem();
-	DiscordLogs::Shutdown();
 	return TRUE;
 }
