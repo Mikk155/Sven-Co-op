@@ -17,6 +17,8 @@ namespace Hooks
             FixModelIndexGMR::GMR.clear();
             FixUnprecachedCrash::g_PrecachedModels.clear();
             g_MapInitialized = false;
+
+            SET_META_RESULT( META_RES::MRES_IGNORED );
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Hooks
         {
             if( auto gmrFile = FixModelIndexGMR::CFGHasReplacementList(); gmrFile.has_value() )
                 FixModelIndexGMR::LoadCFGFile( gmrFile.value() );
+
+            SET_META_RESULT( META_RES::MRES_IGNORED );
         }
     }
 
@@ -23,7 +25,7 @@ namespace Hooks
         {
             VTableHook();
 
-            SET_META_RESULT( MRES_IGNORED );
+            SET_META_RESULT( META_RES::MRES_IGNORED );
 
             g_MapInitialized = true;
         }
