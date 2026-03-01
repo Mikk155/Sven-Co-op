@@ -37,28 +37,19 @@ endif()
 
 option( GENERATE_AS_DOCUMENTATION "Generate AS documentation on start up" ON )
 
-option( SVENCOOP_DEDICATED_SERVER "If on. the debugger will run the dedicated server. Listen server otherwise." OFF )
-
 set( PARAM_MAP_NAME "hl_c04" CACHE STRING "Name of the map to launch on debuging" )
 
 set( PARAM_LAUNCH_PARAMETERS "-dev -console" CACHE STRING "Additional launch parameters" )
 
-set( DEFAULT_BUILD_CONFIG "Debug"
+set( SVENCOOP_EXECUTABLE "svencoop.exe"
     CACHE STRING "Default configuration selected in generated solution"
 )
 
-set_property( CACHE DEFAULT_BUILD_CONFIG PROPERTY STRINGS
-    "Debug"
-    "Release"
+set_property( CACHE SVENCOOP_EXECUTABLE PROPERTY STRINGS
+    "svencoop.exe"
+    "svends.exe"
 )
 
-if( MSVC )
-    set( CMAKE_VS_DEFAULT_BUILD_TYPE "${DEFAULT_BUILD_CONFIG}" CACHE STRING "" FORCE )
-    mark_as_advanced( CMAKE_VS_DEFAULT_BUILD_TYPE )
-else()
-    set( CMAKE_BUILD_TYPE "${DEFAULT_BUILD_CONFIG}" CACHE STRING "" FORCE )
-    mark_as_advanced( CMAKE_BUILD_TYPE )
-endif()
 # ============================================================
 # End cache
 # ============================================================
@@ -220,7 +211,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 )
 
 if( MSVC )
-    target_compile_options(${PROJECT_NAME} PRIVATE
+    target_compile_options( ${PROJECT_NAME} PRIVATE
         # FMT
         /utf-8
         # Truncated cast data loss
@@ -269,14 +260,8 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
 
     # Visual Studio Debugger
     if( MSVC )
-        if( SVENCOOP_DEDICATED_SERVER )
-            set( GAME_EXECUTABLE "${SVENCOOP_ROOT}/svends.exe" )
-        else()
-            set( GAME_EXECUTABLE "${SVENCOOP_ROOT}/svencoop.exe" )
-        endif()
-
         set_target_properties(${PROJECT_NAME} PROPERTIES
-            VS_DEBUGGER_COMMAND "${GAME_EXECUTABLE}"
+            VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/${SVENCOOP_EXECUTABLE}"
             VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
             VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map ${PARAM_MAP_NAME} ${PARAM_GENERATE_AS_DOCUMENTATION} ${PARAM_LAUNCH_PARAMETERS}"
         )
