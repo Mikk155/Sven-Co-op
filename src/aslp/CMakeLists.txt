@@ -27,13 +27,17 @@ mark_as_advanced(
 )
 
 # User-configurable paths
-set( SVENCOOP_ROOT "C:\Program Files (x86)\Steam\steamapps\common\Sven Co-op" CACHE PATH "Path to Sven Co-op/ root folder" )
+set( SVENCOOP_ROOT "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sven Co-op" CACHE PATH "Path to Sven Co-op/ root folder" )
 
 if( NOT EXISTS "${SVENCOOP_ROOT}/svencoop/" )
     message( FATAL_ERROR "SVENCOOP_ROOT is not valid, couldn't find svencoop folder" )
 endif()
 
 option( GENERATE_AS_DOCUMENTATION "Generate AS documentation on start up" ON )
+
+set( PARAM_MAP_NAME "hl_c04" CACHE STRING "Name of the map to launch on debuging" )
+
+set( PARAM_LAUNCH_PARAMETERS "-dev -console" CACHE STRING "Additional launch parameters" )
 
 # Where to copy the binaries
 set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
@@ -200,7 +204,9 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
     # Should we create as.predefined with our new exposed API?
     # ============================================================
     if( GENERATE_AS_DOCUMENTATION )
-        set( PARAM_GENERATE_AS_DOCUMENTATION " -as_outputdocs asdocs" CACHE STRING "" FORCE)
+        set( PARAM_GENERATE_AS_DOCUMENTATION "-as_outputdocs asdocs" CACHE STRING "" FORCE )
+    else()
+        set( PARAM_GENERATE_AS_DOCUMENTATION "" CACHE STRING "" FORCE )
     endif()
 
     # Visual Studio Debugger
@@ -208,7 +214,7 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
         set_target_properties(${PROJECT_NAME} PROPERTIES
             VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/svencoop.exe"
             VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
-            VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map hl_c04${PARAM_GENERATE_AS_DOCUMENTATION}"
+            VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map ${PARAM_MAP_NAME} ${PARAM_GENERATE_AS_DOCUMENTATION} ${PARAM_LAUNCH_PARAMETERS}"
         )
     endif()
 endif()
