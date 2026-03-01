@@ -382,5 +382,5 @@ extern bool InstallEngineHook();
 
 REGISTER_TABLE( GetEntityAPI2, gFunctionTable, INTERFACE_VERSION, DLL_FUNCTIONS, (TRUE) )
 REGISTER_TABLE( GetEntityAPI2_Post, gFunctionTable_Post, INTERFACE_VERSION, DLL_FUNCTIONS, (TRUE) )
-REGISTER_TABLE( GetNewDLLFunctions, gNewDllFunctionTable, INTERFACE_VERSION, NEW_DLL_FUNCTIONS, (TRUE) )
+REGISTER_TABLE( GetNewDLLFunctions, gNewDllFunctionTable, NEW_DLL_FUNCTIONS_VERSION, NEW_DLL_FUNCTIONS, (TRUE) )
 REGISTER_TABLE( GetEngineFunctions, meta_engfuncs, ENGINE_INTERFACE_VERSION, enginefuncs_t, InstallEngineHook() )
