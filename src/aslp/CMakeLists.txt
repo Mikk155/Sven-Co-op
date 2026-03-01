@@ -43,20 +43,11 @@ include_directories(
 add_compile_definitions( $<$<CONFIG:Debug>:_DEBUG> )
 add_compile_definitions( $<$<CONFIG:Release>:NDEBUG> )
 
-if(WIN32)
+if( WIN32 )
     set( PLATFORM_TARGET "x86" )
-    add_compile_definitions( 
-        WIN32
-        _WINDOWS
-        _USRDLL
-        _CRT_SECURE_NO_WARNINGS
-    )
-elseif(UNIX)
-    add_compile_definitions( 
-        PLATFORM_POSIX
-        LINUX
-        _LINUX
-    )
+    set( CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${PLATFORM_TARGET}/$<CONFIG>/include )
+    set( CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${PLATFORM_TARGET}/$<CONFIG>/lib/capstone.lib )
+else()
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(PLATFORM_TARGET "dbg.linux_i386")
         set(OBJDIR_LINUX "dbg.linux_i386")
@@ -66,17 +57,8 @@ elseif(UNIX)
         set(OBJDIR_LINUX "opt.linux_i386")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
     endif()
-endif()
-
-# 查找第三方库
-if(WIN32)
-    # Windows 下的第三方库路径
-    set(CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${PLATFORM_TARGET}/$<CONFIG>/include)
-    set(CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${PLATFORM_TARGET}/$<CONFIG>/lib/capstone.lib)
-else()
-    # Linux 下的第三方库路径
-    set(CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/include)
-    set(CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/lib/libcapstone.a)
+    set( CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/include )
+    set( CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/lib/libcapstone.a )
 endif()
 
 # ============================================================

@@ -1,0 +1,13 @@
+set( CMAKE_SYSTEM_NAME Linux )
+
+add_compile_definitions( 
+    PLATFORM_POSIX
+    LINUX
+    _LINUX
+)
+
+set( CMAKE_C_FLAGS "-m32" CACHE STRING "c flags" )
+set( CMAKE_CXX_FLAGS "-m32" CACHE STRING "c++ flags" )
+
+set( CMAKE_EXE_LINKER_FLAGS "-m32" CACHE STRING "" FORCE )
+set( CMAKE_SHARED_LINKER_FLAGS "-m32" CACHE STRING "" FORCE )
