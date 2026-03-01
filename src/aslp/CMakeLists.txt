@@ -23,14 +23,17 @@ mark_as_advanced(
     CMAKE_TOOLCHAIN_FILE
     CMAKE_C_FLAGS
     CMAKE_CXX_FLAGS
+    PARAM_GENERATE_AS_DOCUMENTATION
 )
 
 # User-configurable paths
-set( SVENCOOP_ROOT "" CACHE PATH "Path to Sven Co-op root folder" )
+set( SVENCOOP_ROOT "C:\Program Files (x86)\Steam\steamapps\common\Sven Co-op" CACHE PATH "Path to Sven Co-op/ root folder" )
 
 if( NOT EXISTS "${SVENCOOP_ROOT}/svencoop/" )
     message( FATAL_ERROR "SVENCOOP_ROOT is not valid, couldn't find svencoop folder" )
 endif()
+
+option( GENERATE_AS_DOCUMENTATION "Generate AS documentation on start up" ON )
 
 # Where to copy the binaries
 set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
@@ -180,10 +183,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # End ASLP
 # ============================================================
 
-# ============================================================
-# Copy plugins.ini if not exists. this is done at generation time
-# ============================================================
 if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
+
+    # ============================================================
+    # Copy plugins.ini if not exists
+    # ============================================================
     set( PLUGIN_DEST_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod" )
     set( PLUGIN_DEST "${PLUGIN_DEST_DIR}/plugins.ini" )
     file( MAKE_DIRECTORY "${PLUGIN_DEST_DIR}" )
@@ -192,12 +196,19 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
         file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/plugins.ini" DESTINATION "${PLUGIN_DEST_DIR}" )
     endif()
 
+    # ============================================================
+    # Should we create as.predefined with our new exposed API?
+    # ============================================================
+    if( GENERATE_AS_DOCUMENTATION )
+        set( PARAM_GENERATE_AS_DOCUMENTATION " -as_outputdocs asdocs" CACHE STRING "" FORCE)
+    endif()
+
     # Visual Studio Debugger
     if( MSVC )
         set_target_properties(${PROJECT_NAME} PROPERTIES
             VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/svencoop.exe"
             VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
-            VS_DEBUGGER_COMMAND_ARGUMENTS "-as_outputdocs asdocs +map hl_c04 -dll addons/metamod/dlls/metamod.dll"
+            VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map hl_c04${PARAM_GENERATE_AS_DOCUMENTATION}"
         )
     endif()
 endif()
