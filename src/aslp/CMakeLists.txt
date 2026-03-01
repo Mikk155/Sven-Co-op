@@ -222,6 +222,7 @@ if( MSVC )
         # Truncated cast data loss
         /wd4302
         /wd4311
+        /EHsc
     )
 endif()
 
