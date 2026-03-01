@@ -32,6 +32,11 @@ file( GLOB_RECURSE PROJECT_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
 )
 
+# Windows-specific source files
+if( WIN32 )
+    list( APPEND PROJECT_FILES metamod/windows.cpp )
+endif()
+
 add_library( ${PROJECT_NAME} SHARED ${PROJECT_FILES} )
 
 if( MSVC ) 

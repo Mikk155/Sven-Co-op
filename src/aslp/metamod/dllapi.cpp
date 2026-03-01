@@ -38,7 +38,6 @@
 #include "aslp.h"
 
 #include <fmt/format.h>
-#include <windows.h>
 
 #include "Hooks/KeyValue.hpp"
 #include "Hooks/ModelIndex.hpp"
@@ -333,22 +332,6 @@ enginefuncs_t meta_engfuncs = {
 	NULL, // pfnQueryClientCvarValue2()
 	NULL, // pfnEngCheckParm()
 };
-
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved )
-{
-    switch (ul_reason_for_call)
-    {
-		case DLL_PROCESS_ATTACH:
-		case DLL_THREAD_ATTACH:
-		case DLL_THREAD_DETACH:
-		case DLL_PROCESS_DETACH:
-		default:
-			break;
-    }
-    return TRUE;
-}
-
-// From SDK dlls/h_export.cpp:
 
 //! Holds engine functionality callbacks
 enginefuncs_t g_engfuncs;
