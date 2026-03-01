@@ -35,6 +35,8 @@ endif()
 
 option( GENERATE_AS_DOCUMENTATION "Generate AS documentation on start up" ON )
 
+option( SVENCOOP_DEDICATED_SERVER "If on. the debugger will run the dedicated server. Listen server otherwise." OFF )
+
 set( PARAM_MAP_NAME "hl_c04" CACHE STRING "Name of the map to launch on debuging" )
 
 set( PARAM_LAUNCH_PARAMETERS "-dev -console" CACHE STRING "Additional launch parameters" )
@@ -211,6 +213,11 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
 
     # Visual Studio Debugger
     if( MSVC )
+        if( SVENCOOP_DEDICATED_SERVER )
+            set( GAME_EXECUTABLE "${SVENCOOP_ROOT}/svends.exe" )
+        else()
+            set( GAME_EXECUTABLE "${SVENCOOP_ROOT}/svencoop.exe" )
+        endif()
         set_target_properties(${PROJECT_NAME} PROPERTIES
             VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/svencoop.exe"
             VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
