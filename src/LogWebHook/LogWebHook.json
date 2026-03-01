@@ -1,0 +1,31 @@
+{
+    // Webhook target
+    "webhook": "https://discord.com/api/webhooks/<channel-id>/<webhook-token>",
+
+    // Structure json to send. where "%1" is located it will be replaced with the message to send.
+    "structure":
+    {
+        // We only need the content for discord.
+        "content": "-# %1",
+
+        "username": "mikk155",
+
+        "avatar_url": "https://cdn.discordapp.com/avatars/744768007892500481/62d6f755078d10a2b517be7bb5552362.jpg?size=2048",
+
+        // Disallow mentioning
+        "allowed_mentions":
+        {
+            "parse": []
+        },
+
+        // Silent message
+        "flags": 4096
+    },
+
+    // Header expected for discord
+    "headers":
+    [
+        "Content-Type: application/json"
+    ]
+}
+// More information about discord webhooks at: https://docs.discord.com/developers/resources/webhook
