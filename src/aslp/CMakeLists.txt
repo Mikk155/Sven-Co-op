@@ -178,6 +178,17 @@ set_target_properties( asext PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
 )
 
+# Game logs webhook
+add_subdirectory(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../LogWebHook
+    ${CMAKE_CURRENT_BINARY_DIR}/LogWebHook
+)
+
+set_target_properties( LogWebHook PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
+)
+
 if( MSVC )
     if( EXISTS "${CMAKE_INSTALL_PREFIX}/svencoop.exe" )
 
