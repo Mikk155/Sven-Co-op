@@ -41,9 +41,7 @@ set( PARAM_MAP_NAME "hl_c04" CACHE STRING "Name of the map to launch on debuging
 
 set( PARAM_LAUNCH_PARAMETERS "-dev -console" CACHE STRING "Additional launch parameters" )
 
-set( SVENCOOP_EXECUTABLE "svencoop.exe"
-    CACHE STRING "Default configuration selected in generated solution"
-)
+set( SVENCOOP_EXECUTABLE "svencoop.exe" CACHE STRING "Executable to run on debugging" )
 
 set_property( CACHE SVENCOOP_EXECUTABLE PROPERTY STRINGS
     "svencoop.exe"
