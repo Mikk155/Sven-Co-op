@@ -63,6 +63,18 @@ endif()
 # End cache
 # ============================================================
 
+# Enable LTO
+include( CheckIPOSupported )
+
+check_ipo_supported( RESULT ipo_supported OUTPUT error )
+
+if( ipo_supported )
+    message( STATUS "IPO/LTO enabled." )
+    set( CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE )
+else()
+    message( WARNING "IPO/LTO not supported: ${error}" )
+endif()
+
 # Where to copy the binaries
 set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
 
