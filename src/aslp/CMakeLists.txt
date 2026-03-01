@@ -23,7 +23,6 @@ mark_as_advanced(
     CMAKE_TOOLCHAIN_FILE
     CMAKE_C_FLAGS
     CMAKE_CXX_FLAGS
-    PARAM_GENERATE_AS_DOCUMENTATION
 )
 
 # User-configurable paths
@@ -40,6 +39,23 @@ option( SVENCOOP_DEDICATED_SERVER "If on. the debugger will run the dedicated se
 set( PARAM_MAP_NAME "hl_c04" CACHE STRING "Name of the map to launch on debuging" )
 
 set( PARAM_LAUNCH_PARAMETERS "-dev -console" CACHE STRING "Additional launch parameters" )
+
+set( DEFAULT_BUILD_CONFIG "Debug"
+    CACHE STRING "Default configuration selected in generated solution"
+)
+
+set_property( CACHE DEFAULT_BUILD_CONFIG PROPERTY STRINGS
+    "Debug"
+    "Release"
+)
+
+if( MSVC )
+    set( CMAKE_VS_DEFAULT_BUILD_TYPE "${DEFAULT_BUILD_CONFIG}" CACHE STRING "" FORCE )
+    mark_as_advanced( CMAKE_VS_DEFAULT_BUILD_TYPE )
+else()
+    set( CMAKE_BUILD_TYPE "${DEFAULT_BUILD_CONFIG}" CACHE STRING "" FORCE )
+    mark_as_advanced( CMAKE_BUILD_TYPE )
+endif()
 
 # Where to copy the binaries
 set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
@@ -210,6 +226,8 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
     else()
         set( PARAM_GENERATE_AS_DOCUMENTATION "" CACHE STRING "" FORCE )
     endif()
+
+    mark_as_advanced( PARAM_GENERATE_AS_DOCUMENTATION )
 
     # Visual Studio Debugger
     if( MSVC )
