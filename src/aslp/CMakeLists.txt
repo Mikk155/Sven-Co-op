@@ -213,6 +213,10 @@ target_include_directories( ${PROJECT_NAME} PRIVATE
 # FMT options
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     FMT_HEADER_ONLY=1
+    # Disable Exceptions
+    FMT_USE_EXCEPTIONS=0
+    # Disables some Unicode features, named arguments, locale support and applies some optimizations
+    FMT_OPTIMIZE_SIZE=2
 )
 
 if( MSVC )
