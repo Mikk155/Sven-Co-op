@@ -12,6 +12,9 @@ set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF )
 
+# ============================================================
+# Start cache
+# ============================================================
 set( CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE )
 
 # Don't confuse the user with these
@@ -56,6 +59,9 @@ else()
     set( CMAKE_BUILD_TYPE "${DEFAULT_BUILD_CONFIG}" CACHE STRING "" FORCE )
     mark_as_advanced( CMAKE_BUILD_TYPE )
 endif()
+# ============================================================
+# End cache
+# ============================================================
 
 # Where to copy the binaries
 set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
@@ -80,10 +86,19 @@ add_compile_definitions( $<$<CONFIG:Release>:NDEBUG> )
 
 # Platform configuration
 if( WIN32 )
+    # Platform target
     set( PLATFORM_TARGET "x86" )
+
+    # debug symbols
+    set( CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /Zi" )
+    set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi" )
+    set( CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG" )
+
+    # Capstone lib & include
     set( CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${PLATFORM_TARGET}/$<CONFIG>/include )
     set( CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${PLATFORM_TARGET}/$<CONFIG>/lib/capstone.lib )
 else()
+    # Platform target
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(PLATFORM_TARGET "dbg.linux_i386")
         set(OBJDIR_LINUX "dbg.linux_i386")
@@ -93,6 +108,12 @@ else()
         set(OBJDIR_LINUX "opt.linux_i386")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
     endif()
+
+    # debug symbols
+    set( CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -g" )
+    set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g" )
+
+    # Capstone lib & include
     set( CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/include )
     set( CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/lib/libcapstone.a )
 endif()
