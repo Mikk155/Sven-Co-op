@@ -1,7 +1,8 @@
 *.bat linguist-vendored
 *.res  linguist-vendored
 
-CMakeLists.txt linguist-language=C++
+CMakeLists.txt linguist-language=CMake
+*.cmake linguist-language=CMake
 *.c linguist-language=C++
 *.cpp linguist-language=C++
 *.h linguist-language=C++

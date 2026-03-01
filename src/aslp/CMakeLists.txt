@@ -1,54 +1,30 @@
-cmake_minimum_required( VERSION 3.10 )
+cmake_minimum_required( VERSION 3.15 )
 
 project( aslp LANGUAGES CXX )
 
+# 32-bit enforcement (strict for sven)
+if( NOT CMAKE_SIZEOF_VOID_P EQUAL 4 )
+    message( FATAL_ERROR "This project MUST be compiled as 32-bit." )
+endif()
+
+# Standard we use at aslp
 set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF )
 
-if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-    message( FATAL_ERROR "This project MUST be built for 32-bits" )
-endif()
-
-if( MSVC ) 
-    set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
-endif()
-
 set( CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE )
 
-set( SVENCOOP_DEBUG_ARGS
-    "-as_outputdocs asdocs +map hl_c04"
-    CACHE STRING
-    "Command line arguments used when debugging Sven Co-op"
-)
+# User-configurable paths
+set( SVENCOOP_ROOT "" CACHE PATH "Path to Sven Co-op root folder" )
 
-set( METAMOD_DLL_DIR
-    "${CMAKE_INSTALL_PREFIX}/svencoop/addons/metamod/dlls"
-)
-
-file( GLOB_RECURSE PROJECT_FILES
-    CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
-)
-
-# Windows-specific source files
-if( WIN32 )
-    list( APPEND PROJECT_FILES metamod/windows.cpp )
+if( NOT EXISTS "${SVENCOOP_ROOT}/svencoop/" )
+    message( FATAL_ERROR "SVENCOOP_ROOT is not valid, couldn't find svencoop folder" )
 endif()
 
-add_library( ${PROJECT_NAME} SHARED ${PROJECT_FILES} )
+# Where to copy the binaries
+set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
 
-if( MSVC ) 
-    target_compile_options( ${PROJECT_NAME} PRIVATE
-        # fmt
-        /utf-8
-        # implicit cast
-        /wd4302
-        /wd4311
-    )
-endif()
-
+# Global Includes
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/hlsdk/common
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/hlsdk/dlls
@@ -63,84 +39,31 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/thirdparty/capstone_fork/include
 )
 
-target_include_directories( ${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/angelscript
-    ${CMAKE_CURRENT_SOURCE_DIR}/metamod
-)
+# Platform configuration
+add_compile_definitions( $<$<CONFIG:Debug>:_DEBUG> )
+add_compile_definitions( $<$<CONFIG:Release>:NDEBUG> )
 
-target_compile_definitions( ${PROJECT_NAME} PRIVATE
-    WIN32
-    _WINDOWS
-    _USRDLL
-    PLATFORM_WINDOWS
-    _CRT_SECURE_NO_WARNINGS
-)
-
-# JSON
-target_include_directories( ${PROJECT_NAME} SYSTEM PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/json/single_include
-)
-
-# FMT
-target_include_directories( ${PROJECT_NAME} SYSTEM PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt/include
-)
-
-target_compile_definitions( ${PROJECT_NAME} PRIVATE
-    FMT_HEADER_ONLY=1
-)
-
-add_dependencies( ${PROJECT_NAME} asext metamod )
-
-set_target_properties( ${PROJECT_NAME} PROPERTIES
-    OUTPUT_NAME "${PROJECT_NAME}"
-    RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
-    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
-)
-
-# Taken from metamod's main CMakeLists
-# 设置平台名称
 if(WIN32)
-    set(PLATFORM_TARGET "x86")
-else()
+    set( PLATFORM_TARGET "x86" )
+    add_compile_definitions( 
+        WIN32
+        _WINDOWS
+        _USRDLL
+        _CRT_SECURE_NO_WARNINGS
+    )
+elseif(UNIX)
+    add_compile_definitions( 
+        PLATFORM_POSIX
+        LINUX
+        _LINUX
+    )
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(PLATFORM_TARGET "dbg.linux_i386")
         set(OBJDIR_LINUX "dbg.linux_i386")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
     else()
         set(PLATFORM_TARGET "opt.linux_i386")
         set(OBJDIR_LINUX "opt.linux_i386")
-    endif()
-endif()
-
-# 平台特定设置
-if(WIN32)
-    add_definitions(-DWIN32 -D_WINDOWS -D_USRDLL -D_CRT_SECURE_NO_WARNINGS)
-
-    # Windows 下的编译选项 - 支持多配置生成器
-    # 使用生成器表达式来设置运行时库
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-    
-    # 设置调试信息
-    add_compile_definitions($<$<CONFIG:Debug>:_DEBUG>)
-    add_compile_definitions($<$<CONFIG:Release>:NDEBUG>)
-    
-    # 注意：根据项目文件，字符集设置为 NotSet，所以不添加 UNICODE 定义
-    
-elseif(UNIX)
-    add_definitions(-DPLATFORM_POSIX -DLINUX -D_LINUX)
-    
-    # Linux 下的编译选项
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -fPIC")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -fPIC")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -m32")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
-    
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        add_definitions(-D_DEBUG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
-    else()
-        add_definitions(-DNDEBUG)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
     endif()
 endif()
@@ -156,6 +79,11 @@ else()
     set(CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/lib/libcapstone.a)
 endif()
 
+# ============================================================
+# Start Metamod
+# ============================================================
+set( PROJECT_METAMOD metamod )
+
 # Metamod
 add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/metamod
@@ -163,46 +91,120 @@ add_subdirectory(
 )
 
 if( MSVC )
-    target_compile_options( metamod PRIVATE /Zc:strictStrings- )
-    target_compile_definitions( metamod PRIVATE _CRT_SECURE_NO_WARNINGS )
+    # Implicit conversions from const char to char
+    target_compile_options( ${PROJECT_METAMOD} PRIVATE /Zc:strictStrings- )
+    target_compile_definitions( ${PROJECT_METAMOD} PRIVATE _CRT_SECURE_NO_WARNINGS )
 endif()
 
-set_target_properties( metamod PROPERTIES
+# Binary destination
+set_target_properties( ${PROJECT_METAMOD} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
 )
+# ============================================================
+# End Metamod
+# ============================================================
 
-# AS Extended
+# ============================================================
+# Start Angelscript Extended
+# ============================================================
+set( PROJECT_ASEXT asext )
+
 add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/asext
     ${CMAKE_CURRENT_BINARY_DIR}/asext
 )
 
-set_target_properties( asext PROPERTIES
+# Binary destination
+set_target_properties( ${PROJECT_ASEXT} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
 )
+# ============================================================
+# End Angelscript Extended
+# ============================================================
+
+# ============================================================
+# Start ASLP
+# ============================================================
+file( GLOB_RECURSE PROJECT_FILES
+    CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+)
+
+# Windows-specific source
+if( WIN32 )
+    list( APPEND PROJECT_FILES metamod/windows.cpp )
+endif()
+
+add_library(${PROJECT_NAME} SHARED ${PROJECT_FILES})
+
+# Includes
+target_include_directories( ${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/angelscript
+    ${CMAKE_CURRENT_SOURCE_DIR}/metamod
+
+    # JSON
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/json/single_include
+
+    # FMT
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fmt/include
+
+    # AngelScript SDK
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/thirdparty/angelscript-sdk/angelscript/include
+
+    # AS Extended
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/asext/include
+)
+
+# FMT options
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    FMT_HEADER_ONLY=1
+)
 
 if( MSVC )
-    if( EXISTS "${CMAKE_INSTALL_PREFIX}/svencoop.exe" )
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        # FMT
+        /utf-8
+        # Truncated cast data loss
+        /wd4302
+        /wd4311
+    )
+endif()
 
-        # Copy plugins.ini if it doesn't exists
-        set( PLUGIN_DEST_DIR "${CMAKE_INSTALL_PREFIX}/svencoop/addons/metamod" )
-        set( PLUGIN_DEST "${PLUGIN_DEST_DIR}/plugins.ini" )
-        file( MAKE_DIRECTORY "${PLUGIN_DEST_DIR}" )
+# Link dependencies
+target_link_libraries( ${PROJECT_NAME} PRIVATE metamod asext )
 
-        if( NOT EXISTS "${PLUGIN_DEST}" )
-            message( STATUS "Installing ${PLUGIN_DEST}" )
-            file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/plugins.ini" DESTINATION "${PLUGIN_DEST_DIR}" )
-        endif()
+# Binary destination
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    OUTPUT_NAME "${PROJECT_NAME}"
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
+)
+# ============================================================
+# End ASLP
+# ============================================================
 
-        # Launch game
-        set_target_properties( ${PROJECT_NAME} PROPERTIES
-            VS_DEBUGGER_COMMAND "${CMAKE_INSTALL_PREFIX}/svencoop.exe"
-            VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
-            VS_DEBUGGER_COMMAND_ARGUMENTS "${SVENCOOP_DEBUG_ARGS}"
+# ============================================================
+# Copy plugins.ini if not exists. this is done at generation time
+# ============================================================
+if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
+    set( PLUGIN_DEST_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod" )
+    set( PLUGIN_DEST "${PLUGIN_DEST_DIR}/plugins.ini" )
+    file( MAKE_DIRECTORY "${PLUGIN_DEST_DIR}" )
+    if( NOT EXISTS "${PLUGIN_DEST}" )
+        message( STATUS "Installing default plugins.ini" )
+        file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/plugins.ini" DESTINATION "${PLUGIN_DEST_DIR}" )
+    endif()
+
+    # Visual Studio Debugger
+    if( MSVC )
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+            VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/svencoop.exe"
+            VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
+            VS_DEBUGGER_COMMAND_ARGUMENTS "-as_outputdocs asdocs +map hl_c04 -dll addons/metamod/dlls/metamod.dll"
         )
-    else()
-        message( WARNING "CMAKE_INSTALL_PREFIX is not defined propertly, couldn't find \"${CMAKE_INSTALL_PREFIX}/svencoop.exe\"" )
     endif()
 endif()
