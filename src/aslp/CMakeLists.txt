@@ -257,8 +257,9 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
         else()
             set( GAME_EXECUTABLE "${SVENCOOP_ROOT}/svencoop.exe" )
         endif()
+
         set_target_properties(${PROJECT_NAME} PROPERTIES
-            VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/svencoop.exe"
+            VS_DEBUGGER_COMMAND "${GAME_EXECUTABLE}"
             VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
             VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map ${PARAM_MAP_NAME} ${PARAM_GENERATE_AS_DOCUMENTATION} ${PARAM_LAUNCH_PARAMETERS}"
         )
