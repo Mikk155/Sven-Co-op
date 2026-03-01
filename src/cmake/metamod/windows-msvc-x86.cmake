@@ -7,8 +7,7 @@ add_compile_definitions(
     _CRT_SECURE_NO_WARNINGS
 )
 
-set( CMAKE_C_FLAGS "-m32" CACHE STRING "c flags" )
-set( CMAKE_CXX_FLAGS "-m32" CACHE STRING "c++ flags" )
+set( PLATFORM_TARGET "x86" )
 
 set( CMAKE_GENERATOR_PLATFORM Win32 CACHE STRING "" FORCE )
 
