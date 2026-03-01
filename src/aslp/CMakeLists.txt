@@ -14,6 +14,17 @@ set( CMAKE_CXX_EXTENSIONS OFF )
 
 set( CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE )
 
+# Don't confuse the user with these
+mark_as_advanced(
+    CMAKE_INSTALL_PREFIX
+    CMAKE_CONFIGURATION_TYPES
+    CMAKE_GENERATOR_PLATFORM
+    CMAKE_MSVC_RUNTIME_LIBRARY
+    CMAKE_TOOLCHAIN_FILE
+    CMAKE_C_FLAGS
+    CMAKE_CXX_FLAGS
+)
+
 # User-configurable paths
 set( SVENCOOP_ROOT "" CACHE PATH "Path to Sven Co-op root folder" )
 
@@ -39,10 +50,10 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/metamod/thirdparty/capstone_fork/include
 )
 
-# Platform configuration
 add_compile_definitions( $<$<CONFIG:Debug>:_DEBUG> )
 add_compile_definitions( $<$<CONFIG:Release>:NDEBUG> )
 
+# Platform configuration
 if( WIN32 )
     set( PLATFORM_TARGET "x86" )
     set( CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${PLATFORM_TARGET}/$<CONFIG>/include )
