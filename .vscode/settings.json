@@ -30,7 +30,6 @@
     {
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true,
         "code-runner.*": true
     },
 

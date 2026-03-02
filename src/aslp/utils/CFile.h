@@ -6,7 +6,6 @@
 
 class CFile
 {
-
     public:
 
         enum class Mode

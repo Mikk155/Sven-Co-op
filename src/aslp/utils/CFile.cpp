@@ -1,7 +1,3 @@
-#include <extdll.h>
-#include <meta_api.h>
-#include <asext_api.h>
-
 #include "CFile.h"
 
 #include <optional>
