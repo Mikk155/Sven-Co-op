@@ -206,6 +206,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     FMT_USE_EXCEPTIONS=0
     # Disables some Unicode features, named arguments, locale support and applies some optimizations
     FMT_OPTIMIZE_SIZE=2
+    # C++ 20 for json
+    JSON_HAS_CPP_20=1
 )
 
 if( MSVC )
@@ -250,6 +252,7 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
     # ============================================================
     if( GENERATE_AS_DOCUMENTATION )
         set( PARAM_GENERATE_AS_DOCUMENTATION "-as_outputdocs asdocs" CACHE STRING "" FORCE )
+        target_compile_definitions(${PROJECT_NAME} PRIVATE AS_GENERATE_DOCUMENTATION=1 )
     else()
         set( PARAM_GENERATE_AS_DOCUMENTATION "" CACHE STRING "" FORCE )
     endif()
@@ -261,7 +264,4 @@ if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
         set_target_properties(${PROJECT_NAME} PROPERTIES
             VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/${SVENCOOP_EXECUTABLE}"
             VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
-            VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map ${PARAM_MAP_NAME} ${PARAM_GENERATE_AS_DOCUMENTATION} ${PARAM_LAUNCH_PARAMETERS}"
-        )
-    endif()
-endif()
+            VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map ${PARAM_MAP_NAME} ${PARAM
