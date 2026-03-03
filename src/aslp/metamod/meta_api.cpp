@@ -70,7 +70,7 @@ plugin_info_t Plugin_info = {
 	"Mikk, Gaftherman, hzqst, Dr.Abc",	// author
 	"https://github.com/Mikk155/Sven-Co-op",	// url
 	"ASHEXT",	// logtag, all caps please
-	PT_ANYTIME,	// (when) loadable
+	PT_STARTUP,	// (when) loadable
 	PT_STARTUP,	// (when) unloadable
 };
 
