@@ -41,11 +41,6 @@
 
 #include "utils/curl.hpp"
 
-// CMakeLists option "GENERATE_AS_DOCUMENTATION" sets to true.
-#if AS_GENERATE_DOCUMENTATION
-#include "misc/GenerateASPredefined.hpp"
-#endif
-
 using namespace std::literals::string_view_literals;
 
 mBOOL dlclose_handle_invalid;
@@ -174,10 +169,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_
 		if( e.is_regular_file() && e.path().filename().string().starts_with( "svencoop_assert_" ) ) {
 			fs::remove( e.path(), ec );
 	} }
-
-#if AS_GENERATE_DOCUMENTATION // -TODO This is too early for asdocs.txt to be created!
-	GenerateASPredefined::Generate();
-#endif
 
 	return TRUE;
 }

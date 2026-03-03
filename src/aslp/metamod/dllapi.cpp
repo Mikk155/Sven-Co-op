@@ -47,6 +47,8 @@
 #include "Hooks/ServerDeactivate.hpp"
 #include "Hooks/SetModel.hpp"
 #include "Hooks/ShouldCollide.hpp"
+#include "Hooks/ClientPutInServer.hpp"
+#include "Hooks/StartFrame.hpp"
 #include "Hooks/UserMessage.hpp"
 #include "Hooks/AddToFullPack.hpp"
 #include "Hooks/ClientCommand.hpp"
@@ -138,14 +140,14 @@ static DLL_FUNCTIONS gFunctionTable_Post = {
 	NULL, // pfnClientConnect
 	NULL, // pfnClientDisconnect
 	NULL, // pfnClientKill
-	NULL, // pfnClientPutInServer
+	Hooks::Post::ClientPutInServer, // pfnClientPutInServer
 	NULL, // pfnClientCommand
 	NULL, // pfnClientUserInfoChanged
 	Hooks::Post::ServerActivate, 
 	Hooks::Post::ServerDeactivate,
 	NULL, // pfnPlayerPreThink
 	NULL, // pfnPlayerPostThink
-	NULL, // pfnStartFrame
+	Hooks::Post::StartFrame, // pfnStartFrame
 	NULL, // pfnParmsNewLevel
 	NULL, // pfnParmsChangeLevel
 	NULL, // pfnGetGameDescription

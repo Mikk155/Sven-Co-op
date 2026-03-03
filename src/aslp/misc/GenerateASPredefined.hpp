@@ -14,27 +14,6 @@
 
 #pragma once
 
-// Google AI Slop for now.
-#include <windows.h>
-// Convert from a specific source encoding (e.g., system's active code page CP_ACP) to UTF-8
-std::string& convertToUtf8(std::string& sourceStr) {
-    // 1. Convert source encoding (e.g., CP_ACP) to UTF-16 (std::wstring)
-    int sizeNeededForWstr = MultiByteToWideChar(CP_ACP, 0, sourceStr.c_str(), -1, nullptr, 0);
-    std::wstring wstr(sizeNeededForWstr, 0);
-    MultiByteToWideChar(CP_ACP, 0, sourceStr.c_str(), -1, &wstr[0], sizeNeededForWstr);
-
-    // 2. Convert UTF-16 to UTF-8 (std::string)
-    int sizeNeededForUtf8 = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, nullptr, 0, nullptr, nullptr);
-    std::string utf8Str(sizeNeededForUtf8, 0);
-    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &utf8Str[0], sizeNeededForUtf8, nullptr, nullptr);
-
-    // Remove the null terminators that MultiByteToWideChar/WideCharToMultiByte add
-    // when using -1 for the input length
-    utf8Str.resize(sizeNeededForUtf8 - 1);
-    sourceStr = std::move( utf8Str );
-    return sourceStr;
-}
-
 #ifdef GENERATE_AS_EXTERNAL_TEST
 #define LOG_ARGS(fmt_str, ...) fmt::print( "[GenerateASPredefined] " fmt_str "\n", __VA_ARGS__ )
 #define LOG(fmt_str) fmt::print( "[GenerateASPredefined] " fmt_str "\n" )
@@ -46,12 +25,38 @@ std::string& convertToUtf8(std::string& sourceStr) {
 #define LOG(fmt_str, ...) ALERT( at_console, "[GenerateASPredefined] " fmt_str "\n" )
 #endif
 
+namespace GenerateASPredefined
+{
 using string = std::string;
 using string_v = std::string_view;
 
-namespace GenerateASPredefined
+// Google AI Slop for now.
+#include <windows.h>
+// Convert from a specific source encoding (e.g., system's active code page CP_ACP) to UTF-8
+string& convertToUtf8( string& sourceStr )
 {
-void Generate()
+    // 1. Convert source encoding (e.g., CP_ACP) to UTF-16 (wstring)
+    int sizeNeededForWstr = MultiByteToWideChar(CP_ACP, 0, sourceStr.c_str(), -1, nullptr, 0);
+    std::wstring wstr(sizeNeededForWstr, 0);
+    MultiByteToWideChar(CP_ACP, 0, sourceStr.c_str(), -1, &wstr[0], sizeNeededForWstr);
+
+    // 2. Convert UTF-16 to UTF-8 (string)
+    int sizeNeededForUtf8 = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, nullptr, 0, nullptr, nullptr);
+    string utf8Str(sizeNeededForUtf8, 0);
+    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &utf8Str[0], sizeNeededForUtf8, nullptr, nullptr);
+
+    // Remove the null terminators that MultiByteToWideChar/WideCharToMultiByte add
+    // when using -1 for the input length
+    utf8Str.resize(sizeNeededForUtf8 - 1);
+    sourceStr = std::move( utf8Str );
+    return sourceStr;
+}
+
+inline void StartFrame()
+{
+}
+
+inline void ClientPutInServer()
 {
     auto ParseFile = []( const char* path, string& content ) -> bool
     {
