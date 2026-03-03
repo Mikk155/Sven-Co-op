@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sven Co-op</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js"></script>
+</head>
+<body>
+
+<div id="content">
+
+  <p>If you want to contribute to the metamod plugin aslp you'll need additional dependancies</p>
+  <p>Enter the repository directory and install the dependancies</p>
+  <div class="code-block">
+    <button onclick="ClipboardCopy( 'metamod-submodules' )" title="Copy">📋</button>
+      <code id="metamod-submodules">
+git submodule update --init --remote external/fmt
+<br>
+git submodule update --init --remote external/json
+<br>
+git submodule update --init --remote external/metamod
+      </code>
+  </div>
+  <p>Generate the project solution from CMakeLists.</p>
+  <p>You can either configure yourself by command line or using <a href="https://cmake.org/download/" target="_blank">CMakeGui</a> 3.27.9 or greater</p>
+
+  <p>Set the path to where the project is located and where to build the binaries.</p>
+  <p>Due to how aslp include files, it is not recommended to build the binaries in the same folder or sub-folders.</p>
+  <img src="assets/images/aslp/cmake01directory.png">
+  <p>Press the "Configure" button and select your project generator</p>
+  <img src="assets/images/aslp/cmake02ide.png">
+  <p>Select your build platform</p>
+  <img src="assets/images/aslp/cmake03platform.png">
+  <p>Specify toolchain file for cross-compiling</p>
+  <img src="assets/images/aslp/cmake04toolchain.png">
+  <p>Set the path to either <a href="https://github.com/Mikk155/Sven-Co-op/blob/main/src/cmake/metamod/windows-msvc-x86.cmake" target="_blank">windows-msvc-x86</a> or <a href="https://github.com/Mikk155/Sven-Co-op/blob/main/src/cmake/metamod/linux-gcc-i386.cmake" target="_blank">linux-gcc-i386</a></p>
+  <img src="assets/images/aslp/cmake05toolchain.png">
+
+  <p>You can now set the path to your "Sven Co-op" installation and modify some launch parameters for when debuging</p>
+  <img src="assets/images/aslp/cmake06generate.png">
+  <p>Press the "Generate" button and wait until is done, you can press then the "Open Project" to launch your IDE</p>
+  <img src="assets/images/aslp/project.png">
+  <p>Select the "aslp" project. right click and mark as "Startup project" so when you press F5 to debug it runs the game.</p>
+  <p>You may now be able to compile aslp and asext but to actually compile metamod you gonna need to go to the folder "external/metamod/scripts/" and run some dependancy scripts.</p>
+  <p>For instance you need the "build-capstone" Ideally both release and debug if you plan on building for both.</p>
+  <p>When debuging you do not need to modify liblist.gam, Visual Studio will run the game with the -dll argument</p>
+  <p>You don't need to create a plugins.ini file. if it doesn't exists the CMake process will generate one. unless you already have one, in that case you need to modify the file.</p>
+
+</div>
+
+</body>
+</html>
