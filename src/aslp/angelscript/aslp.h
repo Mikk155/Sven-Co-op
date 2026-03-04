@@ -26,7 +26,7 @@ typedef struct healthinfo_s {
 } healthinfo_t;
 
 typedef struct angelhook_s {
-	void* pCientCommandHook = nullptr;
+	void* pClientCommandHook = nullptr;
 	void* pPlayerUserInfoChanged = nullptr;
 	void* pPreMovement = nullptr;
 	void* pPostMovement = nullptr;

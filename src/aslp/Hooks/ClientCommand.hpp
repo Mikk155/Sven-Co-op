@@ -15,7 +15,7 @@ namespace Hooks
             if( entity != nullptr && entity->pvPrivateData )
             {
                 // -TODO Can we pass CMD_ARGV? pretty sure an object already exists
-                CALL_ANGELSCRIPT( pCientCommandHook, entity->pvPrivateData, &meta_result );
+                CALL_ANGELSCRIPT( pClientCommandHook, entity->pvPrivateData, &meta_result );
 
                 const char* pcmd = CMD_ARGV(0);
 

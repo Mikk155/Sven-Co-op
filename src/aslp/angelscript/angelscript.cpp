@@ -21,9 +21,14 @@
 angelhook_t g_AngelHook;
 
 /**
+ * @brief The plugin's namespace
+ */
+
+#define ASLP_NAMESPACE_ONLY "aslp"
+/**
  * @brief Append the plugin's namespace string to *a*
  */
-#define ASLP_NAMESPACE(a) "aslp::" #a
+#define ASLP_NAMESPACE(a) ASLP_NAMESPACE_ONLY "::" #a
 
 uint32 SC_SERVER_DECL CASEngineFuncs_CRC32(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer)
 {
@@ -104,6 +109,8 @@ ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "WINDOWS" );
 	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
 	{
 #pragma region HealthInfo
+ASEXT_SetDefaultNamespace( pASDoc, ASLP_NAMESPACE_ONLY );
+
 ASEXT_RegisterObjectType( pASDoc,
 	"Arguments for when a player is getting healed",
 	"HealthInfo", 0, asOBJ_REF | asOBJ_NOCOUNT );
@@ -124,6 +131,8 @@ ASEXT_RegisterObjectProperty( pASDoc,
 ASEXT_RegisterObjectProperty( pASDoc,
 	"Whatever to cap the max health capacity. Zero to not cap.",
 	"HealthInfo", "int cap", offsetof( healthinfo_t, cap ) );
+
+ASEXT_SetDefaultNamespace( pASDoc, "" );
 #pragma endregion
 #pragma region CBinaryStringBuilder
 		asSFuncPtr reg;
@@ -900,7 +909,7 @@ ASEXT_RegisterObjectProperty( pASDoc,
 
 void RegisterAngelScriptHooks()
 {
-CREATE_AS_HOOK( pCientCommandHook,
+CREATE_AS_HOOK( pClientCommandHook,
 	"Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
 	ASLP_NAMESPACE( Player ),
 	"ClientCommand",
@@ -952,7 +961,7 @@ CREATE_AS_HOOK( pShouldCollide,
 CREATE_AS_HOOK( pPlayerTakeHealth,
 	"Pre call before a player is healed",
 	ASLP_NAMESPACE( Player ),
-	"TakeHealth", "HealthInfo@ info"
+	"TakeHealth", ASLP_NAMESPACE( HealthInfo@ info )
 );
 
 CREATE_AS_HOOK( pEntityIRelationship, "Pre call before checking relation", "Entity", "IRelationship", "CBaseEntity@ pEntity, CBaseEntity@ pOther, bool param, int& out newValue");
