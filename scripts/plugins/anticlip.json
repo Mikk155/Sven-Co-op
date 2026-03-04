@@ -6,6 +6,9 @@
     // Allow boosting by jumping over a player
     "player_boost": true,
 
+    // Whatever projectiles (rockets, spores, bolts etc) can clip to allies
+    "projectiles_clip": false,
+
     // Completelly hide intersecting entities. if this is false the next option has no effect.
     "cliper_invisible": false,
 

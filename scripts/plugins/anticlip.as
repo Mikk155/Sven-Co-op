@@ -30,6 +30,7 @@ class CAntiClipConfig
         data.get( "cliper_invisible", nodraw );
         data.get( "cliper_rendermode", rendermode );
         data.get( "cliper_renderamt", renderamt );
+        data.get( "projectiles_clip", projectiles );
 
         g_Hooks.RegisterHook( Hooks::aslp::Player::PreMovement, @this.fnPreMovement );
 
@@ -37,18 +38,26 @@ class CAntiClipConfig
         {
             g_Hooks.RegisterHook( Hooks::aslp::Player::PostAddToFullPack, @this.fnPostAddToFullPack );
         }
+
+        if( !projectiles )
+        {
+            g_Hooks.RegisterHook( Hooks::aslp::Entity::ShouldCollide, @this.fnShouldCollide );
+        }
     }
 
     void Shutdown()
     {
-        g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @fnPreMovement );
-        g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+        g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @this.fnPreMovement );
+        g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @this.fnPostAddToFullPack );
+        g_Hooks.RemoveHook( Hooks::aslp::Entity::ShouldCollide, @this.fnShouldCollide );
     }
 
     PostAddToFullPackHook@ fnPostAddToFullPack = PostAddToFullPackHook( PostAddToFullPack );
     PreMovementHook@ fnPreMovement = PreMovementHook( PreMovement );
+    ShouldCollideHook@ fnShouldCollide = ShouldCollideHook( ShouldCollide );
 
     bool monsters = false;
+    bool projectiles = false;
     bool boost = true;
     bool nodraw = false;
     int rendermode = kRenderTransTexture;
@@ -185,6 +194,35 @@ HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_res
     }
 
     packet.state.solid = SOLID_NOT;
+
+    return HOOK_CONTINUE;
+}
+
+HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResult &out meta_resut, bool&out Collide )
+{
+    if( toucher is null || other is null )
+        return HOOK_CONTINUE;
+
+    if( toucher.IsPlayer() && other.IsPlayer() )
+    {
+        // Player can melee while inside another player and hit something else
+        if( other.Intersects( toucher ) )
+        {
+            Collide = false;
+            meta_resut = MetaResult::Supercede;
+        }
+        return HOOK_HANDLED;
+    }
+
+    auto owner = g_EntityFuncs.Instance( other.pev.owner );
+
+    // Don't touch allied projectiles
+    if( owner !is null && toucher.IRelationship( owner ) == R_AL )
+    {
+        Collide = false;
+        meta_resut = MetaResult::Supercede;
+        return HOOK_HANDLED;
+    }
 
     return HOOK_CONTINUE;
 }
