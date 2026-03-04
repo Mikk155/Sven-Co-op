@@ -93,7 +93,7 @@ bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMY
 {
     try
     {
-        if( auto js = nlohmann::json::parse( (char*)str.c_str() ); js.is_structured() )
+        if( auto js = nlohmann::json::parse( (char*)str.c_str(), nullptr, true, true, true ); js.is_structured() )
         {
             json::ToDictionary( js, obj );
             return true;
