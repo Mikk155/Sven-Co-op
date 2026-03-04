@@ -83,12 +83,17 @@ void RegisterAngelScriptMethods()
 ASEXT_RegisterScriptBuilderDefineCallback( []( CScriptBuilder* pScriptBuilder )
 {
 ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "METAMOD_PLUGIN_ASLP" );
+
 #if _DEBUG
 ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "METAMOD_DEBUG" );
+#else
+ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "METAMOD_RELEASE" );
 #endif
+
 #if LINUX
 ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "LINUX" );
 #endif
+
 #if WIN32
 ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "WIN32" );
 ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "WINDOWS" );
