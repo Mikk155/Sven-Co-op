@@ -176,7 +176,7 @@ HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_res
         return HOOK_CONTINUE;
 
     // Skip if the packet is not a player and we're not checking for NPCs
-    if( g_Config.monsters && !entityPacket.IsPlayer() )
+    if( g_Config.monsters && !entityPacket.IsPlayer() || ( !entityPacket.IsPlayer() && !entityPacket.IsMonster() ) )
         return HOOK_CONTINUE;
 
     // Is the host intersecting the packet?
