@@ -1,6 +1,7 @@
 .vscode/c_cpp_properties.json
 
 build/*
+steam_autocloud.vdf
 as.predefined
 /code-runner.*
 src/GoldSrc2Sven/cache.json
