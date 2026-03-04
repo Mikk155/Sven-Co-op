@@ -1,0 +1,24 @@
+// Fast Restart configuration
+{
+    // Reload the map after this many seconds
+    "reload_time": 1.5,
+
+    // Whatever to wait if there are a medic npc nearby (scientist and medic grunt can revive players)
+    "wait_medic": true,
+
+    // Radius in units (sphere) to look up for medic monsters
+    "medic_radius": 1024,
+
+    // Classname of medic entities to look up for
+    "medic_entities":
+    [
+        "monster_scientist",
+        "monster_human_medic_ally"
+    ],
+
+    "map_blacklist":
+    [
+        "hl_c05_a1",
+        "hl_c05_a2"
+    ]
+}

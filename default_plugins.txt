@@ -21,4 +21,9 @@
         "name" "anticlip"
         "script" "anticlip"
     }
+    "plugin"
+    {
+        "name" "FastRestart"
+        "script" "FastRestart"
+    }
 }
