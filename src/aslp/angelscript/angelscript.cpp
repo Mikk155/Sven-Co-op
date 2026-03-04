@@ -80,10 +80,20 @@ void RegisterAngelScriptMethods()
 {
 	CASSQLite::LoadSQLite3DLL();
 
-	ASEXT_RegisterScriptBuilderDefineCallback([](CScriptBuilder* pScriptBuilder) {
-
-		ASEXT_CScriptBuilder_DefineWord(pScriptBuilder, "METAMOD_PLUGIN_ASLP");
-	} );
+ASEXT_RegisterScriptBuilderDefineCallback( []( CScriptBuilder* pScriptBuilder )
+{
+ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "METAMOD_PLUGIN_ASLP" );
+#if _DEBUG
+ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "METAMOD_DEBUG" );
+#endif
+#if LINUX
+ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "LINUX" );
+#endif
+#if WIN32
+ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "WIN32" );
+ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "WINDOWS" );
+#endif
+} );
 
 	// -TODO How to get the const char doc* in the generate_as_predefined.cpp
 	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
