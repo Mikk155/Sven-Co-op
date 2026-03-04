@@ -89,11 +89,29 @@ namespace json
     }
 }
 
+#include "utils/CFile.h"
+
 bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMYARG const CString& str, CScriptDictionary* obj )
 {
+    std::string content = str.c_str();
+
+    // Should maybe we check this is a plugin or map script?
+    if( content.ends_with( ".json" ) )
+    {
+        CFile file( str.c_str(), CFile::Mode::Read, true );
+
+        if( !file.IsOpen() )
+        {
+            ALERT( at_console, fmt::format( "JSON Error Could not open file at {}\n", str.c_str() ).c_str() );
+            return false;
+        }
+
+        file.Read( content );
+    }
+
     try
     {
-        if( auto js = nlohmann::json::parse( (char*)str.c_str(), nullptr, true, true, true ); js.is_structured() )
+        if( auto js = nlohmann::json::parse( (char*)content.c_str(), nullptr, true, true, true ); js.is_structured() )
         {
             json::ToDictionary( js, obj );
             return true;
