@@ -1,0 +1,19 @@
+"plugins"
+{
+    "plugin"
+    {
+        "name" "AFBase"
+        "script" "AFBase"
+    }
+    "plugin"
+    {
+        "name" "BotManager"
+        "script" "BotManager/BotManager"
+        "concommandns" "rcbot"
+    }
+    "plugin"
+    {
+        "name" "tests"
+        "script" "../../test/angelscript/main"
+    }
+}
