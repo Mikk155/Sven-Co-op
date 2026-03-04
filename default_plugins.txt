@@ -16,4 +16,9 @@
         "name" "tests"
         "script" "../../test/angelscript/main"
     }
+    "plugin"
+    {
+        "name" "anticlip"
+        "script" "anticlip"
+    }
 }

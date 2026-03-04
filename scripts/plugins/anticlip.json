@@ -1,0 +1,23 @@
+// Anti Clip configuration
+{
+    // Whatever players should collide with allied npcs.
+    "npc_clip": false,
+
+    // Allow boosting by jumping over a player
+    "player_boost": true,
+
+    // Completelly hide intersecting entities. if this is false the next option has no effect.
+    "cliper_invisible": false,
+
+    // rendermode var for intersecting entities.
+    "cliper_rendermode": 4,
+
+    // renderamt var for intersecting entities.
+    "cliper_renderamt": 100,
+
+    "map_blacklist":
+    [
+        "hl_c05_a1",
+        "hl_c05_a2"
+    ]
+}
