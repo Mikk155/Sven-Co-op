@@ -12,11 +12,6 @@ void PluginInit()
 #if METAMOD_PLUGIN_ASLP
 class CAntiClipConfig
 {
-    void Shutdown()
-    {
-        g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @PreMovement );
-    }
-
     void Update()
     {
         this.Shutdown();
@@ -36,8 +31,22 @@ class CAntiClipConfig
         data.get( "cliper_rendermode", rendermode );
         data.get( "cliper_renderamt", renderamt );
 
-        g_Hooks.RegisterHook( Hooks::aslp::Player::PreMovement, @PreMovement );
+        g_Hooks.RegisterHook( Hooks::aslp::Player::PreMovement, @this.fnPreMovement );
+
+        if( ( this.nodraw || this.rendermode > kRenderNormal  ) )
+        {
+            g_Hooks.RegisterHook( Hooks::aslp::Player::PostAddToFullPack, @this.fnPostAddToFullPack );
+        }
     }
+
+    void Shutdown()
+    {
+        g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @fnPreMovement );
+        g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+    }
+
+    PostAddToFullPackHook@ fnPostAddToFullPack = PostAddToFullPackHook( PostAddToFullPack );
+    PreMovementHook@ fnPreMovement = PreMovementHook( PreMovement );
 
     bool monsters = false;
     bool boost = true;
@@ -134,6 +143,48 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
     }
 
     pmove.numphysent = numphysent;
+
+    return HOOK_CONTINUE;
+}
+
+HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_result )
+{
+    // If npc is clipping then we don't care about non-player entities.
+    if( g_Config.monsters && packet.playerIndex == 0 )
+        return HOOK_CONTINUE;
+
+    if( packet.host is null || packet.entity is null )
+        return HOOK_CONTINUE;
+
+    // Skip if the packet is the host
+    if( packet.entity is packet.host )
+        return HOOK_CONTINUE;
+
+    auto playerHost = g_EntityFuncs.Instance( packet.host );
+    auto entityPacket = g_EntityFuncs.Instance( packet.entity );
+
+    if( playerHost is null || entityPacket is null )
+        return HOOK_CONTINUE;
+
+    // Skip if the packet is not a player and we're not checking for NPCs
+    if( g_Config.monsters && !entityPacket.IsPlayer() )
+        return HOOK_CONTINUE;
+
+    // Is the host intersecting the packet?
+    if( playerHost.IRelationship( entityPacket ) == R_AL && playerHost.Intersects( entityPacket ) )
+    {
+        if( g_Config.nodraw )
+        {
+            packet.state.effects |= EF_NODRAW;
+        }
+        else
+        {
+            packet.state.rendermode = g_Config.rendermode;
+            packet.state.renderamt = g_Config.renderamt;
+        }
+    }
+
+    packet.state.solid = SOLID_NOT;
 
     return HOOK_CONTINUE;
 }

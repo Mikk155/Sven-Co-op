@@ -15,6 +15,9 @@
     // renderamt var for intersecting entities.
     "cliper_renderamt": 100,
 
+    // NOTE: Setting cliper_invisible to false and cliper_rendermode to 0 will considerably improve performance.
+    // At the cost of fully visible players & clients "stomping" entities for a moment since no client-prediction
+
     "map_blacklist":
     [
         "hl_c05_a1",
