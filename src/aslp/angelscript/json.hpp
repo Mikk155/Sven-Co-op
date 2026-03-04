@@ -17,6 +17,8 @@ namespace json
             return false;
 
         auto ASEngine = ASEXT_GetServerManager()->GetScriptEngine();
+        auto dictionaryType = ASEngine->GetTypeInfoByName( "dictionary" );
+        int dictionaryId = ASEngine->GetTypeIdByDecl("dictionary@");
 
         auto stringType = ASEngine->GetTypeInfoByName( "string" );
         int stringId = ASEngine->GetTypeIdByDecl("string");
@@ -51,10 +53,10 @@ namespace json
             }
             else if (value.is_object())
             {
-                auto* subDict = ASEXT_CScriptDictionary_Create(ASEngine);
-                JsonToDict(value, subDict);
-                ASEXT_CScriptDictionary_Set(dict, asKey, &subDict, asTYPEID_OBJHANDLE);
-                ASEXT_CScriptDictionary_Release(subDict);
+                auto asDictionary = reinterpret_cast<CScriptDictionary*>( ASEngine->CreateScriptObject( dictionaryType ) );
+                JsonToDict(value, asDictionary);
+                ASEXT_CScriptDictionary_Set( dict, asKey, &asDictionary, dictionaryId );
+                ASEngine->ReleaseScriptObject( asDictionary, dictionaryType );
             }
         }
 
