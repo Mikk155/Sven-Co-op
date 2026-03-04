@@ -13,7 +13,7 @@ namespace json
      */
     void ToDictionary( nlohmann::json& js, CScriptDictionary* dict )
     {
-        if( !js.is_object() )
+        if( !js.is_structured() )
             return;
 
         auto ASEngine = ASEXT_GetServerManager()->GetScriptEngine();
@@ -27,7 +27,7 @@ namespace json
         CString* asKey = reinterpret_cast<CString*>( ASEngine->CreateScriptObject( stringType ) );
         CString* asValue = reinterpret_cast<CString*>( ASEngine->CreateScriptObject( stringType ) );
 
-        for( auto& [ key, value ] : js.items() )
+        auto SetDictionaryValue = [&]( const std::string& key, nlohmann::json& value )
         {
             asKey->assign( key.c_str(), key.length() );
 
@@ -52,7 +52,7 @@ namespace json
                 bool v = value.get<bool>();
                 ASEXT_CScriptDictionary_Set( dict, asKey, &v, asTYPEID_BOOL );
             }
-            else if( value.is_object() )
+            else if( value.is_structured() )
             {
                 auto asDictionary = reinterpret_cast<CScriptDictionary*>( ASEngine->CreateScriptObject( dictionaryType ) );
                 ToDictionary( value, asDictionary ); // Nested dictionary
@@ -62,6 +62,25 @@ namespace json
             else
             {
                 ALERT( at_console, fmt::format( "JSON Warning ignoring unsuported type implementation \"{}\" for key \"{}\"\n", (int)value.type(), key.c_str() ).c_str() );
+            }
+        };
+
+        if( js.is_object() )
+        {
+            for( auto& [ key, value ] : js.items() )
+            {
+                SetDictionaryValue( key, value );
+            }
+        }
+        else
+        {
+            int index = 0;
+
+            for( auto& value : js )
+            {
+                std::string key = std::to_string( index );
+                SetDictionaryValue( key, value );
+                index++;
             }
         }
 
@@ -74,16 +93,19 @@ bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMY
 {
     try
     {
-        auto js = nlohmann::json::parse( (char*)str.c_str() );
-        json::ToDictionary( js, obj );
-        return true;
+        if( auto js = nlohmann::json::parse( (char*)str.c_str() ); js.is_structured() )
+        {
+            json::ToDictionary( js, obj );
+            return true;
+        }
+        ALERT( at_console, "JSON Error Can not parse json is not an object or array type!\n" );
     }
     catch( nlohmann::json::parse_error& exception )
     {
         ALERT( at_console, fmt::format( "JSON Error deserializing data at {}\n{}\n", exception.byte, exception.what() ).c_str() );
     }
 
-    return true;
+    return false;
 }
 
 bool SC_SERVER_DECL CASEngineFuncs_JsonSerialize( void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString& str, int indents = -1 )
