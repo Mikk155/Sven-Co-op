@@ -6,7 +6,10 @@ void PluginInit()
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
     meta_api::NoticeInstallation();
+
+#if METAMOD_PLUGIN_ASLP
     g_Config.Update();
+#endif
 }
 
 #if METAMOD_PLUGIN_ASLP
