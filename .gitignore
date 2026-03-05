@@ -2,6 +2,7 @@
 
 build/*
 steam_autocloud.vdf
+*.rar
 as.predefined
 /code-runner.*
 src/GoldSrc2Sven/cache.json
