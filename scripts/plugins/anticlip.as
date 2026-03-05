@@ -126,6 +126,9 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
 
             if( entity !is null && entity.IsMonster() )
             {
+                if( !entity.IsAlive() )
+                    continue;
+
                 // Do not clip on ally monsters
                 if( player.IRelationship( entity ) == R_AL )
                 {
