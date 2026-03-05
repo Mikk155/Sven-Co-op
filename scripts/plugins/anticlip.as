@@ -62,14 +62,6 @@ class CAntiClipConfig
     bool nodraw = false;
     int rendermode = kRenderTransTexture;
     int renderamt = 100;
-
-    bool ShouldPacketFilter {
-        get {
-            return ( this.nodraw || this.rendermode > kRenderNormal  );
-        }
-    }
-
-    bool state;
 }
 
 CAntiClipConfig g_Config;
@@ -92,9 +84,9 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
 
     CBasePlayer@ player = g_PlayerFuncs.FindPlayerByIndex( pmove.player );
 
-    int numphysent = -1;
+    int numphysent = 0;
 
-    for( int j = numphysent; j <= pmove.numphysent; j++ )
+    for( int j = numphysent; j < pmove.numphysent; j++ )
     {
         physent_t@ physent = pmove.GetPhysEntByIndex(j);
 
@@ -129,7 +121,7 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
         {
             CBaseEntity@ entity = g_EntityFuncs.Instance( physent.info );
 
-            if( entity !is null )
+            if( entity !is null && entity.IsMonster() )
             {
                 // Do not clip on ally monsters
                 if( player.IRelationship( entity ) == R_AL )
@@ -175,9 +167,11 @@ HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_res
     if( playerHost is null || entityPacket is null )
         return HOOK_CONTINUE;
 
-    // Skip if the packet is not a player and we're not checking for NPCs
-    if( g_Config.monsters && !entityPacket.IsPlayer() || ( !entityPacket.IsPlayer() && !entityPacket.IsMonster() ) )
-        return HOOK_CONTINUE;
+    if( !entityPacket.IsPlayer() )
+    {
+        if( g_Config.monsters || !entityPacket.IsMonster() )
+            return HOOK_CONTINUE;
+    }
 
     // Is the host intersecting the packet?
     if( playerHost.IRelationship( entityPacket ) == R_AL && playerHost.Intersects( entityPacket ) )
@@ -209,7 +203,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
         if( other.Intersects( toucher ) )
         {
             Collide = false;
-            meta_resut = MetaResult::Supercede;
+            meta_resut = MetaResult::Override;
         }
         return HOOK_HANDLED;
     }
@@ -220,7 +214,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
     if( owner !is null && toucher.IRelationship( owner ) == R_AL )
     {
         Collide = false;
-        meta_resut = MetaResult::Supercede;
+        meta_resut = MetaResult::Override;
         return HOOK_HANDLED;
     }
 
