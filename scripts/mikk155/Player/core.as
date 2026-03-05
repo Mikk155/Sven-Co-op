@@ -1,0 +1,5 @@
+#include "GetUniqueID"
+
+namespace Player
+{
+}
