@@ -1,0 +1,21 @@
+// Chat Roles configuration. Add the plugin at the end of your default_plugins.txt to prevent issues with other plugins.
+{
+    "userdata":
+    {
+        // You can add as many entries like this. role and color are optional, you don't need to define both.
+        "STEAM_0:0:202010794":
+        {
+            "role": "Server Owner",
+
+            // Due to limitations only "green", "red", "blue" and "yellow" are supported.
+            "color": "green"
+            // If Wootguy's plugin "ChatColors" is installed in the server then this plugin's colors won't work.
+        }
+    },
+
+    "map_blacklist":
+    [
+        "hl_c04",
+        "hl_c05_a1"
+    ]
+}
