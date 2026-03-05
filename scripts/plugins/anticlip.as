@@ -206,7 +206,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
         if( other.Intersects( toucher ) )
         {
             Collide = false;
-            meta_resut = MetaResult::Override;
+            meta_resut = MetaResult::Supercede;
         }
         return HOOK_HANDLED;
     }
@@ -217,7 +217,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
     if( owner !is null && toucher.IRelationship( owner ) == R_AL )
     {
         Collide = false;
-        meta_resut = MetaResult::Override;
+        meta_resut = MetaResult::Supercede;
         return HOOK_HANDLED;
     }
 
