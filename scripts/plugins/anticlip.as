@@ -177,7 +177,7 @@ HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_res
     }
 
     // Is the host intersecting the packet?
-    if( playerHost.IRelationship( entityPacket ) == R_AL && playerHost.Intersects( entityPacket ) )
+    if( entityPacket.IsAlive() && playerHost.IRelationship( entityPacket ) == R_AL && playerHost.Intersects( entityPacket ) )
     {
         if( g_Config.nodraw )
         {
