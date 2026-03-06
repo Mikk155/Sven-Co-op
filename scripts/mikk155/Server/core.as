@@ -1,0 +1,5 @@
+#include "IsPluginInstalled"
+
+namespace Server
+{
+}
