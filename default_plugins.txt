@@ -36,4 +36,9 @@
         "name" "UnforcePlayermodels"
         "script" "UnforcePlayermodels"
     }
+    "plugin"
+    {
+        "name" "ShowPlayTime"
+        "script" "ShowPlayTime"
+    }
 }
