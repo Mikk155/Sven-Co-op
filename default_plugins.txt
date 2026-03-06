@@ -31,4 +31,9 @@
         "name" "ChatRoles"
         "script" "ChatRoles"
     }
+    "plugin"
+    {
+        "name" "UnforcePlayermodels"
+        "script" "UnforcePlayermodels"
+    }
 }
