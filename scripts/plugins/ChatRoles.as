@@ -158,11 +158,11 @@ HookReturnCode ClientSay( SayParameters@ params )
     string role;
     if( userdata.get( "role", role ) && !role.IsEmpty() )
     {
-        snprintf( message, "[%1] %2: %3", role, string( player.pev.netname ), sentence );
+        snprintf( message, "[%1] %2: %3\n", role, string( player.pev.netname ), sentence );
     }
     else
     {
-        snprintf( message, "%2: %3", string( player.pev.netname ), sentence );
+        snprintf( message, "%2: %3\n", string( player.pev.netname ), sentence );
     }
 
     bool HasColor;
