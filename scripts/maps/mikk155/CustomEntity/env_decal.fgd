@@ -1,0 +1,11 @@
+@PointClass decal() = env_decal : "Decal"
+[
+    spawnflags(flags) =
+    [
+        2048 : "Not in Deathmatch" : 0
+    ]
+
+    targetname(target_source) : "Name"
+
+    texture(decal)
+]
