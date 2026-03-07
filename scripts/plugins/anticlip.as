@@ -96,9 +96,7 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
         if( physent is null )
             continue;
 
-        CBasePlayer@ s1 = g_PlayerFuncs.FindPlayerByIndex( physent.info );
-
-        if( physent.IsPlayer() )
+        if( physent.name == "player" )
         {
             // No boosting? Skip immediatelly
             if( !g_Config.boost )
