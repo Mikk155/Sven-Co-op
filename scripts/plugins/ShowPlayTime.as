@@ -48,7 +48,7 @@ void ShowTime()
 
     if( mapRestarts > 0 ) { snprintf( time, "%1during %2 map restart%3", time, mapRestarts, ( mapRestarts > 1 ? "s" : "" ) ); }
 
-    g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, time + ".\n" );
+    g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, time + "\n" );
 }
 
 CScheduledFunction@ fnThink;
