@@ -11,8 +11,44 @@ namespace meta_api
         if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
             return g_EngineFuncs.JsonDeserialize( str, obj );
 #endif
-            // -TODO manual string parsing
-            return false;
+            // Make a copy to work with
+            string serialized = str;
+
+            // Is this a file we need to open?
+            if( str.StartsWith( "scripts/" ) )
+            {
+                if( !str.EndsWith( ".json" ) )
+                {
+                    g_Game.AlertMessage( at_console, "[JSON] Only .json format files can be parsed.\n" );
+                    return false;
+                }
+
+                auto file = g_FileSystem.OpenFile( str, OpenFile::READ );
+
+                if( file is null || !file.IsOpen() )
+                {
+                    g_Game.AlertMessage( at_console, "[JSON] Couldn't open file %1\n", str );
+                    return false;
+                }
+
+                serialized = String::EMPTY_STRING;
+
+                while( !file.EOFReached() )
+                {
+                    string line;
+                    file.ReadLine( line );
+
+                    // Saves some time when iterating the characters.
+                    line.Trim( ' ' );
+
+                    if( line.IsEmpty() )
+                        continue;
+
+                    serialized += line;
+                }
+            }
+
+            return true;
         }
 
 #if FALSE
