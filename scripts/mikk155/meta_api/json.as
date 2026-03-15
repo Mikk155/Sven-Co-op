@@ -3,40 +3,35 @@ namespace meta_api
     namespace json
     {
         /**
-        *   @brief Deserializes str into obj
+        *   @brief Deserializes str into obj, if file is true then str is a path to a file
         **/
-        bool Deserialize( const string&in str, dictionary&out obj )
+        bool Deserialize( const string&in str, dictionary&out obj, bool file = false )
         {
-#if METAMOD_PLUGIN_ASLP
-        if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
-            return g_EngineFuncs.JsonDeserialize( str, obj );
-#endif
-            // Make a copy to work with
-            string serialized = str;
+            // AS copy
+            string serialized = String::EMPTY_STRING;
 
-            // Is this a file we need to open?
-            if( str.StartsWith( "scripts/" ) )
+            if( file )
             {
-                if( !str.EndsWith( ".json" ) )
+                string filename;
+                snprintf( filename, "scripts/%2.json", str );
+
+#if METAMOD_PLUGIN_ASLP
+            if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
+                return g_EngineFuncs.JsonDeserialize( filename, obj );
+#endif
+
+                auto fstream = g_FileSystem.OpenFile( filename, OpenFile::READ );
+
+                if( fstream is null || !fstream.IsOpen() )
                 {
-                    g_Game.AlertMessage( at_console, "[JSON] Only .json format files can be parsed.\n" );
+                    g_Game.AlertMessage( at_console, "[JSON] Couldn't open file \"%1\"\n", filename );
                     return false;
                 }
 
-                auto file = g_FileSystem.OpenFile( str, OpenFile::READ );
-
-                if( file is null || !file.IsOpen() )
-                {
-                    g_Game.AlertMessage( at_console, "[JSON] Couldn't open file %1\n", str );
-                    return false;
-                }
-
-                serialized = String::EMPTY_STRING;
-
-                while( !file.EOFReached() )
+                while( !fstream.EOFReached() )
                 {
                     string line;
-                    file.ReadLine( line );
+                    fstream.ReadLine( line );
 
                     // Saves some time when iterating the characters.
                     line.Trim( ' ' );
@@ -48,7 +43,14 @@ namespace meta_api
                 }
             }
 
-            return true;
+#if METAMOD_PLUGIN_ASLP
+        if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
+            return g_EngineFuncs.JsonDeserialize( str, obj );
+#endif
+
+            // -- AS parser "serialized" here --
+
+            return false;
         }
 
 #if FALSE
