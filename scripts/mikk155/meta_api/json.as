@@ -41,7 +41,7 @@ namespace meta_api
                     // Saves some time when iterating the characters.
                     line.Trim( ' ' );
 
-                    if( line.IsEmpty() )
+                    if( line.IsEmpty() || ( line[0] == '/' && line[1] == '/' ) )
                         continue;
 
                     serialized += line;
