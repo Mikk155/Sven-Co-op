@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Downloads</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="scripts.js"></script>
+</head>
+
+<body>
+
+<main>
+<div id="content">
+
+<h1>Downloads</h1>
+
+<table id="downloadsTable">
+<thead>
+<tr>
+<th>Name</th>
+<th>Plugin</th>
+<th>Map Script</th>
+<th>Metamod</th>
+<th>Description</th>
+<th>Download</th>
+</tr>
+</thead>
+
+<tbody>
+
+<!--
+<tr>
+<td>anticlip</td>
+<td class="check yes">✓</td>
+<td class="check no">✗</td>
+<td class="check no">Required</td>
+<td>Allow players to pass through other players and allied characters just like Left 2 Dead.</td>
+<td>
+<button onclick="downloadAssets( this, 'scripts/maps/mikk155/CustomEntity/env_decal.json', 'env_decal' )">Download</button>
+</tr>
+-->
+
+</tbody>
+
+</table>
+
+<h1>Mapping-specifics</h1>
+
+<table id="downloadsTable">
+<thead>
+<tr>
+<th>Name</th>
+<th>Metamod</th>
+<th>Description</th>
+<th>Download</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>env_decal</td>
+<td class="check yes">Partial</td>
+<td>Late-joined players won't see the decals that has been already triggered, this custom entity solves that issue by storing the decal information and sending it to a late-joined players.</td>
+<td>
+<button onclick="downloadAssets( this, 'scripts/maps/mikk155/CustomEntity/env_decal.json', 'env_decal' )">Download</button>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</main>
+
+</body>
+</html>

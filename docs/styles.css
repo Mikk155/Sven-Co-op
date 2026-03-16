@@ -1,9 +1,23 @@
+html, body
+{
+  height: 100%;
+  margin: 0;
+}
+
+main
+{
+  flex: 1;
+}
 
 body
 {
+  height: 100%;
   margin: 0;
   font-family: Arial, sans-serif;
   background: #486088;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 header, footer
@@ -22,6 +36,27 @@ header, footer
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#content th {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #ccc;
+}
+
+#content td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+#content tr:hover {
+    background-color: rgba(0,0,0,0.15);
 }
 
 #discord
@@ -91,4 +126,41 @@ table.markdown td
 {
   border-bottom: 1px solid #ccc;
   padding: 8px;
+}
+
+.check
+{
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.check.yes
+{
+  color: #3aa655;
+}
+
+.check.no
+{
+  color: #cc4444;
+}
+
+button
+{
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  background: #e8e8e8;
+  cursor: pointer;
+}
+
+button:hover
+{
+  background: #dcdcdc;
+}
+
+button:disabled
+{
+  opacity: 0.6;
+  cursor: default;
 }
