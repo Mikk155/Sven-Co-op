@@ -5,11 +5,15 @@ namespace meta_api
         uint __position__;
         uint __size__;
 
-        // Lambda used for AS string parsing
+        // Lambda used for AS string deserialize
         funcdef dictionary __ParseObject__( const string&in serialized, __ParseObject__@ ParseObject, __ParseObject__@ ParseArray );
+        // Lambda used for AS string serialize
+        funcdef string __SerializeObject__( dictionary@ obj, __SerializeObject__@ SerializeObject, int indents, int depth );
 
         /**
-        *   @brief Deserializes str into obj, if file is true then str is a path to a file
+        *   @brief Deserializes str into obj, if file is true then str is a path to a file.
+        *   No need to specify scripts/plugins/ or scripts/maps/ it will be automatically detected.
+        *   No need to specify file format, it will always be .json.
         **/
         bool Deserialize( const string&in str, dictionary&out obj, bool file = false )
         {
@@ -197,31 +201,31 @@ namespace meta_api
 
                             if( value_is_string )
                             {
-                                obj[ key ] = value;
+                                obj.set( key, value );
                             }
                             else if( g_Utility.IsStringFloat( value ) )
                             {
-                                obj[ key ] = atof( value );
+                                obj.set( key, atof( value ) ); 
                             }
                             else if( g_Utility.IsStringInt( value ) )
                             {
-                                obj[ key ] = atoi( value );
+                                obj.set( key, atoi( value ) ); 
                             }
                             else if( value == "false" )
                             {
-                                obj[ key ] = false;
+                                obj.set( key, false );
                             }
                             else if( value == "true" )
                             {
-                                obj[ key ] = true;
+                                obj.set( key, true );
                             }
                             else if( value == "null" )
                             {
-                                obj[ key ] = null;
+                                obj.set( key, string("__null__") );
                             }
                             else if( value != String::EMPTY_STRING )
                             {
-                                obj[ key ] = value;
+                                obj.set( key, value );
                             }
                         }
 
@@ -321,7 +325,7 @@ namespace meta_api
                             return obj;
                         }
 
-                        obj[ string( item_index ) ] = ParseObject( serialized, ParseObject, ParseArray );
+                        obj.set( string( item_index ), ParseObject( serialized, ParseObject, ParseArray ) );
                         just_parsed_child = true;
                     }
                     else if( c == '[' )
@@ -332,7 +336,7 @@ namespace meta_api
                             return obj;
                         }
 
-                        obj[ string( item_index ) ] = ParseArray( serialized, ParseObject, ParseArray );
+                        obj.set( string( item_index ), ParseArray( serialized, ParseObject, ParseArray ) );
                         just_parsed_child = true;
                     }
                     else if( c == ',' || c == ']' )
@@ -349,31 +353,31 @@ namespace meta_api
                         {
                             if( value_is_string )
                             {
-                                obj[ string( item_index ) ] = value;
+                                obj.set( string( item_index ), value );
                             }
                             else if( g_Utility.IsStringFloat( value ) )
                             {
-                                obj[ string( item_index ) ] = atof( value );
+                                obj.set( string( item_index ), atof( value ) );
                             }
                             else if( g_Utility.IsStringInt( value ) )
                             {
-                                obj[ string( item_index ) ] = atoi( value );
+                                obj.set( string( item_index ), atoi( value ) );
                             }
                             else if( value == "false" )
                             {
-                                obj[ string( item_index ) ] = false;
+                                obj.set( string( item_index ), false );
                             }
                             else if( value == "true" )
                             {
-                                obj[ string( item_index ) ] = true;
+                                obj.set( string( item_index ), true );
                             }
                             else if( value == "null" )
                             {
-                                obj[ string( item_index ) ] = null;
+                                obj.set( string( item_index ), string("__null__") );
                             }
                             else if( value != String::EMPTY_STRING )
                             {
-                                obj[ string( item_index ) ] = value;
+                                obj.set( string( item_index ), value );
                             }
 
                             item_index++;
@@ -455,21 +459,127 @@ namespace meta_api
             return !( obj.isEmpty() );
         }
 
-#if FALSE
         /**
-        *   @brief Serializes a obj into str with the given indents
+            @brief Serializes obj into str. indents: -1 = single line, >= 0 = base tabs for root
         **/
-        bool Serialize( dictionary@ obj, string&out str, int indents = -1 )
+        void Serialize( dictionary@ obj, string&out str, int indents = -1 )
         {
-#if METAMOD_PLUGIN_ASLP
-        if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
-            return g_EngineFuncs.JsonSerialize( obj, str, indents );
-#endif
-            // -TODO manual dictionary parsing
-            return false;
-        }
-#endif
+            auto SerializeObject = __SerializeObject__( function( dictionary@ obj, __SerializeObject__@ SerializeObject, int indents, int depth )
+            {
+                array<string>@ keys = obj.getKeys();
+                
+                if( keys.length() == 0 )
+                {
+                    return "{}";
+                }
 
+                bool is_array = true;
+                for( uint i = 0; i < keys.length(); i++ )
+                {
+                    if( !obj.exists( string( i ) ) )
+                    {
+                        is_array = false;
+                        break;
+                    }
+                }
+
+                string newline = ( indents >= 0 ) ? "\n" : "";
+                
+                string indent_str = String::EMPTY_STRING;
+                string indent_inner = String::EMPTY_STRING;
+
+                if( indents > 0 )
+                {
+                    int inner_tabs = depth > 0 ? indents * depth : indents;
+                    for( int i = 1; i <= inner_tabs; i++ )
+                    {
+                        indent_str += " ";
+                    }
+
+                    indent_inner = indent_str;
+                    for( int i = 1; i <= indents; i++ )
+                    {
+                        indent_inner += " ";
+                    }
+                }
+
+                string buffer = ( depth > 0 ? newline + indent_str : '' ) + ( is_array ? "[" : "{" ) + newline;
+
+                for( uint ui = 0; ui < keys.length(); ui++ )
+                {
+                    string key = is_array ? string( ui ) : keys[ui];
+
+                    buffer += ( depth > 0 ? indent_inner : indent_str );
+
+                    if( !is_array )
+                    {
+                        string escaped_key = key;
+                        escaped_key.Replace( "\\", "\\\\" );
+                        escaped_key.Replace( "\"", "\\\"" );
+                        escaped_key.Replace( "\n", "\\n" );
+                        escaped_key.Replace( "\r", "\\r" );
+                        escaped_key.Replace( "\t", "\\t" );
+                        
+                        buffer += "\"" + escaped_key + "\": ";
+                    }
+
+                    string strValue;
+                    dictionary@ objValue = null; 
+                    int iValue;
+                    float fValue;
+
+                    if( obj.get( key, strValue ) )
+                    {
+                        if( strValue == "__null__" )
+                        {
+                            buffer += "null";
+                        }
+                        else
+                        {
+                            strValue.Replace( "\\", "\\\\" );
+                            strValue.Replace( "\"", "\\\"" );
+                            strValue.Replace( "\n", "\\n" );
+                            strValue.Replace( "\r", "\\r" );
+                            strValue.Replace( "\t", "\\t" );
+                            
+                            buffer += "\"" + strValue + "\"";
+                        }
+                    }
+                    else if( obj.get( key, @objValue ) )
+                    {
+                        buffer += SerializeObject( objValue, SerializeObject, indents, depth + 1 );
+                    }
+                    else if( obj.get( key, fValue ) )
+                    {
+                        buffer += string( fValue );
+                    }
+                    else if( obj.get( key, iValue ) )
+                    {
+                        buffer += string( iValue );
+                    }
+                    else
+                    {
+                        buffer += "null";
+                    }
+
+                    if( ui < keys.length() - 1 )
+                    {
+                        buffer += "," + newline;
+                    }
+                    else
+                    {
+                        buffer += newline;
+                    }
+                }
+
+                buffer += ( depth > 0 ? indent_str : '' ) + ( is_array ? "]" : "}" );
+
+                return buffer;
+            } );
+
+            str = SerializeObject( obj, SerializeObject, indents, 0 );
+        }
+        
         /**
         *   @brief Return whatever the given obj has an object at key containing the current map name in it.
         **/
