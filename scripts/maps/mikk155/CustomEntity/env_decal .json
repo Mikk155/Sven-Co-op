@@ -1,0 +1,9 @@
+{
+    "$schema": "../../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/maps/mikk155/CustomEntity/env_decal.as",
+        "scripts/maps/mikk155/CustomEntity/env_decal.fgd"
+    ]
+}
