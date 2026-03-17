@@ -622,6 +622,14 @@ namespace meta_api
         }
 
         /**
+        *   @brief converts the given obj to a list of string. any type that is not a string will be skipped.
+        **/
+        array<string> ToArray( dictionaryValue&in obj )
+        {
+            return ToArray( cast<dictionary>( obj ) );
+        }
+
+        /**
         *   @brief converts the given obj to a list of dictionaryValue
         **/
         array<dictionaryValue> ToAnyArray( dictionary@ obj )
