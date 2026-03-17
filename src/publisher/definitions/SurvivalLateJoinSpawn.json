@@ -5,6 +5,7 @@
     [
         "scripts/plugins/SurvivalLateJoinSpawn.as",
         "scripts/plugins/SurvivalLateJoinSpawn.json",
+        "scripts/mikk155/meta_api.as",
         "scripts/mikk155/meta_api/json.as",
         "scripts/mikk155/Player/GetUniqueID.as",
         "scripts/mikk155/Server/IsMapListed.as"

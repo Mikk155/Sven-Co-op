@@ -22,6 +22,7 @@
 *   SOFTWARE.
 **/
 
+#include "../mikk155/meta_api"
 #include "../mikk155/meta_api/json"
 #include "../mikk155/Player/GetUniqueID"
 #include "../mikk155/Server/IsMapListed"
@@ -30,6 +31,7 @@ void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
+    meta_api::NoticeInstallation();
 }
 
 ClientPutInServerHook@ fnClientPutInServer = ClientPutInServerHook( ClientPutInServer );
