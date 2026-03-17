@@ -1,29 +1,36 @@
-// Anti Clip configuration
 {
     // Whatever players should collide with allied npcs.
     "npc_clip": false,
 
-    // Allow boosting by jumping over a player
+    // Allow boosting by jumping over a player / npc
     "player_boost": true,
 
     // Whatever projectiles (rockets, spores, bolts etc) can clip to allies
+    // Disabling this will disable the ShouldCollideHook
     "projectiles_clip": false,
 
-    // Completelly hide intersecting entities. if this is false the next option has no effect.
-    "cliper_invisible": false,
+    "client_prediction":
+    {
+        // NOTE: set to false and will considerably improve performance.
+        "active": true,
 
-    // rendermode var for intersecting entities.
-    "cliper_rendermode": 4,
+        // rendermode var for intersecting entities.
+        "rendermode": 4,
+        // renderamt var for intersecting entities.
+        "renderamt": 100,
 
-    // renderamt var for intersecting entities.
-    "cliper_renderamt": 100,
+        // Completelly hide intersecting entities. (ignore render settings)
+        "invisible": false
+    },
 
-    // NOTE: Setting cliper_invisible to false and cliper_rendermode to 0 will considerably improve performance.
-    // At the cost of fully visible players & clients "stomping" entities for a moment since no client-prediction
+    // Should this json file be parsed every map change?
+    "reload": false,
 
+    // List of maps that this plugin should be disabled.
+    // Supports the wildcard "*" as suffix and prefix
     "map_blacklist":
     [
-        "hl_c04",
-        "hl_c05_a1"
+        "bts_rc",
+        "of*"
     ]
 }
