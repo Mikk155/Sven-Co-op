@@ -1,0 +1,15 @@
+{
+    // Should survival mode activate right away if it's enabled?
+    "activate_survival": true,
+
+    // Should this json file be parsed every map change?
+    "reload": false,
+
+    // List of maps that this plugin should be disabled.
+    // Supports the wildcard "*" as suffix and prefix
+    "map_blacklist":
+    [
+        "bts_rc",
+        "of*"
+    ]
+}

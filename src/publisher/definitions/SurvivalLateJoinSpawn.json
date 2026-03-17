@@ -1,0 +1,24 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/SurvivalLateJoinSpawn.as",
+        "scripts/plugins/SurvivalLateJoinSpawn.json",
+        "scripts/mikk155/meta_api/json.as",
+        "scripts/mikk155/Player/GetUniqueID.as",
+        "scripts/mikk155/Server/IsMapListed.as"
+    ],
+
+    "description": "Allow late join players to spawn for a first time if survival mode is been activated.",
+
+    "map_script": false,
+
+    "plugin": true,
+
+    "metamod": "optional",
+
+    "name": "SurvivalLateJoinSpawn",
+
+    "title": "Survival Mode late join players respawn"
+}
