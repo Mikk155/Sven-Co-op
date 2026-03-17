@@ -37,14 +37,14 @@ void PluginInit()
 ClientPutInServerHook@ fnClientPutInServer = ClientPutInServerHook( ClientPutInServer );
 ClientDisconnectHook@ fnClientDisconnect = ClientDisconnectHook( ClientDisconnect );
 
-bool g_Loaded;
+bool g_ShouldReloadJson = true;
 dictionary g_SpawnedPlayers;
 bool g_ActivateNow;
 array<string> g_BlacklistedMaps;
 
 void MapActivate()
 {
-    if( !g_Loaded )
+    if( g_ShouldReloadJson )
     {
         dictionary data;
         if( meta_api::json::Deserialize( "scripts/plugins/SurvivalLateJoinSpawn.json", data ) )
@@ -53,10 +53,7 @@ void MapActivate()
 
             data.get( "activate_survival", g_ActivateNow );
 
-            if( bool( data[ "reload" ] ) )
-            {
-                g_Loaded = true;
-            }
+            g_ShouldReloadJson = bool( data[ "reload" ] );
         }
     }
 
