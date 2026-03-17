@@ -168,7 +168,7 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
         {
             CBaseEntity@ entity = g_EntityFuncs.Instance( physent.info );
 
-            if( entity !is null && entity.IsMonster() )
+            if( entity !is null && entity.IsMonster() && entity.GetClassname() != "monster_tripmine" )
             {
                 if( !entity.IsAlive() )
                 {
@@ -231,6 +231,13 @@ HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_res
         return HOOK_CONTINUE;
     }
 
+    string classname = entityPacket.GetClassname();
+
+    if( classname == "monster_tripmine" )
+    {
+        return HOOK_CONTINUE;
+    }
+
     if( !entityPacket.IsPlayer() )
     {
         if( g_AllowMonsters || !entityPacket.IsMonster() )
@@ -267,7 +274,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
 
     string classname = other.GetClassname();
 
-    if( classname == "grappletongue" )
+    if( classname == "grappletongue" || ( classname == "monster_tripmine" || toucher.pev.classname == "monster_tripmine" ) )
     {
         return HOOK_CONTINUE;
     }
