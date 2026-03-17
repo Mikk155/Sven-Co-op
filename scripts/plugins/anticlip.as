@@ -265,6 +265,13 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
         return HOOK_CONTINUE;
     }
 
+    string classname = other.GetClassname();
+
+    if( classname == "grappletongue" )
+    {
+        return HOOK_CONTINUE;
+    }
+
     // Player can melee while inside another player and hit something else
     if( toucher.IsPlayer() && other.IsPlayer() )
     {
