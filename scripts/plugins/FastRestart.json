@@ -1,4 +1,3 @@
-// Fast Restart configuration
 {
     // Reload the map after this many seconds
     "reload_time": 1.5,
@@ -16,9 +15,14 @@
         "monster_human_medic_ally"
     ],
 
+    // Should this json file be parsed every map change?
+    "reload": false,
+
+    // List of maps that this plugin should be disabled.
+    // Supports the wildcard "*" as suffix and prefix
     "map_blacklist":
     [
-        "hl_c04",
-        "hl_c05_a1"
+        "bts_rc",
+        "of*"
     ]
 }
