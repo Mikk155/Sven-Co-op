@@ -23,7 +23,7 @@ namespace meta_api
             if( file )
             {
                 string filename;
-                snprintf( filename, "scripts/%1/%2.json", ( g_Module.GetModuleName() =="MapModule" ? "maps" : "plugins" ), str );
+                snprintf( filename, "scripts/%1/%2.json", ( g_Module.GetModuleName() == "MapModule" ? "maps" : "plugins" ), str );
 
 #if METAMOD_PLUGIN_ASLP
             if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
