@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="../">
+<head>
+<meta charset="UTF-8">
+<title>ShowFrameRate</title>
+<link rel="stylesheet" href="styles.css">
+<script src="scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+<main>
+<div id="content">
+<h1>Show server frame rate</h1>
+<p>Allow players to see the server frame-rate information by a .framerate command</p>
+</table>
+<table id="supportTable">
+<thead>
+<tr>
+<th>Map Script</th>
+<th>Server Plugin</th>
+<th>Metamod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a style="color:#cc4444">✗ No</a></td>
+<td><a style="color:#3aaa10">✓ Yes</a></td>
+<td><a style="color:#3aaa10">✗ Not needed</a></td>
+</tr>
+</tbody>
+</table>
+<script> const assets = ["scripts/plugins/ShowFrameRate.as", "scripts/maps/mikk155/Server/Framerate.as"]; </script>
+<button onclick="downloadAssets( this, assets )">Download</button>
+</div>
+</main>
+</body>
+</html>

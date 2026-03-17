@@ -43,6 +43,11 @@
     }
     "plugin"
     {
+        "name" "ShowFrameRate"
+        "script" "ShowFrameRate"
+    }
+    "plugin"
+    {
         "name" "SurvivalLateJoinSpawn"
         "script" "SurvivalLateJoinSpawn"
     }

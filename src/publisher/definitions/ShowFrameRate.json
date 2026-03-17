@@ -1,0 +1,21 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/ShowFrameRate.as",
+        "scripts/maps/mikk155/Server/Framerate.as"
+    ],
+
+    "description": "Allow players to see the server frame-rate information by a .framerate command",
+
+    "map_script": false,
+
+    "plugin": true,
+
+    "metamod": "no",
+
+    "name": "ShowFrameRate",
+
+    "title": "Show server frame rate"
+}
