@@ -65,7 +65,7 @@
         "**/__pycache__",
         "**/obj",
         "**/bin",
-        "code-runner.*"
+        "code-runner.*", "**/node_modules", "**/.*"
     ],
 
     "files.associations":
