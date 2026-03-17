@@ -1,0 +1,21 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/maps/mikk155/CustomEntity/env_decal.as",
+        "scripts/maps/mikk155/CustomEntity/env_decal.fgd"
+    ],
+
+    "description": "Players joining the server after a infodecal was triggered won't see such decal.\nThis custom entity fixes that by keeping track of the decals it paint and sending them to late join players.",
+
+    "map_script": true,
+
+    "plugin": false,
+
+    "metamod": "no",
+
+    "name": "env_decal",
+
+    "title": "Environment Decal"
+}

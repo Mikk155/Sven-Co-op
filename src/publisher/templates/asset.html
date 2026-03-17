@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="../">
+<head>
+<meta charset="UTF-8">
+<title>{name}</title>
+<link rel="stylesheet" href="styles.css">
+<script src="scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+<main>
+<div id="content">
+<h1>{title}</h1>
+<p>{description}</p>
+</table>
+<table id="supportTable">
+<thead>
+<tr>
+<th>Map Script</th>
+<th>Server Plugin</th>
+<th>Metamod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{map_script}</td>
+<td>{plugin}</td>
+<td>{metamod}</td>
+</tr>
+</tbody>
+</table>
+<script> const assets = {assets}; </script>
+<button onclick="downloadAssets( this, assets )">Download</button>
+</div>
+</main>
+</body>
+</html>

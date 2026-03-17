@@ -135,16 +135,6 @@ table.markdown td
   font-weight: bold;
 }
 
-.check.yes
-{
-  color: #3aa655;
-}
-
-.check.no
-{
-  color: #cc4444;
-}
-
 button
 {
   padding: 5px 10px;

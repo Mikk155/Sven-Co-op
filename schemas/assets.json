@@ -16,11 +16,52 @@
         {
             "type": "array",
             "description": "Include extra assets json"
+        },
+        "map_script":
+        {
+            "type": "boolean",
+            "description": "Is this a script for maps?"
+        },
+        "plugin":
+        {
+            "type": "boolean",
+            "description": "Is this a plugin for servers?"
+        },
+        "name":
+        {
+            "type": "string",
+            "description": "Name of the asset as-is"
+        },
+        "title":
+        {
+            "type": "string",
+            "description": "Name"
+        },
+        "description":
+        {
+            "type": "string",
+            "description": "Description for the header"
+        },
+        "metamod":
+        {
+            "type": "string",
+            "enum": [
+                "required",
+                "optional",
+                "no"
+            ],
+            "description": "Does this require metamod to some extent?"
+        },
+        "short_description":
+        {
+            "type": "string",
+            "description": "Short description for the main table"
         }
     },
     "additionalProperties": false,
     "required":
     [
+        "name",
         "assets"
     ]
 }

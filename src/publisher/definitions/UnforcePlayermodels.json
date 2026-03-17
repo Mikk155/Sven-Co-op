@@ -1,0 +1,20 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/UnforcePlayermodels.as"
+    ],
+
+    "description": "Allow players to use any model at any map that enforces a selected list.",
+
+    "map_script": false,
+
+    "plugin": true,
+
+    "metamod": "no",
+
+    "name": "UnforcePlayermodels",
+
+    "title": "Un-force player models"
+}

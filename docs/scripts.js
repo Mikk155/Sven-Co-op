@@ -80,47 +80,14 @@ function buildRawURL( relative )
     return `https://raw.githubusercontent.com/Mikk155/Sven-Co-op/main/${relative}`;
 }
 
-async function collectAssets( url, list = [] )
-{
-    const res = await fetch( url );
-
-    if( !res.ok )
-    {
-        throw new Error("Failed to fetch " + url );
-    }
-
-    const data = await res.json();
-
-    if(data.assets)
-    {
-        for(const a of data.assets)
-            list.push(a);
-    }
-
-    if( data.includes )
-    {
-        for( const inc of data.includes )
-        {
-            const includeURL = buildRawURL( inc );
-            await collectAssets( includeURL, list );
-        }
-    }
-
-    return list;
-}
-
-async function downloadAssets( button, relativeUrl, name )
+async function downloadAssets( button, files )
 {
     try
     {
         button.textContent = "Downloading...";
         button.disabled = true;
 
-        const jsonURL = buildRawURL( relativeUrl );
-
         const zip = new JSZip();
-
-        const files = await collectAssets( jsonURL );
 
         for( const file of files )
         {
@@ -142,7 +109,7 @@ async function downloadAssets( button, relativeUrl, name )
 
         const link = document.createElement( "a" );
         link.href = URL.createObjectURL( content );
-        link.download = name + ".zip";
+        link.download = "svencoop.zip";
         link.click();
     }
     catch( err )
@@ -150,6 +117,7 @@ async function downloadAssets( button, relativeUrl, name )
         console.error( err );
         alert( "Download failed. Check console." );
     }
+
     button.textContent = "Downloaded";
 
     await delay(3000);
