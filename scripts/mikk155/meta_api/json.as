@@ -600,5 +600,45 @@ namespace meta_api
             }
             return false;
         }
+
+        /**
+        *   @brief converts the given obj to a list of string. any type that is not a string will be skipped.
+        **/
+        array<string> ToArray( dictionary@ obj )
+        {
+            uint size = obj.getSize();
+
+            array<string> List( size );
+
+            for( uint ui = 0; ui < size; ui++ )
+            {
+                string value;
+                if( !obj.get( string( ui ), value ) )
+                    return {};
+                List[ ui ] = value;
+            }
+
+            return List;
+        }
+
+        /**
+        *   @brief converts the given obj to a list of dictionaryValue
+        **/
+        array<dictionaryValue> ToAnyArray( dictionary@ obj )
+        {
+            uint size = obj.getSize();
+
+            array<dictionaryValue> List( size );
+
+            for( uint ui = 0; ui < size; ui++ )
+            {
+                dictionaryValue value;
+                if( !obj.get( string( ui ), value ) )
+                    return {};
+                List[ ui ] = value;
+            }
+
+            return List;
+        }
     }
 }
