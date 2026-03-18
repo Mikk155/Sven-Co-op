@@ -1,76 +1,58 @@
 {
-    "code-runner.executorMapByFileExtension":
-    {
-        ".as": ".\\build/code-runner/code-runner $fullFileName"
-    },
-    "code-runner.runInTerminal": true,
-
-    "remove-tabs-on-save.ignoreFileExtensions": [
-        "*.cpp",
-        "*.h"
+    // Don't format submodules we don't own
+    "remove-tabs-on-save.ignoreFileExtensions":
+    [
+        "external/**"
     ],
-    "editor.indentSize": 4,
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": false,
-    "editor.formatOnType": false,
-    "editor.codeLens": false,
-
-    // Somehow C# overrided the aboves
-    "[csharp]":
-    {
-        "editor.indentSize": 4,
-        "editor.formatOnPaste": false,
-        "editor.formatOnSave": false,
-        "editor.formatOnType": false,
-        "editor.codeLens": false,
-    },
 
     // File excludes
-    "files.exclude":
+    "explorer.excludeGitIgnore": true,
+    "files.exclude": 
     {
-        "**/__pycache__": true,
-        "**/obj": true,
-        "code-runner.*": true
     },
 
+    // Don't search on binary directories
     "search.exclude":
     {
         "build": true,
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true,
-        "code-runner.*": true
+        "**/bin": true
     },
 
+    // Ditto
     "C_Cpp.codeAnalysis.exclude":
     {
         "build": true,
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true,
-        "code-runner.*": true
+        "**/bin": true
     },
 
+    // Ditto
     "C_Cpp.files.exclude":
     {
         "build": true,
         "**/__pycache__": true,
         "**/obj": true,
-        "**/bin": true,
-        "code-runner.*": true
+        "**/bin": true
     },
 
+    // Ditto
     "python.analysis.exclude": [
         "build",
         "**/__pycache__",
         "**/obj",
         "**/bin",
-        "code-runner.*", "**/node_modules", "**/.*"
+        "**/node_modules"
     ],
 
     "files.associations":
     {
+        // We allow commentary
         "*.json": "jsonc",
+
+        // C++ auto generated
         "xstring": "cpp",
         "iostream": "cpp",
         "deque": "cpp",

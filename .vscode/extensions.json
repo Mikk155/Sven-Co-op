@@ -1,11 +1,6 @@
 {
     "recommendations":
     [
-        "formulahendry.code-runner",
-        "sashi0034.angel-lsp",
-
-        "naumovs.color-highlight",
-        "redlin.remove-tabs-on-save",
-        "vscode-icons-team.vscode-icons"
+        "sashi0034.angel-lsp"
     ]
 }
