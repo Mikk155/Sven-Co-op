@@ -48,6 +48,11 @@
     }
     "plugin"
     {
+        "name" "CustomPrecache"
+        "script" "CustomPrecache"
+    }
+    "plugin"
+    {
         "name" "SurvivalLateJoinSpawn"
         "script" "SurvivalLateJoinSpawn"
     }

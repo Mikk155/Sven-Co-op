@@ -1,0 +1,23 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/CustomPrecache.as",
+        "scripts/plugins/CustomPrecache.json",
+        "scripts/mikk155/meta_api.as",
+        "scripts/mikk155/meta_api/json.as"
+    ],
+
+    "description": "Set a list of any type of asset to precache, even dynamic per-level precaching is allowed.",
+
+    "map_script": false,
+
+    "plugin": true,
+
+    "metamod": "optional",
+
+    "name": "CustomPrecache",
+
+    "title": "Custom Precache"
+}

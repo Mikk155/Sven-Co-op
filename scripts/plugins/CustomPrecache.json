@@ -1,0 +1,31 @@
+{
+    /*
+        Possible values are:
+        1 = generic assets. uses PrecacheGeneric.
+        2 = mdl/spr assets. uses PrecacheModel.
+        3 = wav/mp3/ogg and any other sound file. uses PrecacheSound.
+        4 = Entity classname. uses PrecacheOther
+        {} = Object of string key-value pairs for a entity creation. this way you can precache a entity with custom models sounds etc.
+    */
+
+    // Assets that are always precached
+    "AlwaysPrecached":
+    {
+        "models/player/Hololive_Fubuki/Hololive_Fubuki.mdl": 2,
+        "models/player/Hololive_Fubuki/Hololive_Fubuki.bmp": 1,
+        "oghs/chatsounds/alo.wav.wav": 3,
+        "point_checkpoint": 4,
+        "monster_houndeye":
+        {
+            "model": "models/hlclassic/houndeye.mdl"
+        }
+    },
+
+    // Assets that are precached dynamically (See MaxDynamicPrecache)
+    "DynamicPrecache":
+    {
+    },
+
+    // Max number of dynamic precaches per level.
+    "MaxDynamicPrecache": 5
+}

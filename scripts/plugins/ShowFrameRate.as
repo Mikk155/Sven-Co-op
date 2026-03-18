@@ -3,6 +3,10 @@
 dictionary g_Players = {};
 Server::Framerate::FrameRateCallback@ cb = null;
 
+int g_AvgAccumulator = 0;
+int g_AvgSamples = 0;
+int g_LastAverage = 0;
+
 auto cmd = CClientCommand( "framerate", "Display frame rate information", function( const CCommand@ args )
 {
     auto player = g_ConCommandSystem.GetCurrentPlayer();
@@ -19,6 +23,19 @@ auto cmd = CClientCommand( "framerate", "Display frame rate information", functi
         {
             @cb = Server::Framerate::SetCallback( function( const ServerFramerate@ data )
             {
+                if( data.LastFrame )
+                {
+                    g_AvgAccumulator += data.Frames;
+                    g_AvgSamples++;
+
+                    if( g_AvgSamples >= 10 )
+                    {
+                        g_LastAverage = g_AvgAccumulator / g_AvgSamples;
+                        g_AvgAccumulator = 0;
+                        g_AvgSamples = 0;
+                    }
+                }
+
                 HUDTextParams params;
                 params.holdTime = 1.0f;
                 params.fadeinTime = 0.0f;
@@ -35,7 +52,7 @@ auto cmd = CClientCommand( "framerate", "Display frame rate information", functi
 
                 string buffer;
                 snprintf( buffer, "second: %1\nframes last second: %2\nframes this second: %3\nCurrent framerate: %4\nAverage framerate: %5\n",
-                    int(g_Engine.time), data.Frames, data.Count, data.Current, data.Average );
+                    int(g_Engine.time), data.Frames, data.Count, data.Current, g_LastAverage );
 
                 bool Any = false;
 
