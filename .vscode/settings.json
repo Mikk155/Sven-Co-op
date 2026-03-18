@@ -5,6 +5,13 @@
         "external/**"
     ],
 
+    "angelScript.explicitPropertyAccessor": false,
+    "angelScript.forceIncludePredefined": [
+        "as.predefined"
+    ],
+    "angelScript.implicitMutualInclusion": false,
+    "angelScript.supportsForEach": false,
+
     // File excludes
     "explorer.excludeGitIgnore": true,
     "files.exclude": 
@@ -44,7 +51,8 @@
         "**/__pycache__",
         "**/obj",
         "**/bin",
-        "**/node_modules"
+        "**/node_modules",
+        "**/.*"
     ],
 
     "files.associations":
