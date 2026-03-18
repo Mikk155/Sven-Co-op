@@ -67,7 +67,14 @@ for file in os.listdir( Path.Definitions ):
     scriptDescription: str = data.get( "description", "No description provided." );
     if not "short_description" in data:
         data[ "short_description" ] = scriptDescription;
-    scriptAssets = json.dumps( data[ "assets" ] );
+    AddIncludes( data );
+    scriptAssets: list[str] =  data[ "assets" ];
+    for asset in scriptAssets:
+        if not os.path.exists( os.path.join( Path.Workspace, asset ) ):
+            print( f"Invalid file {asset} at {file}!" );
+            exit(0);
+
+    scriptAssets: str = json.dumps( scriptAssets );
     data[ "assets" ] = scriptAssets;
     scriptMapScript: str = f"""<a style="color:{T_RedColor}">✗ No</a>""";
     scriptPlugin: str = f"""<a style="color:{T_RedColor}">✗ No</a>""";
@@ -94,8 +101,6 @@ for file in os.listdir( Path.Definitions ):
             case "optional":
                 scriptMetamod: str = f"""<a style="color:{T_GreenColor}">✓ Partial support</a>""";
     data[ "metamod" ] = scriptMetamod;
-
-    AddIncludes( data );
 
     html: str = T_asset \
         .replace( "{name}", scriptName ) \
