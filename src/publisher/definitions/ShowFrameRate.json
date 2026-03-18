@@ -4,7 +4,7 @@
     "assets":
     [
         "scripts/plugins/ShowFrameRate.as",
-        "scripts/maps/mikk155/Server/Framerate.as"
+        "scripts/mikk155/Server/Framerate.as"
     ],
 
     "description": "Allow players to see the server frame-rate information by a .framerate command",
