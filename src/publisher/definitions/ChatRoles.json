@@ -1,0 +1,25 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/ChatRoles.as",
+        "scripts/plugins/ChatRoles.json",
+        "scripts/mikk155/meta_api.as",
+        "scripts/mikk155/meta_api/json.as",
+        "scripts/mikk155/Player/GetUniqueID.as",
+        "scripts/mikk155/Server/IsMapListed.as"
+    ],
+
+    "description": "Set custom roles and colors to player names in chat",
+
+    "map_script": false,
+
+    "plugin": true,
+
+    "metamod": "optional",
+
+    "name": "ChatRoles",
+
+    "title": "Chat Roles"
+}

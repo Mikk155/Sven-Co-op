@@ -1,10 +1,14 @@
+#include "../mikk155/meta_api"
 #include "../mikk155/meta_api/json"
 #include "../mikk155/Player/GetUniqueID"
+#include "../mikk155/Server/IsMapListed"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
+
+    meta_api::NoticeInstallation();
 
     MapActivate();
 }
@@ -13,63 +17,73 @@ bool g_AllowColors;
 ClientSayHook@ fnClientSay = ClientSayHook( ClientSay );
 dictionary g_UserData;
 
+bool g_ShouldReloadJson = true;
+array<string> g_BlacklistedMaps;
+
 void MapActivate()
 {
+    dictionary userdata;
+
     g_Hooks.RemoveHook( Hooks::Player::ClientSay, @fnClientSay );
 
-    dictionary data;
-    meta_api::json::Deserialize( "scripts/plugins/ChatRoles.json", data );
+    if( g_ShouldReloadJson )
+    {
+        dictionary data;
+        if( meta_api::json::Deserialize( "scripts/plugins/ChatRoles.json", data ) )
+        {
+            g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
+            g_ShouldReloadJson = bool( data[ "reload" ] );
 
-    if( meta_api::json::IsMapListed( data ) )
+            if( !data.get( "userdata", userdata ) )
+                return;
+
+            auto authIDs = userdata.getKeys();
+
+            if( authIDs.length() <= 0 )
+                return;
+
+            for( uint ui = 0; ui < authIDs.length(); ui++ )
+            {
+                string authID = authIDs[ui];
+
+                dictionary newData;
+                userdata.get( authID, newData );
+
+                string color; // Convert to integer to use less bytes
+                if( newData.get( "color", color ) )
+                {
+                    if( color == "red" ) {
+                        newData[ "color" ] = 17;
+                    }
+                    else if( color == "green" ) {
+                        newData[ "color" ] = 19;
+                    }
+                    else if( color == "blue" ) {
+                        newData[ "color" ] = 16;
+                    }
+                    else if( color == "yellow" ) {
+                        newData[ "color" ] = 18;
+                    }
+                    else {
+                        g_Game.AlertMessage( at_console, "[ChatRoles] Parsed an invalid color name \"%1\"\n", color );
+                    }
+                }
+
+                dictionary curData;
+                if( g_UserData.get( authID, curData ) )
+                {
+                    newData[ "hide" ] = bool( curData[ "hide" ] );
+                }
+
+                g_UserData[ authID ] = newData;
+            }
+        }
+    }
+
+    if( Server::IsMapListed( g_BlacklistedMaps ) )
     {
         g_Game.AlertMessage( at_console, "Chat-Roles disabled for this map.\n" );
         return;
-    }
-
-    dictionary userdata;
-
-    if( !data.get( "userdata", userdata ) )
-        return;
-
-    auto authIDs = userdata.getKeys();
-
-    if( authIDs.length() <= 0 )
-        return;
-
-    for( uint ui = 0; ui < authIDs.length(); ui++ )
-    {
-        string authID = authIDs[ui];
-
-        dictionary newData;
-        userdata.get( authID, newData );
-
-        string color; // Convert to integer to use less bytes
-        if( newData.get( "color", color ) )
-        {
-            if( color == "red" ) {
-                newData[ "color" ] = 17;
-            }
-            else if( color == "green" ) {
-                newData[ "color" ] = 19;
-            }
-            else if( color == "blue" ) {
-                newData[ "color" ] = 16;
-            }
-            else if( color == "yellow" ) {
-                newData[ "color" ] = 18;
-            }
-            else {
-                g_Game.AlertMessage( at_console, "[ChatRoles] Parsed an invalid color name \"%1\"\n", color );
-            }
-        }
-
-        dictionary curData;
-        if( g_UserData.get( authID, curData ) )
-        {
-            newData[ "hide" ] = bool( curData[ "hide" ] );
-        }
-
-        g_UserData[ authID ] = newData;
     }
 
     g_AllowColors = ( g_PluginManager.GetPluginList().find( "ChatColors" ) <= 0 );
@@ -83,6 +97,8 @@ void ClientCommand( const CCommand@ args )
 {
     auto player = g_ConCommandSystem.GetCurrentPlayer();
 
+    // -TODO Maybe a serialization? So players can store for ever whatever they want or not to hide their names
+    // Plus admins being able to set roles to players connected
     if( args.ArgC() == 1 )
     {
         g_PlayerFuncs.ClientPrint( player, HUD_PRINTCONSOLE, "--- Chat Roles ---\n" );
