@@ -97,9 +97,9 @@ for file in os.listdir( Path.Definitions ):
             case "no":
                 scriptMetamod: str = f"""<a style="color:{T_GreenColor}">✗ Not needed</a>""";
             case "required":
-                scriptMetamod: str = f"""<a style="color:{T_RedColor}">✓ Required</a>""";
+                scriptMetamod: str = f"""<a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/metamod" target="_blank" style="color:{T_RedColor}">✓ Required</a>""";
             case "optional":
-                scriptMetamod: str = f"""<a style="color:{T_GreenColor}">✓ Partial support</a>""";
+                scriptMetamod: str = f"""<a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/metamod" target="_blank" style="color:{T_GreenColor}">✓ Partial support</a>""";
     data[ "metamod" ] = scriptMetamod;
 
     html: str = T_asset \
