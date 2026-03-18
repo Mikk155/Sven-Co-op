@@ -1,0 +1,64 @@
+name: Metamod Build (Windows)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/aslp/**
+      - external/metamod/**
+      - .github/workflows/metamod-windows.yml
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  win32:
+    name: Windows
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: 3.26.4
+
+      - name: Build Capstone
+        working-directory: external/metamod/scripts/
+        run: |
+          call build-capstone-x86-Release.bat
+        shell: cmd
+
+      - name: Configure CMake
+        shell: cmd
+        run: |
+          cmake -S src/aslp -B build ^
+            -A Win32 ^
+            -DCMAKE_BUILD_TYPE=Release ^
+            "-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/src/cmake/metamod/windows-msvc-x86.cmake" ^
+            -DASLP_STANDALONE=ON
+
+      - name: Build Project
+        run: cmake --build build --config Release
+
+      - name: Zip binaries
+        shell: pwsh
+        run: |
+          Remove-Item "build/svencoop/addons/metamod/dlls/Release" -Recurse -Force -ErrorAction SilentlyContinue
+
+          Compress-Archive `
+            -Path build/svencoop/* `
+            -DestinationPath metamod-win32.zip
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: metamod
+          files: |
+            metamod-win32.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

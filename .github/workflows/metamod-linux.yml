@@ -1,0 +1,77 @@
+name: Metamod Build (Linux)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/aslp/**
+      - external/metamod/**
+      - .github/workflows/metamod-linux.yml
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            gcc-multilib \
+            g++-multilib \
+            make \
+            cmake
+
+      - name: Build Capstone
+        working-directory: external/metamod/scripts/
+        run: |
+          chmod +x build-capstone-opt.linux_i386.sh
+          ./build-capstone-opt.linux_i386.sh
+
+      - name: Build Procmap
+        working-directory: external/metamod/scripts/
+        run: |
+          chmod +x build-procmap-opt.linux_i386.sh
+          ./build-procmap-opt.linux_i386.sh
+
+      - name: Configure CMake
+        run: |
+          cmake -S src/aslp -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/src/cmake/metamod/linux-gcc-i386.cmake \
+            -DCMAKE_C_FLAGS=-m32 \
+            -DCMAKE_CXX_FLAGS=-m32 \
+            -DCMAKE_C_FLAGS="-m32 -Dlinux" \
+            -DCMAKE_CXX_FLAGS="-m32 -Dlinux" \
+            -DASLP_STANDALONE=ON
+
+      - name: Build Project
+        run: cmake --build build -j
+
+      - name: Zip binaries
+        shell: pwsh
+        run: |
+          Compress-Archive `
+            -Path build/svencoop/* `
+            -DestinationPath metamod-linux.zip
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: metamod
+          files: |
+            metamod-linux.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
