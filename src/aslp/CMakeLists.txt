@@ -31,8 +31,13 @@ mark_as_advanced(
 # User-configurable paths
 set( SVENCOOP_ROOT "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sven Co-op" CACHE PATH "Path to Sven Co-op/ root folder" )
 
-if( NOT EXISTS "${SVENCOOP_ROOT}/svencoop/" )
-    message( FATAL_ERROR "SVENCOOP_ROOT is not valid, couldn't find svencoop folder" )
+# Github actions
+option( ASLP_STANDALONE "Build without Sven Co-op environment" ON )
+
+if( NOT ASLP_STANDALONE )
+    if( NOT EXISTS "${SVENCOOP_ROOT}/svencoop/" )
+        message( FATAL_ERROR "SVENCOOP_ROOT is not valid, couldn't find svencoop folder" )
+    endif()
 endif()
 
 option( GENERATE_AS_DOCUMENTATION "Generate AS documentation on start up" ON )
@@ -65,7 +70,15 @@ else()
 endif()
 
 # Where to copy the binaries
-set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
+if( ASLP_STANDALONE )
+    set( METAMOD_DLL_DIR "${CMAKE_BINARY_DIR}/svencoop/addons/metamod/dlls" )
+else()
+    set( METAMOD_DLL_DIR "${SVENCOOP_ROOT}/svencoop/addons/metamod/dlls" )
+endif()
+
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${METAMOD_DLL_DIR}" )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}" )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${METAMOD_DLL_DIR}" )
 
 # Global Includes
 include_directories(
@@ -117,6 +130,9 @@ else()
     # Capstone lib & include
     set( CAPSTONE_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/include )
     set( CAPSTONE_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/capstone/${OBJDIR_LINUX}/lib/libcapstone.a )
+
+    set( PROCMAP_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/procmap/${OBJDIR_LINUX}/include )
+    set( PROCMAP_LIBRARIES ${CMAKE_SOURCE_DIR}/../../external/metamod/thirdparty/install/procmap/${OBJDIR_LINUX}/lib/libprocmap.a )
 endif()
 
 # ============================================================
@@ -138,7 +154,9 @@ endif()
 
 # Binary destination
 set_target_properties( ${PROJECT_METAMOD} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
+    LIBRARY_OUTPUT_DIRECTORY "${METAMOD_DLL_DIR}"
+    ARCHIVE_OUTPUT_DIRECTORY "${METAMOD_DLL_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${METAMOD_DLL_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
 )
 # ============================================================
@@ -157,6 +175,8 @@ add_subdirectory(
 
 # Binary destination
 set_target_properties( ${PROJECT_ASEXT} PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${METAMOD_DLL_DIR}"
+    ARCHIVE_OUTPUT_DIRECTORY "${METAMOD_DLL_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
 )
@@ -172,11 +192,6 @@ file( GLOB_RECURSE PROJECT_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
 )
-
-# Windows-specific source
-if( WIN32 )
-    list( APPEND PROJECT_FILES metamod/windows.cpp )
-endif()
 
 add_library(${PROJECT_NAME} SHARED ${PROJECT_FILES})
 
@@ -227,14 +242,19 @@ target_link_libraries( ${PROJECT_NAME} PRIVATE metamod asext )
 # Binary destination
 set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_NAME "${PROJECT_NAME}"
+    LIBRARY_OUTPUT_DIRECTORY "${METAMOD_DLL_DIR}"
+    ARCHIVE_OUTPUT_DIRECTORY "${METAMOD_DLL_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${METAMOD_DLL_DIR}"
     RUNTIME_OUTPUT_DIRECTORY_RELEASE "${METAMOD_DLL_DIR}"
 )
+
 # ============================================================
 # End ASLP
 # ============================================================
 
-if( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
+if( ASLP_STANDALONE )
+    file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/plugins.ini" DESTINATION "${METAMOD_DLL_DIR}" )
+elseif( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
 
     # ============================================================
     # Copy plugins.ini if not exists
