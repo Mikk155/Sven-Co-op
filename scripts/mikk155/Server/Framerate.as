@@ -11,9 +11,6 @@ class ServerFramerate
 
     // True if this is the last frame of a second
     bool LastFrame;
-
-    // Average frame rate every 10 seconds. if zero then is the first 10 seconds
-    int Average;
 }
 
 namespace Server
@@ -62,9 +59,6 @@ namespace Server
             private int m_FrameCount = 0;
             private int m_ServerFrames = 0;
             private float m_NextFrameUpdate = 0.0f;
-            private int m_AvgAccumulator = 0;
-            private int m_AvgSamples = 0;
-            private int m_LastAverage = 0;
             private ServerFramerate@ data;
 
             void __Think__()
@@ -77,18 +71,6 @@ namespace Server
                     this.m_FrameCount = 0;
                     data.LastFrame = true;
                     this.m_NextFrameUpdate = g_Engine.time + 1.0f;
-
-                    m_AvgAccumulator += data.Frames;
-                    m_AvgSamples++;
-
-                    if( m_AvgSamples >= 10 ) // 10 segundos
-                    {
-                        m_LastAverage = m_AvgAccumulator / m_AvgSamples;
-                        m_AvgAccumulator = 0;
-                        m_AvgSamples = 0;
-                    }
-
-                    data.Average = m_LastAverage;
                 }
 
                 data.Current = CurrentRate();
@@ -116,7 +98,7 @@ namespace Server
         __CThinker__@ __Thinker__;
 
         /**
-        *   @brief Set a callback method to call every second with a provided int representing the average frame rate during that second
+        *   @brief Set a callback method for every frame update
         **/
         FrameRateCallback@ SetCallback( FrameRateCallback@ callback )
         {
