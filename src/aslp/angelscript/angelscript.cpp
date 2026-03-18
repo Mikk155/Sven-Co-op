@@ -15,8 +15,8 @@
 
 #include "string/CASBinaryStringBuilder.h"
 
-#include "hooks/AddToFullPack.hpp"
-#include "hooks/PM_Move.hpp"
+#include "Hooks/AddToFullPack.hpp"
+#include "Hooks/PM_Move.hpp"
 
 angelhook_t g_AngelHook;
 
