@@ -7,8 +7,8 @@
         "scripts/plugins/anticlip.json",
         "scripts/mikk155/meta_api.as",
         "scripts/mikk155/meta_api/json.as",
-        "scripts/mikk155/meta_api/Framerate.as",
-        "scripts/mikk155/meta_api/IsMapListed.as"
+        "scripts/mikk155/Server/Framerate.as",
+        "scripts/mikk155/Server/IsMapListed.as"
     ],
 
     "description": "Disable allied characters collision. Pass through players and allied monsters like Left 4 dead",
