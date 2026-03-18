@@ -24,6 +24,7 @@
 
 #include "../mikk155/meta_api"
 #include "../mikk155/meta_api/json"
+#include "../mikk155/Server/Framerate"
 #include "../mikk155/Server/IsMapListed"
 
 void PluginInit()
@@ -43,6 +44,7 @@ array<string> g_BlacklistedMaps;
 PostAddToFullPackHook@ fnPostAddToFullPack = PostAddToFullPackHook( PostAddToFullPack );
 PreMovementHook@ fnPreMovement = PreMovementHook( PreMovement );
 ShouldCollideHook@ fnShouldCollide = ShouldCollideHook( ShouldCollide );
+auto fnCheckFramerate = Server::Framerate::FrameRateCallback( CheckFramerate );
 #endif
 
 bool g_AllowMonsters = false;
@@ -81,6 +83,7 @@ void MapActivate()
     g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @fnPreMovement );
     g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
     g_Hooks.RemoveHook( Hooks::aslp::Entity::ShouldCollide, @fnShouldCollide );
+    Server::Framerate::RemoveCallback( @fnCheckFramerate );
 #endif
 
     if( Server::IsMapListed( g_BlacklistedMaps ) )
@@ -95,6 +98,7 @@ void MapActivate()
     if( g_ClientPrediction )
     {
         g_Hooks.RegisterHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+        Server::Framerate::SetCallback( @fnCheckFramerate );
     }
 
     if( !g_AllowProjectiles )
@@ -112,6 +116,68 @@ void MapInit()
 }
 
 #if METAMOD_PLUGIN_ASLP
+int g_BestServerFrames = 0;
+
+int g_LagSpikes = 0;
+bool g_ServerLagged = false;
+
+int g_AvgAccumulator = 0;
+int g_AvgSamples = 0;
+int g_LastAverage = 0;
+
+void CheckFramerate( const ServerFramerate@ data )
+{
+    if( !data.LastFrame )
+        return;
+
+    g_AvgAccumulator += data.Frames;
+    g_AvgSamples++;
+
+    if( g_AvgSamples < 10 )
+        return;
+
+    g_LastAverage = g_AvgAccumulator / g_AvgSamples;
+    g_AvgAccumulator = 0;
+    g_AvgSamples = 0;
+
+    if( g_LastAverage > g_BestServerFrames )
+    {
+        g_BestServerFrames = g_LastAverage;
+    }
+    else
+    {
+        g_BestServerFrames = int( g_BestServerFrames * 0.98f + g_LastAverage * 0.02f );
+    }
+
+    // Are we lagging?
+    if( g_LastAverage < g_BestServerFrames * 0.75f )
+    {
+        g_LagSpikes++;
+    }
+    else
+    {
+        g_LagSpikes = Math.max( 0, g_LagSpikes - 1 );
+    }
+
+//    g_Game.AlertMessage( at_console, "spikes: %1 | best: %2 | avg: %3\n", g_LagSpikes, g_BestServerFrames, g_LastAverage );
+
+    if( !g_ServerLagged && g_LagSpikes >= 4 )
+    {
+        g_ServerLagged = true;
+        g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Anti-Clip] The Server is experiencing slow frame rates. Disabling client prediction...\n" );
+        g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+    }
+
+    // If your server usually lags a lot you can decrease this multiplier 0.85 to something lower to not spam the hook de-activation
+    if( g_ServerLagged && g_LastAverage > g_BestServerFrames * 0.85f )
+    {
+        g_ServerLagged = false;
+        g_LagSpikes = 0;
+        g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Anti-Clip] Server recovered. Re-enabling prediction.\n" );
+        g_Hooks.RegisterHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+    }
+}
+
 HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_result )
 {
     if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
