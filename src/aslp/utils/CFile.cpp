@@ -85,7 +85,6 @@ bool CFile::Read( std::string& out )
     fseek( m_File, 0, SEEK_SET );
 
     out.resize( size );
-    fread( out.data(), 1, size, m_File );
-
-    return true;
+    size_t read = fread( out.data(), 1, size, m_File );
+    return ( read == static_cast<size_t>(size) );
 }
