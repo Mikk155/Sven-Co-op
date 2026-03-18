@@ -19,7 +19,11 @@ namespace FixModelIndexGMR
     {
         int filesize = 0;
         char mappath[MAX_PATH];
+#ifdef _WIN32
         sprintf_s(mappath, "maps/%s.cfg", STRING( gpGlobals->mapname ) );
+#else
+        snprintf(mappath, sizeof(mappath), "maps/%s.cfg", STRING( gpGlobals->mapname ) );
+#endif
         byte* membuf = g_engfuncs.pfnLoadFileForMe(mappath, &filesize);
 
         if( !membuf )
