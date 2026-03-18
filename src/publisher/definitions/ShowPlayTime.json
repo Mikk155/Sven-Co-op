@@ -1,0 +1,23 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/plugins/ShowPlayTime.as",
+        "scripts/plugins/ShowPlayTime.json",
+        "scripts/mikk155/meta_api.as",
+        "scripts/mikk155/meta_api/json.as"
+    ],
+
+    "description": "Display the total time a map has been running on the server",
+
+    "map_script": false,
+
+    "plugin": true,
+
+    "metamod": "optional",
+
+    "name": "ShowPlayTime",
+
+    "title": "Show map play time"
+}

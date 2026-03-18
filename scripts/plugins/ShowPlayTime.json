@@ -1,0 +1,26 @@
+{
+    // Time in seconds to display a scheduled message
+    "message_schedule": 600,
+
+    // Cooldown for clients using /time
+    "client_cooldown": 60,
+
+    // Maybe you want to translate?
+    "message":
+    [
+        "This map has been running for",
+        "day",
+        "days",
+        "hour",
+        "hours",
+        "minute",
+        "minutes",
+        "second",
+        "seconds",
+        "%1during %2 map restart",
+        "%1during %2 map restarts"
+    ],
+
+    // Should this json file be parsed every map change?
+    "reload": false
+}

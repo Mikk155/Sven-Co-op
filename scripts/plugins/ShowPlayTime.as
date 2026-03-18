@@ -1,32 +1,91 @@
-const float MESSAGE_DISPLAY_COOLDOWN = 60;
+/**
+*   MIT License
+*
+*   Copyright (c) 2025 Mikk155
+*
+*   Permission is hereby granted, free of charge, to any person obtaining a copy
+*   of this software and associated documentation files (the "Software"), to deal
+*   in the Software without restriction, including without limitation the rights
+*   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+*   copies of the Software, and to permit persons to whom the Software is
+*   furnished to do so, subject to the following conditions:
+*
+*   The above copyright notice and this permission notice shall be included in all
+*   copies or substantial portions of the Software.
+*
+*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+*   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+*   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+*   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+*   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+*   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+*   SOFTWARE.
+**/
+
+#include "../mikk155/meta_api"
+#include "../mikk155/meta_api/json"
 
 void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
 
-    g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
-    g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
+    meta_api::NoticeInstallation();
+
+    g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string& in nextmap )
+    {
+        if( string( g_Engine.mapname ) == nextmap )
+        {
+            mapRestarts++;
+        }
+        else
+        {
+            date = DateTime();
+        }
+
+        Shutdown();
+
+        return HOOK_CONTINUE;
+    } ) );
+
+    g_Hooks.RegisterHook( Hooks::Player::ClientSay, ClientSayHook( function( SayParameters@ params )
+    {
+        if( g_NextClientDisplay > g_Engine.time )
+            return HOOK_CONTINUE;
+
+        if( params.GetArguments()[0] != '/time' )
+            return HOOK_CONTINUE;
+
+        ShowTime();
+
+        g_NextClientDisplay = g_Engine.time + 10.0f;
+
+        return HOOK_CONTINUE;
+    } ) );
 
     MapActivate();
 }
 
-int mapRestarts = 0;
-
 DateTime date;
+int mapRestarts = 0;
+CScheduledFunction@ fnThink;
+float g_MessageSchedule = 60;
+float g_NextClientDisplay;
+bool g_ShouldReloadJson = true;
+array<string> g_Messages;
 
-HookReturnCode MapChange( const string& in nextmap )
+void Shutdown()
 {
-    if( string( g_Engine.mapname ) == nextmap )
+    if( fnThink !is null )
     {
-        mapRestarts++;
+        g_Scheduler.RemoveTimer( fnThink );
+        @fnThink = null;
     }
-    else
-    {
-        date = DateTime();
-    }
+}
 
-    return HOOK_CONTINUE;
+void PluginExit()
+{
+    Shutdown();
 }
 
 void ShowTime()
@@ -39,44 +98,31 @@ void ShowTime()
     int minutes = difference.GetMinutes() % 60;
     int seconds = difference.GetSeconds() % 60;
 
-    string time = "This map has been running for ";
+    string time = g_Messages[0] + " ";
 
-    if( days > 0 ) { snprintf( time, "%1%2 day%3 ", time, days, ( days > 1 ? "s" : "" ) ); }
-    if( hours > 0 ) { snprintf( time, "%1%2 hour%3 ", time, hours, ( hours > 1 ? "s" : "" ) ); }
-    if( minutes > 0 ) { snprintf( time, "%1%2 minute%3 ", time, minutes, ( minutes > 1 ? "s" : "" ) ); }
-    if( seconds > 0 ) { snprintf( time, "%1%2 second%3 ", time, seconds, ( seconds > 1 ? "s" : "" ) ); }
+    if( days > 0 ) { snprintf( time, "%1%2 %3 ", time, days, ( days > 1 ? g_Messages[2] : g_Messages[1] ) ); }
+    if( hours > 0 ) { snprintf( time, "%1%2 %3 ", time, hours, ( hours > 1 ? g_Messages[4] : g_Messages[3] ) ); }
+    if( minutes > 0 ) { snprintf( time, "%1%2 %3 ", time, minutes, ( minutes > 1 ? g_Messages[6] : g_Messages[5] ) ); }
+    if( seconds > 0 ) { snprintf( time, "%1%2 %3 ", time, seconds, ( seconds > 1 ? g_Messages[8] : g_Messages[7] ) ); }
 
-    if( mapRestarts > 0 ) { snprintf( time, "%1during %2 map restart%3", time, mapRestarts, ( mapRestarts > 1 ? "s" : "" ) ); }
+    if( mapRestarts > 0 ) { snprintf( time, ( mapRestarts > 1 ? g_Messages[10] : g_Messages[9] ), time, mapRestarts ); }
 
     g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, time + "\n" );
 }
 
-CScheduledFunction@ fnThink;
-
 void MapActivate()
 {
-    if( fnThink !is null )
+    if( g_ShouldReloadJson )
     {
-        g_Scheduler.RemoveTimer( fnThink );
-        @fnThink = null;
+        dictionary data;
+        if( meta_api::json::Deserialize( "scripts/plugins/ShowPlayTime.json", data ) )
+        {
+            g_Messages = meta_api::json::ToArray( data[ "message" ] );
+            g_ShouldReloadJson = bool( data[ "reload" ] );
+            data.get( "client_cooldown", g_NextClientDisplay );
+            data.get( "message_schedule", g_MessageSchedule );
+        }
     }
 
-    @fnThink = g_Scheduler.SetInterval( "ShowTime", MESSAGE_DISPLAY_COOLDOWN, g_Scheduler.REPEAT_INFINITE_TIMES );
-}
-
-float NextClientDisplay;
-
-HookReturnCode ClientSay( SayParameters@ params )
-{
-    if( NextClientDisplay > g_Engine.time )
-        return HOOK_CONTINUE;
-
-    if( params.GetArguments()[0] != '/time' )
-        return HOOK_CONTINUE;
-
-    ShowTime();
-
-    NextClientDisplay = g_Engine.time + 10.0f;
-
-    return HOOK_CONTINUE;
+    @fnThink = g_Scheduler.SetInterval( "ShowTime", g_MessageSchedule, g_Scheduler.REPEAT_INFINITE_TIMES );
 }
