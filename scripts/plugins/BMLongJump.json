@@ -1,0 +1,24 @@
+{
+    // Speed at which the player can jump straight
+    "speed": 400,
+
+    // Sound to play when jumping (sound/ not needed!). or empty to not play anything
+    "jump_sound": "player/pl_long_jump.wav",
+
+    // Should the longjump supress fall damage?
+    "supress_fall_damage": true,
+
+    // Sound to play when supressing fall damage (sound/ not needed!). or empty to not play anything
+    "fall_sound": "player/pl_long_jump.wav",
+
+    // Should this json file be parsed every map change?
+    "reload": false,
+
+    // List of maps that this plugin should be disabled.
+    // Supports the wildcard "*" as suffix and prefix
+    "map_blacklist":
+    [
+        "bts_rc",
+        "of*"
+    ]
+}

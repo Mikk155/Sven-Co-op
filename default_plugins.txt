@@ -53,6 +53,11 @@
     }
     "plugin"
     {
+        "name" "BMLongJump"
+        "script" "BMLongJump"
+    }
+    "plugin"
+    {
         "name" "SurvivalLateJoinSpawn"
         "script" "SurvivalLateJoinSpawn"
     }
