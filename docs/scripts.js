@@ -3,7 +3,26 @@ document.addEventListener( "DOMContentLoaded", () =>
     UpdateElementWithTemplate( "header", "templates/header.html" );
     UpdateElementWithTemplate( "footer", "templates/footer.html" );
     loadDetailFiles();
+    LoadLanguageCodeBlocks();
 } );
+
+async function LoadLanguageCodeBlocks()
+{
+    const link = document.createElement( "link" );
+    link.rel = "stylesheet";
+    link.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css";
+    document.head.appendChild(link);
+
+    const script = document.createElement( "script" );
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js";
+
+    script.onload = () =>
+    {
+        hljs.highlightAll();
+    };
+
+    document.head.appendChild( script );
+}
 
 async function loadDetailFiles()
 {
@@ -31,6 +50,11 @@ async function loadDetailFiles()
 
             el.innerHTML = html;
             el.classList.add( "loaded" );
+
+            if( window.hljs )
+            {
+                hljs.highlightAll();
+            }
         }
         catch( err )
         {
