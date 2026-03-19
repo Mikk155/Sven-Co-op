@@ -29,6 +29,8 @@ T_install_plugin: str = GetTemplate( "install_plugin" );
 T_GreenColor = "#3aaa10";
 T_RedColor = "#cc4444";
 
+g_MaxShortDescriptionCharacters: int = 128;
+
 g_Plugins: list[dict] = []
 g_MapScripts: list[dict] = []
 
@@ -104,12 +106,17 @@ for file in os.listdir( Path.Definitions ):
                 scriptMetamod: str = f"""<a href="https://github.com/Mikk155/Sven-Co-op/releases/tag/metamod" target="_blank" style="color:{T_GreenColor}">✓ Partial support</a>""";
     data[ "metamod" ] = scriptMetamod;
 
+    scriptShortDescription: str = data[ "short_description" ];
+    if len( scriptShortDescription ) > g_MaxShortDescriptionCharacters:
+        scriptShortDescription = scriptShortDescription[ 0 : g_MaxShortDescriptionCharacters ];
+
     html: str = T_asset \
         .replace( "{name}", scriptName ) \
         .replace( "{title}", scriptTitle ) \
         .replace( "{assets}", scriptAssets ) \
         .replace( "{map_script}", scriptMapScript ) \
         .replace( "{plugin}", scriptPlugin ) \
+        .replace( "{header_description}", scriptShortDescription ) \
         .replace( "{metamod}", scriptMetamod ) \
         .replace( "{description}", scriptDescription.replace( "\n", "<br>" ) );
 
@@ -137,8 +144,6 @@ for file in os.listdir( Path.Definitions ):
     
     with open( outputFile, "w", encoding="utf-8" ) as f:
         f.write( html )
-
-g_MaxShortDescriptionCharacters = 128;
 
 def GetBufferFor( obj: list ) -> str:
 
