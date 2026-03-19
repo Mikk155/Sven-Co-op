@@ -345,8 +345,8 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
         return HOOK_CONTINUE;
     }
 
-    // Player can melee while inside another player and hit something else
-    if( toucher.IsPlayer() && other.IsPlayer() )
+    // Player can melee while inside an ally and hit something else
+    if( other.IRelationship( toucher ) == R_AL && ( toucher.IsPlayer() || other.IsPlayer() ) )
     {
         if( other.Intersects( toucher ) )
         {
