@@ -1,5 +1,41 @@
 [
   {
+    "Author": "sashi0034",
+    "Resource": "https://github.com/sashi0034/angel-lsp",
+    "Type": "Visual studio code extension",
+    "Description": "Visual studio code extension AngelScript language server"
+  },
+  {
+    "Author": "Sven Co-op wiki",
+    "Resource": "https://wiki.svencoop.com/Main_Page",
+    "Type": "Everything",
+    "Description": "Any asset and mods"
+  },
+  {
+    "Author": "GameBanana",
+    "Resource": "https://gamebanana.com/games/54",
+    "Type": "Documentation",
+    "Description": "Various documentation"
+  },
+  {
+    "Author": "Sven Co-op map data base",
+    "Resource": "http://scmapdb.wikidot.com/",
+    "Type": "Maps",
+    "Description": "Maps, campaigns & prefabs for mappers"
+  },
+  {
+    "Author": "Sven Manor",
+    "Resource": "https://www.svenmanor.com/",
+    "Type": "Documentation",
+    "Description": "Documentation about mapping"
+  },
+  {
+    "Author": "Mod data base",
+    "Resource": "https://www.moddb.com/mods/sven-co-op/addons",
+    "Type": "Everything",
+    "Description": "Any asset and mods"
+  },
+  {
     "Author": "w00tguy",
     "Resource": "https://github.com/wootguy#sven-co-op-projects",
     "Type": "AngelScript, Metamod",
@@ -158,6 +194,18 @@
   {
     "Author": "angelaLuna14",
     "Resource": "https://github.com/angelaLuna14?tab=repositories",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "FoxPlays24",
+    "Resource": "https://github.com/FoxPlays24/FoxPlays-SC-Plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "JustJ4Y",
+    "Resource": "https://github.com/JustJ4Y/Sven-Coop-Server-Plugins",
     "Type": "AngelScript",
     "Description": "AngelScript plugins"
   }
