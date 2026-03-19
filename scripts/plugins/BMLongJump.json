@@ -2,6 +2,8 @@
     // Speed at which the player can jump straight
     "speed": 400,
 
+    "height_speed": 300,
+
     // Sound to play when jumping (sound/ not needed!). or empty to not play anything
     "jump_sound": "player/pl_long_jump.wav",
 

@@ -62,6 +62,7 @@ PlayerPostThinkHook@ fnPostThink;
 PlayerTakeDamageHook@ fnTakeDamage = PlayerTakeDamageHook( TakeDamage );
 
 int g_Speed = 400;
+int g_HeightSpeed = 300;
 string g_JumpSound;
 string g_FallSound;
 bool g_ShouldReloadJson = true;
@@ -92,6 +93,7 @@ void MapInit()
             data.get( "jump_sound", g_JumpSound );
             data.get( "fall_sound", g_FallSound );
             data.get( "supress_fall_damage", g_FallDamage );
+            data.get( "height_speed", g_HeightSpeed );
         }
     }
 
@@ -226,7 +228,7 @@ bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
                     return false;
                 }
 
-                direction.z = 1300;
+                direction.z = g_HeightSpeed;
 
                 player.SetAnimation( PLAYER_SUPERJUMP, 1 );
 
