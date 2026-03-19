@@ -11,6 +11,8 @@
 
     "description": "Set a list of any type of asset to precache, even dynamic per-level precaching is allowed.",
 
+    "details": "angelscript/CustomPrecache.html",
+
     "map_script": false,
 
     "plugin": true,

@@ -56,6 +56,11 @@
         {
             "type": "string",
             "description": "Short description for the main table"
+        },
+        "details":
+        {
+            "type": "string",
+            "description": "Path to a .html file in docs/ to add in the generated html"
         }
     },
     "additionalProperties": false,

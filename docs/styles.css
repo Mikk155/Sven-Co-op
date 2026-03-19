@@ -176,3 +176,14 @@ button:disabled
   cursor: default;
   box-shadow: none;
 }
+
+#extra-content
+{
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#extra-content.loaded
+{
+  opacity: 1;
+}

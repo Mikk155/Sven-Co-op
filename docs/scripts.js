@@ -2,7 +2,42 @@ document.addEventListener( "DOMContentLoaded", () =>
 {
     UpdateElementWithTemplate( "header", "templates/header.html" );
     UpdateElementWithTemplate( "footer", "templates/footer.html" );
+    loadDetailFiles();
 } );
+
+async function loadDetailFiles()
+{
+    const containers = document.querySelectorAll( "[data-src]" );
+
+    for( const el of containers )
+    {
+        const file = el.getAttribute( "data-src" );
+
+        if( !file )
+        {
+            continue;
+        }
+
+        try
+        {
+            const res = await fetch( file );
+
+            if( !res.ok )
+            {
+                throw new Error( res.statusText );
+            }
+
+            const html = await res.text();
+
+            el.innerHTML = html;
+            el.classList.add( "loaded" );
+        }
+        catch( err )
+        {
+            console.error( "Error loading:", file, err );
+        }
+    }
+}
 
 async function UpdateElementWithTemplate( tag, file )
 {

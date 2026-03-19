@@ -111,6 +111,13 @@ for file in os.listdir( Path.Definitions ):
         .replace( "{metamod}", scriptMetamod ) \
         .replace( "{description}", scriptDescription.replace( "\n", "<br>" ) );
 
+    scriptDetails = data.get( "details", None );
+
+    if scriptDetails is None:
+        html = html.replace( "{details}", "" );
+    else:
+        html = html.replace( "{details}", f"""<div id="details" data-src="{scriptDetails}"></div>""" );
+
     outputFile: str = os.path.join( Path.Documents, f"{scriptName}.html" );
 
     with open( outputFile, "w", encoding="utf-8" ) as f:
