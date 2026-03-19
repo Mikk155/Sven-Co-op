@@ -1,3 +1,19 @@
+:root
+{
+  --background_dark: rgb(18, 22, 33);
+
+  --SVENCOOP_HUD: rgb(0, 60, 160);
+  --SVENCOOP_RGB: rgb(0, 40, 100);
+  --SVENCOOP_BACKGROUND: rgb(0, 20, 40);
+  --white: rgb( 255, 255, 255 );
+  --greenlight: rgb(0, 255, 145);
+  --cyan: rgb(0, 251, 255);
+  --red: rgb( 255, 0, 0);
+  --blue: rgb(0, 24, 158);
+  --limitless: #cb00b0;
+  --darkcyan: #007acc;
+}
+
 html, body
 {
   height: 100%;
@@ -15,6 +31,7 @@ body
   margin: 0;
   font-family: Arial, sans-serif;
   background: #486088;
+  background: var(--SVENCOOP_RGB);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -22,7 +39,7 @@ body
 
 header, footer
 {
-  background: #333;
+  background: var(--SVENCOOP_BACKGROUND);
   color: #486088;
   text-align: center;
   padding: 10px;
@@ -30,33 +47,37 @@ header, footer
 
 #content
 {
-  max-width: 800px;
+  max-width: 80%;
   margin: 30px auto;
-  background: white;
+  background: var(--white);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-#content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+#content table
+{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-#content th {
-    text-align: left;
-    padding: 12px;
-    border-bottom: 2px solid #ccc;
+#content th
+{
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #ccc;
 }
 
-#content td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
+#content td
+{
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
 }
 
-#content tr:hover {
-    background-color: rgba(0,0,0,0.15);
+#content tr:hover
+{
+  background-color: rgba(0,0,0,0.15);
 }
 
 #discord
@@ -67,12 +88,12 @@ header, footer
 
 #content h1, #content h2, p
 {
-  color: #007acc;
+  color: var(--darkcyan);
 }
 
 a
 {
-  color: #cb00b0;
+  color: var(--blue);
 }
 
 .code-block {
