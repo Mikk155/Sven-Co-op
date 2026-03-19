@@ -31,8 +31,32 @@
 </tr>
 </tbody>
 </table>
+<br>
 <script> const assets = ["scripts/plugins/ChatRoles.as", "scripts/plugins/ChatRoles.json", "scripts/mikk155/meta_api.as", "scripts/mikk155/meta_api/json.as", "scripts/mikk155/Player/GetUniqueID.as", "scripts/mikk155/Server/IsMapListed.as"]; </script>
 <button onclick="downloadAssets( this, assets )">⬇ Download</button>
+<h1>Installation</h1>
+<p>
+Open "<a style="color: var(--red);">svencoop/default_plugins.txt</a>" and paste this over.
+</p>
+
+<div class="code-block" style="width: fit-content; padding-right: 100px;">
+<button onclick="ClipboardCopy( 'default_plugins' )" title="Copy">📋</button>
+<code id="default_plugins">
+<br>
+&emsp;&emsp;"plugin"
+<br>
+&emsp;&emsp;{
+<br>
+&emsp;&emsp;&emsp;&emsp;"name" "ChatRoles"
+<br>
+&emsp;&emsp;&emsp;&emsp;"script" "ChatRoles"
+<br>
+&emsp;&emsp;}
+</code>
+</div>
+<p>
+Please do <a style="color: var(--red);">NOT</a> change the "<a style="color: var(--red);">name</a>" value. some plugins and map scripts want to find plugins by name to adjust their behaviour.
+</p>
 </div>
 </main>
 </body>

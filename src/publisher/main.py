@@ -24,6 +24,7 @@ def GetTemplate( name: str ) -> str:
 T_index: str = GetTemplate( "index" );
 T_block: str = GetTemplate( "block" );
 T_asset: str = GetTemplate( "asset" );
+T_install_plugin: str = GetTemplate( "install_plugin" );
 
 T_GreenColor = "#3aaa10";
 T_RedColor = "#cc4444";
@@ -74,6 +75,7 @@ for file in os.listdir( Path.Definitions ):
             print( f"Invalid file {asset} at {file}!" );
             exit(0);
 
+    MainScriptFile: str = scriptAssets[0];
     scriptAssets: str = json.dumps( scriptAssets );
     data[ "assets" ] = scriptAssets;
     scriptMapScript: str = f"""<a style="color:{T_RedColor}">✗ No</a>""";
@@ -120,14 +122,21 @@ for file in os.listdir( Path.Definitions ):
 
     outputFile: str = os.path.join( Path.Documents, f"{scriptName}.html" );
 
-    with open( outputFile, "w", encoding="utf-8" ) as f:
-        f.write( html )
+    installationDetails = '';
 
     if isMapScript is True:
         g_MapScripts.append( data );
 
     if isPlugin is True:
+        installationDetails += T_install_plugin \
+            .replace( "{name}", scriptName ) \
+            .replace( "{file}", MainScriptFile[ 16 : -3 ] );
         g_Plugins.append( data );
+
+    html = html.replace( "{installation}", installationDetails );
+    
+    with open( outputFile, "w", encoding="utf-8" ) as f:
+        f.write( html )
 
 g_MaxShortDescriptionCharacters = 128;
 
