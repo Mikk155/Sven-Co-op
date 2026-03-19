@@ -24,15 +24,15 @@ async function LoadLanguageCodeBlocks()
     document.head.appendChild( script );
 }
 
-async function loadDetailFiles()
+async function loadDetailFiles( root = document )
 {
-    const containers = document.querySelectorAll( "[data-src]" );
+    const containers = root.querySelectorAll( "[data-src]" );
 
     for( const el of containers )
     {
         const file = el.getAttribute( "data-src" );
 
-        if( !file )
+        if( !file || el.dataset.loaded )
         {
             continue;
         }
@@ -49,7 +49,10 @@ async function loadDetailFiles()
             const html = await res.text();
 
             el.innerHTML = html;
+            el.dataset.loaded = "true";
             el.classList.add( "loaded" );
+
+            await loadDetailFiles( el );
 
             if( window.hljs )
             {
