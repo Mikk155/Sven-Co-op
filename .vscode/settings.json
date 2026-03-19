@@ -18,6 +18,10 @@
     {
     },
 
+    "angelScript.angelScriptFilePatterns": [
+        "scripts/**/*.as"
+    ],
+
     // Don't search on binary directories
     "search.exclude":
     {

@@ -137,20 +137,42 @@ table.markdown td
 
 button
 {
-  padding: 5px 10px;
-  border-radius: 4px;
-  border: 1px solid #888;
-  background: #e8e8e8;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #2a6fa3;
+
+  background: linear-gradient( 180deg, #3da0ff 0%, #1f78d1 100% );
+
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
   cursor: pointer;
+
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+
+  transition: all 0.15s ease;
 }
 
 button:hover
 {
-  background: #dcdcdc;
+  background: linear-gradient( 180deg, #5bb2ff 0%, #2a8be8 100% );
+
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+button:active
+{
+  transform: translateY(1px);
+
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 2px 3px rgba(0,0,0,0.2);
 }
 
 button:disabled
 {
-  opacity: 0.6;
+  background: #7aa7d6;
+  border-color: #6c9bc9;
+  opacity: 0.7;
   cursor: default;
+  box-shadow: none;
 }
