@@ -64,9 +64,9 @@ for file in os.listdir( Path.Definitions ):
     scriptName: str = data[ "name" ];
     scriptTitle: str = data.get( "title", scriptName );
     data[ "title" ] = scriptTitle;
-    scriptDescription: str = data.get( "description", "No description provided." );
+    scriptDescription: str = data.get( "description", "" );
     if not "short_description" in data:
-        data[ "short_description" ] = scriptDescription;
+        data[ "short_description" ] = scriptDescription if scriptDescription != "" else "No description provided.";
     AddIncludes( data );
     scriptAssets: list[str] =  data[ "assets" ];
     for asset in scriptAssets:
