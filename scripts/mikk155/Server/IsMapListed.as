@@ -27,15 +27,19 @@ namespace Server
     /**
     *   @brief Return whatever the current map is in the given list
     *   allowWildcarding: Allow "*" as wildcarding for suffix and prefix
+    *   freeArray: when true list is resized to 0.
     **/
-    bool IsMapListed( array<string>@ list, bool allowWildcarding = true )
+    bool IsMapListed( array<string>@ list, bool allowWildcarding = true, bool freeArray = false )
     {
+        bool returnValue = false;
+
         string mapname = string( g_Engine.mapname );
 
         if( list.find( mapname ) >= 0 )
-            return true;
-
-        if( allowWildcarding )
+        {
+            returnValue = true;
+        }
+        else if( allowWildcarding )
         {
             for( uint ui = 0; ui < list.length(); ui++ )
             {
@@ -45,15 +49,28 @@ namespace Server
                 bool HasSuffix = key.EndsWith( '*' );
 
                 if( HasPrefix && HasSuffix && mapname.Find( key.SubString( 1, key.Length() - 2 ) ) != String::INVALID_INDEX )
-                    return true;
-
-                if( HasPrefix && mapname.EndsWith( key.SubString( 1, String::INVALID_INDEX ) ) )
-                    return true;
-
-                if( HasSuffix && mapname.StartsWith( key.SubString( 0, key.Length() - 1 ) ) )
-                    return true;
+                {
+                    returnValue = true;
+                    break;
+                }
+                else if( HasPrefix && mapname.EndsWith( key.SubString( 1, String::INVALID_INDEX ) ) )
+                {
+                    returnValue = true;
+                    break;
+                }
+                else if( HasSuffix && mapname.StartsWith( key.SubString( 0, key.Length() - 1 ) ) )
+                {
+                    returnValue = true;
+                    break;
+                }
             }
         }
+
+        if( freeArray )
+        {
+            list.resize(0);
+        }
+
         return false;
     }
 }
