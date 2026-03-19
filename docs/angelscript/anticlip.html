@@ -1,0 +1,47 @@
+<p>
+Allow players to pass through other players and allied monsters just like you'd do in Left 4 Dead
+<br>
+<br>
+This plugin unlikelly semiclip doesn't resort to do some hacking on the players but completelly overwrite the list of possible entity collision in the player movement code (Server-side)
+<br>
+<br>
+This "Anti Clipping" is not limited to players. There is a json config "<a style="color: var(--red);">npc_clip</a>" which when set to false players can pass through allied monsters as well.
+<br>
+<br>
+With the json config "<a style="color: var(--red);">projectiles_clip</a>" this will also affect your projectiles. i.e rockets, spores, grenades, bolts, squeaks etc. the same with custom weapons as long as their projectiles defines the player as their owner.
+<br>
+<br>
+Players can still "boost" onto other players or monsters if the json variable "<a style="color: var(--red);">player_boost</a>" is true.
+<br>
+<br>
+We previously said "Server-Side" so all of that would actually feel really laggy to the clients but there's a label in the json config called "<a style="color: var(--red);">client_prediction</a>"
+<br>
+When the "<a style="color: var(--red);">active</a>" option is set to <a style="color:blue;">true</a> the plugin will register the AddToFullPack hook. this is quite expensive so we made it to be an option for you instead.
+<br>
+But enabling it is not an absolute risk. We've made a system for that to know when the server is experiencing slow frame rates and dynamically remove / register that hook.
+</p>
+
+<div class="code-block">
+[Anti-Clip] The Server is experiencing slow frame rates. Disabling client prediction...
+<br>
+...
+<br>
+[Anti-Clip] Server recovered. Re-enabling prediction.
+</div>
+
+<p>
+The client prediction section also has a <a href="https://www.svenmanor.com/entity-guide/entity_rendering" target="_blank">rendering</a> setting for rendermode & renderamt so whatever you're colliding with an entity it will use that render settings.
+</p>
+
+<img src="assets/images/anticlip/sample.jpg">
+
+<p>
+<br>
+This sections is entirelly cosmetic. the most relevant use of this is to tell the client that the entity we're hiting is not solid.
+<br>
+Otherwise the client things it is solid and so it kicks back them for a moment. but in reality at the server side we're not colliding at all.
+<br>
+The main purpose is just to give clients a bit of sync.
+<br>
+There's the possibility for clients to use the client command "<a style="color: var(--red);">cl_solid_players 0</a>" to avoid using AddToFullPack but we've experienced some issues while clients are on spectator mode.
+</p>

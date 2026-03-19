@@ -2,11 +2,10 @@
     // Whatever players should collide with allied npcs.
     "npc_clip": false,
 
-    // Allow boosting by jumping over a player / npc
+    // Whatever to allow boosting by jumping over a player / npc
     "player_boost": true,
 
     // Whatever projectiles (rockets, spores, bolts etc) can clip to allies
-    // Disabling this will disable the ShouldCollideHook
     "projectiles_clip": false,
 
     "client_prediction":

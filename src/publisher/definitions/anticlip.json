@@ -11,7 +11,7 @@
         "scripts/mikk155/Server/IsMapListed.as"
     ],
 
-    "description": "Disable allied characters collision. Pass through players and allied monsters like Left 4 dead",
+    "short_description": "Disable allied characters collision. Pass through players and allied monsters like in Left 4 dead",
 
     "map_script": false,
 
@@ -20,6 +20,8 @@
     "metamod": "required",
 
     "name": "anticlip",
+
+    "details": "angelscript/anticlip.html",
 
     "title": "Anti Clip"
 }
