@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<base href="../">
+<head>
+  <meta charset="UTF-8">
+  <title>Sven Co-op Resources</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js"></script>
+</head>
+<body>
+    <main>
+        <div id="content">
+            <h1>List of external resources</h1>
+            <div class="table-wrap">
+                <table class="markdown" id="pages">
+                    <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th>Resource</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <script>
+async function loadResources()
+{
+    try
+    {
+        const res = await fetch( "resources/resources.json" );
+
+        if( !res.ok )
+        {
+            throw new Error( "Failed to load JSON" );
+        }
+
+        const data = await res.json();
+
+        const tbody = document.getElementById( "resources-body" );
+
+        if( !tbody )
+        {
+            return;
+        }
+
+        for( const item of data )
+        {
+            const tr = document.createElement( "tr" );
+
+            const url = new URL( item.Resource );
+
+            const domain = url.hostname.replace( "www.", "" );
+
+            tr.innerHTML = `
+                <td>${item.Author || ""}</td>
+                <td>
+                    <a href="${item.Resource}" target="_blank" rel="noopener noreferrer">${domain}</a>
+                </td>
+                <td>${item.Type || ""}</td>
+                <td>${item.Description || ""}</td>
+            `;
+
+            tbody.appendChild( tr );
+        }
+    }
+    catch( err )
+    {
+        console.error( "Error loading resources:", err );
+    }
+}
+
+document.addEventListener( "DOMContentLoaded", loadResources );
+                    </script>
+                    </thead>
+                    <tbody id="resources-body">
+                    </tbody>
+                </table>
+            </div>
+            <br>
+        </div>
+    </main>
+</body>
+</html>

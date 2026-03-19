@@ -1,0 +1,164 @@
+[
+  {
+    "Author": "w00tguy",
+    "Resource": "https://github.com/wootguy#sven-co-op-projects",
+    "Type": "AngelScript, Metamod",
+    "Description": "AngelScript plugins/map-scripts and metamod plugins"
+  },
+  {
+    "Author": "Gaftherman",
+    "Resource": "https://github.com/Gaftherman?tab=repositories",
+    "Type": "AngelScript, Metamod",
+    "Description": "AngelScript plugins/map-scripts and metamod plugins"
+  },
+  {
+    "Author": "hzqst",
+    "Resource": "https://github.com/hzqst/metamod-fallguys",
+    "Type": "Metamod",
+    "Description": "Metamod itself and metamod plugins"
+  },
+  {
+    "Author": "Zode",
+    "Resource": "https://github.com/Zode/AFBase",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "KernCore91",
+    "Resource": "https://github.com/KernCore91#sven-co-op-plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript weapons"
+  },
+  {
+    "Author": "Giegue",
+    "Resource": "https://github.com/JulianR0?tab=repositories",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/map-scripts"
+  },
+  {
+    "Author": "kmkz27",
+    "Resource": "https://github.com/kmkz27/Sven-Co-op-scripts",
+    "Type": "AngelScript",
+    "Description": "AngelScript map-scripts"
+  },
+  {
+    "Author": "Duk0",
+    "Resource": "https://github.com/Duk0/AngelScript-SvenCoop",
+    "Type": "AngelScript",
+    "Description": "AngelScript/map-scripts"
+  },
+  {
+    "Author": "RedSprend",
+    "Resource": "https://github.com/RedSprend/svencoop_plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/map-scripts"
+  },
+  {
+    "Author": "Paranoid_AF",
+    "Resource": "https://github.com/Paranoid-AF/SvenCoop_Plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "MrOats",
+    "Resource": "https://github.com/MrOats/AngelScript_SC_Plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "Rizulix",
+    "Resource": "https://github.com/Rizulix/Random-Plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "Rizulix",
+    "Resource": "https://github.com/Rizulix/Classic-Weapons",
+    "Type": "AngelScript",
+    "Description": "AngelScript weapons"
+  },
+  {
+    "Author": "Outerbeast",
+    "Resource": "https://github.com/Outerbeast/Entities-and-Gamemodes",
+    "Type": "AngelScript",
+    "Description": "map-scripts"
+  },
+  {
+    "Author": "DrAbcOfficial",
+    "Resource": "https://github.com/DrAbcOfficial/AngelScripts",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/map-scripts"
+  },
+  {
+    "Author": "CubeMath",
+    "Resource": "https://github.com/CubeMath/UCHFastDL2",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/map-scripts"
+  },
+  {
+    "Author": "ltibm",
+    "Resource": "https://github.com/ltibm?tab=repositories",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/map-scripts"
+  },
+  {
+    "Author": "incognico",
+    "Resource": "https://github.com/incognico/svencoop-plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "Adambean",
+    "Resource": "https://github.com/Adambean?tab=repositories",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/map-scripts, Tools"
+  },
+  {
+    "Author": "Neyami",
+    "Resource": "https://github.com/Neyami?tab=repositories",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/map-scripts, Weapons"
+  },
+  {
+    "Author": "Nexytpowa",
+    "Resource": "https://github.com/Nexytpowa/svencoop-as-plugins",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "KneeG",
+    "Resource": "https://github.com/KneeG/SvenCoopSpecialists",
+    "Type": "AngelScript",
+    "Description": "AngelScript map-scripts"
+  },
+  {
+    "Author": "stellosartois",
+    "Resource": "https://github.com/stellosartois/WindowsGSM.SvenCoop",
+    "Type": "Tool",
+    "Description": "Server Tool"
+  },
+  {
+    "Author": "gvazdas",
+    "Resource": "https://github.com/gvazdas/svencoop",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "FrameEnder",
+    "Resource": "https://github.com/FrameEnder/Sven-Coop-Modmanager",
+    "Type": "Tool",
+    "Description": "Tool"
+  },
+  {
+    "Author": "Komerad",
+    "Resource": "https://github.com/Komerad/as-DynamicConfig",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "angelaLuna14",
+    "Resource": "https://github.com/angelaLuna14?tab=repositories",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins"
+  }
+]
