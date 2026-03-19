@@ -1,0 +1,63 @@
+<p>
+Allows the server to precache multiple assets in two different ways
+<br>
+<br>
+Open the json configuration file and you will see two objects where you can add assets to precache
+</p>
+
+<pre><code class="language-json">
+{
+    "AlwaysPrecached": { },
+    "DynamicPrecache": { },
+    "MaxDynamicPrecache": 5
+}
+</code></pre>
+
+<p>
+"<a style="color: var(--red);">AlwaysPrecached</a>" as it's name suggest will always precache the assets inside it.
+<br>
+<br>
+While "<a style="color: var(--red);">DynamicPrecache</a>" will precache a set number of assets between different maps ("<a style="color: var(--red);">MaxDynamicPrecache</a>")
+<br>
+<br>
+The keys in the object represents the asset to precache and the value is a number representing the asset type
+</p>
+
+<pre><code class="language-json">
+"AlwaysPrecached":
+{
+    "models/player/Hololive_Fubuki/Hololive_Fubuki.mdl": 2,
+    "models/player/Hololive_Fubuki/Hololive_Fubuki.bmp": 1,
+    "oghs/chatsounds/alo.wav.wav": 3,
+    "point_checkpoint": 4
+}
+</code></pre>
+
+<p>
+So if you want to precache a mdl or spr file you set the value to "<a style="color: var(--red);">2</a>" corresponding to the next table:
+</p>
+
+<pre><code class="language-cpp">
+enum PrecacheType
+{
+    Dictionary = 0,
+    Generic = 1,
+    Model = 2,
+    Sound = 3,
+    Entity = 4
+};
+</code></pre>
+
+<p>
+The value could also be an object, in wich case that will be a entity to precache with custom key values. so you can precache custom model lists, sound lists etc.
+</p>
+
+<pre><code class="language-json">
+"AlwaysPrecached":
+{
+    "monster_houndeye":
+    {
+        "model": "models/hlclassic/houndeye.mdl"
+    }
+}
+</code></pre>

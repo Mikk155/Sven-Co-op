@@ -9,7 +9,7 @@
         "scripts/mikk155/meta_api/json.as"
     ],
 
-    "description": "Display the total time a map has been running on the server",
+    "short_description": "Display the total time a map has been running on the server",
 
     "map_script": false,
 
@@ -18,6 +18,8 @@
     "metamod": "optional",
 
     "name": "ShowPlayTime",
+
+    "details": "angelscript/ShowPlayTime.html",
 
     "title": "Show map play time"
 }

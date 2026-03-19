@@ -11,7 +11,7 @@
         "scripts/mikk155/Server/IsMapListed.as"
     ],
 
-    "description": "Allow late join players to spawn for a first time if survival mode is been activated.",
+    "short_description": "Allow late join players to spawn for a first time if survival mode is been activated.",
 
     "map_script": false,
 
@@ -20,6 +20,8 @@
     "metamod": "optional",
 
     "name": "SurvivalLateJoinSpawn",
+
+    "details": "angelscript/SurvivalLateJoinSpawn.html",
 
     "title": "Survival Mode late join players respawn"
 }

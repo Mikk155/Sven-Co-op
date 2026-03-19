@@ -9,7 +9,7 @@
         "scripts/mikk155/meta_api/json.as"
     ],
 
-    "description": "Set a list of any type of asset to precache, even dynamic per-level precaching is allowed.",
+    "short_description": "Set a list of any type of asset to statically or dynamically precache across levels.",
 
     "details": "angelscript/CustomPrecache.html",
 

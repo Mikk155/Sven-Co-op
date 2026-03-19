@@ -1,0 +1,21 @@
+<h1>Map black list</h1>
+<p>
+This plugin supports a map black list.
+<br>
+<br>
+These supports "<a style="color: var(--red);">*</a>" as a suffix and prefix wildcard.
+</p>
+
+<pre><code class="language-json">
+"map_blacklist":
+[
+    // Single map disabled
+    "bts_rc",
+
+    // The whole opposing force campaign
+    "of*",
+
+    // any campaign using hl's map name format where the C represents a chapter
+    "*c*"
+]
+</code></pre>
