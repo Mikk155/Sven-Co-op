@@ -2,7 +2,7 @@ name: Metamod plugin
 description: Issue or suggestion related to metamod's plugin "aslp"
 title: "[Metamod] "
 labels: [ "Metamod", "ASEXT" ]
-assignees: [ "Gaftherman" ]
+assignees: [ "mikk155" ]
 
 body:
   - type: markdown
