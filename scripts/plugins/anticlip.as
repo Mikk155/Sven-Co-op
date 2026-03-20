@@ -60,7 +60,7 @@ void MapActivate()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "scripts/plugins/anticlip.json", data ) )
+        if( meta_api::json::Deserialize( "anticlip.json", data ) )
         {
             g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
             g_ShouldReloadJson = bool( data[ "reload" ] );

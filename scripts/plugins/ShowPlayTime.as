@@ -115,7 +115,7 @@ void MapActivate()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "scripts/plugins/ShowPlayTime.json", data ) )
+        if( meta_api::json::Deserialize( "ShowPlayTime.json", data ) )
         {
             g_Messages = meta_api::json::ToArray( data[ "message" ] );
             g_ShouldReloadJson = bool( data[ "reload" ] );

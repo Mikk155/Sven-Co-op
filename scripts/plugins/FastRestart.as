@@ -55,7 +55,7 @@ void MapActivate()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "scripts/plugins/FastRestart.json", data ) )
+        if( meta_api::json::Deserialize( "FastRestart.json", data ) )
         {
             g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
             g_medics = meta_api::json::ToArray( data[ "medic_entities" ] );

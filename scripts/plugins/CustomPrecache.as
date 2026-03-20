@@ -50,7 +50,7 @@ void PluginInit()
     } ) );
 
     dictionary data;
-    meta_api::json::Deserialize( "scripts/plugins/CustomPrecache.json", data );
+    meta_api::json::Deserialize( "CustomPrecache.json", data );
     g_AlwaysPrecache = cast<dictionary>( data[ "AlwaysPrecached" ] );
     g_DynamicPrecache = cast<dictionary>( data[ "DynamicPrecache" ] );
     data.get( "MaxDynamicPrecache", g_DynamicPrecacheMax );

@@ -29,7 +29,7 @@ void MapActivate()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "scripts/plugins/ChatRoles.json", data ) )
+        if( meta_api::json::Deserialize( "ChatRoles.json", data ) )
         {
             g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
             g_ShouldReloadJson = bool( data[ "reload" ] );

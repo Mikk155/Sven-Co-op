@@ -33,20 +33,13 @@ void PluginInit()
 
     meta_api::NoticeInstallation();
 
-    meta_api::json::Deserialize( "scripts/plugins/store/BMLongJump.json", g_Cache );
+    meta_api::json::Deserialize( "store/BMLongJump.json", g_Cache );
 
     g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string&in mapname )
     {
-        string buffer;
-        if( g_ShouldWriteCache && meta_api::json::Serialize( g_Cache, buffer ) )
+        if( g_ShouldWriteCache )
         {
-            auto file = g_FileSystem.OpenFile( "scripts/plugins/store/BMLongJump.json", OpenFile::WRITE );
-
-            if( file !is null && file.IsOpen() )
-            {
-                file.Write( buffer );
-                file.Close();
-            }
+            meta_api::json::Serialize( g_Cache, -1, "BMLongJump" );
         }
         return HOOK_CONTINUE;
     } ));
@@ -57,7 +50,7 @@ void PluginInit()
 
 #if METAMOD_DEBUG
 //    g_HasMetamod = false;
-    g_PluginJustLoaded = false;
+//    g_PluginJustLoaded = false;
 #endif
 
     if( !g_HasMetamod )
@@ -107,7 +100,7 @@ void MapInit()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "scripts/plugins/BMLongJump.json", data ) )
+        if( meta_api::json::Deserialize( "BMLongJump.json", data ) )
         {
             g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
             g_ShouldReloadJson = bool( data[ "reload" ] );

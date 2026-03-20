@@ -47,7 +47,7 @@ void MapActivate()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "scripts/plugins/SurvivalLateJoinSpawn.json", data ) )
+        if( meta_api::json::Deserialize( "SurvivalLateJoinSpawn.json", data ) )
         {
             g_BlacklistedMaps = meta_api::json::ToArray( cast<dictionary>( data[ "map_blacklist" ] ) );
 
