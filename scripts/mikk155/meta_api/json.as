@@ -24,6 +24,7 @@ namespace meta_api
             {
                 string filename;
                 snprintf( filename, "scripts/%1/%2.json", ( g_Module.GetModuleName() == "MapModule" ? "maps" : "plugins" ), str );
+                g_Game.AlertMessage( at_console, "[JSON] Info: Reading \"%1\"\n", filename );
 
 #if METAMOD_PLUGIN_ASLP
             if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
@@ -460,9 +461,11 @@ namespace meta_api
         }
 
         /**
-            @brief Serializes obj into str. indents: -1 = single line, >= 0 = base tabs for root
+        *   @brief Serializes obj.
+        *   indents: -1 = single line, >= 0 = base tabs for root
+        *   filename: if not empty, a file name to write in "scripts/<module type>/store/<filename>.json"
         **/
-        void Serialize( dictionary@ obj, string&out str, int indents = -1 )
+        string Serialize( dictionary@ obj, int indents = -1, string filename = String::EMPTY_STRING )
         {
             auto SerializeObject = __SerializeObject__( function( dictionary@ obj, __SerializeObject__@ SerializeObject, int indents, int depth )
             {
@@ -577,7 +580,22 @@ namespace meta_api
                 return buffer;
             } );
 
-            str = SerializeObject( obj, SerializeObject, indents, 0 );
+            string str = SerializeObject( obj, SerializeObject, indents, 0 );
+
+            if( !filename.IsEmpty() )
+            {
+                snprintf( filename, "scripts/%1/store/%2.json", ( g_Module.GetModuleName() == "MapModule" ? "maps" : "plugins" ), filename );
+
+                auto file = g_FileSystem.OpenFile( filename, OpenFile::WRITE );
+
+                if( file !is null && file.IsOpen() )
+                {
+                    file.Write( str );
+                    file.Close();
+                }
+            }
+
+            return str;
         }
         
         /**
