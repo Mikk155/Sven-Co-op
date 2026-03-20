@@ -89,7 +89,7 @@ namespace json
     }
 }
 
-#include "utils/CFile.h"
+#include "../utils/CFile.hpp"
 
 bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMYARG const CString& str, CScriptDictionary* obj )
 {
