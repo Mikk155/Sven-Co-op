@@ -63,6 +63,7 @@ PlayerTakeDamageHook@ fnTakeDamage = PlayerTakeDamageHook( TakeDamage );
 
 int g_Speed = 400;
 int g_HeightSpeed = 300;
+bool g_HasEffects;
 string g_JumpSound;
 string g_FallSound;
 bool g_ShouldReloadJson = true;
@@ -94,6 +95,14 @@ void MapInit()
             data.get( "fall_sound", g_FallSound );
             data.get( "supress_fall_damage", g_FallDamage );
             data.get( "height_speed", g_HeightSpeed );
+
+            g_HasEffects = false;
+
+            dictionary jumpEffect;
+            if( data.get( "jump_effect", jumpEffect ) )
+            {
+                data.get( "active", g_HasEffects );
+            }
         }
     }
 
@@ -140,6 +149,61 @@ void MapInit()
         g_Game.PrecacheGeneric( buffer );
         g_SoundSystem.PrecacheSound( g_FallSound );
     }
+
+    if( g_HasEffects )
+    {
+    }
+}
+
+void CreateFX( CBasePlayer@ player, bool isLanding )
+{
+    if( !g_Precached )
+        return;
+
+    if( player is null )
+        return;
+
+    if( isLanding )
+    {
+        if( !g_FallSound.IsEmpty() )
+        {
+            g_SoundSystem.PlaySound( player.edict(), CHAN_STATIC, g_FallSound, VOL_NORM, ATTN_NORM, 0, PITCH_NORM );
+        }
+    }
+    else
+    {
+        if( !g_JumpSound.IsEmpty() )
+        {
+            g_SoundSystem.PlaySound( player.edict(), CHAN_STATIC, g_JumpSound, VOL_NORM, ATTN_NORM, 0, PITCH_NORM );
+        }
+    }
+
+    if( !g_HasEffects )
+        return;
+
+    TraceResult tr;
+    g_Utility.TraceLine( player.pev.origin, player.pev.origin + Vector( 0, 0, -90 ), ignore_monsters, player.edict(), tr );
+
+    NetworkMessage msg( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY );
+        msg.WriteByte(TE_BEAMTORUS);
+        msg.WriteCoord( tr.vecEndPos.x );
+        msg.WriteCoord( tr.vecEndPos.y );
+        msg.WriteCoord( tr.vecEndPos.z);
+        msg.WriteCoord( tr.vecEndPos.x );
+        msg.WriteCoord( tr.vecEndPos.y );
+        msg.WriteCoord( tr.vecEndPos.z + 128 );
+        msg.WriteShort( g_EngineFuncs.ModelIndex( "sprites/laserbeam.spr" ) );
+        msg.WriteByte( 0 ); // frame
+        msg.WriteByte( 0 ); // framerate
+        msg.WriteByte( 5 ); // life
+        msg.WriteByte( 16 ); // width
+        msg.WriteByte( 0 ); // noise
+        msg.WriteByte( 255 ); // R
+        msg.WriteByte( 255 ); // G
+        msg.WriteByte( 255 ); // B
+        msg.WriteByte( 60 ); // A
+        msg.WriteByte( 0 ); // scrollspeed
+    msg.End();
 }
 
 enum JumpState
@@ -162,19 +226,14 @@ bool CanPlayerSuperLongjump( CBasePlayer@ player )
 
 bool ShouldPreventFall( CBasePlayer@ player )
 {
-    if( ( player.pev.flags & FL_ONGROUND ) == 0 && -player.pev.velocity.z >= 350 && player.pev.waterlevel == WATERLEVEL_DRY )
+    if( ( player.pev.flags & FL_ONGROUND ) == 0 && player.m_flFallVelocity >= 450 && player.pev.waterlevel == WATERLEVEL_DRY )
     {
         TraceResult tr;
         g_Utility.TraceLine( player.pev.origin, player.pev.origin + Vector( 0, 0, -256 ), dont_ignore_monsters, player.edict(), tr );
 
         if( tr.vecEndPos[2] + 128 >= player.pev.origin[2] )
         {
-            if( g_Precached && !g_FallSound.IsEmpty() )
-            {
-                g_SoundSystem.PlaySound( player.edict(), CHAN_STATIC, g_FallSound, VOL_NORM, ATTN_NORM, 0, PITCH_NORM );
-            }
-
-            DoEffect( player );
+            CreateFX( player, true );
 
             return true;
         }
@@ -232,12 +291,7 @@ bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
 
                 player.SetAnimation( PLAYER_SUPERJUMP, 1 );
 
-                if( g_Precached && !g_JumpSound.IsEmpty() )
-                {
-                    g_SoundSystem.PlaySound( player.edict(), CHAN_STATIC, g_JumpSound, VOL_NORM, ATTN_NORM, 0, PITCH_NORM );
-                }
-
-                DoEffect( player );
+                CreateFX( player, false );
 
                 return true;
             }
@@ -309,36 +363,6 @@ HookReturnCode PostThink( CBasePlayer@ player )
     return HOOK_CONTINUE;
 }
 
-void DoEffect( CBasePlayer@ player )
-{
-    if( g_PluginJustLoaded )
-        return;
-
-    TraceResult tr;
-    g_Utility.TraceLine( player.pev.origin, player.pev.origin + Vector( 0, 0, -90 ), ignore_monsters, player.edict(), tr );
-
-    NetworkMessage msg( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY );
-        msg.WriteByte(TE_BEAMTORUS);
-        msg.WriteCoord( tr.vecEndPos.x );
-        msg.WriteCoord( tr.vecEndPos.y );
-        msg.WriteCoord( tr.vecEndPos.z);
-        msg.WriteCoord( tr.vecEndPos.x );
-        msg.WriteCoord( tr.vecEndPos.y );
-        msg.WriteCoord( tr.vecEndPos.z + 128 );
-        msg.WriteShort( g_EngineFuncs.ModelIndex( "sprites/laserbeam.spr" ) );
-        msg.WriteByte( 0 ); // frame
-        msg.WriteByte( 0 ); // framerate
-        msg.WriteByte( 5 ); // life
-        msg.WriteByte( 16 ); // width
-        msg.WriteByte( 0 ); // noise
-        msg.WriteByte( 255 ); // R
-        msg.WriteByte( 255 ); // G
-        msg.WriteByte( 255 ); // B
-        msg.WriteByte( 60 ); // A
-        msg.WriteByte( 0 ); // scrollspeed
-    msg.End();
-}
-
 HookReturnCode TakeDamage( DamageInfo@ pDamageInfo )
 {
     if( pDamageInfo.pVictim is null )
@@ -351,12 +375,7 @@ HookReturnCode TakeDamage( DamageInfo@ pDamageInfo )
 
     if( ( pDamageInfo.bitsDamageType & DMG_FALL ) != 0 && player.m_fLongJump )
     {
-        if( g_Precached && !g_FallSound.IsEmpty() )
-        {
-            g_SoundSystem.PlaySound( player.edict(), CHAN_STATIC, g_FallSound, VOL_NORM, ATTN_NORM, 0, PITCH_NORM );
-        }
-
-        DoEffect( player );
+        CreateFX( player, true );
 
         pDamageInfo.flDamage = 0;
         player.pev.velocity.z = 0;
