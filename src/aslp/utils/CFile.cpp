@@ -8,7 +8,7 @@ CFile::CFile( const std::filesystem::path& relativePath, Mode mode, bool recursi
 
     if( recursive )
     {
-	    auto FileExistsAt = [&]( const char* folder ) -> std::optional<std::filesystem::path>
+        auto FileExistsAt = [&]( const char* folder ) -> std::optional<std::filesystem::path>
         {
             std::filesystem::path myRecursivePath = std::filesystem::current_path() / folder / relativePath;
             if( std::filesystem::exists( myRecursivePath ) )
@@ -20,7 +20,7 @@ CFile::CFile( const std::filesystem::path& relativePath, Mode mode, bool recursi
         if( auto folder = FileExistsAt( "svencoop_hd" ); folder.has_value() ) { fullPath = folder.value(); } else
         if( auto folder = FileExistsAt( "svencoop" ); folder.has_value() ) { fullPath = folder.value(); } else
         if( auto folder = FileExistsAt( "svencoop_downloads" ); folder.has_value() ) { fullPath = folder.value(); } else
-        if( mode == Mode::Write ) { fullPath = std::filesystem::current_path() / "svencoop" / relativePath; }
+        if( mode == Mode::Write ) { fullPath = std::filesystem::current_path() / "svencoop" / relativePath; } else { return; }
     }
     else
     {
