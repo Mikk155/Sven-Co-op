@@ -37,10 +37,7 @@ void PluginInit()
 
     g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string&in mapname )
     {
-        if( g_ShouldWriteCache )
-        {
-            meta_api::json::Serialize( g_Cache, -1, "BMLongJump" );
-        }
+        Shutdown();
         return HOOK_CONTINUE;
     } ));
 
@@ -50,7 +47,7 @@ void PluginInit()
 
 #if METAMOD_DEBUG
 //    g_HasMetamod = false;
-//    g_PluginJustLoaded = false;
+    g_PluginJustLoaded = false;
 #endif
 
     if( !g_HasMetamod )
@@ -63,6 +60,52 @@ void PluginInit()
 
 dictionary g_Cache;
 bool g_ShouldWriteCache;
+
+void Shutdown()
+{
+    if( g_ShouldWriteCache )
+    {
+        meta_api::json::Serialize( g_Cache, -1, "BMLongJump" );
+    }
+}
+
+void PluginExit()
+{
+    Shutdown();
+}
+
+CClientCommand g_PlayerCache( "longjump", "ChatRoles", function( const CCommand@ args )
+{
+    auto player = g_ConCommandSystem.GetCurrentPlayer();
+
+    if( player is null )
+        return;
+
+    if( args.ArgC() == 1 )
+    {
+        g_PlayerFuncs.ClientPrint( player, HUD_PRINTCONSOLE, "--- Black Mesa Long Jump Module ---\n" );
+        g_PlayerFuncs.ClientPrint( player, HUD_PRINTCONSOLE, ".longjump mode\n" );
+        g_PlayerFuncs.ClientPrint( player, HUD_PRINTCONSOLE, "- Toggle the mode to use the longjump module\n" );
+        return;
+    }
+
+    if( args.ArgC() == 2 )
+    {
+        string arg = args[1];
+
+        if( arg == "mode" )
+        {
+            string id = g_EngineFuncs.GetPlayerAuthId(player.edict());
+            bool mode = !bool( g_Cache[id] );
+            g_Cache[id] = mode;
+
+            string buffer;
+            snprintf( buffer, "Updated long jump mode to %1\n", mode ? "crouch + jump" : "double jump tap" );
+            g_PlayerFuncs.ClientPrint( player, HUD_PRINTCONSOLE, buffer );
+            g_ShouldWriteCache = true;
+        }
+    }
+} );
 
 bool g_Precached;
 bool g_PluginJustLoaded = true;
@@ -304,6 +347,12 @@ bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
     }
 
     JumpState state = g_PlayerData[index];
+
+    bool mode = bool( g_Cache[ g_EngineFuncs.GetPlayerAuthId( player.edict() ) ] );
+
+    if( !mode )
+    {
+    }
 
     switch( state )
     {
