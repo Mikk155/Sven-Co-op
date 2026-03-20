@@ -13,11 +13,8 @@
     // Sound to play when supressing fall damage (sound/ not needed!). or empty to not play anything
     "fall_sound": "player/pl_long_jump.wav",
 
-    "jump_effect":
-    {
-        // Whatever these effects are active
-        "active": true
-    },
+    // Whatever the visual effects are active
+    "jump_effect": true,
 
     // Should this json file be parsed every map change?
     "reload": false,

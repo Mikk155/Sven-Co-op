@@ -95,14 +95,7 @@ void MapInit()
             data.get( "fall_sound", g_FallSound );
             data.get( "supress_fall_damage", g_FallDamage );
             data.get( "height_speed", g_HeightSpeed );
-
-            g_HasEffects = false;
-
-            dictionary jumpEffect;
-            if( data.get( "jump_effect", jumpEffect ) )
-            {
-                data.get( "active", g_HasEffects );
-            }
+            data.get( "jump_effect", g_HasEffects );
         }
     }
 
@@ -152,8 +145,13 @@ void MapInit()
 
     if( g_HasEffects )
     {
+        g_LaserBeam = g_Game.PrecacheModel( "sprites/laserbeam.spr" );
+        g_Bubble = g_Game.PrecacheModel( "sprites/bubble.spr" );
     }
 }
+
+int g_LaserBeam;
+int g_Bubble;
 
 void CreateFX( CBasePlayer@ player, bool isLanding )
 {
@@ -184,26 +182,65 @@ void CreateFX( CBasePlayer@ player, bool isLanding )
     TraceResult tr;
     g_Utility.TraceLine( player.pev.origin, player.pev.origin + Vector( 0, 0, -90 ), ignore_monsters, player.edict(), tr );
 
-    NetworkMessage msg( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY );
-        msg.WriteByte(TE_BEAMTORUS);
-        msg.WriteCoord( tr.vecEndPos.x );
-        msg.WriteCoord( tr.vecEndPos.y );
-        msg.WriteCoord( tr.vecEndPos.z);
-        msg.WriteCoord( tr.vecEndPos.x );
-        msg.WriteCoord( tr.vecEndPos.y );
-        msg.WriteCoord( tr.vecEndPos.z + 128 );
-        msg.WriteShort( g_EngineFuncs.ModelIndex( "sprites/laserbeam.spr" ) );
-        msg.WriteByte( 0 ); // frame
-        msg.WriteByte( 0 ); // framerate
-        msg.WriteByte( 5 ); // life
-        msg.WriteByte( 16 ); // width
-        msg.WriteByte( 0 ); // noise
-        msg.WriteByte( 255 ); // R
-        msg.WriteByte( 255 ); // G
-        msg.WriteByte( 255 ); // B
-        msg.WriteByte( 60 ); // A
-        msg.WriteByte( 0 ); // scrollspeed
-    msg.End();
+    {
+        NetworkMessage m( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY );
+            m.WriteByte( TE_BEAMDISK);
+            m.WriteCoord( tr.vecEndPos.x );
+            m.WriteCoord( tr.vecEndPos.y );
+            m.WriteCoord( tr.vecEndPos.z );
+            m.WriteCoord( tr.vecEndPos.x );
+            m.WriteCoord( tr.vecEndPos.y );
+            m.WriteCoord( tr.vecEndPos.z + 128 );
+            m.WriteShort( g_LaserBeam );
+            m.WriteByte( 0 ); // startFrame
+            m.WriteByte( 0 ); // frameRate
+            m.WriteByte( 8 ); // life
+            m.WriteByte( 1 ); // "width" - has no effect
+            m.WriteByte( 0 ); // "noise" - has no effect
+            m.WriteByte( 100 );
+            m.WriteByte( 100 );
+            m.WriteByte( 100 );
+            m.WriteByte( 50 );
+            m.WriteByte( 0 ); // scrollSpeed
+        m.End();
+    }
+    {
+        NetworkMessage m( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY );
+            m.WriteByte( TE_BUBBLES );
+            m.WriteCoord( player.pev.absmin.x );
+            m.WriteCoord( player.pev.absmin.y );
+            m.WriteCoord( player.pev.absmin.z );
+            m.WriteCoord( player.pev.absmax.x );
+            m.WriteCoord( player.pev.absmax.y );
+            m.WriteCoord( player.pev.absmax.z );
+            m.WriteCoord(40 );
+            m.WriteShort( g_Bubble );
+            m.WriteByte( 70 );
+            m.WriteCoord( 50 );
+        m.End();
+    }
+    {
+        NetworkMessage m( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY );
+            m.WriteByte(TE_BEAMTORUS);
+            m.WriteCoord( tr.vecEndPos.x );
+            m.WriteCoord( tr.vecEndPos.y );
+            m.WriteCoord( tr.vecEndPos.z);
+            m.WriteCoord( tr.vecEndPos.x );
+            m.WriteCoord( tr.vecEndPos.y );
+            m.WriteCoord( tr.vecEndPos.z + 128 );
+            m.WriteShort( g_LaserBeam );
+            m.WriteByte( 0 ); // frame
+            m.WriteByte( 0 ); // framerate
+            m.WriteByte( 5 ); // life
+            m.WriteByte( 16 ); // width
+            m.WriteByte( 0 ); // noise
+            m.WriteByte( 255 ); // R
+            m.WriteByte( 255 ); // G
+            m.WriteByte( 255 ); // B
+            m.WriteByte( 30 ); // A
+            m.WriteByte( 0 ); // scrollspeed
+        m.End();
+    }
 }
 
 enum JumpState
