@@ -11,25 +11,43 @@ namespace meta_api
         funcdef string __SerializeObject__( dictionary@ obj, __SerializeObject__@ SerializeObject, int indents, int depth );
 
         /**
-        *   @brief Deserializes str into obj, if file is true then str is a path to a file.
-        *   No need to specify scripts/plugins/ or scripts/maps/ it will be automatically detected.
-        *   No need to specify file format, it will always be .json.
+        *   @brief return whatever str is a valid file name and formats the output filename
         **/
-        bool Deserialize( const string&in str, dictionary&out obj, bool file = false )
+        bool GetFilename( const string&in str, string&out filename )
+        {
+            if( str.EndsWith( ".json" ) )
+            {
+                bool isPlugin = ( g_Module.GetModuleName() != "MapModule" );
+                string moduleFolder = ( isPlugin ? "plugins/" : "maps/" );
+
+                if( str.StartsWith( "scripts/" ) || str.StartsWith( moduleFolder ) )
+                {
+                    g_Game.AlertMessage( at_console, "[JSON] Error: you can not define folders before of \"scripts/%1\"\n", moduleFolder );
+                    return false;
+                }
+
+                snprintf( filename, "scripts/%1%2", moduleFolder, str );
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
+        *   @brief Deserializes str into obj,
+        *   If str ends with ".json" we will open a file. No need to specify scripts/plugins/ or scripts/maps/ it will be automatically detected.
+        *   If str is a file and is pointing to store/ and the file couldn't be opened it will be writed and return {}
+        **/
+        bool Deserialize( const string&in str, dictionary&out obj )
         {
             // AS copy
             string serialized = String::EMPTY_STRING;
 
-            if( file )
+            string filename;
+            if( GetFilename( str, filename ) )
             {
-                string filename;
-                snprintf( filename, "scripts/%1/%2.json", ( g_Module.GetModuleName() == "MapModule" ? "maps" : "plugins" ), str );
                 g_Game.AlertMessage( at_console, "[JSON] Info: Reading \"%1\"\n", filename );
-
-#if METAMOD_PLUGIN_ASLP
-            if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
-                return g_EngineFuncs.JsonDeserialize( filename, obj );
-#endif
 
                 auto fstream = g_FileSystem.OpenFile( filename, OpenFile::READ );
 
@@ -38,6 +56,12 @@ namespace meta_api
                     g_Game.AlertMessage( at_console, "[JSON] Error: Couldn't open file \"%1\"\n", filename );
                     return false;
                 }
+
+#if METAMOD_PLUGIN_ASLP
+                fstream.Close();
+                if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
+                    return g_EngineFuncs.JsonDeserialize( filename, obj );
+#endif
 
                 while( !fstream.EOFReached() )
                 {
@@ -52,6 +76,8 @@ namespace meta_api
 
                     serialized += line;
                 }
+
+                fstream.Close();
             }
 
 #if METAMOD_PLUGIN_ASLP
@@ -59,7 +85,8 @@ namespace meta_api
             return g_EngineFuncs.JsonDeserialize( str, obj );
 #endif
 
-            if( !file )
+            // No file loaded?
+            if( serialized == String::EMPTY_STRING )
             {
                 serialized = str;
                 serialized.Trim( ' ' );
