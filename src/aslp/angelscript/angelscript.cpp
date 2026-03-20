@@ -32,48 +32,48 @@ angelhook_t g_AngelHook;
 
 uint32 SC_SERVER_DECL CASEngineFuncs_CRC32(void* pthis, SC_SERVER_DUMMYARG CString* szBuffer)
 {
-	CRC32_t crc;
-	CRC32_INIT(&crc);
-	CRC32_PROCESS_BUFFER(&crc, (void*)szBuffer->c_str(), szBuffer->length());
-	return CRC32_FINAL(crc);
+    CRC32_t crc;
+    CRC32_INIT(&crc);
+    CRC32_PROCESS_BUFFER(&crc, (void*)szBuffer->c_str(), szBuffer->length());
+    return CRC32_FINAL(crc);
 }
 
 bool SC_SERVER_DECL CASEngineFuncs_ClassMemcpy(void* pthis, SC_SERVER_DUMMYARG void* _src, int srctypeid, void* _dst, int dsttypeid) 
 {
-	if (srctypeid != dsttypeid)
-		return false;
-	asIScriptObject* src = *static_cast<asIScriptObject**>(_src);
-	asIScriptObject* dst = *static_cast<asIScriptObject**>(_dst);
-	if (!src || !dst)
-		return false;
-	dst->CopyFrom(src);
-	return true;
+    if (srctypeid != dsttypeid)
+        return false;
+    asIScriptObject* src = *static_cast<asIScriptObject**>(_src);
+    asIScriptObject* dst = *static_cast<asIScriptObject**>(_dst);
+    if (!src || !dst)
+        return false;
+    dst->CopyFrom(src);
+    return true;
 }
 
 template <typename T>
 void RegisteRefObject(CASDocumentation* pASDoc, const char* szName) 
 {
-	asSFuncPtr reg;
-	reg = asMETHOD(T, AddRef);
-	ASEXT_RegisterObjectBehaviourEx(pASDoc, "AddRef", szName, asBEHAVE_ADDREF, "void AddRef()", &reg, asCALL_THISCALL);
-	reg = asMETHOD(T, Release);
-	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Release", szName, asBEHAVE_RELEASE, "void Release()", &reg, asCALL_THISCALL);
+    asSFuncPtr reg;
+    reg = asMETHOD(T, AddRef);
+    ASEXT_RegisterObjectBehaviourEx(pASDoc, "AddRef", szName, asBEHAVE_ADDREF, "void AddRef()", &reg, asCALL_THISCALL);
+    reg = asMETHOD(T, Release);
+    ASEXT_RegisterObjectBehaviourEx(pASDoc, "Release", szName, asBEHAVE_RELEASE, "void Release()", &reg, asCALL_THISCALL);
 }
 template <typename T>
 void RegisterGCObject(CASDocumentation* pASDoc, const char* szName) 
 {
-	RegisteRefObject<T>(pASDoc, szName);
-	asSFuncPtr reg;
-	reg = asMETHOD(T, SetGCFlag);
-	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Set GC Flag", szName, asBEHAVE_SETGCFLAG, "void SetGCFlag()", &reg, asCALL_THISCALL);
-	reg = asMETHOD(T, GetGCFlag);
-	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Get GC Flag", szName, asBEHAVE_GETGCFLAG, "bool GetGCFlag() const", &reg, asCALL_THISCALL);
-	reg = asMETHOD(T, GetRefCount);
-	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Get reference count", szName, asBEHAVE_GETREFCOUNT, "int GetRefCount() const", &reg, asCALL_THISCALL);
-	reg = asMETHOD(T, EnumReferences);
-	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Enumerate references held by this class", szName, asBEHAVE_ENUMREFS, "void EnumReferences(int& in)", &reg, asCALL_THISCALL);
-	reg = asMETHOD(T, ReleaseReferences);
-	ASEXT_RegisterObjectBehaviourEx(pASDoc, "Release all references held by this class", szName, asBEHAVE_RELEASEREFS, "void ReleaseReferences(int& in)", &reg, asCALL_THISCALL);
+    RegisteRefObject<T>(pASDoc, szName);
+    asSFuncPtr reg;
+    reg = asMETHOD(T, SetGCFlag);
+    ASEXT_RegisterObjectBehaviourEx(pASDoc, "Set GC Flag", szName, asBEHAVE_SETGCFLAG, "void SetGCFlag()", &reg, asCALL_THISCALL);
+    reg = asMETHOD(T, GetGCFlag);
+    ASEXT_RegisterObjectBehaviourEx(pASDoc, "Get GC Flag", szName, asBEHAVE_GETGCFLAG, "bool GetGCFlag() const", &reg, asCALL_THISCALL);
+    reg = asMETHOD(T, GetRefCount);
+    ASEXT_RegisterObjectBehaviourEx(pASDoc, "Get reference count", szName, asBEHAVE_GETREFCOUNT, "int GetRefCount() const", &reg, asCALL_THISCALL);
+    reg = asMETHOD(T, EnumReferences);
+    ASEXT_RegisterObjectBehaviourEx(pASDoc, "Enumerate references held by this class", szName, asBEHAVE_ENUMREFS, "void EnumReferences(int& in)", &reg, asCALL_THISCALL);
+    reg = asMETHOD(T, ReleaseReferences);
+    ASEXT_RegisterObjectBehaviourEx(pASDoc, "Release all references held by this class", szName, asBEHAVE_RELEASEREFS, "void ReleaseReferences(int& in)", &reg, asCALL_THISCALL);
 }
 
 /// <summary>
@@ -83,7 +83,7 @@ void RegisterGCObject(CASDocumentation* pASDoc, const char* szName)
 #define REGISTE_OBJMETHODPREX(r, d, e, c, m, cc, mm, pp, rr, call) r=asMETHODPR(cc,mm, pp, rr);ASEXT_RegisterObjectMethodEx(d,e,c,m,&r,call)
 void RegisterAngelScriptMethods() 
 {
-	CASSQLite::LoadSQLite3DLL();
+    CASSQLite::LoadSQLite3DLL();
 
 ASEXT_RegisterScriptBuilderDefineCallback( []( CScriptBuilder* pScriptBuilder )
 {
@@ -105,802 +105,796 @@ ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "WINDOWS" );
 #endif
 } );
 
-	// -TODO How to get the const char doc* in the generate_as_predefined.cpp
-	ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
-	{
+    // -TODO How to get the const char doc* in the generate_as_predefined.cpp
+    ASEXT_RegisterDocInitCallback([](CASDocumentation* pASDoc) 
+    {
 #pragma region HealthInfo
 ASEXT_SetDefaultNamespace( pASDoc, ASLP_NAMESPACE_ONLY );
 
 ASEXT_RegisterObjectType( pASDoc,
-	"Arguments for when a player is getting healed",
-	"HealthInfo", 0, asOBJ_REF | asOBJ_NOCOUNT );
+    "Arguments for when a player is getting healed",
+    "HealthInfo", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Player being healed",
-	"HealthInfo",
-	"CBasePlayer@ player", offsetof( healthinfo_t, player ) );
+    "Player being healed",
+    "HealthInfo",
+    "CBasePlayer@ player", offsetof( healthinfo_t, player ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Health to recover.",
-	"HealthInfo", "float health", offsetof( healthinfo_t, health ) );
+    "Health to recover.",
+    "HealthInfo", "float health", offsetof( healthinfo_t, health ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Damage type.",
-	"HealthInfo", "int bits", offsetof( healthinfo_t, bits ) );
+    "Damage type.",
+    "HealthInfo", "int bits", offsetof( healthinfo_t, bits ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Whatever to cap the max health capacity. Zero to not cap.",
-	"HealthInfo", "int cap", offsetof( healthinfo_t, cap ) );
+    "Whatever to cap the max health capacity. Zero to not cap.",
+    "HealthInfo", "int cap", offsetof( healthinfo_t, cap ) );
 
 ASEXT_SetDefaultNamespace( pASDoc, "" );
 #pragma endregion
 #pragma region CBinaryStringBuilder
-		asSFuncPtr reg;
-		ASEXT_RegisterObjectType(pASDoc, "Binary String Builder", "CBinaryStringBuilder", 0, asOBJ_REF | asOBJ_GC);
-		reg = asFUNCTION(CBinaryStringBuilder::Factory);
-		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CBinaryStringBuilder", asBEHAVE_FACTORY, "CBinaryStringBuilder@ CBinaryStringBuilder()", &reg, asCALL_CDECL);
-		reg = asFUNCTION(CBinaryStringBuilder::ParamFactory);
-		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CBinaryStringBuilder", asBEHAVE_FACTORY, "CBinaryStringBuilder@ CBinaryStringBuilder(string&in buffer)", &reg, asCALL_CDECL);
-		RegisterGCObject<CBinaryStringBuilder>(pASDoc, "CBinaryStringBuilder");
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Is Read to end?", "CBinaryStringBuilder", "bool IsReadToEnd()", CBinaryStringBuilder, IsReadToEnd, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get output to a string", "CBinaryStringBuilder", "string Get()", CBinaryStringBuilder, Get, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Set a read buffer", "CBinaryStringBuilder", "bool Set(string&in buffer)", CBinaryStringBuilder, Set, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get the read pointer", "CBinaryStringBuilder", "uint GetReadPointer()", CBinaryStringBuilder, GetReadPointer, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Set the read pointer", "CBinaryStringBuilder", "void SetReadPointer(uint iPointer)", CBinaryStringBuilder, SetReadPointer, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteInt(int value)", CBinaryStringBuilder, WriteInt, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteLong(int64 value)", CBinaryStringBuilder, WriteLong, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteFloat(float value)", CBinaryStringBuilder, WriteFloat, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteDouble(double value)", CBinaryStringBuilder, WriteDouble, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteVector(Vector value)", CBinaryStringBuilder, WriteVector, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteString(string&in value)", CBinaryStringBuilder, WriteString, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "int ReadInt()", CBinaryStringBuilder, ReadInt, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "int64 ReadLong()", CBinaryStringBuilder, ReadLong, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "float ReadFloat()", CBinaryStringBuilder, ReadFloat, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "double ReadDouble()", CBinaryStringBuilder, ReadDouble, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "Vector ReadVector()", CBinaryStringBuilder, ReadVector, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "string ReadString()", CBinaryStringBuilder, ReadString, asCALL_THISCALL);
+        asSFuncPtr reg;
+        ASEXT_RegisterObjectType(pASDoc, "Binary String Builder", "CBinaryStringBuilder", 0, asOBJ_REF | asOBJ_GC);
+        reg = asFUNCTION(CBinaryStringBuilder::Factory);
+        ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CBinaryStringBuilder", asBEHAVE_FACTORY, "CBinaryStringBuilder@ CBinaryStringBuilder()", &reg, asCALL_CDECL);
+        reg = asFUNCTION(CBinaryStringBuilder::ParamFactory);
+        ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CBinaryStringBuilder", asBEHAVE_FACTORY, "CBinaryStringBuilder@ CBinaryStringBuilder(string&in buffer)", &reg, asCALL_CDECL);
+        RegisterGCObject<CBinaryStringBuilder>(pASDoc, "CBinaryStringBuilder");
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Is Read to end?", "CBinaryStringBuilder", "bool IsReadToEnd()", CBinaryStringBuilder, IsReadToEnd, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get output to a string", "CBinaryStringBuilder", "string Get()", CBinaryStringBuilder, Get, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Set a read buffer", "CBinaryStringBuilder", "bool Set(string&in buffer)", CBinaryStringBuilder, Set, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get the read pointer", "CBinaryStringBuilder", "uint GetReadPointer()", CBinaryStringBuilder, GetReadPointer, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Set the read pointer", "CBinaryStringBuilder", "void SetReadPointer(uint iPointer)", CBinaryStringBuilder, SetReadPointer, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteInt(int value)", CBinaryStringBuilder, WriteInt, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteLong(int64 value)", CBinaryStringBuilder, WriteLong, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteFloat(float value)", CBinaryStringBuilder, WriteFloat, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteDouble(double value)", CBinaryStringBuilder, WriteDouble, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteVector(Vector value)", CBinaryStringBuilder, WriteVector, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Write a Value", "CBinaryStringBuilder", "void WriteString(string&in value)", CBinaryStringBuilder, WriteString, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "int ReadInt()", CBinaryStringBuilder, ReadInt, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "int64 ReadLong()", CBinaryStringBuilder, ReadLong, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "float ReadFloat()", CBinaryStringBuilder, ReadFloat, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "double ReadDouble()", CBinaryStringBuilder, ReadDouble, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "Vector ReadVector()", CBinaryStringBuilder, ReadVector, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Read a Value", "CBinaryStringBuilder", "string ReadString()", CBinaryStringBuilder, ReadString, asCALL_THISCALL);
 #pragma endregion
 #pragma region CSQLite
-		//Enum
-		ASEXT_RegisterEnum(pASDoc, "SQLite Return Value", "SQLiteResult", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "Successful result ", "SQLiteResult", "SQLITE_OK", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "Generic error ", "SQLiteResult", "SQLITE_ERROR", 1);
-		ASEXT_RegisterEnumValue(pASDoc, "Internal logic error in SQLite ", "SQLiteResult", "SQLITE_INTERNAL", 2);
-		ASEXT_RegisterEnumValue(pASDoc, "Access permission denied ", "SQLiteResult", "SQLITE_PERM", 3);
-		ASEXT_RegisterEnumValue(pASDoc, "Callback routine requested an abort ", "SQLiteResult", "SQLITE_ABORT", 4);
-		ASEXT_RegisterEnumValue(pASDoc, "The database file is locked ", "SQLiteResult", "SQLITE_BUSY", 5);
-		ASEXT_RegisterEnumValue(pASDoc, "A table in the database is locked ", "SQLiteResult", "SQLITE_LOCKED", 6);
-		ASEXT_RegisterEnumValue(pASDoc, "A malloc() failed ", "SQLiteResult", "SQLITE_NOMEM", 7);
-		ASEXT_RegisterEnumValue(pASDoc, "Attempt to write a readonly database ", "SQLiteResult", "SQLITE_READONLY", 8);
-		ASEXT_RegisterEnumValue(pASDoc, "Operation terminated by sqlite3_interrupt()", "SQLiteResult", "SQLITE_INTERRUPT", 9);
-		ASEXT_RegisterEnumValue(pASDoc, "Some kind of disk I/O error occurred ", "SQLiteResult", "SQLITE_IOERR", 10);
-		ASEXT_RegisterEnumValue(pASDoc, "The database disk image is malformed ", "SQLiteResult", "SQLITE_CORRUPT", 11);
-		ASEXT_RegisterEnumValue(pASDoc, "Unknown opcode in sqlite3_file_control() ", "SQLiteResult", "SQLITE_NOTFOUND", 12);
-		ASEXT_RegisterEnumValue(pASDoc, "Insertion failed because database is full ", "SQLiteResult", "SQLITE_FULL", 13);
-		ASEXT_RegisterEnumValue(pASDoc, "Unable to open the database file ", "SQLiteResult", "SQLITE_CANTOPEN", 14);
-		ASEXT_RegisterEnumValue(pASDoc, "Database lock protocol error ", "SQLiteResult", "SQLITE_PROTOCOL", 15);
-		ASEXT_RegisterEnumValue(pASDoc, "Internal use only ", "SQLiteResult", "SQLITE_EMPTY", 16);
-		ASEXT_RegisterEnumValue(pASDoc, "The database schema changed ", "SQLiteResult", "SQLITE_SCHEMA", 17);
-		ASEXT_RegisterEnumValue(pASDoc, "String or BLOB exceeds size limit ", "SQLiteResult", "SQLITE_TOOBIG", 18);
-		ASEXT_RegisterEnumValue(pASDoc, "Abort due to constraint violation ", "SQLiteResult", "SQLITE_CONSTRAINT", 19);
-		ASEXT_RegisterEnumValue(pASDoc, "Data type mismatch ", "SQLiteResult", "SQLITE_MISMATCH", 20);
-		ASEXT_RegisterEnumValue(pASDoc, "Library used incorrectly ", "SQLiteResult", "SQLITE_MISUSE", 21);
-		ASEXT_RegisterEnumValue(pASDoc, "Uses OS features not supported on host ", "SQLiteResult", "SQLITE_NOLFS", 22);
-		ASEXT_RegisterEnumValue(pASDoc, "Authorization denied ", "SQLiteResult", "SQLITE_AUTH", 23);
-		ASEXT_RegisterEnumValue(pASDoc, "Not used ", "SQLiteResult", "SQLITE_FORMAT", 24);
-		ASEXT_RegisterEnumValue(pASDoc, "2nd parameter to sqlite3_bind out of range ", "SQLiteResult", "SQLITE_RANGE", 25);
-		ASEXT_RegisterEnumValue(pASDoc, "File opened that is not a database file ", "SQLiteResult", "SQLITE_NOTADB", 26);
-		ASEXT_RegisterEnumValue(pASDoc, "Notifications from sqlite3_log() ", "SQLiteResult", "SQLITE_NOTICE", 27);
-		ASEXT_RegisterEnumValue(pASDoc, "Warnings from sqlite3_log() ", "SQLiteResult", "SQLITE_WARNING", 28);
-		ASEXT_RegisterEnumValue(pASDoc, "sqlite3_step() has another row ready ", "SQLiteResult", "SQLITE_ROW", 100);
-		ASEXT_RegisterEnumValue(pASDoc, "sqlite3_step() has finished executing ", "SQLiteResult", "SQLITE_DONE", 101);
-		ASEXT_RegisterEnumValue(pASDoc, "sql has been closed ", "SQLiteResult", "SQLITE_CLOSED", 999);
+        //Enum
+        ASEXT_RegisterEnum(pASDoc, "SQLite Return Value", "SQLiteResult", 0);
+        ASEXT_RegisterEnumValue(pASDoc, "Successful result ", "SQLiteResult", "SQLITE_OK", 0);
+        ASEXT_RegisterEnumValue(pASDoc, "Generic error ", "SQLiteResult", "SQLITE_ERROR", 1);
+        ASEXT_RegisterEnumValue(pASDoc, "Internal logic error in SQLite ", "SQLiteResult", "SQLITE_INTERNAL", 2);
+        ASEXT_RegisterEnumValue(pASDoc, "Access permission denied ", "SQLiteResult", "SQLITE_PERM", 3);
+        ASEXT_RegisterEnumValue(pASDoc, "Callback routine requested an abort ", "SQLiteResult", "SQLITE_ABORT", 4);
+        ASEXT_RegisterEnumValue(pASDoc, "The database file is locked ", "SQLiteResult", "SQLITE_BUSY", 5);
+        ASEXT_RegisterEnumValue(pASDoc, "A table in the database is locked ", "SQLiteResult", "SQLITE_LOCKED", 6);
+        ASEXT_RegisterEnumValue(pASDoc, "A malloc() failed ", "SQLiteResult", "SQLITE_NOMEM", 7);
+        ASEXT_RegisterEnumValue(pASDoc, "Attempt to write a readonly database ", "SQLiteResult", "SQLITE_READONLY", 8);
+        ASEXT_RegisterEnumValue(pASDoc, "Operation terminated by sqlite3_interrupt()", "SQLiteResult", "SQLITE_INTERRUPT", 9);
+        ASEXT_RegisterEnumValue(pASDoc, "Some kind of disk I/O error occurred ", "SQLiteResult", "SQLITE_IOERR", 10);
+        ASEXT_RegisterEnumValue(pASDoc, "The database disk image is malformed ", "SQLiteResult", "SQLITE_CORRUPT", 11);
+        ASEXT_RegisterEnumValue(pASDoc, "Unknown opcode in sqlite3_file_control() ", "SQLiteResult", "SQLITE_NOTFOUND", 12);
+        ASEXT_RegisterEnumValue(pASDoc, "Insertion failed because database is full ", "SQLiteResult", "SQLITE_FULL", 13);
+        ASEXT_RegisterEnumValue(pASDoc, "Unable to open the database file ", "SQLiteResult", "SQLITE_CANTOPEN", 14);
+        ASEXT_RegisterEnumValue(pASDoc, "Database lock protocol error ", "SQLiteResult", "SQLITE_PROTOCOL", 15);
+        ASEXT_RegisterEnumValue(pASDoc, "Internal use only ", "SQLiteResult", "SQLITE_EMPTY", 16);
+        ASEXT_RegisterEnumValue(pASDoc, "The database schema changed ", "SQLiteResult", "SQLITE_SCHEMA", 17);
+        ASEXT_RegisterEnumValue(pASDoc, "String or BLOB exceeds size limit ", "SQLiteResult", "SQLITE_TOOBIG", 18);
+        ASEXT_RegisterEnumValue(pASDoc, "Abort due to constraint violation ", "SQLiteResult", "SQLITE_CONSTRAINT", 19);
+        ASEXT_RegisterEnumValue(pASDoc, "Data type mismatch ", "SQLiteResult", "SQLITE_MISMATCH", 20);
+        ASEXT_RegisterEnumValue(pASDoc, "Library used incorrectly ", "SQLiteResult", "SQLITE_MISUSE", 21);
+        ASEXT_RegisterEnumValue(pASDoc, "Uses OS features not supported on host ", "SQLiteResult", "SQLITE_NOLFS", 22);
+        ASEXT_RegisterEnumValue(pASDoc, "Authorization denied ", "SQLiteResult", "SQLITE_AUTH", 23);
+        ASEXT_RegisterEnumValue(pASDoc, "Not used ", "SQLiteResult", "SQLITE_FORMAT", 24);
+        ASEXT_RegisterEnumValue(pASDoc, "2nd parameter to sqlite3_bind out of range ", "SQLiteResult", "SQLITE_RANGE", 25);
+        ASEXT_RegisterEnumValue(pASDoc, "File opened that is not a database file ", "SQLiteResult", "SQLITE_NOTADB", 26);
+        ASEXT_RegisterEnumValue(pASDoc, "Notifications from sqlite3_log() ", "SQLiteResult", "SQLITE_NOTICE", 27);
+        ASEXT_RegisterEnumValue(pASDoc, "Warnings from sqlite3_log() ", "SQLiteResult", "SQLITE_WARNING", 28);
+        ASEXT_RegisterEnumValue(pASDoc, "sqlite3_step() has another row ready ", "SQLiteResult", "SQLITE_ROW", 100);
+        ASEXT_RegisterEnumValue(pASDoc, "sqlite3_step() has finished executing ", "SQLiteResult", "SQLITE_DONE", 101);
+        ASEXT_RegisterEnumValue(pASDoc, "sql has been closed ", "SQLiteResult", "SQLITE_CLOSED", 999);
 
-		ASEXT_RegisterEnum(pASDoc, "SQLite Open Mode", "SQLiteMode", 0);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_READONLY", 0x00000001);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_READWRITE", 0x00000002);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_CREATE", 0x00000004);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_DELETEONCLOSE", 0x00000008);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_EXCLUSIVE", 0x00000010);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_AUTOPROXY", 0x00000020);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_URI", 0x00000040);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_MEMORY", 0x00000080);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_MAIN_DB", 0x00000100);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_TEMP_DB", 0x00000200);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_TRANSIENT_DB", 0x00000400);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_MAIN_JOURNAL", 0x00000800);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_TEMP_JOURNAL", 0x00001000);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_SUBJOURNAL", 0x00002000);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_SUPER_JOURNAL", 0x00004000);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_NOMUTEX", 0x00008000);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_FULLMUTEX", 0x00010000);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_SHAREDCACHE", 0x00020000);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_PRIVATECACHE", 0x00040000);
-		ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_WAL", 0x00080000);
-		ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_NOFOLLOW", 0x01000000);
-		ASEXT_RegisterEnumValue(pASDoc, "Extended result codes", "SQLiteMode", "SQLITE_OPEN_EXRESCODE", 0x02000000);
+        ASEXT_RegisterEnum(pASDoc, "SQLite Open Mode", "SQLiteMode", 0);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_READONLY", 0x00000001);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_READWRITE", 0x00000002);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_CREATE", 0x00000004);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_DELETEONCLOSE", 0x00000008);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_EXCLUSIVE", 0x00000010);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_AUTOPROXY", 0x00000020);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_URI", 0x00000040);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_MEMORY", 0x00000080);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_MAIN_DB", 0x00000100);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_TEMP_DB", 0x00000200);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_TRANSIENT_DB", 0x00000400);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_MAIN_JOURNAL", 0x00000800);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_TEMP_JOURNAL", 0x00001000);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_SUBJOURNAL", 0x00002000);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_SUPER_JOURNAL", 0x00004000);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_NOMUTEX", 0x00008000);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_FULLMUTEX", 0x00010000);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_SHAREDCACHE", 0x00020000);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_PRIVATECACHE", 0x00040000);
+        ASEXT_RegisterEnumValue(pASDoc, "VFS only", "SQLiteMode", "SQLITE_OPEN_WAL", 0x00080000);
+        ASEXT_RegisterEnumValue(pASDoc, "Ok for sqlite3_open_v2()", "SQLiteMode", "SQLITE_OPEN_NOFOLLOW", 0x01000000);
+        ASEXT_RegisterEnumValue(pASDoc, "Extended result codes", "SQLiteMode", "SQLITE_OPEN_EXRESCODE", 0x02000000);
 
-		//Class
-		ASEXT_RegisterObjectType(pASDoc, "SQL Item", "CSQLItem", 0, asOBJ_REF | asOBJ_GC);
-		RegisterGCObject<CASSQLItem>(pASDoc, "CSQLItem");
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get string", "CSQLItem", "void Get(string&out buffer)", CASSQLItem, Get, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get int64", "CSQLItem", "int64 GetLong()", CASSQLItem, GetInt64, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get int", "CSQLItem", "int GetInt()", CASSQLItem, GetInt, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get int", "CSQLItem", "uint64 GetULong()", CASSQLItem, GetUInt64, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get int", "CSQLItem", "uint GetUInt()", CASSQLItem, GetUInt, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get real", "CSQLItem", "double GetReal()", CASSQLItem, GetReal, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get blob", "CSQLItem", "CBinaryStringBuilder@ GetBlob()", CASSQLItem, GetBlob, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Is null", "CSQLItem", "bool IsNull()", CASSQLItem, IsNull, asCALL_THISCALL);
+        //Class
+        ASEXT_RegisterObjectType(pASDoc, "SQL Item", "CSQLItem", 0, asOBJ_REF | asOBJ_GC);
+        RegisterGCObject<CASSQLItem>(pASDoc, "CSQLItem");
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get string", "CSQLItem", "void Get(string&out buffer)", CASSQLItem, Get, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get int64", "CSQLItem", "int64 GetLong()", CASSQLItem, GetInt64, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get int", "CSQLItem", "int GetInt()", CASSQLItem, GetInt, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get int", "CSQLItem", "uint64 GetULong()", CASSQLItem, GetUInt64, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get int", "CSQLItem", "uint GetUInt()", CASSQLItem, GetUInt, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get real", "CSQLItem", "double GetReal()", CASSQLItem, GetReal, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get blob", "CSQLItem", "CBinaryStringBuilder@ GetBlob()", CASSQLItem, GetBlob, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Is null", "CSQLItem", "bool IsNull()", CASSQLItem, IsNull, asCALL_THISCALL);
 
-		ASEXT_RegisterObjectType(pASDoc, "SQL Grid", "CSQLGrid", 0, asOBJ_REF | asOBJ_GC);
-		RegisterGCObject<CASSQLGrid>(pASDoc, "CSQLGrid");
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get CSQLItem", "CSQLGrid", "CSQLItem@ Get(uint row, uint column)", CASSQLGrid, Get, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get CSQLItem", "CSQLGrid", "CSQLItem@ opIndex(uint row, uint column)", CASSQLGrid, Get, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get Rows", "CSQLGrid", "uint Rows()", CASSQLGrid, Rows, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Get Columns", "CSQLGrid", "uint Columns()", CASSQLGrid, Columns, asCALL_THISCALL);
+        ASEXT_RegisterObjectType(pASDoc, "SQL Grid", "CSQLGrid", 0, asOBJ_REF | asOBJ_GC);
+        RegisterGCObject<CASSQLGrid>(pASDoc, "CSQLGrid");
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get CSQLItem", "CSQLGrid", "CSQLItem@ Get(uint row, uint column)", CASSQLGrid, Get, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get CSQLItem", "CSQLGrid", "CSQLItem@ opIndex(uint row, uint column)", CASSQLGrid, Get, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get Rows", "CSQLGrid", "uint Rows()", CASSQLGrid, Rows, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Get Columns", "CSQLGrid", "uint Columns()", CASSQLGrid, Columns, asCALL_THISCALL);
 
-		ASEXT_RegisterFuncDef(pASDoc, "SQLite Callback", "void fnSQLiteCallback(any@ pParam, int iColumnSize, array<CSQLItem@>@ aryColumnValue, array<CSQLItem@>@ aryColumnName)");
+        ASEXT_RegisterFuncDef(pASDoc, "SQLite Callback", "void fnSQLiteCallback(any@ pParam, int iColumnSize, array<CSQLItem@>@ aryColumnValue, array<CSQLItem@>@ aryColumnName)");
 
-		ASEXT_RegisterObjectType(pASDoc, "SQLite", "CSQLite", 0, asOBJ_REF | asOBJ_GC);
-		reg = asFUNCTION(CASSQLite::Factory);
-		ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CSQLite", asBEHAVE_FACTORY, "CSQLite@ CSQLite(string&in path, SQLiteMode iMode)", &reg, asCALL_CDECL);
-		RegisterGCObject<CASSQLite>(pASDoc, "CSQLite");
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, string&out errMsg)", CASSQLite, Exec, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL In Sync", "CSQLite", "SQLiteResult Exec(string&in sql, CSQLGrid@ &out aryResult, string&out errMsg)", CASSQLite, ExecSync, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, fnSQLiteCallback@ pCallback, any@ pCallBackparam, string&out errMsg)", CASSQLite, ExecWithCallBack, asCALL_THISCALL);
-		REGISTE_OBJMETHODEX(reg, pASDoc, "Close SQL", "CSQLite", "void Close()", CASSQLite, Close, asCALL_THISCALL);
+        ASEXT_RegisterObjectType(pASDoc, "SQLite", "CSQLite", 0, asOBJ_REF | asOBJ_GC);
+        reg = asFUNCTION(CASSQLite::Factory);
+        ASEXT_RegisterObjectBehaviourEx(pASDoc, "Factory", "CSQLite", asBEHAVE_FACTORY, "CSQLite@ CSQLite(string&in path, SQLiteMode iMode)", &reg, asCALL_CDECL);
+        RegisterGCObject<CASSQLite>(pASDoc, "CSQLite");
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, string&out errMsg)", CASSQLite, Exec, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL In Sync", "CSQLite", "SQLiteResult Exec(string&in sql, CSQLGrid@ &out aryResult, string&out errMsg)", CASSQLite, ExecSync, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, fnSQLiteCallback@ pCallback, any@ pCallBackparam, string&out errMsg)", CASSQLite, ExecWithCallBack, asCALL_THISCALL);
+        REGISTE_OBJMETHODEX(reg, pASDoc, "Close SQL", "CSQLite", "void Close()", CASSQLite, Close, asCALL_THISCALL);
 #pragma endregion
 #pragma region Json
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Deserialize a stringjson-like into a dictionary",
-	"CEngineFuncs",
-	"bool JsonDeserialize( const string &in str, dictionary &out obj )",
-	(void*)CASEngineFuncs_JsonDeserialize, asCALL_THISCALL );
-
-ASEXT_RegisterObjectMethod( pASDoc,
-	"Serialize a dictionary into a string json-like",
-	"CEngineFuncs",
-	"bool JsonSerialize( const dictionary &in obj, string &out str, int indents = -1 )",
-	(void*)CASEngineFuncs_JsonSerialize, asCALL_THISCALL );
+    "Deserialize a stringjson-like into a dictionary",
+    "CEngineFuncs",
+    "bool JsonDeserialize( const string &in str, dictionary &out obj )",
+    (void*)CASEngineFuncs_JsonDeserialize, asCALL_THISCALL );
 #pragma endregion
-		ASEXT_RegisterObjectMethod(pASDoc,
-			"Caculate CRC32 for a string", "CEngineFuncs", "uint32 CRC32(const string& in szBuffer)",
-			(void*)CASEngineFuncs_CRC32, asCALL_THISCALL);
-		ASEXT_RegisterObjectMethod(pASDoc,
-			"copy class, If src and dst are different type, return false.\nIf not class ref, crash game.", "CEngineFuncs", "bool ClassMemcpy(?& in src, ?& in dst)",
-			(void*)CASEngineFuncs_ClassMemcpy, asCALL_THISCALL);
+        ASEXT_RegisterObjectMethod(pASDoc,
+            "Caculate CRC32 for a string", "CEngineFuncs", "uint32 CRC32(const string& in szBuffer)",
+            (void*)CASEngineFuncs_CRC32, asCALL_THISCALL);
+        ASEXT_RegisterObjectMethod(pASDoc,
+            "copy class, If src and dst are different type, return false.\nIf not class ref, crash game.", "CEngineFuncs", "bool ClassMemcpy(?& in src, ?& in dst)",
+            (void*)CASEngineFuncs_ClassMemcpy, asCALL_THISCALL);
 #pragma endregion
 #pragma region physent_t
 ASEXT_RegisterObjectType( pASDoc,
-	"Physics data",
-	"physent_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
+    "Physics data",
+    "physent_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Classname of this entity",
-	"physent_t", "string get_name() property",  (void*)CASPlayerMove__GetPhysEntName, asCALL_THISCALL );
+    "Classname of this entity",
+    "physent_t", "string get_name() property",  (void*)CASPlayerMove__GetPhysEntName, asCALL_THISCALL );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Is this entity a player?",
-	"physent_t", "bool IsPlayer() const",  (void*)CASPlayerMove__PhysEntIsPlayer, asCALL_THISCALL );
+    "Is this entity a player?",
+    "physent_t", "bool IsPlayer() const",  (void*)CASPlayerMove__PhysEntIsPlayer, asCALL_THISCALL );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector origin", offsetof( physent_t, origin ) );
+    "",
+    "physent_t", "Vector origin", offsetof( physent_t, origin ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector mins", offsetof( physent_t, mins ) );
+    "",
+    "physent_t", "Vector mins", offsetof( physent_t, mins ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector maxs", offsetof( physent_t, maxs ) );
+    "",
+    "physent_t", "Vector maxs", offsetof( physent_t, maxs ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Entity index or identifier associated with this physent.",
-	"physent_t", "int info", offsetof( physent_t, info ) );
+    "Entity index or identifier associated with this physent.",
+    "physent_t", "int info", offsetof( physent_t, info ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector angles", offsetof( physent_t, angles ) );
+    "",
+    "physent_t", "Vector angles", offsetof( physent_t, angles ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int solid", offsetof( physent_t, solid ) );
+    "",
+    "physent_t", "int solid", offsetof( physent_t, solid ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int skin", offsetof( physent_t, skin ) );
+    "",
+    "physent_t", "int skin", offsetof( physent_t, skin ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int rendermode", offsetof( physent_t, rendermode ) );
+    "",
+    "physent_t", "int rendermode", offsetof( physent_t, rendermode ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "float frame", offsetof( physent_t, frame ) );
+    "",
+    "physent_t", "float frame", offsetof( physent_t, frame ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int sequence", offsetof( physent_t, sequence ) );
+    "",
+    "physent_t", "int sequence", offsetof( physent_t, sequence ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int controller", offsetof( physent_t, controller ) );
+    "",
+    "physent_t", "int controller", offsetof( physent_t, controller ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int blending", offsetof( physent_t, blending ) );
+    "",
+    "physent_t", "int blending", offsetof( physent_t, blending ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int movetype", offsetof( physent_t, movetype ) );
+    "",
+    "physent_t", "int movetype", offsetof( physent_t, movetype ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int takedamage", offsetof( physent_t, takedamage ) );
+    "",
+    "physent_t", "int takedamage", offsetof( physent_t, takedamage ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int blooddecal", offsetof( physent_t, blooddecal ) );
+    "",
+    "physent_t", "int blooddecal", offsetof( physent_t, blooddecal ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int team", offsetof( physent_t, team ) );
+    "",
+    "physent_t", "int team", offsetof( physent_t, team ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int classnumber", offsetof( physent_t, classnumber ) );
+    "",
+    "physent_t", "int classnumber", offsetof( physent_t, classnumber ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int iuser1", offsetof( physent_t, iuser1 ) );
+    "",
+    "physent_t", "int iuser1", offsetof( physent_t, iuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int iuser2", offsetof( physent_t, iuser2 ) );
+    "",
+    "physent_t", "int iuser2", offsetof( physent_t, iuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int iuser3", offsetof( physent_t, iuser3 ) );
+    "",
+    "physent_t", "int iuser3", offsetof( physent_t, iuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "int iuser4", offsetof( physent_t, iuser4 ) );
+    "",
+    "physent_t", "int iuser4", offsetof( physent_t, iuser4 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "float fuser1", offsetof( physent_t, fuser1 ) );
+    "",
+    "physent_t", "float fuser1", offsetof( physent_t, fuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "float fuser2", offsetof( physent_t, fuser2 ) );
+    "",
+    "physent_t", "float fuser2", offsetof( physent_t, fuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "float fuser3", offsetof( physent_t, fuser3 ) );
+    "",
+    "physent_t", "float fuser3", offsetof( physent_t, fuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "float fuser4", offsetof( physent_t, fuser4 ) );
+    "",
+    "physent_t", "float fuser4", offsetof( physent_t, fuser4 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector vuser1", offsetof( physent_t, vuser1 ) );
+    "",
+    "physent_t", "Vector vuser1", offsetof( physent_t, vuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector vuser2", offsetof( physent_t, vuser2 ) );
+    "",
+    "physent_t", "Vector vuser2", offsetof( physent_t, vuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector vuser3", offsetof( physent_t, vuser3 ) );
+    "",
+    "physent_t", "Vector vuser3", offsetof( physent_t, vuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"physent_t", "Vector vuser4", offsetof( physent_t, vuser4 ) );
+    "",
+    "physent_t", "Vector vuser4", offsetof( physent_t, vuser4 ) );
 #pragma endregion
 #pragma region playermove_t
 ASEXT_RegisterObjectType( pASDoc,
-	"Player movement data",
-	"playermove_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
+    "Player movement data",
+    "playermove_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"index of the player that is moving",
-	"playermove_t", "int get_player() const property", (void*)CASPlayerMove__PlayerIndex, asCALL_THISCALL );
+    "index of the player that is moving",
+    "playermove_t", "int get_player() const property", (void*)CASPlayerMove__PlayerIndex, asCALL_THISCALL );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const float time", offsetof( playermove_t, time ) );
+    "",
+    "playermove_t", "const float time", offsetof( playermove_t, time ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const float frametime", offsetof( playermove_t, frametime ) );
+    "",
+    "playermove_t", "const float frametime", offsetof( playermove_t, frametime ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector forward", offsetof( playermove_t, forward ) );
+    "",
+    "playermove_t", "Vector forward", offsetof( playermove_t, forward ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector right", offsetof( playermove_t, right ) );
+    "",
+    "playermove_t", "Vector right", offsetof( playermove_t, right ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector up", offsetof( playermove_t, up ) );
+    "",
+    "playermove_t", "Vector up", offsetof( playermove_t, up ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector origin", offsetof( playermove_t, origin ) );
+    "",
+    "playermove_t", "Vector origin", offsetof( playermove_t, origin ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector angles", offsetof( playermove_t, angles ) );
+    "",
+    "playermove_t", "Vector angles", offsetof( playermove_t, angles ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const Vector oldangles", offsetof( playermove_t, oldangles ) );
+    "",
+    "playermove_t", "const Vector oldangles", offsetof( playermove_t, oldangles ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector velocity", offsetof( playermove_t, velocity ) );
+    "",
+    "playermove_t", "Vector velocity", offsetof( playermove_t, velocity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector movedir", offsetof( playermove_t, movedir ) );
+    "",
+    "playermove_t", "Vector movedir", offsetof( playermove_t, movedir ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector basevelocity", offsetof( playermove_t, basevelocity ) );
+    "",
+    "playermove_t", "Vector basevelocity", offsetof( playermove_t, basevelocity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector view_ofs", offsetof( playermove_t, view_ofs ) );
+    "",
+    "playermove_t", "Vector view_ofs", offsetof( playermove_t, view_ofs ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float flDuckTime", offsetof( playermove_t, flDuckTime ) );
+    "",
+    "playermove_t", "float flDuckTime", offsetof( playermove_t, flDuckTime ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int bInDuck", offsetof( playermove_t, bInDuck ) );
+    "",
+    "playermove_t", "int bInDuck", offsetof( playermove_t, bInDuck ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int flTimeStepSound", offsetof( playermove_t, flTimeStepSound ) );
+    "",
+    "playermove_t", "int flTimeStepSound", offsetof( playermove_t, flTimeStepSound ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int iStepLeft", offsetof( playermove_t, iStepLeft ) );
+    "",
+    "playermove_t", "int iStepLeft", offsetof( playermove_t, iStepLeft ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float flFallVelocity", offsetof( playermove_t, flFallVelocity ) );
+    "",
+    "playermove_t", "float flFallVelocity", offsetof( playermove_t, flFallVelocity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector punchangle", offsetof( playermove_t, punchangle ) );
+    "",
+    "playermove_t", "Vector punchangle", offsetof( playermove_t, punchangle ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float flSwimTime", offsetof( playermove_t, flSwimTime ) );
+    "",
+    "playermove_t", "float flSwimTime", offsetof( playermove_t, flSwimTime ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float flNextPrimaryAttack", offsetof( playermove_t, flNextPrimaryAttack ) );
+    "",
+    "playermove_t", "float flNextPrimaryAttack", offsetof( playermove_t, flNextPrimaryAttack ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int effects", offsetof( playermove_t, effects ) );
+    "",
+    "playermove_t", "int effects", offsetof( playermove_t, effects ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int flags", offsetof( playermove_t, flags ) );
+    "",
+    "playermove_t", "int flags", offsetof( playermove_t, flags ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int usehull", offsetof( playermove_t, usehull ) );
+    "",
+    "playermove_t", "int usehull", offsetof( playermove_t, usehull ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float gravity", offsetof( playermove_t, gravity ) );
+    "",
+    "playermove_t", "float gravity", offsetof( playermove_t, gravity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float friction", offsetof( playermove_t, friction ) );
+    "",
+    "playermove_t", "float friction", offsetof( playermove_t, friction ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const int oldbuttons", offsetof( playermove_t, oldbuttons ) );
+    "",
+    "playermove_t", "const int oldbuttons", offsetof( playermove_t, oldbuttons ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float waterjumptime", offsetof( playermove_t, waterjumptime ) );
+    "",
+    "playermove_t", "float waterjumptime", offsetof( playermove_t, waterjumptime ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const int dead", offsetof( playermove_t, dead ) );
+    "",
+    "playermove_t", "const int dead", offsetof( playermove_t, dead ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const int deadflag", offsetof( playermove_t, deadflag ) );
+    "",
+    "playermove_t", "const int deadflag", offsetof( playermove_t, deadflag ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const int spectator", offsetof( playermove_t, spectator ) );
+    "",
+    "playermove_t", "const int spectator", offsetof( playermove_t, spectator ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int movetype", offsetof( playermove_t, movetype ) );
+    "",
+    "playermove_t", "int movetype", offsetof( playermove_t, movetype ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Entity index the player is standing on (-1 if none).",
-	"playermove_t", "const int onground", offsetof( playermove_t, onground ) );
+    "Entity index the player is standing on (-1 if none).",
+    "playermove_t", "const int onground", offsetof( playermove_t, onground ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const int waterlevel", offsetof( playermove_t, waterlevel ) );
+    "",
+    "playermove_t", "const int waterlevel", offsetof( playermove_t, waterlevel ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const int watertype", offsetof( playermove_t, watertype ) );
+    "",
+    "playermove_t", "const int watertype", offsetof( playermove_t, watertype ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const int oldwaterlevel", offsetof( playermove_t, oldwaterlevel ) );
+    "",
+    "playermove_t", "const int oldwaterlevel", offsetof( playermove_t, oldwaterlevel ) );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Texture name the player is currently standing at",
-	"playermove_t", "string get_sztexturename() property",  (void*)CASPlayerMove__GetTextureName, asCALL_THISCALL );
+    "Texture name the player is currently standing at",
+    "playermove_t", "string get_sztexturename() property",  (void*)CASPlayerMove__GetTextureName, asCALL_THISCALL );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Texture type the player is currently standing at",
-	"playermove_t", "const char chtexturetype", offsetof( playermove_t, chtexturetype ) );
+    "Texture type the player is currently standing at",
+    "playermove_t", "const char chtexturetype", offsetof( playermove_t, chtexturetype ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float maxspeed", offsetof( playermove_t, maxspeed ) );
+    "",
+    "playermove_t", "float maxspeed", offsetof( playermove_t, maxspeed ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "const float clientmaxspeed", offsetof( playermove_t, clientmaxspeed ) );
+    "",
+    "playermove_t", "const float clientmaxspeed", offsetof( playermove_t, clientmaxspeed ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int iuser1", offsetof( playermove_t, iuser1 ) );
+    "",
+    "playermove_t", "int iuser1", offsetof( playermove_t, iuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int iuser2", offsetof( playermove_t, iuser2 ) );
+    "",
+    "playermove_t", "int iuser2", offsetof( playermove_t, iuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int iuser3", offsetof( playermove_t, iuser3 ) );
+    "",
+    "playermove_t", "int iuser3", offsetof( playermove_t, iuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "int iuser4", offsetof( playermove_t, iuser4 ) );
+    "",
+    "playermove_t", "int iuser4", offsetof( playermove_t, iuser4 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float fuser1", offsetof( playermove_t, fuser1 ) );
+    "",
+    "playermove_t", "float fuser1", offsetof( playermove_t, fuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float fuser2", offsetof( playermove_t, fuser2 ) );
+    "",
+    "playermove_t", "float fuser2", offsetof( playermove_t, fuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float fuser3", offsetof( playermove_t, fuser3 ) );
+    "",
+    "playermove_t", "float fuser3", offsetof( playermove_t, fuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "float fuser4", offsetof( playermove_t, fuser4 ) );
+    "",
+    "playermove_t", "float fuser4", offsetof( playermove_t, fuser4 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector vuser1", offsetof( playermove_t, vuser1 ) );
+    "",
+    "playermove_t", "Vector vuser1", offsetof( playermove_t, vuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector vuser2", offsetof( playermove_t, vuser2 ) );
+    "",
+    "playermove_t", "Vector vuser2", offsetof( playermove_t, vuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector vuser3", offsetof( playermove_t, vuser3 ) );
+    "",
+    "playermove_t", "Vector vuser3", offsetof( playermove_t, vuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"playermove_t", "Vector vuser4", offsetof( playermove_t, vuser4 ) );
+    "",
+    "playermove_t", "Vector vuser4", offsetof( playermove_t, vuser4 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Number of physical entities in collision list.",
-	"playermove_t", "int numphysent", offsetof( playermove_t, numphysent ) );
+    "Number of physical entities in collision list.",
+    "playermove_t", "int numphysent", offsetof( playermove_t, numphysent ) );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Get the physical entity in collision list for the given index.",
-	"playermove_t", "physent_t@ GetPhysEntByIndex( int index )", (void*)CASPlayerMove__GetPhysEntByIndex, asCALL_THISCALL );
+    "Get the physical entity in collision list for the given index.",
+    "playermove_t", "physent_t@ GetPhysEntByIndex( int index )", (void*)CASPlayerMove__GetPhysEntByIndex, asCALL_THISCALL );
 
 ASEXT_RegisterObjectMethod( pASDoc,
-	"Set the physical entity in collision list for the given index.",
-	"playermove_t", "void SetPhysEntByIndex( physent_t@ pPhyEnt, int newindex )", ( void* )CASPlayerMove__SetPhysEntByIndex, asCALL_THISCALL );
+    "Set the physical entity in collision list for the given index.",
+    "playermove_t", "void SetPhysEntByIndex( physent_t@ pPhyEnt, int newindex )", ( void* )CASPlayerMove__SetPhysEntByIndex, asCALL_THISCALL );
 
 #pragma endregion
 #pragma region MetaResult
 ASEXT_RegisterEnum( pASDoc,
-	"Flags returned by a plugin's api function.",
-	"MetaResult", 0 );
+    "Flags returned by a plugin's api function.",
+    "MetaResult", 0 );
 ASEXT_RegisterEnumValue( pASDoc,
-	"Plugin didn't take any action",
-	"MetaResult", "Ignored", static_cast<int>( META_RES::MRES_IGNORED ) );
+    "Plugin didn't take any action",
+    "MetaResult", "Ignored", static_cast<int>( META_RES::MRES_IGNORED ) );
 ASEXT_RegisterEnumValue( pASDoc,
-	"Plugin did something, but real function should still be called",
-	"MetaResult", "Handled", static_cast<int>( META_RES::MRES_HANDLED ) );
+    "Plugin did something, but real function should still be called",
+    "MetaResult", "Handled", static_cast<int>( META_RES::MRES_HANDLED ) );
 ASEXT_RegisterEnumValue( pASDoc,
-	"Call real function, but use my return value",
-	"MetaResult", "Override", static_cast<int>( META_RES::MRES_OVERRIDE ) );
+    "Call real function, but use my return value",
+    "MetaResult", "Override", static_cast<int>( META_RES::MRES_OVERRIDE ) );
 ASEXT_RegisterEnumValue( pASDoc,
-	"Skip real function; use my return value",
-	"MetaResult", "Supercede", static_cast<int>( META_RES::MRES_SUPERCEDE ) );
+    "Skip real function; use my return value",
+    "MetaResult", "Supercede", static_cast<int>( META_RES::MRES_SUPERCEDE ) );
 #pragma endregion
 #pragma region entity_state_t
 ASEXT_RegisterObjectType(pASDoc,
-	"Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.",
-	"entity_state_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
+    "Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.",
+    "entity_state_t", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Type classification used by the engine (normal entity, player, beam, etc.). Mostly internal; affects how the client interprets the state.",
-	"entity_state_t", "int entityType", offsetof( entity_state_t, entityType ) );
+    "Type classification used by the engine (normal entity, player, beam, etc.). Mostly internal; affects how the client interprets the state.",
+    "entity_state_t", "int entityType", offsetof( entity_state_t, entityType ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Entity index",
-	"entity_state_t", "int number", offsetof( entity_state_t, number ) );
+    "Entity index",
+    "entity_state_t", "int number", offsetof( entity_state_t, number ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Server time when this state was generated. Used for interpolation and networking.",
-	"entity_state_t", "float msg_time", offsetof( entity_state_t, msg_time ) );
+    "Server time when this state was generated. Used for interpolation and networking.",
+    "entity_state_t", "float msg_time", offsetof( entity_state_t, msg_time ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Incrementing message sequence number. Helps delta compression determine differences.",
-	"entity_state_t", "int messagenum", offsetof( entity_state_t, messagenum ) );
+    "Incrementing message sequence number. Helps delta compression determine differences.",
+    "entity_state_t", "int messagenum", offsetof( entity_state_t, messagenum ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Position in world",
-	"entity_state_t", "Vector origin", offsetof( entity_state_t, origin ) );
+    "Position in world",
+    "entity_state_t", "Vector origin", offsetof( entity_state_t, origin ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Entity angles",
-	"entity_state_t", "Vector angles", offsetof( entity_state_t, angles ) );
+    "Entity angles",
+    "entity_state_t", "Vector angles", offsetof( entity_state_t, angles ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Index into the precached model table. Determines which .mdl, .spr, or brush model to render.",
-	"entity_state_t", "int modelindex", offsetof( entity_state_t, modelindex ) );
+    "Index into the precached model table. Determines which .mdl, .spr, or brush model to render.",
+    "entity_state_t", "int modelindex", offsetof( entity_state_t, modelindex ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Model animation sequence number.",
-	"entity_state_t", "int sequence", offsetof( entity_state_t, sequence ) );
+    "Model animation sequence number.",
+    "entity_state_t", "int sequence", offsetof( entity_state_t, sequence ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Current animation frame.",
-	"entity_state_t", "float frame", offsetof( entity_state_t, frame ) );
+    "Current animation frame.",
+    "entity_state_t", "float frame", offsetof( entity_state_t, frame ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Color remap index",
-	"entity_state_t", "int colormap", offsetof( entity_state_t, colormap ) );
+    "Color remap index",
+    "entity_state_t", "int colormap", offsetof( entity_state_t, colormap ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Skin index inside the model.",
-	"entity_state_t", "int16 skin", offsetof( entity_state_t, skin ) );
+    "Skin index inside the model.",
+    "entity_state_t", "int16 skin", offsetof( entity_state_t, skin ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Bodygroup selection.",
-	"entity_state_t", "int body", offsetof( entity_state_t, body ) );
+    "Bodygroup selection.",
+    "entity_state_t", "int body", offsetof( entity_state_t, body ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Solid mode (How the client interacts with this entity)",
-	"entity_state_t", "int16 solid", offsetof( entity_state_t, solid ) );
+    "Solid mode (How the client interacts with this entity)",
+    "entity_state_t", "int16 solid", offsetof( entity_state_t, solid ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Rendering effects flag",
-	"entity_state_t", "int effects", offsetof( entity_state_t, effects ) );
+    "Rendering effects flag",
+    "entity_state_t", "int effects", offsetof( entity_state_t, effects ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Model/Sprite scale multiplier",
-	"entity_state_t", "float scale", offsetof( entity_state_t, scale ) );
+    "Model/Sprite scale multiplier",
+    "entity_state_t", "float scale", offsetof( entity_state_t, scale ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int8 eflags", offsetof( entity_state_t, eflags ) );
+    "",
+    "entity_state_t", "int8 eflags", offsetof( entity_state_t, eflags ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Render mode",
-	"entity_state_t", "int rendermode", offsetof( entity_state_t, rendermode ) );
+    "Render mode",
+    "entity_state_t", "int rendermode", offsetof( entity_state_t, rendermode ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Render ammount",
-	"entity_state_t", "int renderamt", offsetof( entity_state_t, renderamt ) );
+    "Render ammount",
+    "entity_state_t", "int renderamt", offsetof( entity_state_t, renderamt ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Render color",
-	"entity_state_t", "Vector rendercolor", offsetof( entity_state_t, rendercolor ) );
+    "Render color",
+    "entity_state_t", "Vector rendercolor", offsetof( entity_state_t, rendercolor ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Render effect",
-	"entity_state_t", "int renderfx", offsetof( entity_state_t, renderfx ) );
+    "Render effect",
+    "entity_state_t", "int renderfx", offsetof( entity_state_t, renderfx ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Move type",
-	"entity_state_t", "int movetype", offsetof( entity_state_t, movetype ) );
+    "Move type",
+    "entity_state_t", "int movetype", offsetof( entity_state_t, movetype ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float animtime", offsetof( entity_state_t, animtime ) );
+    "",
+    "entity_state_t", "float animtime", offsetof( entity_state_t, animtime ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float framerate", offsetof( entity_state_t, framerate ) );
+    "",
+    "entity_state_t", "float framerate", offsetof( entity_state_t, framerate ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector velocity", offsetof( entity_state_t, velocity ) );
+    "",
+    "entity_state_t", "Vector velocity", offsetof( entity_state_t, velocity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector mins", offsetof( entity_state_t, mins ) );
+    "",
+    "entity_state_t", "Vector mins", offsetof( entity_state_t, mins ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector maxs", offsetof( entity_state_t, maxs ) );
+    "",
+    "entity_state_t", "Vector maxs", offsetof( entity_state_t, maxs ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int aiment", offsetof( entity_state_t, aiment ) );
+    "",
+    "entity_state_t", "int aiment", offsetof( entity_state_t, aiment ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int owner", offsetof( entity_state_t, owner ) );
+    "",
+    "entity_state_t", "int owner", offsetof( entity_state_t, owner ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float friction", offsetof( entity_state_t, friction ) );
+    "",
+    "entity_state_t", "float friction", offsetof( entity_state_t, friction ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float gravity", offsetof( entity_state_t, gravity ) );
+    "",
+    "entity_state_t", "float gravity", offsetof( entity_state_t, gravity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int team", offsetof( entity_state_t, team ) );
+    "",
+    "entity_state_t", "int team", offsetof( entity_state_t, team ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Player-specific classification",
-	"entity_state_t", "int playerclass", offsetof( entity_state_t, playerclass ) );
+    "Player-specific classification",
+    "entity_state_t", "int playerclass", offsetof( entity_state_t, playerclass ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int health", offsetof( entity_state_t, health ) );
+    "",
+    "entity_state_t", "int health", offsetof( entity_state_t, health ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Player-specific spectator. 0/1 false/true",
-	"entity_state_t", "int spectator", offsetof( entity_state_t, spectator ) );
+    "Player-specific spectator. 0/1 false/true",
+    "entity_state_t", "int spectator", offsetof( entity_state_t, spectator ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int weaponmodel", offsetof( entity_state_t, weaponmodel ) );
+    "",
+    "entity_state_t", "int weaponmodel", offsetof( entity_state_t, weaponmodel ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int gaitsequence", offsetof( entity_state_t, gaitsequence ) );
+    "",
+    "entity_state_t", "int gaitsequence", offsetof( entity_state_t, gaitsequence ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector basevelocity", offsetof( entity_state_t, basevelocity ) );
+    "",
+    "entity_state_t", "Vector basevelocity", offsetof( entity_state_t, basevelocity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int usehull", offsetof( entity_state_t, usehull ) );
+    "",
+    "entity_state_t", "int usehull", offsetof( entity_state_t, usehull ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int oldbuttons", offsetof( entity_state_t, oldbuttons ) );
+    "",
+    "entity_state_t", "int oldbuttons", offsetof( entity_state_t, oldbuttons ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Entity index the player is standing on (-1 if none).",
-	"entity_state_t", "int onground", offsetof( entity_state_t, onground ) );
+    "Entity index the player is standing on (-1 if none).",
+    "entity_state_t", "int onground", offsetof( entity_state_t, onground ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int iStepLeft", offsetof( entity_state_t, iStepLeft ) );
+    "",
+    "entity_state_t", "int iStepLeft", offsetof( entity_state_t, iStepLeft ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float flFallVelocity", offsetof( entity_state_t, flFallVelocity ) );
+    "",
+    "entity_state_t", "float flFallVelocity", offsetof( entity_state_t, flFallVelocity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float fov", offsetof( entity_state_t, fov ) );
+    "",
+    "entity_state_t", "float fov", offsetof( entity_state_t, fov ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int weaponanim", offsetof( entity_state_t, weaponanim ) );
+    "",
+    "entity_state_t", "int weaponanim", offsetof( entity_state_t, weaponanim ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int iuser1", offsetof( entity_state_t, iuser1 ) );
+    "",
+    "entity_state_t", "int iuser1", offsetof( entity_state_t, iuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int iuser2", offsetof( entity_state_t, iuser2 ) );
+    "",
+    "entity_state_t", "int iuser2", offsetof( entity_state_t, iuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int iuser3", offsetof( entity_state_t, iuser3 ) );
+    "",
+    "entity_state_t", "int iuser3", offsetof( entity_state_t, iuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "int iuser4", offsetof( entity_state_t, iuser4 ) );
+    "",
+    "entity_state_t", "int iuser4", offsetof( entity_state_t, iuser4 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float fuser1", offsetof( entity_state_t, fuser1 ) );
+    "",
+    "entity_state_t", "float fuser1", offsetof( entity_state_t, fuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float fuser2", offsetof( entity_state_t, fuser2 ) );
+    "",
+    "entity_state_t", "float fuser2", offsetof( entity_state_t, fuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float fuser3", offsetof( entity_state_t, fuser3 ) );
+    "",
+    "entity_state_t", "float fuser3", offsetof( entity_state_t, fuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "float fuser4", offsetof( entity_state_t, fuser4 ) );
+    "",
+    "entity_state_t", "float fuser4", offsetof( entity_state_t, fuser4 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector vuser1", offsetof( entity_state_t, vuser1 ) );
+    "",
+    "entity_state_t", "Vector vuser1", offsetof( entity_state_t, vuser1 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector vuser2", offsetof( entity_state_t, vuser2 ) );
+    "",
+    "entity_state_t", "Vector vuser2", offsetof( entity_state_t, vuser2 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector vuser3", offsetof( entity_state_t, vuser3 ) );
+    "",
+    "entity_state_t", "Vector vuser3", offsetof( entity_state_t, vuser3 ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"",
-	"entity_state_t", "Vector vuser4", offsetof( entity_state_t, vuser4 ) );
+    "",
+    "entity_state_t", "Vector vuser4", offsetof( entity_state_t, vuser4 ) );
 #pragma endregion
 #pragma region addtofullpack_t
 ASEXT_RegisterObjectType( pASDoc,
-	"Entity networking packet.",
-	"ClientPacket", 0, asOBJ_REF | asOBJ_NOCOUNT );
+    "Entity networking packet.",
+    "ClientPacket", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Entity state being processed.",
-	"ClientPacket", "entity_state_t@ state", offsetof( addtofullpack_t, state ) );
+    "Entity state being processed.",
+    "ClientPacket", "entity_state_t@ state", offsetof( addtofullpack_t, state ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"The index of the entity currently being considered for transmission.",
-	"ClientPacket", "const int index", offsetof( addtofullpack_t, index ) );
+    "The index of the entity currently being considered for transmission.",
+    "ClientPacket", "const int index", offsetof( addtofullpack_t, index ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"The entity currently being considered for transmission.",
-	"ClientPacket", "edict_t@ entity", offsetof( addtofullpack_t, entity ) );
+    "The entity currently being considered for transmission.",
+    "ClientPacket", "edict_t@ entity", offsetof( addtofullpack_t, entity ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"The client receiving this packet.",
-	"ClientPacket", "edict_t@ host", offsetof( addtofullpack_t, host ) );
+    "The client receiving this packet.",
+    "ClientPacket", "edict_t@ host", offsetof( addtofullpack_t, host ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"Flags describing properties of the receiving client.",
-	"ClientPacket", "int hostFlags", offsetof( addtofullpack_t, hostFlags ) );
+    "Flags describing properties of the receiving client.",
+    "ClientPacket", "int hostFlags", offsetof( addtofullpack_t, hostFlags ) );
 
 ASEXT_RegisterObjectProperty( pASDoc,
-	"The index of the client receiving this packet.",
-	"ClientPacket", "const int playerIndex", offsetof( addtofullpack_t, playerIndex ) );
+    "The index of the client receiving this packet.",
+    "ClientPacket", "const int playerIndex", offsetof( addtofullpack_t, playerIndex ) );
 #pragma endregion
-	} );
+    } );
 }
 #undef REGISTE_OBJMETHODEX
 #undef REGISTE_OBJMETHODPREX
@@ -910,93 +904,93 @@ ASEXT_RegisterObjectProperty( pASDoc,
 void RegisterAngelScriptHooks()
 {
 CREATE_AS_HOOK( pClientCommandHook,
-	"Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
-	ASLP_NAMESPACE( Player ),
-	"ClientCommand",
-	"CBasePlayer@ player, MetaResult &out meta_result"
+    "Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
+    ASLP_NAMESPACE( Player ),
+    "ClientCommand",
+    "CBasePlayer@ player, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pPlayerUserInfoChanged,
-	"Pre call before a player info changed",
-	ASLP_NAMESPACE( Player ),
-	"UserInfoChanged",
-	"CBasePlayer@ player, string buffer, MetaResult &out meta_result"
+    "Pre call before a player info changed",
+    ASLP_NAMESPACE( Player ),
+    "UserInfoChanged",
+    "CBasePlayer@ player, string buffer, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pPreMovement,
-	"Called before the Server-side logic of the player movement.",
-	ASLP_NAMESPACE( Player ),
-	"PreMovement",
-	"playermove_t@ &out pmove, MetaResult &out meta_result"
+    "Called before the Server-side logic of the player movement.",
+    ASLP_NAMESPACE( Player ),
+    "PreMovement",
+    "playermove_t@ &out pmove, MetaResult &out meta_result"
 );
 CREATE_AS_HOOK( pPostMovement,
-	"Called after the Server-side logic of the player movement.",
-	ASLP_NAMESPACE( Player ),
-	"PostMovement",
-	"playermove_t@ &out pmove, MetaResult &out meta_result"
+    "Called after the Server-side logic of the player movement.",
+    ASLP_NAMESPACE( Player ),
+    "PostMovement",
+    "playermove_t@ &out pmove, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pPreAddToFullPack,
-	"Called when the server is about to network a entity to a client",
-	ASLP_NAMESPACE( Player ),
-	"PreAddToFullPack",
-	"ClientPacket@ packet, MetaResult &out meta_result"
+    "Called when the server is about to network a entity to a client",
+    ASLP_NAMESPACE( Player ),
+    "PreAddToFullPack",
+    "ClientPacket@ packet, MetaResult &out meta_result"
 );
 CREATE_AS_HOOK( pPostAddToFullPack,
-	"Called when the server is about to network a entity to a client",
-	ASLP_NAMESPACE( Player ),
-	"PostAddToFullPack",
-	"ClientPacket@ packet, MetaResult &out meta_result"
+    "Called when the server is about to network a entity to a client",
+    ASLP_NAMESPACE( Player ),
+    "PostAddToFullPack",
+    "ClientPacket@ packet, MetaResult &out meta_result"
 );
 
 CREATE_AS_HOOK( pShouldCollide,
-	"Called whatever a entity is touched by another. Set Collide to false to prevent the interaction.",
-	ASLP_NAMESPACE( Entity ),
-	"ShouldCollide",
-	"CBaseEntity@ touched, CBaseEntity@ other, MetaResult &out meta_result, bool &out Collide"
+    "Called whatever a entity is touched by another. Set Collide to false to prevent the interaction.",
+    ASLP_NAMESPACE( Entity ),
+    "ShouldCollide",
+    "CBaseEntity@ touched, CBaseEntity@ other, MetaResult &out meta_result, bool &out Collide"
 );
 
-	CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "Player", "PlayerPostTakeDamage", "DamageInfo@ info");
+    CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "Player", "PlayerPostTakeDamage", "DamageInfo@ info");
 
 CREATE_AS_HOOK( pPlayerTakeHealth,
-	"Pre call before a player is healed",
-	ASLP_NAMESPACE( Player ),
-	"TakeHealth", ASLP_NAMESPACE( HealthInfo@ info )
+    "Pre call before a player is healed",
+    ASLP_NAMESPACE( Player ),
+    "TakeHealth", ASLP_NAMESPACE( HealthInfo@ info )
 );
 
 CREATE_AS_HOOK( pEntityIRelationship, "Pre call before checking relation", "Entity", "IRelationship", "CBaseEntity@ pEntity, CBaseEntity@ pOther, bool param, int& out newValue");
 
 CREATE_AS_HOOK( pMonsterTraceAttack,
-	"Pre call before a monster trace attack",
-	"Monster", "MonsterTraceAttack", "CBaseMonster@ pMonster, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType");
+    "Pre call before a monster trace attack",
+    "Monster", "MonsterTraceAttack", "CBaseMonster@ pMonster, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType");
 CREATE_AS_HOOK( pMonsterPostTakeDamage,
-	"Post call after a monster took damage",
-	"Monster", "MonsterPostTakeDamage", "DamageInfo@ info"
+    "Post call after a monster took damage",
+    "Monster", "MonsterPostTakeDamage", "DamageInfo@ info"
 );
 
 CREATE_AS_HOOK( pBreakableTraceAttack,
-	"Pre call before a breakable trace attack",
-	"Entity", "BreakableTraceAttack", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType"
+    "Pre call before a breakable trace attack",
+    "Entity", "BreakableTraceAttack", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, float flDamage, Vector vecDir, const TraceResult& in ptr, int bitDamageType"
 );
 
 CREATE_AS_HOOK( pBreakableKilled,
-	"Pre call before a breakable died",
-	"Entity", "BreakableDie", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, int iGib"
+    "Pre call before a breakable died",
+    "Entity", "BreakableDie", "CBaseEntity@ pBreakable, entvars_t@ pevAttacker, int iGib"
 );
 
 CREATE_AS_HOOK( pBreakableTakeDamage,
-	"Pre call before a breakable took damage",
-	"Entity", "BreakableTakeDamage", "DamageInfo@ info"
+    "Pre call before a breakable took damage",
+    "Entity", "BreakableTakeDamage", "DamageInfo@ info"
 );
 
 CREATE_AS_HOOK( pGrappleCheckMonsterType,
-	"Pre call before Weapon Grapple checking monster type",
-	"Weapon", "GrappleGetMonsterType", "CBaseEntity@ pThis, CBaseEntity@ pEntity, uint& out flag"
+    "Pre call before Weapon Grapple checking monster type",
+    "Weapon", "GrappleGetMonsterType", "CBaseEntity@ pThis, CBaseEntity@ pEntity, uint& out flag"
 );
 }
 #undef CREATE_AS_HOOK
 
 void CloseAngelScriptsItem() 
 {
-	CASSQLite::CloseSQLite3DLL();
+    CASSQLite::CloseSQLite3DLL();
 }

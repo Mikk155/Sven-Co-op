@@ -125,22 +125,3 @@ bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMY
 
     return false;
 }
-
-bool SC_SERVER_DECL CASEngineFuncs_JsonSerialize( void* pthis, SC_SERVER_DUMMYARG const CScriptDictionary* obj, CString& str, int indents = -1 )
-{
-    // Iterate over obj which is a dictionary and turn its variables into a json then dump into str
-    try
-    {
-        auto js = nlohmann::json();
-        std::string serialized = js.dump( indents /*, (char)32, false, json::error_handler_t::ignore*/ );
-        str.assign( serialized.c_str(), serialized.length() );
-        return true;
-    }
-    catch( nlohmann::json::type_error& exception )
-    {
-        ALERT( at_console, fmt::format( "JSON Error serializing data\n{}\n", exception.what() ).c_str() );
-        str.assign( "{}", 2 );
-    }
-
-    return false;
-}
