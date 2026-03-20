@@ -33,6 +33,24 @@ void PluginInit()
 
     meta_api::NoticeInstallation();
 
+    meta_api::json::Deserialize( "scripts/plugins/store/BMLongJump.json", g_Cache );
+
+    g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string&in mapname )
+    {
+        string buffer;
+        if( g_ShouldWriteCache && meta_api::json::Serialize( g_Cache, buffer ) )
+        {
+            auto file = g_FileSystem.OpenFile( "scripts/plugins/store/BMLongJump.json", OpenFile::WRITE );
+
+            if( file !is null && file.IsOpen() )
+            {
+                file.Write( buffer );
+                file.Close();
+            }
+        }
+        return HOOK_CONTINUE;
+    } ));
+
 #if METAMOD_PLUGIN_ASLP
     g_HasMetamod = true;
 #endif
@@ -49,6 +67,9 @@ void PluginInit()
 
     MapInit();
 }
+
+dictionary g_Cache;
+bool g_ShouldWriteCache;
 
 bool g_Precached;
 bool g_PluginJustLoaded = true;
