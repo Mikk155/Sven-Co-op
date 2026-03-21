@@ -60,7 +60,7 @@ namespace meta_api
 #if METAMOD_PLUGIN_ASLP
                 fstream.Close();
                 if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
-                    return g_EngineFuncs.JsonDeserialize( filename, obj );
+                    return aslp::json::Deserialize( filename, obj );
 #endif
 
                 while( !fstream.EOFReached() )
@@ -82,7 +82,7 @@ namespace meta_api
 
 #if METAMOD_PLUGIN_ASLP
         if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
-            return g_EngineFuncs.JsonDeserialize( str, obj );
+            return aslp::json::Deserialize( str, obj );
 #endif
 
             // No file loaded?

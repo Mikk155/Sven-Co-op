@@ -251,11 +251,12 @@ ASEXT_SetDefaultNamespace( pASDoc, "" );
         REGISTE_OBJMETHODEX(reg, pASDoc, "Close SQL", "CSQLite", "void Close()", CASSQLite, Close, asCALL_THISCALL);
 #pragma endregion
 #pragma region Json
-ASEXT_RegisterObjectMethod( pASDoc,
-    "Deserialize a stringjson-like into a dictionary",
-    "CEngineFuncs",
-    "bool JsonDeserialize( const string &in str, dictionary &out obj )",
-    (void*)CASEngineFuncs_JsonDeserialize, asCALL_THISCALL );
+ASEXT_SetDefaultNamespace( pASDoc, ASLP_NAMESPACE(json) );
+ASEXT_RegisterGlobalFunction( pASDoc,
+    "Deserialize a string json-format into a dictionary. if str ends with .json it will be a file to open",
+    "bool Deserialize( const string &in str, dictionary &out obj )",
+    (void*)CASJsonDeserialize, asCALL_CDECL );
+ASEXT_SetDefaultNamespace( pASDoc, "" );
 #pragma endregion
         ASEXT_RegisterObjectMethod(pASDoc,
             "Caculate CRC32 for a string", "CEngineFuncs", "uint32 CRC32(const string& in szBuffer)",

@@ -91,7 +91,7 @@ namespace json
 
 #include "../utils/CFile.hpp"
 
-bool SC_SERVER_DECL CASEngineFuncs_JsonDeserialize( void* pthis, SC_SERVER_DUMMYARG const CString& str, CScriptDictionary* obj )
+bool SC_SERVER_CDECL CASJsonDeserialize( const CString& str, CScriptDictionary* obj )
 {
     std::string content = str.c_str();
 
