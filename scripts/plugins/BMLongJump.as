@@ -418,7 +418,7 @@ bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
 }
 
 #if METAMOD_PLUGIN_ASLP
-HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_result )
+HookReturnCode PreMovement( aslp::playermove_t@& out pmove, aslp::MetaResult &out meta_result )
 {
     if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
         return HOOK_CONTINUE;

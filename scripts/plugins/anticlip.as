@@ -178,7 +178,7 @@ void CheckFramerate( const ServerFramerate@ data )
     }
 }
 
-HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_result )
+HookReturnCode PreMovement( aslp::playermove_t@& out pmove, aslp::MetaResult &out meta_result )
 {
     if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
     {
@@ -191,7 +191,7 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
 
     for( int j = numphysent; j < pmove.numphysent; j++ )
     {
-        physent_t@ physent = pmove.GetPhysEntByIndex(j);
+        aslp::physent_t@ physent = pmove.GetPhysEntByIndex(j);
 
         if( physent is null )
         {
@@ -270,7 +270,7 @@ HookReturnCode PreMovement( playermove_t@& out pmove, MetaResult &out meta_resul
     return HOOK_CONTINUE;
 }
 
-HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_result )
+HookReturnCode PostAddToFullPack( aslp::ClientPacket@ packet, aslp::MetaResult &out meta_result )
 {
     // If npc is clipping then we don't care about non-player entities.
     if( g_AllowMonsters && packet.playerIndex == 0 )
@@ -331,7 +331,7 @@ HookReturnCode PostAddToFullPack( ClientPacket@ packet, MetaResult &out meta_res
     return HOOK_CONTINUE;
 }
 
-HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResult &out meta_resut, bool&out Collide )
+HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, aslp::MetaResult &out meta_resut, bool&out Collide )
 {
     if( toucher is null || other is null )
     {
@@ -351,7 +351,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
         if( other.Intersects( toucher ) )
         {
             Collide = false;
-            meta_resut = MetaResult::Supercede;
+            meta_resut = aslp::MetaResult::Supercede;
         }
         return HOOK_HANDLED;
     }
@@ -362,7 +362,7 @@ HookReturnCode ShouldCollide( CBaseEntity@ toucher, CBaseEntity@ other, MetaResu
     if( owner !is null && toucher.IRelationship( owner ) == R_AL )
     {
         Collide = false;
-        meta_resut = MetaResult::Supercede;
+        meta_resut = aslp::MetaResult::Supercede;
         return HOOK_HANDLED;
     }
 
