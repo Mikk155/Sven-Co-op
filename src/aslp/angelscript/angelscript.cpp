@@ -249,6 +249,12 @@ ASEXT_SetDefaultNamespace( pASDoc, "" );
         REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL In Sync", "CSQLite", "SQLiteResult Exec(string&in sql, CSQLGrid@ &out aryResult, string&out errMsg)", CASSQLite, ExecSync, asCALL_THISCALL);
         REGISTE_OBJMETHODEX(reg, pASDoc, "Excute SQL", "CSQLite", "SQLiteResult Exec(string&in sql, fnSQLiteCallback@ pCallback, any@ pCallBackparam, string&out errMsg)", CASSQLite, ExecWithCallBack, asCALL_THISCALL);
         REGISTE_OBJMETHODEX(reg, pASDoc, "Close SQL", "CSQLite", "void Close()", CASSQLite, Close, asCALL_THISCALL);
+ASEXT_RegisterObjectMethod(pASDoc,
+    "Caculate CRC32 for a string", "CEngineFuncs", "uint32 CRC32(const string& in szBuffer)",
+    (void*)CASEngineFuncs_CRC32, asCALL_THISCALL);
+ASEXT_RegisterObjectMethod(pASDoc,
+    "copy class, If src and dst are different type, return false.\nIf not class ref, crash game.", "CEngineFuncs", "bool ClassMemcpy(?& in src, ?& in dst)",
+    (void*)CASEngineFuncs_ClassMemcpy, asCALL_THISCALL);
 #pragma endregion
 #pragma region Json
 ASEXT_SetDefaultNamespace( pASDoc, ASLP_NAMESPACE(json) );
@@ -256,15 +262,8 @@ ASEXT_RegisterGlobalFunction( pASDoc,
     "Deserialize a string json-format into a dictionary. if str ends with .json it will be a file to open",
     "bool Deserialize( const string &in str, dictionary &out obj )",
     (void*)CASJsonDeserialize, asCALL_CDECL );
-ASEXT_SetDefaultNamespace( pASDoc, "" );
 #pragma endregion
-        ASEXT_RegisterObjectMethod(pASDoc,
-            "Caculate CRC32 for a string", "CEngineFuncs", "uint32 CRC32(const string& in szBuffer)",
-            (void*)CASEngineFuncs_CRC32, asCALL_THISCALL);
-        ASEXT_RegisterObjectMethod(pASDoc,
-            "copy class, If src and dst are different type, return false.\nIf not class ref, crash game.", "CEngineFuncs", "bool ClassMemcpy(?& in src, ?& in dst)",
-            (void*)CASEngineFuncs_ClassMemcpy, asCALL_THISCALL);
-#pragma endregion
+ASEXT_SetDefaultNamespace( pASDoc, ASLP_NAMESPACE_ONLY );
 #pragma region physent_t
 ASEXT_RegisterObjectType( pASDoc,
     "Physics data",
@@ -895,6 +894,7 @@ ASEXT_RegisterObjectProperty( pASDoc,
     "The index of the client receiving this packet.",
     "ClientPacket", "const int playerIndex", offsetof( addtofullpack_t, playerIndex ) );
 #pragma endregion
+ASEXT_SetDefaultNamespace( pASDoc, "" );
     } );
 }
 #undef REGISTE_OBJMETHODEX
