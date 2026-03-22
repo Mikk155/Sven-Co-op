@@ -251,15 +251,21 @@ ASEXT_SetDefaultNamespace( pASDoc, NAMESPACE_ASLP );
 ASEXT_RegisterObjectType( pASDoc, "Physics data",
     "PhysicalEntity", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
-ASEXT_RegisterObjectMethod( pASDoc, "Classname of this entity",
-    "PhysicalEntity", "string get_name() property",  (void*)CASPlayerMove__GetPhysEntName, asCALL_THISCALL );
+ASEXT_RegisterObjectMethod( pASDoc, "Name of this entity",
+    "PhysicalEntity", "string get_name() const property",
+    (void*)( +[]( physent_t* pthis ) -> CString
+    {
+        CString result = CString();
+        result.assign( pthis->name, strlen( pthis->name ) );
+        return result;
+    } ), asCALL_CDECL_OBJFIRST );
 
 ASEXT_RegisterObjectMethod( pASDoc, "Is this entity a player?",
     "PhysicalEntity", "bool IsPlayer() const",
-    (void*)( +[]( physent_t* pthis SC_SERVER_DUMMYARG_NOCOMMA ) -> bool
+    (void*)( +[]( physent_t* pthis ) -> bool
     {
         return( strcmp( pthis->name, "player" ) == 0 );
-    } ), asCALL_THISCALL );
+    } ), asCALL_CDECL_OBJFIRST );
 
 ASEXT_RegisterObjectProperty( pASDoc, "",
     "PhysicalEntity", "Vector origin", offsetof( physent_t, origin ) );
@@ -354,7 +360,11 @@ ASEXT_RegisterObjectType( pASDoc, "Player movement data",
     "PlayerMovement", 0, asOBJ_REF | asOBJ_NOCOUNT );
 
 ASEXT_RegisterObjectMethod( pASDoc, "index of the player that is moving",
-    "PlayerMovement", "int get_player() const property", (void*)CASPlayerMove__PlayerIndex, asCALL_THISCALL );
+    "PlayerMovement", "int get_player() const property",
+    (void*)( +[]( playermove_t* pthis ) -> int
+    {
+        return pthis->player_index + 1; // player_index starts from zero. let's not confuse scripters.
+    } ), asCALL_CDECL_OBJFIRST );
 
 ASEXT_RegisterObjectProperty( pASDoc, "Realtime on host, for reckoning duck timing",
     "PlayerMovement", "const float time", offsetof( playermove_t, time ) );
@@ -462,7 +472,13 @@ ASEXT_RegisterObjectProperty( pASDoc, "",
     "PlayerMovement", "int oldwaterlevel", offsetof( playermove_t, oldwaterlevel ) );
 
 ASEXT_RegisterObjectMethod( pASDoc, "Texture name the player is currently standing at",
-    "PlayerMovement", "string get_TextureName() property",  (void*)CASPlayerMove__GetTextureName, asCALL_THISCALL );
+    "PlayerMovement", "string get_TextureName() property",
+    (void*)( +[]( playermove_t* pthis ) -> CString
+    {
+        CString result = CString();
+        result.assign( pthis->sztexturename, strlen( pthis->sztexturename ) );
+        return result;
+    } ), asCALL_CDECL_OBJFIRST );
 
 ASEXT_RegisterObjectProperty( pASDoc, "Texture type the player is currently standing at",
     "PlayerMovement", "const char TextureType", offsetof( playermove_t, chtexturetype ) );
@@ -512,11 +528,22 @@ ASEXT_RegisterObjectProperty( pASDoc, "",
 ASEXT_RegisterObjectProperty( pASDoc, "Number of physical entities in collision list.",
     "PlayerMovement", "int numphysent", offsetof( playermove_t, numphysent ) );
 
+// -TODO Add some cap + warning
 ASEXT_RegisterObjectMethod( pASDoc, "Get the physical entity in collision list for the given index.",
-    "PlayerMovement", NAMESPACE_ASLP "::PhysicalEntity@ GetPhysEntByIndex( int index )", (void*)CASPlayerMove__GetPhysEntByIndex, asCALL_THISCALL );
+    "PlayerMovement", NAMESPACE_ASLP "::PhysicalEntity@ GetPhysEntByIndex( int index )",
+    (void*)( +[]( playermove_t* pthis, int index ) -> physent_t*
+    {
+        return &pthis->physents[index];
+    } ), asCALL_CDECL_OBJFIRST );
 
+// -TODO Add some cap + warning
 ASEXT_RegisterObjectMethod( pASDoc, "Set the physical entity in collision list for the given index.",
-    "PlayerMovement", "void SetPhysEntByIndex( " NAMESPACE_ASLP "::PhysicalEntity@ pPhyEnt, int newindex )", ( void* )CASPlayerMove__SetPhysEntByIndex, asCALL_THISCALL );
+    "PlayerMovement", "void SetPhysEntByIndex( " NAMESPACE_ASLP "::PhysicalEntity@ pPhyEnt, int newindex )",
+    (void*)( +[]( playermove_t* pthis, physent_t* pPhyEnt, int index )
+    {
+        pthis->physents[index] = *pPhyEnt;
+    } ), asCALL_CDECL_OBJFIRST );
+
 #pragma endregion
 
 #pragma region MetaResult
