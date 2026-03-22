@@ -6,8 +6,8 @@
     "Description": "Visual studio code extension AngelScript language server"
   },
   {
-    "Author": "r4to0",
-    "Resource": "https://r4to0.github.io/asautodocs/nd_prerelease/",
+    "Author": "R4to0",
+    "Resource": "https://r4to0.github.io/asautodocs/naturaldocs/",
     "Type": "Documentation",
     "Description": "Angel script documentation"
   },
