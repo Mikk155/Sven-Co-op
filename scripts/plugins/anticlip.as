@@ -42,7 +42,7 @@ array<string> g_BlacklistedMaps;
 
 #if METAMOD_PLUGIN_ASLP
 PostAddToFullPackHook@ fnPostAddToFullPack = PostAddToFullPackHook( PostAddToFullPack );
-PreMovementHook@ fnPreMovement = PreMovementHook( PreMovement );
+PlayerPreMovementHook@ fnPreMovement = PlayerPreMovementHook( PreMovement );
 ShouldCollideHook@ fnShouldCollide = ShouldCollideHook( ShouldCollide );
 auto fnCheckFramerate = Server::Framerate::FrameRateCallback( CheckFramerate );
 #endif
@@ -80,9 +80,9 @@ void MapActivate()
     }
 
 #if METAMOD_PLUGIN_ASLP
-    g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @fnPreMovement );
-    g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
-    g_Hooks.RemoveHook( Hooks::aslp::Entity::ShouldCollide, @fnShouldCollide );
+    g_Hooks.RemoveHook( Hooks::aslp::PlayerPreMovement, @fnPreMovement );
+    g_Hooks.RemoveHook( Hooks::aslp::PostAddToFullPack, @fnPostAddToFullPack );
+    g_Hooks.RemoveHook( Hooks::aslp::ShouldCollide, @fnShouldCollide );
     Server::Framerate::RemoveCallback( @fnCheckFramerate );
 #endif
 
@@ -93,17 +93,17 @@ void MapActivate()
     }
 
 #if METAMOD_PLUGIN_ASLP
-    g_Hooks.RegisterHook( Hooks::aslp::Player::PreMovement, @fnPreMovement );
+    g_Hooks.RegisterHook( Hooks::aslp::PlayerPreMovement, @fnPreMovement );
 
     if( g_ClientPrediction )
     {
-        g_Hooks.RegisterHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+        g_Hooks.RegisterHook( Hooks::aslp::PostAddToFullPack, @fnPostAddToFullPack );
         Server::Framerate::SetCallback( @fnCheckFramerate );
     }
 
     if( !g_AllowProjectiles )
     {
-        g_Hooks.RegisterHook( Hooks::aslp::Entity::ShouldCollide, @fnShouldCollide );
+        g_Hooks.RegisterHook( Hooks::aslp::ShouldCollide, @fnShouldCollide );
     }
 #endif
 }
@@ -165,7 +165,7 @@ void CheckFramerate( const ServerFramerate@ data )
     {
         g_ServerLagged = true;
         g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Anti-Clip] The Server is experiencing slow frame rates. Disabling client prediction...\n" );
-        g_Hooks.RemoveHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+        g_Hooks.RemoveHook( Hooks::aslp::PostAddToFullPack, @fnPostAddToFullPack );
     }
 
     // If your server usually lags a lot you can decrease this multiplier 0.85 to something lower to not spam the hook de-activation
@@ -174,11 +174,11 @@ void CheckFramerate( const ServerFramerate@ data )
         g_ServerLagged = false;
         g_LagSpikes = 0;
         g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Anti-Clip] Server recovered. Re-enabling prediction.\n" );
-        g_Hooks.RegisterHook( Hooks::aslp::Player::PostAddToFullPack, @fnPostAddToFullPack );
+        g_Hooks.RegisterHook( Hooks::aslp::PostAddToFullPack, @fnPostAddToFullPack );
     }
 }
 
-HookReturnCode PreMovement( aslp::playermove_t@& out pmove, aslp::MetaResult &out meta_result )
+HookReturnCode PreMovement( aslp::PlayerMovement@ &out pmove, aslp::MetaResult &out meta_result )
 {
     if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
     {
@@ -191,7 +191,7 @@ HookReturnCode PreMovement( aslp::playermove_t@& out pmove, aslp::MetaResult &ou
 
     for( int j = numphysent; j < pmove.numphysent; j++ )
     {
-        aslp::physent_t@ physent = pmove.GetPhysEntByIndex(j);
+        aslp::PhysicalEntity@ physent = pmove.GetPhysEntByIndex(j);
 
         if( physent is null )
         {
@@ -312,21 +312,23 @@ HookReturnCode PostAddToFullPack( aslp::ClientPacket@ packet, aslp::MetaResult &
         }
     }
 
+    aslp::EntityState@ state = packet.state;
+
     // Is the host intersecting the packet?
     if( entityPacket.IsAlive() && playerHost.IRelationship( entityPacket ) == R_AL && playerHost.Intersects( entityPacket ) )
     {
         if( g_InvisibleColliders )
         {
-            packet.state.effects |= EF_NODRAW;
+            state.effects |= EF_NODRAW;
         }
         else
         {
-            packet.state.rendermode = g_RenderMode;
-            packet.state.renderamt = g_RenderAmt;
+            state.rendermode = g_RenderMode;
+            state.renderamt = g_RenderAmt;
         }
     }
 
-    packet.state.solid = SOLID_NOT;
+    state.solid = SOLID_NOT;
 
     return HOOK_CONTINUE;
 }

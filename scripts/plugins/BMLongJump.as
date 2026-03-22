@@ -112,7 +112,7 @@ bool g_PluginJustLoaded = true;
 bool g_HasMetamod;
 
 #if METAMOD_PLUGIN_ASLP
-PreMovementHook@ fnPreMovement = PreMovementHook( PreMovement );
+PlayerPreMovementHook@ fnPreMovement = PlayerPreMovementHook( PreMovement );
 #endif
 
 PlayerPostThinkHook@ fnPostThink;
@@ -137,7 +137,7 @@ void MapInit()
     g_Hooks.RemoveHook( Hooks::Player::PlayerTakeDamage, @fnTakeDamage );
 
 #if METAMOD_PLUGIN_ASLP
-    g_Hooks.RemoveHook( Hooks::aslp::Player::PreMovement, @fnPreMovement );
+    g_Hooks.RemoveHook( Hooks::aslp::PlayerPreMovement, @fnPreMovement );
 #endif
 
     if( g_ShouldReloadJson )
@@ -160,7 +160,7 @@ void MapInit()
         return;
 
 #if METAMOD_PLUGIN_ASLP
-    g_Hooks.RegisterHook( Hooks::aslp::Player::PreMovement, @fnPreMovement );
+    g_Hooks.RegisterHook( Hooks::aslp::PlayerPreMovement, @fnPreMovement );
 #endif
 
     if( g_FallDamage )
@@ -418,7 +418,7 @@ bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
 }
 
 #if METAMOD_PLUGIN_ASLP
-HookReturnCode PreMovement( aslp::playermove_t@& out pmove, aslp::MetaResult &out meta_result )
+HookReturnCode PreMovement( aslp::PlayerMovement@& out pmove, aslp::MetaResult &out meta_result )
 {
     if( pmove.spectator != 0 || pmove.dead != 0 || pmove.deadflag != DEAD_NO )
         return HOOK_CONTINUE;
