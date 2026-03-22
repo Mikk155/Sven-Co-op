@@ -214,5 +214,11 @@
     "Resource": "https://github.com/JustJ4Y/Sven-Coop-Server-Plugins",
     "Type": "AngelScript",
     "Description": "AngelScript plugins"
+  },
+  {
+    "Author": "AnggaraNothing",
+    "Resource": "http://gitlab.com/groups/an-sc-projects/-/inactive",
+    "Type": "AngelScript",
+    "Description": "AngelScript plugins/utilities"
   }
 ]
