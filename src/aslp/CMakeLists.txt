@@ -33,6 +33,7 @@ set( SVENCOOP_ROOT "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sven Co-o
 
 # Github actions
 option( ASLP_STANDALONE "Build without Sven Co-op environment" ON )
+mark_as_advanced( ASLP_STANDALONE )
 
 if( NOT ASLP_STANDALONE )
     if( NOT EXISTS "${SVENCOOP_ROOT}/svencoop/" )
