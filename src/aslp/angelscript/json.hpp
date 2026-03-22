@@ -89,7 +89,7 @@ namespace json
     }
 }
 
-#include "../utils/CFile.hpp"
+#include "../utils/File.hpp"
 
 bool SC_SERVER_CDECL CASJsonDeserialize( const CString& str, CScriptDictionary* obj )
 {
@@ -98,15 +98,10 @@ bool SC_SERVER_CDECL CASJsonDeserialize( const CString& str, CScriptDictionary* 
     // Should maybe we check this is a plugin or map script?
     if( content.ends_with( ".json" ) )
     {
-        CFile file( str.c_str(), CFile::Mode::Read, true );
+        File file( content );
 
-        if( !file.IsOpen() )
-        {
-            ALERT( at_console, fmt::format( "JSON Error Could not open file at {}\n", str.c_str() ).c_str() );
+        if( !file.Read( content ) )
             return false;
-        }
-
-        file.Read( content );
     }
 
     try

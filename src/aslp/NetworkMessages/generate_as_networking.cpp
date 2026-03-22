@@ -1,18 +1,11 @@
 #include "generate_as_networking.h"
 
-#include "../utils/CFile.hpp"
+#include "../utils/File.hpp"
 #include <fmt/format.h>
+#include <iterator>
 
 void CNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
 {
-    CFile file( "scripts/mikk/NetworkMessages.as", CFile::Mode::Write );
-
-    if( !file.IsOpen() )
-    {
-        ALERT( at_console, "[Error] Couldn't create file \"scripts/NetworkMessages.as\"\n" );
-        return;
-    }
-
     std::string fileContent;
     fileContent.reserve(16000); // -TODO Approximate a lesser number
 
@@ -50,7 +43,7 @@ void CNetworkMessageAPI :: Initialize( const asIScriptEngine* engine )
 
     fmt::format_to( std::back_inserter( fileContent ), "\t}}\n}}\n" );
 
-    if( file.Write( fileContent ) )
+    if( File( "scripts/mikk/NetworkMessages.as" ).Write( fileContent ) )
     {
         ALERT(at_console, "File \"scripts/NetworkMessages.as\" Generated suscessfully. writted %i network message's IDs\n", m_RegisteredNetworkMessages.size() );
     }
