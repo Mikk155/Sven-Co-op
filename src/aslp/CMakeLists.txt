@@ -256,6 +256,21 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 if( ASLP_STANDALONE )
     file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/plugins.ini" DESTINATION "${METAMOD_DLL_DIR}" )
+
+    if( NOT MSVC AND CMAKE_OBJCOPY AND CMAKE_STRIP )
+        function( enable_split_debug_external TARGET_NAME )
+            add_custom_target(${TARGET_NAME}_dbg ALL
+                COMMAND ${CMAKE_OBJCOPY} --only-keep-debug $<TARGET_FILE:${TARGET_NAME}> $<TARGET_FILE:${TARGET_NAME}>.dbg
+                COMMAND ${CMAKE_OBJCOPY} --add-gnu-debuglink=$<TARGET_FILE:${TARGET_NAME}>.dbg $<TARGET_FILE:${TARGET_NAME}>
+                COMMAND ${CMAKE_STRIP} --strip-debug $<TARGET_FILE:${TARGET_NAME}>
+                DEPENDS ${TARGET_NAME}
+            )
+        endfunction()
+        enable_split_debug_external( ${PROJECT_NAME} )
+        enable_split_debug_external( ${PROJECT_ASEXT} )
+        enable_split_debug_external( ${PROJECT_METAMOD} )
+    endif()
+
 elseif( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
 
     # ============================================================
