@@ -49,6 +49,18 @@ namespace meta_api
             {
                 g_Game.AlertMessage( at_console, "[JSON] Info: Reading \"%1\"\n", filename );
 
+#if METAMOD_PLUGIN_ASLP
+                if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
+                {
+                    if( !aslp::json::Deserialize( filename, obj ) )
+                    {
+                        g_Game.AlertMessage( at_console, "[JSON] Error: Couldn't open file \"%1\"\n", filename );
+                        return false;
+                    }
+                    return true;
+                }
+#endif
+
                 auto fstream = g_FileSystem.OpenFile( filename, OpenFile::READ );
 
                 if( fstream is null || !fstream.IsOpen() )
@@ -56,12 +68,6 @@ namespace meta_api
                     g_Game.AlertMessage( at_console, "[JSON] Error: Couldn't open file \"%1\"\n", filename );
                     return false;
                 }
-
-#if METAMOD_PLUGIN_ASLP
-                fstream.Close();
-                if( true ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
-                    return aslp::json::Deserialize( filename, obj );
-#endif
 
                 while( !fstream.EOFReached() )
                 {
