@@ -53,7 +53,7 @@ void PluginInit()
         if( g_NextClientDisplay > g_Engine.time )
             return HOOK_CONTINUE;
 
-        if( params.GetArguments()[0] != '/time' )
+        if( params.GetArguments().Arg(0) != '/time' )
             return HOOK_CONTINUE;
 
         ShowTime();
