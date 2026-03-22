@@ -5,7 +5,7 @@
 #include "angelscriptlib.h"
 class CASBaseRefObject {
 public:
-	virtual void AddRef();
+    virtual void AddRef();
     virtual void Release();
 protected:
     size_t  refCount = 1;

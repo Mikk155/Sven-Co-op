@@ -49,140 +49,140 @@ IMPORT_ASEXT_API_DEFINE()
 
 // Must provide at least one of these..
 static META_FUNCTIONS gMetaFunctionTable = {
-	NULL,			// pfnGetEntityAPI				HL SDK; called before game DLL
-	NULL,			// pfnGetEntityAPI_Post			META; called after game DLL
-	GetEntityAPI2,	// pfnGetEntityAPI2				HL SDK2; called before game DLL
-	GetEntityAPI2_Post,			// pfnGetEntityAPI2_Post		META; called after game DLL
-	GetNewDLLFunctions,			// pfnGetNewDLLFunctions		HL SDK2; called before game DLL
-	NULL,			// pfnGetNewDLLFunctions_Post	META; called after game DLL
-	GetEngineFunctions,	// pfnGetEngineFunctions	META; called before HL engine
-	NULL,			// pfnGetEngineFunctions_Post	META; called after HL engine
-	NULL,			// pfnGetStudioBlendingInterface 2022/07/02 Added by hzqst
-	NULL,			// pfnGetStudioBlendingInterface_Post 2022/07/02 Added by hzqst
+    NULL,           // pfnGetEntityAPI              HL SDK; called before game DLL
+    NULL,           // pfnGetEntityAPI_Post         META; called after game DLL
+    GetEntityAPI2,  // pfnGetEntityAPI2             HL SDK2; called before game DLL
+    GetEntityAPI2_Post,         // pfnGetEntityAPI2_Post        META; called after game DLL
+    GetNewDLLFunctions,         // pfnGetNewDLLFunctions        HL SDK2; called before game DLL
+    NULL,           // pfnGetNewDLLFunctions_Post   META; called after game DLL
+    GetEngineFunctions, // pfnGetEngineFunctions    META; called before HL engine
+    NULL,           // pfnGetEngineFunctions_Post   META; called after HL engine
+    NULL,           // pfnGetStudioBlendingInterface 2022/07/02 Added by hzqst
+    NULL,           // pfnGetStudioBlendingInterface_Post 2022/07/02 Added by hzqst
 };
 
 // Description of plugin
 plugin_info_t Plugin_info = {
-	META_INTERFACE_VERSION,	// ifvers
-	"AngelScript Limitless Potential API",	// name
-	"2.0",	// version
-	"2025",	// date
-	"Mikk, Gaftherman, hzqst, Dr.Abc",	// author
-	"https://github.com/Mikk155/Sven-Co-op",	// url
-	"ASHEXT",	// logtag, all caps please
-	PT_STARTUP,	// (when) loadable
-	PT_STARTUP,	// (when) unloadable
+    META_INTERFACE_VERSION, // ifvers
+    "AngelScript Limitless Potential API",  // name
+    "2.0",  // version
+    "2025", // date
+    "Mikk, Gaftherman, hzqst, Dr.Abc",  // author
+    "https://github.com/Mikk155/Sven-Co-op",    // url
+    "ASHEXT",   // logtag, all caps please
+    PT_STARTUP, // (when) loadable
+    PT_STARTUP, // (when) unloadable
 };
 
 // Global vars from metamod:
-meta_globals_t* gpMetaGlobals;		// metamod globals
-gamedll_funcs_t* gpGamedllFuncs;	// gameDLL function tables
-mutil_funcs_t* gpMetaUtilFuncs;		// metamod utility functions
+meta_globals_t* gpMetaGlobals;      // metamod globals
+gamedll_funcs_t* gpGamedllFuncs;    // gameDLL function tables
+mutil_funcs_t* gpMetaUtilFuncs;     // metamod utility functions
 
 // Metamod requesting info about this plugin:
-//  ifvers			(given) interface_version metamod is using
-//  pPlugInfo		(requested) struct with info about plugin
-//  pMetaUtilFuncs	(given) table of utility functions provided by metamod
+//  ifvers          (given) interface_version metamod is using
+//  pPlugInfo       (requested) struct with info about plugin
+//  pMetaUtilFuncs  (given) table of utility functions provided by metamod
 
 C_DLLEXPORT int Meta_Query(const char* interfaceVersion, plugin_info_t** pPlugInfo, mutil_funcs_t* pMetaUtilFuncs)
 {
-	if (0 != strcmp(interfaceVersion, META_INTERFACE_VERSION))
-	{
-		pMetaUtilFuncs->pfnLogError(PLID, "Meta_Query version mismatch! expect %s but got %s", META_INTERFACE_VERSION, interfaceVersion);
-		return FALSE;
-	}
+    if (0 != strcmp(interfaceVersion, META_INTERFACE_VERSION))
+    {
+        pMetaUtilFuncs->pfnLogError(PLID, "Meta_Query version mismatch! expect %s but got %s", META_INTERFACE_VERSION, interfaceVersion);
+        return FALSE;
+    }
 
-	// Give metamod our plugin_info struct
-	*pPlugInfo = &Plugin_info;
-	// Get metamod utility function table.
-	gpMetaUtilFuncs = pMetaUtilFuncs;
-	return TRUE;
+    // Give metamod our plugin_info struct
+    *pPlugInfo = &Plugin_info;
+    // Get metamod utility function table.
+    gpMetaUtilFuncs = pMetaUtilFuncs;
+    return TRUE;
 }
 
 C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_globals_t* pMGlobals, gamedll_funcs_t* pGamedllFuncs )
 {
-	if (!pMGlobals) {
-		LOG_ERROR(PLID, "Meta_Attach called with null pMGlobals");
-		return FALSE;
-	}
+    if (!pMGlobals) {
+        LOG_ERROR(PLID, "Meta_Attach called with null pMGlobals");
+        return FALSE;
+    }
 
-	gpMetaGlobals = pMGlobals;
+    gpMetaGlobals = pMGlobals;
 
-	if (!pFunctionTable) {
-		LOG_ERROR(PLID, "Meta_Attach called with null pFunctionTable");
-		return FALSE;
-	}
+    if (!pFunctionTable) {
+        LOG_ERROR(PLID, "Meta_Attach called with null pFunctionTable");
+        return FALSE;
+    }
 
-	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
+    memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 
-	gpGamedllFuncs = pGamedllFuncs;
+    gpGamedllFuncs = pGamedllFuncs;
 
-	auto engineHandle = gpMetaUtilFuncs->pfnGetEngineHandle();
-	auto engineBase = gpMetaUtilFuncs->pfnGetEngineBase();
+    auto engineHandle = gpMetaUtilFuncs->pfnGetEngineHandle();
+    auto engineBase = gpMetaUtilFuncs->pfnGetEngineBase();
 
-	if (!engineHandle)
-	{
-		LOG_ERROR(PLID, "engine handle not found!");
-		return FALSE;
-	}
+    if (!engineHandle)
+    {
+        LOG_ERROR(PLID, "engine handle not found!");
+        return FALSE;
+    }
 
-	if (!engineBase)
-	{
-		LOG_ERROR(PLID, "engine base not found!");
-		return FALSE;
-	}
+    if (!engineBase)
+    {
+        LOG_ERROR(PLID, "engine base not found!");
+        return FALSE;
+    }
 
-	auto loadLibrary = []( std::string_view libName ) -> void*
-	{
-		std::string libPath;
-		void* libraryPointer = nullptr;
+    auto loadLibrary = []( std::string_view libName ) -> void*
+    {
+        std::string libPath;
+        void* libraryPointer = nullptr;
 
-		#ifdef _WIN32
-			libPath = fmt::format( "addons/metamod/dlls/{}.dll", libName );
-		#else
-			libPath = fmt::format( "addons/metamod/dlls/{}.so", libName );
-		#endif
+        #ifdef _WIN32
+            libPath = fmt::format( "addons/metamod/dlls/{}.dll", libName );
+        #else
+            libPath = fmt::format( "addons/metamod/dlls/{}.so", libName );
+        #endif
 
-		LOAD_PLUGIN( PLID, libPath.c_str(), PLUG_LOADTIME::PT_ANYTIME, &libraryPointer);
+        LOAD_PLUGIN( PLID, libPath.c_str(), PLUG_LOADTIME::PT_ANYTIME, &libraryPointer);
 
-		if( !libraryPointer )
-		{
-			LOG_ERROR( PLID, fmt::format( "{} not found!", libPath ).c_str() );
-		}
+        if( !libraryPointer )
+        {
+            LOG_ERROR( PLID, fmt::format( "{} not found!", libPath ).c_str() );
+        }
 
-		return libraryPointer;
-	};
+        return libraryPointer;
+    };
 
-	void* asextHandle = loadLibrary( "asext"sv );
+    void* asextHandle = loadLibrary( "asext"sv );
 
-	if( !asextHandle )
-		return FALSE;
+    if( !asextHandle )
+        return FALSE;
 
-	IMPORT_ASEXT_API(asext);
+    IMPORT_ASEXT_API(asext);
 
-	RegisterAngelScriptMethods();
-	RegisterAngelScriptHooks();
+    RegisterAngelScriptMethods();
+    RegisterAngelScriptHooks();
 
     // Delete svencoop_assert_*.mdmp files. they're useless and only takes up space on the virtual machine.
-	std::error_code ec; namespace fs = std::filesystem;
-	for( const auto& e : fs::directory_iterator( fs::current_path(), ec ) ) {
-		if( e.is_regular_file() && e.path().filename().string().starts_with( "svencoop_assert_" ) ) {
-			fs::remove( e.path(), ec );
-	} }
+    std::error_code ec; namespace fs = std::filesystem;
+    for( const auto& e : fs::directory_iterator( fs::current_path(), ec ) ) {
+        if( e.is_regular_file() && e.path().filename().string().starts_with( "svencoop_assert_" ) ) {
+            fs::remove( e.path(), ec );
+    } }
 
-	return TRUE;
+    return TRUE;
 }
 
 extern void UninstallEngineHook();
 extern void VtableUnhook();
 
 // Metamod detaching plugin from the server.
-// now		(given) current phase, ie during map, etc
-// reason	(given) why detaching (refresh, console unload, forced unload, etc)
+// now      (given) current phase, ie during map, etc
+// reason   (given) why detaching (refresh, console unload, forced unload, etc)
 C_DLLEXPORT int Meta_Detach( PLUG_LOADTIME, PL_UNLOAD_REASON  )
 {
-	UninstallEngineHook();
-	VtableUnhook();
-	CloseAngelScriptsItem();
-	return TRUE;
+    UninstallEngineHook();
+    VtableUnhook();
+    CloseAngelScriptsItem();
+    return TRUE;
 }
