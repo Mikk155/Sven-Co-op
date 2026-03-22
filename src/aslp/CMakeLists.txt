@@ -272,7 +272,7 @@ elseif( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
     # Should we create as.predefined with our new exposed API?
     # ============================================================
     if( GENERATE_AS_DOCUMENTATION )
-        if( NOT SVENCOOP_EXECUTABLE EQUAL "svencoop.exe" )
+        if( NOT SVENCOOP_EXECUTABLE STREQUAL "svencoop.exe" )
             message( STATUS "AS API Generation can only be done in listen server! select svencoop.exe as debug runner" )
             set( PARAM_GENERATE_AS_DOCUMENTATION "" CACHE STRING "" FORCE )
         else()
