@@ -255,7 +255,11 @@ ASEXT_RegisterObjectMethod( pASDoc, "Classname of this entity",
     "PhysicalEntity", "string get_name() property",  (void*)CASPlayerMove__GetPhysEntName, asCALL_THISCALL );
 
 ASEXT_RegisterObjectMethod( pASDoc, "Is this entity a player?",
-    "PhysicalEntity", "bool IsPlayer() const",  (void*)CASPlayerMove__PhysEntIsPlayer, asCALL_THISCALL );
+    "PhysicalEntity", "bool IsPlayer() const",
+    (void*)( +[]( physent_t* pthis SC_SERVER_DUMMYARG_NOCOMMA ) -> bool
+    {
+        return( strcmp( pthis->name, "player" ) == 0 );
+    } ), asCALL_THISCALL );
 
 ASEXT_RegisterObjectProperty( pASDoc, "",
     "PhysicalEntity", "Vector origin", offsetof( physent_t, origin ) );
