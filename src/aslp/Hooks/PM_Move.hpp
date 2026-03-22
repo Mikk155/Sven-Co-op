@@ -33,7 +33,7 @@ inline CString SC_SERVER_DECL CASPlayerMove__GetPhysEntName(physent_t* pthis SC_
 
 inline bool SC_SERVER_DECL CASPlayerMove__PhysEntIsPlayer(physent_t* pthis SC_SERVER_DUMMYARG_NOCOMMA )
 {
-    return ( pthis->player == 1 );
+    return( strcmp( pthis->name, "player" ) == 0 );
 }
 
 namespace Hooks
