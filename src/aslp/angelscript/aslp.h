@@ -18,13 +18,6 @@ typedef struct damageinfo_s{
     int bitsDamageType;
 }damageinfo_t;
 
-typedef struct healthinfo_s {
-    void* player;
-    float health;
-    int bits;
-    int cap;
-} healthinfo_t;
-
 typedef struct angelhook_s {
     void* pClientCommandHook = nullptr;
     void* pPlayerUserInfoChanged = nullptr;
