@@ -6,12 +6,16 @@ namespace test
     {
         void PluginInit()
         {
-            string serialized = '
+            string serialized = """
 {
+    // Single line commentary
     "int": 1,
     "float": 2.5,
+    /*
+    Multi line commentary
+    */
     "bool": true,
-    "string": "string",
+    "string": "string", // Commentary after a line
     "object":
     {
         "string": "string in object"
@@ -26,7 +30,7 @@ namespace test
             "key": "string in object in array"
         }
     ]
-}';
+}""";
 
             g_Game.AlertMessage( at_console, serialized + "\n" );
 
@@ -60,11 +64,11 @@ namespace test
                 }
             }
 
-            serialized = '
+            serialized = """
 [
     "string",
     1
-]';
+]""";
             g_Game.AlertMessage( at_console, serialized + "\n" );
             meta_api::json::Deserialize( serialized, deserialized );
             g_Game.AlertMessage( at_console, "0 -> " + string( deserialized[ "0" ] ) + "\n" );
