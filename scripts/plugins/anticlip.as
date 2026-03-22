@@ -198,7 +198,7 @@ HookReturnCode PreMovement( aslp::PlayerMovement@ &out pmove, aslp::MetaResult &
             continue;
         }
 
-        if( physent.name == "player" )
+        if( physent.IsPlayer() )
         {
             // No boosting? Skip immediatelly
             if( !g_AllowBoosting )
