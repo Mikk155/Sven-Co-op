@@ -2,6 +2,43 @@
 
 #pragma once
 
+inline void CASPM_ContainerSizeSet( int* psize, int count, int newsize )
+{
+    if( newsize < 0 || newsize >= count )
+    {
+        return;
+    }
+
+    *psize = newsize;
+}
+
+template<typename T>
+inline T* CASPM_ContainerGet( T* list, int count, int index )
+{
+    if( index < 0 || index >= count )
+    {
+        return nullptr;
+    }
+
+    return &list[ index ];
+}
+
+template<typename T>
+inline void CASPM_ContainerSet( T* list, int count, int index, const T* value )
+{
+    if( index < 0 || index >= count )
+    {
+        return;
+    }
+
+    if( !value )
+    {
+        return;
+    }
+
+    list[ index ] = *value;
+}
+
 namespace Hooks
 {
     namespace Pre
