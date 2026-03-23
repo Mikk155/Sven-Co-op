@@ -5,8 +5,10 @@
 #include <filesystem>
 #include <cstdio>
 
+#ifndef EXTERNAL_PROGRAM_TEST
 #include <extdll.h>
 #include <meta_api.h>
+#endif
 
 using namespace std::literals::string_view_literals;
 
@@ -25,6 +27,12 @@ private:
     FILE* m_File = nullptr;
 
 public:
+    // Whatever the engine's filesystem is used instead for when reading a file
+    bool Engine = true;
+
+    // Whatever to open file from the base game folder Sven Co-op/
+    bool Base = false;
+
     Mode m_Mode;
 
     File( std::string_view path ) : m_Path( std::string( path ) ) {}
@@ -52,6 +60,12 @@ public:
      */
     std::string GetFullPath()
     {
+        if( Base )
+        {
+            std::filesystem::path fullPath = std::filesystem::current_path() / m_Path;
+            return fullPath.string();
+        }
+
         auto currentPath = std::filesystem::current_path();
         std::filesystem::path fullPath;
 
@@ -149,17 +163,32 @@ public:
      */
     bool Read( std::string& out )
     {
-        m_Mode = Mode::Read;
+#ifndef EXTERNAL_PROGRAM_TEST
+        if( Engine )
+        {
+            int len = 0;
+            byte* data = g_engfuncs.pfnLoadFileForMe( const_cast<char*>( m_Path.c_str() ), &len );
 
-        int len = 0;
-        byte* data = g_engfuncs.pfnLoadFileForMe( const_cast<char*>( m_Path.c_str() ), &len );
+            if( !data )
+                return false;
 
-        if( !data )
+            out.assign( reinterpret_cast<char*>( data ), len );
+
+            g_engfuncs.pfnFreeFile( data );
+
+            return true;
+        }
+#endif
+
+        if( !Open( Mode::Read ) )
             return false;
 
-        out.assign( reinterpret_cast<char*>( data ), len );
+        fseek( m_File, 0, SEEK_END );
+        long size = ftell( m_File );
+        fseek( m_File, 0, SEEK_SET );
 
-        g_engfuncs.pfnFreeFile( data );
+        out.resize( size );
+        fread( out.data(), 1, size, m_File );
 
         return true;
     }
