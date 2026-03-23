@@ -29,9 +29,16 @@ namespace Hooks
                     meta_result = MRES_SUPERCEDE;
                 }
 #if AS_GENERATE_DOCUMENTATION
-                else if( !strncmp( pcmd, "generate_as_documentation", 25 ) )
+                else if( !strncmp( pcmd, "generate_as_predefined", 22 ) )
                 {
-                    GenerateASPredefined::Start();
+                    static bool ASDocGenerator = false;
+
+                    if( !ASDocGenerator )
+                    {
+                        GenerateASPredefined::Start();
+                        SET_META_RESULT(MRES_SUPERCEDE);
+                        ASDocGenerator = true;
+                    }
                 }
 #endif
             }
