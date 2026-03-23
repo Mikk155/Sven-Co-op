@@ -1,4 +1,7 @@
-// Special thanks to AnggaraNothing for https://github.com/anggaranothing/sc-py-asdocs-vscode
+// Remove dis shit later since VSC bitches about it. -TODO
+#define AS_GENERATE_DOCUMENTATION 1
+
+// Special thanks to AnggaraNothing for the idea: https://github.com/anggaranothing/sc-py-asdocs-vscode
 #if AS_GENERATE_DOCUMENTATION
 #include <string>
 #include <string_view>
@@ -68,6 +71,7 @@ inline void Generate( ThreadState* state )
         utf8Str.resize(sizeNeededForUtf8 - 1);
         sourceStr = std::move( utf8Str );
 #else
+        // -TODO Maybe linux?
 #endif
         return sourceStr;
     };
@@ -98,7 +102,7 @@ inline void Generate( ThreadState* state )
             convertToUTF8( asbaseclasses );
             if( size_t startClass = asbaseclasses.find( "abstract class" ); startClass != std::string::npos )
                 asbaseclasses = asbaseclasses.substr( startClass );
-            asbaseclasses = asbaseclasses.substr( 0, asbaseclasses.rfind( "}", asbaseclasses.rfind( "end_scriptbaseclasses" ) ) + 1 );
+            asbaseclasses = asbaseclasses.substr( 0, asbaseclasses.rfind( "}", asbaseclasses.find( "end_scriptbaseclasses" ) ) + 1 );
             as_predefined.Append( asbaseclasses );
         }
         else
