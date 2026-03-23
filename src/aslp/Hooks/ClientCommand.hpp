@@ -4,6 +4,10 @@
 
 #include "../NetworkMessages/generate_as_networking.h"
 
+#if AS_GENERATE_DOCUMENTATION
+#include "misc/GenerateASPredefined.hpp"
+#endif
+
 namespace Hooks
 {
     namespace Pre
@@ -24,6 +28,12 @@ namespace Hooks
                     g_NetworkMessageAPI.Initialize( ASEXT_GetServerManager()->scriptEngine );
                     meta_result = MRES_SUPERCEDE;
                 }
+#if AS_GENERATE_DOCUMENTATION
+                else if( !strncmp( pcmd, "generate_as_documentation", 25 ) )
+                {
+                    GenerateASPredefined::Start();
+                }
+#endif
             }
 
             SET_META_RESULT(meta_result);

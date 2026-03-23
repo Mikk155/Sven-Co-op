@@ -2,10 +2,6 @@
 
 #pragma once
 
-#if AS_GENERATE_DOCUMENTATION
-#include "misc/GenerateASPredefined.hpp"
-#endif
-
 namespace Hooks
 {
     namespace Post
@@ -17,7 +13,14 @@ namespace Hooks
             if( entity != nullptr && entity->pvPrivateData )
             {
 #if AS_GENERATE_DOCUMENTATION
-                GenerateASPredefined::ClientPutInServer();
+                static bool bDocsGenerated = false;
+                if( !bDocsGenerated )
+                {
+                    bDocsGenerated = true;
+                    MESSAGE_BEGIN( MSG_ONE, 9, nullptr, entity );
+                        WRITE_STRING( "as_dumphooks hooks;wait;condebug;wait;[as_scriptbaseclasses];wait;as_scriptbaseclasses;wait;condebug;wait;generate_as_documentation" );
+                    MESSAGE_END();
+                }
 #endif
             }
 

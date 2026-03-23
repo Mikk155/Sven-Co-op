@@ -15,9 +15,15 @@ namespace Hooks
             META_RES meta_result = META_RES::MRES_IGNORED;
 
 #if AS_GENERATE_DOCUMENTATION
-            GenerateASPredefined::StartFrame();
+            if( GenerateASPredefined::g_state != nullptr && GenerateASPredefined::g_state->done )
+            {
+                for( const std::string& str : GenerateASPredefined::g_state->buffer )
+                {
+                    ALERT( at_console, str.c_str() );
+                }
+                GenerateASPredefined::Shutdown();
+            }
 #endif
-
             SET_META_RESULT(meta_result);
         }
     }
