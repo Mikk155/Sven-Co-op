@@ -29,7 +29,7 @@
 
 #define LOG(fmt_str) { \
     std::lock_guard<std::mutex> lock(state->bufferMutex); \
-    state->buffer.push_back( fmt::format( "[GenerateASPredefined] " fmt_str "\n" ) ); }
+    state->buffer.push_back( "[GenerateASPredefined] " fmt_str "\n" ); }
 
 #define LOG_ARGS(fmt_str, ...) { \
     std::lock_guard<std::mutex> lock(state->bufferMutex); \
@@ -51,14 +51,6 @@ struct ThreadState
 
 inline void Generate( ThreadState* state )
 {
-    for( int i = 0; i < 100; ++i )
-    {
-        if( state->cancel.load() )
-            break;
-
-        LOG_ARGS( "Procesing {}", i )
-    }
-
     // Convert from a specific source encoding (e.g., system's active code page CP_ACP) to UTF-8
     auto convertToUTF8 = []( string& sourceStr ) -> string&
     {
@@ -80,6 +72,14 @@ inline void Generate( ThreadState* state )
         return sourceStr;
     };
 
+    File as_predefined( "svencoop_addon/as.predefined.txt" ); // txt for no to not replace mine
+    as_predefined.Base = true;
+    as_predefined.Write( "// Header \n" );
+
+    // -Read asdocs.txt here- and Append to as_predefined
+
+    // -Read hooks.txt here- and Append to as_predefined
+
     // Get the last console log file for AS Base classes
     string asbaseclasses;
     {
@@ -89,12 +89,22 @@ inline void Generate( ThreadState* state )
 
         char time_buffer[11];
         std::strftime( time_buffer, 11, "%Y-%m-%d", now_tm );
-        File asbaseclass_file( fmt::format( "console-{}.log", time_buffer ) );
+        string fileName = fmt::format( "console-{}.log", time_buffer );
+        File asbaseclass_file( fileName );
         asbaseclass_file.Base = true;
 
         if( asbaseclass_file.Read( asbaseclasses ) && !asbaseclasses.empty() )
         {
             convertToUTF8( asbaseclasses );
+            if( size_t startClass = asbaseclasses.find( "abstract class" ); startClass != std::string::npos )
+                asbaseclasses = asbaseclasses.substr( startClass );
+            asbaseclasses = asbaseclasses.substr( 0, asbaseclasses.rfind( "}", asbaseclasses.rfind( "end_scriptbaseclasses" ) ) + 1 );
+            as_predefined.Append( asbaseclasses );
+        }
+        else
+        {
+            asbaseclasses.clear();
+            LOG_ARGS( "Error: Could not parse the abstract base class file {} Skipping...", fileName )
         }
     }
 

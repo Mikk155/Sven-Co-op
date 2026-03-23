@@ -9,6 +9,8 @@ add_executable( ${PROJECT_NAME} main.cpp )
 target_include_directories( ${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../src/aslp
+
     # JSON
     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/json/single_include
 
@@ -25,9 +27,11 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     FMT_OPTIMIZE_SIZE=2
     # C++ 20 for json
     JSON_HAS_CPP_20=1
+    # convertToUTF8
+    WINDOWS=1
     # GenerateASPredefined
     AS_GENERATE_DOCUMENTATION=1
-    GENERATE_AS_EXTERNAL_TEST=1
+    EXTERNAL_PROGRAM_TEST=1
 )
 
 target_compile_options( ${PROJECT_NAME} PRIVATE
