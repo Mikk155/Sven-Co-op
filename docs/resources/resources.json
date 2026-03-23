@@ -217,7 +217,7 @@
   },
   {
     "Author": "AnggaraNothing",
-    "Resource": "http://gitlab.com/groups/an-sc-projects/-/inactive",
+    "Resource": "https://codeberg.org/anggaranothing",
     "Type": "AngelScript",
     "Description": "AngelScript plugins/utilities"
   }
