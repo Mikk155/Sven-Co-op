@@ -357,7 +357,7 @@ ASEXT_RegisterObjectMethod( pASDoc, "Set the physical entity in collision list f
     } ), asCALL_CDECL_OBJFIRST );
 
 // moveents
-ASEXT_RegisterObjectMethod( pASDoc, "Get the number of physical entity in collision list.",
+ASEXT_RegisterObjectMethod( pASDoc, "Get the number of physical entity in movement list.",
     "PlayerMovement", "uint get_nummoveent()",
     (void*)( +[]( playermove_t* pthis ) -> int {
         return pthis->nummoveent;
@@ -379,6 +379,31 @@ ASEXT_RegisterObjectMethod( pASDoc, "Set the physical entity in movement list fo
     "PlayerMovement", "void set_moveents( " NAMESPACE_ASLP "::PhysicalEntity@ entity, uint index )",
     (void*)( +[]( playermove_t* pthis, physent_t* entity, int index ) {
         CASPM_ContainerSet( pthis->moveents, MAX_MOVEENTS, index, entity );
+    } ), asCALL_CDECL_OBJFIRST );
+
+// visents
+ASEXT_RegisterObjectMethod( pASDoc, "Get the number of physical entity in render list.",
+    "PlayerMovement", "uint get_numvisent()",
+    (void*)( +[]( playermove_t* pthis ) -> int {
+        return pthis->numvisent;
+    } ), asCALL_CDECL_OBJFIRST );
+
+ASEXT_RegisterObjectMethod( pASDoc, "Set the number of physical entity in render list.",
+    "PlayerMovement", "void set_numvisent( uint size )",
+    (void*)( +[]( playermove_t* pthis, int size ) {
+        CASPM_ContainerSizeSet( &pthis->numvisent, MAX_PHYSENTS_10152, size );
+    } ), asCALL_CDECL_OBJFIRST );
+
+ASEXT_RegisterObjectMethod( pASDoc, "Get the physical entity in render list for the given index.",
+    "PlayerMovement", NAMESPACE_ASLP "::PhysicalEntity@ get_visents( uint index )",
+    (void*)( +[]( playermove_t* pthis, int index ) -> physent_t* {
+        return CASPM_ContainerGet( pthis->visents, MAX_PHYSENTS_10152, index );
+    } ), asCALL_CDECL_OBJFIRST );
+
+ASEXT_RegisterObjectMethod( pASDoc, "Set the physical entity in render list for the given index.",
+    "PlayerMovement", "void set_visents( " NAMESPACE_ASLP "::PhysicalEntity@ entity, uint index )",
+    (void*)( +[]( playermove_t* pthis, physent_t* entity, int index ) {
+        CASPM_ContainerSet( pthis->visents, MAX_PHYSENTS_10152, index, entity );
     } ), asCALL_CDECL_OBJFIRST );
 
 #pragma endregion
