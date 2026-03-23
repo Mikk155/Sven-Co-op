@@ -356,6 +356,31 @@ ASEXT_RegisterObjectMethod( pASDoc, "Set the physical entity in collision list f
         CASPM_ContainerSet( pthis->physents, MAX_PHYSENTS_10152, index, entity );
     } ), asCALL_CDECL_OBJFIRST );
 
+// moveents
+ASEXT_RegisterObjectMethod( pASDoc, "Get the number of physical entity in collision list.",
+    "PlayerMovement", "uint get_nummoveent()",
+    (void*)( +[]( playermove_t* pthis ) -> int {
+        return pthis->nummoveent;
+    } ), asCALL_CDECL_OBJFIRST );
+
+ASEXT_RegisterObjectMethod( pASDoc, "Set the number of physical entity in movement list.",
+    "PlayerMovement", "void set_nummoveent( uint size )",
+    (void*)( +[]( playermove_t* pthis, int size ) {
+        CASPM_ContainerSizeSet( &pthis->nummoveent, MAX_MOVEENTS, size );
+    } ), asCALL_CDECL_OBJFIRST );
+
+ASEXT_RegisterObjectMethod( pASDoc, "Get the physical entity in movement list for the given index.",
+    "PlayerMovement", NAMESPACE_ASLP "::PhysicalEntity@ get_moveents( uint index )",
+    (void*)( +[]( playermove_t* pthis, int index ) -> physent_t* {
+        return CASPM_ContainerGet( pthis->moveents, MAX_MOVEENTS, index );
+    } ), asCALL_CDECL_OBJFIRST );
+
+ASEXT_RegisterObjectMethod( pASDoc, "Set the physical entity in movement list for the given index.",
+    "PlayerMovement", "void set_moveents( " NAMESPACE_ASLP "::PhysicalEntity@ entity, uint index )",
+    (void*)( +[]( playermove_t* pthis, physent_t* entity, int index ) {
+        CASPM_ContainerSet( pthis->moveents, MAX_MOVEENTS, index, entity );
+    } ), asCALL_CDECL_OBJFIRST );
+
 #pragma endregion
 
 #pragma region MetaResult
