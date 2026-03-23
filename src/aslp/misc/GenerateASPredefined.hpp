@@ -1,6 +1,3 @@
-// Remove dis shit later since VSC bitches about it. -TODO
-#define AS_GENERATE_DOCUMENTATION 1
-
 // Special thanks to AnggaraNothing for the idea: https://github.com/anggaranothing/sc-py-asdocs-vscode
 #if AS_GENERATE_DOCUMENTATION
 #include <string>
