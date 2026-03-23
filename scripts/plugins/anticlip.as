@@ -185,8 +185,6 @@ HookReturnCode PreMovement( aslp::PlayerMovement@ &out pmove, aslp::MetaResult &
         return HOOK_CONTINUE;
     }
 
-    CBasePlayer@ player = g_PlayerFuncs.FindPlayerByIndex( pmove.player );
-
     uint currentPhysents = pmove.get_numphysent();
     uint newPhysents = 0;
 
@@ -213,6 +211,8 @@ HookReturnCode PreMovement( aslp::PlayerMovement@ &out pmove, aslp::MetaResult &
             {
                 continue;
             }
+
+            auto player = g_PlayerFuncs.FindPlayerByIndex( pmove.player );
 
             if( ( player.pev.button & IN_DUCK ) != 0 )
             {
@@ -241,6 +241,8 @@ HookReturnCode PreMovement( aslp::PlayerMovement@ &out pmove, aslp::MetaResult &
                 {
                     continue;
                 }
+
+                auto player = g_PlayerFuncs.FindPlayerByIndex( pmove.player );
 
                 // Do not clip on ally monsters
                 if( player.IRelationship( entity ) == R_AL )
