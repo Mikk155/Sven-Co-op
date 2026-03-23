@@ -187,11 +187,12 @@ HookReturnCode PreMovement( aslp::PlayerMovement@ &out pmove, aslp::MetaResult &
 
     CBasePlayer@ player = g_PlayerFuncs.FindPlayerByIndex( pmove.player );
 
-    int numphysent = 0;
+    uint currentPhysents = pmove.get_numphysent();
+    uint newPhysents = 0;
 
-    for( int j = numphysent; j < pmove.numphysent; j++ )
+    for( uint j = newPhysents; j < currentPhysents; j++ )
     {
-        aslp::PhysicalEntity@ physent = pmove.GetPhysEntByIndex(j);
+        aslp::PhysicalEntity@ physent = pmove.get_physents(j);
 
         if( physent is null )
         {
@@ -262,10 +263,10 @@ HookReturnCode PreMovement( aslp::PlayerMovement@ &out pmove, aslp::MetaResult &
             }
         }
 
-        pmove.SetPhysEntByIndex( physent, numphysent++ );
+        pmove.set_physents( physent, newPhysents++ );
     }
 
-    pmove.numphysent = numphysent;
+    pmove.set_numphysent( newPhysents );
 
     return HOOK_CONTINUE;
 }
