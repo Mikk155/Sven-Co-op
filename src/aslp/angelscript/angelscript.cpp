@@ -595,7 +595,6 @@ CREATE_AS_HOOK(pPlayerPostTakeDamage, "Pre call before a player took damage", "P
 CREATE_AS_HOOK( pPlayerTakeHealth, "Pre call before a player is healed",
     NAMESPACE_ASLP, "PlayerTakeHealth", "CBasePlayer@ player, float &out health, int &out bitsDamage" );
 
-#if 0
 CREATE_AS_HOOK( pEntityIRelationship, "Pre call before checking relation", "Entity", "IRelationship", "CBaseEntity@ pEntity, CBaseEntity@ pOther, bool param, int& out newValue");
 
 CREATE_AS_HOOK( pMonsterTraceAttack,
@@ -625,7 +624,6 @@ CREATE_AS_HOOK( pGrappleCheckMonsterType,
     "Pre call before Weapon Grapple checking monster type",
     "Weapon", "GrappleGetMonsterType", "CBaseEntity@ pThis, CBaseEntity@ pEntity, uint& out flag"
 );
-#endif
 }
 #undef CREATE_AS_HOOK
 
