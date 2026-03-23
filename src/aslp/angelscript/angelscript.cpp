@@ -286,8 +286,15 @@ ASEXT_RegisterObjectMethod( pASDoc, "Texture name the player is currently standi
         return result;
     } ), asCALL_CDECL_OBJFIRST );
 
-ASEXT_RegisterObjectProperty( pASDoc, "Texture type the player is currently standing at",
-    "PlayerMovement", "const char TextureType", offsetof( playermove_t, chtexturetype ) );
+
+ASEXT_RegisterObjectMethod( pASDoc, "Texture type the player is currently standing at",
+    "PlayerMovement", "string get_TextureType() property",
+    (void*)( +[]( playermove_t* pthis ) -> CString
+    {
+        CString result = CString();
+        result.assign( &pthis->chtexturetype, 1 );
+        return result;
+    } ), asCALL_CDECL_OBJFIRST );
 
 ASEXT_RegisterObjectProperty( pASDoc, "",
     "PlayerMovement", "float maxspeed", offsetof( playermove_t, maxspeed ) );
