@@ -60,6 +60,9 @@
         // We allow commentary
         "*.json": "jsonc",
 
+        // AngelScript
+        "as.predefined": "as",
+
         // C++ auto generated
         "xstring": "cpp",
         "iostream": "cpp",
