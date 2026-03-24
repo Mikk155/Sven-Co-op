@@ -43,28 +43,28 @@
 #include "mandatory.h"
 #endif
 
-#ifdef WINDOWS
+#if WIN32
 #include <windows.h>
-#else
+#endif
+#if LINUX
 // convertToUTF8
 #endif
 
 #pragma once
 
+// Log a single literal string
 #define LOG(fmt_str) { \
     std::lock_guard<std::mutex> lock(state->bufferMutex); \
     state->buffer.push_back( "[GenerateASPredefined] " fmt_str "\n" ); }
 
+// Log a formated literal string using fmt::format style
 #define LOG_ARGS(fmt_str, ...) { \
     std::lock_guard<std::mutex> lock(state->bufferMutex); \
     state->buffer.push_back( fmt::format( "[GenerateASPredefined] " fmt_str "\n", __VA_ARGS__ ) ); }
 
 namespace GenerateASPredefined
 {
-using string = std::string;
-using string_v = std::string_view;
-
-static std::string ASPredefinedHeader( string time )
+static std::string ASPredefinedHeader( std::string time )
 {
     return fmt::format( R"(/**
  *  AngelScript predefined file snippets for the metamod plugin "ASLP"
@@ -88,34 +88,35 @@ struct ThreadState
     std::atomic<bool> done{false};
 
     std::mutex bufferMutex;
-    std::vector<string> buffer;
+    std::vector<std::string> buffer;
 };
 
 inline void Generate( ThreadState* state )
 {
     // Convert from a specific source encoding (e.g., system's active code page CP_ACP) to UTF-8
-    auto convertToUTF8 = []( string& sourceStr ) -> string&
+    auto convertToUTF8 = []( std::string& sourceStr ) -> std::string&
     {
-#ifdef WINDOWS
+#if WIN32
         int sizeNeededForWstr = MultiByteToWideChar( CP_ACP, 0, sourceStr.c_str(), -1, nullptr, 0 );
         std::wstring wstr( sizeNeededForWstr, 0 );
         MultiByteToWideChar( CP_ACP, 0, sourceStr.c_str(), -1, &wstr[0], sizeNeededForWstr );
 
         int sizeNeededForUtf8 = WideCharToMultiByte( CP_UTF8, 0, wstr.c_str(), -1, nullptr, 0, nullptr, nullptr );
-        string utf8Str( sizeNeededForUtf8, 0 );
+        std::string utf8Str( sizeNeededForUtf8, 0 );
         WideCharToMultiByte( CP_UTF8, 0, wstr.c_str(), -1, &utf8Str[0], sizeNeededForUtf8, nullptr, nullptr );
 
         // Remove the null terminators that MultiByteToWideChar/WideCharToMultiByte add
         // when using -1 for the input length
         utf8Str.resize(sizeNeededForUtf8 - 1);
         sourceStr = std::move( utf8Str );
-#else
+#endif
+#if LINUX
         // -TODO Maybe linux?
 #endif
         return sourceStr;
     };
 
-    string currentTime;
+    std::string currentTime;
     {
         auto now = std::chrono::system_clock::now();
         std::time_t now_c = std::chrono::system_clock::to_time_t( now );
@@ -134,7 +135,7 @@ inline void Generate( ThreadState* state )
 
     if( curl::Initialize() )
     {
-        string url = "https://codeberg.org/anggaranothing/svencoop-py-asdocs-vscode/raw/branch/dev/default.as.predefined";
+        std::string url = "https://codeberg.org/anggaranothing/svencoop-py-asdocs-vscode/raw/branch/dev/default.as.predefined";
 
         curl::Request req = {
             .url = url
@@ -160,7 +161,7 @@ inline void Generate( ThreadState* state )
 #if 0
             LOG_ARGS( "Error: Could not request to {}", url )
 
-            string content;
+            std::string content;
             if( default_predefined.Read( content ) )
             {
                 as_predefined.Append( content );
@@ -187,9 +188,9 @@ inline void Generate( ThreadState* state )
     // -Read hooks.txt here- and Append to as_predefined
 
     // Get the last console log file for AS Base classes
-    string asbaseclasses;
+    std::string asbaseclasses;
     {
-        string fileName = fmt::format( "console-{}.log", currentTime );
+        std::string fileName = fmt::format( "console-{}.log", currentTime );
         File asbaseclass_file( fileName );
         asbaseclass_file.Base = true;
 
