@@ -43,6 +43,7 @@ namespace curl
     typedef void ( *curl_slist_free_all_fn )( curl_slist* );
     typedef CURLcode ( *curl_global_init_fn )( long );
     typedef void ( *curl_global_cleanup_fn )();
+    typedef CURLcode (*curl_easy_getinfo_fn)(CURL*, int, ...);
 
     static curl_easy_init_fn easy_init;
     static curl_easy_setopt_fn easy_setopt;
@@ -53,6 +54,7 @@ namespace curl
     static curl_slist_free_all_fn slist_free_all;
     static curl_global_init_fn global_init;
     static curl_global_cleanup_fn global_cleanup;
+    static curl_easy_getinfo_fn easy_getinfo;
 
     static bool __IsActive__ = false;
 
@@ -131,6 +133,7 @@ namespace curl
         CURLGET( slist_append );
         CURLGET( global_init );
         CURLGET( global_cleanup );
+        CURLGET( easy_getinfo );
 
         if( global_init( 3 ) != 0 )
         {
@@ -171,6 +174,10 @@ namespace curl
             if( !curl )
                 return Response::NotInitialized;
 
+            // Cleanup for reusing
+            response.clear();
+            status = 0;
+
             curl_slist* hdr = nullptr;
 
             for( auto& h : headers )
@@ -183,6 +190,9 @@ namespace curl
             easy_setopt( curl, 20011 /* CURLOPT_WRITEFUNCTION */, CurlWrite );
             easy_setopt( curl, 10001 /* CURLOPT_WRITEDATA */, &response );
             easy_setopt( curl, 10018 /* CURLOPT_USERAGENT */, "svencoop/1.0" );
+            easy_setopt( curl, 13 /* CURLOPT_TIMEOUT */, 10L );
+            easy_setopt( curl, 78 /* CURLOPT_CONNECTTIMEOUT */, 5L );
+            easy_setopt( curl, 52 /* CURLOPT_FOLLOWLOCATION */, 1L );
 
             if( !post.empty() )
             {
@@ -196,6 +206,15 @@ namespace curl
 
             easy_cleanup( curl );
             slist_free_all( hdr );
+
+            if( res != 0 )
+            {
+                LOG_ARGS( "curl error {}: {}", res, easy_strerror( res ) );
+            }
+            else
+            {
+                easy_getinfo( curl, 0x200002 /* CURLINFO_RESPONSE_CODE */, &status );
+            }
 
             return (Response)res;
         }
