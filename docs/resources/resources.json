@@ -121,9 +121,15 @@
   },
   {
     "Author": "Outerbeast",
-    "Resource": "https://github.com/Outerbeast/Entities-and-Gamemodes",
+    "Resource": "https://github.com/Outerbeast",
     "Type": "AngelScript",
-    "Description": "map-scripts"
+    "Description": "AngelScript plugins/map-scripts"
+  },
+  {
+    "Author": "Erty",
+    "Resource": "https://github.com/Erty-Gamedev",
+    "Type": "AngelScript",
+    "Description": "map-scripts, Tools"
   },
   {
     "Author": "DrAbcOfficial",
