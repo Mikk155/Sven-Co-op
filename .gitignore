@@ -1,5 +1,3 @@
-.vscode/c_cpp_properties.json
-
 build*
 maps*
 steam_autocloud.vdf
