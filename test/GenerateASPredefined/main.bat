@@ -3,10 +3,7 @@
 setlocal
 
 if not exist bin (
-    mkdir bin
-    cd bin
-    cmake ..
-    cd ..
+    cmake -S . -B bin -G "Visual Studio 16 2019" -A Win32
 )
 
 cmake --build bin --config Debug --clean-first
