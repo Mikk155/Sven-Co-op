@@ -39,8 +39,6 @@
 #include <fmt/format.h>
 #include <filesystem>
 
-#include "utils/curl.hpp"
-
 using namespace std::literals::string_view_literals;
 
 mBOOL dlclose_handle_invalid;
