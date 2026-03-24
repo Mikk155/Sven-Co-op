@@ -3,9 +3,19 @@
         {
             "name": "aslp",
             "includePath": [
+                "${workspaceFolder}/external/metamod/hlsdk/common/**",
+                "${workspaceFolder}/external/metamod/hlsdk/dlls/**",
+                "${workspaceFolder}/external/metamod/hlsdk/pm_shared/**",
+                "${workspaceFolder}/external/metamod/hlsdk/engine/**",
+                "${workspaceFolder}/external/metamod/metamod/**",
+                "${workspaceFolder}/external/metamod/thirdparty/capstone_fork/include/**",
                 "${workspaceFolder}/src/aslp/**",
+                "${workspaceFolder}/src/aslp/angelscript/**",
+                "${workspaceFolder}/src/aslp/metamod/**",
                 "${workspaceFolder}/external/json/single_include/**",
-                "${workspaceFolder}/external/fmt/include/**"
+                "${workspaceFolder}/external/fmt/include/**",
+                "${workspaceFolder}/external/metamod/thirdparty/angelscript-sdk/angelscript/include/**",
+                "${workspaceFolder}/external/metamod/asext/include/**"
             ],
             "defines": [
                 "_DEBUG",
