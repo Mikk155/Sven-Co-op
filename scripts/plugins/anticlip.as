@@ -44,7 +44,7 @@ array<string> g_BlacklistedMaps;
 PostAddToFullPackHook@ fnPostAddToFullPack = PostAddToFullPackHook( PostAddToFullPack );
 PlayerPreMovementHook@ fnPreMovement = PlayerPreMovementHook( PreMovement );
 ShouldCollideHook@ fnShouldCollide = ShouldCollideHook( ShouldCollide );
-auto fnCheckFramerate = Server::Framerate::FrameRateCallback( CheckFramerate );
+Server::Framerate::FrameRateCallback@ fnCheckFramerate = Server::Framerate::FrameRateCallback( CheckFramerate );
 #endif
 
 bool g_AllowMonsters = false;
