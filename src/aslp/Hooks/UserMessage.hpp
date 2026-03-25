@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include "../NetworkMessages/generate_as_networking.h"
-
 namespace Hooks
 {
     namespace UserMessage
@@ -21,8 +19,6 @@ namespace Hooks
             registeringMessage = true;
             int messageID = REG_USER_MSG( name, bytes );
             registeringMessage = false;
-
-            g_NetworkMessageAPI.Register( name, bytes, messageID );
 
             RETURN_META_VALUE(META_RES::MRES_SUPERCEDE, messageID);
         }

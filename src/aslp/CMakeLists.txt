@@ -41,8 +41,6 @@ if( NOT ASLP_STANDALONE )
     endif()
 endif()
 
-option( GENERATE_AS_DOCUMENTATION "Generate AS documentation on start up" ON )
-
 set( PARAM_MAP_NAME "hl_c04" CACHE STRING "Name of the map to launch on debuging" )
 
 set( PARAM_LAUNCH_PARAMETERS "-dev -console" CACHE STRING "Additional launch parameters" )
@@ -286,29 +284,12 @@ elseif( EXISTS "${SVENCOOP_ROOT}/svencoop/" )
         file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/plugins.ini" DESTINATION "${PLUGIN_DEST_DIR}" )
     endif()
 
-    # ============================================================
-    # Should we create as.predefined with our new exposed API?
-    # ============================================================
-    if( GENERATE_AS_DOCUMENTATION )
-        if( NOT SVENCOOP_EXECUTABLE STREQUAL "svencoop.exe" )
-            message( STATUS "AS API Generation can only be done in listen server! select svencoop.exe as debug runner" )
-            set( PARAM_GENERATE_AS_DOCUMENTATION "" CACHE STRING "" FORCE )
-        else()
-            set( PARAM_GENERATE_AS_DOCUMENTATION "-as_outputdocs asdocs" CACHE STRING "" FORCE )
-            target_compile_definitions( ${PROJECT_NAME} PRIVATE AS_GENERATE_DOCUMENTATION=1 )
-        endif()
-    else()
-        set( PARAM_GENERATE_AS_DOCUMENTATION "" CACHE STRING "" FORCE )
-    endif()
-
-    mark_as_advanced( PARAM_GENERATE_AS_DOCUMENTATION )
-
     # Visual Studio Debugger
     if( MSVC )
         set_target_properties(${PROJECT_NAME} PROPERTIES
             VS_DEBUGGER_COMMAND "${SVENCOOP_ROOT}/${SVENCOOP_EXECUTABLE}"
             VS_DEBUGGER_WORKING_DIRECTORY "${SVENCOOP_ROOT}"
-            VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map ${PARAM_MAP_NAME} ${PARAM_GENERATE_AS_DOCUMENTATION} ${PARAM_LAUNCH_PARAMETERS}"
+            VS_DEBUGGER_COMMAND_ARGUMENTS "-dll addons/metamod/dlls/metamod.dll +map ${PARAM_MAP_NAME} ${PARAM_LAUNCH_PARAMETERS}"
         )
     endif()
 endif()

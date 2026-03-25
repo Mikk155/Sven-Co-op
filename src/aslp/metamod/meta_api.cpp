@@ -174,10 +174,6 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME, META_FUNCTIONS* pFunctionTable, meta_
 extern void UninstallEngineHook();
 extern void VtableUnhook();
 
-#if AS_GENERATE_DOCUMENTATION
-#include "misc/GenerateASPredefined.hpp"
-#endif
-
 // Metamod detaching plugin from the server.
 // now      (given) current phase, ie during map, etc
 // reason   (given) why detaching (refresh, console unload, forced unload, etc)
@@ -186,10 +182,6 @@ C_DLLEXPORT int Meta_Detach( PLUG_LOADTIME, PL_UNLOAD_REASON  )
     UninstallEngineHook();
     VtableUnhook();
     CloseAngelScriptsItem();
-
-#if AS_GENERATE_DOCUMENTATION
-    GenerateASPredefined::Shutdown();
-#endif
 
     return TRUE;
 }

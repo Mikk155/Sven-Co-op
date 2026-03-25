@@ -250,7 +250,7 @@ enginefuncs_t meta_engfuncs = {
     NULL, // pfnPEntityOfEntIndex()
     NULL, // pfnFindEntityByVars()
     NULL, // pfnGetModelPtr()
-    Hooks::UserMessage::Register,
+    NULL, // Hooks::UserMessage::Register,
     NULL, // pfnAnimationAutomove()
     NULL, // pfnGetBonePosition()
     NULL, // pfnFunctionFromName()
