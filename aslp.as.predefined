@@ -1,0 +1,253 @@
+// Is the server running aslp?
+bool METAMOD_PLUGIN_ASLP = true;
+// Is the server running aslp in debug build?
+bool METAMOD_DEBUG = true;
+// Is the server running aslp in release build?
+bool METAMOD_RELEASE = true;
+// Is the server running aslp in linux?
+bool LINUX = true;
+// Is the server running aslp in windows?
+bool WINDOWS = true;
+
+namespace aslp
+{
+    namespace json
+    {
+        // Deserialize a string json-format into a dictionary. if str ends with .json it will be a file to open",
+        bool Deserialize( const string &in str, dictionary &out obj );
+    }
+
+    class PhysicalEntity
+    {
+        const string name;
+        bool IsPlayer() const;
+        Vector origin;
+        Vector mins;
+        Vector maxs;
+        int info;
+        Vector angles;
+        int solid;
+        int skin;
+        int rendermode;
+        float frame;
+        int sequence;
+        int controller;
+        int blending;
+        int movetype;
+        int takedamage;
+        int blooddecal;
+        int team;
+        int classnumber;
+        int iuser1;
+        int iuser2;
+        int iuser3;
+        int iuser4;
+        float fuser1;
+        float fuser2;
+        float fuser3;
+        float fuser4;
+        Vector vuser1;
+        Vector vuser2;
+        Vector vuser3;
+        Vector vuser4;
+    }
+
+    class PlayerMovement
+    {
+        const int player;
+        const float time;
+        const float frametime;
+        Vector forward;
+        Vector right;
+        Vector up;
+        Vector origin;
+        Vector angles;
+        Vector oldangles;
+        Vector velocity;
+        Vector movedir;
+        Vector basevelocity;
+        Vector view_ofs;
+        float flDuckTime;
+        int bInDuck;
+        int flTimeStepSound;
+        int iStepLeft;
+        float flFallVelocity;
+        Vector punchangle;
+        float flSwimTime;
+        float flNextPrimaryAttack;
+        int effects;
+        int flags;
+        int usehull;
+        float gravity;
+        float friction;
+        int oldbuttons;
+        float waterjumptime;
+        const int dead;
+        const int deadflag;
+        const int spectator;
+        int movetype;
+        int onground;
+        int waterlevel;
+        int watertype;
+        int oldwaterlevel;
+        const string TextureName;
+        const string TextureType;
+        float maxspeed;
+        float clientmaxspeed;
+        int iuser1;
+        int iuser2;
+        int iuser3;
+        int iuser4;
+        float fuser1;
+        float fuser2;
+        float fuser3;
+        float fuser4;
+        Vector vuser1;
+        Vector vuser2;
+        Vector vuser3;
+        Vector vuser4;
+
+        uint get_numphysent();
+        void set_numphysent( uint size );
+        PhysicalEntity@ get_physents( uint index );
+        void set_physents( PhysicalEntity@ entity, uint index );
+        uint get_nummoveent();
+        void set_nummoveent( uint size );
+        PhysicalEntity@ get_moveents( uint index );
+        void set_moveents( PhysicalEntity@ entity, uint index );
+        uint get_numvisent();
+        void set_numvisent( uint size );
+        PhysicalEntity@ get_visents( uint index );
+        void set_visents( PhysicalEntity@ entity, uint index );
+    }
+
+    // Flags returned by a plugin's api function.
+    enum MetaResult
+    {
+        // Plugin didn't take any action
+        Ignored,
+        // Plugin did something, but real function should still be called
+        Handled,
+        // Call real function, but use my return value
+        Override,
+        // Skip real function and use my return value
+        Supercede
+    }
+
+    // Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.
+    class EntityState
+    {
+        int entityType;
+        int number;
+        float msg_time;
+        int messagenum;
+        Vector origin;
+        Vector angles;
+        int modelindex;
+        int sequence;
+        float frame;
+        int colormap;
+        int16 skin;
+        int body;
+        int16 solid;
+        int effects;
+        float scale;
+        int8 eflags;
+        int rendermode;
+        int renderamt;
+        Vector rendercolor;
+        int renderfx;
+        int movetype;
+        float animtime;
+        float framerate;
+        Vector velocity;
+        Vector mins;
+        Vector maxs;
+        int aiment;
+        int owner;
+        float friction;
+        float gravity;
+        int team;
+        int playerclass;
+        int health;
+        int spectator;
+        int weaponmodel;
+        int gaitsequence;
+        Vector basevelocity;
+        int usehull;
+        int oldbuttons;
+        int onground;
+        int iStepLeft;
+        float flFallVelocity;
+        float fov;
+        int weaponanim;
+        int iuser1;
+        int iuser2;
+        int iuser3;
+        int iuser4;
+        float fuser1;
+        float fuser2;
+        float fuser3;
+        float fuser4;
+        Vector vuser1;
+        Vector vuser2;
+        Vector vuser3;
+        Vector vuser4;
+    }
+
+    class ClientPacket
+    {
+        // Entity state being processed.",
+        EntityState@ state;
+        // The index of the entity currently being considered for transmission.",
+        const int index;
+        // The entity currently being considered for transmission.",
+        edict_t@ entity;
+        // The client receiving this packet.",
+        edict_t@ host;
+        // Flags describing properties of the receiving client.
+        int hostFlags;
+        // The index of the client receiving this packet.
+        const int playerIndex;
+    }
+}
+
+// Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc,
+funcdef HookReturnCode ClientCommandHook( CBasePlayer@ player, aslp::MetaResult &out meta_result );
+// Pre call before a player info changed,
+funcdef HookReturnCode UserInfoChangedHook( CBasePlayer@ player, string buffer, aslp::MetaResult &out meta_result );
+// Called before the Server-side logic of the player movement.,
+funcdef HookReturnCode PlayerPreMovementHook( aslp::PlayerMovement@ &out movement, aslp::MetaResult &out meta_result );
+// Called after the Server-side logic of the player movement.,
+funcdef HookReturnCode PlayerPostMovementHook( aslp::PlayerMovement@ &out movement, aslp::MetaResult &out meta_result );
+// Called when the server is about to network a entity to a client,
+funcdef HookReturnCode PreAddToFullPackHook( aslp::ClientPacket@ packet, aslp::MetaResult &out meta_result );
+// Called when the server is about to network a entity to a client,
+funcdef HookReturnCode PostAddToFullPackHook( aslp::ClientPacket@ packet, aslp::MetaResult &out meta_result );
+// Called whatever a entity is touched by another. Set Collide to false to prevent the interaction.,
+funcdef HookReturnCode ShouldCollideHook( CBaseEntity@ touched, CBaseEntity@ other, aslp::MetaResult &out meta_result, bool &out Collide );
+// Pre call before a player is healed,
+funcdef HookReturnCode PlayerTakeHealthHook( CBasePlayer@ player, float &out health, int &out bitsDamage );
+
+namespace Hooks
+{
+    namespace aslp
+    {
+        // Pre call of ClientCommand. See CEngineFuncs Cmd_Args, Cmd_Argv and Cmd_Argc",
+        uint ClientCommand;
+        // Pre call before a player info changed",
+        uint UserInfoChanged;
+        // Called before the Server-side logic of the player movement.",
+        uint PlayerPreMovement;
+        // Called after the Server-side logic of the player movement.",
+        uint PlayerPostMovement;
+        // Called when the server is about to network a entity to a client",
+        uint PreAddToFullPack;
+        // Called when the server is about to network a entity to a client",
+        uint PostAddToFullPack;
+        // Called whatever a entity is touched by another. Set Collide to false to prevent the interaction.",
+        uint ShouldCollide;
+        // Pre call before a player is healed",
+        uint PlayerTakeHealth;
+    }
+}

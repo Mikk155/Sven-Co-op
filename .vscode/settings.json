@@ -7,7 +7,8 @@
 
     "angelScript.explicitPropertyAccessor": false,
     "angelScript.forceIncludePredefined": [
-        "as.predefined"
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sven Co-op\\svencoop_addon\\as.predefined",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sven Co-op\\svencoop_addon\\aslp.as.predefined"
     ],
     "angelScript.implicitMutualInclusion": false,
     "angelScript.supportsForEach": false,
