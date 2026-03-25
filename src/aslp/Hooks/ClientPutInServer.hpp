@@ -2,10 +2,6 @@
 
 #pragma once
 
-#if AS_GENERATE_DOCUMENTATION
-#include "misc/GenerateASPredefined.hpp"
-#endif
-
 namespace Hooks
 {
     namespace Post
@@ -13,10 +9,6 @@ namespace Hooks
         inline void ClientPutInServer( edict_t* entity )
         {
             META_RES meta_result = META_RES::MRES_IGNORED;
-
-#if AS_GENERATE_DOCUMENTATION
-            GenerateASPredefined::GameDumpData();
-#endif
 
             SET_META_RESULT(meta_result);
         }
