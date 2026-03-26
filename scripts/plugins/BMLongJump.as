@@ -305,7 +305,7 @@ enum JumpState
     None = 0,
     JustJumped,
     JumpReleased,
-    JumpTwice
+    JustSuperLongjump
 };
 
 array<JumpState> g_PlayerData(g_Engine.maxClients);
@@ -336,6 +336,38 @@ bool ShouldPreventFall( CBasePlayer@ player )
     return false;
 }
 
+bool DoSuperLongjump( CBasePlayer@ player, Vector&out direction )
+{
+    if( ( player.pev.button & IN_FORWARD ) != 0 )
+    {
+        direction = g_Engine.v_forward * ( g_Speed * 1.6f );
+    }
+    else if( ( player.pev.button & IN_BACK ) != 0 )
+    {
+        direction = -g_Engine.v_forward * ( g_Speed * 1.6f );
+    }
+    else if( ( player.pev.button & IN_MOVERIGHT ) != 0 )
+    {
+        direction = g_Engine.v_right * ( g_Speed * 1.6f );
+    }
+    else if( ( player.pev.button & IN_MOVELEFT ) != 0 )
+    {
+        direction = -g_Engine.v_right * ( g_Speed * 1.6f );
+    }
+    else
+    {
+        return false;
+    }
+
+    direction.z = g_HeightSpeed;
+
+    player.SetAnimation( PLAYER_SUPERJUMP, 1 );
+
+    CreateFX( player, false );
+
+    return true;
+}
+
 bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
 {
     int index = player.entindex() - 1;
@@ -350,13 +382,22 @@ bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
 
     bool mode = bool( g_Cache[ g_EngineFuncs.GetPlayerAuthId( player.edict() ) ] );
 
-    if( !mode )
+    if( mode )
     {
+        if( state != JumpState::None )
+            return false;
+
+        if( player.pev.sequence == 9 )
+        {
+            g_PlayerData[index] = JumpState::JustSuperLongjump;
+            return DoSuperLongjump( player, direction );
+        }
+        return false;
     }
 
     switch( state )
     {
-        case JumpState::JumpTwice:
+        case JumpState::JustSuperLongjump:
         {
             return false;
         }
@@ -364,36 +405,8 @@ bool ShouldPlayerSuperJump( CBasePlayer@ player, Vector&out direction )
         {
             if( ( player.pev.button & IN_JUMP ) != 0 )
             {
-                g_PlayerData[index] = JumpState::JumpTwice;
-
-                if( ( player.pev.button & IN_FORWARD ) != 0 )
-                {
-                    direction = g_Engine.v_forward * ( g_Speed * 1.6f );
-                }
-                else if( ( player.pev.button & IN_BACK ) != 0 )
-                {
-                    direction = -g_Engine.v_forward * ( g_Speed * 1.6f );
-                }
-                else if( ( player.pev.button & IN_MOVERIGHT ) != 0 )
-                {
-                    direction = g_Engine.v_right * ( g_Speed * 1.6f );
-                }
-                else if( ( player.pev.button & IN_MOVELEFT ) != 0 )
-                {
-                    direction = -g_Engine.v_right * ( g_Speed * 1.6f );
-                }
-                else
-                {
-                    return false;
-                }
-
-                direction.z = g_HeightSpeed;
-
-                player.SetAnimation( PLAYER_SUPERJUMP, 1 );
-
-                CreateFX( player, false );
-
-                return true;
+                g_PlayerData[index] = JumpState::JustSuperLongjump;
+                return DoSuperLongjump( player, direction );
             }
             return false;
         }
