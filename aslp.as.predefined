@@ -1,12 +1,12 @@
-// Is the server running aslp?
+// Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server
 bool METAMOD_PLUGIN_ASLP = true;
-// Is the server running aslp in debug build?
+// Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not a debug build
 bool METAMOD_DEBUG = true;
-// Is the server running aslp in release build?
+// Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not a release build
 bool METAMOD_RELEASE = true;
-// Is the server running aslp in linux?
+// Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not in linux
 bool LINUX = true;
-// Is the server running aslp in windows?
+// Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not in windows
 bool WINDOWS = true;
 
 namespace aslp
