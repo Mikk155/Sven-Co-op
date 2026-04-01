@@ -40,6 +40,7 @@ void PluginInit()
         }
         else
         {
+            mapRestarts = 0;
             date = DateTime();
         }
 
