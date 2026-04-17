@@ -328,7 +328,9 @@ namespace meta_api
                 string value = String::EMPTY_STRING;
                 bool in_string = false;
                 bool is_escaped = false;
-                
+
+                bool reading_commentary = false;
+                bool single_commentary = false;
                 bool value_is_string = false;
                 bool just_parsed_child = false;
 
@@ -341,7 +343,20 @@ namespace meta_api
                     bool was_escaped = is_escaped;
                     is_escaped = false;
 
-                    if( in_string )
+                    if( reading_commentary )
+                    {
+                        if( single_commentary )
+                        {
+                            if( c == '\n' )
+                                single_commentary = reading_commentary = false;
+                        }
+                        else if( c == '/' && serialized[__position__ - 2] == '*' )
+                        {
+                            reading_commentary = false;
+                        }
+                        continue;
+                    }
+                    else if( in_string )
                     {
                         if( c == '"' && !was_escaped )
                         {
@@ -451,13 +466,24 @@ namespace meta_api
                     }
                     else if( c != ' ' && c != '\n' && c != '\r' && c != '\t' )
                     {
-                        if( value_is_string || just_parsed_child )
+                        if( c == '/' && serialized[__position__] == '*' )
                         {
-                            g_Game.AlertMessage( at_console, "[JSON] Error (Pos %1): Missing separating ',' in array\n", string( __position__ ) );
-                            return obj;
+                            reading_commentary = true;
                         }
+                        else if( c == '/' && serialized[__position__] == '/' )
+                        {
+                            reading_commentary = single_commentary = true;
+                        }
+                        else
+                        {
+                            if( value_is_string || just_parsed_child )
+                            {
+                                g_Game.AlertMessage( at_console, "[JSON] Error (Pos %1): Missing separating ',' in array\n", string( __position__ ) );
+                                return obj;
+                            }
 
-                        value += c;
+                            value += c;
+                        }
                     }
                 }
 
