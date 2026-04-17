@@ -1,13 +1,13 @@
 // Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server
-bool METAMOD_PLUGIN_ASLP = true;
+#define METAMOD_PLUGIN_ASLP
 // Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not a debug build
-bool METAMOD_DEBUG = true;
+#define METAMOD_DEBUG
 // Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not a release build
-bool METAMOD_RELEASE = true;
+#define METAMOD_RELEASE
 // Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not in linux
-bool LINUX = true;
+#define LINUX
 // Whatever that is in a #if statement with this keyword won't be compiled if ASLP is not installed on the server or is not in windows
-bool WINDOWS = true;
+#define WINDOWS
 
 namespace aslp
 {
