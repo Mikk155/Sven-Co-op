@@ -551,6 +551,9 @@ namespace meta_api
         {
             auto SerializeObject = __SerializeObject__( function( dictionary@ obj, __SerializeObject__@ SerializeObject, int indents, int depth )
             {
+                if( obj is null )
+                    return "{}";
+
                 array<string>@ keys = obj.getKeys();
                 
                 if( keys.length() == 0 )
@@ -618,6 +621,14 @@ namespace meta_api
                         if( strValue == "__null__" )
                         {
                             buffer += "null";
+                        }
+                        else if( strValue == "false" )
+                        {
+                            buffer += "false";
+                        }
+                        else if( strValue == "true" )
+                        {
+                            buffer += "true";
                         }
                         else
                         {
