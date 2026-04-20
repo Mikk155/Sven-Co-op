@@ -14,14 +14,14 @@
   {
     "Author": "Sven Co-op wiki",
     "Resource": "https://wiki.svencoop.com/Main_Page",
-    "Type": "Everything",
-    "Description": "Any asset and mods"
+    "Type": "Documentation",
+    "Description": "Various documentation"
   },
   {
     "Author": "GameBanana",
     "Resource": "https://gamebanana.com/games/54",
-    "Type": "Documentation",
-    "Description": "Various documentation"
+    "Type": "Everything",
+    "Description": "Any asset and mods"
   },
   {
     "Author": "Sven Co-op map data base",
