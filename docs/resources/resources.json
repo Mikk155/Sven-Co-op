@@ -6,6 +6,12 @@
     "Description": "Visual studio code extension AngelScript language server"
   },
   {
+    "Author": "cti333",
+    "Resource": "https://github.com/Mikk155/as-clang-format",
+    "Type": "clang-format",
+    "Description": "Customized version of clang-format, specifically optimized for AngelScript"
+  },
+  {
     "Author": "R4to0",
     "Resource": "https://r4to0.github.io/asautodocs/naturaldocs/",
     "Type": "Documentation",
