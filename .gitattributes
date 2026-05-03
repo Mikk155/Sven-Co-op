@@ -1,3 +1,9 @@
+gfx/** filter=lfs diff=lfs merge=lfs -text
+maps/** filter=lfs diff=lfs merge=lfs -text
+models/** filter=lfs diff=lfs merge=lfs -text
+sound/** filter=lfs diff=lfs merge=lfs -text
+sprites/** filter=lfs diff=lfs merge=lfs -text
+
 *.bat linguist-vendored
 *.res  linguist-vendored
 
