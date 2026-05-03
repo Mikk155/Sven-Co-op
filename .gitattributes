@@ -3,7 +3,7 @@
 
 CMakeLists.txt linguist-language=CMake
 *.cmake linguist-language=CMake
-*.c linguist-language=C++
+*.c linguist-language=C
 *.cpp linguist-language=C++
 *.h linguist-language=C++
 *.hpp linguist-language=C++
@@ -19,6 +19,6 @@ CMakeLists.txt linguist-language=CMake
 
 docs/* linguist-documentation=false
 *.html linguist-language=HTML
-*.js linguist-language=HTML
+*.js linguist-language=JavaScript
 *.css linguist-language=HTML
 *.md linguist-language=HTML
