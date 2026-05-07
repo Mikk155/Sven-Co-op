@@ -6,6 +6,7 @@
         "scripts/plugins/CustomPrecache.as",
         "scripts/plugins/CustomPrecache.json",
         "scripts/mikk155/meta_api.as",
+        "scripts/mikk155/meta_api/json/v1.as",
         "scripts/mikk155/meta_api/json.as"
     ],
 
