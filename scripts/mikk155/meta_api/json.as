@@ -75,6 +75,14 @@ namespace meta_api
             protected
                 bool m_AllOk = false;
 
+            bool m_RemoveSchemaKeyvalue = true;
+
+            /// Remove $schema keyvalue on deserializing
+            Validator@ SetRemoveSchema( const bool remove = true ) {
+                this.m_RemoveSchemaKeyvalue = remove;
+                return this;
+            }
+
             /// Return whatever the everything was parsed propertly.
             const bool get_Ok() {
                 return this.m_AllOk;
@@ -684,6 +692,10 @@ namespace meta_api
                             this.print( snprintf( cout, "ERROR: could not open file \"%1\"", filename ) );
                             return false;
                         }
+
+                        if( this.m_RemoveSchemaKeyvalue )
+                            obj.delete( "$schema" );
+
                         return true;
                     }
 #endif
@@ -730,6 +742,10 @@ namespace meta_api
                         this.print( "ERROR: could not parse object" );
                         return false;
                     }
+
+                    if( this.m_RemoveSchemaKeyvalue )
+                        obj.delete( "$schema" );
+
                     return true;
                 }
 #endif
@@ -783,6 +799,9 @@ namespace meta_api
                     this.print( snprintf( cout, "ERROR: (Pos %1): Invalid format. Expected '{' or '[' at the beginning of the JSON", string( start_idx ) ) );
                     return false;
                 }
+
+                if( this.m_RemoveSchemaKeyvalue )
+                    obj.delete( "$schema" );
 
                 this.m_AllOk = true;
                 return true;
