@@ -23,7 +23,7 @@
 **/
 
 #include "../mikk155/meta_api"
-#include "../mikk155/meta_api/json"
+#include "../mikk155/meta_api/json/v1"
 #include "../mikk155/Server/Framerate"
 #include "../mikk155/Server/IsMapListed"
 
@@ -60,9 +60,9 @@ void MapActivate()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "anticlip.json", data ) )
+        if( meta_api::json::v1::Deserialize( "anticlip.json", data ) )
         {
-            g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
+            g_BlacklistedMaps = meta_api::json::v1::ToArray( data[ "map_blacklist" ] );
             g_ShouldReloadJson = bool( data[ "reload" ] );
             data.get( "npc_clip", g_AllowMonsters );
             data.get( "player_boost", g_AllowBoosting );

@@ -23,7 +23,7 @@
 **/
 
 #include "../mikk155/meta_api"
-#include "../mikk155/meta_api/json"
+#include "../mikk155/meta_api/json/v1"
 #include "../mikk155/Server/IsMapListed"
 
 void PluginInit()
@@ -33,7 +33,7 @@ void PluginInit()
 
     meta_api::NoticeInstallation();
 
-    meta_api::json::Deserialize( "store/BMLongJump.json", g_Cache );
+    meta_api::json::v1::Deserialize( "store/BMLongJump.json", g_Cache );
 
     g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string&in mapname )
     {
@@ -65,7 +65,7 @@ void Shutdown()
 {
     if( g_ShouldWriteCache )
     {
-        meta_api::json::Serialize( g_Cache, -1, "BMLongJump" );
+        meta_api::json::v1::Serialize( g_Cache, "BMLongJump", -1 );
     }
 }
 
@@ -143,9 +143,9 @@ void MapInit()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "BMLongJump.json", data ) )
+        if( meta_api::json::v1::Deserialize( "BMLongJump.json", data ) )
         {
-            g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
+            g_BlacklistedMaps = meta_api::json::v1::ToArray( data[ "map_blacklist" ] );
             g_ShouldReloadJson = bool( data[ "reload" ] );
             data.get( "speed", g_Speed );
             data.get( "jump_sound", g_JumpSound );
