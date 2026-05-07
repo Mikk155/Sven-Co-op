@@ -23,7 +23,7 @@
 **/
 
 #include "../mikk155/meta_api"
-#include "../mikk155/meta_api/json"
+#include "../mikk155/meta_api/json/v1"
 
 int g_DynamicPrecacheMax = 5;
 int g_LastIndexPrecaching = 0;
@@ -50,7 +50,7 @@ void PluginInit()
     } ) );
 
     dictionary data;
-    meta_api::json::Deserialize( "CustomPrecache.json", data );
+    meta_api::json::v1::Deserialize( "CustomPrecache.json", data );
     g_AlwaysPrecache = cast<dictionary>( data[ "AlwaysPrecached" ] );
     g_DynamicPrecache = cast<dictionary>( data[ "DynamicPrecache" ] );
     data.get( "MaxDynamicPrecache", g_DynamicPrecacheMax );

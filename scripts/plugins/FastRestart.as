@@ -23,7 +23,7 @@
 **/
 
 #include "../mikk155/meta_api"
-#include "../mikk155/meta_api/json"
+#include "../mikk155/meta_api/json/v1"
 #include "../mikk155/Server/IsMapListed"
 
 void PluginInit()
@@ -55,10 +55,10 @@ void MapActivate()
     if( g_ShouldReloadJson )
     {
         dictionary data;
-        if( meta_api::json::Deserialize( "FastRestart.json", data ) )
+        if( meta_api::json::v1::Deserialize( "FastRestart.json", data ) )
         {
-            g_BlacklistedMaps = meta_api::json::ToArray( data[ "map_blacklist" ] );
-            g_medics = meta_api::json::ToArray( data[ "medic_entities" ] );
+            g_BlacklistedMaps = meta_api::json::v1::ToArray( data[ "map_blacklist" ] );
+            g_medics = meta_api::json::v1::ToArray( data[ "medic_entities" ] );
             g_ShouldReloadJson = bool( data[ "reload" ] );
             data.get( "medic_radius", g_searchRadius );
             data.get( "wait_medic", g_shouldWaitForMedic );
