@@ -35,7 +35,7 @@ namespace test
             g_Game.AlertMessage( at_console, serialized + "\n" );
 
             dictionary deserialized;
-            meta_api::json::Deserialize( serialized, deserialized );
+            meta_api::json::v1::Deserialize( serialized, deserialized );
 
             g_Game.AlertMessage( at_console, "int -> " + int( deserialized[ "int" ] ) + "\n" );
             g_Game.AlertMessage( at_console, "float -> " + float( deserialized[ "float" ] ) + "\n" );
@@ -70,7 +70,7 @@ namespace test
     1
 ]""";
             g_Game.AlertMessage( at_console, serialized + "\n" );
-            meta_api::json::Deserialize( serialized, deserialized );
+            meta_api::json::v1::Deserialize( serialized, deserialized );
             g_Game.AlertMessage( at_console, "0 -> " + string( deserialized[ "0" ] ) + "\n" );
             g_Game.AlertMessage( at_console, "1 -> " + int( deserialized[ "1" ] ) + "\n" );
         }
