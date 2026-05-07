@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include "misc/FixModelIndexGMR.hpp"
+#include "../misc/FixModelIndexGMR.hpp"
+#include "../misc/PrecacheReporter.hpp"
 
 extern void VTableHook();
 
@@ -26,6 +27,8 @@ namespace Hooks
             VTableHook();
 
             SET_META_RESULT( META_RES::MRES_IGNORED );
+
+            PrecacheReporter::Write();
 
             g_MapInitialized = true;
         }
