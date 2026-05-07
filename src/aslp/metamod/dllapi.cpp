@@ -43,6 +43,8 @@
 #include "Hooks/ModelIndex.hpp"
 #include "Hooks/PM_Move.hpp"
 #include "Hooks/PrecacheModel.hpp"
+#include "Hooks/PrecacheSound.hpp"
+#include "Hooks/PrecacheGeneric.hpp"
 #include "Hooks/ServerActivate.hpp"
 #include "Hooks/ServerDeactivate.hpp"
 #include "Hooks/SetModel.hpp"
@@ -176,7 +178,7 @@ static DLL_FUNCTIONS gFunctionTable_Post = {
 
 enginefuncs_t meta_engfuncs = {
     Hooks::PrecacheModel,
-    NULL, // pfnPrecacheSound()
+    Hooks::PrecacheSound,
     Hooks::SetModel,
     Hooks::ModelIndex,
     NULL, // pfnModelFrames()
@@ -287,7 +289,7 @@ enginefuncs_t meta_engfuncs = {
     NULL, // pfnSetClientKeyValue()
     NULL, // pfnIsMapValid()
     NULL, // pfnStaticDecal()
-    NULL, // pfnPrecacheGeneric()
+    Hooks::PrecacheGeneric,
     NULL,  // pfnGetPlayerUserId()
     NULL, // pfnBuildSoundMsg()
     NULL, // pfnIsDedicatedServer()

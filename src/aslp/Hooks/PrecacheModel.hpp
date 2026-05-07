@@ -6,10 +6,10 @@
 
 namespace Hooks
 {
-    inline int PrecacheModel( char* model )
+    inline int PrecacheModel( char* modelName )
     {
         // Do not precache too late. get an error model/sprite instead.
-        if( int index = FixUnprecachedCrash::PrecacheModel( model ); index != -1 )
+        if( int index = FixUnprecachedCrash::PrecacheModel( modelName ); index != -1 )
         {
             RETURN_META_VALUE( MRES_SUPERCEDE, index );
         }
