@@ -2,6 +2,11 @@ namespace meta_api
 {
     namespace json
     {
+#if METAMOD_PLUGIN_ASLP
+        // Set to false for testing vanilla behaviour. so we don't need to restart with metamod off.
+        bool gpUseMetaod = true;
+#endif
+
         /**
         *   @brief return whatever str is a valid file name and formats the output filename
         **/
@@ -672,7 +677,7 @@ namespace meta_api
 
 /// Metamod handles this with the internal file system getting the whole buffer in one go
 #if METAMOD_PLUGIN_ASLP
-                    if( false ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
+                    if( gpUseMetaod ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
                     {
                         if( !aslp::json::Deserialize( filename, obj ) ) // -TODO Update metamod so we send the Validator pointer/options
                         {
@@ -718,7 +723,7 @@ namespace meta_api
 
 /// Metamod handles this with the internal nlohmann/json library
 #if METAMOD_PLUGIN_ASLP
-                if( false ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
+                if( gpUseMetaod ) // HACK HACK: Fix Unreachable code error since we don't get the #else keyword.
                 {
                     if( !aslp::json::Deserialize( serialized, obj ) ) // -TODO Update metamod so we send the Validator pointer/options
                     {
