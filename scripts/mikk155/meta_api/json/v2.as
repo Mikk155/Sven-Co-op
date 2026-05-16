@@ -35,11 +35,40 @@ namespace meta_api
                 /// Ordered key names
                 array<string> m_KeyNames = {};
 
+                // All key-values
+                array<string>@ get_Keys()
+                {
+                    switch( this.Type )
+                    {
+                        case meta_api::json::v2::Type::Object:
+                        /**
+                        {
+                            array<string> keys = this.m_KeyValues.getKeys();
+
+                            if( this.m_KeyValues.exists( this.__Value__ ) ) {
+                              keys.removeAt( keys.find( this.__Value__ ) );
+                            }
+                            return keys;
+                        }
+                         */
+                        case meta_api::json::v2::Type::Array:
+                        {
+                            return @this.m_KeyNames;
+                        }
+                        case meta_api::json::v2::Type::String:
+                        case meta_api::json::v2::Type::Float:
+                        case meta_api::json::v2::Type::Integer:
+                        case meta_api::json::v2::Type::Boolean:
+                        default:
+                            return null;
+                    }
+                }
+
                 /// Internal name where the value is stored for non object/array types
                 const string& __Value__ { get const { return "__value__"; } }
 
                 /// Internal value
-                dictionaryValue get_Value()
+                dictionaryValue@ get_Value()
                 {
                     if( !this.m_KeyValues.exists( this.__Value__ ) )
                     {
@@ -54,23 +83,24 @@ namespace meta_api
                 {
                     switch( type )
                     {
+                        case Type::Object:
+                        case Type::Array:
+                        {
+                            this.Clear();
+                            break;
+                        }
                         case Type::String:
                         case Type::Handle:
                         case Type::Float:
                         case Type::Integer:
                         case Type::Boolean:
+                        default:
                         {
                             auto value = this.m_KeyValues[ this.__Value__ ];
                             this.Clear();
                             this.m_KeyValues.deleteAll();
                             this.m_KeyValues[ this.__Value__ ] = value;
                             this.m_KeyNames.resize(0);
-                            break;
-                        }
-                        case Type::Object:
-                        case Type::Array:
-                        {
-                            this.Clear();
                             break;
                         }
                     }
@@ -92,6 +122,7 @@ namespace meta_api
                     this.m_KeyNames = value.m_KeyNames;
                     return this;
                 }
+
                 meta_api::json::v2::json@ opAssign( const float value ) { this.SetValue( this.Value.opAssign(value), Type::Float ); return this; }
                 meta_api::json::v2::json@ opAssign( const int value ) { this.SetValue( this.Value.opAssign(value), Type::Integer ); return this; }
                 meta_api::json::v2::json@ opAssign( const bool value ) { this.SetValue( this.Value.opAssign(value), Type::Boolean ); return this; }
@@ -119,7 +150,7 @@ namespace meta_api
                     {
                         case Type::Object:
                         case Type::Array:
-                            return this.m_KeyValues.getSize();
+                            return this.m_KeyNames.length();
                         case Type::String:
                         case Type::Handle:
                         case Type::Float:
@@ -136,7 +167,24 @@ namespace meta_api
                 meta_api::json::v2::json@ Set( const string&in keyName, meta_api::json::v2::json@ value )
                 {
                     meta_api::json::v2::json@ old = cast<meta_api::json::v2::json@>( this.m_KeyValues[ keyName ] );
+
+                    /// Ordering
+                    if( keyName != this.__Value__ )
+                    {
+                        int keyIndex = this.m_KeyNames.find( keyName );
+
+                        if( keyIndex >= 0 )
+                        {
+                            this.m_KeyNames[keyIndex] = keyName;
+                        }
+                        else
+                        {
+                            this.m_KeyNames.insertLast( keyName );
+                        }
+                    }
+
                     @this.m_KeyValues[ keyName ] = value;
+
                     return @old;
                 }
 
@@ -354,10 +402,7 @@ namespace meta_api
                         @value = null; value.push_back(null);
                     }
 
-                    __unique_index__++;
-                    string keyName = string( __unique_index__ );
-                    this.Set( keyName, value );
-                    this.m_KeyNames.insertLast( keyName );
+                    this.Set( string( __unique_index__++ ), value );
                     return value;
                 }
 
@@ -869,6 +914,155 @@ namespace meta_api
                 }
 
                 return true;
+            }
+
+            /**
+            *   @brief Serializes obj.
+            *   indents: -1 = single line, >= 0 = base tabs for root
+            **/
+            string Serialize( int indents, meta_api::json::v2::json@ obj )
+            {
+                return SerializeObject( obj, indents, 0 );
+            }
+
+            /**
+            *   @brief Serializes obj.
+            *   indents: -1 = single line, >= 0 = base tabs for root
+            *   filename: a file name to write in "scripts/(module type)/store/(filename).json"
+            *   Return whatever the content was written
+            **/
+            bool Serialize( meta_api::json::v2::json@ obj, string filename, int indents = -1 )
+            {
+                snprintf( filename, "scripts/%1/store/%2.json", ( g_Module.GetModuleName() == "MapModule" ? "maps" : "plugins" ), filename );
+
+                auto file = g_FileSystem.OpenFile( filename, OpenFile::WRITE );
+
+                if( file !is null && file.IsOpen() )
+                {
+                    file.Write( Serialize( indents, obj ) );
+                    file.Close();
+                    return true;
+                }
+
+                print( snprintf( cout, "ERROR: Couldn't serialize content to \"%1\"", filename ), Version::V1 );
+
+                return false;
+            }
+
+            /// Escape sequences from string, if add_quitation is true we also add a suffix and prefix quote
+            string EscapeSequences( string&in str, bool add_quotation = false )
+            {
+                str.Replace( "\\", "\\\\" );
+                str.Replace( "\"", "\\\"" );
+                str.Replace( "\n", "\\n" );
+                str.Replace( "\r", "\\r" );
+                str.Replace( "\t", "\\t" );
+                if( add_quotation )
+                    snprintf( str, "\"%1\"", str );
+                return str;
+            }
+
+            string SerializeObject( meta_api::json::v2::json@ obj, int indents, int depth )
+            {
+                if( obj is null )
+                    return "{}";
+
+                bool is_array = ( obj.Type == meta_api::json::v2::Type::Array );
+                bool is_object = ( obj.Type == meta_api::json::v2::Type::Object );
+
+                if( !is_array && !is_object )
+                    return "{}";
+
+                array<string>@ keys = obj.Keys;
+
+                if( keys.length() == 0 )
+                {
+                    if( is_array )
+                        return "[]";
+                    return "{}";
+                }
+
+                string newline = ( indents >= 0 ) ? "\n" : "";
+
+                string indent_str = String::EMPTY_STRING;
+                string indent_inner = String::EMPTY_STRING;
+
+                if( indents > 0 )
+                {
+                    int inner_tabs = depth > 0 ? indents * depth : indents;
+                    for( int i = 1; i <= inner_tabs; i++ )
+                    {
+                        indent_str += " ";
+                    }
+
+                    indent_inner = indent_str;
+                    for( int i = 1; i <= indents; i++ )
+                    {
+                        indent_inner += " ";
+                    }
+                }
+
+                string buffer = ( depth > 0 ? newline + indent_str : '' ) + ( is_array ? "[" : "{" ) + newline;
+
+                for( uint ui = 0; ui < keys.length(); ui++ )
+                {
+                    string key = keys[ui];
+
+                    buffer += ( depth > 0 ? indent_inner : indent_str );
+
+                    if( !is_array )
+                        buffer += EscapeSequences( key, true ) + ( indents > -1 ? ": " : ":" );
+
+                    meta_api::json::v2::json@ value = obj.First( key );
+
+                    switch( value.Type )
+                    {
+                        case meta_api::json::v2::Type::String:
+                        {
+                            buffer += EscapeSequences( string( value.Value ), true );
+                            break;
+                        }
+                        case meta_api::json::v2::Type::Float:
+                        {
+                            buffer += float( value.Value );
+                            break;
+                        }
+                        case meta_api::json::v2::Type::Integer:
+                        {
+                            buffer += int( value.Value );
+                            break;
+                        }
+                        case meta_api::json::v2::Type::Boolean:
+                        {
+                            buffer += ( bool( value.Value ) ? "true" : "false" );
+                            break;
+                        }
+                        case meta_api::json::v2::Type::Object:
+                        case meta_api::json::v2::Type::Array:
+                        {
+                            buffer += SerializeObject( value, indents, depth + 1 );
+                            break;
+                        }
+                        default:
+                        {
+                            buffer += "null";
+                            break;
+                        }
+                    }
+
+                    if( ui < keys.length() - 1 )
+                    {
+                        buffer += "," + newline;
+                    }
+                    else
+                    {
+                        buffer += newline;
+                    }
+                }
+
+                buffer += ( depth > 0 ? indent_str : '' ) + ( is_array ? "]" : "}" );
+
+                return buffer;
             }
         }
     }
