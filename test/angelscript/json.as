@@ -7,7 +7,7 @@ namespace test
     {
         void PluginInit()
         {
-            string serialized = """
+string serialized = """
 {
     // Single line commentary
     "int": 1,
@@ -32,98 +32,101 @@ namespace test
         }
     ]
 }""";
-
-            g_Game.AlertMessage( at_console,  "========================== json V1 ==========================\n" );
-            g_Game.AlertMessage( at_console, serialized + "\n" );
-
-            dictionary deserialized;
-            if( meta_api::json::v1::Deserialize( serialized, deserialized ) )
-            {
-                g_Game.AlertMessage( at_console, "int -> " + int( deserialized[ "int" ] ) + "\n" );
-                g_Game.AlertMessage( at_console, "float -> " + float( deserialized[ "float" ] ) + "\n" );
-                g_Game.AlertMessage( at_console, "bool -> " + ( bool( deserialized[ "bool" ] ) ? "true" : "false" ) + "\n" );
-                g_Game.AlertMessage( at_console, "string -> " + string( deserialized[ "string" ] ) + "\n" );
-
-                dictionary nestedObject;
-                if( deserialized.get( "object", nestedObject ) )
-                {
-                    g_Game.AlertMessage( at_console, "object::string -> " + string( nestedObject[ "string" ] ) + "\n" );
-                }
-
-                dictionary nestedArray;
-
-                if( deserialized.get( "array", nestedArray ) )
-                {
-                    g_Game.AlertMessage( at_console, "array::0 -> " + string( nestedArray[ "0" ] ) + "\n" );
-                    g_Game.AlertMessage( at_console, "array::1 -> " + ( bool( nestedArray[ "1" ] ) ? "true" : "false" ) + "\n" );
-                    g_Game.AlertMessage( at_console, "array::2 -> " + int( nestedArray[ "2" ] ) + "\n" );
-                    g_Game.AlertMessage( at_console, "array::3 -> " + float( nestedArray[ "3" ] ) + "\n" );
-                
-                    dictionary nestedObjectInArray;
-                    if( nestedArray.get( "4", nestedObjectInArray ) )
-                    {
-                        g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray[ "key" ] ) + "\n" );
-                    }
-                }
-            }
-
-            string serialized_array = """
+string serialized_array = """
 [
     "string",
     1
 ]""";
-            g_Game.AlertMessage( at_console, serialized_array + "\n" );
+{
+g_Game.AlertMessage( at_console,  "========================== json V1 ==========================\n" );
+g_Game.AlertMessage( at_console, serialized + "\n" );
 
-            if( meta_api::json::v1::Deserialize( serialized_array, deserialized ) )
-            {
-                g_Game.AlertMessage( at_console, "0 -> " + string( deserialized[ "0" ] ) + "\n" );
-                g_Game.AlertMessage( at_console, "1 -> " + int( deserialized[ "1" ] ) + "\n" );
-            }
+dictionary deserialized;
+if( meta_api::json::v1::Deserialize( serialized, deserialized ) )
+{
+    g_Game.AlertMessage( at_console, "int -> " + int( deserialized[ "int" ] ) + "\n" );
+    g_Game.AlertMessage( at_console, "float -> " + float( deserialized[ "float" ] ) + "\n" );
+    g_Game.AlertMessage( at_console, "bool -> " + ( bool( deserialized[ "bool" ] ) ? "true" : "false" ) + "\n" );
+    g_Game.AlertMessage( at_console, "string -> " + string( deserialized[ "string" ] ) + "\n" );
 
-            g_Game.AlertMessage( at_console,  "========================== json V2 ==========================\n" );
-            g_Game.AlertMessage( at_console, serialized + "\n" );
+    dictionary nestedObject;
+    if( deserialized.get( "object", nestedObject ) )
+    {
+        g_Game.AlertMessage( at_console, "object::string -> " + string( nestedObject[ "string" ] ) + "\n" );
+    }
 
-            meta_api::json::v2::json json;
-            if( meta_api::json::v2::Deserialize( serialized, json ) )
-            {
-                g_Game.AlertMessage( at_console, "length -> " + json.Length() + "\n" );
+    dictionary nestedArray;
 
-                g_Game.AlertMessage( at_console, "default_integer_of_5 -> " + json.FirstOrDefault( "default_integer_of_5", 5, true ) + "\n" );
-                g_Game.AlertMessage( at_console, "default_integer_of_5 now stored -> " + int( json.First( "default_integer_of_5" ) ) + "\n" );
-                g_Game.AlertMessage( at_console, "default_bool_of_true -> " + ( json.FirstOrDefault( "default_bool_of_true", true ) ? "true" : "false" ) + "\n" );
-                g_Game.AlertMessage( at_console, "default_float_of_1_5 -> " + json.FirstOrDefault( "default_float_of_1_5", 1.5f ) + "\n" );
-                g_Game.AlertMessage( at_console, "default_string_str -> " + json.FirstOrDefault( "default_string_str", "str" ) + "\n" );
+    if( deserialized.get( "array", nestedArray ) )
+    {
+        g_Game.AlertMessage( at_console, "array::0 -> " + string( nestedArray[ "0" ] ) + "\n" );
+        g_Game.AlertMessage( at_console, "array::1 -> " + ( bool( nestedArray[ "1" ] ) ? "true" : "false" ) + "\n" );
+        g_Game.AlertMessage( at_console, "array::2 -> " + int( nestedArray[ "2" ] ) + "\n" );
+        g_Game.AlertMessage( at_console, "array::3 -> " + float( nestedArray[ "3" ] ) + "\n" );
+    
+        dictionary nestedObjectInArray;
+        if( nestedArray.get( "4", nestedObjectInArray ) )
+        {
+            g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray[ "key" ] ) + "\n" );
+        }
+    }
+}
 
-                g_Game.AlertMessage( at_console, "float -> " + float( json.First( "float" ) ) + "\n" );
-                g_Game.AlertMessage( at_console, "bool -> " + ( bool( json.First( "bool" ) ) ? "true" : "false" ) + "\n" );
-                g_Game.AlertMessage( at_console, "string -> " + string( json.First( "string" ) ) + "\n" );
-                g_Game.AlertMessage( at_console, "object::string -> " + string( json.First( "object" ).First( "string" ) ) + "\n" );
+g_Game.AlertMessage( at_console, serialized_array + "\n" );
 
-                try {
-                    json.push_back( "Index 0" );
-                }
-                catch {
-                    g_Game.AlertMessage( at_console, "Exception at json.push_back\n" );
-                }
+if( meta_api::json::v1::Deserialize( serialized_array, deserialized ) )
+{
+    g_Game.AlertMessage( at_console, "0 -> " + string( deserialized[ "0" ] ) + "\n" );
+    g_Game.AlertMessage( at_console, "1 -> " + int( deserialized[ "1" ] ) + "\n" );
+}
+}
 
-                meta_api::json::v2::json@ nestedArray = json.First( "array" );
+{
+g_Game.AlertMessage( at_console,  "========================== json V2 ==========================\n" );
+g_Game.AlertMessage( at_console, serialized + "\n" );
 
-                if( nestedArray !is null )
-                {
-                    g_Game.AlertMessage( at_console, "push \"%1\" to \"array\" at index %2\n", string( nestedArray.push_back( "last item" ) ), nestedArray.Length() );
-                    g_Game.AlertMessage( at_console, "array::0 -> " + string( nestedArray[0] ) + "\n" );
-                    g_Game.AlertMessage( at_console, "array::1 -> " + ( bool( nestedArray[1] ) ? "true" : "false" ) + "\n" );
-                    g_Game.AlertMessage( at_console, "array::2 -> " + int( nestedArray[2] ) + "\n" );
-                    g_Game.AlertMessage( at_console, "array::3 -> " + float( nestedArray[3] ) + "\n" );
+meta_api::json::v2::json json;
+if( meta_api::json::v2::Deserialize( serialized, json ) )
+{
+    g_Game.AlertMessage( at_console, "length -> " + json.Length() + "\n" );
 
-                    meta_api::json::v2::json@ nestedObjectInArray = nestedArray[4];
+    g_Game.AlertMessage( at_console, "default_integer_of_5 -> " + json.FirstOrDefault( "default_integer_of_5", 5, true ) + "\n" );
+    g_Game.AlertMessage( at_console, "default_integer_of_5 now stored -> " + int( json.First( "default_integer_of_5" ) ) + "\n" );
+    g_Game.AlertMessage( at_console, "default_bool_of_true -> " + ( json.FirstOrDefault( "default_bool_of_true", true ) ? "true" : "false" ) + "\n" );
+    g_Game.AlertMessage( at_console, "default_float_of_1_5 -> " + json.FirstOrDefault( "default_float_of_1_5", 1.5f ) + "\n" );
+    g_Game.AlertMessage( at_console, "default_string_str -> " + json.FirstOrDefault( "default_string_str", "str" ) + "\n" );
 
-                    if( nestedObjectInArray !is null )
-                    {
-                        g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray.First( "key" ) ) + "\n" );
-                    }
-                }
-            }
+    g_Game.AlertMessage( at_console, "float -> " + float( json.First( "float" ) ) + "\n" );
+    g_Game.AlertMessage( at_console, "bool -> " + ( bool( json.First( "bool" ) ) ? "true" : "false" ) + "\n" );
+    g_Game.AlertMessage( at_console, "string -> " + string( json.First( "string" ) ) + "\n" );
+    g_Game.AlertMessage( at_console, "object::string -> " + string( json.First( "object" ).First( "string" ) ) + "\n" );
+
+    try {
+        json.push_back( "Index 0" );
+    }
+    catch {
+        g_Game.AlertMessage( at_console, "Exception at json.push_back\n" );
+    }
+
+    meta_api::json::v2::json@ nestedArray = json.First( "array" );
+
+    if( nestedArray !is null )
+    {
+        g_Game.AlertMessage( at_console, "push \"%1\" to \"array\" at index %2\n", string( nestedArray.push_back( "last item" ) ), nestedArray.Length() );
+        g_Game.AlertMessage( at_console, "array::0 -> " + string( nestedArray[0] ) + "\n" );
+        g_Game.AlertMessage( at_console, "array::1 -> " + ( bool( nestedArray[1] ) ? "true" : "false" ) + "\n" );
+        g_Game.AlertMessage( at_console, "array::2 -> " + int( nestedArray[2] ) + "\n" );
+        g_Game.AlertMessage( at_console, "array::3 -> " + float( nestedArray[3] ) + "\n" );
+
+        meta_api::json::v2::json@ nestedObjectInArray = nestedArray[4];
+
+        if( nestedObjectInArray !is null )
+        {
+            g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray.First( "key" ) ) + "\n" );
+        }
+    }
+}
+}
         }
     }
 }
