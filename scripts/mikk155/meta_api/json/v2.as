@@ -96,7 +96,7 @@ namespace meta_api
                         case Type::Boolean:
                         default:
                         {
-                            auto value = this.m_KeyValues[ this.__Value__ ];
+                            dictionaryValue@ value = this.m_KeyValues[ this.__Value__ ];
                             this.Clear();
                             this.m_KeyValues.deleteAll();
                             this.m_KeyValues[ this.__Value__ ] = value;
@@ -438,7 +438,7 @@ namespace meta_api
                 {
                     print( snprintf( cout, "Reading file \"%1\"", filename ), Version::V2 );
 
-                    auto fstream = g_FileSystem.OpenFile( filename, OpenFile::READ );
+                    File@ fstream = g_FileSystem.OpenFile( filename, OpenFile::READ );
 
                     if( fstream is null || !fstream.IsOpen() )
                     {
@@ -935,7 +935,7 @@ namespace meta_api
             {
                 snprintf( filename, "scripts/%1/store/%2.json", ( g_Module.GetModuleName() == "MapModule" ? "maps" : "plugins" ), filename );
 
-                auto file = g_FileSystem.OpenFile( filename, OpenFile::WRITE );
+                File@ file = g_FileSystem.OpenFile( filename, OpenFile::WRITE );
 
                 if( file !is null && file.IsOpen() )
                 {
