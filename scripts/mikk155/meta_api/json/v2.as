@@ -143,6 +143,12 @@ namespace meta_api
                     this.m_KeyNames.resize(0);
                 }
 
+                /// Return whatever this objects contains the given key
+                bool Contains( const string&in keyName )
+                {
+                    return this.m_KeyValues.exists( keyName );
+                }
+
                 /// Get the length of the object. for non object/array this is 1. zero if undefined value.
                 uint Length()
                 {
