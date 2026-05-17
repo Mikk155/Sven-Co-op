@@ -461,7 +461,8 @@ namespace meta_api
                 /// Get the first occurrence of value or a default value if not exists.
                 /// If store is true the default value is stored in data if not exists
                 /// If strict is false booleans and integers are converted to float and returned.
-                string FirstOrDefault( const string&in keyName, string&in value = String::EMPTY_STRING, bool store = false ) {
+                string FirstOrDefault( const string&in keyName, string&in value, bool store = false )
+                {
 // https://github.com/anjo76/angelscript/issues/70
 #if FALSE
                     if( !this.Get( keyName, value, strict ) && store )
