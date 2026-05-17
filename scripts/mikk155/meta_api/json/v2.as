@@ -7,6 +7,10 @@ namespace meta_api
         /// Version 2 of Json. conversion to/from class.
         namespace v2
         {
+            // This is not meant to be useable but for storing an existent but null value in json.
+            enum Null { Null = 0 };
+//            typedef void Null;
+
             enum Type
             {
                 Undefined = 0,
@@ -16,7 +20,8 @@ namespace meta_api
                 Integer,
                 Boolean,
                 Object,
-                Array
+                Array,
+                Null
             };
 
             class json
@@ -41,16 +46,6 @@ namespace meta_api
                     switch( this.Type )
                     {
                         case meta_api::json::v2::Type::Object:
-                        /**
-                        {
-                            array<string> keys = this.m_KeyValues.getKeys();
-
-                            if( this.m_KeyValues.exists( this.__Value__ ) ) {
-                              keys.removeAt( keys.find( this.__Value__ ) );
-                            }
-                            return keys;
-                        }
-                         */
                         case meta_api::json::v2::Type::Array:
                         {
                             return @this.m_KeyNames;
@@ -59,6 +54,7 @@ namespace meta_api
                         case meta_api::json::v2::Type::Float:
                         case meta_api::json::v2::Type::Integer:
                         case meta_api::json::v2::Type::Boolean:
+                        case meta_api::json::v2::Type::Null:
                         default:
                             return null;
                     }
@@ -94,6 +90,7 @@ namespace meta_api
                         case Type::Float:
                         case Type::Integer:
                         case Type::Boolean:
+                        case Type::Null:
                         default:
                         {
                             dictionaryValue@ value = this.m_KeyValues[ this.__Value__ ];
@@ -127,6 +124,7 @@ namespace meta_api
                 meta_api::json::v2::json@ opAssign( const int value ) { this.SetValue( this.Value.opAssign(value), Type::Integer ); return this; }
                 meta_api::json::v2::json@ opAssign( const bool value ) { this.SetValue( this.Value.opAssign(value), Type::Boolean ); return this; }
                 meta_api::json::v2::json@ opAssign( const string&in value ) { this.SetValue( this.Value.opAssign(value), Type::String ); return this; }
+                meta_api::json::v2::json@ opAssign( const meta_api::json::v2::Null&in value ) { this.SetValue( this.Value.opAssign(value), Type::Null ); return this; }
 
                 float opConv() { return float( this.Value ); }
                 int opConv() { return int( this.Value ); }
@@ -149,8 +147,10 @@ namespace meta_api
                     return this.m_KeyValues.exists( keyName );
                 }
 
-                /// Get the length of the object. for non object/array this is 1. zero if undefined value.
-                uint Length()
+                /// Get the length of the object.
+                /// For non object/array this is -1
+                /// For null values this is -2
+                int Length()
                 {
                     switch( this.Type )
                     {
@@ -162,10 +162,11 @@ namespace meta_api
                         case Type::Float:
                         case Type::Integer:
                         case Type::Boolean:
-                            return 1;
+                            return -1;
+                        case Type::Null:
                         case Type::Undefined:
                         default:
-                            return 0;
+                            return -2;
                     }
                 }
 
@@ -208,6 +209,9 @@ namespace meta_api
                 }
                 /// Set key value pair, return the old value if it exists otherwise null
                 meta_api::json::v2::json@ Set( const string&in keyName, const string&in value ) {
+                    return @this.Set( keyName, meta_api::json::v2::json().opAssign(value) );
+                }
+                meta_api::json::v2::json@ Set( const string&in keyName, const meta_api::json::v2::Null&in value ) {
                     return @this.Set( keyName, meta_api::json::v2::json().opAssign(value) );
                 }
 
@@ -421,6 +425,7 @@ namespace meta_api
                 meta_api::json::v2::json@ push_back( const int value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
                 meta_api::json::v2::json@ push_back( const float value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
                 meta_api::json::v2::json@ push_back( const string&in value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
+                meta_api::json::v2::json@ push_back( const meta_api::json::v2::Null&in value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
             }
 
             /**
@@ -701,7 +706,7 @@ namespace meta_api
                             }
                             else if( value == "null" )
                             {
-                                obj.Set( key, null );
+                                obj.Set( key, meta_api::json::v2::Null::Null );
                             }
                             else if( value != String::EMPTY_STRING )
                             {
@@ -879,7 +884,7 @@ namespace meta_api
                             }
                             else if( value == "null" )
                             {
-                                obj.push_back( null );
+                                obj.push_back( meta_api::json::v2::Null::Null );
                             }
                             else if( value != String::EMPTY_STRING )
                             {
@@ -1028,6 +1033,11 @@ namespace meta_api
                             buffer += EscapeSequences( string( value.Value ), true );
                             break;
                         }
+                        case meta_api::json::v2::Type::Null:
+                        {
+                            buffer += "null";
+                            break;
+                        }
                         case meta_api::json::v2::Type::Float:
                         {
                             buffer += float( value.Value );
@@ -1047,11 +1057,6 @@ namespace meta_api
                         case meta_api::json::v2::Type::Array:
                         {
                             buffer += SerializeObject( value, indents, depth + 1 );
-                            break;
-                        }
-                        default:
-                        {
-                            buffer += "null";
                             break;
                         }
                     }

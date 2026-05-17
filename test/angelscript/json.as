@@ -8,6 +8,7 @@ namespace json
 void PluginInit()
 {
 string serialized = """{
+ "null": null,
  // Single line commentary
  "int": 1,
  "float": 2.5,
@@ -45,6 +46,8 @@ g_Game.AlertMessage( at_console,  "========================== json V1 ==========
 dictionary json;
 if( meta_api::json::v1::Deserialize( serialized, json ) )
 {
+    //-TODO maybe fix null at V1? no real reason to use this rather than V2...
+//    g_Game.AlertMessage( at_console, "null -> " + ( json.exists( "null" ) ? "exists" : "not exists" ) + "\n" );
     g_Game.AlertMessage( at_console, "int -> " + int( json[ "int" ] ) + "\n" );
     g_Game.AlertMessage( at_console, "float -> " + float( json[ "float" ] ) + "\n" );
     g_Game.AlertMessage( at_console, "bool -> " + ( bool( json[ "bool" ] ) ? "true" : "false" ) + "\n" );
@@ -90,6 +93,7 @@ if( meta_api::json::v2::Deserialize( serialized, json ) )
 {
     g_Game.AlertMessage( at_console, "length -> " + json.Length() + "\n" );
 
+    g_Game.AlertMessage( at_console, "null -> " + ( json.Contains( "null" ) ? "exists" : "not exists" ) + "\n" );
     g_Game.AlertMessage( at_console, "default_integer_of_5 -> " + json.FirstOrDefault( "default_integer_of_5", 5, true ) + "\n" );
     g_Game.AlertMessage( at_console, "default_integer_of_5 now stored -> " + int( json.First( "default_integer_of_5" ) ) + "\n" );
     g_Game.AlertMessage( at_console, "default_bool_of_true -> " + ( json.FirstOrDefault( "default_bool_of_true", true ) ? "true" : "false" ) + "\n" );
