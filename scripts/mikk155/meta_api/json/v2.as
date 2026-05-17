@@ -290,90 +290,118 @@ namespace meta_api
                 {
                     return ( this.m_KeyValues.exists( keyName ) && ( @value = cast<meta_api::json::v2::json@>( this.m_KeyValues[ keyName ] ) ) !is null );
                 }
+
+                /// Get the value&out and return whatever the value exists or not
+                /// If strict is false floats and integers are converted to boolean and returned.
+                bool Get( bool&out value, bool strict = true )
+                {
+                    if( strict && this.Type != meta_api::json::v2::Type::Boolean )
+                        return false;
+
+                    switch( this.Type )
+                    {
+                        case meta_api::json::v2::Type::Integer:
+                            value = ( int( this.Value ) > 0 );
+                            return true;
+                        case meta_api::json::v2::Type::Float:
+                            value = ( int( float( this.Value ) ) > 0 );
+                            return true;
+                        case meta_api::json::v2::Type::Boolean:
+                            value = bool( this.Value );
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
                 /// Get the value&out and return whatever the value exists or not
                 /// If strict is false floats and integers are converted to boolean and returned.
                 bool Get( const string&in keyName, bool&out value, bool strict = true )
                 {
                     meta_api::json::v2::json@ obj;
-                    if( this.Get( keyName, obj ) )
-                    {
-                        if( strict && obj.Type != meta_api::json::v2::Type::Boolean )
-                            return false;
-
-                        switch( obj.Type )
-                        {
-                            case meta_api::json::v2::Type::Integer:
-                                value = ( int( obj.Value ) > 0 );
-                                return true;
-                            case meta_api::json::v2::Type::Float:
-                                value = ( int( float( obj.Value ) ) > 0 );
-                                return true;
-                            case meta_api::json::v2::Type::Boolean:
-                                value = bool( obj.Value );
-                                return true;
-                        }
-                    }
-                    return false;
+                    return ( this.Get( keyName, obj ) && obj.Get( value, strict ) );
                 }
+
+                /// Get the value&out and return whatever the value exists or not.
+                /// If strict is false floats and booleans are converted to integer and returned.
+                bool Get( int&out value, bool strict = true )
+                {
+                    if( strict && this.Type != meta_api::json::v2::Type::Integer )
+                        return false;
+
+                    switch( this.Type )
+                    {
+                        case meta_api::json::v2::Type::Boolean:
+                            value = ( bool( this.Value ) ? 1 : 0 );
+                            return true;
+                        case meta_api::json::v2::Type::Float:
+                            value = int( float( this.Value ) );
+                            return true;
+                        case meta_api::json::v2::Type::Integer:
+                            value = int( this.Value );
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
                 /// Get the value&out and return whatever the value exists or not.
                 /// If strict is false floats and booleans are converted to integer and returned.
                 bool Get( const string&in keyName, int&out value, bool strict = true )
                 {
                     meta_api::json::v2::json@ obj;
-                    if( this.Get( keyName, obj ) )
-                    {
-                        if( strict && obj.Type != meta_api::json::v2::Type::Integer )
-                            return false;
-
-                        switch( obj.Type )
-                        {
-                            case meta_api::json::v2::Type::Boolean:
-                                value = ( bool( obj.Value ) ? 1 : 0 );
-                                return true;
-                            case meta_api::json::v2::Type::Float:
-                                value = int( float( obj.Value ) );
-                                return true;
-                            case meta_api::json::v2::Type::Integer:
-                                value = int( obj.Value );
-                                return true;
-                        }
-                    }
-                    return false;
+                    return ( this.Get( keyName, obj ) && obj.Get( value, strict ) );
                 }
+
+                /// Get the value&out and return whatever the value exists or not.
+                /// If strict is false integers and booleans are converted to float and returned.
+                bool Get( float&out value, bool strict = true )
+                {
+                    if( strict && this.Type != meta_api::json::v2::Type::Float )
+                        return false;
+
+                    switch( this.Type )
+                    {
+                        case meta_api::json::v2::Type::Boolean:
+                            value = ( bool( this.Value ) ? 1.0f : 0.0f );
+                            return true;
+                        case meta_api::json::v2::Type::Integer:
+                            value = float( int( this.Value ) );
+                            return true;
+                        case meta_api::json::v2::Type::Float:
+                            value = float( this.Value );
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
                 /// Get the value&out and return whatever the value exists or not.
                 /// If strict is false integers and booleans are converted to float and returned.
                 bool Get( const string&in keyName, float&out value, bool strict = true )
                 {
                     meta_api::json::v2::json@ obj;
-                    if( this.Get( keyName, obj ) )
-                    {
-                        if( strict && obj.Type != meta_api::json::v2::Type::Float )
-                            return false;
-
-                        switch( obj.Type )
-                        {
-                            case meta_api::json::v2::Type::Boolean:
-                                value = ( bool( obj.Value ) ? 1.0f : 0.0f );
-                                return true;
-                            case meta_api::json::v2::Type::Integer:
-                                value = float( int( obj.Value ) );
-                                return true;
-                            case meta_api::json::v2::Type::Float:
-                                value = float( obj.Value );
-                                return true;
-                        }
-                    }
-                    return false;
+                    return ( this.Get( keyName, obj ) && obj.Get( value, strict ) );
                 }
+
+                /// Get the value&out and return whatever the value exists or not
+                bool Get( string&out value )
+                {
+                    switch( this.Type )
+                    {
+                        case meta_api::json::v2::Type::String:
+                            value = string( this.Value );
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
                 /// Get the value&out and return whatever the value exists or not
                 bool Get( const string&in keyName, string&out value )
                 {
                     meta_api::json::v2::json@ obj;
-                    if( this.Get( keyName, obj ) && obj.Type == meta_api::json::v2::Type::String ) {
-                        value = string( obj.Value );
-                        return true;
-                    }
-                    return false;
+                    return ( this.Get( keyName, obj ) && obj.Get( value ) );
                 }
 
                 /// Get the first occurrence of value
