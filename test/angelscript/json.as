@@ -130,6 +130,28 @@ if( json.Load( serialized ) )
             g_Game.AlertMessage( at_console, "Key name of object \"array::4\" -> " + nestedObjectInArray.Name + "\n" );
             g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray.First( "key" ) ) + "\n" );
         }
+
+        array<float>@ fmt_float;
+
+        if( meta_api::json::v2::fmt::ToArray( nestedArray, fmt_float, false ) )
+        {
+            g_Game.AlertMessage( at_console, "Converted \"array\" into array<float>@\n" );
+            for( uint ui = 0; ui < fmt_float.length(); ui++ )
+            {
+                g_Game.AlertMessage( at_console, "[%1] -> %2\n", ui, fmt_float[ui] );
+            }
+
+            // Test Handle casted reference
+            fmt_float.removeAt(0);
+            if( meta_api::json::v2::fmt::ToArray( nestedArray, fmt_float, false ) )
+            {
+                g_Game.AlertMessage( at_console, "Handle \"array\" reference array<float>@ with item [0] removed\n" );
+                for( uint ui = 0; ui < fmt_float.length(); ui++ )
+                {
+                    g_Game.AlertMessage( at_console, "[%1] -> %2\n", ui, fmt_float[ui] );
+                }
+            }
+        }
     }
     g_Game.AlertMessage( at_console, "meta_api::json::v1::Serialized( serialized )\n%1\n", meta_api::json::v2::Serialize(1, json ) );
 }
