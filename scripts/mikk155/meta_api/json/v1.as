@@ -55,10 +55,8 @@ namespace meta_api
                         // Saves some time when iterating the characters.
                         line.Trim( ' ' );
 
-                        if( line.IsEmpty() || ( line[0] == '/' && line[1] == '/' ) )
-                            continue;
-
-                        serialized += line;
+                        if( !line.IsEmpty() && ( line[0] != '/' || line[1] != '/' ) )
+                            snprintf( serialized, "%1%2\n", serialized, line );
                     }
 
                     fstream.Close();
@@ -68,7 +66,6 @@ namespace meta_api
                 if( serialized.IsEmpty() )
                 {
                     serialized = str;
-                    serialized.Trim( ' ' ); // Saves on iterations
                 }
 
 /// Metamod handles this with the internal nlohmann/json library
