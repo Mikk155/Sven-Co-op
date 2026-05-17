@@ -37,6 +37,27 @@ namespace meta_api
                     return this.m_Type;
                 }
 
+                /// Return whatever this object contains a boolean value
+                bool get_is_boolean() const { return ( this.Type ==  meta_api::json::v2::Type::Boolean ); }
+                /// Return whatever this object contains a integer value
+                bool get_is_integer() const { return ( this.Type ==  meta_api::json::v2::Type::Integer ); }
+                /// Return whatever this object contains a float value
+                bool get_is_float() const { return ( this.Type ==  meta_api::json::v2::Type::Float ); }
+                /// Return whatever this object contains a float value
+                bool get_is_string() const { return ( this.Type ==  meta_api::json::v2::Type::String ); }
+                /// Return whatever this object contains a json object value
+                bool get_is_object() const { return ( this.Type ==  meta_api::json::v2::Type::Object ); }
+                /// Return whatever this object contains a json array value
+                bool get_is_array() const { return ( this.Type ==  meta_api::json::v2::Type::Array ); }
+                /// Return whatever this object contains a "null" value
+                bool get_is_null() const { return ( this.Type ==  meta_api::json::v2::Type::Null ); }
+                /// Return whatever this object contains a handle value
+                bool get_is_handle() const { return ( this.Type ==  meta_api::json::v2::Type::Handle ); }
+                /// Return whatever this object contains a json array or object value
+                bool is_structured() const { return ( this.is_object || this.is_array ); }
+                /// Return whatever this object contains number either float or integer
+                bool is_numeric() const { return ( this.is_integer || this.is_float ); }
+
                 protected
                     string m_Name;
 
