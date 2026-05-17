@@ -103,6 +103,7 @@ if( json.Load( serialized ) )
     g_Game.AlertMessage( at_console, "float -> " + float( json.First( "float" ) ) + "\n" );
     g_Game.AlertMessage( at_console, "bool -> " + ( bool( json.First( "bool" ) ) ? "true" : "false" ) + "\n" );
     g_Game.AlertMessage( at_console, "string -> " + string( json.First( "string" ) ) + "\n" );
+    g_Game.AlertMessage( at_console, "Key name of object \"object\" -> " + json.First( "object" ).Name + "\n" );
     g_Game.AlertMessage( at_console, "object::string -> " + string( json.First( "object" ).First( "string" ) ) + "\n" );
 
     try {
@@ -126,6 +127,7 @@ if( json.Load( serialized ) )
 
         if( nestedObjectInArray !is null )
         {
+            g_Game.AlertMessage( at_console, "Key name of object \"array::4\" -> " + nestedObjectInArray.Name + "\n" );
             g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray.First( "key" ) ) + "\n" );
         }
     }

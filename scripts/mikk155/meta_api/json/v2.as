@@ -37,6 +37,20 @@ namespace meta_api
                     return this.m_Type;
                 }
 
+                protected
+                    string m_Name;
+
+                /// Key name of this object
+                const string& get_Name() const
+                {
+                    return this.m_Name;
+                }
+
+                void __SetName__( const string&in keyName )
+                {
+                    this.m_Name = keyName;
+                }
+
                 /// Unordered key-values
                 dictionary m_KeyValues = {};
 
@@ -121,8 +135,13 @@ namespace meta_api
                 meta_api::json::v2::json@ opAssign( meta_api::json::v2::json@ value )
                 {
                     this.SetType( value.Type );
+
                     this.m_KeyValues = value.m_KeyValues;
                     this.m_KeyNames = value.m_KeyNames;
+
+                    // No. because we're still allocated on a different owner
+                    // this.m_Name = value.m_Name;
+
                     return this;
                 }
 
@@ -202,21 +221,19 @@ namespace meta_api
                     meta_api::json::v2::json@ old = cast<meta_api::json::v2::json@>( this.m_KeyValues[ keyName ] );
 
                     /// Ordering
-                    if( keyName != this.__Value__ )
-                    {
-                        int keyIndex = this.m_KeyNames.find( keyName );
+                    int keyIndex = this.m_KeyNames.find( keyName );
 
-                        if( keyIndex >= 0 )
-                        {
-                            this.m_KeyNames[keyIndex] = keyName;
-                        }
-                        else
-                        {
-                            this.m_KeyNames.insertLast( keyName );
-                        }
+                    if( keyIndex >= 0 )
+                    {
+                        this.m_KeyNames[keyIndex] = keyName;
+                    }
+                    else
+                    {
+                        this.m_KeyNames.insertLast( keyName );
                     }
 
                     @this.m_KeyValues[ keyName ] = value;
+                    value.__SetName__( keyName );
 
                     return @old;
                 }
