@@ -20,6 +20,7 @@ CMakeLists.txt linguist-language=CMake
 *.csproj linguist-language=C#
 
 *.as linguist-language=AngelScript
+*.predefined linguist-language=AngelScript
 
 *.json linguist-language=JSON
 

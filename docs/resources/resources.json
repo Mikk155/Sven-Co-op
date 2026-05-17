@@ -115,15 +115,9 @@
   },
   {
     "Author": "Rizulix",
-    "Resource": "https://github.com/Rizulix/Random-Plugins",
+    "Resource": "https://github.com/Rizulix",
     "Type": "AngelScript",
     "Description": "AngelScript plugins"
-  },
-  {
-    "Author": "Rizulix",
-    "Resource": "https://github.com/Rizulix/Classic-Weapons",
-    "Type": "AngelScript",
-    "Description": "AngelScript weapons"
   },
   {
     "Author": "Outerbeast",
