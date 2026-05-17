@@ -11,6 +11,7 @@ namespace meta_api
             enum Null { Null = 0 };
 //            typedef void Null;
 
+            /// Type of value that json is containing
             enum Type
             {
                 Undefined = 0,
@@ -24,6 +25,8 @@ namespace meta_api
                 Null
             };
 
+            /// Json is a complete wrapper to dictionary and array the main difference is that json is ordered.
+            /// If something is missing you can either pull request or just inherit from this class and make your specific changes according to your needs.
             class json
             {
                 protected
@@ -112,6 +115,9 @@ namespace meta_api
                     this.m_KeyValues[ this.__Value__ ] = value;
                 }
 
+                /// ======================================
+                /// opAssign
+                /// ======================================
                 meta_api::json::v2::json@ opAssign( meta_api::json::v2::json@ value )
                 {
                     this.SetType( value.Type );
@@ -126,13 +132,23 @@ namespace meta_api
                 meta_api::json::v2::json@ opAssign( const string&in value ) { this.SetValue( this.Value.opAssign(value), Type::String ); return this; }
                 meta_api::json::v2::json@ opAssign( const meta_api::json::v2::Null&in value ) { this.SetValue( this.Value.opAssign(value), Type::Null ); return this; }
 
+                /// ======================================
+                /// opConv
+                /// ======================================
                 float opConv() { return float( this.Value ); }
                 int opConv() { return int( this.Value ); }
                 bool opConv() { return bool( this.Value ); }
                 string opConv() { return string( this.Value ); }
 
+                /// ======================================
+                /// Constructors
+                /// ======================================
                 json( meta_api::json::v2::json@ other ) { this.opAssign( other ); }
                 json() { this.m_Type = meta_api::json::v2::Type::Object; }
+
+                /// ======================================
+                /// Object/Array methods
+                /// ======================================
 
                 /// Clear all data. only the type remains and whatever this is an ordered object.
                 void Clear()
@@ -196,31 +212,40 @@ namespace meta_api
                 }
 
                 /// Set key value pair, return the old value if it exists otherwise null
-                meta_api::json::v2::json@ Set( const string&in keyName, const bool value ) {
+                meta_api::json::v2::json@ Set( const string&in keyName, const bool value )
+                {
                     return @this.Set( keyName, meta_api::json::v2::json().opAssign(value) );
                 }
                 /// Set key value pair, return the old value if it exists otherwise null
-                meta_api::json::v2::json@ Set( const string&in keyName, const int value ) {
+                meta_api::json::v2::json@ Set( const string&in keyName, const int value )
+                {
                     return @this.Set( keyName, meta_api::json::v2::json().opAssign(value) );
                 }
                 /// Set key value pair, return the old value if it exists otherwise null
-                meta_api::json::v2::json@ Set( const string&in keyName, const float value ) {
+                meta_api::json::v2::json@ Set( const string&in keyName, const float value )
+                {
                     return @this.Set( keyName, meta_api::json::v2::json().opAssign(value) );
                 }
                 /// Set key value pair, return the old value if it exists otherwise null
-                meta_api::json::v2::json@ Set( const string&in keyName, const string&in value ) {
+                meta_api::json::v2::json@ Set( const string&in keyName, const string&in value )
+                {
                     return @this.Set( keyName, meta_api::json::v2::json().opAssign(value) );
                 }
-                meta_api::json::v2::json@ Set( const string&in keyName, const meta_api::json::v2::Null&in value ) {
+                meta_api::json::v2::json@ Set( const string&in keyName, const meta_api::json::v2::Null&in value )
+                {
                     return @this.Set( keyName, meta_api::json::v2::json().opAssign(value) );
                 }
 
-                /// Get the value&out and return whatever the value exists or not. if strict is false floats and booleans are converted to integer and returned.
-                bool Get( const string&in keyName, meta_api::json::v2::json@&out value ) {
+                /// Get the value&out and return whatever the value exists or not.
+                /// If strict is false floats and booleans are converted to integer and returned.
+                bool Get( const string&in keyName, meta_api::json::v2::json@&out value )
+                {
                     return ( this.m_KeyValues.exists( keyName ) && ( @value = cast<meta_api::json::v2::json@>( this.m_KeyValues[ keyName ] ) ) !is null );
                 }
                 /// Get the value&out and return whatever the value exists or not
-                bool Get( const string&in keyName, bool&out value, bool strict = true ) {
+                /// If strict is false floats and integers are converted to boolean and returned.
+                bool Get( const string&in keyName, bool&out value, bool strict = true )
+                {
                     meta_api::json::v2::json@ obj;
                     if( this.Get( keyName, obj ) )
                     {
@@ -242,8 +267,10 @@ namespace meta_api
                     }
                     return false;
                 }
-                /// Get the value&out and return whatever the value exists or not. if strict is false floats and booleans are converted to integer and returned.
-                bool Get( const string&in keyName, int&out value, bool strict = true ) {
+                /// Get the value&out and return whatever the value exists or not.
+                /// If strict is false floats and booleans are converted to integer and returned.
+                bool Get( const string&in keyName, int&out value, bool strict = true )
+                {
                     meta_api::json::v2::json@ obj;
                     if( this.Get( keyName, obj ) )
                     {
@@ -265,8 +292,10 @@ namespace meta_api
                     }
                     return false;
                 }
-                /// Get the value&out and return whatever the value exists or not. if strict is false integers and booleans are converted to float and returned.
-                bool Get( const string&in keyName, float&out value, bool strict = true ) {
+                /// Get the value&out and return whatever the value exists or not.
+                /// If strict is false integers and booleans are converted to float and returned.
+                bool Get( const string&in keyName, float&out value, bool strict = true )
+                {
                     meta_api::json::v2::json@ obj;
                     if( this.Get( keyName, obj ) )
                     {
@@ -289,7 +318,8 @@ namespace meta_api
                     return false;
                 }
                 /// Get the value&out and return whatever the value exists or not
-                bool Get( const string&in keyName, string&out value ) {
+                bool Get( const string&in keyName, string&out value )
+                {
                     meta_api::json::v2::json@ obj;
                     if( this.Get( keyName, obj ) && obj.Type == meta_api::json::v2::Type::String ) {
                         value = string( obj.Value );
@@ -404,6 +434,10 @@ namespace meta_api
                 protected
                     uint __unique_index__ = 0;
 
+                /// ======================================
+                /// Array methods
+                /// ======================================
+                /// For arrays, push value to the last index
                 meta_api::json::v2::json@ push_back( meta_api::json::v2::json@ value )
                 {
                     if( this.Type != meta_api::json::v2::Type::Array )
@@ -416,15 +450,21 @@ namespace meta_api
                     return value;
                 }
 
+                /// Get the item at the given index
                 meta_api::json::v2::json@ opIndex( uint index )
                 {
                     return this.First( this.m_KeyNames[ index ] );
                 }
 
+                /// For arrays, push value to the last index
                 meta_api::json::v2::json@ push_back( const bool value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
+                /// For arrays, push value to the last index
                 meta_api::json::v2::json@ push_back( const int value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
+                /// For arrays, push value to the last index
                 meta_api::json::v2::json@ push_back( const float value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
+                /// For arrays, push value to the last index
                 meta_api::json::v2::json@ push_back( const string&in value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
+                /// For arrays, push value to the last index
                 meta_api::json::v2::json@ push_back( const meta_api::json::v2::Null&in value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
             }
 
@@ -646,8 +686,8 @@ namespace meta_api
                         }
 
                         meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        ParseObject( serialized, @objChild );
-                        obj.Set( key, objChild );
+                        if( ParseObject( serialized, @objChild ) )
+                            obj.Set( key, objChild );
                         just_parsed_child = true;
                     }
                     else if( c == '[' )
@@ -664,8 +704,8 @@ namespace meta_api
                         }
 
                         meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        ParseArray( serialized, @objChild );
-                        obj.Set( key, objChild );
+                        if( ParseArray( serialized, @objChild ) )
+                            obj.Set( key, objChild );
                         just_parsed_child = true;
                     }
                     else if( c == ',' || c == '}' )
@@ -833,8 +873,8 @@ namespace meta_api
                         }
 
                         meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        ParseObject( serialized, @objChild );
-                        obj.push_back( objChild );
+                        if( ParseObject( serialized, @objChild ) )
+                            obj.push_back( objChild );
                         just_parsed_child = true;
                     }
                     else if( c == '[' )
@@ -846,8 +886,8 @@ namespace meta_api
                         }
 
                         meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        ParseArray( serialized, @objChild );
-                        obj.push_back( objChild );
+                        if( ParseArray( serialized, @objChild ) )
+                            obj.push_back( objChild );
                         just_parsed_child = true;
                     }
                     else if( c == ',' || c == ']' )
