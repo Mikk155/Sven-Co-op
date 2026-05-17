@@ -514,6 +514,33 @@ namespace meta_api
                 meta_api::json::v2::json@ push_back( const string&in value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
                 /// For arrays, push value to the last index
                 meta_api::json::v2::json@ push_back( const meta_api::json::v2::Null&in value ) { return this.push_back( meta_api::json::v2::json().opAssign(value) ); }
+
+                /// Get the value converted to string.
+                /// For objects/arrays this is a serialization with -1 indents.
+                string ToString()
+                {
+                    switch( this.Type )
+                    {
+                        case meta_api::json::v2::Type::Object:
+                        case meta_api::json::v2::Type::Array:
+                        {
+                            return Serialize(-1, this);
+                        }
+                        case meta_api::json::v2::Type::String:
+                            return string( this.Value );
+                        case meta_api::json::v2::Type::Float:
+                            return string( float( this.Value ) );
+                        case meta_api::json::v2::Type::Integer:
+                            return string( int( this.Value ) );
+                        case meta_api::json::v2::Type::Boolean:
+                            return ( bool( this.Value ) ? "true" : "false" );
+                        case meta_api::json::v2::Type::Handle:
+                            return "@";
+                        case meta_api::json::v2::Type::Null:
+                        default:
+                            return "null";
+                    }
+                }
             }
 
             /**
