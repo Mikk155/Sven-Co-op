@@ -88,8 +88,8 @@ if( meta_api::json::v1::Deserialize( serialized_array, json ) )
 { // v2
 g_Game.AlertMessage( at_console,  "========================== json V2 ==========================\n" );
 
-meta_api::json::v2::json json;
-if( meta_api::json::v2::Deserialize( serialized, json ) )
+meta_api::json::v2::json@ json = meta_api::json::v2::json();;
+if( json.Load( serialized ) )
 {
     g_Game.AlertMessage( at_console, "length -> " + json.Length() + "\n" );
 

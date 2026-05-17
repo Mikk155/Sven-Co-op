@@ -146,6 +146,16 @@ namespace meta_api
                 json( meta_api::json::v2::json@ other ) { this.opAssign( other ); }
                 json() { this.m_Type = meta_api::json::v2::Type::Object; }
 
+                /**
+                *   @brief Deserializes str
+                *   If str ends with ".json" we will open a file. No need to specify scripts/plugins/ or scripts/maps/ it will be automatically detected.
+                *   If str is a file and is pointing to store/ and the file couldn't be opened it will be writed and return a valid handle
+                **/
+                bool Load( const string&in str )
+                {
+                    return Deserialize( str, this );
+                }
+
                 /// ======================================
                 /// Object/Array methods
                 /// ======================================
