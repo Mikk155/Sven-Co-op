@@ -95,16 +95,16 @@ if( json.Load( serialized ) )
 
     g_Game.AlertMessage( at_console, "null -> " + ( json.Contains( "null" ) ? "exists" : "not exists" ) + "\n" );
     g_Game.AlertMessage( at_console, "default_integer_of_5 -> " + json.ValueOrDefault( "default_integer_of_5", 5, true ) + "\n" );
-    g_Game.AlertMessage( at_console, "default_integer_of_5 now stored -> " + int( json.First( "default_integer_of_5" ) ) + "\n" );
+    g_Game.AlertMessage( at_console, "default_integer_of_5 now stored -> " + int( json[ "default_integer_of_5" ] ) + "\n" );
     g_Game.AlertMessage( at_console, "default_bool_of_true -> " + ( json.ValueOrDefault( "default_bool_of_true", true ) ? "true" : "false" ) + "\n" );
     g_Game.AlertMessage( at_console, "default_float_of_1_5 -> " + json.ValueOrDefault( "default_float_of_1_5", 1.5f ) + "\n" );
     g_Game.AlertMessage( at_console, "default_string_str -> " + json.ValueOrDefault( "default_string_str", "str" ) + "\n" );
 
-    g_Game.AlertMessage( at_console, "float -> " + float( json.First( "float" ) ) + "\n" );
-    g_Game.AlertMessage( at_console, "bool -> " + ( bool( json.First( "bool" ) ) ? "true" : "false" ) + "\n" );
-    g_Game.AlertMessage( at_console, "string -> " + string( json.First( "string" ) ) + "\n" );
-    g_Game.AlertMessage( at_console, "Key name of object \"object\" -> " + json.First( "object" ).Name + "\n" );
-    g_Game.AlertMessage( at_console, "object::string -> " + string( json.First( "object" ).First( "string" ) ) + "\n" );
+    g_Game.AlertMessage( at_console, "float -> " + float( json[ "float" ] ) + "\n" );
+    g_Game.AlertMessage( at_console, "bool -> " + ( bool( json[ "bool" ] ) ? "true" : "false" ) + "\n" );
+    g_Game.AlertMessage( at_console, "string -> " + string( json[ "string" ] ) + "\n" );
+    g_Game.AlertMessage( at_console, "Key name of object \"object\" -> " + json[ "object" ].Name + "\n" );
+    g_Game.AlertMessage( at_console, "object::string -> " + string( json[ "object" ][ "string" ] ) + "\n" );
 
     try {
         json.Append( "something" );
@@ -113,7 +113,7 @@ if( json.Load( serialized ) )
         g_Game.AlertMessage( at_console, "Exception at json.Append\n" );
     }
 
-    meta_api::json::v2::json@ nestedArray = json.First( "array" );
+    meta_api::json::v2::json@ nestedArray = json[ "array" ];
 
     if( nestedArray !is null )
     {
@@ -128,7 +128,7 @@ if( json.Load( serialized ) )
         if( nestedObjectInArray !is null )
         {
             g_Game.AlertMessage( at_console, "Key name of object \"array::4\" -> " + nestedObjectInArray.Name + "\n" );
-            g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray.First( "key" ) ) + "\n" );
+            g_Game.AlertMessage( at_console, "array::4::key -> " + string( nestedObjectInArray[ "key" ] ) + "\n" );
         }
 
         array<float>@ fmt_float;

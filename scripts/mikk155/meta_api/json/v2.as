@@ -410,18 +410,10 @@ namespace meta_api
                     return ( this.Get( keyName, obj ) && obj.Get( value ) );
                 }
 
-                /// Get the first occurrence of value
-                meta_api::json::v2::json@ First( const string&in keyName )
-                {
-                    meta_api::json::v2::json@ value;
-                    this.Get( keyName, value );
-                    return value;
-                }
-
-                /// Get the first occurrence of value or a default value if not exists.
+                /// Get the stored value at the given key name or a default value if not exists.
                 /// If store is true the default value is stored in data if not exists
                 /// In this json case if the default value is null we will initialize a instance and return that
-                meta_api::json::v2::json@ FirstOrDefault( const string&in keyName, meta_api::json::v2::json@ value = null, bool store = false )
+                meta_api::json::v2::json@ ValueOrDefault( const string&in keyName, meta_api::json::v2::json@ value = null, bool store = false )
                 {
                     if( !this.Get( keyName, value ) )
                     {
@@ -432,10 +424,10 @@ namespace meta_api
                     }
                     return value;
                 }
-                /// Get the first occurrence of value or a default value if not exists.
+                /// Get the stored value at the given key name or a default value if not exists.
                 /// If store is true the default value is stored in data if not exists
                 /// If strict is false integers and floats are converted to boolean and returned.
-                bool FirstOrDefault( const string&in keyName, bool value, bool store = false, bool strict = true )
+                bool ValueOrDefault( const string&in keyName, bool value, bool store = false, bool strict = true )
                 {
 // https://github.com/anjo76/angelscript/issues/70
 #if FALSE
@@ -452,10 +444,10 @@ namespace meta_api
                     }
                     return temp;
                 }
-                /// Get the first occurrence of value or a default value if not exists.
+                /// Get the stored value at the given key name or a default value if not exists.
                 /// If store is true the default value is stored in data if not exists
                 /// If strict is false booleans and floats are converted to integer and returned.
-                int FirstOrDefault( const string&in keyName, int value, bool store = false, bool strict = true )
+                int ValueOrDefault( const string&in keyName, int value, bool store = false, bool strict = true )
                 {
 // https://github.com/anjo76/angelscript/issues/70
 #if FALSE
@@ -472,10 +464,10 @@ namespace meta_api
                     }
                     return temp;
                 }
-                /// Get the first occurrence of value or a default value if not exists.
+                /// Get the stored value at the given key name or a default value if not exists.
                 /// If store is true the default value is stored in data if not exists
                 /// If strict is false booleans and integers are converted to float and returned.
-                float FirstOrDefault( const string&in keyName, float value, bool store = false, bool strict = true )
+                float ValueOrDefault( const string&in keyName, float value, bool store = false, bool strict = true )
                 {
 // https://github.com/anjo76/angelscript/issues/70
 #if FALSE
@@ -492,10 +484,10 @@ namespace meta_api
                     }
                     return temp;
                 }
-                /// Get the first occurrence of value or a default value if not exists.
+                /// Get the stored value at the given key name or a default value if not exists.
                 /// If store is true the default value is stored in data if not exists
                 /// If strict is false booleans and integers are converted to float and returned.
-                string FirstOrDefault( const string&in keyName, string&in value, bool store = false )
+                string ValueOrDefault( const string&in keyName, string&in value, bool store = false )
                 {
 // https://github.com/anjo76/angelscript/issues/70
 #if FALSE
@@ -539,7 +531,14 @@ namespace meta_api
                     return value;
                 }
 
-                /// Get the item at the given index
+                /// Get the value at the given key
+                meta_api::json::v2::json@ opIndex( const string&in keyName )
+                {
+                    meta_api::json::v2::json@ value;
+                    this.Get( keyName, value );
+                    return value;
+                }
+
                 meta_api::json::v2::json@ opIndex( uint index )
                 {
                     if( index >= this.m_KeyNames.length() )
@@ -548,7 +547,7 @@ namespace meta_api
                         return null;
                     }
 
-                    return this.First( this.m_KeyNames[ index ] );
+                    return this.opIndex( this.m_KeyNames[ index ] );
                 }
 
                 /// For arrays, push value to the last index
@@ -1373,7 +1372,7 @@ namespace meta_api
                     if( !is_array )
                         buffer += EscapeSequences( key, true ) + ( indents > -1 ? ": " : ":" );
 
-                    meta_api::json::v2::json@ value = obj.First( key );
+                    meta_api::json::v2::json@ value = obj[ key ];
 
                     if( value is null )
                     {
