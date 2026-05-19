@@ -1,5 +1,6 @@
 #include "../../scripts/mikk155/meta_api/json/v1"
 #include "../../scripts/mikk155/meta_api/json/v2"
+#include "../../scripts/mikk155/meta_api/json/v2/fmt/core"
 
 namespace test
 {
