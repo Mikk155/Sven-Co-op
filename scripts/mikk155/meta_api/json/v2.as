@@ -37,40 +37,56 @@ namespace meta_api
                     return this.m_Type;
                 }
 
-                /// Return whatever this object contains a boolean value
-                bool is_boolean() const { return ( this.Type ==  meta_api::json::v2::Type::Boolean ); }
-                /// Return whatever this object contains a integer value
-                bool is_number_integer() const { return ( this.Type ==  meta_api::json::v2::Type::Integer ); }
-                /// Return whatever this object contains a float value
-                bool is_number_float() const { return ( this.Type ==  meta_api::json::v2::Type::Float ); }
-                /// Return whatever this object contains a float value
-                bool is_string() const { return ( this.Type ==  meta_api::json::v2::Type::String ); }
-                /// Return whatever this object contains a json object value
-                bool is_object() const { return ( this.Type ==  meta_api::json::v2::Type::Object ); }
-                /// Return whatever this object contains a json array value
-                bool is_array() const { return ( this.Type ==  meta_api::json::v2::Type::Array ); }
-                /// Return whatever this object contains a "null" value
-                bool is_null() const { return ( this.Type ==  meta_api::json::v2::Type::Null ); }
-                /// Return whatever this object contains a handle value
-                bool is_handle() const { return ( this.Type ==  meta_api::json::v2::Type::Handle ); }
-                /// Return whatever this object contains a json array or object value
-                bool is_structured() const { return ( this.is_object() || this.is_array() ); }
-                /// Return whatever this object contains number either float or integer
-                bool is_number() const { return ( this.is_number_integer() || this.is_number_float() ); }
-                bool is_number_unsigned() const { return ( this.is_number_integer() && int( this.m_KeyValues[ this.__Value__ ] ) >= 0 ); }
-
-                protected
-                    string m_Name;
-
-                /// Key name of this object
-                const string& get_Name() const
-                {
-                    return this.m_Name;
+                /// Return whatever value is a bool
+                bool is_boolean() const {
+                    return ( this.Type == meta_api::json::v2::Type::Boolean );
+                }
+                /// Return whatever value is a integer
+                bool is_number_integer() const {
+                    return ( this.Type ==  meta_api::json::v2::Type::Integer );
+                }
+                /// Return whatever value is a float with decimals
+                bool is_number_float() const {
+                    return ( this.Type ==  meta_api::json::v2::Type::Float );
+                }
+                /// Return whatever value is a string
+                bool is_string() const {
+                    return ( this.Type ==  meta_api::json::v2::Type::String );
+                }
+                /// Return whatever value is a json object
+                bool is_object() const {
+                    return ( this.Type ==  meta_api::json::v2::Type::Object );
+                }
+                /// Return whatever value is a json array
+                bool is_array() const {
+                    return ( this.Type ==  meta_api::json::v2::Type::Array );
+                }
+                /// Return whatever value is null but existent
+                bool is_null() const {
+                    return ( this.Type ==  meta_api::json::v2::Type::Null );
+                }
+                /// Return whatever value is a handle to an object
+                bool is_handle() const {
+                    return ( this.Type ==  meta_api::json::v2::Type::Handle );
+                }
+                /// Return whatever value is a json object or array structure
+                bool is_structured() const {
+                    return ( this.is_object() || this.is_array() );
+                }
+                /// Return whatever value is a number either float or integer
+                bool is_number() const {
+                    return ( this.is_number_integer() || this.is_number_float() );
+                }
+                /// Return whatever value is a non-negative integer
+                bool is_number_unsigned() const {
+                    return ( this.is_number_integer() && int( this.m_KeyValues[ this.__Value__ ] ) >= 0 );
                 }
 
-                void __SetName__( const string&in keyName )
-                {
-                    this.m_Name = keyName;
+                string m_Name;
+
+                /// Key name of this object
+                const string& get_Name() const {
+                    return this.m_Name;
                 }
 
                 /// Unordered key-values
@@ -79,8 +95,8 @@ namespace meta_api
                 /// Ordered key names
                 array<string> m_KeyNames = {};
 
-                // All key-values
-                array<string>@ get_Keys()
+                /// Return all the key names of this object/array
+                const array<string>@ get_Keys() const
                 {
                     switch( this.Type )
                     {
@@ -95,7 +111,7 @@ namespace meta_api
                         case meta_api::json::v2::Type::Boolean:
                         case meta_api::json::v2::Type::Null:
                         default:
-                            return null;
+                            return @null;
                     }
                 }
 
@@ -134,9 +150,7 @@ namespace meta_api
                         {
                             dictionaryValue@ value = this.m_KeyValues[ this.__Value__ ];
                             this.Clear();
-                            this.m_KeyValues.deleteAll();
                             this.m_KeyValues[ this.__Value__ ] = value;
-                            this.m_KeyNames.resize(0);
                             break;
                         }
                     }
@@ -167,25 +181,50 @@ namespace meta_api
                     return this;
                 }
 
-                meta_api::json::v2::json@ opAssign( const float value ) { this.SetValue( this.Value.opAssign(value), Type::Float ); return this; }
-                meta_api::json::v2::json@ opAssign( const int value ) { this.SetValue( this.Value.opAssign(value), Type::Integer ); return this; }
-                meta_api::json::v2::json@ opAssign( const bool value ) { this.SetValue( this.Value.opAssign(value), Type::Boolean ); return this; }
-                meta_api::json::v2::json@ opAssign( const string&in value ) { this.SetValue( this.Value.opAssign(value), Type::String ); return this; }
-                meta_api::json::v2::json@ opAssign( const meta_api::json::v2::Null&in value ) { this.SetValue( this.Value.opAssign(value), Type::Null ); return this; }
+                meta_api::json::v2::json@ opAssign( const float value ) {
+                    this.SetValue( this.Value.opAssign(value), Type::Float ); return this;
+                }
+                meta_api::json::v2::json@ opAssign( const int value ) {
+                    this.SetValue( this.Value.opAssign(value), Type::Integer ); return this;
+                }
+                meta_api::json::v2::json@ opAssign( const bool value ) {
+                    this.SetValue( this.Value.opAssign(value), Type::Boolean ); return this;
+                }
+                meta_api::json::v2::json@ opAssign( const string&in value ) {
+                    this.SetValue( this.Value.opAssign(value), Type::String ); return this;
+                }
+                meta_api::json::v2::json@ opAssign( const meta_api::json::v2::Null&in value ) {
+                    this.SetValue( this.Value.opAssign(value), Type::Null ); return this;
+                }
 
                 /// ======================================
                 /// opConv
                 /// ======================================
-                float opConv() { return float( this.Value ); }
-                int opConv() { return int( this.Value ); }
-                bool opConv() { return bool( this.Value ); }
-                string opConv() { return string( this.Value ); }
+                float opConv() {
+                    return float( this.Value );
+                }
+                int opConv() {
+                    return int( this.Value );
+                }
+                bool opConv() {
+                    return bool( this.Value );
+                }
+                string opConv() {
+                    return string( this.Value );
+                }
 
                 /// ======================================
                 /// Constructors
                 /// ======================================
-                json( meta_api::json::v2::json@ other ) { this.opAssign( other ); }
-                json() { this.m_Type = meta_api::json::v2::Type::Object; }
+                json( meta_api::json::v2::json@ other )
+                {
+                    this.opAssign( other );
+                }
+
+                json()
+                {
+                    this.m_Type = meta_api::json::v2::Type::Object;
+                }
 
                 /**
                 *   @brief Deserializes str
@@ -209,7 +248,7 @@ namespace meta_api
                 }
 
                 /// Return whatever this objects contains the given key
-                bool Contains( const string&in keyName )
+                bool Contains( const string&in keyName ) const
                 {
                     return this.m_KeyValues.exists( keyName );
                 }
@@ -217,7 +256,7 @@ namespace meta_api
                 /// Get the length of the object.
                 /// For non object/array this is -1
                 /// For null values this is -2
-                int Length()
+                int Length() const
                 {
                     switch( this.Type )
                     {
@@ -261,7 +300,7 @@ namespace meta_api
                     }
 
                     @this.m_KeyValues[ keyName ] = value;
-                    value.__SetName__( keyName );
+                    value.m_Name = keyName;
 
                     return @old;
                 }
@@ -1333,7 +1372,7 @@ namespace meta_api
                 if( !is_array && !is_object )
                     return "{}";
 
-                array<string>@ keys = obj.Keys;
+                const auto keys = obj.Keys;
 
                 if( keys.length() == 0 )
                 {
