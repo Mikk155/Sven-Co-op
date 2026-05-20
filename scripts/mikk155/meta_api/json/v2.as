@@ -707,6 +707,26 @@ namespace meta_api
                     return false;
                 }
 
+                while( start_idx < __Size__ )
+                {
+                    char check( serialized[start_idx] );
+                    
+                    if( check != '{' && check != '[' )
+                    {
+                        start_idx++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if( start_idx >= __Size__ )
+                {
+                    print( "Error: The provided string is not an object or array! missing tokens \"{\" or \"[\"", Version::V2 );
+                    return false;
+                }
+
                 char c( serialized[start_idx] );
                 __Position__ = start_idx + 1;
 
