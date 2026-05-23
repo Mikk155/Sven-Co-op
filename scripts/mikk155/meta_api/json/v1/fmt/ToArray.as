@@ -13,7 +13,7 @@ namespace meta_api
                 uint ToArray( dictionary@ obj, array<string>@&out List )
                 {
                     if( List is null )
-                        List = {};
+                        @List = {};
 
                     uint size = obj.getSize();
 
@@ -33,7 +33,7 @@ namespace meta_api
                 *   @brief converts the given obj to a list of string.
                 *   NOTE: Any type that is not a string will be skipped.
                 **/
-                uint ToArray( dictionaryValue& obj, array<string>@&out List )
+                uint ToArray( dictionaryValue&in obj, array<string>@&out List )
                 {
                     return ToArray( cast<dictionary@>( obj ), List );
                 }
@@ -41,10 +41,10 @@ namespace meta_api
                 /**
                 *   @brief converts the given obj to a list of dictionaryValue
                 **/
-                uint ToArray( dictionary@ obj, array<dictionaryValue>@&out List )
+                uint ToArray( dictionary&in obj, array<dictionaryValue>@&out List )
                 {
                     if( List is null )
-                        List = {};
+                        @List = {};
 
                     uint size = obj.getSize();
 
@@ -60,7 +60,7 @@ namespace meta_api
                     return size;
                 }
 
-                uint ToArray( dictionaryValue& obj, array<dictionaryValue>@&out List )
+                uint ToArray( dictionaryValue&in obj, array<dictionaryValue>@&out List )
                 {
                     return ToArray( cast<dictionary@>( obj ), List );
                 }
