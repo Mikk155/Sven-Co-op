@@ -13,8 +13,8 @@ namespace meta_api
                     {
                         switch( json.Type )
                         {
-                            case meta_api::json::v2::Type::Array:
-                            case meta_api::json::v2::Type::Object:
+                            case meta_api::json::Type::Array:
+                            case meta_api::json::Type::Object:
                             {
                                 @list = {};
                                 uint length = json.Length();
@@ -24,10 +24,10 @@ namespace meta_api
                                     if( value.Get( fvalue, strict ) )
                                         list.insertLast( fvalue );
                                 }
-                                json.SetValue( json.Value.opAssign(@list), meta_api::json::v2::Type::Handle );
+                                json.SetValue( json.Value.opAssign(@list), meta_api::json::Type::Handle );
                                 return true;
                             }
-                            case meta_api::json::v2::Type::Handle:
+                            case meta_api::json::Type::Handle:
                             {
                                 array<float>@ ar = cast<array<float>@>( json.Value );
                                 if( ar !is null ) {
@@ -47,8 +47,8 @@ namespace meta_api
                     {
                         switch( json.Type )
                         {
-                            case meta_api::json::v2::Type::Array:
-                            case meta_api::json::v2::Type::Object:
+                            case meta_api::json::Type::Array:
+                            case meta_api::json::Type::Object:
                             {
                                 @list = {};
                                 uint length = json.Length();
@@ -58,10 +58,10 @@ namespace meta_api
                                     if( value.Get( fvalue, strict ) )
                                         list.insertLast( fvalue );
                                 }
-                                json.SetValue( json.Value.opAssign(@list), meta_api::json::v2::Type::Handle );
+                                json.SetValue( json.Value.opAssign(@list), meta_api::json::Type::Handle );
                                 return true;
                             }
-                            case meta_api::json::v2::Type::Handle:
+                            case meta_api::json::Type::Handle:
                             {
                                 array<int>@ ar = cast<array<int>@>( json.Value );
                                 if( ar !is null ) {
@@ -81,8 +81,8 @@ namespace meta_api
                     {
                         switch( json.Type )
                         {
-                            case meta_api::json::v2::Type::Array:
-                            case meta_api::json::v2::Type::Object:
+                            case meta_api::json::Type::Array:
+                            case meta_api::json::Type::Object:
                             {
                                 @list = {};
                                 uint length = json.Length();
@@ -92,10 +92,10 @@ namespace meta_api
                                     if( value.Get( fvalue, strict ) )
                                         list.insertLast( fvalue );
                                 }
-                                json.SetValue( json.Value.opAssign(@list), meta_api::json::v2::Type::Handle );
+                                json.SetValue( json.Value.opAssign(@list), meta_api::json::Type::Handle );
                                 return true;
                             }
-                            case meta_api::json::v2::Type::Handle:
+                            case meta_api::json::Type::Handle:
                             {
                                 array<bool>@ ar = cast<array<bool>@>( json.Value );
                                 if( ar !is null ) {
@@ -115,8 +115,8 @@ namespace meta_api
                     {
                         switch( json.Type )
                         {
-                            case meta_api::json::v2::Type::Array:
-                            case meta_api::json::v2::Type::Object:
+                            case meta_api::json::Type::Array:
+                            case meta_api::json::Type::Object:
                             {
                                 @list = {};
                                 uint length = json.Length();
@@ -126,10 +126,10 @@ namespace meta_api
                                     if( value.Get( fvalue ) )
                                         list.insertLast( fvalue );
                                 }
-                                json.SetValue( json.Value.opAssign(@list), meta_api::json::v2::Type::Handle );
+                                json.SetValue( json.Value.opAssign(@list), meta_api::json::Type::Handle );
                                 return true;
                             }
-                            case meta_api::json::v2::Type::Handle:
+                            case meta_api::json::Type::Handle:
                             {
                                 array<string>@ ar = cast<array<string>@>( json.Value );
                                 if( ar !is null ) {

@@ -89,7 +89,7 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
     meta_api::json::print( snprintf( meta_api::json::cout, "===== Running json tests for %1 =====", ( metamod ? "METAMOD" : "VANILLA" ) ), g_Version );
 
 #if METAMOD_PLUGIN_ASLP
-    meta_api::json::__METAMOD__ = !metamod;
+    meta_api::json::__METAMOD__ = metamod;
 #endif
 
     switch( version )
@@ -125,7 +125,7 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
         meta_api::json::print( snprintf( meta_api::json::cout, "===== Failed: %1 =====", g_Failed ), g_Version );
     }
 
-    meta_api::json::print( "=====All done!=====", g_Version );
+    meta_api::json::print( "===== All done! =====\n==================", g_Version );
 }
 
 void PluginInit()
@@ -143,6 +143,7 @@ void PluginInit()
         RunTests( versionRuns[ui], false );
     }
 
+#if FALSE
     if( true )
         return;
 string serialized = """{
@@ -301,6 +302,7 @@ if( meta_api::json::v2::Deserialize( serialized_array, json ) )
     g_Game.AlertMessage( at_console, "meta_api::json::v1::Serialized( serialized_array )\n%1\n", meta_api::json::v2::Serialize(1, json ) );
 }
 } // v2
+#endif
 } // PluginInit
 } // json
 } // Test

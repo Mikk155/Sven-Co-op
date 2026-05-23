@@ -8,66 +8,49 @@ namespace meta_api
         /// Work in progress. expect API changes.
         namespace v2
         {
-            // This is not meant to be useable but for storing an existent but null value in json.
-            enum Null { Null = 0 };
-
-            /// Type of value that json is containing
-            enum Type
-            {
-                Undefined = 0,
-                Handle,
-                String,
-                Float,
-                Integer,
-                Boolean,
-                Object,
-                Array,
-                Null
-            };
-
             /// Json is a complete wrapper to dictionary and array the main difference is that json is ordered.
             /// If something is missing you can either pull request or just inherit from this class and make your specific changes according to your needs.
             class json
             {
                 protected
-                    meta_api::json::v2::Type m_Type = Type::Undefined;
+                    meta_api::json::Type m_Type = meta_api::json::Type::Undefined;
 
                 // Current type of this object.
-                const meta_api::json::v2::Type& get_Type() const {
+                const meta_api::json::Type& get_Type() const {
                     return this.m_Type;
                 }
 
                 /// Return whatever value is a bool
                 bool is_boolean() const {
-                    return ( this.Type == meta_api::json::v2::Type::Boolean );
+                    return ( this.Type == meta_api::json::Type::Boolean );
                 }
                 /// Return whatever value is a integer
                 bool is_number_integer() const {
-                    return ( this.Type ==  meta_api::json::v2::Type::Integer );
+                    return ( this.Type ==  meta_api::json::Type::Integer );
                 }
                 /// Return whatever value is a float with decimals
                 bool is_number_float() const {
-                    return ( this.Type ==  meta_api::json::v2::Type::Float );
+                    return ( this.Type ==  meta_api::json::Type::Float );
                 }
                 /// Return whatever value is a string
                 bool is_string() const {
-                    return ( this.Type ==  meta_api::json::v2::Type::String );
+                    return ( this.Type ==  meta_api::json::Type::String );
                 }
                 /// Return whatever value is a json object
                 bool is_object() const {
-                    return ( this.Type ==  meta_api::json::v2::Type::Object );
+                    return ( this.Type ==  meta_api::json::Type::Object );
                 }
                 /// Return whatever value is a json array
                 bool is_array() const {
-                    return ( this.Type ==  meta_api::json::v2::Type::Array );
+                    return ( this.Type ==  meta_api::json::Type::Array );
                 }
                 /// Return whatever value is null but existent
                 bool is_null() const {
-                    return ( this.Type ==  meta_api::json::v2::Type::Null );
+                    return ( this.Type ==  meta_api::json::Type::Null );
                 }
                 /// Return whatever value is a handle to an object
                 bool is_handle() const {
-                    return ( this.Type ==  meta_api::json::v2::Type::Handle );
+                    return ( this.Type ==  meta_api::json::Type::Handle );
                 }
                 /// Return whatever value is a json object or array structure
                 bool is_structured() const {
@@ -100,16 +83,16 @@ namespace meta_api
                 {
                     switch( this.Type )
                     {
-                        case meta_api::json::v2::Type::Object:
-                        case meta_api::json::v2::Type::Array:
+                        case meta_api::json::Type::Object:
+                        case meta_api::json::Type::Array:
                         {
                             return @this.m_KeyNames;
                         }
-                        case meta_api::json::v2::Type::String:
-                        case meta_api::json::v2::Type::Float:
-                        case meta_api::json::v2::Type::Integer:
-                        case meta_api::json::v2::Type::Boolean:
-                        case meta_api::json::v2::Type::Null:
+                        case meta_api::json::Type::String:
+                        case meta_api::json::Type::Float:
+                        case meta_api::json::Type::Integer:
+                        case meta_api::json::Type::Boolean:
+                        case meta_api::json::Type::Null:
                         default:
                             return @null;
                     }
@@ -130,22 +113,22 @@ namespace meta_api
                     return this.m_KeyValues[ this.__Value__ ];
                 }
 
-                void SetType( const meta_api::json::v2::Type&in type )
+                void SetType( const meta_api::json::Type&in type )
                 {
                     switch( type )
                     {
-                        case Type::Object:
-                        case Type::Array:
+                        case meta_api::json::Type::Object:
+                        case meta_api::json::Type::Array:
                         {
                             this.Clear();
                             break;
                         }
-                        case Type::String:
-                        case Type::Handle:
-                        case Type::Float:
-                        case Type::Integer:
-                        case Type::Boolean:
-                        case Type::Null:
+                        case meta_api::json::Type::String:
+                        case meta_api::json::Type::Handle:
+                        case meta_api::json::Type::Float:
+                        case meta_api::json::Type::Integer:
+                        case meta_api::json::Type::Boolean:
+                        case meta_api::json::Type::Null:
                         default:
                         {
                             dictionaryValue@ value = this.m_KeyValues[ this.__Value__ ];
@@ -159,7 +142,7 @@ namespace meta_api
                 }
 
                 /// Set a value of any type. "value" could be set by using Value.opAssign(T) from this object
-                void SetValue( const dictionaryValue&in value, const meta_api::json::v2::Type&in type )
+                void SetValue( const dictionaryValue&in value, const meta_api::json::Type&in type )
                 {
                     this.SetType(type);
                     this.m_KeyValues[ this.__Value__ ] = value;
@@ -182,19 +165,19 @@ namespace meta_api
                 }
 
                 meta_api::json::v2::json@ opAssign( const float value ) {
-                    this.SetValue( this.Value.opAssign(value), Type::Float ); return this;
+                    this.SetValue( this.Value.opAssign(value), meta_api::json::Type::Float ); return this;
                 }
                 meta_api::json::v2::json@ opAssign( const int value ) {
-                    this.SetValue( this.Value.opAssign(value), Type::Integer ); return this;
+                    this.SetValue( this.Value.opAssign(value), meta_api::json::Type::Integer ); return this;
                 }
                 meta_api::json::v2::json@ opAssign( const bool value ) {
-                    this.SetValue( this.Value.opAssign(value), Type::Boolean ); return this;
+                    this.SetValue( this.Value.opAssign(value), meta_api::json::Type::Boolean ); return this;
                 }
                 meta_api::json::v2::json@ opAssign( const string&in value ) {
-                    this.SetValue( this.Value.opAssign(value), Type::String ); return this;
+                    this.SetValue( this.Value.opAssign(value), meta_api::json::Type::String ); return this;
                 }
                 meta_api::json::v2::json@ opAssign( const meta_api::json::v2::Null&in value ) {
-                    this.SetValue( this.Value.opAssign(value), Type::Null ); return this;
+                    this.SetValue( this.Value.opAssign(value), meta_api::json::Type::Null ); return this;
                 }
 
                 /// ======================================
@@ -223,7 +206,7 @@ namespace meta_api
 
                 json()
                 {
-                    this.m_Type = meta_api::json::v2::Type::Object;
+                    this.m_Type = meta_api::json::Type::Object;
                 }
 
                 /**
@@ -260,17 +243,17 @@ namespace meta_api
                 {
                     switch( this.Type )
                     {
-                        case Type::Object:
-                        case Type::Array:
+                        case meta_api::json::Type::Object:
+                        case meta_api::json::Type::Array:
                             return this.m_KeyNames.length();
-                        case Type::String:
-                        case Type::Handle:
-                        case Type::Float:
-                        case Type::Integer:
-                        case Type::Boolean:
+                        case meta_api::json::Type::String:
+                        case meta_api::json::Type::Handle:
+                        case meta_api::json::Type::Float:
+                        case meta_api::json::Type::Integer:
+                        case meta_api::json::Type::Boolean:
                             return -1;
-                        case Type::Null:
-                        case Type::Undefined:
+                        case meta_api::json::Type::Null:
+                        case meta_api::json::Type::Undefined:
                         default:
                             return -2;
                     }
@@ -341,18 +324,18 @@ namespace meta_api
                 /// If strict is false floats and integers are converted to boolean and returned.
                 bool Get( bool&out value, bool strict = true )
                 {
-                    if( strict && this.Type != meta_api::json::v2::Type::Boolean )
+                    if( strict && this.Type != meta_api::json::Type::Boolean )
                         return false;
 
                     switch( this.Type )
                     {
-                        case meta_api::json::v2::Type::Integer:
+                        case meta_api::json::Type::Integer:
                             value = ( int( this.Value ) > 0 );
                             return true;
-                        case meta_api::json::v2::Type::Float:
+                        case meta_api::json::Type::Float:
                             value = ( int( float( this.Value ) ) > 0 );
                             return true;
-                        case meta_api::json::v2::Type::Boolean:
+                        case meta_api::json::Type::Boolean:
                             value = bool( this.Value );
                             return true;
                         default:
@@ -372,18 +355,18 @@ namespace meta_api
                 /// If strict is false floats and booleans are converted to integer and returned.
                 bool Get( int&out value, bool strict = true )
                 {
-                    if( strict && this.Type != meta_api::json::v2::Type::Integer )
+                    if( strict && this.Type != meta_api::json::Type::Integer )
                         return false;
 
                     switch( this.Type )
                     {
-                        case meta_api::json::v2::Type::Boolean:
+                        case meta_api::json::Type::Boolean:
                             value = ( bool( this.Value ) ? 1 : 0 );
                             return true;
-                        case meta_api::json::v2::Type::Float:
+                        case meta_api::json::Type::Float:
                             value = int( float( this.Value ) );
                             return true;
-                        case meta_api::json::v2::Type::Integer:
+                        case meta_api::json::Type::Integer:
                             value = int( this.Value );
                             return true;
                         default:
@@ -403,18 +386,18 @@ namespace meta_api
                 /// If strict is false integers and booleans are converted to float and returned.
                 bool Get( float&out value, bool strict = true )
                 {
-                    if( strict && this.Type != meta_api::json::v2::Type::Float )
+                    if( strict && this.Type != meta_api::json::Type::Float )
                         return false;
 
                     switch( this.Type )
                     {
-                        case meta_api::json::v2::Type::Boolean:
+                        case meta_api::json::Type::Boolean:
                             value = ( bool( this.Value ) ? 1.0f : 0.0f );
                             return true;
-                        case meta_api::json::v2::Type::Integer:
+                        case meta_api::json::Type::Integer:
                             value = float( int( this.Value ) );
                             return true;
-                        case meta_api::json::v2::Type::Float:
+                        case meta_api::json::Type::Float:
                             value = float( this.Value );
                             return true;
                         default:
@@ -435,7 +418,7 @@ namespace meta_api
                 {
                     switch( this.Type )
                     {
-                        case meta_api::json::v2::Type::String:
+                        case meta_api::json::Type::String:
                             value = string( this.Value );
                             return true;
                         default:
@@ -555,7 +538,7 @@ namespace meta_api
                 /// For arrays, push value to the last index
                 meta_api::json::v2::json@ Append( meta_api::json::v2::json@ value )
                 {
-                    if( this.Type != meta_api::json::v2::Type::Array )
+                    if( this.Type != meta_api::json::Type::Array )
                     {
                         print( snprintf( cout, "ERROR: Couldn't Append to a json that is not an array!" ), Version::V2 );
                         return null;
@@ -607,25 +590,107 @@ namespace meta_api
                 {
                     switch( this.Type )
                     {
-                        case meta_api::json::v2::Type::Object:
-                        case meta_api::json::v2::Type::Array:
+                        case meta_api::json::Type::Object:
+                        case meta_api::json::Type::Array:
                         {
-                            return Serialize(-1, this);
+                            //return Serialize(-1, this);
                         }
-                        case meta_api::json::v2::Type::String:
+                        case meta_api::json::Type::String:
                             return string( this.Value );
-                        case meta_api::json::v2::Type::Float:
+                        case meta_api::json::Type::Float:
                             return string( float( this.Value ) );
-                        case meta_api::json::v2::Type::Integer:
+                        case meta_api::json::Type::Integer:
                             return string( int( this.Value ) );
-                        case meta_api::json::v2::Type::Boolean:
+                        case meta_api::json::Type::Boolean:
                             return ( bool( this.Value ) ? "true" : "false" );
-                        case meta_api::json::v2::Type::Handle:
+                        case meta_api::json::Type::Handle:
                             return "@";
-                        case meta_api::json::v2::Type::Null:
+                        case meta_api::json::Type::Null:
                         default:
                             return "null";
                     }
+                }
+            }
+
+            class __Deserializer__ : meta_api::json::parser::Deserializer
+            {
+                const meta_api::json::Version GetVersion() const override {
+                    return meta_api::json::Version::V2;
+                }
+
+                bool Parse( meta_api::json::v2::json@&out obj, const meta_api::json::Type&in objectType )
+                {
+                    if( obj is null )
+                        @obj = meta_api::json::v2::json();
+
+                    obj.SetType( objectType );
+
+                    string key;
+                    string value;
+                    dictionary data;
+                    meta_api::json::Type type;
+
+                    while( this.Advance( objectType, type, key, value, data ) )
+                    {
+                        switch( type )
+                        {
+                            case meta_api::json::Type::Object:
+                            case meta_api::json::Type::Array:
+                            {
+                                meta_api::json::v2::json@ objChild;
+                                if( !this.Parse( objChild, type ) )
+                                    return false;
+                                obj.Set( key, objChild );
+                                return true;
+                            }
+                            // -TODO __prefixed SetOrAppend method?
+                            case meta_api::json::Type::String:
+                            {
+                                if( objectType == meta_api::json::Type::Object )
+                                    obj.Set( key, value );
+                                else
+                                    obj.Append( value );
+                                return true;
+                            }
+                            case meta_api::json::Type::Float:
+                            {
+                                if( objectType == meta_api::json::Type::Object )
+                                    obj.Set( key, atof( value ) );
+                                else
+                                    obj.Append( atof( value ) );
+                                return true;
+                            }
+                            case meta_api::json::Type::Integer:
+                            {
+                                if( objectType == meta_api::json::Type::Object )
+                                    obj.Set( key, atoi( value ) );
+                                else
+                                    obj.Append( atoi( value ) );
+                                return true;
+                            }
+                            case meta_api::json::Type::Boolean:
+                            {
+                                if( objectType == meta_api::json::Type::Object )
+                                    obj.Set( key, ( value == "true" ? true : false ) );
+                                else
+                                    obj.Append( ( value == "true" ? true : false ) );;
+                                return true;
+                            }
+                            case meta_api::json::Type::Null:
+                            {
+                                if( objectType == meta_api::json::Type::Object )
+                                    obj.Set( key, meta_api::json::Null::Null );
+                                else
+                                    obj.Append( meta_api::json::Null::Null );
+                                return true;
+                            }
+                            default:
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    return false;
                 }
             }
 
@@ -636,859 +701,23 @@ namespace meta_api
             **/
             bool Deserialize( const string&in str, meta_api::json::v2::json@&out obj )
             {
-                __Position__ = __Size__ = 0;
+                meta_api::json::v2::__Deserializer__ Deserializer();
 
-                // Instantiate obj if null
-                if( obj is null )
-                    @obj = meta_api::json::v2::json();
+                meta_api::json::Type type = Deserializer.Initialize(str);
 
-                // AS copy
-                string serialized = String::EMPTY_STRING;
-
-                string filename;
-                if( GetFilename( str, filename ) )
+                switch( type )
                 {
-                    print( snprintf( cout, "Reading file \"%1\"", filename ), Version::V2 );
-
-                    File@ fstream = g_FileSystem.OpenFile( filename, OpenFile::READ );
-
-                    if( fstream is null || !fstream.IsOpen() )
+                    case meta_api::json::Type::Object:
+                    case meta_api::json::Type::Array:
                     {
-                        print( snprintf( cout, "ERROR: could not open file \"%1\"", filename ), Version::V2 );
+                        return Deserializer.Parse( obj, type );
+                    }
+                    case meta_api::json::Type::Undefined:
+                    default:
+                    {
                         return false;
                     }
-
-                    while( !fstream.EOFReached() )
-                    {
-                        string line;
-                        fstream.ReadLine( line );
-
-                        // Saves some time when iterating the characters.
-                        line.Trim( ' ' );
-
-                        if( !line.IsEmpty() && !( line.Length() >= 2 && line[0] == '/' && line[1] == '/' ) )
-                            snprintf( serialized, "%1%2\n", serialized, line );
-                    }
-
-                    fstream.Close();
                 }
-
-                // No file loaded?
-                if( serialized.IsEmpty() )
-                    serialized = str;
-
-                __Size__ = serialized.Length();
-
-                if( __Size__ == 0 )
-                {
-                    print( "Error: The provided string is empty", Version::V2 );
-                    return false;
-                }
-
-                uint start_idx = 0;
-
-                while( start_idx < __Size__ )
-                {
-                    char check( serialized[start_idx] );
-                    
-                    if( check == ' ' || check == '\n' || check == '\r' || check == '\t' )
-                    {
-                        start_idx++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if( start_idx >= __Size__ )
-                {
-                    print( "Error: The provided string only contains whitespaces", Version::V2 );
-                    return false;
-                }
-
-                while( start_idx < __Size__ )
-                {
-                    char check( serialized[start_idx] );
-                    
-                    if( check != '{' && check != '[' )
-                    {
-                        start_idx++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if( start_idx >= __Size__ )
-                {
-                    print( "Error: The provided string is not an object or array! missing tokens \"{\" or \"[\"", Version::V2 );
-                    return false;
-                }
-
-                char c( serialized[start_idx] );
-                __Position__ = start_idx + 1;
-
-                if( c == '[' )
-                {
-                    if( !ParseArray( serialized, @obj ) )
-                        return false;
-                }
-                else if( c == '{' )
-                {
-                    if( !ParseObject( serialized, @obj ) )
-                        return false;
-                }
-                else
-                {
-                    print( snprintf( cout, "ERROR: (Pos %1): Invalid format. Expected '{' or '[' at the beginning of the JSON", string( start_idx ) ), Version::V2 );
-                    return false;
-                }
-
-                return __ReadIgnored__( serialized );
-            }
-
-            bool __IsIgnoredChar__( char c )
-            {
-                return ( c == ' ' || c == '\n' || c == '\r' || c == '\t' );
-            }
-
-            bool __ReadIgnored__( const string&in serialized )
-            {
-                bool reading_commentary = false;
-                bool single_commentary = false;
-
-                while( __Position__ < __Size__ )
-                {
-                    char c( serialized[__Position__] );
-                    __Position__++;
-
-                    if( reading_commentary )
-                    {
-                        if( single_commentary )
-                        {
-                            if( c == '\n' )
-                                single_commentary = reading_commentary = false;
-                        }
-                        else if( c == '/' && serialized[__Position__ - 2] == '*' )
-                        {
-                            reading_commentary = false;
-                        }
-                        continue;
-                    }
-
-                    if( __IsIgnoredChar__( c ) )
-                        continue;
-
-                    if( c == '/' && __Position__ < __Size__ && serialized[__Position__] == '*' )
-                    {
-                        reading_commentary = true;
-                        continue;
-                    }
-
-                    if( c == '/' && __Position__ < __Size__ && serialized[__Position__] == '/' )
-                    {
-                        reading_commentary = single_commentary = true;
-                        continue;
-                    }
-
-                    print( snprintf( cout, "ERROR: (Pos %1): Unexpected trailing data after root json value", string( __Position__ ) ), Version::V2 );
-                    return false;
-                }
-
-                if( reading_commentary )
-                {
-                    print( snprintf( cout, "ERROR: Unterminated commentary after root json value" ), Version::V2 );
-                    return false;
-                }
-
-                return true;
-            }
-
-            bool __SetScalar__( meta_api::json::v2::json@ obj, const string&in key, const string&in value )
-            {
-                if( value == String::EMPTY_STRING )
-                    return false;
-
-                if( g_Utility.IsStringFloat( value ) )
-                {
-                    obj.Set( key, atof( value ) );
-                    return true;
-                }
-
-                if( g_Utility.IsStringInt( value ) )
-                {
-                    obj.Set( key, atoi( value ) );
-                    return true;
-                }
-
-                if( value == "false" )
-                {
-                    obj.Set( key, false );
-                    return true;
-                }
-
-                if( value == "true" )
-                {
-                    obj.Set( key, true );
-                    return true;
-                }
-
-                if( value == "null" )
-                {
-                    obj.Set( key, meta_api::json::v2::Null::Null );
-                    return true;
-                }
-
-                print( snprintf( cout, "ERROR: (Pos %1): Invalid unquoted value \"%2\" for key \"%3\"", string( __Position__ ), value, key ), Version::V2 );
-                return false;
-            }
-
-            bool __PushScalar__( meta_api::json::v2::json@ obj, const string&in value )
-            {
-                if( value == String::EMPTY_STRING )
-                    return false;
-
-                if( g_Utility.IsStringFloat( value ) )
-                {
-                    obj.Append( atof( value ) );
-                    return true;
-                }
-
-                if( g_Utility.IsStringInt( value ) )
-                {
-                    obj.Append( atoi( value ) );
-                    return true;
-                }
-
-                if( value == "false" )
-                {
-                    obj.Append( false );
-                    return true;
-                }
-
-                if( value == "true" )
-                {
-                    obj.Append( true );
-                    return true;
-                }
-
-                if( value == "null" )
-                {
-                    obj.Append( meta_api::json::v2::Null::Null );
-                    return true;
-                }
-
-                print( snprintf( cout, "ERROR: (Pos %1): Invalid unquoted array value \"%2\"", string( __Position__ ), value ), Version::V2 );
-                return false;
-            }
-
-            bool ParseObject( const string&in serialized, meta_api::json::v2::json@ obj )
-            {
-                obj.SetType( meta_api::json::v2::Type::Object );
-
-                string key = String::EMPTY_STRING;
-                string value = String::EMPTY_STRING;
-                bool in_string = false;
-                bool is_escaped = false;
-                
-                bool reading_commentary = false;
-                bool single_commentary = false;
-                bool reading_key = true;
-                bool value_is_string = false;
-                bool value_is_complete = false;
-                bool just_parsed_child = false;
-                bool found_end = false;
-                bool can_close = true;
-
-                while( __Position__ < __Size__ )
-                {
-                    char c( serialized[__Position__] );
-
-                    __Position__++;
-
-                    bool was_escaped = is_escaped;
-                    is_escaped = false;
-
-                    if( reading_commentary )
-                    {
-                        if( single_commentary )
-                        {
-                            if( c == '\n' )
-                                single_commentary = reading_commentary = false;
-                        }
-                        else if( c == '/' && serialized[__Position__ - 2] == '*' )
-                        {
-                            reading_commentary = false;
-                        }
-                        continue;
-                    }
-                    else if( in_string )
-                    {
-                        if( c == '"' && !was_escaped )
-                        {
-                            in_string = false;
-                            
-                            if( !reading_key )
-                            {
-                                value_is_string = true;
-                            }
-                            
-                            continue;
-                        }
-                        else if( c == '\\' && !was_escaped )
-                        {
-                            is_escaped = true;
-                            continue;
-                        }
-
-                        if( was_escaped )
-                        {
-                            if( c == 'n' ) c = '\n';
-                            else if( c == 't' ) c = '\t';
-                            else if( c == 'r' ) c = '\r';
-                        }
-
-                        if( reading_key )
-                        {
-                            key += c;
-                        }
-                        else
-                        {
-                            value += c;
-                        }
-                    }
-                    else if( c == '"' )
-                    {
-                        if( reading_key && key != String::EMPTY_STRING )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Expected ':' after key", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-                        else if( !reading_key && ( value != String::EMPTY_STRING || value_is_string || just_parsed_child ) )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Missing ',' after value for key \"%2\"", string( __Position__ ), key ), Version::V2 );
-                            return false;
-                        }
-
-                        in_string = true;
-                    }
-                    else if( c == ':' )
-                    {
-                        if( !reading_key )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Unexpected colon ':' in value", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-                        if( key == String::EMPTY_STRING )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Found ':' without a preceding valid key", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        reading_key = false;
-                    }
-                    else if( c == '{' )
-                    {
-                        if( reading_key )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Objects are not allowed as keys", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-                        if( value != String::EMPTY_STRING || value_is_string || just_parsed_child )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Missing ',' before opening a new object", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        if( !ParseObject( serialized, @objChild ) )
-                            return false;
-                        obj.Set( key, objChild );
-                        just_parsed_child = true;
-                        can_close = true;
-                    }
-                    else if( c == '[' )
-                    {
-                        if( reading_key )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Arrays are not allowed as keys", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-                        if( value != String::EMPTY_STRING || value_is_string || just_parsed_child )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Missing ',' before opening an array", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        if( !ParseArray( serialized, @objChild ) )
-                            return false;
-                        obj.Set( key, objChild );
-                        just_parsed_child = true;
-                        can_close = true;
-                    }
-                    else if( c == ',' || c == '}' )
-                    {
-                        if( c == '}' && key == String::EMPTY_STRING && !can_close )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Trailing comma before closing object", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        if( c == ',' && reading_key && key == String::EMPTY_STRING )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Unexpected comma ','. Expected a key", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        if( key != String::EMPTY_STRING )
-                        {
-                            if( !reading_key && value == String::EMPTY_STRING && !value_is_string && !just_parsed_child )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Missing value for key \"%2\"", string( __Position__ ), key ), Version::V2 );
-                                return false;
-                            }
-
-                            if( value_is_string )
-                            {
-                                obj.Set( key, value );
-                            }
-                            else if( value != String::EMPTY_STRING && !__SetScalar__( obj, key, value ) )
-                            {
-                                return false;
-                            }
-
-                            can_close = true;
-                        }
-
-                        key = String::EMPTY_STRING;
-                        value = String::EMPTY_STRING;
-                        reading_key = true;
-                        value_is_string = false;
-                        value_is_complete = false;
-                        just_parsed_child = false;
-
-                        if( c == ',' )
-                            can_close = false;
-
-                        if( c == '}' )
-                        {
-                            found_end = true;
-                            break;
-                        }
-                    }
-                    else if( __IsIgnoredChar__( c ) )
-                    {
-                        if( !reading_key && value != String::EMPTY_STRING )
-                            value_is_complete = true;
-                    }
-                    else
-                    {
-                        if( c == '/' && __Position__ < __Size__ && serialized[__Position__] == '*' )
-                        {
-                            reading_commentary = true;
-                            if( !reading_key && value != String::EMPTY_STRING )
-                                value_is_complete = true;
-                        }
-                        else if( c == '/' && __Position__ < __Size__ && serialized[__Position__] == '/' )
-                        {
-                            reading_commentary = single_commentary = true;
-                            if( !reading_key && value != String::EMPTY_STRING )
-                                value_is_complete = true;
-                        }
-                        else if( reading_key )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Keys must be enclosed in quotes. Invalid character: \"%2\"", string( __Position__ ), string( c ) ), Version::V2 );
-                            return false;
-                        }
-                        else
-                        {
-                            if( value_is_string || just_parsed_child || value_is_complete )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Missing ',' after value for key \"%2\"", string( __Position__ ), key ), Version::V2 );
-                                return false;
-                            }
-
-                            value += c;
-                        }
-                    }
-                }
-
-                if( in_string )
-                {
-                    print( snprintf( cout, "ERROR: Unterminated string in object" ), Version::V2 );
-                    return false;
-                }
-
-                if( reading_commentary )
-                {
-                    print( snprintf( cout, "ERROR: Unterminated commentary in object" ), Version::V2 );
-                    return false;
-                }
-
-                if( !found_end )
-                {
-                    print( snprintf( cout, "ERROR: Unterminated object. Expected '}'" ), Version::V2 );
-                    return false;
-                }
-
-                return true;
-            }
-
-            bool ParseArray( const string&in serialized, meta_api::json::v2::json@ obj )
-            {
-                obj.SetType( meta_api::json::v2::Type::Array );
-
-                string value = String::EMPTY_STRING;
-                bool in_string = false;
-                bool is_escaped = false;
-
-                bool reading_commentary = false;
-                bool single_commentary = false;
-                bool value_is_string = false;
-                bool value_is_complete = false;
-                bool just_parsed_child = false;
-                bool found_end = false;
-                bool can_close = true;
-
-                while( __Position__ < __Size__ )
-                {
-                    char c( serialized[__Position__] );
-
-                    __Position__++;
-
-                    bool was_escaped = is_escaped;
-                    is_escaped = false;
-
-                    if( reading_commentary )
-                    {
-                        if( single_commentary )
-                        {
-                            if( c == '\n' )
-                                single_commentary = reading_commentary = false;
-                        }
-                        else if( c == '/' && serialized[__Position__ - 2] == '*' )
-                        {
-                            reading_commentary = false;
-                        }
-                        continue;
-                    }
-                    else if( in_string )
-                    {
-                        if( c == '"' && !was_escaped )
-                        {
-                            in_string = false;
-                            value_is_string = true;
-                            continue;
-                        }
-                        else if( c == '\\' && !was_escaped )
-                        {
-                            is_escaped = true;
-                            continue;
-                        }
-
-                        if( was_escaped )
-                        {
-                            if( c == 'n' ) c = '\n';
-                            else if( c == 't' ) c = '\t';
-                            else if( c == 'r' ) c = '\r';
-                        }
-
-                        value += c;
-                    }
-                    else if( c == '"' )
-                    {
-                        if( value != String::EMPTY_STRING || value_is_string || just_parsed_child )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Missing separating ',' in array before quotes", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        in_string = true;
-                    }
-                    else if( c == '{' )
-                    {
-                        if( value != String::EMPTY_STRING || value_is_string || just_parsed_child )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Missing ',' before opening an object in array", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        if( !ParseObject( serialized, @objChild ) )
-                            return false;
-                        obj.Append( objChild );
-                        just_parsed_child = true;
-                        can_close = true;
-                    }
-                    else if( c == '[' )
-                    {
-                        if( value != String::EMPTY_STRING || value_is_string || just_parsed_child )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Missing ',' before opening a sub-array", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        meta_api::json::v2::json@ objChild = meta_api::json::v2::json();
-                        if( !ParseArray( serialized, @objChild ) )
-                            return false;
-                        obj.Append( objChild );
-                        just_parsed_child = true;
-                        can_close = true;
-                    }
-                    else if( c == ',' || c == ']' )
-                    {
-                        if( c == ']' && value == String::EMPTY_STRING && !value_is_string && !just_parsed_child && !can_close )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Trailing comma before closing array", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        if( c == ',' && value == String::EMPTY_STRING && !value_is_string && !just_parsed_child )
-                        {
-                            print( snprintf( cout, "ERROR: (Pos %1): Duplicate comma ',' or empty value in array", string( __Position__ ) ), Version::V2 );
-                            return false;
-                        }
-
-                        bool has_data = ( value != String::EMPTY_STRING ) || value_is_string || just_parsed_child;
-
-                        if( has_data )
-                        {
-                            if( value_is_string )
-                            {
-                                obj.Append( value );
-                            }
-                            else if( value != String::EMPTY_STRING && !__PushScalar__( obj, value ) )
-                            {
-                                return false;
-                            }
-
-                            can_close = true;
-                        }
-
-                        value = String::EMPTY_STRING;
-                        value_is_string = false;
-                        value_is_complete = false;
-                        just_parsed_child = false;
-
-                        if( c == ',' )
-                            can_close = false;
-
-                        if( c == ']' )
-                        {
-                            found_end = true;
-                            break;
-                        }
-                    }
-                    else if( __IsIgnoredChar__( c ) )
-                    {
-                        if( value != String::EMPTY_STRING )
-                            value_is_complete = true;
-                    }
-                    else
-                    {
-                        if( c == '/' && __Position__ < __Size__ && serialized[__Position__] == '*' )
-                        {
-                            reading_commentary = true;
-                            if( value != String::EMPTY_STRING )
-                                value_is_complete = true;
-                        }
-                        else if( c == '/' && __Position__ < __Size__ && serialized[__Position__] == '/' )
-                        {
-                            reading_commentary = single_commentary = true;
-                            if( value != String::EMPTY_STRING )
-                                value_is_complete = true;
-                        }
-                        else
-                        {
-                            if( value_is_string || just_parsed_child || value_is_complete )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Missing separating ',' in array", string( __Position__ ) ), Version::V2 );
-                                return false;
-                            }
-
-                            value += c;
-                        }
-                    }
-                }
-
-                if( in_string )
-                {
-                    print( snprintf( cout, "ERROR: Unterminated string in array" ), Version::V2 );
-                    return false;
-                }
-
-                if( reading_commentary )
-                {
-                    print( snprintf( cout, "ERROR: Unterminated commentary in array" ), Version::V2 );
-                    return false;
-                }
-
-                if( !found_end )
-                {
-                    print( snprintf( cout, "ERROR: Unterminated array. Expected ']'" ), Version::V2 );
-                    return false;
-                }
-
-                return true;
-            }
-
-            /**
-            *   @brief Serializes obj.
-            *   indents: -1 = single line, >= 0 = base tabs for root
-            **/
-            string Serialize( int indents, meta_api::json::v2::json@ obj )
-            {
-                return SerializeObject( obj, indents, 0 );
-            }
-
-            /**
-            *   @brief Serializes obj.
-            *   indents: -1 = single line, >= 0 = base tabs for root
-            *   filename: a file name to write in "scripts/(module type)/store/(filename).json"
-            *   Return whatever the content was written
-            **/
-            bool Serialize( meta_api::json::v2::json@ obj, string filename, int indents = -1 )
-            {
-                snprintf( filename, "scripts/%1/store/%2.json", ( g_Module.GetModuleName() == "MapModule" ? "maps" : "plugins" ), filename );
-
-                File@ file = g_FileSystem.OpenFile( filename, OpenFile::WRITE );
-
-                if( file !is null && file.IsOpen() )
-                {
-                    file.Write( Serialize( indents, obj ) );
-                    file.Close();
-                    return true;
-                }
-
-                print( snprintf( cout, "ERROR: Couldn't serialize content to \"%1\"", filename ), Version::V2 );
-
-                return false;
-            }
-
-            /// Escape sequences from string, if add_quitation is true we also add a suffix and prefix quote
-            string EscapeSequences( string&in str, bool add_quotation = false )
-            {
-                str.Replace( "\\", "\\\\" );
-                str.Replace( "\"", "\\\"" );
-                str.Replace( "\n", "\\n" );
-                str.Replace( "\r", "\\r" );
-                str.Replace( "\t", "\\t" );
-                if( add_quotation )
-                    snprintf( str, "\"%1\"", str );
-                return str;
-            }
-
-            string SerializeObject( meta_api::json::v2::json@ obj, int indents, int depth )
-            {
-                if( obj is null )
-                    return "{}";
-
-                bool is_array = ( obj.Type == meta_api::json::v2::Type::Array );
-                bool is_object = ( obj.Type == meta_api::json::v2::Type::Object );
-
-                if( !is_array && !is_object )
-                    return "{}";
-
-                const auto keys = obj.Keys;
-
-                if( keys.length() == 0 )
-                {
-                    if( is_array )
-                        return "[]";
-                    return "{}";
-                }
-
-                string newline = ( indents >= 0 ) ? "\n" : "";
-
-                string indent_str = String::EMPTY_STRING;
-                string indent_inner = String::EMPTY_STRING;
-
-                if( indents > 0 )
-                {
-                    int inner_tabs = depth > 0 ? indents * depth : indents;
-                    for( int i = 1; i <= inner_tabs; i++ )
-                    {
-                        indent_str += " ";
-                    }
-
-                    indent_inner = indent_str;
-                    for( int i = 1; i <= indents; i++ )
-                    {
-                        indent_inner += " ";
-                    }
-                }
-
-                string buffer = ( depth > 0 ? newline + indent_str : '' ) + ( is_array ? "[" : "{" ) + newline;
-
-                for( uint ui = 0; ui < keys.length(); ui++ )
-                {
-                    string key = keys[ui];
-
-                    buffer += ( depth > 0 ? indent_inner : indent_str );
-
-                    if( !is_array )
-                        buffer += EscapeSequences( key, true ) + ( indents > -1 ? ": " : ":" );
-
-                    meta_api::json::v2::json@ value = obj[ key ];
-
-                    if( value is null )
-                    {
-                        buffer += "null";
-                    }
-                    else
-                    {
-                        switch( value.Type )
-                        {
-                            case meta_api::json::v2::Type::String:
-                            {
-                                buffer += EscapeSequences( string( value.Value ), true );
-                                break;
-                            }
-                            case meta_api::json::v2::Type::Null:
-                            {
-                                buffer += "null";
-                                break;
-                            }
-                            case meta_api::json::v2::Type::Float:
-                            {
-                                buffer += float( value.Value );
-                                break;
-                            }
-                            case meta_api::json::v2::Type::Integer:
-                            {
-                                buffer += int( value.Value );
-                                break;
-                            }
-                            case meta_api::json::v2::Type::Boolean:
-                            {
-                                buffer += ( bool( value.Value ) ? "true" : "false" );
-                                break;
-                            }
-                            case meta_api::json::v2::Type::Object:
-                            case meta_api::json::v2::Type::Array:
-                            {
-                                buffer += SerializeObject( value, indents, depth + 1 );
-                                break;
-                            }
-                        }
-                    }
-
-                    if( ui < keys.length() - 1 )
-                    {
-                        buffer += "," + newline;
-                    }
-                    else
-                    {
-                        buffer += newline;
-                    }
-                }
-
-                buffer += ( depth > 0 ? indent_str : '' ) + ( is_array ? "]" : "}" );
-
-                return buffer;
             }
         } // v2
     } // json

@@ -6,7 +6,7 @@
 interface JToken
 {
     // Current type of this object.
-    const meta_api::json::v2::Type& get_Type() const;
+    const meta_api::json::Type& get_Type() const;
     /// Return whatever value is a bool
     bool is_boolean() const;
     /// Return whatever value is a integer
@@ -94,7 +94,7 @@ interface JContainer
 interface JObject : JToken, JContainer
 {
     /// Set a value of any type. "value" could be set by using Value.opAssign(T) from this object
-    void SetValue( const dictionaryValue&in value, const meta_api::json::v2::Type&in type );
+    void SetValue( const dictionaryValue&in value, const meta_api::json::Type&in type );
     /// Return whatever this objects contains the given key
     bool Contains( const string&in keyName ) const;
     /// Get the value&out and return whatever the value exists or not.
