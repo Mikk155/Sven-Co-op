@@ -81,6 +81,25 @@ namespace v1
     }
 }
 
+class CDeserializeTest
+{
+    bool expected;
+    string title;
+    string serialized;
+
+    CDeserializeTest( string title, bool expected, string serialized )
+    {
+        this.title = title;
+        this.expected = expected;
+        this.serialized = serialized;
+    }
+}
+
+/// Various tests for deserialization
+array<CDeserializeTest@> g_DeserializerTests = {
+    CDeserializeTest( "Invalid last key pair with coma", false, "{\"null\":null,}" )
+};
+
 void RunTests( const meta_api::json::Version&in version, bool metamod )
 {
     g_Version = version;
@@ -96,11 +115,23 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
     {
         case meta_api::json::Version::V1:
         {
+            for( uint ui = 0; ui < g_DeserializerTests.length(); ui++ )
+            {
+                CDeserializeTest@ test = g_DeserializerTests[ui];
+                v1::ExpectDeserialize( test.title, test.expected, test.serialized );
+            }
+
             dictionary@ obj = v1::ExpectDeserialize( "valid object with comments and nested values", true, g_DeserializeSample );
             break;
         }
         case meta_api::json::Version::V2:
         {
+            for( uint ui = 0; ui < g_DeserializerTests.length(); ui++ )
+            {
+                CDeserializeTest@ test = g_DeserializerTests[ui];
+                v1::ExpectDeserialize( test.title, test.expected, test.serialized );
+            }
+
             meta_api::json::v2::json@ obj = v2::ExpectDeserialize( "valid object with comments and nested values", true, g_DeserializeSample );
             break;
         }
