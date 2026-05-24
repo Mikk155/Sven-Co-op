@@ -66,7 +66,7 @@ void Shutdown()
 {
     if( g_ShouldWriteCache )
     {
-        meta_api::json::v1::Serialize( g_Cache, "BMLongJump", -1 );
+        meta_api::json::v1::Serialize( g_Cache, "BMLongJump", meta_api::json::parser::Indentation::AllTogether );
     }
 }
 

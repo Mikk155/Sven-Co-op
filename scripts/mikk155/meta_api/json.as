@@ -33,8 +33,9 @@ namespace meta_api
 
         /**
         *   @brief return whatever str is a valid file name and formats the output filename
+        *   IsCache: if true the path is at the store/ folder
         **/
-        bool GetFilename( string&in str, string&out filename )
+        bool GetFilename( string&in str, string&out filename, bool IsCache = false )
         {
             if( str.EndsWith( ".json" ) )
             {
@@ -51,7 +52,7 @@ namespace meta_api
                     str = str.SubString( moduleFolder.Length() );
                 }
 
-                snprintf( filename, "scripts/%1%2", moduleFolder, str );
+                snprintf( filename, "scripts/%1%2%3", moduleFolder, ( IsCache ? "store/" : String::EMPTY_STRING ), str );
 
                 return true;
             }
@@ -135,189 +136,283 @@ namespace meta_api
             {
                 private
                     string m_Buffer;
-
                 private
                     meta_api::json::parser::Indentation m_Indents = meta_api::json::parser::Indentation::AllTogether;
-
-                const meta_api::json::parser::Indentation get_Indentation()
-                {
-                    return this.m_Indents;
-                }
-
-                Serializer@ SetIndentation( const meta_api::json::parser::Indentation&in indents ) {
-                    this.m_Indents = indents;
-                    return this;
-                }
-
                 private
                     meta_api::json::parser::Style m_Style = meta_api::json::parser::Style::AllMan;
-
-                const meta_api::json::parser::Style get_Style()
-                {
-                    if( this.m_Indents == meta_api::json::parser::Indentation::AllTogether && this.m_Style != meta_api::json::parser::Style::KandR )
-                    {
-                        print( "Only Style::KandR is supported when Indentation::AllTogether. Enforcing Style::KandR..." );
-                        this.m_Style = meta_api::json::parser::Style::KandR;
-                    }
-                    return this.m_Style;
-                }
-
-                Serializer@ SetStyle( const meta_api::json::parser::Style&in style ) {
-                    this.m_Style = style;
-                    return this;
-                }
-
                 private
                     meta_api::json::Type m_Type = meta_api::json::Type::Object;
+                private
+                    string m_Filename;
+                private
+                    uint error = 0;
+                private
+                    uint m_Depth = 1;
 
-                string Serialized()
-                {
-                    string buffer;
-                    switch( m_Type )
-                    {
-                        case meta_api::json::Type::Array:
-                        {
-                            snprintf( buffer, "[%1",);
-                            break;
-                        }
-                        case meta_api::json::Type::Object:
-                    }
-                    snprintf( );
+                private
+                    meta_api::json::Version version;
+
+                const meta_api::json::Version GetVersion() const override { return this.version; }
+
+                /// Return whatever all is been parsed with no issues
+                const bool get_Ok() const {
+                    return ( this.error == 0 );
                 }
 
-                Serializer@ SetType( const meta_api::json::Type&in type )
+                Serializer@ Object( const meta_api::json::Type&in type )
                 {
+                    return Serializer( this.m_Depth + 1, String::EMPTY_STRING, this.m_Type, this.m_Style, this.m_Indents, this.GetVersion() );
+                }
+
+                Serializer(
+                    uint depth,
+                    const string&in filename,
+                    const meta_api::json::Type&in type,
+                    const meta_api::json::parser::Style&in style,
+                    const meta_api::json::parser::Indentation&in indents,
+                    const meta_api::json::Version&in version
+                )
+                {
+                    this.m_Depth = depth;
+                    this.m_Indents = indents;
+                    this.m_Style = style;
+                    this.m_Filename = filename;
+                    this.version = version;
+
+                    if( this.m_Indents == meta_api::json::parser::Indentation::AllTogether && this.m_Style != meta_api::json::parser::Style::KandR )
+                    {
+                        if( depth == 0 )
+                        {
+                            print( "Only Style::KandR is supported when Indentation::AllTogether. Enforcing Style::KandR..." );
+                        }
+
+                        this.m_Style = meta_api::json::parser::Style::KandR;
+                    }
+
+                    if( this.m_Depth > 1 )
+                    {
+                        if( this.m_Style == meta_api::json::parser::Style::AllMan && this.m_Indents != meta_api::json::parser::Indentation::AllTogether )
+                            this.m_Buffer.opAddAssign( '\n' );
+
+                        switch( this.m_Indents )
+                        {
+                            case meta_api::json::parser::Indentation::OneSpace:
+                            {
+                                for( uint ui = 0; ui < this.m_Depth; ui++ )
+                                    this.m_Buffer.opAddAssign( ' ' );
+                                break;
+                            }
+                            case meta_api::json::parser::Indentation::OneTabSpace:
+                            {
+                                for( uint ui = 0; ui < this.m_Depth; ui++ )
+                                    this.m_Buffer.opAddAssign( '\t' );
+                                break;
+                            }
+                            case meta_api::json::parser::Indentation::NoIndentation:
+                            case meta_api::json::parser::Indentation::AllTogether:
+                            default:
+                            {
+                                break;
+                            }
+                        }
+                    }
+
                     switch( type )
                     {
                         case meta_api::json::Type::Array:
+                        {
+                            this.m_Buffer.opAddAssign( '[' );
+                            this.m_Type = type;
+                            break;
+                        }
                         case meta_api::json::Type::Object:
                         {
+                            this.m_Buffer.opAddAssign( '{' );
                             this.m_Type = type;
+                            break;
                         }
                         default:
                         {
-                            print( "Error: Can not call Serializer::SetType with other than Array or Object!" );
-                            return null;
-                        }
-                    }
-                    return this;
-                }
-
-                Serializer@ opAssign( Serializer@ other )
-                {
-                    this.m_Style = other.Style;
-                    this.m_Indents = other.Indentation;
-                    return this;
-                }
-
-                const string& get_PairSeparator()
-                {
-                    switch( this.m_Style )
-                    {
-                        case meta_api::json::parser::Style::KandR:
-                        {
-                            return ":";
-                        }
-                        case meta_api::json::parser::Style::AllMan:
-                        default:
-                        {
-                            return ": ";
+                            print( "Error: Can not instantiate a Serializer with other than Array or Object!" );
+                            this.error++;
+                            break;
                         }
                     }
                 }
 
-                const string& get_NewLine()
+                string Serialize()
                 {
-                    switch( this.m_Style )
-                    {
-                        case meta_api::json::parser::Indentation::AllTogether:
-                        {
-                            return String::EMPTY_STRING;
-                        }
-                        case meta_api::json::parser::Style::AllMan:
-                        default:
-                        {
-                            return "\n";
-                        }
-                    }
-                }
-
-                const string& GetIndentation( int depth = 1 )
-                {
-                    char type('');
-
                     switch( this.m_Indents )
                     {
+                        case meta_api::json::parser::Indentation::NoIndentation:
+                        {
+                            this.m_Buffer.opAddAssign( '\n' );
+                            break;
+                        }
                         case meta_api::json::parser::Indentation::OneSpace:
                         {
-                            type = ' ';
+                            this.m_Buffer.opAddAssign( '\n' );
+                            for( uint ui = 0; this.m_Depth > 1 && ui < this.m_Depth; ui++ )
+                                this.m_Buffer.opAddAssign( ' ' );
                             break;
                         }
                         case meta_api::json::parser::Indentation::OneTabSpace:
                         {
-                            type = '\t';
+                            this.m_Buffer.opAddAssign( '\n' );
+                            for( uint ui = 0; this.m_Depth > 1 && ui < this.m_Depth; ui++ )
+                                this.m_Buffer.opAddAssign( '\t' );
                             break;
                         }
-                        case meta_api::json::parser::Indentation::NoIndentation:
                         case meta_api::json::parser::Indentation::AllTogether:
                         default:
                         {
                             break;
                         }
                     }
+
+                    switch( this.m_Type )
+                    {
+                        case meta_api::json::Type::Array:
+                        {
+                            this.m_Buffer.opAddAssign( ']' );
+                            break;
+                        }
+                        case meta_api::json::Type::Object:
+                        {
+                            this.m_Buffer.opAddAssign( '}' );
+                            break;
+                        }
+                    }
+
+                    // Write to a file
+                    if( !this.m_Filename.IsEmpty() )
+                    {
+                        snprintf( this.m_Filename, "%1.json", this.m_Filename );
+
+                        if( meta_api::json::GetFilename( this.m_Filename, this.m_Filename ) )
+                        {
+                            // Any errors? Then write a empty object ONLY if the file doesn't exists already.
+                            if( !this.Ok )
+                            {
+                                File@ fstream = g_FileSystem.OpenFile( this.m_Filename, OpenFile::READ );
+
+                                if( fstream is null )
+                                {
+                                    @fstream = g_FileSystem.OpenFile( this.m_Filename, OpenFile::WRITE );
+
+                                    if( fstream !is null && fstream.IsOpen() )
+                                    {
+                                        fstream.Write( "{}" );
+                                        fstream.Close();
+                                    }
+                                }
+                                return String::EMPTY_STRING;
+                            }
+
+                            File@ file = g_FileSystem.OpenFile( this.m_Filename, OpenFile::WRITE );
+
+                            if( file !is null && file.IsOpen() )
+                            {
+                                file.Write( this.m_Buffer );
+                                file.Close();
+                                return this.m_Buffer;
+                            }
+                        }
+
+                        print( snprintf( cout, "ERROR: Couldn't serialize content to file \"%1\"", this.m_Filename ) );
+                        return String::EMPTY_STRING;
+                    }
+
+                    if( !this.Ok )
+                    {
+                        print( snprintf( cout, "ERROR: Couldn't serialize content for \"%1\"", g_Module.GetModuleName() ) );
+                        return String::EMPTY_STRING;
+                    }
+
+                    return this.m_Buffer;
                 }
 
                 private
-                    bool m_HadPreviousValue = false;
+                    bool m_HasAnyKey = false;
 
-                const string& get_EndOfValue()
+                /// Insert a key-value
+                void KeyValue( const string&in key, const string&in value, const meta_api::json::Type&in type )
                 {
-                    if( m_HadPreviousValue )
-                        return ",";
-                    return "";
-                }
-
-                bool KeyValue( const string&in key, const string&in value, const meta_api::json::Type&in type )
-                {
-                    if( m_HadPreviousValue )
-                        this.m_Buffer.opAdd( "," );
-
-                    switch( type )
+                    if( value.IsEmpty() && type != meta_api::json::Type::String )
                     {
-                        case meta_api::json::Type::String:
-                            return snprintf( this.m_Buffer, "%1\"%2\"%3\"%4\"%5", this.m_Buffer, key, this.PairSeparator, EscapeSequences(value), this.EndOfValue );
-                        case meta_api::json::Type::Float:
-                        case meta_api::json::Type::Integer:
-                            return snprintf( this.m_Buffer, "%1\"%2\"%3%4%5", this.m_Buffer, key, this.PairSeparator, value, this.EndOfValue );
-                        case meta_api::json::Type::Boolean:
-                            return snprintf( this.m_Buffer, "%1\"%2\"%3%4%5", this.m_Buffer, key, this.PairSeparator, ( value == '1' || value == "true" ? "true" : "false" ), this.EndOfValue );
-                        case meta_api::json::Type::Null:
-                            return snprintf( this.m_Buffer, "%1\"%2\"%3null%4", this.m_Buffer, key, this.PairSeparator, this.EndOfValue );
-                        case meta_api::json::Type::Array:
-                        case meta_api::json::Type::Object:
-                        case meta_api::json::Type::Undefined:
-                        case meta_api::json::Type::Handle:
+                        print( snprintf( cout, "Error: Skiping unable to serialize empty value other than string. value of type %1 at key %2", type, key ) );
+                        return;
+                    }
+
+                    if( this.m_HasAnyKey )
+                        this.m_Buffer.opAddAssign( ',' );
+                    else
+                        this.m_HasAnyKey = true;
+
+                    switch( this.m_Indents )
+                    {
+                        case meta_api::json::parser::Indentation::NoIndentation:
+                        {
+                            this.m_Buffer.opAddAssign( '\n' );
+                            break;
+                        }
+                        case meta_api::json::parser::Indentation::OneSpace:
+                        {
+                            this.m_Buffer.opAddAssign( '\n' );
+                            for( uint ui = 0; ui <= this.m_Depth; ui++ )
+                                this.m_Buffer.opAddAssign( ' ' );
+                            break;
+                        }
+                        case meta_api::json::parser::Indentation::OneTabSpace:
+                        {
+                            this.m_Buffer.opAddAssign( '\n' );
+                            for( uint ui = 0; ui <= this.m_Depth; ui++ )
+                                this.m_Buffer.opAddAssign( '\t' );
+                            break;
+                        }
+                        case meta_api::json::parser::Indentation::AllTogether:
                         default:
                         {
                             break;
                         }
                     }
 
-                    this.m_HadPreviousValue = true;
-                }
+                    this.m_Buffer.opAddAssign( EscapeSequences( key, true ) );
+                    this.m_Buffer.opAddAssign( ':' );
 
-                // Open object either one of: Array, Object
-                void Open( const meta_api::json::Type&in objectType )
-                {
-                    switch( this.m_Style )
+                    if( this.m_Style == meta_api::json::parser::Style::AllMan && this.m_Indents != meta_api::json::parser::Indentation::AllTogether )
+                        this.m_Buffer.opAddAssign( ' ' );
+
+                    switch( type )
                     {
-                        case meta_api::json::parser::Style::AllMan:
+                        case meta_api::json::Type::String:
                         {
-                            snprintf( this.m_Buffer, "%1", this.m_Buffer );
+                            this.m_Buffer.opAddAssign( EscapeSequences( value, true ) );
                             break;
                         }
-                        case meta_api::json::parser::Style::KandR:
+                        case meta_api::json::Type::Float:
+                        case meta_api::json::Type::Integer:
+                        case meta_api::json::Type::Array:
+                        case meta_api::json::Type::Object:
                         {
+                            this.m_Buffer.opAddAssign( value );
+                            break;
+                        }
+                        case meta_api::json::Type::Boolean:
+                        {
+                            this.m_Buffer.opAddAssign( ( value == '1' || value == "true" ? "true" : "false" ) );
+                            break;
+                        }
+                        case meta_api::json::Type::Null:
+                        {
+                            this.m_Buffer.opAddAssign( "null" );
+                            break;
+                        }
+                        case meta_api::json::Type::Undefined:
+                        case meta_api::json::Type::Handle:
+                        default:
+                        {
+                            print( snprintf( cout, "Error: Skiping unable to serialize value of type %1 at key %2 with value of %3", type, key, value ) );
                             break;
                         }
                     }
@@ -815,33 +910,33 @@ namespace meta_api
                             if( c == '}' )
                             {
                                 found_end = true;
-                                    break;
-                                }
+                                break;
                             }
-                            else if( this.IsIgnoredChar( c ) )
+                        }
+                        else if( this.IsIgnoredChar( c ) )
+                        {
+                            if( !reading_key && value != String::EMPTY_STRING )
+                                value_is_complete = true;
+                        }
+                        else
+                        {
+                            if( reading_key )
                             {
-                                if( !reading_key && value != String::EMPTY_STRING )
-                                    value_is_complete = true;
+                                print( snprintf( cout, "ERROR: (Pos %1): Keys must be enclosed in quotes. Invalid character: \"%2\"", string( this.CurrentPosition ), string( c ) ) );
+                                return false;
                             }
                             else
                             {
-                                if( reading_key )
+                                if( value_is_string || bool( data[ "just_parsed_child" ] ) || value_is_complete )
                                 {
-                                    print( snprintf( cout, "ERROR: (Pos %1): Keys must be enclosed in quotes. Invalid character: \"%2\"", string( this.CurrentPosition ), string( c ) ) );
+                                    print( snprintf( cout, "ERROR: (Pos %1): Missing ',' after value for key \"%2\"", string( this.CurrentPosition ), key ) );
                                     return false;
                                 }
-                                else
-                                {
-                                    if( value_is_string || bool( data[ "just_parsed_child" ] ) || value_is_complete )
-                                    {
-                                        print( snprintf( cout, "ERROR: (Pos %1): Missing ',' after value for key \"%2\"", string( this.CurrentPosition ), key ) );
-                                        return false;
-                                    }
 
-                                    value += c;
-                                }
+                                value += c;
                             }
                         }
+                    }
 
                     if( in_string )
                     {
