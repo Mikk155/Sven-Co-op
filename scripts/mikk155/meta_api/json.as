@@ -84,6 +84,244 @@ namespace meta_api
 
                 // Parser version.
                 const meta_api::json::Version GetVersion() const { return Version::Undefined; }
+
+                // Print cout to console if "developer" is greater than zero
+                void print( bool fmt ) {
+                    meta_api::json::print( fmt, this.GetVersion() );
+                }
+
+                // Print cout to console if "developer" is greater than zero
+                void print( const string &in message ) {
+                    meta_api::json::print( message, this.GetVersion() );
+                }
+            }
+
+            enum Indentation
+            {
+                /// Everything together, no spaces or new lines, hard to read faster to parse.
+                AllTogether = -1,
+                /// Zero spaces but everything goes on a new line
+                NoIndentation,
+                /// A single space for each object
+                OneSpace,
+                /// One tab (\t) space for each object
+                OneTabSpace,
+            };
+
+            enum Style
+            {
+                /// Each opening of array/object ("{" and "[") goes on their own line
+                AllMan = 0,
+                /// Each opening of array/object ("{" and "[") goes after the value's colon (":")
+                KandR
+            };
+
+            /// Escape sequences from string, if add_quitation is true we also add a suffix and prefix quote
+            // -TODO iterate to see something isn't actually escaped
+            string EscapeSequences( string&in str, bool add_quotation = false )
+            {
+                str.Replace( "\\", "\\\\" );
+                str.Replace( "\"", "\\\"" );
+                str.Replace( "\n", "\\n" );
+                str.Replace( "\r", "\\r" );
+                str.Replace( "\t", "\\t" );
+                if( add_quotation )
+                    snprintf( str, "\"%1\"", str );
+                return str;
+            }
+
+            /// Serializer class.
+            final class Serializer : Parser
+            {
+                private
+                    string m_Buffer;
+
+                private
+                    meta_api::json::parser::Indentation m_Indents = meta_api::json::parser::Indentation::AllTogether;
+
+                const meta_api::json::parser::Indentation get_Indentation()
+                {
+                    return this.m_Indents;
+                }
+
+                Serializer@ SetIndentation( const meta_api::json::parser::Indentation&in indents ) {
+                    this.m_Indents = indents;
+                    return this;
+                }
+
+                private
+                    meta_api::json::parser::Style m_Style = meta_api::json::parser::Style::AllMan;
+
+                const meta_api::json::parser::Style get_Style()
+                {
+                    if( this.m_Indents == meta_api::json::parser::Indentation::AllTogether && this.m_Style != meta_api::json::parser::Style::KandR )
+                    {
+                        print( "Only Style::KandR is supported when Indentation::AllTogether. Enforcing Style::KandR..." );
+                        this.m_Style = meta_api::json::parser::Style::KandR;
+                    }
+                    return this.m_Style;
+                }
+
+                Serializer@ SetStyle( const meta_api::json::parser::Style&in style ) {
+                    this.m_Style = style;
+                    return this;
+                }
+
+                private
+                    meta_api::json::Type m_Type = meta_api::json::Type::Object;
+
+                string Serialized()
+                {
+                    string buffer;
+                    switch( m_Type )
+                    {
+                        case meta_api::json::Type::Array:
+                        {
+                            snprintf( buffer, "[%1",);
+                            break;
+                        }
+                        case meta_api::json::Type::Object:
+                    }
+                    snprintf( );
+                }
+
+                Serializer@ SetType( const meta_api::json::Type&in type )
+                {
+                    switch( type )
+                    {
+                        case meta_api::json::Type::Array:
+                        case meta_api::json::Type::Object:
+                        {
+                            this.m_Type = type;
+                        }
+                        default:
+                        {
+                            print( "Error: Can not call Serializer::SetType with other than Array or Object!" );
+                            return null;
+                        }
+                    }
+                    return this;
+                }
+
+                Serializer@ opAssign( Serializer@ other )
+                {
+                    this.m_Style = other.Style;
+                    this.m_Indents = other.Indentation;
+                    return this;
+                }
+
+                const string& get_PairSeparator()
+                {
+                    switch( this.m_Style )
+                    {
+                        case meta_api::json::parser::Style::KandR:
+                        {
+                            return ":";
+                        }
+                        case meta_api::json::parser::Style::AllMan:
+                        default:
+                        {
+                            return ": ";
+                        }
+                    }
+                }
+
+                const string& get_NewLine()
+                {
+                    switch( this.m_Style )
+                    {
+                        case meta_api::json::parser::Indentation::AllTogether:
+                        {
+                            return String::EMPTY_STRING;
+                        }
+                        case meta_api::json::parser::Style::AllMan:
+                        default:
+                        {
+                            return "\n";
+                        }
+                    }
+                }
+
+                const string& GetIndentation( int depth = 1 )
+                {
+                    char type('');
+
+                    switch( this.m_Indents )
+                    {
+                        case meta_api::json::parser::Indentation::OneSpace:
+                        {
+                            type = ' ';
+                            break;
+                        }
+                        case meta_api::json::parser::Indentation::OneTabSpace:
+                        {
+                            type = '\t';
+                            break;
+                        }
+                        case meta_api::json::parser::Indentation::NoIndentation:
+                        case meta_api::json::parser::Indentation::AllTogether:
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                private
+                    bool m_HadPreviousValue = false;
+
+                const string& get_EndOfValue()
+                {
+                    if( m_HadPreviousValue )
+                        return ",";
+                    return "";
+                }
+
+                bool KeyValue( const string&in key, const string&in value, const meta_api::json::Type&in type )
+                {
+                    if( m_HadPreviousValue )
+                        this.m_Buffer.opAdd( "," );
+
+                    switch( type )
+                    {
+                        case meta_api::json::Type::String:
+                            return snprintf( this.m_Buffer, "%1\"%2\"%3\"%4\"%5", this.m_Buffer, key, this.PairSeparator, EscapeSequences(value), this.EndOfValue );
+                        case meta_api::json::Type::Float:
+                        case meta_api::json::Type::Integer:
+                            return snprintf( this.m_Buffer, "%1\"%2\"%3%4%5", this.m_Buffer, key, this.PairSeparator, value, this.EndOfValue );
+                        case meta_api::json::Type::Boolean:
+                            return snprintf( this.m_Buffer, "%1\"%2\"%3%4%5", this.m_Buffer, key, this.PairSeparator, ( value == '1' || value == "true" ? "true" : "false" ), this.EndOfValue );
+                        case meta_api::json::Type::Null:
+                            return snprintf( this.m_Buffer, "%1\"%2\"%3null%4", this.m_Buffer, key, this.PairSeparator, this.EndOfValue );
+                        case meta_api::json::Type::Array:
+                        case meta_api::json::Type::Object:
+                        case meta_api::json::Type::Undefined:
+                        case meta_api::json::Type::Handle:
+                        default:
+                        {
+                            break;
+                        }
+                    }
+
+                    this.m_HadPreviousValue = true;
+                }
+
+                // Open object either one of: Array, Object
+                void Open( const meta_api::json::Type&in objectType )
+                {
+                    switch( this.m_Style )
+                    {
+                        case meta_api::json::parser::Style::AllMan:
+                        {
+                            snprintf( this.m_Buffer, "%1", this.m_Buffer );
+                            break;
+                        }
+                        case meta_api::json::parser::Style::KandR:
+                        {
+                            break;
+                        }
+                    }
+                }
             }
 
             /// Deserializer class. inherit from this overriding the GetVersion method from the Parser interface
@@ -103,16 +341,6 @@ namespace meta_api
                         default:
                             return false;
                     }
-                }
-
-                // Print cout to console if "developer" is greater than zero
-                void print( bool fmt ) {
-                    meta_api::json::print( fmt, this.GetVersion() );
-                }
-
-                // Print cout to console if "developer" is greater than zero
-                void print( const string &in message ) {
-                    meta_api::json::print( message, this.GetVersion() );
                 }
 
                 private
@@ -290,19 +518,6 @@ namespace meta_api
                     return ( c == ' ' || c == '\n' || c == '\r' || c == '\t' );
                 }
 
-                /// Escape sequences from string, if add_quitation is true we also add a suffix and prefix quote
-                string EscapeSequences( string&in str, bool add_quotation = false )
-                {
-                    str.Replace( "\\", "\\\\" );
-                    str.Replace( "\"", "\\\"" );
-                    str.Replace( "\n", "\\n" );
-                    str.Replace( "\r", "\\r" );
-                    str.Replace( "\t", "\\t" );
-                    if( add_quotation )
-                        snprintf( str, "\"%1\"", str );
-                    return str;
-                }
-
                 /// Get the last read string formated as " Last read: %1"
                 string GetLastRead()
                 {
@@ -385,7 +600,7 @@ namespace meta_api
                     }
 
                     if( m_Initialized == meta_api::json::Type::Undefined )
-                        print( snprintf( cout, "Unexpected token \"%1\" at line %2 expected \"{\" or \"[\"%3", this.EscapeSequences( string(check) ), this.GetCurrentLine(), this.GetLastRead() ) );
+                        print( snprintf( cout, "Unexpected token \"%1\" at line %2 expected \"{\" or \"[\"%3", meta_api::json::parser::EscapeSequences( string(check) ), this.GetCurrentLine(), this.GetLastRead() ) );
 
                     return m_Initialized;
                 }
