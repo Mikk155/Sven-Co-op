@@ -97,7 +97,8 @@ class CDeserializeTest
 
 /// Various tests for deserialization
 array<CDeserializeTest@> g_DeserializerTests = {
-    CDeserializeTest( "Invalid last key pair with coma", false, "{\"null\":null,}" )
+    CDeserializeTest( "Invalid last key pair with coma", false, "{\"null\":null,}" ),
+    CDeserializeTest( "Invalid pairs with no coma separator", false, "{\"null\":null\n\"string\":\"empty\"}" )
 };
 
 void RunTests( const meta_api::json::Version&in version, bool metamod )
