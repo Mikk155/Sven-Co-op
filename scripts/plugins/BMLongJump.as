@@ -23,6 +23,7 @@
 **/
 
 #include "../mikk155/meta_api"
+#include "../mikk155/meta_api/json/v1/fmt/ToArray"
 #include "../mikk155/meta_api/json/v1"
 #include "../mikk155/Server/IsMapListed"
 
@@ -145,7 +146,7 @@ void MapInit()
         dictionary data;
         if( meta_api::json::v1::Deserialize( "BMLongJump.json", data ) )
         {
-            g_BlacklistedMaps = meta_api::json::v1::ToArray( data[ "map_blacklist" ] );
+            meta_api::json::v1::fmt::ToArray( data[ "map_blacklist" ], g_BlacklistedMaps );
             g_ShouldReloadJson = bool( data[ "reload" ] );
             data.get( "speed", g_Speed );
             data.get( "jump_sound", g_JumpSound );
