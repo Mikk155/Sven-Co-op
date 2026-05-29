@@ -20,15 +20,42 @@ namespace meta_api
         // Console output temporal buffer
         string cout;
 
-        // Print cout to console if "developer" is greater than zero
-        void print( bool fmt, const Version &in version = Latest ) {
-            g_Game.AlertMessage( at_console, "[JSON v%1] %2\n", int(version), cout );
-            cout = String::EMPTY_STRING;
-        }
+        bool debug = false;
 
-        // Print cout to console if "developer" is greater than zero
-        void print( const string &in message, const Version &in version = Latest ) {
-            print( snprintf( cout, message ), version );
+        namespace print
+        {
+            void __print__( const string &in type, const string&in message, const Version &in version )
+            {
+                string moduleName = g_Module.GetModuleName();
+
+                if( moduleName != "MapModule" )
+                    snprintf( moduleName, "Plugin %1", moduleName );
+
+                snprintf( cout, "[JSON v%1] [%2] %3: %4\n", int(version), moduleName, type, message );
+                g_EngineFuncs.ServerPrint(cout);
+                cout.Clear();
+            }
+
+            void error( bool fmt, const Version &in version = meta_api::json::Latest ) {
+                __print__( "Error", cout, version );
+            }
+            void error( const string &in message, const Version &in version = Latest ) {
+                __print__( "Error", message, version );
+            }
+
+            void info( bool fmt, const Version &in version = meta_api::json::Latest ) {
+                __print__( "Info", cout, version );
+            }
+            void info( const string &in message, const Version &in version = Latest ) {
+                __print__( "Info", message, version );
+            }
+
+            void debug( bool fmt, const Version &in version = meta_api::json::Latest ) {
+                __print__( "Debug", cout, version );
+            }
+            void debug( const string &in message, const Version &in version = Latest ) {
+                __print__( "Debug", message, version );
+            }
         }
 
         /**
@@ -77,24 +104,42 @@ namespace meta_api
             Null
         };
 
+        namespace Type
+        {
+            const string& ToString( const meta_api::json::Type&in type )
+            {
+                switch( type )
+                {
+                    case meta_api::json::Type::Handle: return "Handle";
+                    case meta_api::json::Type::String: return "String";
+                    case meta_api::json::Type::Float: return "Float";
+                    case meta_api::json::Type::Integer: return "Integer";
+                    case meta_api::json::Type::Boolean: return "Boolean";
+                    case meta_api::json::Type::Object: return "Object";
+                    case meta_api::json::Type::Array: return "Array";
+                    case meta_api::json::Type::Null: return "Null";
+                }
+
+                return "Undefined";
+            }
+        }
+
         namespace parser
         {
             abstract class Parser
             {
                 // -TODO Move methods meant to be overrided to interface: https://github.com/anjo76/angelscript/issues/68
 
+                protected
+                    uint error = 0;
+
+                /// Return whatever all is been parsed with no issues
+                const bool get_Ok() const {
+                    return ( this.error == 0 );
+                }
+
                 // Parser version.
                 const meta_api::json::Version GetVersion() const { return Version::Undefined; }
-
-                // Print cout to console if "developer" is greater than zero
-                void print( bool fmt ) {
-                    meta_api::json::print( fmt, this.GetVersion() );
-                }
-
-                // Print cout to console if "developer" is greater than zero
-                void print( const string &in message ) {
-                    meta_api::json::print( message, this.GetVersion() );
-                }
             }
 
             enum Indentation
@@ -145,19 +190,12 @@ namespace meta_api
                 private
                     string m_Filename;
                 private
-                    uint error = 0;
-                private
                     uint m_Depth = 1;
 
                 private
                     meta_api::json::Version version;
 
                 const meta_api::json::Version GetVersion() const override { return this.version; }
-
-                /// Return whatever all is been parsed with no issues
-                const bool get_Ok() const {
-                    return ( this.error == 0 );
-                }
 
                 Serializer@ Object( const meta_api::json::Type&in type )
                 {
@@ -183,7 +221,7 @@ namespace meta_api
                     {
                         if( depth == 0 )
                         {
-                            print( "Only Style::KandR is supported when Indentation::AllTogether. Enforcing Style::KandR..." );
+                            print::info( "Only Style::KandR is supported when Indentation::AllTogether. Enforcing Style::KandR...", this.GetVersion() );
                         }
 
                         this.m_Style = meta_api::json::parser::Style::KandR;
@@ -233,7 +271,7 @@ namespace meta_api
                         }
                         default:
                         {
-                            print( "Error: Can not instantiate a Serializer with other than Array or Object!" );
+                            print::error( "Can not instantiate a Serializer with other than Array or Object!", this.GetVersion() );
                             this.error++;
                             break;
                         }
@@ -319,13 +357,13 @@ namespace meta_api
                             }
                         }
 
-                        print( snprintf( cout, "ERROR: Couldn't serialize content to file \"%1\"", this.m_Filename ) );
+                        print::error( snprintf( cout, "Couldn't serialize content to file \"%1\"", this.m_Filename ), this.GetVersion() );
                         return String::EMPTY_STRING;
                     }
 
                     if( !this.Ok )
                     {
-                        print( snprintf( cout, "ERROR: Couldn't serialize content for \"%1\"", g_Module.GetModuleName() ) );
+                        print::error( snprintf( cout, "Couldn't serialize content for \"%1\"", g_Module.GetModuleName() ), this.GetVersion() );
                         return String::EMPTY_STRING;
                     }
 
@@ -340,7 +378,7 @@ namespace meta_api
                 {
                     if( value.IsEmpty() && type != meta_api::json::Type::String )
                     {
-                        print( snprintf( cout, "Error: Skiping unable to serialize empty value other than string. value of type %1 at key %2", type, key ) );
+                        print::error( snprintf( cout, "Skiping unable to serialize empty value other than string. value of type %1 at key %2", type, key ), this.GetVersion() );
                         return;
                     }
 
@@ -412,7 +450,7 @@ namespace meta_api
                         case meta_api::json::Type::Handle:
                         default:
                         {
-                            print( snprintf( cout, "Error: Skiping unable to serialize value of type %1 at key %2 with value of %3", type, key, value ) );
+                            print::error( snprintf( cout, "Skiping unable to serialize value of type %1 at key %2 with value of %3", type, key, value ), this.GetVersion() );
                             break;
                         }
                     }
@@ -471,7 +509,7 @@ namespace meta_api
                 }
 
                 private
-                    uint m_CurrentLine = 0;
+                    uint m_CurrentLine = 1;
 
                 /// Current line reading in buffer
                 const uint get_CurrentLine() const {
@@ -530,7 +568,7 @@ namespace meta_api
                         /*
                         if( !aslp::FileSystem::ReadAll( filename, this.buffer ) )
                         {
-                            print( snprintf( cout, "ERROR: could not open file \"%1\"", filename ) );
+                            print::error( snprintf( cout, "ERROR: could not open file \"%1\"", filename ) );
                             return false;
                         }
                         */
@@ -542,7 +580,7 @@ namespace meta_api
 
                     if( fstream is null || !fstream.IsOpen() )
                     {
-                        print( snprintf( cout, "ERROR: could not open file \"%1\"", filename ) );
+                        print::error( snprintf( cout, "could not open file \"%1\"", filename ), this.GetVersion() );
                         return false;
                     }
 
@@ -583,8 +621,9 @@ namespace meta_api
                         }
                         else if( multi_line_commentary )
                         {
-                            if( check == '*' && ( this.CurrentPosition + 1 < this.totalSize ) && buffer[this.CurrentPosition + 1] == '/' )
+                            if( check == '*' && buffer[this.CurrentPosition + 1] == '/' )
                             {
+                                this.AdvancePosition(1);
                                 multi_line_commentary = false;
                             }
                         }
@@ -593,9 +632,25 @@ namespace meta_api
                             check = buffer[this.CurrentPosition+1];
 
                             if( check == '*' )
+                            {
+                                if( this.m_Buffer.Find( '*/', this.CurrentPosition, String::CompareType::CaseSensitive ) == String::INVALID_INDEX )
+                                {
+                                    print::error( snprintf( cout, "Unclosed multi line commentary at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.error++;
+                                    return false;
+                                }
+                                this.AdvancePosition(1);
                                 multi_line_commentary = true;
+                            }
                             else if( check == '/' )
+                            {
+                                this.AdvancePosition(1);
                                 single_line_commentary = true;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                         else
                         {
@@ -613,14 +668,14 @@ namespace meta_api
                     return ( c == ' ' || c == '\n' || c == '\r' || c == '\t' );
                 }
 
-                /// Get the last read string formated as " Last read: %1"
+                /// Get the last read string formated as " Last read:\n%1"
                 string GetLastRead()
                 {
                     string str = buffer;
-                    str = str.SubString( 0, this.CurrentPosition - 1 );
-                    str = str.SubString( Math.max( 0, str.Length() - 32 ) );
+                    str = str.SubString( 0, this.CurrentPosition );
+                    str = str.SubString( Math.max( 0, str.Length() - 64 ) );
                     if( !str.IsEmpty() )
-                        snprintf( str, " Last read: %1", str );
+                        snprintf( str, " Last read:\n%1", str );
                     return str;
                 }
 
@@ -647,7 +702,7 @@ namespace meta_api
                     {
                         this.m_IsFile = true;
 
-                        print( snprintf( cout, "Reading file \"%1\"", filename ) );
+                        print::info( snprintf( cout, "Reading file \"%1\"", filename ), this.GetVersion() );
 
                         if( !LoadFromFile( filename ) )
                         {
@@ -664,7 +719,7 @@ namespace meta_api
                     /// Seek to the first json object/array return Type::Undefined if "{" or "[" is not found
                     if( this.totalSize <= 0 )
                     {
-                        print( "Error: The provided string is empty!" );
+                        print::error( "The provided string is empty!", this.GetVersion() );
                         return meta_api::json::Type::Undefined;
                     }
 
@@ -695,30 +750,106 @@ namespace meta_api
                     }
 
                     if( m_Initialized == meta_api::json::Type::Undefined )
-                        print( snprintf( cout, "Unexpected token \"%1\" at line %2 expected \"{\" or \"[\"%3", meta_api::json::parser::EscapeSequences( string(check) ), this.GetCurrentLine(), this.GetLastRead() ) );
+                        print::error( snprintf( cout, "Unexpected token \"%1\" at line %2 expected \"{\" or \"[\"%3", meta_api::json::parser::EscapeSequences( string(check) ), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
 
                     return m_Initialized;
                 }
 
-                /// Advance in the parser. updates key and value and type. data is a dummy object we use for internal operations, provide a empty dictionary per object/array
-                bool Advance( const meta_api::json::Type&in ObjectType, meta_api::json::Type&out type, string&out key, string&out value, dictionary@ data )
-                {
-                    if( ObjectType != meta_api::json::Type::Array && ObjectType != meta_api::json::Type::Object )
+                /// Handles persistent information for the current object at end and parents to start
+                private
+                    array<dictionary> m_Data(1);
+                private
+                    uint m_DataCurrent = 1;
+
+                private
+                    bool ErrorUnexpected( const string&in expected, const string&in unexpected, const string&in comment = String::EMPTY_STRING )
                     {
-                        print( snprintf( cout, "ERROR: can not Advance with type \"%1\". only supported Object or Array", ObjectType ) );
+                        bool has_comment = comment.IsEmpty();
+                        print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected \"%3\"%4%5%6%7",
+                                unexpected,
+                                this.GetCurrentLine(),
+                                expected,
+                                ( has_comment ? "" : " " ),
+                                comment,
+                                ( has_comment ? "" : "." ),
+                                this.GetLastRead()
+                            ), this.GetVersion()
+                        );
+                        this.error++;
                         return false;
                     }
 
+                private
+                    bool ValueType( const string&in key, const string&in value, bool value_is_string, meta_api::json::Type&out type )
+                    {
+                        bool has_data = ( !value.IsEmpty() || value_is_string );
+
+                        if( has_data )
+                        {
+                            if( value_is_string )
+                            {
+                                type = meta_api::json::Type::String;
+                                return true;
+                            }
+                            else if( g_Utility.IsStringFloat( value ) )
+                            {
+                                type =  meta_api::json::Type::Float;
+                                return true;
+                            }
+                            else if( g_Utility.IsStringInt( value ) )
+                            {
+                                type =  meta_api::json::Type::Integer;
+                                return true;
+                            }
+                            else if( value == "false" || value == "true" )
+                            {
+                                type =  meta_api::json::Type::Boolean;
+                                return true;
+                            }
+                            else if( value == "null" )
+                            {
+                                type =  meta_api::json::Type::Null;
+                                return true;
+                            }
+                        }
+
+                        return false;
+                    }
+
+                /// Advance in the parser. updates key and value and type. if the type is an array the key contains the value index
+                bool Advance( const meta_api::json::Type&in ObjectType, meta_api::json::Type&out type, string&out key, string&out value )
+                {
+                    const bool is_array = ( ObjectType == meta_api::json::Type::Array );
+                    const bool is_object = ( ObjectType == meta_api::json::Type::Object );
+
+                    if( !is_array && !is_object )
+                    {
+                        print::error( snprintf( cout, "can not Advance with type \"%1\". only supported Object or Array", ObjectType ), this.GetVersion() );
+                        this.error++;
+                        return false;
+                    }
+
+                    // Clear up data
                     key = value = String::EMPTY_STRING;
                     type = meta_api::json::Type::Undefined;
 
+                    /// Get the data for the current object that is being deserialized.
+                    dictionary@ data = this.m_Data[this.m_DataCurrent-1];
+
+                    /// Are we inside a string?
                     bool in_string = false;
                     bool is_escaped = false;
-                    
-                    bool reading_key = true;
+
+                    bool reading_key = is_object;
                     bool value_is_string = false;
                     bool value_is_complete = false;
-                    bool found_end = false;
+
+                    if( is_array )
+                    {
+                        int idx = int( data[ "array_index" ] );
+                        key = string(idx);
+                        data[ "array_index" ] = ++idx;
+                    }
 
                     while( this.CurrentPosition < this.totalSize )
                     {
@@ -727,6 +858,14 @@ namespace meta_api
 
                         char c( this.buffer[this.CurrentPosition] );
 
+                        if( bool( data[ "break_loop" ] ) )
+                        {
+                            if( c == ',' )
+                                this.AdvancePosition(1);
+                            this.m_Data.resize(--this.m_DataCurrent);
+                            return false;
+                        }
+
                         this.AdvancePosition(1);
 
                         bool was_escaped = is_escaped;
@@ -734,223 +873,182 @@ namespace meta_api
 
                         if( in_string )
                         {
-                            if( c == '"' && !was_escaped )
+                            if( c == '"' )
                             {
-                                in_string = false;
-                                
-                                if( !reading_key )
+                                if( !was_escaped )
                                 {
-                                    value_is_string = true;
+                                    in_string = false;
+                                    if( !reading_key )
+                                    {
+                                        value_is_string = true;
+                                    }
+                                    continue;
                                 }
-                                
-                                continue;
                             }
-                            else if( c == '\\' && !was_escaped )
+                            else if( c == '\\' )
                             {
-                                is_escaped = true;
-                                continue;
+                                if( !was_escaped )
+                                {
+                                    is_escaped = true;
+                                    continue;
+                                }
                             }
-
-                            if( was_escaped )
+                            else if( c == 'n' )
                             {
-                                if( c == 'n' ) c = '\n';
-                                else if( c == 't' ) c = '\t';
-                                else if( c == 'r' ) c = '\r';
+                                if( was_escaped )
+                                    c = '\n';
+                            }
+                            else if( c == 't' )
+                            {
+                                if( was_escaped )
+                                    c = '\t';
+                            }
+                            else if( c == 'r' )
+                            {
+                                if( was_escaped )
+                                    c = '\r';
                             }
 
                             if( reading_key )
                             {
-                                key += c;
+                                key.opAddAssign(c);
                             }
                             else
                             {
-                                value += c;
+                                value.opAddAssign(c);
                             }
+                            continue;
+                        }
+
+                        if( this.IsIgnoredChar(c) )
+                        {
+                            continue;
+                        }
+
+                        /// Expect coma or end as we've left an object/array
+                        if( bool( data[ "expect_end_of_object" ] ) )
+                        {
+                            data[ "expect_end_of_object" ] = false;
+
+                            if( c == ',' )
+                                continue;
+                        }
+
+                        if( c == ',' )
+                        {
+                            if( is_object )
+                            {
+                                if( reading_key )
+                                    return ErrorUnexpected( '"', c, "Key name string" );
+                            }
+
+                            if( !this.ValueType( key, value, value_is_string, type ) )
+                            {
+                                print::error( snprintf( cout, "Invalid unquoted value \"%1\" for key \"%2\" at %3%4", value, key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                this.error++;
+                                return false;
+                            }
+                            return true;
+                        }
+                        else if( reading_key )
+                        {
+                            if( c == ':' )
+                            {
+                                if( key.IsEmpty() )
+                                    return ErrorUnexpected( '"', c, "got an empty key" );
+                                reading_key = false;
+                            }
+                            else if( c == '"' )
+                            {
+                                in_string = true;
+                            }
+                            // End of object reached. cry for invalid remaining chars
+                            else if( c == '}' )
+                            {
+                                while( this.CurrentPosition < this.totalSize )
+                                {
+                                    if( this.SkipComments() )
+                                    {
+                                        c = this.buffer[this.CurrentPosition];
+                                        this.AdvancePosition(1);
+                                        if( !this.IsIgnoredChar(c) )
+                                        {
+                                            this.error++;
+                                            print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of file%4", c, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                            return false;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            else
+                            {
+                                return ErrorUnexpected( ( key.IsEmpty() ? '"' : ':' ), c, "key-value separator" );
+                            }
+                        }
+                        else if( c == '[' || c == '{' )
+                        {
+                            type = ( c == '[' ? meta_api::json::Type::Array : meta_api::json::Type::Object );
+                            data[ "expect_end_of_object" ] = true;
+                            this.m_Data.resize(++this.m_DataCurrent);
+                            return true;
+                        }
+                        else if( c == ']' )
+                        {
+                            if( is_object )
+                                return ErrorUnexpected( "}", c, "Closed object with list token" );
+
+                            if( !value.IsEmpty() )
+                            {
+                                if( !this.ValueType( key, value, value_is_string, type ) )
+                                {
+                                    print::error( snprintf( cout, "Invalid unquoted value \"%1\" at %2%3", value, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.error++;
+                                    return false;
+                                }
+                                data[ "break_loop" ] = true;
+                                return true;
+                            }
+                            this.m_Data.resize(--this.m_DataCurrent);
+                            return false;
+                        }
+                        else if( c == '}' )
+                        {
+                            if( is_array )
+                                return ErrorUnexpected( "}", c, "Closed list with object token" );
+
+                            if( !value.IsEmpty() )
+                            {
+                                if( !this.ValueType( key, value, value_is_string, type ) )
+                                {
+                                    print::error( snprintf( cout, "Invalid unquoted value \"%1\" for key \"%2\" at %3%4", value, key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.error++;
+                                    return false;
+                                }
+                                data[ "break_loop" ] = true;
+                                return true;
+                            }
+                            this.m_Data.resize(--this.m_DataCurrent);
+                            return false;
                         }
                         else if( c == '"' )
                         {
-                            if( reading_key && key != String::EMPTY_STRING )
-                            {
-                                print( snprintf( cout, "ERROR: Expected ':' after key at %1%2", this.GetCurrentLine(), this.GetLastRead() ) );
-                                return false;
-                            }
-                            else if( !reading_key && ( value != String::EMPTY_STRING || value_is_string || bool( data[ "just_parsed_child" ] ) ) )
-                            {
-                                print( snprintf( cout, "ERROR: Missing ',' after value for key \"%1\" at %2%3", key, this.GetCurrentLine(), this.GetLastRead() ) );
-                                return false;
-                            }
+                            if( !value.IsEmpty() )
+                                return ErrorUnexpected( ",", c, "Missing coma at end of value" );
 
                             in_string = true;
-                        }
-                        else if( c == ':' )
-                        {
-                            if( !reading_key )
+
+                            if( is_object )
                             {
-                                print( snprintf( cout, "ERROR: (Pos %1): Unexpected colon ':' in value", string( this.CurrentPosition ) ) );
-                                return false;
                             }
-                            if( key == String::EMPTY_STRING )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Found ':' without a preceding valid key", string( this.CurrentPosition ) ) );
-                                return false;
-                            }
-
-                            reading_key = false;
-                        }
-                        else if( c == '{' )
-                        {
-                            if( reading_key )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Objects are not allowed as keys", string( this.CurrentPosition ) ) );
-                                return false;
-                            }
-                            if( value != String::EMPTY_STRING || value_is_string || bool( data[ "just_parsed_child" ] ) )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Missing ',' before opening a new object", string( this.CurrentPosition ) ) );
-                                return false;
-                            }
-
-                            data[ "just_parsed_child" ] = true;
-                            data[ "can_close" ] = true;
-                            type = meta_api::json::Type::Object;
-                            return true;
-                        }
-                        else if( c == '[' )
-                        {
-                            if( reading_key )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Arrays are not allowed as keys", string( this.CurrentPosition ) ) );
-                                return false;
-                            }
-                            if( value != String::EMPTY_STRING || value_is_string || bool( data[ "just_parsed_child" ] ) )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Missing ',' before opening an array", string( this.CurrentPosition ) ) );
-                                return false;
-                            }
-
-                            data[ "just_parsed_child" ]= true;
-                            data[ "can_close" ] = true;
-                            type = meta_api::json::Type::Array;
-                            return true;
-                        }
-                        else if( c == ',' || c == '}' )
-                        {
-                            if( c == '}' && key == String::EMPTY_STRING && !bool( data[ "can_close" ] ) )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Trailing comma before closing object", string( this.CurrentPosition ) ) );
-                                return false;
-                            }
-
-                            if( c == ',' && reading_key && key == String::EMPTY_STRING )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Unexpected comma ','. Expected a key", string( this.CurrentPosition ) ) );
-                                return false;
-                            }
-
-                            if( key != String::EMPTY_STRING )
-                            {
-                                if( !reading_key && value == String::EMPTY_STRING && !value_is_string && !bool( data[ "just_parsed_child" ] ) )
-                                {
-                                    print( snprintf( cout, "ERROR: (Pos %1): Missing value for key \"%2\"", string( this.CurrentPosition ), key ) );
-                                    return false;
-                                }
-
-                                data[ "can_close" ] = true;
-
-                                if( value_is_string )
-                                {
-                                    type = meta_api::json::Type::String;
-                                    return true;
-                                }
-
-                                if( value == String::EMPTY_STRING )
-                                {
-                                    // -TODO Case error
-                                    return false;
-                                }
-
-                                if( g_Utility.IsStringFloat( value ) )
-                                {
-                                    type = meta_api::json::Type::Float;
-                                    return true;
-                                }
-
-                                if( g_Utility.IsStringInt( value ) )
-                                {
-                                    type = meta_api::json::Type::Integer;
-                                    return true;
-                                }
-
-                                if( value == "false" || value == "true" )
-                                {
-                                    type = meta_api::json::Type::Boolean;
-                                    return true;
-                                }
-
-                                if( value == "null" )
-                                {
-                                    type = meta_api::json::Type::Null;
-                                    return true;
-                                }
-
-                                print( snprintf( cout, "ERROR: (Pos %1): Invalid unquoted value \"%2\" for key \"%3\"", string( this.CurrentPosition ), value, key ) );
-                                return false;
-                            }
-
-                            key = String::EMPTY_STRING;
-                            value = String::EMPTY_STRING;
-                            reading_key = true;
-                            value_is_string = false;
-                            value_is_complete = false;
-                            data[ "just_parsed_child" ] = false;
-
-                            if( c == ',' )
-                                data[ "can_close" ] = false;
-
-                            if( c == '}' )
-                            {
-                                found_end = true;
-                                break;
-                            }
-                        }
-                        else if( this.IsIgnoredChar( c ) )
-                        {
-                            if( !reading_key && value != String::EMPTY_STRING )
-                                value_is_complete = true;
                         }
                         else
                         {
-                            if( reading_key )
-                            {
-                                print( snprintf( cout, "ERROR: (Pos %1): Keys must be enclosed in quotes. Invalid character: \"%2\"", string( this.CurrentPosition ), string( c ) ) );
-                                return false;
-                            }
-                            else
-                            {
-                                if( value_is_string || bool( data[ "just_parsed_child" ] ) || value_is_complete )
-                                {
-                                    print( snprintf( cout, "ERROR: (Pos %1): Missing ',' after value for key \"%2\"", string( this.CurrentPosition ), key ) );
-                                    return false;
-                                }
-
-                                value += c;
-                            }
+                            value.opAddAssign(c);
                         }
                     }
 
-                    if( in_string )
-                    {
-                        print( snprintf( cout, "ERROR: Unterminated string in object" ) );
-                        return false;
-                    }
-
-                    if( !found_end )
-                    {
-                        print( snprintf( cout, "ERROR: Unterminated object. Expected '}'" ) );
-                        return false;
-                    }
-
-                    return true;
+                    return false;
                 }
             } // Deserializer
         } // parser
