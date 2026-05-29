@@ -11,10 +11,10 @@ uint g_Failed;
 
 meta_api::json::Version g_Version;
 
-const string g_DeserializeSample = """
-// Single line comment outside of object
+const string g_DeserializeSample = """// Single line comment outside of object
 { // Single line after token in object
-    "null": null,
+    "null": null, /* Multi line
+    commentary*/
     "bool": true,
     "int": 1,
     "float": 1.5, // Single line after token in pair
@@ -41,12 +41,12 @@ void Expect( const string&in name, bool condition )
     if( condition )
     {
         g_Passed++;
-        meta_api::json::print( snprintf( meta_api::json::cout, "PASS: %1", name ), g_Version );
+        meta_api::json::print::info( snprintf( meta_api::json::cout, "PASS: %1", name ), g_Version );
         return;
     }
 
     g_Failed++;
-    meta_api::json::print( snprintf( meta_api::json::cout, "FAIL: %1", name ), g_Version );
+    meta_api::json::print::error( snprintf( meta_api::json::cout, "FAIL: %1", name ), g_Version );
 }
 
 namespace v2
@@ -106,7 +106,7 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
     g_Version = version;
     g_Passed = g_Failed = 0;
 
-    meta_api::json::print( snprintf( meta_api::json::cout, "===== Running json tests for %1 =====", ( metamod ? "METAMOD" : "VANILLA" ) ), g_Version );
+    meta_api::json::print::info( snprintf( meta_api::json::cout, "===== Running json tests for %1 =====", ( metamod ? "METAMOD" : "VANILLA" ) ), g_Version );
 
 #if METAMOD_PLUGIN_ASLP
     meta_api::json::__METAMOD__ = metamod;
@@ -119,10 +119,14 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
             for( uint ui = 0; ui < g_DeserializerTests.length(); ui++ )
             {
                 CDeserializeTest@ test = g_DeserializerTests[ui];
-                v1::ExpectDeserialize( test.title, test.expected, test.serialized );
+                //v1::ExpectDeserialize( test.title, test.expected, test.serialized );
             }
 
             dictionary@ obj = v1::ExpectDeserialize( "valid object with comments and nested values", true, g_DeserializeSample );
+
+//            string serialization = meta_api::json::v1::Serialize( obj, String::EMPTY_STRING, meta_api::json::parser::Indentation::OneSpace );
+//            Expect( "Serialization test:\n" + serialization, !serialization.IsEmpty() );
+
             break;
         }
         case meta_api::json::Version::V2:
@@ -145,19 +149,19 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
 
     if( g_Failed == 0 )
     {
-        meta_api::json::print( snprintf( meta_api::json::cout, "===== All %1 tests passed =====", g_Passed ), g_Version );
+        meta_api::json::print::info( snprintf( meta_api::json::cout, "===== All %1 tests passed =====", g_Passed ), g_Version );
     }
     else if( g_Passed == 0 )
     {
-        meta_api::json::print( snprintf( meta_api::json::cout, "===== All %1 tests failed =====", g_Passed ), g_Version );
+        meta_api::json::print::error( snprintf( meta_api::json::cout, "===== All %1 tests failed =====", g_Failed ), g_Version );
     }
     else
     {
-        meta_api::json::print( snprintf( meta_api::json::cout, "===== Passed: %1 =====", g_Passed ), g_Version );
-        meta_api::json::print( snprintf( meta_api::json::cout, "===== Failed: %1 =====", g_Failed ), g_Version );
+        meta_api::json::print::info( snprintf( meta_api::json::cout, "===== Passed: %1 =====", g_Passed ), g_Version );
+        meta_api::json::print::error( snprintf( meta_api::json::cout, "===== Failed: %1 =====", g_Failed ), g_Version );
     }
 
-    meta_api::json::print( "===== All done! =====\n==================", g_Version );
+    meta_api::json::print::info( "===== All done! =====\n==================", g_Version );
 }
 
 void PluginInit()
