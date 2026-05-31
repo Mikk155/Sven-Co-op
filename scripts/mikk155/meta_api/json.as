@@ -674,12 +674,10 @@ namespace meta_api
                 /// Get the last read string formated as " Last read:\n%1"
                 string GetLastRead()
                 {
-                    string str = buffer;
-                    str = str.SubString( 0, this.CurrentPosition );
-                    int length = str.Length();
-                    str = str.SubString( Math.max( 0, length - 64 ) );
-                    if( !str.IsEmpty() )
-                        snprintf( str, " Last read:\n%1", str );
+                    string str;
+                    int start = Math.max( 0, int( this.CurrentPosition - 64 ) );
+                    int end = int( this.CurrentPosition );
+                    snprintf( str, " Last read:\n%1", buffer.SubString( start, end ) );
                     return str;
                 }
 
