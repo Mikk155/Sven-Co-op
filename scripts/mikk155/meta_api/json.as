@@ -676,7 +676,8 @@ namespace meta_api
                 {
                     string str = buffer;
                     str = str.SubString( 0, this.CurrentPosition );
-                    str = str.SubString( Math.max( 0, str.Length() - 64 ) );
+                    int length = str.Length();
+                    str = str.SubString( Math.max( 0, length - 64 ) );
                     if( !str.IsEmpty() )
                         snprintf( str, " Last read:\n%1", str );
                     return str;
@@ -860,6 +861,27 @@ namespace meta_api
                     {
                         if( bool( data[ "break_loop" ] ) )
                         {
+                            // End of main object reached. cry for invalid remaining chars
+                            if( this.m_DataCurrent == 1 )
+                            {
+                                this.AdvancePosition(1);
+
+                                while( this.CurrentPosition < this.totalSize )
+                                {
+                                    if( this.SkipComments() )
+                                    {
+                                        char c = this.buffer[this.CurrentPosition];
+                                        this.AdvancePosition(1);
+                                        if( !this.IsIgnoredChar(c) )
+                                        {
+                                            this.error++;
+                                            print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of file%3", string(c), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+
                             this.m_Data.resize(--this.m_DataCurrent);
                             return false;
                         }
@@ -871,28 +893,6 @@ namespace meta_api
 
                         if( bool( data[ "child_parsed" ] ) )
                         {
-                            // End of main object reached. cry for invalid remaining chars
-                            if( this.m_DataCurrent == 0 )
-                            {
-                                this.AdvancePosition(1);
-
-                                while( this.CurrentPosition < this.totalSize )
-                                {
-                                    if( this.SkipComments() )
-                                    {
-                                        c = this.buffer[this.CurrentPosition];
-                                        this.AdvancePosition(1);
-                                        if( !this.IsIgnoredChar(c) )
-                                        {
-                                            this.error++;
-                                            print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of file%3", c, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
-                                            return false;
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-
                             data[ "child_parsed" ] = false;
                             data[ "last_was_object" ] = true;
 
