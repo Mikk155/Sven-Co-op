@@ -695,6 +695,95 @@ namespace meta_api
                 }
             }
 
+            string Serialize( meta_api::json::v2::json@ obj, meta_api::json::parser::Serializer@ Serializer )
+            {
+                const array<string>@ keys = obj.Keys;
+                uint length = keys.length();
+
+                for( uint ui = 0; ui < length; ui++ )
+                {
+                    string key = keys[ui];
+
+                    meta_api::json::v2::json@ value = obj[ key ];
+
+                    if( value is null )
+                        continue;
+
+                    switch( value.Type )
+                    {
+                        case meta_api::json::Type::Handle:
+                        {
+                            if( debug )
+                                print::debug( snprintf( cout, "Handle pointer serialization is not supported. storing as \"null\"" ), Version::V2 );
+                            Serializer.KeyValue( key, "null", meta_api::json::Type::Null );
+                            break;
+                        }
+                        case meta_api::json::Type::String:
+                        {
+                            Serializer.KeyValue( key, string( value.Value ), value.Type );
+                            break;
+                        }
+                        case meta_api::json::Type::Float:
+                        {
+                            Serializer.KeyValue( key, float( value.Value ), value.Type );
+                            break;
+                        }
+                        case meta_api::json::Type::Integer:
+                        {
+                            Serializer.KeyValue( key, int( value.Value ), value.Type );
+                            break;
+                        }
+                        case meta_api::json::Type::Boolean:
+                        {
+                            Serializer.KeyValue( key, bool( value.Value ), value.Type );
+                            break;
+                        }
+                        case meta_api::json::Type::Object:
+                        {
+                            Serializer.KeyValue( key, meta_api::json::v2::Serialize( value, Serializer.Object( value.Type ) ), value.Type );
+                            break;
+                        }
+                        case meta_api::json::Type::Array:
+                        {
+                            Serializer.KeyValue( key, meta_api::json::v2::Serialize( value, Serializer.Object( value.Type ) ), value.Type );
+                            break;
+                        }
+                        case meta_api::json::Type::Null:
+                        {
+                            Serializer.KeyValue( key, "null", value.Type );
+                            break;
+                        }
+                    }
+                }
+
+                return Serializer.Serialize();
+            }
+
+            /**
+            *   @brief Serializes obj
+            *   filename: if provided is a path to write to a file at scripts(module type)/store/(filename).json
+            *   If the object failed to parse for any reason it will write "{}" to the file only if the file doesn't exists
+            **/
+            string Serialize(
+                meta_api::json::v2::json@ obj,
+                const string&in filename = String::EMPTY_STRING,
+                const meta_api::json::parser::Indentation&in indents = meta_api::json::parser::Indentation::AllTogether,
+                const meta_api::json::parser::Style&in style = meta_api::json::parser::Style::AllMan
+            )
+            {
+                return meta_api::json::v2::Serialize(
+                    obj,
+                    meta_api::json::parser::Serializer(
+                        1,
+                        filename,
+                        obj.Type,
+                        style,
+                        indents,
+                        meta_api::json::Version::V1
+                    )
+                );
+            }
+
             /**
             *   @brief Deserializes str into obj,
             *   If str ends with ".json" we will open a file. No need to specify scripts/plugins/ or scripts/maps/ it will be automatically detected.
