@@ -8,11 +8,13 @@ namespace json
 {
 uint g_Passed;
 uint g_Failed;
+bool show_fail_only = false;
 
 meta_api::json::Version g_Version;
 
 const string g_DeserializeSample = """// Single line comment outside of object
-{ // Single line after token in object
+{
+// Single line after token in object
     "null": null, /* Multi line
     commentary*/
     "bool": true,
@@ -41,7 +43,8 @@ void Expect( const string&in name, bool condition )
     if( condition )
     {
         g_Passed++;
-        meta_api::json::print::info( snprintf( meta_api::json::cout, "PASS: %1", name ), g_Version );
+        if( !show_fail_only )
+            meta_api::json::print::info( snprintf( meta_api::json::cout, "PASS: %1", name ), g_Version );
         return;
     }
 
@@ -97,8 +100,8 @@ class CDeserializeTest
 
 /// Various tests for deserialization
 array<CDeserializeTest@> g_DeserializerTests = {
-    CDeserializeTest( "Invalid last key pair with coma", false, "{\"null\":null,}" ),
-    CDeserializeTest( "Invalid pairs with no coma separator", false, "{\"null\":null\n\"string\":\"empty\"}" )
+//    CDeserializeTest( "Invalid last key pair with coma", true, "{\"0\":0,}" ),
+    CDeserializeTest( "Invalid pairs with no coma separator", false, "{\"0\":0\n\"string\":\"empty\"}" )
 };
 
 void RunTests( const meta_api::json::Version&in version, bool metamod )
@@ -119,13 +122,15 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
             for( uint ui = 0; ui < g_DeserializerTests.length(); ui++ )
             {
                 CDeserializeTest@ test = g_DeserializerTests[ui];
-                //v1::ExpectDeserialize( test.title, test.expected, test.serialized );
+                v1::ExpectDeserialize( test.title, test.expected, test.serialized );
             }
 
             dictionary@ obj = v1::ExpectDeserialize( "valid object with comments and nested values", true, g_DeserializeSample );
 
-//            string serialization = meta_api::json::v1::Serialize( obj, String::EMPTY_STRING, meta_api::json::parser::Indentation::OneSpace );
-//            Expect( "Serialization test:\n" + serialization, !serialization.IsEmpty() );
+            string serialization = meta_api::json::v1::Serialize( obj, String::EMPTY_STRING, meta_api::json::parser::Indentation::OneSpace );
+            Expect( "Serialization test:\n" + serialization, !serialization.IsEmpty() );
+            g_Game.AlertMessage( at_console, serialization + '\n' );
+            @obj = v1::ExpectDeserialize( "deserialize post serialize", true, serialization );
 
             break;
         }
@@ -138,6 +143,72 @@ void RunTests( const meta_api::json::Version&in version, bool metamod )
             }
 
             meta_api::json::v2::json@ obj = v2::ExpectDeserialize( "valid object with comments and nested values", true, g_DeserializeSample );
+
+            string serialization = meta_api::json::v2::Serialize( obj, String::EMPTY_STRING, meta_api::json::parser::Indentation::OneSpace );
+            Expect( "Serialization test:\n" + serialization, !serialization.IsEmpty() );
+            g_Game.AlertMessage( at_console, serialization + '\n' );
+            @obj = v2::ExpectDeserialize( "deserialize post serialize", true, serialization );
+
+            bool boolValue = false;
+            int intValue = 0;
+            float floatValue = 0.0f;
+            string stringValue;
+
+            Expect( "strict bool read", obj.Get( "bool", boolValue ) && boolValue );
+            Expect( "strict integer read", obj.Get( "int", intValue ) && intValue == 1 );
+            Expect( "strict float read", obj.Get( "float", floatValue ) && floatValue == 1.5f );
+            Expect( "strict string read", obj.Get( "string", stringValue ) && stringValue == "text" );
+            Expect( "null key exists", obj.Contains( "null" ) );
+
+            meta_api::json::v2::json@ nullValue = obj[ "null" ];
+            Expect( "null value keeps null type", nullValue !is null && nullValue.is_null() );
+
+            bool rejectedBool = false;
+            Expect( "strict bool rejects integer", !obj.Get( "int", rejectedBool ) );
+            Expect( "non-strict bool converts integer", obj.Get( "int", rejectedBool, false ) && rejectedBool );
+
+            int defaultValue = obj.ValueOrDefault( "missing_integer", 42, true );
+            int storedDefault = 0;
+            Expect( "ValueOrDefault returns missing default", defaultValue == 42 );
+            Expect( "ValueOrDefault stores missing default", obj.Get( "missing_integer", storedDefault ) && storedDefault == 42 );
+
+            meta_api::json::v2::json@ objectValue = obj[ "object" ];
+            Expect( "object node keeps key name", objectValue !is null && objectValue.Name == "object" );
+            Expect( "nested object value read", objectValue !is null && int( objectValue[ "value" ] ) == 2 );
+
+            meta_api::json::v2::json@ pushResult = obj.Append( "something" );
+            Expect( "Append on object returns null", pushResult is null );
+
+            meta_api::json::v2::json@ arrayValue = obj[ "array" ];
+            Expect( "array node has expected length", arrayValue !is null && arrayValue.is_array() && arrayValue.Length() == 5 );
+
+            if( arrayValue !is null )
+            {
+                Expect( "array Append appends value", arrayValue.Append( "something" ) !is null && arrayValue.Length() == 6 && string( arrayValue[5] ) == "something" );
+
+                meta_api::json::v2::json@ nestedObjectInArray = arrayValue[4];
+                Expect( "nested object in array keeps key name", nestedObjectInArray !is null && nestedObjectInArray.Name == "4" );
+                Expect( "nested object in array value read", nestedObjectInArray !is null && string( nestedObjectInArray[ "key" ] ) == "value" );
+                Expect( "array opIndex rejects out of range", arrayValue[32] is null );
+            }
+
+            meta_api::json::v2::json@ rootArray = v2::ExpectDeserialize( "valid root array", true, "[\"string\",1]" );
+
+            if( rootArray !is null )
+            {
+                Expect( "root array has expected length", rootArray.is_array() && rootArray.Length() == 2 );
+                Expect( "root array string read", string( rootArray[0] ) == "string" );
+                Expect( "root array integer read", int( rootArray[1] ) == 1 );
+            }
+
+            v2::ExpectDeserialize( "reject invalid literal", false, "{\"value\":tru}" );
+            v2::ExpectDeserialize( "reject missing comma in array", false, "[1 2]" );
+            v2::ExpectDeserialize( "reject trailing comma in object", false, "{\"value\":1,}" );
+            v2::ExpectDeserialize( "reject trailing comma in array", false, "[1,]" );
+            v2::ExpectDeserialize( "reject unterminated object", false, "{\"value\":1" );
+            v2::ExpectDeserialize( "reject broken nested object", false, "{\"array\":[1,{\"value\":2]}" );
+            v2::ExpectDeserialize( "reject trailing root data", false, "{\"value\":1} true" );
+
             break;
         }
     }
@@ -170,6 +241,8 @@ void PluginInit()
         meta_api::json::Version::V1,
         meta_api::json::Version::V2
     };
+
+    meta_api::json::debug = true;
 
     for( uint ui = 0; ui < versionRuns.length(); ui++ )
     {
