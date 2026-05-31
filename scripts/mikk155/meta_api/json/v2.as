@@ -529,8 +529,7 @@ namespace meta_api
                 }
 
                 // Used to sort array and ordered items
-                protected
-                    uint __unique_index__ = 0;
+                uint __unique_index__ = 0;
 
                 /// ======================================
                 /// Array methods
@@ -623,14 +622,22 @@ namespace meta_api
                     if( obj is null )
                         @obj = meta_api::json::v2::json();
 
+                    if( debug )
+                        print::debug( snprintf( cout, "Parsing object of type %1...", Type::ToString(objectType) ), this.GetVersion() );
+
                     obj.SetType( objectType );
 
                     string key;
                     string value;
                     meta_api::json::Type type;
 
+                    bool IHateStupidWarnings = false;
+
                     while( this.Advance( objectType, type, key, value ) )
                     {
+                        if( debug )
+                            print::debug( snprintf( cout, "\"%1\": %2 (%3)", key, ( type == Type::Object ? "{}" : type == Type::Array ? "[]" : value ), Type::ToString(type) ), this.GetVersion() );
+
                         switch( type )
                         {
                             case meta_api::json::Type::Object:
@@ -640,55 +647,50 @@ namespace meta_api
                                 if( !this.Parse( objChild, type ) )
                                     return false;
                                 obj.Set( key, objChild );
-                                return true;
+                                break;
                             }
-                            // -TODO __prefixed SetOrAppend method?
                             case meta_api::json::Type::String:
                             {
-                                if( objectType == meta_api::json::Type::Object )
-                                    obj.Set( key, value );
-                                else
-                                    obj.Append( value );
-                                return true;
+                                obj.Set( key, value );
+                                break;
                             }
                             case meta_api::json::Type::Float:
                             {
-                                if( objectType == meta_api::json::Type::Object )
-                                    obj.Set( key, atof( value ) );
-                                else
-                                    obj.Append( atof( value ) );
-                                return true;
+                                obj.Set( key, atof( value ) );
+                                break;
                             }
                             case meta_api::json::Type::Integer:
                             {
-                                if( objectType == meta_api::json::Type::Object )
-                                    obj.Set( key, atoi( value ) );
-                                else
-                                    obj.Append( atoi( value ) );
-                                return true;
+                                obj.Set( key, atoi( value ) );
+                                break;
                             }
                             case meta_api::json::Type::Boolean:
                             {
-                                if( objectType == meta_api::json::Type::Object )
-                                    obj.Set( key, ( value == "true" ? true : false ) );
-                                else
-                                    obj.Append( ( value == "true" ? true : false ) );;
-                                return true;
+                                obj.Set( key, ( value == "true" ? true : false ) );
+                                break;
                             }
                             case meta_api::json::Type::Null:
                             {
-                                if( objectType == meta_api::json::Type::Object )
-                                    obj.Set( key, meta_api::json::Null::Null );
-                                else
-                                    obj.Append( meta_api::json::Null::Null );
-                                return true;
+                                obj.Set( key, meta_api::json::Null::Null );
+                                break;
                             }
                             default:
                             {
-                                return false;
+                                IHateStupidWarnings = true;
                             }
                         }
+
+                        // Hack to Append
+                        if( objectType == meta_api::json::Type::Array )
+                            obj.__unique_index__++;
                     }
+
+                    if( debug )
+                        print::debug( snprintf( cout, "Exiting object..." ), this.GetVersion() );
+
+                    if( IHateStupidWarnings )
+                        return false;
+
                     return this.Ok;
                 }
             }

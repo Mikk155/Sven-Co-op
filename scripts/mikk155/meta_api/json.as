@@ -844,6 +844,8 @@ namespace meta_api
                     bool value_is_string = false;
                     bool value_is_complete = false;
 
+                    data[ "has_comma" ] = bool( data[ "has_comma" ] );
+
                     if( is_array )
                     {
                         int idx = int( data[ "array_index" ] );
@@ -853,17 +855,50 @@ namespace meta_api
 
                     while( this.CurrentPosition < this.totalSize )
                     {
+                        if( bool( data[ "break_loop" ] ) )
+                        {
+                            this.m_Data.resize(--this.m_DataCurrent);
+                            return false;
+                        }
+
                         if( !this.SkipComments() )
                             break;
 
                         char c( this.buffer[this.CurrentPosition] );
 
-                        if( bool( data[ "break_loop" ] ) )
+                        if( bool( data[ "child_parsed" ] ) )
                         {
-                            if( c == ',' )
+                            // End of main object reached. cry for invalid remaining chars
+                            if( this.m_DataCurrent == 0 )
+                            {
                                 this.AdvancePosition(1);
-                            this.m_Data.resize(--this.m_DataCurrent);
-                            return false;
+
+                                while( this.CurrentPosition < this.totalSize )
+                                {
+                                    if( this.SkipComments() )
+                                    {
+                                        c = this.buffer[this.CurrentPosition];
+                                        this.AdvancePosition(1);
+                                        if( !this.IsIgnoredChar(c) )
+                                        {
+                                            this.error++;
+                                            print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of file%3", c, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                            return false;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+
+                            data[ "child_parsed" ] = false;
+                            data[ "last_was_object" ] = true;
+
+                            if( c == ',' )
+                            {
+                                data[ "has_comma" ] = false;
+                                this.AdvancePosition(1);
+                                continue;
+                            }
                         }
 
                         this.AdvancePosition(1);
@@ -925,30 +960,59 @@ namespace meta_api
                             continue;
                         }
 
-                        /// Expect coma or end as we've left an object/array
-                        if( bool( data[ "expect_end_of_object" ] ) )
-                        {
-                            data[ "expect_end_of_object" ] = false;
+                        bool has_comma = bool( data[ "has_comma" ] );
+                        data[ "has_comma" ] = false;
 
-                            if( c == ',' )
-                                continue;
-                        }
+                        bool last_was_object = bool( data[ "last_was_object" ] );
+                        data[ "last_was_object" ] = false;
 
                         if( c == ',' )
                         {
-                            if( is_object )
+                            if( has_comma )
                             {
-                                if( reading_key )
-                                    return ErrorUnexpected( '"', c, "Key name string" );
-                            }
-
-                            if( !this.ValueType( key, value, value_is_string, type ) )
-                            {
-                                print::error( snprintf( cout, "Invalid unquoted value \"%1\" for key \"%2\" at %3%4", value, key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                print::error( snprintf( cout, "invalid double coma at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
                                 this.error++;
                                 return false;
                             }
-                            return true;
+
+                            data[ "has_comma" ] = true;
+
+                            if( !last_was_object )
+                            {
+                                if( this.ValueType( key, value, value_is_string, type ) )
+                                    return true;
+                                this.error++;
+                                print::error( snprintf( cout, "Invalid unquoted value \"%1\" for key \"%2\" at %3%4", value, key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                            }
+                            return false;
+                        }
+                        else if( c == '}' || c == ']' )
+                        {
+                            if( is_object && c != '}' )
+                                return ErrorUnexpected( "}", c, "Close Object token" );
+                            if( is_array && c != ']' )
+                                return ErrorUnexpected( "]", c, "Close Array token" );
+
+                            if( has_comma )
+                            {
+                                this.error++;
+                                print::error( snprintf( cout, "Invalid comma for last value at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                return false;
+                            }
+
+                            data[ "break_loop" ] = true;
+
+                            if( !last_was_object )
+                            {
+                                if( this.ValueType( key, value, value_is_string, type ) )
+                                    return true;
+                                this.error++;
+                                if( is_object )
+                                    print::error( snprintf( cout, "Invalid unquoted value \"%1\" for key \"%2\" at %3%4", value, key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                else
+                                    print::error( snprintf( cout, "Invalid unquoted value \"%1\" id \"%2\" at %3%4", value, key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                            }
+                            return false;
                         }
                         else if( reading_key )
                         {
@@ -962,25 +1026,6 @@ namespace meta_api
                             {
                                 in_string = true;
                             }
-                            // End of object reached. cry for invalid remaining chars
-                            else if( c == '}' )
-                            {
-                                while( this.CurrentPosition < this.totalSize )
-                                {
-                                    if( this.SkipComments() )
-                                    {
-                                        c = this.buffer[this.CurrentPosition];
-                                        this.AdvancePosition(1);
-                                        if( !this.IsIgnoredChar(c) )
-                                        {
-                                            this.error++;
-                                            print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of file%4", c, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
-                                            return false;
-                                        }
-                                    }
-                                }
-                                break;
-                            }
                             else
                             {
                                 return ErrorUnexpected( ( key.IsEmpty() ? '"' : ':' ), c, "key-value separator" );
@@ -989,52 +1034,14 @@ namespace meta_api
                         else if( c == '[' || c == '{' )
                         {
                             type = ( c == '[' ? meta_api::json::Type::Array : meta_api::json::Type::Object );
-                            data[ "expect_end_of_object" ] = true;
                             this.m_Data.resize(++this.m_DataCurrent);
+                            data[ "child_parsed" ] = true;
                             return true;
-                        }
-                        else if( c == ']' )
-                        {
-                            if( is_object )
-                                return ErrorUnexpected( "}", c, "Closed object with list token" );
-
-                            if( !value.IsEmpty() )
-                            {
-                                if( !this.ValueType( key, value, value_is_string, type ) )
-                                {
-                                    print::error( snprintf( cout, "Invalid unquoted value \"%1\" at %2%3", value, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
-                                    this.error++;
-                                    return false;
-                                }
-                                data[ "break_loop" ] = true;
-                                return true;
-                            }
-                            this.m_Data.resize(--this.m_DataCurrent);
-                            return false;
-                        }
-                        else if( c == '}' )
-                        {
-                            if( is_array )
-                                return ErrorUnexpected( "}", c, "Closed list with object token" );
-
-                            if( !value.IsEmpty() )
-                            {
-                                if( !this.ValueType( key, value, value_is_string, type ) )
-                                {
-                                    print::error( snprintf( cout, "Invalid unquoted value \"%1\" for key \"%2\" at %3%4", value, key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
-                                    this.error++;
-                                    return false;
-                                }
-                                data[ "break_loop" ] = true;
-                                return true;
-                            }
-                            this.m_Data.resize(--this.m_DataCurrent);
-                            return false;
                         }
                         else if( c == '"' )
                         {
                             if( !value.IsEmpty() )
-                                return ErrorUnexpected( ",", c, "Missing coma at end of value" );
+                                return ErrorUnexpected( ",", c, "Missing comma at end of value" );
 
                             in_string = true;
 

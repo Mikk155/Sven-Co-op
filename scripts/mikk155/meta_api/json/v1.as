@@ -18,7 +18,8 @@ namespace meta_api
 
                 bool Parse( dictionary&out obj, const meta_api::json::Type&in objectType )
                 {
-                    print::debug( snprintf( cout, "Parsing object of type %1...", Type::ToString(objectType) ) );
+                    if( debug )
+                        print::debug( snprintf( cout, "Parsing object of type %1...", Type::ToString(objectType) ), this.GetVersion() );
 
                     obj.deleteAll();
 
@@ -26,9 +27,12 @@ namespace meta_api
                     string value;
                     meta_api::json::Type type;
 
+                    bool IHateStupidWarnings = false;
+
                     while( this.Advance( objectType, type, key, value ) )
                     {
-                        print::debug( snprintf( cout, "\"%1\": %2 (%3)", key, ( type == Type::Object ? "{}" : type == Type::Array ? "[]" : value ), Type::ToString(type) ) );
+                        if( debug )
+                            print::debug( snprintf( cout, "\"%1\": %2 (%3)", key, ( type == Type::Object ? "{}" : type == Type::Array ? "[]" : value ), Type::ToString(type) ), this.GetVersion() );
 
                         switch( type )
                         {
@@ -68,10 +72,17 @@ namespace meta_api
                             }
                             default:
                             {
-                                return false;
+                                IHateStupidWarnings = true;
                             }
                         }
                     }
+
+                    if( debug )
+                        print::debug( snprintf( cout, "Exiting object..." ), this.GetVersion() );
+
+                    if( IHateStupidWarnings )
+                        return false;
+
                     return this.Ok;
                 }
             }
