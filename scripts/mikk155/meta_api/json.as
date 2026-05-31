@@ -199,7 +199,7 @@ namespace meta_api
 
                 Serializer@ Object( const meta_api::json::Type&in type )
                 {
-                    return Serializer( this.m_Depth + 1, String::EMPTY_STRING, this.m_Type, this.m_Style, this.m_Indents, this.GetVersion() );
+                    return Serializer( this.m_Depth + 1, String::EMPTY_STRING, type, this.m_Style, this.m_Indents, this.GetVersion() );
                 }
 
                 Serializer(
@@ -415,11 +415,14 @@ namespace meta_api
                         }
                     }
 
-                    this.m_Buffer.opAddAssign( EscapeSequences( key, true ) );
-                    this.m_Buffer.opAddAssign( ':' );
+                    if( this.m_Type != meta_api::json::Type::Array )
+                    {
+                        this.m_Buffer.opAddAssign( EscapeSequences( key, true ) );
+                        this.m_Buffer.opAddAssign( ':' );
 
-                    if( this.m_Style == meta_api::json::parser::Style::AllMan && this.m_Indents != meta_api::json::parser::Indentation::AllTogether )
-                        this.m_Buffer.opAddAssign( ' ' );
+                        if( this.m_Style == meta_api::json::parser::Style::AllMan && this.m_Indents != meta_api::json::parser::Indentation::AllTogether )
+                            this.m_Buffer.opAddAssign( ' ' );
+                    }
 
                     switch( type )
                     {
