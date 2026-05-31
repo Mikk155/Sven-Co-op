@@ -18,15 +18,18 @@ namespace meta_api
 
                 bool Parse( dictionary&out obj, const meta_api::json::Type&in objectType )
                 {
+                    print::debug( snprintf( cout, "Parsing object of type %1...", Type::ToString(objectType) ) );
+
                     obj.deleteAll();
 
                     string key;
                     string value;
-                    dictionary data;
                     meta_api::json::Type type;
 
-                    while( this.Advance( objectType, type, key, value, data ) )
+                    while( this.Advance( objectType, type, key, value ) )
                     {
+                        print::debug( snprintf( cout, "\"%1\": %2 (%3)", key, ( type == Type::Object ? "{}" : type == Type::Array ? "[]" : value ), Type::ToString(type) ) );
+
                         switch( type )
                         {
                             case meta_api::json::Type::Object:
@@ -69,7 +72,7 @@ namespace meta_api
                             }
                         }
                     }
-                    return true;
+                    return this.Ok;
                 }
             }
 

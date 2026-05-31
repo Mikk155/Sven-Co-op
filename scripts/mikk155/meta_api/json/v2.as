@@ -266,7 +266,7 @@ namespace meta_api
 
                     if( value is null )
                     {
-                        print( snprintf( cout, "ERROR: Couldn't set null json value for key \"%1\"", keyName ), Version::V2 );
+                        print::error( snprintf( cout, "Couldn't set null json value for key \"%1\"", keyName ), Version::V2 );
                         return @old;
                     }
 
@@ -540,13 +540,13 @@ namespace meta_api
                 {
                     if( this.Type != meta_api::json::Type::Array )
                     {
-                        print( snprintf( cout, "ERROR: Couldn't Append to a json that is not an array!" ), Version::V2 );
+                        print::error( snprintf( cout, "Couldn't Append to a json that is not an array!" ), Version::V2 );
                         return null;
                     }
 
                     if( value is null )
                     {
-                        print( snprintf( cout, "ERROR: Couldn't Append a null json value!" ), Version::V2 );
+                        print::error( snprintf( cout, "Couldn't Append a null json value!" ), Version::V2 );
                         return null;
                     }
 
@@ -566,7 +566,7 @@ namespace meta_api
                 {
                     if( index >= this.m_KeyNames.length() )
                     {
-                        print( snprintf( cout, "ERROR: Index %1 is outside json length %2", index, this.m_KeyNames.length() ), Version::V2 );
+                        print::error( snprintf( cout, "Index %1 is outside json length %2", index, this.m_KeyNames.length() ), Version::V2 );
                         return null;
                     }
 
@@ -627,10 +627,9 @@ namespace meta_api
 
                     string key;
                     string value;
-                    dictionary data;
                     meta_api::json::Type type;
 
-                    while( this.Advance( objectType, type, key, value, data ) )
+                    while( this.Advance( objectType, type, key, value ) )
                     {
                         switch( type )
                         {
@@ -690,7 +689,7 @@ namespace meta_api
                             }
                         }
                     }
-                    return false;
+                    return this.Ok;
                 }
             }
 
