@@ -885,7 +885,7 @@ namespace meta_api
                         }
 
                         if( !this.SkipComments() )
-                            break;
+                            return false;
 
                         char c( this.buffer[this.CurrentPosition] );
 
@@ -1056,6 +1056,8 @@ namespace meta_api
                         }
                     }
 
+                    this.error++;
+                    print::error( snprintf( cout, "Unexpected end of file. expecting \"%1\"", is_object ? "}" : "]" ) );
                     return false;
                 }
             } // Deserializer
