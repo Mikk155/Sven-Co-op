@@ -41,6 +41,20 @@ namespace meta_api
                     );
                 }
 
+                bool DeserializeArrayObject( const string&in serialized ) override
+                {
+                    json@ obj = json();
+                    json@ obj2;
+                    return ( obj.Load( serialized ) && obj.Length() > 0 && obj.is_array()
+                        && int( obj[0] ) == 1
+                        && float( obj[1] ) == 2.5
+                        && bool( obj[2] )
+                        && string( obj[3] ) == "string"
+                        && ( @obj2 = obj[4] ) !is null && obj2.is_object() && obj2.Contains( "string" ) && string( obj2[ "string" ] ) == "string"
+                        && obj[5].is_null()
+                    );
+                }
+
                 void Tests() override
                 {
                 }

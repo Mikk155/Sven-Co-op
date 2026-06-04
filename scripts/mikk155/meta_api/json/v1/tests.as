@@ -44,6 +44,20 @@ namespace meta_api
                     );
                 }
 
+                bool DeserializeArrayObject( const string&in serialized ) override
+                {
+                    dictionary obj;
+                    dictionary obj2;
+                    return ( Deserialize( serialized, obj ) && obj.getSize() > 0
+                        && int( obj[ "0" ] ) == 1
+                        && float( obj[ "1" ] ) == 2.5
+                        && bool( obj[ "2" ] )
+                        && string( obj[ "3" ] ) == "string"
+                        && obj.get( "4", obj2 ) && obj2.getSize() > 0 && string( obj2[ "string" ] ) == "string"
+                        && obj.exists( "5" )
+                    );
+                }
+
                 void Tests() override
                 {
                     dictionary obj;
