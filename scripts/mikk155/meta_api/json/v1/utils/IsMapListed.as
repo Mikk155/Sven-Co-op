@@ -4,7 +4,7 @@ namespace meta_api
     {
         namespace v1
         {
-            namespace fmt
+            namespace utils
             {
                 /**
                 *   @brief Return whatever the given obj has an object at key containing the current map name in it.

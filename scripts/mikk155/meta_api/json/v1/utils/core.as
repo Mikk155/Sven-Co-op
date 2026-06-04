@@ -1,4 +1,4 @@
-#include "ToArray"
+#include "IsMapListed"
 
 namespace meta_api
 {
@@ -6,8 +6,8 @@ namespace meta_api
     {
         namespace v1
         {
-            // Various formatting methods from and to json::v1
-            namespace fmt
+            // Various utility methods from and to json::v1
+            namespace utils
             {
             }
         }

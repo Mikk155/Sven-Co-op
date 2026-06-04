@@ -1,6 +1,7 @@
 /// Run tests for json
 #include "../v1"
 #include "fmt/core"
+#include "utils/core"
 #include "../tests"
 
 namespace meta_api
@@ -45,6 +46,16 @@ namespace meta_api
 
                 void Tests() override
                 {
+                    dictionary obj;
+
+                    Expect( "utils::IsMapListed current map in list", true,
+                        Deserialize( "{\"map_blacklist\":[\"" + string( g_Engine.mapname ) + "\"]}", obj ) && utils::IsMapListed( obj )
+                    );
+
+                    array<string> arr;
+                    Expect( "fmt::ToArray conversion", true,
+                        fmt::ToArray( obj[ "map_blacklist" ], arr ) == 1 && arr.length() == 1
+                    );
                 }
             }
         }

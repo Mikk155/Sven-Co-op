@@ -1,7 +1,6 @@
+#include "../../scripts/mikk155/meta_api"
 #include "../../scripts/mikk155/meta_api/json/v1/tests"
 #include "../../scripts/mikk155/meta_api/json/v2/tests"
-
-#include "../../test/angelscript/preprocessors"
 
 void PluginInit()
 {
