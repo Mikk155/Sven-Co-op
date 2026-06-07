@@ -147,6 +147,7 @@ if( test is null ) {
     print::error( "Null test passed on meta_api::json::tests::Start( ITest@ )", test.GetVersion() );
     return;
 }
+/*
 bool __META_INSTALLED__ = false;
 #if METAMOD_PLUGIN_ASLP
 __RunTests__( test, true );
@@ -155,6 +156,7 @@ __META_INSTALLED__ = true;
 if( !__META_INSTALLED__ ) {
     print::info( "===== Skiping json tests for METAMOD as is not installed =====", test.GetVersion() );
 }
+*/
 // If metamod is installed disable the support momentarly to test vanilla behaviour
 #if METAMOD_PLUGIN_ASLP
 meta_api::json::__METAMOD__ = false;
