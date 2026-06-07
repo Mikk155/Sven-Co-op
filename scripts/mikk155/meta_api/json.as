@@ -1137,6 +1137,13 @@ namespace meta_api
                         print::error( snprintf( cout, "Unexpected \"%1\" at %2%3", c, this.GetCurrentLine(), this.GetLastRead() ) );
                         return false;
                     }
+
+                    if( in_string )
+                    {
+                        this.error++;
+                        print::error( "Reached end of parser with an unterminated string!", this.GetVersion() );
+                    }
+
                     return false;
                 }
             } // Deserializer
