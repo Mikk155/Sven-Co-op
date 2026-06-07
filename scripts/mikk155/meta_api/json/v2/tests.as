@@ -57,6 +57,13 @@ namespace meta_api
 
                 void Tests() override
                 {
+                    json@ obj;
+
+                    array<string> arr;
+                    Expect( "fmt::ToArray conversion", true,
+                        Deserialize( "{\"some_array\":[\"string\"]}", obj )
+                        && fmt::ToArray( obj[ "some_array" ], arr ) && arr.length() == 1
+                    );
                 }
             }
         }
