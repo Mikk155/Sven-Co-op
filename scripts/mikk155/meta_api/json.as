@@ -1102,6 +1102,24 @@ namespace meta_api
 
                                 data[ "pairs" ] = ++pairs;
 
+                                // Check for duplicated key names
+                                array<string>@ keys;
+                                if( !data.get( "keys", @keys ) )
+                                {
+                                    @keys = { pair.key };
+                                    data[ "keys" ] = keys;
+                                }
+                                else if( keys.find( pair.key ) < 0 )
+                                {
+                                    keys.insertLast( pair.key );
+                                }
+                                else
+                                {
+                                    print::error( snprintf( cout, "Duplicated key name \"%1\" at %2%3", pair.key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.error++;
+                                    return false;
+                                }
+
                                 return true;
                             }
 
