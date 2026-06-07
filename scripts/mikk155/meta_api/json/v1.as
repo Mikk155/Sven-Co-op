@@ -160,6 +160,14 @@ namespace meta_api
             {
                 meta_api::json::v1::__Deserializer__ Deserializer();
                 Deserializer.SetSerialized(str);
+#if METAMOD_PLUGIN_ASLP
+                if( __METAMOD__ )
+                {
+                    if( Deserializer.IsFile )
+                        return aslp::json::Deserialize( Deserializer.FileName, obj );
+                    return aslp::json::Deserialize( Deserializer.buffer, obj );
+                }
+#endif
                 return Deserializer.Parse( obj, Deserializer.Initialize() );
             }
         }

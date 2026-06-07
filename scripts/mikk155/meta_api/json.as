@@ -498,6 +498,11 @@ namespace meta_api
                 private
                     string m_FileName;
 
+                /// The file name
+                const string& get_FileName() const {
+                    return this.m_FileName;
+                }
+
                 private
                     uint m_totalSize;
 
