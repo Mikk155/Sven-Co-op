@@ -46,6 +46,11 @@ interface ITest
 
 namespace tests
 {
+uint __AllTestsTotal__ = 0;
+uint __AllTestsPassed__ = 0;
+uint __AllTestsFailed__ = 0;
+uint __AllTests__ = 0;
+
 Version __CurrentVersion__;
 array<ITest@> __Tests__(0);
 
@@ -64,6 +69,7 @@ array<Expect@> __Results__(0);
 
 void __RunTests__( ITest@ test, bool metamod )
 {
+__AllTests__++;
 __Results__.resize(0);
 __CurrentVersion__ = test.GetVersion();
 print::info( snprintf( meta_api::json::cout, "===== Running json tests for %1 =====", ( metamod ? "METAMOD" : "VANILLA" ) ), __CurrentVersion__ );
@@ -106,9 +112,16 @@ for( uint ui = 0; ui < length; ui++ )
 {
     auto result = __Results__[ui];
     if( result.Failed )
+    {
+        __AllTestsFailed__++;
         fails.insertLast(result);
+    }
     else
+    {
+        __AllTestsPassed__++;
         pass.insertLast(result);
+    }
+    __AllTestsTotal__++;
 }
 if( fails.length() == 0 )
 {
@@ -163,6 +176,21 @@ for( uint ui = 0; ui < __Tests__.length(); ui++ )
         Start( ptr );
     }
 }
+string buffer;
+snprintf(buffer, """
+========== TEST SUMMARY ==========
+Runs: %1
+Pass: %2 (%3%%)
+Fail: %4 (%5%%)
+All : %6
+=================================
+""",
+__AllTests__,
+__AllTestsPassed__, ( __AllTestsTotal__ > 0 ? int( 100.0f * __AllTestsPassed__ / __AllTestsTotal__ ) : 0 ),
+__AllTestsFailed__, ( __AllTestsTotal__ > 0 ? int( 100.0f * __AllTestsFailed__ / __AllTestsTotal__ ) : 0 ),
+__AllTestsTotal__
+);
+g_EngineFuncs.ServerPrint(buffer);
 } // void StartAll
 
 void Start( const Version&in version )
