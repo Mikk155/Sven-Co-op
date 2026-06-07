@@ -21,47 +21,19 @@ namespace meta_api
                     return Version::V2;
                 }
 
-                bool DeserializeSingleLineCommentary( const string&in serialized ) override
-                {
-                    json@ obj = json(), arr;
-                    return ( obj.Load(serialized) && obj.Length() > 0
-                        && obj.Contains( "first" ) && int(obj[ "first" ]) == 1
-                        && obj.Contains( "second" ) && obj.Get( "second", @arr ) && int(arr[0]) == 1 && int(arr[1]) == 2
-                        && obj.Contains( "third" ) && int(obj[ "third" ]) == 2
-                    );
-                }
-
-                bool DeserializeMultiLineCommentary( const string&in serialized ) override
-                {
-                    json@ obj = json(), arr;
-                    return ( obj.Load(serialized) && obj.Length() > 0
-                        && obj.Contains( "first" ) && int(obj[ "first" ]) == 1
-                        && obj.Contains( "second" ) && obj.Get( "second", @arr ) && int(arr[0]) == 1 && int(arr[1]) == 2
-                        && obj.Contains( "third" ) && int(obj[ "third" ]) == 2
-                    );
-                }
-
-                bool DeserializeArrayObject( const string&in serialized ) override
-                {
-                    json@ obj = json();
-                    json@ obj2;
-                    return ( obj.Load( serialized ) && obj.Length() > 0 && obj.is_array()
-                        && int( obj[0] ) == 1
-                        && float( obj[1] ) == 2.5
-                        && bool( obj[2] )
-                        && string( obj[3] ) == "string"
-                        && ( @obj2 = obj[4] ) !is null && obj2.is_object() && obj2.Contains( "string" ) && string( obj2[ "string" ] ) == "string"
-                        && obj[5].is_null()
-                    );
-                }
-
                 bool DeserializeGeneric( const string&in serialized ) override
                 {
                     json@ obj;
                     return Deserialize( serialized, obj );
                 }
 
-                void Tests() override
+                bool DeserializeAllTypes( const string&in serialized ) override
+                {
+                    json@ obj;
+                    return Deserialize( serialized, obj );
+                }
+
+                void AdditionalTests() override
                 {
                     json@ obj;
 

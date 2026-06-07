@@ -33,16 +33,35 @@ interface ITest
 {
     /// Json version
     const Version GetVersion();
-    // serialized = { "first": 1, "second": [ 1, 2 ], "third": 2 }
-    bool DeserializeSingleLineCommentary( const string&in serialized );
-    // serialized = { "first": 1, "second": [ 1, 2 ], "third": 2 }
-    bool DeserializeMultiLineCommentary( const string&in serialized );
-    // serialized = [ 1, 2.5, true, "string", { "string": "string" }, null ]
-    bool DeserializeArrayObject( const string&in serialized );
-    // serialized could be anything invalid, this method is called for all the invalidation tests
+    /**
+        If any data of the following object is missing from your deserialization then assume the test failed and return false.
+{
+    "null": null,
+    "integer": 1,
+    "float": 1.5,
+    "bool": true,
+    "string": "string",
+    "object":
+    {
+    },
+    "array":
+    [
+        null,
+        1,
+        1.5,
+        true,
+        false,
+        "string",
+        {},
+        []
+    ]
+}
+    */
+    bool DeserializeAllTypes( const string&in serialized );
+    // serialized could be anything invalid, this method is called for all the invalidation tests and should only return the object deserialization result
     bool DeserializeGeneric( const string&in serialized );
-    // Tests is called at the end of all the tests. you can initialize Expect class handles there to run your own specific tests
-    void Tests();
+    // For your own tests initialize an Expect class passing up a title, the expected result and the conditional that should be equal to the expected
+    void AdditionalTests();
 }
 
 namespace tests
@@ -75,33 +94,11 @@ __Results__.resize(0);
 __CurrentVersion__ = test.GetVersion();
 print::info( snprintf( meta_api::json::cout, "===== Running json tests for %1 =====", ( metamod ? "METAMOD" : "VANILLA" ) ), __CurrentVersion__ );
 
-Expect( "Single line comments", true, test.DeserializeSingleLineCommentary(
-"""// Comment before object
-{// Comment after token in object
-    "first": 1, // Comment after comma
-    "second": [
-        1, // Comment inside array after value with comma
-        2 // Comment inside array after value with no comma
-    ],
-    "third": 2 // Comment after value with no comma
-}// Comment at end of object"""
-) );
-
-Expect( "Multi line comments", true, test.DeserializeMultiLineCommentary(
-"""/* Comment before object */
-{/* Comment after token in object
-    */
-    "first": 1,/*something*/
-    "second":/*idk other something*/[
-        1,/*something*/
-        2
-    ]/*why would you want to place a comment here?*/,
-    "third"/*This is worse.*/: 2/*end*/
-}/* Comment at end of object*/"""
-) );
-
+Expect( "Deserialization and types", true, test.DeserializeAllTypes( "{\"null\": null,\"integer\": 1,\"float\": 1.5,\"bool\": true,\"string\": \"string\",\"object\":{},\"array\":[null,1,1.5,true,false,\"string\",{},[]]}" ) );
+Expect( "Single line comments", true, test.DeserializeGeneric( "// Comment before object\n{// Comment after token in object\n\"first\": 1, // Comment after comma\n\"second\": [\n1, // Comment inside array after value with comma\n2 // Comment inside array after value with no comma\n],\n\"third\": 2 // Comment after value with no comma\n}// Comment at end of object" ) );
+Expect( "Multi line comments", true, test.DeserializeGeneric( "/**/{\n/*\n*/\n\"first\": 1,/**/\n\"second\":/**/[\n1,/**/\n2\n]/*?*/,\n\"third\"/*x[.*/: 2/**/}\n/**/" ) );
 Expect( "Valid literals", true, test.DeserializeGeneric( "[true,false,null,\"\"]" ) );
-Expect( "Array main object", true, test.DeserializeArrayObject( "[1,2.5,true,\"string\",{\"string\":\"string\"},null]" ) );
+Expect( "Valid literals", true, test.DeserializeGeneric( "[true,false,null,\"\"]" ) );
 Expect( "Invalid pairs with no coma separator", false, test.DeserializeGeneric( "{\"0\":0\n\"1\":1}" ) );
 Expect( "Invalid literal", false, test.DeserializeGeneric( "{\"value\":tru}" ) || test.DeserializeGeneric( "[tru]" ) );
 Expect( "Invalid missing coma in array", false, test.DeserializeGeneric( "[1 2]" ) || test.DeserializeGeneric( "[1\t2]" ) || test.DeserializeGeneric( "[1\n2]" ) );
@@ -134,7 +131,7 @@ Expect( "Invalid escape", false, test.DeserializeGeneric( "{\"a\":\"\\x\"}" ) );
 Expect( "UTF-8 BOM", true, test.DeserializeGeneric( "\xEF\xBB\xBF[]" ) );
 Expect( "Deep array nesting", true, test.DeserializeGeneric( "[1,[2,[3,[[{\"epic\":true},5],4]]]]" ) );
 Expect( "Deep nesting", true, test.DeserializeGeneric( "[{\"1\":[{\"2\":[{\"3\":[null]}]}]}]" ) );
-test.Tests();
+test.AdditionalTests();
 // Gather results
 uint length = __Results__.length();
 array<Expect@> fails(0);

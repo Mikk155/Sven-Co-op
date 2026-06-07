@@ -22,49 +22,19 @@ namespace meta_api
                     return Version::V1;
                 }
 
-                bool DeserializeSingleLineCommentary( const string&in serialized ) override
-                {
-                    int i;
-                    dictionary obj, arr;
-                    return ( Deserialize( serialized, obj ) && obj.getSize() > 0
-                        && obj.get( "first", i ) && i == 1
-                        && obj.get( "second", arr ) && arr.getSize() > 0 && int(arr["0"]) == 1 && int(arr["1"]) == 2
-                        && obj.get( "third", i ) && i == 2
-                    );
-                }
-
-                bool DeserializeMultiLineCommentary( const string&in serialized ) override
-                {
-                    int i;
-                    dictionary obj, arr;
-                    return ( Deserialize( serialized, obj ) && obj.getSize() > 0
-                        && obj.get( "first", i ) && i == 1
-                        && obj.get( "second", arr ) && arr.getSize() > 0 && int(arr["0"]) == 1 && int(arr["1"]) == 2
-                        && obj.get( "third", i ) && i == 2
-                    );
-                }
-
-                bool DeserializeArrayObject( const string&in serialized ) override
-                {
-                    dictionary obj;
-                    dictionary obj2;
-                    return ( Deserialize( serialized, obj ) && obj.getSize() > 0
-                        && int( obj[ "0" ] ) == 1
-                        && float( obj[ "1" ] ) == 2.5
-                        && bool( obj[ "2" ] )
-                        && string( obj[ "3" ] ) == "string"
-                        && obj.get( "4", obj2 ) && obj2.getSize() > 0 && string( obj2[ "string" ] ) == "string"
-                        && obj.exists( "5" )
-                    );
-                }
-
                 bool DeserializeGeneric( const string&in serialized ) override
                 {
                     dictionary obj;
                     return Deserialize( serialized, obj );
                 }
 
-                void Tests() override
+                bool DeserializeAllTypes( const string&in serialized ) override
+                {
+                    dictionary obj;
+                    return Deserialize( serialized, obj );
+                }
+
+                void AdditionalTests() override
                 {
                     dictionary obj;
 
