@@ -32,30 +32,30 @@ namespace meta_api
                 if( moduleName != "MapModule" )
                     snprintf( moduleName, "Plugin %1", moduleName );
 
-                snprintf( cout, "[%1] JSON V%2 %3: %4\n", moduleName, int(version), type, message );
+                snprintf( cout, "[%1] JSON V%2 %3: %4\n", moduleName, ( version == Version::Undefined ? "Undefined" : int(version) ), type, message );
                 g_EngineFuncs.ServerPrint(cout);
                 cout.Clear();
             }
 
-            void error( bool fmt, const Version &in version = meta_api::json::Latest ) {
+            void error( bool fmt, const Version &in version = meta_api::json::Version::Undefined ) {
                 __print__( "Error", cout, version );
             }
-            void error( const string &in message, const Version &in version = Latest ) {
+            void error( const string &in message, const Version &in version = Version::Undefined ) {
                 __print__( "Error", message, version );
             }
 
-            void info( bool fmt, const Version &in version = meta_api::json::Latest ) {
+            void info( bool fmt, const Version &in version = meta_api::json::Version::Undefined ) {
                 __print__( "Info", cout, version );
             }
-            void info( const string &in message, const Version &in version = Latest ) {
+            void info( const string &in message, const Version &in version = Version::Undefined ) {
                 __print__( "Info", message, version );
             }
 
-            void debug( bool fmt, const Version &in version = meta_api::json::Latest ) {
+            void debug( bool fmt, const Version &in version = meta_api::json::Version::Undefined ) {
                 if( meta_api::json::debug )
                     __print__( "Debug", cout, version );
             }
-            void debug( const string &in message, const Version &in version = Latest ) {
+            void debug( const string &in message, const Version &in version = Version::Undefined ) {
                 if( meta_api::json::debug )
                     __print__( "Debug", message, version );
             }
