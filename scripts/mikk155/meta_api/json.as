@@ -632,16 +632,6 @@ namespace meta_api
                     return ( this.CurrentPosition < this.totalSize );
                 }
 
-                bool IsIgnoredChar( const char&in c )
-                {
-                    return ( c == '\n' || c == '\r' );
-                }
-
-                bool IsEmpty( const char&in c )
-                {
-                    return ( c == ' ' || c == '\t' );
-                }
-
                 /// Get the last read string formated as " Last read:\n%1"
                 string GetLastRead()
                 {
@@ -759,7 +749,7 @@ namespace meta_api
                         if( check == '{' )
                             return meta_api::json::Type::Object;
 
-                        if( !this.IsIgnoredChar(check) && !this.IsEmpty(check) )
+                        if( check != '\r' && check != ' ' && check != '\t' && check != '\n' )
                             break;
                     }
                     this.ErrorUnexpected( "{\" or \"[", check );
@@ -811,7 +801,7 @@ namespace meta_api
                                 char c = this.buffer[this.CurrentPosition];
                                 this.AdvancePosition(1);
 
-                                if( !this.IsIgnoredChar(c) && !this.IsEmpty(c) )
+                                if( c != '\r' && c != ' ' && c != '\t' && c != '\n' )
                                 {
                                     print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of string%3", string(c), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
                                     this.error++;
@@ -829,7 +819,7 @@ namespace meta_api
 
                     if( debug )
                     {
-                        print::debug( snprintf( cout, "Exiting object %1 of type %2", string( currentData[ "path" ] ), meta_api::json::Type::ToString(ObjectType) ), this.GetVersion() );
+                        print::debug( snprintf( cout, "%1: %2 %3", string( currentData[ "path" ] ), meta_api::json::Type::ToString(ObjectType), ( ObjectType == meta_api::json::Type::Array ? "]" : "}" ) ), this.GetVersion() );
                     }
                 }
 
@@ -873,7 +863,7 @@ namespace meta_api
                         if( !data.exists( "path" ) )
                         {
                             data[ "path" ] = "\"<root>\"";
-                            print::debug( snprintf( cout, "%1: %2 (%3)", string( data[ "path" ] ), ( ObjectType == meta_api::json::Type::Array ? "[]" : "{}" ), meta_api::json::Type::ToString(ObjectType) ), this.GetVersion() );
+                            print::debug( snprintf( cout, "%1: %2 %3", string( data[ "path" ] ), meta_api::json::Type::ToString(ObjectType), ( ObjectType == meta_api::json::Type::Array ? "[" : "{" ) ), this.GetVersion() );
                         }
                     }
 
@@ -965,11 +955,15 @@ namespace meta_api
                             continue;
                         }
 
-                        if( is_array && ( c == '\n' || this.IsEmpty(c) ) && reading_value && !value_is_string && !had_comma && !pair.value_string.IsEmpty() )
-                            return ErrorUnexpected( ",", c, "Invalid value separated by a space" );
+                        bool is_space = ( c == ' ' || c == '\t' );
 
-                        if( this.IsIgnoredChar(c) || this.IsEmpty(c) )
+                        if( c == '\r' )
+                            continue;
+
+                        if( is_space || c == '\n' )
                         {
+                            if( is_array && !pair.value_string.IsEmpty() )
+                                pair.value_string.opAddAssign(c);
                             continue;
                         }
 
@@ -1045,7 +1039,7 @@ namespace meta_api
 
                                     dictionary@ childData = this.m_Data[this.m_DataCurrent-1];
                                     childData[ "path" ] = path;
-                                    print::debug( snprintf( cout, "%1: %2 (%3)", path, ( pair.type == meta_api::json::Type::Array ? "[]" : "{}" ), meta_api::json::Type::ToString(pair.type) ), this.GetVersion() );
+                                    print::debug( snprintf( cout, "%1: %2 %3", path, meta_api::json::Type::ToString(pair.type), ( pair.type == meta_api::json::Type::Array ? "[" : "{" ) ), this.GetVersion() );
                                 }
                                 return true;
                             }
@@ -1054,8 +1048,25 @@ namespace meta_api
                                 pair.value_string.opAddAssign(c);
                             }
 
+                            if( pair.value_string.IsEmpty() && !value_is_string )
+                            {
+                                // Empty nested array
+                                if( stop )
+                                {
+                                    g_Game.AlertMessage( at_console, "Type %1 Comma %2 pairs %3\n", Type::ToString(ObjectType), had_comma, pairs );
+                                    CloseObject( ObjectType, had_comma, pairs );
+                                    return true;
+                                }
+                            }
+
                             if( shouldParsePairs )
                             {
+                                while( pair.value_string.EndsWith( ' ' ) || pair.value_string.EndsWith( '\n' ) )
+                                {
+                                    pair.value_string.Trim( ' ' );
+                                    pair.value_string.Trim( '\n' );
+                                }
+
                                 if( pair.value_string.IsEmpty() && !value_is_string )
                                 {
                                     if( had_comma && bool( data[ "had_comma" ] ) )
@@ -1091,7 +1102,7 @@ namespace meta_api
                                 }
                                 else
                                 {
-                                    print::error( snprintf( cout, "Invalid non-string value %1 at %2%3", pair.value_string, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    print::error( snprintf( cout, "Invalid non-string value \"%1\" at %2%3", EscapeSequences(pair.value_string), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
                                     this.error++;
                                     return false;
                                 }
@@ -1150,9 +1161,9 @@ namespace meta_api
                         if( c == '}' || c == ']' )
                         {
                             if( c == '}' && is_array )
-                                return ErrorUnexpected( "]" , c );
+                                return ErrorUnexpected( "]", c );
                             if( c == ']' && is_object )
-                                return ErrorUnexpected( "}" , c );
+                                return ErrorUnexpected( "}", c );
 
                             CloseObject( ObjectType, had_comma, pairs );
                             return false;
