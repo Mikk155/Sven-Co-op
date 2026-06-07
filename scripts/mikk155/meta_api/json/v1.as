@@ -18,56 +18,48 @@ namespace meta_api
 
                 bool Parse( dictionary&out obj, const meta_api::json::Type&in objectType )
                 {
-                    if( debug )
-                        print::debug( snprintf( cout, "Parsing object of type %1...", Type::ToString(objectType) ), this.GetVersion() );
-
                     obj.deleteAll();
 
-                    string key;
-                    string value;
-                    meta_api::json::Type type;
+                    meta_api::json::parser::KeyValuePair@ pair;
 
                     bool IHateStupidWarnings = false;
 
-                    while( this.Advance( objectType, type, key, value ) )
+                    while( this.Advance( objectType, pair ) )
                     {
-                        if( debug )
-                            print::debug( snprintf( cout, "\"%1\": %2 (%3)", key, ( type == Type::Object ? "{}" : type == Type::Array ? "[]" : value ), Type::ToString(type) ), this.GetVersion() );
-
-                        switch( type )
+                        switch( pair.type )
                         {
                             case meta_api::json::Type::Object:
                             case meta_api::json::Type::Array:
                             {
                                 dictionary objChild;
-                                if( !this.Parse( objChild, type ) )
+                                if( !this.Parse( objChild, pair.type ) )
                                     return false;
-                                obj[ key ] = objChild;
+                                obj[ pair.key ] = objChild;
                                 break;
                             }
                             case meta_api::json::Type::String:
                             {
-                                obj.set( key, value );
+                                obj.set( pair.key, pair.value_string );
                                 break;
                             }
                             case meta_api::json::Type::Float:
                             {
-                                obj.set( key, atof( value ) );
+                                obj.set( pair.key, pair.value_float );
                                 break;
                             }
                             case meta_api::json::Type::Integer:
                             {
-                                obj.set( key, atoi( value ) );
+                                obj.set( pair.key, pair.value_int );
                                 break;
                             }
                             case meta_api::json::Type::Boolean:
                             {
-                                obj.set( key, ( value == "true" ? true : false ) );;
+                                obj.set( pair.key, pair.value_bool );
                                 break;
                             }
                             case meta_api::json::Type::Null:
                             {
-                                obj.set( key, "__null__" );
+                                obj.set( pair.key, "__null__" );
                                 break;
                             }
                             default:
@@ -76,9 +68,6 @@ namespace meta_api
                             }
                         }
                     }
-
-                    if( debug )
-                        print::debug( snprintf( cout, "Exiting object..." ), this.GetVersion() );
 
                     if( IHateStupidWarnings )
                         return false;
@@ -180,19 +169,17 @@ namespace meta_api
             **/
             bool Deserialize( const string&in str, dictionary&out obj )
             {
+                meta_api::json::v1::__Deserializer__ Deserializer();
+                Deserializer.SetSerialized(str);
+
 /// Metamod handles this with the internal nlohmann/json library
 #if METAMOD_PLUGIN_ASLP
-                if( __METAMOD__ )
-                {
-                    string filename;
-                    if( GetFilename( str, filename ) )
-                        return aslp::json::Deserialize( filename, obj );
-                    return aslp::json::Deserialize( str, obj );
+                if( __METAMOD__ ) {
+                    return aslp::json::Deserialize( Deserializer.buffer, obj );
                 }
 #endif
-                meta_api::json::v1::__Deserializer__ Deserializer();
 
-                meta_api::json::Type type = Deserializer.Initialize(str);
+                meta_api::json::Type type = Deserializer.Initialize();
 
                 switch( type )
                 {
