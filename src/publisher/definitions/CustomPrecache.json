@@ -4,10 +4,7 @@
     "assets":
     [
         "scripts/plugins/CustomPrecache.as",
-        "scripts/plugins/CustomPrecache.json",
-        "scripts/mikk155/meta_api.as",
-        "scripts/mikk155/meta_api/json/v1.as",
-        "scripts/mikk155/meta_api/json.as"
+        "scripts/plugins/CustomPrecache.json"
     ],
 
     "short_description": "Set a list of any type of asset to statically or dynamically precache across levels.",
