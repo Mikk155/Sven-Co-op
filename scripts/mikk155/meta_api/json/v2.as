@@ -622,56 +622,48 @@ namespace meta_api
                     if( obj is null )
                         @obj = meta_api::json::v2::json();
 
-                    if( debug )
-                        print::debug( snprintf( cout, "Parsing object of type %1...", Type::ToString(objectType) ), this.GetVersion() );
-
                     obj.SetType( objectType );
 
-                    string key;
-                    string value;
-                    meta_api::json::Type type;
+                    meta_api::json::parser::KeyValuePair@ pair;
 
                     bool IHateStupidWarnings = false;
 
-                    while( this.Advance( objectType, type, key, value ) )
+                    while( this.Advance( objectType, pair ) )
                     {
-                        if( debug )
-                            print::debug( snprintf( cout, "\"%1\": %2 (%3)", key, ( type == Type::Object ? "{}" : type == Type::Array ? "[]" : value ), Type::ToString(type) ), this.GetVersion() );
-
-                        switch( type )
+                        switch( pair.type )
                         {
                             case meta_api::json::Type::Object:
                             case meta_api::json::Type::Array:
                             {
                                 meta_api::json::v2::json@ objChild;
-                                if( !this.Parse( objChild, type ) )
+                                if( !this.Parse( objChild, pair.type ) )
                                     return false;
-                                obj.Set( key, objChild );
+                                obj.Set( pair.key, objChild );
                                 break;
                             }
                             case meta_api::json::Type::String:
                             {
-                                obj.Set( key, value );
+                                obj.Set( pair.key, pair.value_string );
                                 break;
                             }
                             case meta_api::json::Type::Float:
                             {
-                                obj.Set( key, atof( value ) );
+                                obj.Set( pair.key, pair.value_float );
                                 break;
                             }
                             case meta_api::json::Type::Integer:
                             {
-                                obj.Set( key, atoi( value ) );
+                                obj.Set( pair.key, pair.value_int );
                                 break;
                             }
                             case meta_api::json::Type::Boolean:
                             {
-                                obj.Set( key, ( value == "true" ? true : false ) );
+                                obj.Set( pair.key, pair.value_bool );
                                 break;
                             }
                             case meta_api::json::Type::Null:
                             {
-                                obj.Set( key, meta_api::json::Null::Null );
+                                obj.Set( pair.key, meta_api::json::Null::Null );
                                 break;
                             }
                             default:
@@ -684,9 +676,6 @@ namespace meta_api
                         if( objectType == meta_api::json::Type::Array )
                             obj.__unique_index__++;
                     }
-
-                    if( debug )
-                        print::debug( snprintf( cout, "Exiting object..." ), this.GetVersion() );
 
                     if( IHateStupidWarnings )
                         return false;
@@ -792,8 +781,9 @@ namespace meta_api
             bool Deserialize( const string&in str, meta_api::json::v2::json@&out obj )
             {
                 meta_api::json::v2::__Deserializer__ Deserializer();
+                Deserializer.SetSerialized(str);
 
-                meta_api::json::Type type = Deserializer.Initialize(str);
+                meta_api::json::Type type = Deserializer.Initialize();
 
                 switch( type )
                 {
