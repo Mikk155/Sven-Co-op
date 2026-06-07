@@ -1050,12 +1050,10 @@ namespace meta_api
 
                             if( pair.value_string.IsEmpty() && !value_is_string )
                             {
-                                // Empty nested array
                                 if( stop )
                                 {
-                                    g_Game.AlertMessage( at_console, "Type %1 Comma %2 pairs %3\n", Type::ToString(ObjectType), had_comma, pairs );
                                     CloseObject( ObjectType, had_comma, pairs );
-                                    return true;
+                                    return false;
                                 }
                             }
 
