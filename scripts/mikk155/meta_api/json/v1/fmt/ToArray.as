@@ -10,8 +10,11 @@ namespace meta_api
                 *   @brief converts the given obj to a list of string.
                 *   NOTE: Any type that is not a string will be skipped.
                 **/
-                uint ToArray( dictionary@ obj, array<string>@&out List )
+                bool ToArray( dictionary@ obj, array<string>@&out List )
                 {
+                    if( obj is null )
+                        return false;
+
                     if( List is null )
                         @List = {};
 
@@ -19,21 +22,33 @@ namespace meta_api
 
                     List.resize( size );
 
+                    bool hasAny;
+
                     for( uint ui = 0; ui < size; ui++ )
                     {
-                        string value;
-                        if( obj.get( string( ui ), value ) )
-                            List[ ui ] = value;
+                        int iValue;
+                        float fValue;
+                        string strValue;
+                        string key = string(ui);
+                        if( obj.get( key, strValue ) )
+                            List[ui] = strValue;
+                        else if( obj.get( key, fValue ) )
+                            List[ui] = string(fValue);
+                        else if( obj.get( key, iValue ) )
+                            List[ui] = string(iValue);
+                        else
+                            continue;
+                        hasAny = true;
                     }
 
-                    return size;
+                    return hasAny;
                 }
 
                 /**
                 *   @brief converts the given obj to a list of string.
                 *   NOTE: Any type that is not a string will be skipped.
                 **/
-                uint ToArray( dictionaryValue&in obj, array<string>@&out List )
+                bool ToArray( dictionaryValue&in obj, array<string>@&out List )
                 {
                     return ToArray( cast<dictionary@>( obj ), List );
                 }
@@ -41,8 +56,11 @@ namespace meta_api
                 /**
                 *   @brief converts the given obj to a list of dictionaryValue
                 **/
-                uint ToArray( dictionary&in obj, array<dictionaryValue>@&out List )
+                bool ToArray( dictionary&in obj, array<dictionaryValue>@&out List )
                 {
+                    if( obj is null )
+                        return false;
+
                     if( List is null )
                         @List = {};
 
@@ -57,10 +75,10 @@ namespace meta_api
                             List[ ui ] = value;
                     }
 
-                    return size;
+                    return true;
                 }
 
-                uint ToArray( dictionaryValue&in obj, array<dictionaryValue>@&out List )
+                bool ToArray( dictionaryValue&in obj, array<dictionaryValue>@&out List )
                 {
                     return ToArray( cast<dictionary@>( obj ), List );
                 }

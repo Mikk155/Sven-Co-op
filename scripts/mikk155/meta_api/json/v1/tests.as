@@ -68,7 +68,7 @@ namespace meta_api
 
                     array<string> arr;
                     Expect( "fmt::ToArray conversion", true,
-                        fmt::ToArray( obj[ "map_blacklist" ], arr ) == 1 && arr.length() == 1
+                        fmt::ToArray( obj[ "map_blacklist" ], arr ) && arr.length() == 1
                     );
                 }
             }
