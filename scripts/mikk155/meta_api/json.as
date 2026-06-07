@@ -928,32 +928,40 @@ namespace meta_api
                             // escape sequences
                             if( c == '\\' )
                             {
+                                string e;
                                 char next( this.buffer[this.CurrentPosition] );
 
-                                if( next == 'r' ) { c = '\r'; }
-                                else if( next == '"' ) { c = '\"'; }
-                                else if( next == 'n' ) { c = '\n'; }
-                                else if( next == 't' ) { c = '\t'; }
-                                else if( next == '\\' ) { c = '\\\\'; }
+                                // Skip next read
+                                this.AdvancePosition(1);
+
+                                if( next == 'r' ) { e = '\r'; }
+                                else if( next == '"' ) { e = "\""; }
+                                else if( next == 'n' ) { e = "\n"; }
+                                else if( next == 't' ) { e = "\t"; }
+                                else if( next == '\\' ) { e = "\\\\"; }
+                                // The game doesnt need these but if we want to share information with other programs it may need to be keept
+                                else if( next == 'u' ) { e = "\\u"; }
+                                else if( next == '/' ) { e = "\\/"; }
+                                else if( next == 'b' ) { e = "\\b"; }
+                                else if( next == 'f' ) { e = "\\f"; }
                                 else
                                 {
-                                    print::error( snprintf( cout, "Non-escaped sequence at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    print::error( snprintf( cout, "Non-escaped sequence \"%1\" at %2%3", string(next), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
                                     this.error++;
                                     return false;
                                 }
 
-                                // Skip next read
-                                this.AdvancePosition(1);
+                                if( reading_key )
+                                    pair.key.opAddAssign(e);
+                                else if( reading_value )
+                                    pair.value_string.opAddAssign(e);
+                                continue;
                             }
 
                             if( reading_key )
-                            {
                                 pair.key.opAddAssign(c);
-                            }
                             else if( reading_value )
-                            {
                                 pair.value_string.opAddAssign(c);
-                            }
                             continue;
                         }
 
