@@ -950,6 +950,9 @@ namespace meta_api
                             continue;
                         }
 
+                        if( is_array && ( c == '\n' || this.IsEmpty(c) ) && reading_value && !value_is_string && !had_comma && !pair.value_string.IsEmpty() )
+                            return ErrorUnexpected( ",", c, "Invalid value separated by a space" );
+
                         if( this.IsIgnoredChar(c) || this.IsEmpty(c) )
                         {
                             continue;
