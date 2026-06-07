@@ -783,11 +783,11 @@ namespace meta_api
                         return false;
                     }
 
-                private void CloseObject( const meta_api::json::Type&in ObjectType, bool had_comma )
+                private void CloseObject( const meta_api::json::Type&in ObjectType, bool had_comma, int pairs )
                 {
                     dictionary@ currentData = this.m_Data[this.m_DataCurrent-1];
 
-                    if( had_comma && bool( currentData[ "has_any_pair" ] ) )
+                    if( had_comma && pairs > 0 )
                     {
                         this.error++;
                         print::error( snprintf( cout, "Unexpected \",\" at the last key-value pair at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
@@ -870,20 +870,12 @@ namespace meta_api
                         }
                     }
 
-                    bool had_comma;
-                    if( !data.get( "had_comma", had_comma ) )
-                        had_comma = true;
+                    int pairs = int( data[ "pairs" ] );
+                    bool had_comma = bool( data[ "had_comma" ] );
 
                     if( bool( data[ "stop" ] ) )
                     {
-                        CloseObject( ObjectType, had_comma );
-                        return false;
-                    }
-
-                    if( !had_comma && bool( data[ "has_any_pair" ] ) )
-                    {
-                        this.error++;
-                        print::error( snprintf( cout, "Unexpected end of value without comma at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                        CloseObject( ObjectType, had_comma, pairs );
                         return false;
                     }
 
@@ -969,7 +961,7 @@ namespace meta_api
 
                             if( c == ',' )
                             {
-                                data[ "had_comma" ] = true;
+                                had_comma = true;
                                 continue;
                             }
                         }
@@ -1008,10 +1000,8 @@ namespace meta_api
                             }
                             else if( c == ',' )
                             {
-                                if( had_comma && bool( data[ "has_any_pair" ] ) )
-                                    return ErrorUnexpected( ( is_array ? "value" : "\"" ), c, "Double comma after value" );
                                 shouldParsePairs = true;
-                                data[ "had_comma" ] = true;
+                                data[ "had_comma" ] = had_comma = true;
                             }
                             else if( c == '}' || c == ']' )
                             {
@@ -1050,6 +1040,9 @@ namespace meta_api
                             {
                                 if( pair.value_string.IsEmpty() && !value_is_string )
                                 {
+                                    if( had_comma && bool( data[ "had_comma" ] ) )
+                                        return ErrorUnexpected( ( is_array ? "value" : "\"" ), c, "Double comma after value" );
+
                                     print::error( snprintf( cout, "Empty non-string value given at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
                                     this.error++;
                                     return false;
@@ -1095,13 +1088,23 @@ namespace meta_api
                                 {
                                     data[ "stop" ] = true;
                                 }
+                                /*
+                                else if( !had_comma && pairs > 0 )
+                                {
+                                    this.error++;
+                                    print::error( snprintf( cout, "Unexpected end of value without comma at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    return false;
+                                }
+                                */
+
+                                data[ "pairs" ] = ++pairs;
 
                                 return true;
                             }
 
                             if( stop )
                             {
-                                CloseObject( ObjectType, had_comma );
+                                CloseObject( ObjectType, had_comma, pairs );
                                 return false;
                             }
 
@@ -1115,7 +1118,7 @@ namespace meta_api
                             if( c == ']' && is_object )
                                 return ErrorUnexpected( "}" , c );
 
-                            CloseObject( ObjectType, had_comma );
+                            CloseObject( ObjectType, had_comma, pairs );
                             return false;
                         }
 

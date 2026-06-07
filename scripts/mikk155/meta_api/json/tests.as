@@ -39,6 +39,7 @@ interface ITest
     bool DeserializeMultiLineCommentary( const string&in serialized );
     // serialized = [ 1, 2.5, true, "string", { "string": "string" }, null ]
     bool DeserializeArrayObject( const string&in seialized );
+    bool DeserializeInvalidLastComma( const string&in seialized );
     // Tests is called at the end of all the tests. you can initialize Expect class handles there to run your own specific tests
     void Tests();
 }
@@ -93,6 +94,8 @@ Expect( "Multi line comments", true, test.DeserializeMultiLineCommentary(
 ) );
 
 Expect( "Array main object", true, test.DeserializeArrayObject( "[1,2.5,true,\"string\",{\"string\":\"string\"},null]" ) );
+
+Expect( "reject trailing comma in object", false, test.DeserializeInvalidLastComma( "{\"1\":1,}" ) );
 
 // Gather results
 test.Tests();
