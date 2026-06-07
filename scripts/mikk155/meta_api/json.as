@@ -730,6 +730,13 @@ namespace meta_api
 
                     this.m_totalSize = this.buffer.Length();
 
+                    // nlohmann json ignores theses so i guess we'll do the same x[
+                    if( this.m_totalSize >= 3 && this.m_Buffer[0] == '\xEF' && this.m_Buffer[1] == '\xBB' && this.m_Buffer[2] == '\xBF' )
+                    {
+                        this.m_Buffer = this.m_Buffer.SubString(3);
+                        this.m_totalSize = this.m_Buffer.Length();
+                    }
+
                     /// Seek to the first json object/array return Type::Undefined if "{" or "[" is not found
                     if( this.totalSize <= 1 ) // 2 is the minimun string size to define empty object/array
                     {
