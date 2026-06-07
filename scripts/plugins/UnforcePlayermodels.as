@@ -26,28 +26,22 @@ void PluginInit()
 {
     g_Module.ScriptInfo.SetAuthor( "Mikk" );
     g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op" );
-
     MapActivate();
 }
 
-PlayerSpawnHook@ fnPlayerThink = PlayerPostThinkHook( PlayerPostThink );
-
 void MapActivate()
 {
-    g_Hooks.RemoveHook( Hooks::Player::PlayerPostThink, @fnPlayerThink );
-
     if( g_Map.HasForcedPlayerModels() )
     {
-        g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @fnPlayerThink );
+        g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink,
+        PlayerPostThinkHook( function( CBasePlayer@ player ) {
+            if( player !is null ) {
+                player.ResetOverriddenPlayerModel( true, true );
+                player.SetOverriddenPlayerModel( g_EngineFuncs.GetInfoKeyBuffer( player.edict() ).GetValue( "model" ) );
+            }
+            return HOOK_CONTINUE;
+        } ) );
     }
-}
-
-HookReturnCode PlayerPostThink( CBasePlayer@ player )
-{
-    if( player !is null )
-    {
-        player.ResetOverriddenPlayerModel( true, true );
-        player.SetOverriddenPlayerModel( g_EngineFuncs.GetInfoKeyBuffer( player.edict() ).GetValue( "model" ) );
-    }
-    return HOOK_CONTINUE;
+    else
+        g_Hooks.RemoveHook( Hooks::Player::PlayerPostThink );
 }
