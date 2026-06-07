@@ -731,7 +731,7 @@ namespace meta_api
                     this.m_totalSize = this.buffer.Length();
 
                     /// Seek to the first json object/array return Type::Undefined if "{" or "[" is not found
-                    if( this.totalSize <= 0 )
+                    if( this.totalSize <= 1 ) // 2 is the minimun string size to define empty object/array
                     {
                         print::error( "The provided string is empty!", this.GetVersion() );
                         return meta_api::json::Type::Undefined;
@@ -806,7 +806,7 @@ namespace meta_api
 
                                 if( !this.IsIgnoredChar(c) && !this.IsEmpty(c) )
                                 {
-                                    print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of file%3", string(c), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of string%3", string(c), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
                                     this.error++;
                                     return;
                                 }
