@@ -668,8 +668,7 @@ namespace meta_api
                 void SetSerialized( const string&in serialized )
                 {
                     /// Is serialized a file path?
-                    string filename;
-                    if( GetFilename( serialized, filename ) )
+                    if( GetFilename( serialized, this.m_FileName ) )
                     {
                         this.m_IsFile = true;
                     }
@@ -682,28 +681,31 @@ namespace meta_api
                 /// Initialize object/array. loading a file if applicable
                 const meta_api::json::Type Initialize()
                 {
+                    if( !this.IsFile && this.m_Buffer.IsEmpty() )
+                    {
+                        print::error( snprintf( cout, "Deserializer::Initialize Empty string provided or Deserializer::SetSerialized was never called!" ), this.GetVersion() );
+                        return meta_api::json::Type::Undefined;
+                    }
+
                     if( this.IsFile )
                     {
                         print::info( snprintf( cout, "Reading file \"%1\"", this.m_FileName ), this.GetVersion() );
 
                         bool shouldVanillaLoad = true;
 
-/// Metamod handles this with the internal file system getting the whole buffer in one go
+/// Metamod handles this with the internal file system getting the whole buffer in one go and loading the file with nlohmann/json
 #if METAMOD_PLUGIN_ASLP
                         if( __METAMOD__ )
                         {
-                            // -TODO Inject metamod FileSystem call to load the buffer in one go
                             /*
-                            if( !aslp::FileSystem::ReadAll( this.m_FileName, this.m_Buffer ) )
-                            {
-                                print::error( snprintf( cout, "ERROR: could not open file \"%1\"", filename ) );
-                                return meta_api::json::Type::Undefined;
-                            }
-                            shouldVanillaLoad = false;
+                            auto type = meta_api::json::Type( aslp::json::Load( this.m_FileName ) ) );
+                            if( type == meta_api::json::Type::Undefined )
+                                print::error( snprintf( cout, "could not open file \"%1\"", this.m_FileName ), this.GetVersion() );
+                            return type;
                             */
                         }
 #endif
-/// Otherwise we use the epic AS API to read line by line x[
+/// Otherwise we use the epic AS API to read line by line and parse ourselves x[
 
                         if( shouldVanillaLoad )
                         {
@@ -834,6 +836,17 @@ namespace meta_api
                         @pair = meta_api::json::parser::KeyValuePair();
                     else
                         pair.clear();
+
+#if METAMOD_PLUGIN_ASLP
+                    if( __METAMOD__ )
+                    {
+                        /*
+                        if( aslp::json::Update( pair ) )
+                            return true;
+                        return false;
+                        */
+                    }
+#endif
 
                     const bool is_array = ( ObjectType == meta_api::json::Type::Array );
                     const bool is_object = ( ObjectType == meta_api::json::Type::Object );
@@ -1095,7 +1108,7 @@ namespace meta_api
                             continue;
                         }
 
-                        if( this.m_DataCurrent == 1 && ( c == '}' || c == ']' ) )
+                        if( c == '}' || c == ']' )
                         {
                             if( c == '}' && is_array )
                                 return ErrorUnexpected( "]" , c );
@@ -1109,7 +1122,7 @@ namespace meta_api
                         if( reading_key )
                         {
                             if( c != '"' )
-                                return ErrorUnexpected( "\"", c );
+                                return ErrorUnexpected( "\"", c, "Key name" );
                             in_string = true;
                             continue;
                         }
