@@ -782,22 +782,7 @@ namespace meta_api
             {
                 meta_api::json::v2::__Deserializer__ Deserializer();
                 Deserializer.SetSerialized(str);
-
-                meta_api::json::Type type = Deserializer.Initialize();
-
-                switch( type )
-                {
-                    case meta_api::json::Type::Object:
-                    case meta_api::json::Type::Array:
-                    {
-                        return Deserializer.Parse( obj, type );
-                    }
-                    case meta_api::json::Type::Undefined:
-                    default:
-                    {
-                        return false;
-                    }
-                }
+                return Deserializer.Parse( obj, Deserializer.Initialize() );
             }
         } // v2
     } // json

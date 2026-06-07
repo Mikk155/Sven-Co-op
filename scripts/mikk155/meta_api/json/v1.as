@@ -171,29 +171,7 @@ namespace meta_api
             {
                 meta_api::json::v1::__Deserializer__ Deserializer();
                 Deserializer.SetSerialized(str);
-
-/// Metamod handles this with the internal nlohmann/json library
-#if METAMOD_PLUGIN_ASLP
-                if( __METAMOD__ ) {
-                    return aslp::json::Deserialize( Deserializer.buffer, obj );
-                }
-#endif
-
-                meta_api::json::Type type = Deserializer.Initialize();
-
-                switch( type )
-                {
-                    case meta_api::json::Type::Object:
-                    case meta_api::json::Type::Array:
-                    {
-                        return Deserializer.Parse( obj, type );
-                    }
-                    case meta_api::json::Type::Undefined:
-                    default:
-                    {
-                        return false;
-                    }
-                }
+                return Deserializer.Parse( obj, Deserializer.Initialize() );
             }
         }
     }
