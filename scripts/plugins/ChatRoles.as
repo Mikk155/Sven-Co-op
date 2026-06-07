@@ -1,5 +1,6 @@
 #include "../mikk155/meta_api"
 #include "../mikk155/meta_api/json/v1"
+#include "../mikk155/meta_api/json/v1/fmt/ToArray"
 #include "../mikk155/Player/GetUniqueID"
 #include "../mikk155/Server/IsMapListed"
 
@@ -31,7 +32,7 @@ void MapActivate()
         dictionary data;
         if( meta_api::json::v1::Deserialize( "ChatRoles.json", data ) )
         {
-            g_BlacklistedMaps = meta_api::json::v1::ToArray( data[ "map_blacklist" ] );
+            meta_api::json::v1::fmt::ToArray( data[ "map_blacklist" ], g_BlacklistedMaps );
             g_ShouldReloadJson = bool( data[ "reload" ] );
 
             if( !data.get( "userdata", userdata ) )

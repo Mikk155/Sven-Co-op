@@ -23,6 +23,7 @@
 **/
 
 #include "../mikk155/meta_api"
+#include "../mikk155/meta_api/json/v1/fmt/ToArray"
 #include "../mikk155/meta_api/json/v1"
 
 void PluginInit()
@@ -118,7 +119,7 @@ void MapActivate()
         dictionary data;
         if( meta_api::json::v1::Deserialize( "ShowPlayTime.json", data ) )
         {
-            g_Messages = meta_api::json::v1::ToArray( data[ "message" ] );
+            meta_api::json::v1::fmt::ToArray( data[ "message" ], g_Messages );
             g_ShouldReloadJson = bool( data[ "reload" ] );
             data.get( "client_cooldown", g_NextClientDisplay );
             data.get( "message_schedule", g_MessageSchedule );

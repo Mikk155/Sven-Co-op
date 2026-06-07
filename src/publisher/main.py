@@ -3,6 +3,7 @@
 # ====================================================
 
 import os
+import re
 import json
 
 class Path:
@@ -72,14 +73,42 @@ for file in os.listdir( Path.Definitions ):
         data[ "short_description" ] = scriptDescription if scriptDescription != "" else "No description provided.";
     AddIncludes( data );
     scriptAssets: list[str] =  data[ "assets" ];
-    for asset in scriptAssets:
-        if not os.path.exists( os.path.join( Path.Workspace, asset ) ):
-            print( f"Invalid file {asset} at {file}!" );
+
+    includeRegex: re.Pattern[str] = re.compile( r'#include\s+[<"](.+?)[>"]' );
+
+    for i, asset in enumerate( scriptAssets ):
+        scriptAssets[i] = os.path.normpath( asset );
+
+    print( "[" );
+
+    i: int = 0;
+    while i < len( scriptAssets ):
+        asset: str = scriptAssets[i];
+        full_path: str = os.path.join( Path.Workspace, asset );
+
+        print( f"\"{asset}\"" );
+
+        if not os.path.exists( full_path ):
+            print( f"Invalid file {asset}!" );
             exit(0);
 
+        if asset.endswith(".as"):
+
+            with open(full_path, "r", encoding="utf-8") as f:
+                content = f.read();
+
+            includes = includeRegex.findall( content );
+
+            for inc in includes:
+                resolved = os.path.normpath( os.path.join( os.path.dirname( asset ), inc ) );
+                if resolved not in scriptAssets:
+                    scriptAssets.append( f'{resolved}.as' );
+        i += 1
+    print( "]" );
+
     MainScriptFile: str = scriptAssets[0];
-    scriptAssets: str = json.dumps( scriptAssets );
-    data[ "assets" ] = scriptAssets;
+    scriptAssetsSerialized: str = json.dumps( scriptAssets );
+    data[ "assets" ] = scriptAssetsSerialized;
     scriptMapScript: str = f"""<a style="color:{T_RedColor}">✗ No</a>""";
     scriptPlugin: str = f"""<a style="color:{T_RedColor}">✗ No</a>""";
     scriptMetamod: str = None;
@@ -113,7 +142,7 @@ for file in os.listdir( Path.Definitions ):
     html: str = T_asset \
         .replace( "{name}", scriptName ) \
         .replace( "{title}", scriptTitle ) \
-        .replace( "{assets}", scriptAssets ) \
+        .replace( "{assets}", scriptAssetsSerialized ) \
         .replace( "{map_script}", scriptMapScript ) \
         .replace( "{plugin}", scriptPlugin ) \
         .replace( "{header_description}", scriptShortDescription ) \
