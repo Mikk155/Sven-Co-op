@@ -626,8 +626,6 @@ namespace meta_api
 
                     meta_api::json::parser::KeyValuePair@ pair;
 
-                    bool IHateStupidWarnings = false;
-
                     while( this.Advance( objectType, pair ) )
                     {
                         switch( pair.type )
@@ -636,9 +634,8 @@ namespace meta_api
                             case meta_api::json::Type::Array:
                             {
                                 meta_api::json::v2::json@ objChild;
-                                if( !this.Parse( objChild, pair.type ) )
-                                    return false;
-                                obj.Set( pair.key, objChild );
+                                if( this.Parse( objChild, pair.type ) )
+                                    obj.Set( pair.key, objChild );
                                 break;
                             }
                             case meta_api::json::Type::String:
@@ -666,20 +663,12 @@ namespace meta_api
                                 obj.Set( pair.key, meta_api::json::Null::Null );
                                 break;
                             }
-                            default:
-                            {
-                                IHateStupidWarnings = true;
-                            }
                         }
 
                         // Hack to Append
                         if( objectType == meta_api::json::Type::Array )
                             obj.__unique_index__++;
                     }
-
-                    if( IHateStupidWarnings )
-                        return false;
-
                     return this.Ok;
                 }
             }

@@ -22,8 +22,6 @@ namespace meta_api
 
                     meta_api::json::parser::KeyValuePair@ pair;
 
-                    bool IHateStupidWarnings = false;
-
                     while( this.Advance( objectType, pair ) )
                     {
                         switch( pair.type )
@@ -32,9 +30,8 @@ namespace meta_api
                             case meta_api::json::Type::Array:
                             {
                                 dictionary objChild;
-                                if( !this.Parse( objChild, pair.type ) )
-                                    return false;
-                                obj[ pair.key ] = objChild;
+                                if( this.Parse( objChild, pair.type ) )
+                                    obj[ pair.key ] = objChild;
                                 break;
                             }
                             case meta_api::json::Type::String:
@@ -62,16 +59,8 @@ namespace meta_api
                                 obj.set( pair.key, "__null__" );
                                 break;
                             }
-                            default:
-                            {
-                                IHateStupidWarnings = true;
-                            }
                         }
                     }
-
-                    if( IHateStupidWarnings )
-                        return false;
-
                     return this.Ok;
                 }
             }
@@ -139,7 +128,7 @@ namespace meta_api
 
             /**
             *   @brief Serializes obj
-            *   filename: if provided is a path to write to a file at scripts(module type)/store/(filename).json
+            *   filename: if provided is a path to write to a file at scripts/(module type)/store/(filename).json
             *   If the object failed to parse for any reason it will write "{}" to the file only if the file doesn't exists
             **/
             string Serialize(
