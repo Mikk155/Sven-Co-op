@@ -100,6 +100,7 @@ Expect( "Multi line comments", true, test.DeserializeMultiLineCommentary(
 }/* Comment at end of object*/"""
 ) );
 
+Expect( "Valid literals", true, test.DeserializeGeneric( "[true,false,null,\"\"]" ) );
 Expect( "Array main object", true, test.DeserializeArrayObject( "[1,2.5,true,\"string\",{\"string\":\"string\"},null]" ) );
 Expect( "Invalid pairs with no coma separator", false, test.DeserializeGeneric( "{\"0\":0\n\"1\":1}" ) );
 Expect( "Invalid literal", false, test.DeserializeGeneric( "{\"value\":tru}" ) || test.DeserializeGeneric( "[tru]" ) );
@@ -108,12 +109,33 @@ Expect( "Invalid root data outside of object", false, test.DeserializeGeneric( "
 Expect( "Invalid object exit token", false, test.DeserializeGeneric( "{]" ) );
 Expect( "Invalid array exit token", false, test.DeserializeGeneric( "[}" ) );
 Expect( "Invalid unterminated object", false, test.DeserializeGeneric( "[" ) || test.DeserializeGeneric( "{" ) );
-Expect( "Valid empty main array/object", false, test.DeserializeGeneric( "[]" ) && test.DeserializeGeneric( "{}" ) );
+Expect( "Valid empty main array/object", true, test.DeserializeGeneric( "[]" ) && test.DeserializeGeneric( "{}" ) );
 // This seemed to be valid in metamod maybe we're missing some option there.
 Expect( "Invalid trailing comma in object/array", false, test.DeserializeGeneric( "{\"1\":1,}" ) || test.DeserializeGeneric( "[1,]" ) );
-
-// Gather results
+Expect( "Unterminated string", false, test.DeserializeGeneric( "{\"a\":\"test}" ) );
+Expect( "Weird whitespace", true, test.DeserializeGeneric( "{\n\t \"a\" : \r\n 1 \t }" ) );
+Expect( "Non-string key", false, test.DeserializeGeneric( "{1: \"a\"}" ) );
+Expect( "Missing colon", false, test.DeserializeGeneric( "{\"a\" 1}" ) );
+Expect( "Trailing object/array", false, test.DeserializeGeneric( "{}{}" ) || test.DeserializeGeneric( "[][]" ) );
+Expect( "Trailing whitespace OK", true, test.DeserializeGeneric( "{}   \n\t" ) );
+Expect( "Empty input", false, test.DeserializeGeneric( "" ) );
+Expect( "Only whitespace", false, test.DeserializeGeneric( "   \n\t" ) );
+Expect( "garbage root", false, test.DeserializeGeneric( "some garbage not a json" ) );
+Expect( "Duplicate keys", false, test.DeserializeGeneric( "{\"a\":1,\"a\":2}") );
+Expect( "Escaped quotes", true, test.DeserializeGeneric( "[\"\\\"\"]" ) );
+Expect( "Escaped line break", true, test.DeserializeGeneric( "[\"line\\nbreak\"]" ) );
+Expect( "Escaped tab", true, test.DeserializeGeneric( "[\"\\ttab\"]" ) );
+Expect( "Escaped back slash", true, test.DeserializeGeneric( "[\"\\\\slash\"]" ) );
+Expect( "Escaped slash", true, test.DeserializeGeneric( "[\"\\/\"]" ) );
+Expect( "Escaped back space", true, test.DeserializeGeneric( "[\"\\b\"]" ) );
+Expect( "Escaped form feed", true, test.DeserializeGeneric( "[\"\\f\"]" ) );
+Expect( "Escaped Unicode automatically for limitations", true, test.DeserializeGeneric( "{\"a\":\"\\u0041\"}" ) ); // 'A'
+Expect( "Invalid escape", false, test.DeserializeGeneric( "{\"a\":\"\\x\"}" ) );
+Expect( "UTF-8 BOM", true, test.DeserializeGeneric( "\xEF\xBB\xBF[]" ) );
+Expect( "Deep array nesting", true, test.DeserializeGeneric( "[1,[2,[3,[[{\"epic\":true},5],4]]]]" ) );
+Expect( "Deep nesting", true, test.DeserializeGeneric( "[{\"1\":[{\"2\":[{\"3\":[null]}]}]}]" ) );
 test.Tests();
+// Gather results
 uint length = __Results__.length();
 array<Expect@> fails(0);
 array<Expect@> pass(0);
