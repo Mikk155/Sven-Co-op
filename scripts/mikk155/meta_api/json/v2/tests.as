@@ -55,10 +55,10 @@ namespace meta_api
                     );
                 }
 
-                bool DeserializeInvalidLastComma( const string&in serialized ) override
+                bool DeserializeGeneric( const string&in serialized ) override
                 {
                     json@ obj;
-                    return ( Deserialize( serialized, obj ) && int( obj[ "1" ] ) == 1 );
+                    return Deserialize( serialized, obj );
                 }
 
                 void Tests() override

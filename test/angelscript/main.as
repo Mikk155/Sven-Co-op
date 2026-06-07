@@ -36,7 +36,7 @@ void PluginInit()
     meta_api::json::v2::Test();
 
     // Enable debug messages
-    meta_api::json::debug = true;
+    meta_api::json::debug = false;
 
     // Run all json tests
     meta_api::json::tests::StartAll();

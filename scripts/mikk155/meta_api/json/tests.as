@@ -38,8 +38,9 @@ interface ITest
     // serialized = { "first": 1, "second": [ 1, 2 ], "third": 2 }
     bool DeserializeMultiLineCommentary( const string&in serialized );
     // serialized = [ 1, 2.5, true, "string", { "string": "string" }, null ]
-    bool DeserializeArrayObject( const string&in seialized );
-    bool DeserializeInvalidLastComma( const string&in seialized );
+    bool DeserializeArrayObject( const string&in serialized );
+    // serialized could be anything invalid, this method is called for all the invalidation tests
+    bool DeserializeGeneric( const string&in serialized );
     // Tests is called at the end of all the tests. you can initialize Expect class handles there to run your own specific tests
     void Tests();
 }
@@ -100,8 +101,16 @@ Expect( "Multi line comments", true, test.DeserializeMultiLineCommentary(
 ) );
 
 Expect( "Array main object", true, test.DeserializeArrayObject( "[1,2.5,true,\"string\",{\"string\":\"string\"},null]" ) );
-
-Expect( "reject trailing comma in object", false, test.DeserializeInvalidLastComma( "{\"1\":1,}" ) );
+Expect( "Invalid pairs with no coma separator", false, test.DeserializeGeneric( "{\"0\":0\n\"1\":1}" ) );
+Expect( "Invalid literal", false, test.DeserializeGeneric( "{\"value\":tru}" ) || test.DeserializeGeneric( "[tru]" ) );
+Expect( "Invalid missing coma in array", false, test.DeserializeGeneric( "[1 2]" ) || test.DeserializeGeneric( "[1\t2]" ) || test.DeserializeGeneric( "[1\n2]" ) );
+Expect( "Invalid root data outside of object", false, test.DeserializeGeneric( "{} something" ) );
+Expect( "Invalid object exit token", false, test.DeserializeGeneric( "{]" ) );
+Expect( "Invalid array exit token", false, test.DeserializeGeneric( "[}" ) );
+Expect( "Invalid unterminated object", false, test.DeserializeGeneric( "[" ) || test.DeserializeGeneric( "{" ) );
+Expect( "Valid empty main array/object", false, test.DeserializeGeneric( "[]" ) && test.DeserializeGeneric( "{}" ) );
+// This seemed to be valid in metamod maybe we're missing some option there.
+Expect( "Invalid trailing comma in object/array", false, test.DeserializeGeneric( "{\"1\":1,}" ) || test.DeserializeGeneric( "[1,]" ) );
 
 // Gather results
 test.Tests();
