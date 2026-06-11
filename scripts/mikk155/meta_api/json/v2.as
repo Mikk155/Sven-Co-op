@@ -580,6 +580,40 @@ namespace meta_api
                 /// For arrays, push value to the last index
                 meta_api::json::v2::json@ Append( const meta_api::json::v2::Null&in value ) { return this.Append( meta_api::json::v2::json().opAssign(value) ); }
 
+                /// Removes the value at the given key. returns the value
+                meta_api::json::v2::json@ Remove( const string&in key )
+                {
+                    if( !this.is_object() )
+                    {
+                        print::error( snprintf( cout, "Can not Remove value at key %1 from a json that is not an object! type: %2", key, Type::ToString( this.Type ) ), Version::V2 );
+                    }
+
+                    meta_api::json::v2::json@ value;
+                    this.Get( key, value );
+
+                    this.m_KeyValues.delete( key );
+
+                    return value;
+                }
+
+                /// Removes the value at the given index. returns the value
+                meta_api::json::v2::json@ Remove( uint index )
+                {
+                    if( !this.is_structured() )
+                    {
+                        print::error( snprintf( cout, "Can not Remove value at index %1 from a json that is not an object! type: %2", index, Type::ToString( this.Type ) ), Version::V2 );
+                    }
+
+                    meta_api::json::v2::json@ value;
+                    if( index < this.Length() )
+                    {
+                        @value = this.opIndex(index);
+                        this.m_KeyValues.delete( this.m_KeyNames[index] );
+                    }
+
+                    return value;
+                }
+
                 /// Get the value converted to string.
                 /// For objects/arrays this is a serialization with -1 indents.
                 string ToString()
