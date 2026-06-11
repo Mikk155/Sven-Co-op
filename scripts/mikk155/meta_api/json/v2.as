@@ -237,9 +237,7 @@ namespace meta_api
                 }
 
                 /// Get the length of the object.
-                /// For non object/array this is -1
-                /// For null values this is -2
-                int Length() const
+                uint Length() const
                 {
                     switch( this.Type )
                     {
@@ -251,11 +249,10 @@ namespace meta_api
                         case meta_api::json::Type::Float:
                         case meta_api::json::Type::Integer:
                         case meta_api::json::Type::Boolean:
-                            return -1;
                         case meta_api::json::Type::Null:
                         case meta_api::json::Type::Undefined:
                         default:
-                            return -2;
+                            return 0;
                     }
                 }
 
