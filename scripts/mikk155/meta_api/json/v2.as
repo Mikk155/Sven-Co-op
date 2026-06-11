@@ -558,6 +558,11 @@ namespace meta_api
                     return value;
                 }
 
+                /// Get the value at the given key
+                const meta_api::json::v2::json@ opIndex( const string&in keyName ) const {
+                    return this.opIndex(keyName);
+                }
+
                 meta_api::json::v2::json@ opIndex( uint index )
                 {
                     if( index >= this.m_KeyNames.length() )
@@ -567,6 +572,10 @@ namespace meta_api
                     }
 
                     return this.opIndex( this.m_KeyNames[ index ] );
+                }
+
+                const meta_api::json::v2::json@ opIndex( uint index ) const {
+                    return this.opIndex(index);
                 }
 
                 /// For arrays, push value to the last index
