@@ -42,6 +42,11 @@ namespace meta_api
                         Deserialize( "{\"some_array\":[\"string\"]}", obj )
                         && fmt::ToArray( obj[ "some_array" ], arr ) && arr.length() == 1
                     );
+
+                    Expect( "json.Count value counting", true,
+                        Deserialize( "{\"0\":[1,2,[3,4,[5,6],{\"0\":7}]],\"1\":{\"1\":8}}", obj )
+                        && obj.Count() == 8
+                    );
                 }
             }
         }

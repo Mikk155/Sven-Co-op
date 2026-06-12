@@ -261,6 +261,36 @@ namespace meta_api
                     }
                 }
 
+                /// Get the full count of items in this object and childs. object/arrays are ignored and we get just a count of actual values.
+                uint Count() const
+                {
+                    switch( this.Type )
+                    {
+                        case meta_api::json::Type::Object:
+                        case meta_api::json::Type::Array:
+                        {
+                            uint length = this.m_KeyNames.length();
+                            uint count = 0;
+
+                            for( uint ui = 0; ui < length; ui++ )
+                            {
+                                const meta_api::json::v2::json@ value = this.opIndex(ui);
+                                count += value.Count();
+                            }
+                            return count;
+                        }
+                        case meta_api::json::Type::String:
+                        case meta_api::json::Type::Handle:
+                        case meta_api::json::Type::Float:
+                        case meta_api::json::Type::Integer:
+                        case meta_api::json::Type::Boolean:
+                        case meta_api::json::Type::Null:
+                        case meta_api::json::Type::Undefined:
+                        default:
+                            return 1;
+                    }
+                }
+
                 /// Set key value pair, return the old value if it exists otherwise null
                 meta_api::json::v2::json@ Set( const string&in keyName, meta_api::json::v2::json@ value )
                 {
