@@ -113,6 +113,11 @@ namespace meta_api
                     return this.m_KeyValues[ this.__Value__ ];
                 }
 
+                dictionaryValue@ get_Value() const
+                {
+                    return this.m_KeyValues[ this.__Value__ ];
+                }
+
                 void SetType( const meta_api::json::Type&in type )
                 {
                     switch( type )
@@ -312,14 +317,14 @@ namespace meta_api
 
                 /// Get the value&out and return whatever the value exists or not.
                 /// If strict is false floats and booleans are converted to integer and returned.
-                bool Get( const string&in keyName, meta_api::json::v2::json@&out value )
+                bool Get( const string&in keyName, meta_api::json::v2::json@&out value ) const
                 {
                     return ( this.m_KeyValues.exists( keyName ) && ( @value = cast<meta_api::json::v2::json@>( this.m_KeyValues[ keyName ] ) ) !is null );
                 }
 
                 /// Get the value&out and return whatever the value exists or not
                 /// If strict is false floats and integers are converted to boolean and returned.
-                bool Get( bool&out value, bool strict = true )
+                bool Get( bool&out value, bool strict = true ) const
                 {
                     if( strict && this.Type != meta_api::json::Type::Boolean )
                         return false;
@@ -342,7 +347,7 @@ namespace meta_api
 
                 /// Get the value&out and return whatever the value exists or not
                 /// If strict is false floats and integers are converted to boolean and returned.
-                bool Get( const string&in keyName, bool&out value, bool strict = true )
+                bool Get( const string&in keyName, bool&out value, bool strict = true ) const
                 {
                     meta_api::json::v2::json@ obj;
                     return ( this.Get( keyName, obj ) && obj.Get( value, strict ) );
@@ -350,7 +355,7 @@ namespace meta_api
 
                 /// Get the value&out and return whatever the value exists or not.
                 /// If strict is false floats and booleans are converted to integer and returned.
-                bool Get( int&out value, bool strict = true )
+                bool Get( int&out value, bool strict = true ) const
                 {
                     if( strict && this.Type != meta_api::json::Type::Integer )
                         return false;
@@ -373,7 +378,7 @@ namespace meta_api
 
                 /// Get the value&out and return whatever the value exists or not.
                 /// If strict is false floats and booleans are converted to integer and returned.
-                bool Get( const string&in keyName, int&out value, bool strict = true )
+                bool Get( const string&in keyName, int&out value, bool strict = true ) const
                 {
                     meta_api::json::v2::json@ obj;
                     return ( this.Get( keyName, obj ) && obj.Get( value, strict ) );
@@ -381,7 +386,7 @@ namespace meta_api
 
                 /// Get the value&out and return whatever the value exists or not.
                 /// If strict is false integers and booleans are converted to float and returned.
-                bool Get( float&out value, bool strict = true )
+                bool Get( float&out value, bool strict = true ) const
                 {
                     if( strict && this.Type != meta_api::json::Type::Float )
                         return false;
@@ -404,14 +409,14 @@ namespace meta_api
 
                 /// Get the value&out and return whatever the value exists or not.
                 /// If strict is false integers and booleans are converted to float and returned.
-                bool Get( const string&in keyName, float&out value, bool strict = true )
+                bool Get( const string&in keyName, float&out value, bool strict = true ) const
                 {
                     meta_api::json::v2::json@ obj;
                     return ( this.Get( keyName, obj ) && obj.Get( value, strict ) );
                 }
 
                 /// Get the value&out and return whatever the value exists or not
-                bool Get( string&out value )
+                bool Get( string&out value ) const
                 {
                     switch( this.Type )
                     {
@@ -424,7 +429,7 @@ namespace meta_api
                 }
 
                 /// Get the value&out and return whatever the value exists or not
-                bool Get( const string&in keyName, string&out value )
+                bool Get( const string&in keyName, string&out value ) const
                 {
                     meta_api::json::v2::json@ obj;
                     return ( this.Get( keyName, obj ) && obj.Get( value ) );
@@ -551,19 +556,14 @@ namespace meta_api
                 }
 
                 /// Get the value at the given key
-                meta_api::json::v2::json@ opIndex( const string&in keyName )
+                meta_api::json::v2::json@ opIndex( const string&in keyName ) const
                 {
                     meta_api::json::v2::json@ value;
                     this.Get( keyName, value );
                     return value;
                 }
 
-                /// Get the value at the given key
-                const meta_api::json::v2::json@ opIndex( const string&in keyName ) const {
-                    return this.opIndex(keyName);
-                }
-
-                meta_api::json::v2::json@ opIndex( uint index )
+                meta_api::json::v2::json@ opIndex( uint index ) const
                 {
                     if( index >= this.m_KeyNames.length() )
                     {
@@ -572,10 +572,6 @@ namespace meta_api
                     }
 
                     return this.opIndex( this.m_KeyNames[ index ] );
-                }
-
-                const meta_api::json::v2::json@ opIndex( uint index ) const {
-                    return this.opIndex(index);
                 }
 
                 /// For arrays, push value to the last index
@@ -625,7 +621,7 @@ namespace meta_api
 
                 /// Get the value converted to string.
                 /// For objects/arrays this is a serialization with -1 indents.
-                string ToString()
+                string ToString() const
                 {
                     switch( this.Type )
                     {
