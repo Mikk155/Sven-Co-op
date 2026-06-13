@@ -1,5 +1,6 @@
 /// Run tests for json
 #include "../v2"
+#include "schema"
 #include "fmt/core"
 #include "../tests"
 
@@ -46,6 +47,22 @@ namespace meta_api
                     Expect( "json.Count value counting", true,
                         Deserialize( "{\"0\":[1,2,[3,4,[5,6],{\"0\":7}]],\"1\":{\"1\":8}}", obj )
                         && obj.Count() == 8
+                    );
+
+                    //============================
+                    // ======== schema test ========
+                    //============================
+
+                    Expect( "[Schema] unevaluated properties discard", true,
+                        Deserialize( "{\"unevaluated\":1,\"evaluated\":1}", obj )
+                        && !schema::Validate( obj, "{\"type\":\"object\",\"unevaluatedProperties\":false}" )
+                    );
+
+                    Expect( "[Schema] type expect", true,
+                        Deserialize( "[]", obj )
+                        && !schema::Validate( obj, "{\"type\":\"object\"}" )
+                        && Deserialize( "{}", obj )
+                        && !schema::Validate( obj, "{\"type\":\"array\"}" )
                     );
                 }
             }
