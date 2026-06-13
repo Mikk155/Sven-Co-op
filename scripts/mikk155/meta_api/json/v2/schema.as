@@ -1,3 +1,5 @@
+#include "../v2"
+
 namespace meta_api
 {
     namespace json
@@ -30,13 +32,23 @@ namespace meta_api
 
                     Validator() {}
 
+                    private
+                        uint m_Fails = 0;
+
+                    private
+                        // Add error count. return false
+                        bool get_error() {
+                            m_Fails++;
+                            return false;
+                        }
+
                     // Return whatever the given obj is of type of the given string.
                     bool is_type( json@ obj, json@ schema, const string&in name )
                     {
                         if( !schema.Contains( "type" ) )
                         {
-                            print( snprintf( cout, "%1 expected \"type\" but is undefined!", name ) );
-                            return false;
+                            print( snprintf( cout, "%1 expected \"type\" at schema but is undefined!", name ) );
+                            return this.error;
                         }
 
                         string type = string( schema[ "type" ] );
@@ -44,8 +56,8 @@ namespace meta_api
 
                         if( type.IsEmpty() )
                         {
-                            print( "Unexpected empty type!" );
-                            return false;
+                            print( "Unexpected empty type at schema!" );
+                            return this.error;
                         }
 
                         switch( obj.Type )
@@ -73,8 +85,8 @@ namespace meta_api
 
                         if( actualType.IsEmpty() )
                         {
-                            print( snprintf( cout, "%1 unknown type %2", name, type ) );
-                            return true;
+                            print( snprintf( cout, "%1 unknown type %2 expected %3", name, Type::ToString(obj.Type), type ) );
+                            return this.error;
                         }
 
                         if( actualType == type )
@@ -82,7 +94,7 @@ namespace meta_api
 
                         print( snprintf( cout, "%1 Expected %2 got %3", name, type, actualType ) );
 
-                        if( this.strict )
+                        if( !this.strict )
                         {
                             obj.Clear();
 
@@ -90,14 +102,14 @@ namespace meta_api
                                 obj.opAssign( schema[ "default" ] );
                         }
 
-                        return false;
+                        return this.error;
                     }
 
                     private bool Validate( json@ obj, json@ schema, const string&in name )
                     {
                         string expectType = schema.ValueOrDefault( "type", "object" );
 
-                        if( !this.is_type( obj, schema, name ) )
+                        if( !this.is_type( obj, schema, name ) && this.strict )
                             return false;
 
                         json@ schemaProperties = schema.ValueOrDefault( "properties" );
@@ -114,17 +126,65 @@ namespace meta_api
                                 if( !schemaProperties.Contains( pair.Name ) )
                                 {
                                     print( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
-                                    return false;
+                                    this.error;
+
+                                    if( this.strict )
+                                        return false;
                                 }
                             }
                         }
-                        return true;
+
+                        // Whatever required properties in schema are defined in obj
+                        if( schema.Contains( "required" ) )
+                        {
+                            json@ required = schema.ValueOrDefault( "required" );
+
+                            uint length = required.Length();
+
+                            for( uint ui = 0; ui < length; ui++ )
+                            {
+                                string key = string( required[ui] );
+
+                                if( !obj.Contains( key ) )
+                                {
+                                    print( snprintf( cout, "%1 missing required key \"%2\"", name, key ) );
+                                    this.error;
+
+                                    if( this.strict )
+                                        return false;
+                                }
+                            }
+                        }
+
+                        // validate all properties
+                        uint length = schemaProperties.Length();
+
+                        for( uint ui = 0; ui < length; ui++ )
+                        {
+                            json@ pair = schemaProperties[ui];
+
+                            json@ childObj = obj[ pair.Name ];
+
+                            if( childObj is null )
+                                continue;
+
+                            string childName;
+                            snprintf( childName, "%1->%2", name, pair.Name );
+
+                            bool result = this.Validate( childObj, pair, childName );
+
+                            if( this.strict && result == false )
+                                return false;
+                        }
+
+                        return ( this.m_Fails == 0 );
                     }
 
                     bool Validate( json@ obj, json@ schema )
                     {
                         // Pop schema key
-                        obj.Remove( "$schema" );
+                        if( obj.is_object() )
+                            obj.Remove( "$schema" );
 
                         // We don't support multi versioning yet. probably will never though.
                         schema.Remove( "$schema" );
@@ -134,16 +194,18 @@ namespace meta_api
                 }
 
                 /// Validate obj against schema
-                /// strict: if false the schema wont modify the obj, if true it will remove invalid pairs and attempt to use default values if provided.
-                bool Validate( json@ obj, json@ schema, bool strict = true )
+                /// strict: if true the method will return false right away stoping the validation.
+                /// Otherwise the validation will keep going removing invalid values, attempting to set defaults if provided by the schema.
+                bool Validate( json@ obj, json@ schema, bool strict = false )
                 {
                     Validator validator( strict );
                     return validator.Validate( obj, schema );
                 }
 
                 /// Validate obj against schema
-                /// strict: if false the schema wont modify the obj, if true it will remove invalid pairs and attempt to use default values if provided.
-                bool Validate( json@ obj, const string&in schema, bool strict = true )
+                /// strict: if true the method will return false right away stoping the validation.
+                /// Otherwise the validation will keep going removing invalid values, attempting to set defaults if provided by the schema.
+                bool Validate( json@ obj, const string&in schema, bool strict = false )
                 {
                     json@ schemaObject;
                     return Deserialize( schema, schemaObject ) && Validate( obj, schemaObject, strict );

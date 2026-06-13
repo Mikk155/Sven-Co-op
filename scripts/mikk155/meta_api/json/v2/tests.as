@@ -44,7 +44,7 @@ namespace meta_api
                         && fmt::ToArray( obj[ "some_array" ], arr ) && arr.length() == 1
                     );
 
-                    Expect( "json.Count value counting", true,
+                    Expect( "json.Count total nested value counting", true,
                         Deserialize( "{\"0\":[1,2,[3,4,[5,6],{\"0\":7}]],\"1\":{\"1\":8}}", obj )
                         && obj.Count() == 8
                     );
@@ -59,10 +59,24 @@ namespace meta_api
                     );
 
                     Expect( "[Schema] type expect", true,
+                        // array != object
                         Deserialize( "[]", obj )
                         && !schema::Validate( obj, "{\"type\":\"object\"}" )
+                        // object != array
                         && Deserialize( "{}", obj )
                         && !schema::Validate( obj, "{\"type\":\"array\"}" )
+                        // object == object && nested array == array
+                        && Deserialize( "{\"a\":[]}", obj )
+                        && schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"nested\":{\"type\":\"array\"}}}" )
+                    );
+
+                    Expect( "[Schema] required key", true,
+                        // required key undefined
+                        Deserialize( "{}", obj )
+                        && !schema::Validate( obj, "{\"type\":\"object\",\"required\":[\"required\"]}" )
+                        // required key defined
+                        && Deserialize( "{\"required\":0}", obj )
+                        && schema::Validate( obj, "{\"type\":\"object\",\"required\":[\"required\"]}" )
                     );
                 }
             }
