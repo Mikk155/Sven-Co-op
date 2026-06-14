@@ -17,14 +17,6 @@ namespace meta_api
                         return this.m_Strict;
                     }
 
-                    void print( bool fmt ) {
-                        print::__print__( "Schema Error", cout, Version::V2 );
-                    }
-
-                    void print( const string fmt ) {
-                        print::__print__( "Schema Error", fmt, Version::V2 );
-                    }
-
                     Validator( bool strict )
                     {
                         this.m_Strict = strict;
@@ -32,23 +24,19 @@ namespace meta_api
 
                     Validator() {}
 
-                    private
-                        uint m_Fails = 0;
+                    private meta_api::json::Logger m_Logger( "JSON V2 Schema Validator" );
 
                     private
-                        // Add error count. return false
-                        bool get_error() {
-                            m_Fails++;
-                            return false;
-                        }
+                        uint errors = 0;
 
                     // Return whatever the given obj is of type of the given string.
                     bool is_type( json@ obj, json@ schema, const string&in name )
                     {
                         if( !schema.Contains( "type" ) )
                         {
-                            print( snprintf( cout, "%1 expected \"type\" at schema but is undefined!", name ) );
-                            return this.error;
+                            this.errors++;
+                            this.m_Logger.error( snprintf( cout, "%1 expected \"type\" at schema but is undefined!", name ) );
+                            return false;
                         }
 
                         string expectedTypeString = string( schema[ "type" ] );
@@ -57,8 +45,9 @@ namespace meta_api
 
                         if( expectedTypeString.IsEmpty() )
                         {
-                            print( "Unexpected empty type at schema!" );
-                            return this.error;
+                            this.errors++;
+                            this.m_Logger.error( "Unexpected empty type at schema!" );
+                            return false;
                         }
 
                         switch( expectedType )
@@ -85,8 +74,9 @@ namespace meta_api
                                 isType = obj.is_null();
                             break;
                             default:
-                                print( snprintf( cout, "schema unknown \"type\" %2", expectedTypeString ) );
-                                if( !this.error )
+                                this.errors++;
+                                this.m_Logger.error( snprintf( cout, "schema unknown \"type\" %2", expectedTypeString ) );
+                                if( true )
                                     return false;
                             break;
                         }
@@ -94,7 +84,8 @@ namespace meta_api
                         if( isType )
                             return true;
 
-                        print( snprintf( cout, "%1 Expected %2 got %3", name, expectedTypeString, Type::ToString(obj.Type) ) );
+                        this.errors++;
+                        this.m_Logger.error( snprintf( cout, "%1 Expected %2 got %3", name, expectedTypeString, Type::ToString(obj.Type) ) );
 
                         if( !this.strict )
                         {
@@ -105,7 +96,7 @@ namespace meta_api
                                 obj.opAssign( schema[ "default" ] );
                         }
 
-                        return this.error;
+                        return false;
                     }
 
                     private bool Validate( json@ obj, json@ schema, const string&in name )
@@ -127,16 +118,16 @@ namespace meta_api
 
                                     if( schema.Get( "minItems", uiTemp ) && obj.Length() < uiTemp )
                                     {
-                                        print( snprintf( cout, "%1 array has less items than minimum expected %2 or more. got %3", name, uiTemp, obj.Length() ) );
-                                        this.error;
+                                        this.errors++;
+                                        this.m_Logger.error( snprintf( cout, "%1 array has less items than minimum expected %2 or more. got %3", name, uiTemp, obj.Length() ) );
                                         if( this.strict )
                                             return false;
                                     }
 
                                     if( schema.Get( "maxItems", uiTemp ) && obj.Length() > uiTemp )
                                     {
-                                        print( snprintf( cout, "%1 array has more items than maximum expected %2 or less. got %3", name, uiTemp, obj.Length() ) );
-                                        this.error;
+                                        this.errors++;
+                                        this.m_Logger.error( snprintf( cout, "%1 array has more items than maximum expected %2 or less. got %3", name, uiTemp, obj.Length() ) );
                                         if( this.strict )
                                             return false;
                                     }
@@ -154,9 +145,8 @@ namespace meta_api
 
                                             if( !schemaProperties.Contains( pair.Name ) )
                                             {
-                                                print( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
-                                                this.error;
-
+                                                this.errors++;
+                                                this.m_Logger.error( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
                                                 if( this.strict )
                                                     return false;
                                             }
@@ -176,9 +166,8 @@ namespace meta_api
 
                                             if( !obj.Contains( key ) )
                                             {
-                                                print( snprintf( cout, "%1 missing required key \"%2\"", name, key ) );
-                                                this.error;
-
+                                                this.errors++;
+                                                this.m_Logger.error( snprintf( cout, "%1 missing required key \"%2\"", name, key ) );
                                                 if( this.strict )
                                                     return false;
                                             }
@@ -217,16 +206,16 @@ namespace meta_api
 
                                 if( schema.Get( "minimum", fTemp, false ) && obj.Get( fValue, false ) && fValue < fTemp )
                                 {
-                                    print( snprintf( cout, "%1 value is lesser than minimum expected %2 or more. got %3", name, fTemp, fValue ) );
-                                    this.error;
+                                    this.errors++;
+                                    this.m_Logger.error( snprintf( cout, "%1 value is lesser than minimum expected %2 or more. got %3", name, fTemp, fValue ) );
                                     if( this.strict )
                                         return false;
                                 }
 
                                 if( schema.Get( "maximum", fTemp, false ) && obj.Get( fValue, false ) && fValue > fTemp )
                                 {
-                                    print( snprintf( cout, "%1 value is higher than maximum expected %2 or less. got %3", name, fTemp, fValue ) );
-                                    this.error;
+                                    this.errors++;
+                                    this.m_Logger.error( snprintf( cout, "%1 value is higher than maximum expected %2 or less. got %3", name, fTemp, fValue ) );
                                     if( this.strict )
                                         return false;
                                 }
@@ -234,7 +223,7 @@ namespace meta_api
                             }
                         }
 
-                        return ( this.m_Fails == 0 );
+                        return ( this.errors == 0 );
                     }
 
                     bool Validate( json@ obj, json@ schema )
