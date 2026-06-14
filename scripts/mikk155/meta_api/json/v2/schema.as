@@ -116,7 +116,7 @@ namespace meta_api
                             case Type::Object:
                             case Type::Array:
                             {
-                                json@ schemaProperties = schema.ValueOrDefault( "properties" );
+                                json@ schemaProperties = schema.ValueOrDefault( ( obj.is_object() ? "properties" : "items" ) );
 
                                 // Whatever non-defined properties in schema are allowed in obj
                                 if( schema.ValueOrDefault( "unevaluatedProperties", true ) == false )
@@ -130,6 +130,36 @@ namespace meta_api
                                         if( !schemaProperties.Contains( pair.Name ) )
                                         {
                                             print( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
+                                            this.error;
+
+                                            if( this.strict )
+                                                return false;
+                                        }
+                                    }
+                                }
+
+                                // Array specific validations
+                                if( obj.is_array() )
+                                {
+                                    if( schema.Contains( "minItems" ) )
+                                    {
+                                        uint minItems = uint( schema[ "minItems" ] );
+                                        if( obj.Length() < minItems )
+                                        {
+                                            print( snprintf( cout, "%1 array has less items than minimum expected %2 got %3", name, minItems, obj.Length() ) );
+                                            this.error;
+
+                                            if( this.strict )
+                                                return false;
+                                        }
+                                    }
+
+                                    if( schema.Contains( "maxItems" ) )
+                                    {
+                                        uint maxItems = uint( schema[ "maxItems" ] );
+                                        if( obj.Length() > maxItems )
+                                        {
+                                            print( snprintf( cout, "%1 array has more items than maximum expected %2 got %3", name, maxItems, obj.Length() ) );
                                             this.error;
 
                                             if( this.strict )

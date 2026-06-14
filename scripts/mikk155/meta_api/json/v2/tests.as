@@ -85,6 +85,24 @@ namespace meta_api
                         && Deserialize( "{\"required\":0}", obj )
                         && schema::Validate( obj, "{\"type\":\"object\",\"required\":[\"required\"]}" )
                     );
+
+                    Expect( "[Schema] minimum items", true,
+                        // 1 != 2
+                        Deserialize( "[0]", obj )
+                        && !schema::Validate( obj, "{\"type\":\"array\",\"minItems\":2}" )
+                        // 2 == 2
+                        && Deserialize( "[0,1]", obj )
+                        && schema::Validate( obj, "{\"type\":\"array\",\"minItems\":2}" )
+                    );
+
+                    Expect( "[Schema] maximum items", true,
+                        // 3 != 2
+                        Deserialize( "[0,1,2]", obj )
+                        && !schema::Validate( obj, "{\"type\":\"array\",\"maxItems\":2}" )
+                        // 2 == 2
+                        && Deserialize( "[0,1]", obj )
+                        && schema::Validate( obj, "{\"type\":\"array\",\"maxItems\":2}" )
+                    );
                 }
             }
         }
