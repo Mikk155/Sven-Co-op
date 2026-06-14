@@ -62,12 +62,19 @@ namespace meta_api
                         // array != object
                         Deserialize( "[]", obj )
                         && !schema::Validate( obj, "{\"type\":\"object\"}" )
+                        && obj.is_object()
                         // object != array
                         && Deserialize( "{}", obj )
                         && !schema::Validate( obj, "{\"type\":\"array\"}" )
+                        && obj.is_array()
                         // object == object && nested array == array
                         && Deserialize( "{\"a\":[]}", obj )
                         && schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"nested\":{\"type\":\"array\"}}}" )
+                        && obj.is_object() && obj[ "a" ].is_array()
+                        // object == object && nested array != array
+                        && Deserialize( "{\"a\":{}}", obj )
+                        && schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"nested\":{\"type\":\"array\"}}}" )
+                        && obj.is_object() && obj[ "a" ].is_object()
                     );
 
                     Expect( "[Schema] required key", true,

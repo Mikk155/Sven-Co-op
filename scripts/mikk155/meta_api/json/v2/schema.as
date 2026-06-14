@@ -97,6 +97,7 @@ namespace meta_api
                         if( !this.strict )
                         {
                             obj.Clear();
+                            obj.SetType( Type::FromString(type) );
 
                             if( schema.Contains( "default" ) )
                                 obj.opAssign( schema[ "default" ] );
@@ -107,74 +108,81 @@ namespace meta_api
 
                     private bool Validate( json@ obj, json@ schema, const string&in name )
                     {
-                        string expectType = schema.ValueOrDefault( "type", "object" );
-
                         if( !this.is_type( obj, schema, name ) && this.strict )
                             return false;
 
-                        json@ schemaProperties = schema.ValueOrDefault( "properties" );
-
-                        // Whatever non-defined properties in schema are allowed in obj
-                        if( schema.ValueOrDefault( "unevaluatedProperties", true ) == false )
+                        switch( obj.Type )
                         {
-                            uint length = obj.Length();
-
-                            for( uint ui = 0; ui < length; ui++ )
+                            case Type::Object:
+                            case Type::Array:
                             {
-                                json@ pair = obj[ui];
+                                json@ schemaProperties = schema.ValueOrDefault( "properties" );
 
-                                if( !schemaProperties.Contains( pair.Name ) )
+                                // Whatever non-defined properties in schema are allowed in obj
+                                if( schema.ValueOrDefault( "unevaluatedProperties", true ) == false )
                                 {
-                                    print( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
-                                    this.error;
+                                    uint length = obj.Length();
 
-                                    if( this.strict )
+                                    for( uint ui = 0; ui < length; ui++ )
+                                    {
+                                        json@ pair = obj[ui];
+
+                                        if( !schemaProperties.Contains( pair.Name ) )
+                                        {
+                                            print( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
+                                            this.error;
+
+                                            if( this.strict )
+                                                return false;
+                                        }
+                                    }
+                                }
+
+                                // Whatever required properties in schema are defined in obj
+                                if( schema.Contains( "required" ) )
+                                {
+                                    json@ required = schema.ValueOrDefault( "required" );
+
+                                    uint length = required.Length();
+
+                                    for( uint ui = 0; ui < length; ui++ )
+                                    {
+                                        string key = string( required[ui] );
+
+                                        if( !obj.Contains( key ) )
+                                        {
+                                            print( snprintf( cout, "%1 missing required key \"%2\"", name, key ) );
+                                            this.error;
+
+                                            if( this.strict )
+                                                return false;
+                                        }
+                                    }
+                                }
+
+                                // validate all properties
+                                uint length = schemaProperties.Length();
+
+                                for( uint ui = 0; ui < length; ui++ )
+                                {
+                                    json@ pair = schemaProperties[ui];
+
+                                    json@ childObj = obj[ pair.Name ];
+
+                                    if( childObj is null )
+                                        continue;
+
+                                    string childName;
+                                    snprintf( childName, "%1->%2", name, pair.Name );
+
+                                    bool result = this.Validate( childObj, pair, childName );
+
+                                    if( this.strict && result == false )
                                         return false;
                                 }
+
+                                break;
                             }
-                        }
-
-                        // Whatever required properties in schema are defined in obj
-                        if( schema.Contains( "required" ) )
-                        {
-                            json@ required = schema.ValueOrDefault( "required" );
-
-                            uint length = required.Length();
-
-                            for( uint ui = 0; ui < length; ui++ )
-                            {
-                                string key = string( required[ui] );
-
-                                if( !obj.Contains( key ) )
-                                {
-                                    print( snprintf( cout, "%1 missing required key \"%2\"", name, key ) );
-                                    this.error;
-
-                                    if( this.strict )
-                                        return false;
-                                }
-                            }
-                        }
-
-                        // validate all properties
-                        uint length = schemaProperties.Length();
-
-                        for( uint ui = 0; ui < length; ui++ )
-                        {
-                            json@ pair = schemaProperties[ui];
-
-                            json@ childObj = obj[ pair.Name ];
-
-                            if( childObj is null )
-                                continue;
-
-                            string childName;
-                            snprintf( childName, "%1->%2", name, pair.Name );
-
-                            bool result = this.Validate( childObj, pair, childName );
-
-                            if( this.strict && result == false )
-                                return false;
                         }
 
                         return ( this.m_Fails == 0 );
