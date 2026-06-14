@@ -23,8 +23,9 @@
 **/
 
 #include "../mikk155/meta_api"
-#include "../mikk155/meta_api/json/v1/fmt/ToArray"
-#include "../mikk155/meta_api/json/v1"
+#include "../mikk155/meta_api/json/v2/fmt/ToArray"
+#include "../mikk155/meta_api/json/v2/schema"
+#include "../mikk155/meta_api/json/v2"
 #include "../mikk155/Server/Framerate"
 #include "../mikk155/Server/IsMapListed"
 
@@ -56,36 +57,145 @@ bool g_ClientPrediction = true;
 int g_RenderMode = kRenderTransTexture;
 int g_RenderAmt = 100;
 
-void MapActivate()
+void Shutdown()
 {
-    if( g_ShouldReloadJson )
-    {
-        dictionary data;
-        if( meta_api::json::v1::Deserialize( "anticlip.json", data ) )
-        {
-            meta_api::json::v1::fmt::ToArray( data[ "map_blacklist" ], g_BlacklistedMaps );
-            g_ShouldReloadJson = bool( data[ "reload" ] );
-            data.get( "npc_clip", g_AllowMonsters );
-            data.get( "player_boost", g_AllowBoosting );
-            data.get( "projectiles_clip", g_AllowProjectiles );
-
-            dictionary client_prediction = cast<dictionary>( data[ "client_prediction" ] );
-
-            if( client_prediction.get( "active", g_ClientPrediction ) && g_ClientPrediction )
-            {
-                client_prediction.get( "invisible", g_InvisibleColliders );
-                client_prediction.get( "rendermode", g_RenderMode );
-                client_prediction.get( "renderamt", g_RenderAmt );
-            }
-        }
-    }
-
 #if METAMOD_PLUGIN_ASLP
     g_Hooks.RemoveHook( Hooks::aslp::PlayerPreMovement, @fnPreMovement );
     g_Hooks.RemoveHook( Hooks::aslp::PostAddToFullPack, @fnPostAddToFullPack );
     g_Hooks.RemoveHook( Hooks::aslp::ShouldCollide, @fnShouldCollide );
     Server::Framerate::RemoveCallback( @fnCheckFramerate );
 #endif
+}
+
+void MapActivate()
+{
+    if( g_ShouldReloadJson )
+    {
+        meta_api::json::v2::json@ data;
+
+        bool failedLoad;
+
+        if( !meta_api::json::v2::Deserialize( "store/anticlip.json", data ) )
+        {
+            @data = meta_api::json::v2::json();
+            failedLoad = true;
+        }
+
+        auto@ Schema = meta_api::json::v2::json();
+
+        Schema.Load( """{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"type":"object",
+"unevaluatedProperties":false,
+"properties":
+{
+    "$schema":
+    {
+        "type":"string",
+        "default":"anticlip_schema.json"
+    }
+    "npc_clip":
+    {
+        "type":"boolean",
+        "default":false,
+        "description":"Whatever players should collide with allied npcs."
+    },
+    "player_boost":
+    {
+        "type":"boolean",
+        "default":true,
+        "description":"Whatever to allow boosting by jumping over a player / npc"
+    },
+    "projectiles_clip":
+    {
+        "type":"boolean",
+        "default":false,
+        "description":"Whatever projectiles (rockets, spores, bolts etc) can clip to allies"
+    },
+    "client_prediction":
+    {
+        "type":"object",
+        "default":{}
+        "unevaluatedProperties":false,
+        "properties":
+        {
+            "active":
+            {
+                "type":"boolean",
+                "default":true,
+                "description":"set to false and will considerably improve performance."
+            },
+            "invisible":
+            {
+                "type":"boolean",
+                "default":false,
+                "description":"Completelly hide intersecting entities. (ignore render settings)"
+            },
+            "rendermode":
+            {
+                "type":"integer",
+                "default":4,
+                "description":"rendermode var for intersecting entities.",
+                "minimum":0,
+                "maximum":4
+            },
+            "renderamt":
+            {
+                "type":"integer",
+                "default":100,
+                "description":"renderamt var for intersecting entities.",
+                "minimum":0,
+                "maximum":255
+            }
+        }
+    }
+    "reload":
+    {
+        "type":"boolean",
+        "default":false,
+        "description":"Should this json file be parsed every map change?"
+    },
+    "map_blacklist":
+    {
+        "type":"array",
+        "description":"List of maps that this plugin should be disabled.",
+        "default": []
+    }
+}
+}""" );
+
+        meta_api::json::v2::schema::Validate( data, Schema, false );
+
+        if( failedLoad )
+        {
+            meta_api::json::v2::Serialize( data, "store/anticlip.json",
+                meta_api::json::parser::Indentation::OneTabSpace,
+                meta_api::json::parser::Style::AllMan
+            );
+            meta_api::json::v2::Serialize( Schema, "store/anticlip_schema.json",
+                meta_api::json::parser::Indentation::OneTabSpace,
+                meta_api::json::parser::Style::AllMan
+            );
+            g_Game.AlertMessage( at_console, "Anti-Clip wroted a template json config at scripts/plugins/store/anticlip.\n" );
+        }
+
+        meta_api::json::v2::fmt::ToArray( data.ValueOrDefault( "map_blacklist" ), g_BlacklistedMaps );
+        g_ShouldReloadJson = data.ValueOrDefault( "reload", false );
+        data.Get( "npc_clip", g_AllowMonsters );
+        data.Get( "player_boost", g_AllowBoosting );
+        data.Get( "projectiles_clip", g_AllowProjectiles );
+
+        auto client_prediction = data.ValueOrDefault( "client_prediction" );
+
+        if( client_prediction.Get( "active", g_ClientPrediction ) && g_ClientPrediction )
+        {
+            client_prediction.Get( "invisible", g_InvisibleColliders );
+            client_prediction.Get( "rendermode", g_RenderMode );
+            client_prediction.Get( "renderamt", g_RenderAmt );
+        }
+    }
+
+    Shutdown();
 
     if( Server::IsMapListed( g_BlacklistedMaps ) )
     {
