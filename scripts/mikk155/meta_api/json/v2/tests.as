@@ -103,6 +103,24 @@ namespace meta_api
                         && Deserialize( "[0,1]", obj )
                         && schema::Validate( obj, "{\"type\":\"array\",\"maxItems\":2}" )
                     );
+
+                    Expect( "[Schema] minimum value", true,
+                        // 1 != 2
+                        Deserialize( "{\"int\":1}", obj )
+                        && !schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"int\":{\"type\":\"integer\",\"minimum\":2}}}" )
+                        // 2 == 2
+                        && Deserialize( "{\"int\":2}", obj )
+                        && schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"int\":{\"type\":\"integer\",\"minimum\":2}}}" )
+                    );
+
+                    Expect( "[Schema] maximum value", true,
+                        // 3 != 2
+                        Deserialize( "{\"int\":3}", obj )
+                        && !schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"int\":{\"type\":\"integer\",\"maximum\":2}}}" )
+                        // 2 == 2
+                        && Deserialize( "{\"int\":2}", obj )
+                        && schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"int\":{\"type\":\"integer\",\"maximum\":2}}}" )
+                    );
                 }
             }
         }

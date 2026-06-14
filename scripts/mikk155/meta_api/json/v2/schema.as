@@ -51,53 +51,55 @@ namespace meta_api
                             return this.error;
                         }
 
-                        string type = string( schema[ "type" ] );
-                        string actualType;
+                        string expectedTypeString = string( schema[ "type" ] );
+                        Type expectedType = Type::FromString( expectedTypeString );
+                        bool isType = false;
 
-                        if( type.IsEmpty() )
+                        if( expectedTypeString.IsEmpty() )
                         {
                             print( "Unexpected empty type at schema!" );
                             return this.error;
                         }
 
-                        switch( obj.Type )
+                        switch( expectedType )
                         {
                             case Type::Object:
-                                actualType = "object";
+                                isType = obj.is_object();
                             break;
                             case Type::Array:
-                                actualType = "array";
+                                isType = obj.is_array();
                             break;
                             case Type::String:
-                                actualType = "string";
+                                isType = obj.is_string();
                             break;
                             case Type::Integer:
+                                isType = obj.is_number_integer();
+                            break;
                             case Type::Float:
-                                actualType = "number";
+                                isType = obj.is_number();
                             break;
                             case Type::Boolean:
-                                actualType = "boolean";
+                                isType = obj.is_boolean();
                             break;
                             case Type::Null:
-                                actualType = "null";
+                                isType = obj.is_null();
+                            break;
+                            default:
+                                print( snprintf( cout, "schema unknown \"type\" %2", expectedTypeString ) );
+                                if( !this.error )
+                                    return false;
                             break;
                         }
 
-                        if( actualType.IsEmpty() )
-                        {
-                            print( snprintf( cout, "%1 unknown type %2 expected %3", name, Type::ToString(obj.Type), type ) );
-                            return this.error;
-                        }
-
-                        if( actualType == type )
+                        if( isType )
                             return true;
 
-                        print( snprintf( cout, "%1 Expected %2 got %3", name, type, actualType ) );
+                        print( snprintf( cout, "%1 Expected %2 got %3", name, expectedTypeString, Type::ToString(obj.Type) ) );
 
                         if( !this.strict )
                         {
                             obj.Clear();
-                            obj.SetType( Type::FromString(type) );
+                            obj.SetType( expectedType );
 
                             if( schema.Contains( "default" ) )
                                 obj.opAssign( schema[ "default" ] );
@@ -117,26 +119,6 @@ namespace meta_api
                             case Type::Array:
                             {
                                 json@ schemaProperties = schema.ValueOrDefault( ( obj.is_object() ? "properties" : "items" ) );
-
-                                // Whatever non-defined properties in schema are allowed in obj
-                                if( schema.ValueOrDefault( "unevaluatedProperties", true ) == false )
-                                {
-                                    uint length = obj.Length();
-
-                                    for( uint ui = 0; ui < length; ui++ )
-                                    {
-                                        json@ pair = obj[ui];
-
-                                        if( !schemaProperties.Contains( pair.Name ) )
-                                        {
-                                            print( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
-                                            this.error;
-
-                                            if( this.strict )
-                                                return false;
-                                        }
-                                    }
-                                }
 
                                 // Array specific validations
                                 if( obj.is_array() )
@@ -159,25 +141,47 @@ namespace meta_api
                                             return false;
                                     }
                                 }
-
-                                // Whatever required properties in schema are defined in obj
-                                if( schema.Contains( "required" ) )
+                                else
                                 {
-                                    json@ required = schema.ValueOrDefault( "required" );
-
-                                    uint length = required.Length();
-
-                                    for( uint ui = 0; ui < length; ui++ )
+                                    // Whatever non-defined properties in schema are allowed in obj
+                                    if( schema.ValueOrDefault( "unevaluatedProperties", true ) == false )
                                     {
-                                        string key = string( required[ui] );
+                                        uint length = obj.Length();
 
-                                        if( !obj.Contains( key ) )
+                                        for( uint ui = 0; ui < length; ui++ )
                                         {
-                                            print( snprintf( cout, "%1 missing required key \"%2\"", name, key ) );
-                                            this.error;
+                                            json@ pair = obj[ui];
 
-                                            if( this.strict )
-                                                return false;
+                                            if( !schemaProperties.Contains( pair.Name ) )
+                                            {
+                                                print( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
+                                                this.error;
+
+                                                if( this.strict )
+                                                    return false;
+                                            }
+                                        }
+                                    }
+
+                                    // Whatever required properties in schema are defined in obj
+                                    if( schema.Contains( "required" ) )
+                                    {
+                                        json@ required = schema.ValueOrDefault( "required" );
+
+                                        uint length = required.Length();
+
+                                        for( uint ui = 0; ui < length; ui++ )
+                                        {
+                                            string key = string( required[ui] );
+
+                                            if( !obj.Contains( key ) )
+                                            {
+                                                print( snprintf( cout, "%1 missing required key \"%2\"", name, key ) );
+                                                this.error;
+
+                                                if( this.strict )
+                                                    return false;
+                                            }
                                         }
                                     }
                                 }
@@ -203,6 +207,29 @@ namespace meta_api
                                         return false;
                                 }
 
+                                break;
+                            }
+                            case Type::Integer:
+                            case Type::Float:
+                            {
+                                float fTemp;
+                                float fValue;
+
+                                if( schema.Get( "minimum", fTemp, false ) && obj.Get( fValue, false ) && fValue < fTemp )
+                                {
+                                    print( snprintf( cout, "%1 value is lesser than minimum expected %2 or more. got %3", name, fTemp, fValue ) );
+                                    this.error;
+                                    if( this.strict )
+                                        return false;
+                                }
+
+                                if( schema.Get( "maximum", fTemp, false ) && obj.Get( fValue, false ) && fValue > fTemp )
+                                {
+                                    print( snprintf( cout, "%1 value is higher than maximum expected %2 or less. got %3", name, fTemp, fValue ) );
+                                    this.error;
+                                    if( this.strict )
+                                        return false;
+                                }
                                 break;
                             }
                         }
