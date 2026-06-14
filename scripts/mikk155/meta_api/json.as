@@ -125,6 +125,29 @@ namespace meta_api
                 }
                 return "Undefined";
             }
+
+            // Convert the given string to Type
+            Type FromString( string&in type )
+            {
+                type.ToLowercase();
+                if( type == "object" )
+                    return Type::Object;
+                if( type == "array" )
+                    return Type::Array;
+                if( type == "string" )
+                    return Type::String;
+                if( type == "integer" )
+                    return Type::Integer;
+                if( type == "float" )
+                    return Type::Float;
+                if( type == "boolean" || type == "bool" )
+                    return Type::Boolean;
+                if( type == "null" )
+                    return Type::Null;
+                if( type == "handle" )
+                    return Type::Handle;
+                return Type::Undefined;
+            }
         }
 
         namespace parser
