@@ -658,7 +658,7 @@ namespace meta_api
                         case meta_api::json::Type::Object:
                         case meta_api::json::Type::Array:
                         {
-                            //return Serialize(-1, this);
+                            return Serialize(this);
                         }
                         case meta_api::json::Type::String:
                             return string( this.Value );
@@ -739,7 +739,7 @@ namespace meta_api
                 }
             }
 
-            string Serialize( meta_api::json::v2::json@ obj, meta_api::json::parser::Serializer@ Serializer )
+            string Serialize( const meta_api::json::v2::json@ obj, meta_api::json::parser::Serializer@ Serializer )
             {
                 const array<string>@ keys = obj.Keys;
                 uint length = keys.length();
@@ -809,7 +809,7 @@ namespace meta_api
             *   If the object failed to parse for any reason it will write "{}" to the file only if the file doesn't exists
             **/
             string Serialize(
-                meta_api::json::v2::json@ obj,
+                const meta_api::json::v2::json@ obj,
                 const string&in filename = String::EMPTY_STRING,
                 const meta_api::json::parser::Indentation&in indents = meta_api::json::parser::Indentation::AllTogether,
                 const meta_api::json::parser::Style&in style = meta_api::json::parser::Style::AllMan
