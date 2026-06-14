@@ -402,7 +402,8 @@ namespace meta_api
                     // Write to a file
                     if( !this.m_Filename.IsEmpty() )
                     {
-                        snprintf( this.m_Filename, "%1.json", this.m_Filename );
+                        if( !this.m_Filename.EndsWith( ".json" ) )
+                            this.m_Filename.opAddAssign( ".json" );
 
                         if( meta_api::json::GetFilename( this.m_Filename, this.m_Filename ) )
                         {
