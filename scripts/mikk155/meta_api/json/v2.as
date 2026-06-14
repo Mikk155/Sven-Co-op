@@ -171,9 +171,18 @@ namespace meta_api
                     this.m_KeyNames = value.m_KeyNames;
 
                     // No. because we're still allocated on a different owner
+                    // -TODO Maybe a list of parent handles so we get a valid one starting from the last index?
                     // this.m_Name = value.m_Name;
 
                     return this;
+                }
+
+                // Creates a shallow copy
+                meta_api::json::v2::json@ Copy()
+                {
+                    meta_api::json::v2::json@ copy = meta_api::json::v2::json();
+                    copy.opAssign( this );
+                    return copy;
                 }
 
                 meta_api::json::v2::json@ opAssign( const float value ) {
