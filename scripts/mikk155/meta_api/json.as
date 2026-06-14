@@ -30,12 +30,22 @@ namespace meta_api
 
             string name;
 
+            private
+                void __SetModuleName__()
+                {
+                    this.module = g_Module.GetModuleName();
+                    if( this.module != "MapModule" )
+                        snprintf( this.module, "Plugin %1", this.module );
+                }
+
+            Logger()
+            {
+                __SetModuleName__();
+            }
+
             Logger( const string&in Name )
             {
-                this.module = g_Module.GetModuleName();
-                if( this.module != "MapModule" )
-                    snprintf( this.module, "Plugin %1", this.module );
-
+                __SetModuleName__();
                 this.name = Name;
             }
 
