@@ -17,11 +17,11 @@ final class Expect
         if( condition != expected )
         {
             Failed = true;
-            print::error( snprintf( cout, "FAIL: %1", title ), tests::__CurrentVersion__ );
+            g_Logger.error( snprintf( cout, "FAIL: %1", title ) );
         }
         else
         {
-            print::info( snprintf( cout, "PASS: %1", title ), tests::__CurrentVersion__ );
+            g_Logger.info( snprintf( cout, "PASS: %1", title ) );
         }
 
         tests::__Results__.insertLast(this);
@@ -33,6 +33,7 @@ interface ITest
 {
     /// Json version
     const Version GetVersion();
+    const Logger@ get_Logger() const;
     /**
         If any data of the following object is missing from your deserialization then assume the test failed and return false.
 {
@@ -71,7 +72,6 @@ uint __AllTestsPassed__ = 0;
 uint __AllTestsFailed__ = 0;
 uint __AllTests__ = 0;
 
-Version __CurrentVersion__;
 array<ITest@> __Tests__(0);
 
 // Register a test class
@@ -79,7 +79,7 @@ void Register( ITest@ test )
 {
 if( test is null )
 {
-    print::error( "Null test passed on meta_api::json::tests::Register( ITest@ )" );
+    g_Logger.error( "Null test passed on meta_api::json::tests::Register( ITest@ )" );
     return;
 }
 __Tests__.insertLast( test );
@@ -91,8 +91,7 @@ void __RunTests__( ITest@ test, bool metamod )
 {
 __AllTests__++;
 __Results__.resize(0);
-__CurrentVersion__ = test.GetVersion();
-print::info( snprintf( meta_api::json::cout, "===== Running json tests for %1 =====", ( metamod ? "METAMOD" : "VANILLA" ) ), __CurrentVersion__ );
+test.Logger.info( snprintf( meta_api::json::cout, "===== Running json tests for %1 =====", ( metamod ? "METAMOD" : "VANILLA" ) ) );
 
 Expect( "Deserialization and types", true, test.DeserializeAllTypes( "{\"null\": null,\"integer\": 1,\"float\": 1.5,\"bool\": true,\"string\": \"string\",\"object\":{},\"array\":[null,1,1.5,true,false,\"string\",{},[]]}" ) );
 Expect( "Single line comments", true, test.DeserializeGeneric( "// Comment before object\n{// Comment after token in object\n\"first\": 1, // Comment after comma\n\"second\": [\n1, // Comment inside array after value with comma\n2 // Comment inside array after value with no comma\n],\n\"third\": 2 // Comment after value with no comma\n}// Comment at end of object" ) );
@@ -153,26 +152,26 @@ for( uint ui = 0; ui < length; ui++ )
 }
 if( fails.length() == 0 )
 {
-    print::info( snprintf( cout, "===== All %1 tests passed =====", pass.length() ), __CurrentVersion__ );
+    test.Logger.info( snprintf( cout, "===== All %1 tests passed =====", pass.length() ) );
 }
 else if( pass.length() == 0 )
 {
-    print::error( snprintf( cout, "===== All %1 tests failed =====", fails.length() ), __CurrentVersion__ );
+    test.Logger.error( snprintf( cout, "===== All %1 tests failed =====", fails.length() ) );
 }
 else
 {
-    print::info( snprintf( meta_api::json::cout, "===== Passed: %1 =====", pass.length() ), __CurrentVersion__ );
-    print::error( snprintf( meta_api::json::cout, "===== Failed: %1 =====", fails.length() ), __CurrentVersion__ );
+    test.Logger.info( snprintf( meta_api::json::cout, "===== Passed: %1 =====", pass.length() ) );
+    test.Logger.error( snprintf( meta_api::json::cout, "===== Failed: %1 =====", fails.length() ) );
 }
 
-meta_api::json::print::info( "===== All done! =====\n==================", __CurrentVersion__ );
+test.Logger.info( "===== All done! =====\n==================" );
 __Results__.resize(0);
 }
 
 void Start( ITest@ test )
 {
 if( test is null ) {
-    print::error( "Null test passed on meta_api::json::tests::Start( ITest@ )", test.GetVersion() );
+    g_Logger.error( "Null test passed on meta_api::json::tests::Start( ITest@ )" );
     return;
 }
 /*
@@ -182,7 +181,7 @@ __RunTests__( test, true );
 __META_INSTALLED__ = true;
 #endif
 if( !__META_INSTALLED__ ) {
-    print::info( "===== Skiping json tests for METAMOD as is not installed =====", test.GetVersion() );
+    g_Logger.info( "===== Skiping json tests for METAMOD as is not installed =====", test.GetVersion() );
 }
 */
 // If metamod is installed disable the support momentarly to test vanilla behaviour
@@ -235,7 +234,7 @@ for( uint ui = 0; ui < __Tests__.length(); ui++ )
         return;
     }
 }
-print::error( snprintf( cout, "Couldn't find a registered test interface for version %1", version ) );
+g_Logger.error( snprintf( cout, "Couldn't find a registered test interface for version %1", version ) );
 } // void Start
 } // namespace tests
 } // namespace json

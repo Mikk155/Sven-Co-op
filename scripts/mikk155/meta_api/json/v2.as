@@ -8,6 +8,8 @@ namespace meta_api
         /// Work in progress. expect API changes.
         namespace v2
         {
+            meta_api::json::Logger Logger( "JSON V2" );
+
             /// Json is a complete wrapper to dictionary and array the main difference is that json is ordered.
             /// If something is missing you can either pull request or just inherit from this class and make your specific changes according to your needs.
             class json
@@ -303,7 +305,7 @@ namespace meta_api
 
                     if( value is null )
                     {
-                        print::error( snprintf( cout, "Couldn't set null json value for key \"%1\"", keyName ), Version::V2 );
+                        Logger.error( snprintf( cout, "Couldn't set null json value for key \"%1\"", keyName ) );
                         return @old;
                     }
 
@@ -576,13 +578,13 @@ namespace meta_api
                 {
                     if( this.Type != meta_api::json::Type::Array )
                     {
-                        print::error( snprintf( cout, "Couldn't Append to a json that is not an array!" ), Version::V2 );
+                        Logger.error( snprintf( cout, "Couldn't Append to a json that is not an array!" ) );
                         return null;
                     }
 
                     if( value is null )
                     {
-                        print::error( snprintf( cout, "Couldn't Append a null json value!" ), Version::V2 );
+                        Logger.error( snprintf( cout, "Couldn't Append a null json value!" ) );
                         return null;
                     }
 
@@ -602,7 +604,7 @@ namespace meta_api
                 {
                     if( index >= this.m_KeyNames.length() )
                     {
-                        print::error( snprintf( cout, "Index %1 is outside json length %2", index, this.m_KeyNames.length() ), Version::V2 );
+                        Logger.error( snprintf( cout, "Index %1 is outside json length %2", index, this.m_KeyNames.length() ) );
                         return null;
                     }
 
@@ -625,7 +627,7 @@ namespace meta_api
                 {
                     if( !this.is_object() )
                     {
-                        print::error( snprintf( cout, "Can not Remove value at key %1 from a json that is not an object! type: %2", key, Type::ToString( this.Type ) ), Version::V2 );
+                        Logger.error( snprintf( cout, "Can not Remove value at key %1 from a json that is not an object! type: %2", key, Type::ToString( this.Type ) ) );
                     }
 
                     meta_api::json::v2::json@ value;
@@ -641,7 +643,7 @@ namespace meta_api
                 {
                     if( !this.is_structured() )
                     {
-                        print::error( snprintf( cout, "Can not Remove value at index %1 from a json that is not an object! type: %2", index, Type::ToString( this.Type ) ), Version::V2 );
+                        Logger.error( snprintf( cout, "Can not Remove value at index %1 from a json that is not an object! type: %2", index, Type::ToString( this.Type ) ) );
                     }
 
                     meta_api::json::v2::json@ value;
@@ -763,7 +765,7 @@ namespace meta_api
                         case meta_api::json::Type::Handle:
                         {
                             if( debug )
-                                print::debug( snprintf( cout, "Handle pointer serialization is not supported. storing as \"null\"" ), Version::V2 );
+                                Logger.debug( snprintf( cout, "Handle pointer serialization is not supported. storing as \"null\"" ) );
                             Serializer.KeyValue( key, "null", meta_api::json::Type::Null );
                             break;
                         }

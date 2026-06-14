@@ -22,6 +22,13 @@ namespace meta_api
                     return Version::V1;
                 }
 
+                private Logger m_Logger( "JSON V1" );
+
+                const Logger@ get_Logger() const
+                {
+                    return this.m_Logger;
+                }
+
                 bool DeserializeGeneric( const string&in serialized ) override
                 {
                     dictionary obj;

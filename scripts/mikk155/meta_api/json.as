@@ -23,43 +23,59 @@ namespace meta_api
         // Set to true for displaying debug messages
         bool debug = false;
 
-        namespace print
+        class Logger
         {
-            void __print__( const string &in type, const string&in message, const Version &in version )
+            protected
+                string module;
+
+            string name;
+
+            Logger( const string&in Name )
             {
-                string moduleName = g_Module.GetModuleName();
+                this.module = g_Module.GetModuleName();
+                if( this.module != "MapModule" )
+                    snprintf( this.module, "Plugin %1", this.module );
 
-                if( moduleName != "MapModule" )
-                    snprintf( moduleName, "Plugin %1", moduleName );
-
-                snprintf( cout, "[%1] JSON V%2 %3: %4\n", moduleName, ( version == Version::Undefined ? "Undefined" : int(version) ), type, message );
-                g_EngineFuncs.ServerPrint(cout);
-                cout.Clear();
+                this.name = Name;
             }
 
-            void error( bool fmt, const Version &in version = meta_api::json::Version::Undefined ) {
-                __print__( "Error", cout, version );
-            }
-            void error( const string &in message, const Version &in version = Version::Undefined ) {
-                __print__( "Error", message, version );
+            void error( bool fmt ) const {
+                snprintf( cout, "[%1] %2 Error: %3\n", this.module, this.name, cout );
+                g_EngineFuncs.ServerPrint(cout); cout.Clear();
             }
 
-            void info( bool fmt, const Version &in version = meta_api::json::Version::Undefined ) {
-                __print__( "Info", cout, version );
-            }
-            void info( const string &in message, const Version &in version = Version::Undefined ) {
-                __print__( "Info", message, version );
+            void error( const string&in message ) const {
+                snprintf( cout, "[%1] %2 Error: %3\n", this.module, this.name, message );
+                g_EngineFuncs.ServerPrint(cout); cout.Clear();
             }
 
-            void debug( bool fmt, const Version &in version = meta_api::json::Version::Undefined ) {
-                if( meta_api::json::debug )
-                    __print__( "Debug", cout, version );
+            void info( bool fmt ) const {
+                snprintf( cout, "[%1] %2 Info: %3\n", this.module, this.name, cout );
+                g_EngineFuncs.ServerPrint(cout); cout.Clear();
             }
-            void debug( const string &in message, const Version &in version = Version::Undefined ) {
-                if( meta_api::json::debug )
-                    __print__( "Debug", message, version );
+
+            void info( const string&in message ) const {
+                snprintf( cout, "[%1] %2 Info: %3\n", this.module, this.name, message );
+                g_EngineFuncs.ServerPrint(cout); cout.Clear();
+            }
+
+            void debug( bool fmt ) const {
+                if( meta_api::json::debug ) {
+                    snprintf( cout, "[%1] %2 Debug: %3\n", this.module, this.name, cout );
+                   g_EngineFuncs.ServerPrint(cout); cout.Clear();
+                }
+            }
+
+            void debug( const string&in message ) const {
+                if( meta_api::json::debug ) {
+                    snprintf( cout, "[%1] %2 Debug: %3\n", this.module, this.name, message );
+                    g_EngineFuncs.ServerPrint(cout); cout.Clear();
+                }
             }
         }
+
+        // Global json logger
+        Logger g_Logger( "JSON" );
 
         /**
         *   @brief return whatever str is a valid file name and formats the output filename
@@ -138,7 +154,7 @@ namespace meta_api
                     return Type::String;
                 if( type == "integer" )
                     return Type::Integer;
-                if( type == "float" )
+                if( type == "float" || type == "number" )
                     return Type::Float;
                 if( type == "boolean" || type == "bool" )
                     return Type::Boolean;
@@ -187,6 +203,10 @@ namespace meta_api
 
                 // Parser version.
                 const meta_api::json::Version GetVersion() const { return Version::Undefined; }
+
+                Logger m_Logger( "JSON V" + int( this.GetVersion() ) );
+
+                const meta_api::json::Logger@ get_Logger() const { return g_Logger; }
             }
 
             enum Indentation
@@ -268,7 +288,7 @@ namespace meta_api
                     {
                         if( depth == 0 )
                         {
-                            print::info( "Only Style::KandR is supported when Indentation::AllTogether. Enforcing Style::KandR...", this.GetVersion() );
+                            this.Logger.info( "Only Style::KandR is supported when Indentation::AllTogether. Enforcing Style::KandR..." );
                         }
 
                         this.m_Style = meta_api::json::parser::Style::KandR;
@@ -318,7 +338,7 @@ namespace meta_api
                         }
                         default:
                         {
-                            print::error( "Can not instantiate a Serializer with other than Array or Object!", this.GetVersion() );
+                            this.Logger.error( "Can not instantiate a Serializer with other than Array or Object!" );
                             this.error++;
                             break;
                         }
@@ -404,13 +424,13 @@ namespace meta_api
                             }
                         }
 
-                        print::error( snprintf( cout, "Couldn't serialize content to file \"%1\"", this.m_Filename ), this.GetVersion() );
+                        this.Logger.error( snprintf( cout, "Couldn't serialize content to file \"%1\"", this.m_Filename ) );
                         return String::EMPTY_STRING;
                     }
 
                     if( !this.Ok )
                     {
-                        print::error( snprintf( cout, "Couldn't serialize content for \"%1\"", g_Module.GetModuleName() ), this.GetVersion() );
+                        this.Logger.error( snprintf( cout, "Couldn't serialize content for \"%1\"", g_Module.GetModuleName() ) );
                         return String::EMPTY_STRING;
                     }
 
@@ -425,7 +445,7 @@ namespace meta_api
                 {
                     if( value.IsEmpty() && type != meta_api::json::Type::String )
                     {
-                        print::error( snprintf( cout, "Skiping unable to serialize empty value other than string. value of type %1 at key %2", type, key ), this.GetVersion() );
+                        this.Logger.error( snprintf( cout, "Skiping unable to serialize empty value other than string. value of type %1 at key %2", type, key ) );
                         return;
                     }
 
@@ -500,14 +520,14 @@ namespace meta_api
                         case meta_api::json::Type::Handle:
                         default:
                         {
-                            print::error( snprintf( cout, "Skiping unable to serialize value of type %1 at key %2 with value of %3", type, key, value ), this.GetVersion() );
+                            this.Logger.error( snprintf( cout, "Skiping unable to serialize value of type %1 at key %2 with value of %3", type, key, value ) );
                             break;
                         }
                     }
                 }
             }
 
-            /// Deserializer class. inherit from this overriding the GetVersion method from the Parser interface
+            /// Deserializer class.
             abstract class Deserializer : Parser
             {
                 private
@@ -632,7 +652,7 @@ namespace meta_api
                             {
                                 if( this.m_Buffer.Find( '*/', this.CurrentPosition, String::CompareType::CaseSensitive ) == String::INVALID_INDEX )
                                 {
-                                    print::error( snprintf( cout, "Unclosed multi line commentary at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.Logger.error( snprintf( cout, "Unclosed multi line commentary at %1%2", this.GetCurrentLine(), this.GetLastRead() ) );
                                     this.error++;
                                     return false;
                                 }
@@ -701,13 +721,13 @@ namespace meta_api
                 {
                     if( !this.IsFile && this.m_Buffer.IsEmpty() )
                     {
-                        print::error( snprintf( cout, "Deserializer::Initialize Empty string provided or Deserializer::SetSerialized was never called!" ), this.GetVersion() );
+                        this.Logger.error( snprintf( cout, "Deserializer::Initialize Empty string provided or Deserializer::SetSerialized was never called!" ) );
                         return meta_api::json::Type::Undefined;
                     }
 
                     if( this.IsFile )
                     {
-                        print::info( snprintf( cout, "Reading file \"%1\"", this.m_FileName ), this.GetVersion() );
+                        this.Logger.info( snprintf( cout, "Reading file \"%1\"", this.m_FileName ) );
 
                         bool shouldVanillaLoad = true;
 
@@ -718,7 +738,7 @@ namespace meta_api
                             /*
                             auto type = meta_api::json::Type( aslp::json::Load( this.m_FileName ) ) );
                             if( type == meta_api::json::Type::Undefined )
-                                print::error( snprintf( cout, "could not open file \"%1\"", this.m_FileName ), this.GetVersion() );
+                                this.Logger.error( snprintf( cout, "could not open file \"%1\"", this.m_FileName ) );
                             return type;
                             */
                         }
@@ -731,7 +751,7 @@ namespace meta_api
 
                             if( fstream is null || !fstream.IsOpen() )
                             {
-                                print::error( snprintf( cout, "could not open file \"%1\"", this.m_FileName ), this.GetVersion() );
+                                this.Logger.error( snprintf( cout, "could not open file \"%1\"", this.m_FileName ) );
                                 return meta_api::json::Type::Undefined;
                             }
 
@@ -758,7 +778,7 @@ namespace meta_api
                     /// Seek to the first json object/array return Type::Undefined if "{" or "[" is not found
                     if( this.totalSize <= 1 ) // 2 is the minimun string size to define empty object/array
                     {
-                        print::error( "The provided string is empty!", this.GetVersion() );
+                        this.Logger.error( "The provided string is empty!" );
                         return meta_api::json::Type::Undefined;
                     }
 
@@ -794,7 +814,7 @@ namespace meta_api
                     bool ErrorUnexpected( const string&in expected, const string&in unexpected, const string&in comment = String::EMPTY_STRING )
                     {
                         bool has_comment = comment.IsEmpty();
-                        print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected \"%3\"%4%5%6%7",
+                        this.Logger.error( snprintf( cout, "Unexpected token \"%1\" at %2 expected \"%3\"%4%5%6%7",
                                 meta_api::json::parser::EscapeSequences( unexpected ),
                                 this.GetCurrentLine(),
                                 expected,
@@ -802,7 +822,7 @@ namespace meta_api
                                 comment,
                                 ( has_comment ? "" : "." ),
                                 this.GetLastRead()
-                            ), this.GetVersion()
+                            )
                         );
                         this.error++;
                         return false;
@@ -815,7 +835,7 @@ namespace meta_api
                     if( had_comma && pairs > 0 )
                     {
                         this.error++;
-                        print::error( snprintf( cout, "Unexpected \",\" at the last key-value pair at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                        this.Logger.error( snprintf( cout, "Unexpected \",\" at the last key-value pair at %1%2", this.GetCurrentLine(), this.GetLastRead() ) );
                         return;
                     }
 
@@ -831,7 +851,7 @@ namespace meta_api
 
                                 if( c != '\r' && c != ' ' && c != '\t' && c != '\n' )
                                 {
-                                    print::error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of string%3", string(c), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.Logger.error( snprintf( cout, "Unexpected token \"%1\" at %2 expected end of string%3", string(c), this.GetCurrentLine(), this.GetLastRead() ) );
                                     this.error++;
                                     return;
                                 }
@@ -847,7 +867,7 @@ namespace meta_api
 
                     if( debug )
                     {
-                        print::debug( snprintf( cout, "%1: %2 %3", string( currentData[ "path" ] ), meta_api::json::Type::ToString(ObjectType), ( ObjectType == meta_api::json::Type::Array ? "]" : "}" ) ), this.GetVersion() );
+                        this.Logger.debug( snprintf( cout, "%1: %2 %3", string( currentData[ "path" ] ), meta_api::json::Type::ToString(ObjectType), ( ObjectType == meta_api::json::Type::Array ? "]" : "}" ) ) );
                     }
                 }
 
@@ -878,7 +898,7 @@ namespace meta_api
 
                     if( !is_array && !is_object )
                     {
-                        print::error( snprintf( cout, "can not Advance with type \"%1\". only supported Object or Array", ObjectType ), this.GetVersion() );
+                        this.Logger.error( snprintf( cout, "can not Advance with type \"%1\". only supported Object or Array", ObjectType ) );
                         this.error++;
                         return false;
                     }
@@ -891,7 +911,7 @@ namespace meta_api
                         if( !data.exists( "path" ) )
                         {
                             data[ "path" ] = "\"<root>\"";
-                            print::debug( snprintf( cout, "%1: %2 %3", string( data[ "path" ] ), meta_api::json::Type::ToString(ObjectType), ( ObjectType == meta_api::json::Type::Array ? "[" : "{" ) ), this.GetVersion() );
+                            this.Logger.debug( snprintf( cout, "%1: %2 %3", string( data[ "path" ] ), meta_api::json::Type::ToString(ObjectType), ( ObjectType == meta_api::json::Type::Array ? "[" : "{" ) ) );
                         }
                     }
 
@@ -964,7 +984,7 @@ namespace meta_api
                                 else if( next == 'f' ) { e = "\\f"; }
                                 else
                                 {
-                                    print::error( snprintf( cout, "Non-escaped sequence \"%1\" at %2%3", string(next), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.Logger.error( snprintf( cout, "Non-escaped sequence \"%1\" at %2%3", string(next), this.GetCurrentLine(), this.GetLastRead() ) );
                                     this.error++;
                                     return false;
                                 }
@@ -1020,7 +1040,7 @@ namespace meta_api
                         {
                             if( pair.key.IsEmpty() )
                             {
-                                print::error( snprintf( cout, "Empty key name given at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                this.Logger.error( snprintf( cout, "Empty key name given at %1%2", this.GetCurrentLine(), this.GetLastRead() ) );
                                 this.error++;
                                 return false;
                             }
@@ -1067,7 +1087,7 @@ namespace meta_api
 
                                     dictionary@ childData = this.m_Data[this.m_DataCurrent-1];
                                     childData[ "path" ] = path;
-                                    print::debug( snprintf( cout, "%1: %2 %3", path, meta_api::json::Type::ToString(pair.type), ( pair.type == meta_api::json::Type::Array ? "[" : "{" ) ), this.GetVersion() );
+                                    this.Logger.debug( snprintf( cout, "%1: %2 %3", path, meta_api::json::Type::ToString(pair.type), ( pair.type == meta_api::json::Type::Array ? "[" : "{" ) ) );
                                 }
                                 return true;
                             }
@@ -1098,7 +1118,7 @@ namespace meta_api
                                     if( had_comma && bool( data[ "had_comma" ] ) )
                                         return ErrorUnexpected( ( is_array ? "value" : "\"" ), c, "Double comma after value" );
 
-                                    print::error( snprintf( cout, "Empty non-string value given at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.Logger.error( snprintf( cout, "Empty non-string value given at %1%2", this.GetCurrentLine(), this.GetLastRead() ) );
                                     this.error++;
                                     return false;
                                 }
@@ -1128,7 +1148,7 @@ namespace meta_api
                                 }
                                 else
                                 {
-                                    print::error( snprintf( cout, "Invalid non-string value \"%1\" at %2%3", EscapeSequences(pair.value_string), this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.Logger.error( snprintf( cout, "Invalid non-string value \"%1\" at %2%3", EscapeSequences(pair.value_string), this.GetCurrentLine(), this.GetLastRead() ) );
                                     this.error++;
                                     return false;
                                 }
@@ -1136,7 +1156,7 @@ namespace meta_api
                                 if( debug )
                                 {
                                     string quote = ( pair.type == meta_api::json::Type::String ? "\"" : "" );
-                                    print::debug( snprintf( cout, "%1->\"%2\": %3%4%3 (%5)", string( data[ "path" ] ), pair.key, quote, pair.value_string, meta_api::json::Type::ToString(pair.type) ), this.GetVersion() );
+                                    this.Logger.debug( snprintf( cout, "%1->\"%2\": %3%4%3 (%5)", string( data[ "path" ] ), pair.key, quote, pair.value_string, meta_api::json::Type::ToString(pair.type) ) );
                                 }
 
                                 if( stop )
@@ -1147,7 +1167,7 @@ namespace meta_api
                                 else if( !had_comma && pairs > 0 )
                                 {
                                     this.error++;
-                                    print::error( snprintf( cout, "Unexpected end of value without comma at %1%2", this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.Logger.error( snprintf( cout, "Unexpected end of value without comma at %1%2", this.GetCurrentLine(), this.GetLastRead() ) );
                                     return false;
                                 }
                                 */
@@ -1167,7 +1187,7 @@ namespace meta_api
                                 }
                                 else
                                 {
-                                    print::error( snprintf( cout, "Duplicated key name \"%1\" at %2%3", pair.key, this.GetCurrentLine(), this.GetLastRead() ), this.GetVersion() );
+                                    this.Logger.error( snprintf( cout, "Duplicated key name \"%1\" at %2%3", pair.key, this.GetCurrentLine(), this.GetLastRead() ) );
                                     this.error++;
                                     return false;
                                 }
@@ -1204,14 +1224,14 @@ namespace meta_api
                         }
 
                         this.error++;
-                        print::error( snprintf( cout, "Unexpected \"%1\" at %2%3", c, this.GetCurrentLine(), this.GetLastRead() ) );
+                        this.Logger.error( snprintf( cout, "Unexpected \"%1\" at %2%3", c, this.GetCurrentLine(), this.GetLastRead() ) );
                         return false;
                     }
 
                     if( in_string )
                     {
                         this.error++;
-                        print::error( "Reached end of parser with an unterminated string!", this.GetVersion() );
+                        this.Logger.error( "Reached end of parser with an unterminated string!" );
                     }
 
                     return false;
