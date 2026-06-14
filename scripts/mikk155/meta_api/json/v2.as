@@ -115,7 +115,12 @@ namespace meta_api
 
                 dictionaryValue@ get_Value() const
                 {
-                    return this.m_KeyValues[ this.__Value__ ];
+                    // For some reason dictionary's opIndex crash when const and value doesn't exists.
+                    // This doesn't seems to happen if the object is not const.
+                    if( this.m_KeyValues.exists( this.__Value__ ) )
+                        return this.m_KeyValues[ this.__Value__ ];
+                    dictionaryValue val;
+                    return val;
                 }
 
                 void SetType( const meta_api::json::Type&in type )
