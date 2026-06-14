@@ -953,7 +953,7 @@ namespace meta_api
 
                     while( this.CurrentPosition < this.totalSize )
                     {
-                        if( !this.SkipComments() )
+                        if( !in_string && !this.SkipComments() )
                         {
                             return false;
                         }
