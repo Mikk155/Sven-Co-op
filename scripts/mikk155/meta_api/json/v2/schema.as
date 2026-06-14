@@ -141,30 +141,22 @@ namespace meta_api
                                 // Array specific validations
                                 if( obj.is_array() )
                                 {
-                                    if( schema.Contains( "minItems" ) )
-                                    {
-                                        uint minItems = uint( schema[ "minItems" ] );
-                                        if( obj.Length() < minItems )
-                                        {
-                                            print( snprintf( cout, "%1 array has less items than minimum expected %2 got %3", name, minItems, obj.Length() ) );
-                                            this.error;
+                                    uint uiTemp;
 
-                                            if( this.strict )
-                                                return false;
-                                        }
+                                    if( schema.Get( "minItems", uiTemp ) && obj.Length() < uiTemp )
+                                    {
+                                        print( snprintf( cout, "%1 array has less items than minimum expected %2 or more. got %3", name, uiTemp, obj.Length() ) );
+                                        this.error;
+                                        if( this.strict )
+                                            return false;
                                     }
 
-                                    if( schema.Contains( "maxItems" ) )
+                                    if( schema.Get( "maxItems", uiTemp ) && obj.Length() > uiTemp )
                                     {
-                                        uint maxItems = uint( schema[ "maxItems" ] );
-                                        if( obj.Length() > maxItems )
-                                        {
-                                            print( snprintf( cout, "%1 array has more items than maximum expected %2 got %3", name, maxItems, obj.Length() ) );
-                                            this.error;
-
-                                            if( this.strict )
-                                                return false;
-                                        }
+                                        print( snprintf( cout, "%1 array has more items than maximum expected %2 or less. got %3", name, uiTemp, obj.Length() ) );
+                                        this.error;
+                                        if( this.strict )
+                                            return false;
                                     }
                                 }
 
