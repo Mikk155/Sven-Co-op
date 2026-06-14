@@ -185,10 +185,24 @@ namespace meta_api
                                     json@ childObj = obj[ pair.Name ];
 
                                     if( childObj is null )
-                                        continue;
+                                    {
+                                        if( !this.strict )
+                                        {
+                                            if( pair.Contains( "default" ) )
+                                            {
+                                                // -TODO DeepCopy
+                                                @childObj = pair[ "default" ].Copy();
+                                                obj.Set( pair.Name, childObj );
+                                            }
+                                        }
+    
+                                        if( childObj is null )
+                                            continue;
+                                    }
 
                                     string childName;
                                     snprintf( childName, "%1->%2", name, pair.Name );
+                                    this.m_Logger.debug( snprintf( cout, "Validating %1", childName ) );
 
                                     bool result = this.Validate( childObj, pair, childName );
 
@@ -206,6 +220,7 @@ namespace meta_api
 
                                 if( schema.Get( "minimum", fTemp, false ) && obj.Get( fValue, false ) && fValue < fTemp )
                                 {
+                                    obj.opAssign(fTemp);
                                     this.errors++;
                                     this.m_Logger.error( snprintf( cout, "%1 value is lesser than minimum expected %2 or more. got %3", name, fTemp, fValue ) );
                                     if( this.strict )
@@ -214,6 +229,7 @@ namespace meta_api
 
                                 if( schema.Get( "maximum", fTemp, false ) && obj.Get( fValue, false ) && fValue > fTemp )
                                 {
+                                    obj.opAssign(fTemp);
                                     this.errors++;
                                     this.m_Logger.error( snprintf( cout, "%1 value is higher than maximum expected %2 or less. got %3", name, fTemp, fValue ) );
                                     if( this.strict )
@@ -228,13 +244,6 @@ namespace meta_api
 
                     bool Validate( json@ obj, json@ schema )
                     {
-                        // Pop schema key
-                        if( obj.is_object() )
-                            obj.Remove( "$schema" );
-
-                        // We don't support multi versioning yet. probably will never though.
-                        schema.Remove( "$schema" );
-
                         return this.Validate( obj, schema, "<root>" );
                     }
                 }
