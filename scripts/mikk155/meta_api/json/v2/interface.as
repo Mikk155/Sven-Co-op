@@ -45,6 +45,7 @@ interface JToken
     *   If str is a file and is pointing to store/ and the file couldn't be opened it will be writed and return a valid handle
     **/
     bool Load( const string&in str );
+    bool Load( const string&in str, meta_api::json::Error&out err );
     /// Set key value pair, return the old value if it exists otherwise null
     meta_api::json::v2::json@ Set( const string&in keyName, meta_api::json::v2::json@ value );
     meta_api::json::v2::json@ Set( const string&in keyName, const bool value );

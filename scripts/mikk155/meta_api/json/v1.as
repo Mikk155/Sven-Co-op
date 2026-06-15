@@ -20,6 +20,11 @@ namespace meta_api
                 {
                     obj.deleteAll();
 
+                    if( objectType != meta_api::json::Type::Object && objectType != meta_api::json::Type::Array )
+                    {
+                        return false;
+                    }
+
                     meta_api::json::parser::KeyValuePair@ pair;
 
                     while( this.Advance( objectType, pair ) )
@@ -169,6 +174,30 @@ namespace meta_api
                 }
 #endif
                 return Deserializer.Parse( obj, Deserializer.Initialize() );
+            }
+
+            bool Deserialize( const string&in str, dictionary&out obj, meta_api::json::Error&out err )
+            {
+                meta_api::json::v1::__Deserializer__ Deserializer();
+                Deserializer.SetSerialized(str);
+#if METAMOD_PLUGIN_ASLP
+                if( __METAMOD__ )
+                {
+                    bool result = false;
+                    if( Deserializer.IsFile )
+                        result = aslp::json::Deserialize( Deserializer.FileName, obj );
+                    else
+                        result = aslp::json::Deserialize( Deserializer.buffer, obj );
+                    if( result )
+                        err = meta_api::json::Error::OK;
+                    else
+                        err = meta_api::json::Error::SYNTAX_ERROR;
+                    return result;
+                }
+#endif
+                bool result = Deserializer.Parse( obj, Deserializer.Initialize() );
+                err = Deserializer.ErrorCode;
+                return result;
             }
         }
     }

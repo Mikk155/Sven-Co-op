@@ -14,6 +14,14 @@ namespace meta_api
             V2
         };
 
+        enum Error
+        {
+            OK = 0,
+            FILE_NOT_FOUND,
+            SYNTAX_ERROR,
+            EMPTY_INPUT
+        };
+
         /// Latest available version
         const Version Latest = Version::V2;
 
@@ -550,6 +558,15 @@ namespace meta_api
                 }
 
                 private
+                    meta_api::json::Error m_ErrorCode = meta_api::json::Error::OK;
+
+                const meta_api::json::Error get_ErrorCode() const {
+                    if( this.error > 0 )
+                        return meta_api::json::Error::SYNTAX_ERROR;
+                    return this.m_ErrorCode;
+                }
+
+                private
                     string m_FileName;
 
                 /// The file name
@@ -707,6 +724,7 @@ namespace meta_api
                     this.m_IsFile = false;
                     this.m_totalSize = this.m_CurrentLine = this.m_CurrentLinePosition = this.m_CurrentPosition = 0;
                     this.m_Buffer.Clear();
+                    this.m_ErrorCode = meta_api::json::Error::OK;
                 }
 
                 ~Deserializer()
@@ -733,6 +751,7 @@ namespace meta_api
                     if( !this.IsFile && this.m_Buffer.IsEmpty() )
                     {
                         this.Logger.error( snprintf( cout, "Deserializer::Initialize Empty string provided or Deserializer::SetSerialized was never called!" ) );
+                        this.m_ErrorCode = meta_api::json::Error::EMPTY_INPUT;
                         return meta_api::json::Type::Undefined;
                     }
 
@@ -763,6 +782,7 @@ namespace meta_api
                             if( fstream is null || !fstream.IsOpen() )
                             {
                                 this.Logger.error( snprintf( cout, "could not open file \"%1\"", this.m_FileName ) );
+                                this.m_ErrorCode = meta_api::json::Error::FILE_NOT_FOUND;
                                 return meta_api::json::Type::Undefined;
                             }
 
@@ -790,6 +810,7 @@ namespace meta_api
                     if( this.totalSize <= 1 ) // 2 is the minimun string size to define empty object/array
                     {
                         this.Logger.error( "The provided string is empty!" );
+                        this.m_ErrorCode = meta_api::json::Error::EMPTY_INPUT;
                         return meta_api::json::Type::Undefined;
                     }
 
@@ -798,7 +819,10 @@ namespace meta_api
                     while( this.CurrentPosition < this.totalSize )
                     {
                         if( !SkipComments() )
+                        {
+                            this.m_ErrorCode = meta_api::json::Error::SYNTAX_ERROR;
                             break;
+                        }
 
                         check = buffer[this.CurrentPosition];
                         this.AdvancePosition(1);
@@ -812,6 +836,7 @@ namespace meta_api
                             break;
                     }
                     this.ErrorUnexpected( "{\" or \"[", check );
+                    this.m_ErrorCode = meta_api::json::Error::SYNTAX_ERROR;
                     return meta_api::json::Type::Undefined;
                 }
 

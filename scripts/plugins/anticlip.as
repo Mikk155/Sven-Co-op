@@ -73,12 +73,20 @@ void MapActivate()
     {
         meta_api::json::v2::json@ data;
 
-        bool failedLoad;
+        bool failedLoad = false;
+        meta_api::json::Error err = meta_api::json::Error::OK;
 
-        if( !meta_api::json::v2::Deserialize( "store/anticlip.json", data ) )
+        if( !meta_api::json::v2::Deserialize( "store/anticlip.json", data, err ) )
         {
             @data = meta_api::json::v2::json();
-            failedLoad = true;
+            if( err == meta_api::json::Error::FILE_NOT_FOUND )
+            {
+                failedLoad = true;
+            }
+            else
+            {
+                g_Game.AlertMessage( at_console, "Anti-Clip JSON parsing failed with error code: %1. Config file preserved.\n", int(err) );
+            }
         }
 
         auto@ Schema = meta_api::json::v2::json();
