@@ -240,6 +240,11 @@ namespace meta_api
                     return Deserialize( str, this );
                 }
 
+                bool Load( const string&in str, meta_api::json::Error&out err )
+                {
+                    return Deserialize( str, this, err );
+                }
+
                 /// ======================================
                 /// Object/Array methods
                 /// ======================================
@@ -706,6 +711,11 @@ namespace meta_api
 
                     obj.SetType( objectType );
 
+                    if( objectType != meta_api::json::Type::Object && objectType != meta_api::json::Type::Array )
+                    {
+                        return false;
+                    }
+
                     meta_api::json::parser::KeyValuePair@ pair;
 
                     while( this.Advance( objectType, pair ) )
@@ -854,6 +864,15 @@ namespace meta_api
                 meta_api::json::v2::__Deserializer__ Deserializer();
                 Deserializer.SetSerialized(str);
                 return Deserializer.Parse( obj, Deserializer.Initialize() );
+            }
+
+            bool Deserialize( const string&in str, meta_api::json::v2::json@&out obj, meta_api::json::Error&out err )
+            {
+                meta_api::json::v2::__Deserializer__ Deserializer();
+                Deserializer.SetSerialized(str);
+                bool result = Deserializer.Parse( obj, Deserializer.Initialize() );
+                err = Deserializer.ErrorCode;
+                return result;
             }
         } // v2
     } // json

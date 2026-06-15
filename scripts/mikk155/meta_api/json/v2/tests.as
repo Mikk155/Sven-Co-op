@@ -128,6 +128,35 @@ namespace meta_api
                         && Deserialize( "{\"int\":2}", obj )
                         && schema::Validate( obj, "{\"type\":\"object\",\"properties\":{\"int\":{\"type\":\"integer\",\"maximum\":2}}}" )
                     );
+
+                    // ============================
+                    // ======== error code test ===
+                    // ============================
+                    meta_api::json::Error testErr;
+
+                    // Valid JSON
+                    Expect( "[Error] Valid JSON OK", true,
+                        Deserialize( "{\"key\": 1}", obj, testErr )
+                        && testErr == meta_api::json::Error::OK
+                    );
+
+                    // Empty Input
+                    Expect( "[Error] Empty input", true,
+                        !Deserialize( "", obj, testErr )
+                        && testErr == meta_api::json::Error::EMPTY_INPUT
+                    );
+
+                    // Syntax Error
+                    Expect( "[Error] Syntax error", true,
+                        !Deserialize( "{invalid}", obj, testErr )
+                        && testErr == meta_api::json::Error::SYNTAX_ERROR
+                    );
+
+                    // File Not Found
+                    Expect( "[Error] File not found", true,
+                        !Deserialize( "nonexistent_file_path_test.json", obj, testErr )
+                        && testErr == meta_api::json::Error::FILE_NOT_FOUND
+                    );
                 }
             }
         }
