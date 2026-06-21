@@ -129,10 +129,20 @@ namespace meta_api
                                 uint length = json.Length();
                                 for( uint ui = 0; ui < length; ui++ ) {
                                     meta_api::json::v2::json@ value = json.opIndex(ui);
-                                    string fvalue;
-                                    if( value.Get( fvalue, strict ) )
-                                        list.insertLast( fvalue );
+                                    if( strict )
+                                    {
+                                        if( value.is_string() )
+                                            list.insertLast( string( value ) );
+                                    }
+                                    else
+                                    {
+                                        list.insertLast( value.ToString() );
+                                    }
                                 }
+
+                                if( list.length() == 0 )
+                                    return false;
+
                                 if( store )
                                     json.SetValue( json.Value.opAssign(@list), meta_api::json::Type::Handle );
                                 return true;
