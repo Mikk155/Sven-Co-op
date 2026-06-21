@@ -111,6 +111,8 @@ namespace meta_api
                             {
                                 json@ schemaProperties = schema.ValueOrDefault( ( obj.is_object() ? "properties" : "items" ) );
 
+                                array<string> additionalProperties(0);
+
                                 // Array specific validations
                                 if( obj.is_array() )
                                 {
@@ -134,6 +136,8 @@ namespace meta_api
                                 }
                                 else
                                 {
+                                    bool hasAdditionalProperties = schema.Contains( "additionalProperties" );
+
                                     // Whatever non-defined properties in schema are allowed in obj
                                     if( schema.ValueOrDefault( "unevaluatedProperties", true ) == false )
                                     {
@@ -145,6 +149,12 @@ namespace meta_api
 
                                             if( !schemaProperties.Contains( pair.Name ) )
                                             {
+                                                if( hasAdditionalProperties )
+                                                {
+                                                    additionalProperties.insertLast( pair.Name );
+                                                    continue;
+                                                }
+
                                                 this.errors++;
                                                 this.m_Logger.error( snprintf( cout, "%1 got unevaluated property \"%2\" which is not allowed!", name, pair.Name ) );
                                                 if( this.strict )
@@ -173,6 +183,13 @@ namespace meta_api
                                             }
                                         }
                                     }
+                                }
+
+                                json@ additionalPropertiesSchema = schema[ "additionalProperties" ];
+                                uint additionalPropertiesLength = additionalProperties.length();
+                                for( uint ui = 0; ui < additionalPropertiesLength; ui++ )
+                                {
+                                    schemaProperties.Set( additionalProperties[ui], additionalPropertiesSchema.Copy() );
                                 }
 
                                 // validate all properties
