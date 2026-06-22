@@ -109,7 +109,7 @@ namespace meta_api
                             case Type::Object:
                             case Type::Array:
                             {
-                                json@ schemaProperties = schema.ValueOrDefault( ( obj.is_object() ? "properties" : "items" ) );
+                                json@ schemaProperties = schema.ValueOrDefault( ( obj.is_object() ? "properties" : "items" ) ).Copy();
 
                                 array<string> additionalProperties(0);
 
