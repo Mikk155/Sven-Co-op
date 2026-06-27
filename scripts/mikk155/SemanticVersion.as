@@ -96,10 +96,14 @@ SemanticVersion@ SemVer( uint major = 1, uint minor = 0, uint patch = 0 )
 
 /// Create a SemanticVersion instance from the given array
 /// Return null if arr is not a valid semantic version
-SemanticVersion@ SemVer( const array<uint> &in arr )
+/// fill: if true fill missing numbers with zeros
+SemanticVersion@ SemVer( const array<uint> &in arr, bool fill = false )
 {
     if( arr.length() != 3 )
     {
+        if( fill )
+            return SemVer( arr.length() > 0 ? arr[0] : 0, arr.length() > 1 ? arr[1] : 0, arr.length() > 2 ? arr[2] : 0 );
+
         g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<uint> with size of %2 expected 3 numbers!\n", g_Module.GetModuleName(), arr.length() );
         return null;
     }
@@ -110,22 +114,26 @@ SemanticVersion@ SemVer( const array<uint> &in arr )
 SemanticVersion@ SemVer( int major = 1, int minor = 0, int patch = 0 )
 {
     if( major < 0 || minor < 0 || patch < 0 )
+    {
+        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got a negative value! \"%2\"\n", g_Module.GetModuleName(), major < 0 ? major : minor < 0 ? minor : patch );
         return null;
+    }
 
     return SemVer( uint( major ), uint( minor ), uint( patch ) );
 }
 
 /// Create a SemanticVersion instance from the given array
 /// Return null if arr is not a valid semantic version
-SemanticVersion@ SemVer( const array<string> &in arr )
+/// fill: if true fill missing numbers with zeros
+SemanticVersion@ SemVer( const array<string> &in arr, bool fill = false )
 {
-    if( arr.length() != 3 )
+    array<int> verList(3);
+
+    if( arr.length() != 3 && !fill )
     {
         g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<string> with size of %2 expected 3 numbers!\n", g_Module.GetModuleName(), arr.length() );
         return null;
     }
-
-    array<int> verList(3);
 
     for( uint ui = 0; ui < arr.length(); ui++ )
     {
@@ -142,25 +150,30 @@ SemanticVersion@ SemVer( const array<string> &in arr )
 
 /// Create a SemanticVersion instance from the given string using the given separator.
 /// Return null if str is not a valid semantic version
-SemanticVersion@ SemVer( const string &in str, const string &in separator = "." )
+/// fill: if true fill missing numbers with zeros
+SemanticVersion@ SemVer( const string &in str, bool fill = false, const string &in separator = "." )
 {
     array<string> arr = str.Split( separator );
 
-    if( arr.length() != 3 )
+    if( arr.length() != 3 && !fill )
     {
         g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got string with size of %2 expected 3. missing \"%3\" separators!\n", g_Module.GetModuleName(), arr.length(), separator );
         return null;
     }
 
-    return SemVer( arr );
+    return SemVer( arr, fill );
 }
 
 /// Create a SemanticVersion instance from the given array
 /// Return null if arr is not a valid semantic version
-SemanticVersion@ SemVer( const array<int> &in arr )
+/// fill: if true fill missing numbers with zeros
+SemanticVersion@ SemVer( const array<int> &in arr, bool fill = false )
 {
     if( arr.length() != 3 )
     {
+        if( fill )
+            return SemVer( arr.length() > 0 ? arr[0] : 0, arr.length() > 1 ? arr[1] : 0, arr.length() > 2 ? arr[2] : 0 );
+
         g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<int> with size of %2 expected 3 numbers!\n", g_Module.GetModuleName(), arr.length() );
         return null;
     }
