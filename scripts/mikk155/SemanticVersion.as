@@ -1,3 +1,6 @@
+/**
+*   Class representing a Semantic version: https://semver.org/
+**/
 class SemanticVersion
 {
     private
@@ -97,7 +100,7 @@ SemanticVersion@ SemVer( const array<uint> &in arr )
 {
     if( arr.length() != 3 )
     {
-        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<uint> with size of %2 expected 3!\n", g_Module.GetModuleName(), arr.length() );
+        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<uint> with size of %2 expected 3 numbers!\n", g_Module.GetModuleName(), arr.length() );
         return null;
     }
     return SemVer( arr[0], arr[1], arr[2] );
@@ -118,7 +121,7 @@ SemanticVersion@ SemVer( const array<string> &in arr )
 {
     if( arr.length() != 3 )
     {
-        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<string> with size of %2 expected 3!\n", g_Module.GetModuleName(), arr.length() );
+        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<string> with size of %2 expected 3 numbers!\n", g_Module.GetModuleName(), arr.length() );
         return null;
     }
 
@@ -145,7 +148,7 @@ SemanticVersion@ SemVer( const string &in str, const string &in separator = "." 
 
     if( arr.length() != 3 )
     {
-        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got string with size of %2 expected 3. missing two \"%3\" separators!\n", g_Module.GetModuleName(), arr.length(), separator );
+        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got string with size of %2 expected 3. missing \"%3\" separators!\n", g_Module.GetModuleName(), arr.length(), separator );
         return null;
     }
 
@@ -158,7 +161,7 @@ SemanticVersion@ SemVer( const array<int> &in arr )
 {
     if( arr.length() != 3 )
     {
-        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<int> with size of %2 expected 3!\n", g_Module.GetModuleName(), arr.length() );
+        g_Game.AlertMessage( at_console, "[%1] SemanticVersion: got array<int> with size of %2 expected 3 numbers!\n", g_Module.GetModuleName(), arr.length() );
         return null;
     }
 
