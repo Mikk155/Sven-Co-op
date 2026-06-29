@@ -37,7 +37,7 @@ void PluginInit()
 
     meta_api::NoticeInstallation();
 
-    g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string &in mapname )
+    g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChangeHook( function( const string &in mapname )
     {
         if( mapname != string( g_Engine.mapname ) )
         {

@@ -36,7 +36,7 @@ void PluginInit()
 
     meta_api::json::v1::Deserialize( "store/BMLongJump.json", g_Cache );
 
-    g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string&in mapname )
+    g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChangeHook( function( const string&in mapname )
     {
         Shutdown();
         return HOOK_CONTINUE;

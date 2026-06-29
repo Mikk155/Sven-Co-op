@@ -34,7 +34,7 @@ void MapActivate()
     if( g_Map.HasForcedPlayerModels() )
     {
         g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink,
-        PlayerPostThinkHook( function( CBasePlayer@ player ) {
+        @PlayerPostThinkHook( function( CBasePlayer@ player ) {
             if( player !is null ) {
                 player.ResetOverriddenPlayerModel( true, true );
                 player.SetOverriddenPlayerModel( g_EngineFuncs.GetInfoKeyBuffer( player.edict() ).GetValue( "model" ) );

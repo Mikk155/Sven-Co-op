@@ -33,7 +33,7 @@ void PluginInit()
 
     meta_api::NoticeInstallation();
 
-    g_Hooks.RegisterHook( Hooks::Game::MapChange, MapChangeHook( function( const string& in nextmap )
+    g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChangeHook( function( const string& in nextmap )
     {
         if( string( g_Engine.mapname ) == nextmap )
         {
@@ -50,7 +50,7 @@ void PluginInit()
         return HOOK_CONTINUE;
     } ) );
 
-    g_Hooks.RegisterHook( Hooks::Player::ClientSay, ClientSayHook( function( SayParameters@ params )
+    g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSayHook( function( SayParameters@ params )
     {
         if( g_NextClientDisplay > g_Engine.time )
             return HOOK_CONTINUE;
