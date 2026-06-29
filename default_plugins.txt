@@ -18,6 +18,11 @@
     }
     "plugin"
     {
+        "name" "DDD"
+        "script" "DDD/main"
+    }
+    "plugin"
+    {
         "name" "anticlip"
         "script" "anticlip"
     }
