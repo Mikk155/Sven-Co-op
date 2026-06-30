@@ -1,3 +1,17 @@
+#==================================================================================
+#
+#   Stock Entity List
+#
+#   Simple Python script that analizes serverdll to find game registered entity classnames.
+#
+#   pip install pefile
+#
+#   python main.py "C:/Path\To\Your\Sven Co-op\svencoop\dlls\server.dll"
+#
+#   This will generate a StockEntityList.txt next to this file.
+#
+#==================================================================================
+
 import os;
 import sys;
 import pefile;

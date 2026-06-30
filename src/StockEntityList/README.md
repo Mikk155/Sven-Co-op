@@ -6,3 +6,5 @@ Simple Python script that analizes serverdll to find game registered entity clas
 pip install pefile
 python main.py "C:/Path\To\Your\Sven Co-op\svencoop\dlls\server.dll"
 ```
+
+This will generate a StockEntityList.txt next to main.py
