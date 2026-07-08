@@ -111,7 +111,7 @@ async function ClipboardCopy( id )
         return;
     }
 
-    const text = element.innerText.trim();
+    const text = element.innerText;
 
     try
     {
