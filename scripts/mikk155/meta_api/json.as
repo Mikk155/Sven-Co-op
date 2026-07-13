@@ -790,7 +790,7 @@ namespace meta_api
                             {
                                 string line;
                                 fstream.ReadLine( line );
-                                snprintf( this.m_Buffer, "%1%2\n", this.m_Buffer, line );
+                                this.m_Buffer += line + "\n";
                             }
 
                             fstream.Close();
