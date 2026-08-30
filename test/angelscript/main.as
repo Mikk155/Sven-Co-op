@@ -1,3 +1,5 @@
+#include "../../scripts/mikk155/Logger/tests"
+
 #include "../../scripts/mikk155/meta_api"
 #include "../../scripts/mikk155/meta_api/json/v1/tests"
 #include "../../scripts/mikk155/meta_api/json/v2/tests"
@@ -31,6 +33,8 @@ void PluginInit()
     g_Game.AlertMessage( at_console, "We are on windows\n" );
 #endif
 
+    Logger::Test();
+/*
     // Constructors registers the tests
     meta_api::json::v1::Test();
     meta_api::json::v2::Test();
@@ -40,4 +44,5 @@ void PluginInit()
 
     // Run all json tests
     meta_api::json::tests::StartAll();
+    */
 }
