@@ -1,5 +1,5 @@
 build/**
-maps*
+maps/*
 steam_autocloud.vdf
 *.rar
 as.predefined

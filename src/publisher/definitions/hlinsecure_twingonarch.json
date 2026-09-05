@@ -1,0 +1,20 @@
+{
+    "$schema": "../../../schemas/assets.json",
+
+    "assets":
+    [
+        "scripts/maps/mikk155/TriggerScript/hlinsecure/twin_gonarch.as"
+    ],
+
+    "description": "Half-Life: Insecure's \"twin gonarch\" which her mortar attack is replaced to a straight misile to her enemy",
+
+    "map_script": true,
+
+    "plugin": false,
+
+    "metamod": "no",
+
+    "name": "twin_gonarch",
+
+    "title": "Gonarch direct mortar"
+}
