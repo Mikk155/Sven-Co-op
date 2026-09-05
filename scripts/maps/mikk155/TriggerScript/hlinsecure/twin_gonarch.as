@@ -160,28 +160,14 @@ namespace ASTwinGonarch
         private
             CBaseMonster@ m_Gonarch = null;
 
+        private
+            EHandle m_hGonarch;
+
         CBaseMonster@ get_Gonarch()
         {
-            CBaseMonster@ monster = null;
-            CBaseEntity@ entity = null;
-
-            if( this.m_Gonarch is null )
-            {
-                if( pev.owner !is null
-                && ( @entity = g_EntityFuncs.Instance( pev.owner ) ) !is null
-                && ( @monster = cast<CBaseMonster@>( entity ) ) !is null )
-                {
-                    @this.m_Gonarch = monster;
-                }
-            }
-
-            if( this.m_Gonarch !is null && this.m_Gonarch.IsAlive() )
-            {
+            if( m_hGonarch.GetEntity() !is null && this.m_Gonarch.IsAlive() )
                 return @this.m_Gonarch;
-            }
-
-            self.pev.flags |= FL_KILLME;
-
+            pev.flags |= FL_KILLME;
             return null;
         }
 
@@ -190,6 +176,7 @@ namespace ASTwinGonarch
             pev.solid = SOLID_NOT;
             pev.movetype = MOVETYPE_NONE;
             pev.nextthink = g_Engine.time + 0.0;
+            m_hGonarch = EHandle( ( @this.m_Gonarch = cast<CBaseMonster@>( g_EntityFuncs.Instance( pev.owner ) ) ) );
         }
 
         void Think()
