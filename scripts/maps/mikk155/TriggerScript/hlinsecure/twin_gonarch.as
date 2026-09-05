@@ -1,20 +1,4 @@
 /**
- * TITLE:
- *      Half-Life: Insecure's "twin gonarch"
- *
- *  USAGE:
- *      trigger_script in Trigger mode.
- *      Callback: "ASTwinGonarch::Register"
- *      Pass itself as !activator.
- *      netname: monster_bigmomma's targetname.
- *
- *  DESCRIPTION:
- *      Supports multiple monster_bigmomma at once by using various trigger_script,
- *      These trigger_script will generate a entity with classname "tcontroller" which is a think entity-
- *      -that tracks their respective gonarch to replace their bmortar entity to our new tmortar entity.
- *      When their respective gonarch dies the tcontroller is deleted.
- *      trigger_script is also deleted when tcontroller is created.
- *
  *  Copyright (c) 2026 Mikk155
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -96,15 +80,15 @@ namespace ASTwinGonarch
             // splat sound
             iPitch = Math.RandomLong( 90, 110 );
 
-            g_SoundSystem.EmitSoundDyn( self.edict(), CHAN_VOICE, "bullchicken/bc_acid1.wav", 1, ATTN_NORM, 0, iPitch );
+            g_SoundSystem.EmitSoundDyn( pev.owner, CHAN_VOICE, "bullchicken/bc_acid1.wav", 1, ATTN_NORM, 0, iPitch );
 
             switch( Math.RandomLong( 0, 1 ) )
             {
                 case 0:
-                    g_SoundSystem.EmitSoundDyn( self.edict(), CHAN_WEAPON, "bullchicken/bc_spithit1.wav", 1, ATTN_NORM, 0, iPitch );
+                    g_SoundSystem.EmitSoundDyn( pev.owner, CHAN_WEAPON, "bullchicken/bc_spithit1.wav", 1, ATTN_NORM, 0, iPitch );
                     break;
                 case 1:
-                    g_SoundSystem.EmitSoundDyn( self.edict(), CHAN_WEAPON, "bullchicken/bc_spithit2.wav", 1, ATTN_NORM, 0, iPitch );
+                    g_SoundSystem.EmitSoundDyn( pev.owner, CHAN_WEAPON, "bullchicken/bc_spithit2.wav", 1, ATTN_NORM, 0, iPitch );
                     break;
             }
 
@@ -256,24 +240,22 @@ namespace ASTwinGonarch
                         }
                         startPos.z += 180;
 
-						// -TODO Use gonarch default sounds so map can do GSR
                         switch( Math.RandomLong( 0, 2 ) )
                         {
                             case 0:
-                                g_SoundSystem.EmitSoundDyn( Gonarch.edict(), CHAN_WEAPON, "tgonarch/tgon_sack1.wav", 1.0, ATTN_NORM, 0, 100 + Math.RandomLong( -5, 5 ) );
+                                g_SoundSystem.EmitSoundDyn( Gonarch.edict(), CHAN_WEAPON, "gonarch/gon_sack1.wav", 1.0, ATTN_NORM, 0, 100 + Math.RandomLong( -5, 5 ) );
                             break;
                             case 1:
-                                g_SoundSystem.EmitSoundDyn( Gonarch.edict(), CHAN_WEAPON, "tgonarch/tgon_sack2.wav", 1.0, ATTN_NORM, 0, 100 + Math.RandomLong( -5, 5 ) );
+                                g_SoundSystem.EmitSoundDyn( Gonarch.edict(), CHAN_WEAPON, "gonarch/gon_sack2.wav", 1.0, ATTN_NORM, 0, 100 + Math.RandomLong( -5, 5 ) );
                             break;
                             case 2:
-                                g_SoundSystem.EmitSoundDyn( Gonarch.edict(), CHAN_WEAPON, "tgonarch/tgon_sack3.wav", 1.0, ATTN_NORM, 0, 100 + Math.RandomLong( -5, 5 ) );
+                                g_SoundSystem.EmitSoundDyn( Gonarch.edict(), CHAN_WEAPON, "gonarch/gon_sack3.wav", 1.0, ATTN_NORM, 0, 100 + Math.RandomLong( -5, 5 ) );
                             break;
                         }
 
                         ASTwinGonarchMortar@ tmortar2 = Shoot( Gonarch.edict(), startPos, Gonarch.pev.movedir );
                         tmortar2.pev.gravity = 1.0;
 
-						// -TODO Make these optional in trigger_script
                         // ADDITION: Makes gonarch to cum more frequently on phase two
                         Gonarch.pev.fuser1 = g_Engine.time + Math.RandomLong( 5, 15 );
                     }

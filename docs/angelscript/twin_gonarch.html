@@ -1,0 +1,27 @@
+<p>
+Supports multiple monster_bigmomma at once by using various trigger_script,
+<br>
+<br>
+These trigger_script will generate a entity with classname "tcontroller" which is a think entity that tracks their respective gonarch to replace their bmortar entity to our new tmortar entity.
+<br>
+<br>
+When their respective gonarch dies the tcontroller is deleted.
+<br>
+<br>
+trigger_script is also deleted when tcontroller is created.
+<br>
+<br>
+Usage:
+<br>
+<br>
+trigger_script in Trigger mode.
+<br>
+<br>
+Callback: "ASTwinGonarch::Register"
+<br>
+<br>
+Pass itself as !activator.
+<br>
+<br>
+netname: monster_bigmomma's targetname.
+</p>
