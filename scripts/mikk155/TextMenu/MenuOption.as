@@ -1,5 +1,5 @@
 // Callback for when a option is selected from a menu.
-funcdef void MenuOptionSelect( CBasePlayer@ player, MenuOption@ option, Menu@ menu );
+funcdef void MenuOptionSelect( CBasePlayer@ player, const MenuOption@ option );
 
 class MenuOption : TextMenu::ASMenuTextHolder
 {
@@ -8,6 +8,12 @@ class MenuOption : TextMenu::ASMenuTextHolder
 
     private
         Menu@ m_Owner;
+
+    // Get menu owning this option.
+    const Menu@ GetMenu() const
+    {
+        return this.m_Owner;
+    }
 
     private
         uint m_Id;
@@ -19,6 +25,17 @@ class MenuOption : TextMenu::ASMenuTextHolder
 
     private
         MenuOptionSelect@ m_Callback = null;
+
+    MenuOption@ SetCallback( MenuOptionSelect@ callback )
+    {
+        @this.m_Callback = callback;
+        return this;
+    }
+
+    MenuOptionSelect@ GetCallback() const
+    {
+        return this.m_Callback;
+    }
 
     MenuOption( Menu@ owner )
     {

@@ -93,7 +93,12 @@ class Menu : TextMenu::ASMenuTextHolder
                 {
                     if( item.m_pUserData.retrieve( @option ) )
                     {
-                        // -TODO Callback to menu option member
+                        MenuOptionSelect@ callback = option.GetCallback();
+
+                        if( callback !is null )
+                        {
+                            callback( player, option );
+                        }
                     }
                 }
             }
