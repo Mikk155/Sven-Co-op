@@ -467,23 +467,34 @@ namespace meta_api
                 }
 
                 /// Get the value&out and return whatever the value exists or not
-                bool Get( string&out value ) const
+                bool Get( string&out value, bool strict = true, const string&in dummy = String::EMPTY_STRING ) const
                 {
+                    if( strict && this.Type != meta_api::json::Type::String )
+                        return false;
+
                     switch( this.Type )
                     {
                         case meta_api::json::Type::String:
                             value = string( this.Value );
                             return true;
+                        case meta_api::json::Type::Integer:
+                            value = string( int( this.Value ) );
+                            return true;
+                        case meta_api::json::Type::Float:
+                            value = string( float( this.Value ) );
+                            return true;
+                        case meta_api::json::Type::Boolean:
+                            value = string( bool( this.Value ) );
                         default:
                             return false;
                     }
                 }
 
                 /// Get the value&out and return whatever the value exists or not
-                bool Get( const string&in keyName, string&out value ) const
+                bool Get( const string&in keyName, string&out value, bool strict = true ) const
                 {
                     meta_api::json::v2::json@ obj;
-                    return ( this.Get( keyName, obj ) && obj.Get( value ) );
+                    return ( this.Get( keyName, obj ) && obj.Get( value, strict, String::EMPTY_STRING ) );
                 }
 
                 /// Get the stored value at the given key name or a default value if not exists.
@@ -511,7 +522,7 @@ namespace meta_api
                         this.Set( keyName, value );
                     return value;
 #endif
-                    bool temp = value; 
+                    bool temp = value;
                     if( !this.Get( keyName, temp, strict ) )
                     {
                         if( store )
@@ -531,7 +542,7 @@ namespace meta_api
                         this.Set( keyName, value );
                     return value;
 #endif
-                    int temp = value; 
+                    int temp = value;
                     if( !this.Get( keyName, temp, strict ) )
                     {
                         if( store )
@@ -551,7 +562,7 @@ namespace meta_api
                         this.Set( keyName, value );
                     return value;
 #endif
-                    float temp = value; 
+                    float temp = value;
                     if( !this.Get( keyName, temp, strict ) )
                     {
                         if( store )
@@ -563,7 +574,7 @@ namespace meta_api
                 /// Get the stored value at the given key name or a default value if not exists.
                 /// If store is true the default value is stored in data if not exists
                 /// If strict is false booleans and integers are converted to float and returned.
-                string ValueOrDefault( const string&in keyName, string&in value, bool store = false )
+                string ValueOrDefault( const string&in keyName, string&in value, bool store = false, bool strict = true )
                 {
 // https://github.com/anjo76/angelscript/issues/70
 #if FALSE
@@ -571,8 +582,8 @@ namespace meta_api
                         this.Set( keyName, value );
                     return value;
 #endif
-                    string temp = value; 
-                    if( !this.Get( keyName, temp ) )
+                    string temp = value;
+                    if( !this.Get( keyName, temp, strict ) )
                     {
                         if( store )
                             this.Set( keyName, value );
