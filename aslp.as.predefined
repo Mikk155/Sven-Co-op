@@ -13,6 +13,8 @@ namespace aslp
 {
     namespace json
     {
+        // Load the given string into memory. return values equals to the defined in json.as meta_api::json::Type
+        int Load( const string &in serialized, string &out errorMessage );
         // Deserialize a string json-format into a dictionary. if str ends with .json it will be a file to open",
         bool Deserialize( const string &in str, dictionary &out obj );
     }

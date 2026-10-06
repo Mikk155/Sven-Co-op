@@ -809,6 +809,7 @@ namespace meta_api
                                 this.m_ErrorCode = meta_api::json::Error::SYNTAX_ERROR;
                                 return metaType;
                             }
+//                            return metaType; -TODO Add back when aslp:json::Advance is introduced.
                         }
 #endif
 /// Otherwise we parse the string character by character x[

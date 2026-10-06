@@ -148,3 +148,32 @@ bool SC_SERVER_CDECL CASFileExists( const CString& path )
 {
     return CASFileLoad( path, nullptr );
 }
+
+// -TODO Clear me up next frame in case Script's Advance loop hasn't finished.
+static nlohmann::json g_GlobalJson;
+
+bool SC_SERVER_CDECL CASJsonLoad( const CString& content, CString* err )
+{
+    std::string errString;
+
+    try
+    {
+        if( auto js = nlohmann::json::parse( (char*)content.c_str(), nullptr, true, true, true ); js.is_structured() )
+        {
+            g_GlobalJson = std::move( js );
+            return js.is_array() ? 7 : 6;
+        }
+        errString = "Can not parse json that is not an object or array type!";
+    }
+    catch( nlohmann::json::parse_error& exception )
+    {
+        errString = fmt::format( "Invalid syntax at {}\n{}", exception.byte, exception.what() );
+    }
+
+    if( err != nullptr )
+    {
+        err->assign( errString.c_str(), errString.length() );
+    }
+
+    return 0;
+}

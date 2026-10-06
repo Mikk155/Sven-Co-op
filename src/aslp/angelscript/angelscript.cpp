@@ -55,6 +55,8 @@ ASEXT_RegisterGlobalFunction( pASDoc, "Return whatever the given file exists.",
 
 ASEXT_SetDefaultNamespace( pASDoc, NAMESPACE_ASLP "::json" );
 #pragma region Json
+ASEXT_RegisterGlobalFunction( pASDoc, "Load the given string into memory. return values equals to the defined in json.as meta_api::json::Type",
+    "int Load( const string &in serialized, string &out errorMessage )", (void*)CASJsonLoad, asCALL_CDECL );
 ASEXT_RegisterGlobalFunction( pASDoc, "Deserialize a string json-format into a dictionary. if str ends with .json it will be a file to open",
     "bool Deserialize( const string &in str, dictionary &out obj )", (void*)CASJsonDeserialize, asCALL_CDECL );
 #pragma endregion
@@ -698,6 +700,6 @@ CREATE_AS_HOOK( pGrappleCheckMonsterType,
 }
 #undef CREATE_AS_HOOK
 
-void CloseAngelScriptsItem()
+void CloseAngelScriptsItem() 
 {
 }
