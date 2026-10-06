@@ -761,19 +761,17 @@ namespace meta_api
 
                         bool shouldVanillaLoad = true;
 
-/// Metamod handles this with the internal file system getting the whole buffer in one go and loading the file with nlohmann/json
+/// Metamod handles this with the internal file system getting the whole buffer in one go.
 #if METAMOD_PLUGIN_ASLP
                         if( __METAMOD__ )
                         {
-                            /*
-                            auto type = meta_api::json::Type( aslp::json::Load( this.m_FileName ) ) );
-                            if( type == meta_api::json::Type::Undefined )
-                                this.Logger.error( snprintf( cout, "could not open file \"%1\"", this.m_FileName ) );
-                            return type;
-                            */
+                            if( aslp::FileLoad( this.m_FileName, this.m_Buffer ) )
+                            {
+                                shouldVanillaLoad = false;
+                            }
                         }
 #endif
-/// Otherwise we use the epic AS API to read line by line and parse ourselves x[
+/// Otherwise we use the epic AS API to read line by line x[
 
                         if( shouldVanillaLoad )
                         {
@@ -796,6 +794,24 @@ namespace meta_api
                             fstream.Close();
                         }
                     }
+
+/// Now that we have this.m_Buffer initialised we can load it.
+#if METAMOD_PLUGIN_ASLP
+                        if( __METAMOD__ )
+                        {
+                            string errMessage;
+                            meta_api::json::Type metaType = meta_api::json::Type( aslp::json::Load( this.m_Buffer, errMessage ) );
+
+                            if( meta_api::json::Type::Undefined == metaType )
+                            {
+                                this.error++;
+                                this.Logger.error( errMessage );
+                                this.m_ErrorCode = meta_api::json::Error::SYNTAX_ERROR;
+                                return metaType;
+                            }
+                        }
+#endif
+/// Otherwise we parse the string character by character x[
 
                     this.m_totalSize = this.buffer.Length();
 
