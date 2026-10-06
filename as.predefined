@@ -1,0 +1,5 @@
+// https://codeberg.org/anggaranothing/svencoop-py-asdocs-vscode
+#include ".vscode/sven.as.predefined"
+
+// https://github.com/Mikk155/Sven-Co-op/blob/main/aslp.as.predefined
+#include "aslp.as.predefined"

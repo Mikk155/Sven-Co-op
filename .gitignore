@@ -2,7 +2,7 @@ build/**
 maps/*
 steam_autocloud.vdf
 *.rar
-as.predefined
+.vscode/sven.as.predefined
 
 src/GoldSrc2Sven/cache.json
 src/GoldSrc2Sven/workspace/*

@@ -1,4 +1,37 @@
 {
+    // Formatting preferences.
+    "editor.indentSize": 4,
+    "editor.trimAutoWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "editor.formatOnType": true,
+    "[angelscript]":
+    {
+        "files.encoding": "utf8"
+    },
+    "[typescript]": { "editor.formatOnType": false, "editor.formatOnSave": false },
+    "[javascript]": { "editor.formatOnType": false, "editor.formatOnSave": false },
+    "[jsonc]": { "editor.formatOnType": false, "editor.formatOnSave": false },
+
+    "angelscript.predefined.active": "${workspaceFolder}/as.predefined",
+    "angelscript.define": [
+        "SERVER",
+        "EDITOR_ONLY",
+        "METAMOD_PLUGIN_ASLP"
+    ],
+    "angelscript.engine.alwaysImplDefaultConstruct": true,
+    "angelscript.include.implicitExtension": true,
+    "angelscript.dimInactiveRegions": true,
+    "angelscript.diagnostics.reportAccessorPortability": true,
+    "angelscript.engine.disableIntegerDivision": true,
+    "angelscript.engine.disallowEmptyListElements": true,
+    "angelscript.preprocessor.pragmaMode": "error",
+    "angelscript.statusBar.alignment": "right",
+    "angelscript.diagnostics.reportPossibleNullDereference": false,
+    "angelscript.features.formatting": false,
+    "angelscript.features.onTypeFormatting": false,
+
     // Don't format submodules we don't own
     "remove-tabs-on-save.ignoreFileExtensions":
     [
@@ -7,7 +40,7 @@
 
     // File excludes
     "explorer.excludeGitIgnore": true,
-    "files.exclude": 
+    "files.exclude":
     {
     },
 
@@ -54,7 +87,7 @@
         "*.json": "jsonc",
 
         // AngelScript
-        "as.predefined": "as",
+        "as.predefined": "angelscript",
 
         // C++ auto generated
         "xstring": "cpp",

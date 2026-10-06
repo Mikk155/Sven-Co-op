@@ -1,6 +1,7 @@
 {
     "recommendations":
     [
-        "sashi0034.angel-lsp"
+        "redlin.remove-tabs-on-save",
+        "gaftherman.angelscript-gaftherman"
     ]
 }
