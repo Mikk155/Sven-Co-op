@@ -61,6 +61,7 @@ namespace json
             }
             else
             {
+                // -TODO Move all these alerts to a string&out errMessage or something, maybe set as =void by default to keep compatibility.
                 ALERT( at_console, fmt::format( "JSON Warning ignoring unsuported type implementation \"{}\" for key \"{}\"\n", (int)value.type(), key.c_str() ).c_str() );
             }
         };
@@ -91,6 +92,7 @@ namespace json
 
 #include "../utils/File.hpp"
 
+// V1 specific
 bool SC_SERVER_CDECL CASJsonDeserialize( const CString& str, CScriptDictionary* obj )
 {
     std::string content = str.c_str();
@@ -119,4 +121,30 @@ bool SC_SERVER_CDECL CASJsonDeserialize( const CString& str, CScriptDictionary* 
     }
 
     return false;
+}
+
+bool SC_SERVER_CDECL CASFileLoad( const CString& path, CString* content )
+{
+    std::string contentString;
+    std::string pathString = path.c_str();
+
+    File file( pathString );
+
+    // Scripted string != void
+    if( content != nullptr )
+    {
+        if( file.Read( contentString ) )
+        {
+            content->assign( contentString.c_str(), contentString.length() );
+            return true;
+        }
+        return false;
+    }
+
+    return file.Exists();
+}
+
+bool SC_SERVER_CDECL CASFileExists( const CString& path )
+{
+    return CASFileLoad( path, nullptr );
 }

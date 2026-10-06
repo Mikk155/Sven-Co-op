@@ -24,7 +24,7 @@ angelhook_t g_AngelHook;
 **/
 #define NAMESPACE_NONE ""
 
-void RegisterAngelScriptMethods() 
+void RegisterAngelScriptMethods()
 {
 ASEXT_RegisterScriptBuilderDefineCallback( []( CScriptBuilder* pScriptBuilder )
 {
@@ -43,8 +43,16 @@ ASEXT_CScriptBuilder_DefineWord( pScriptBuilder, "WINDOWS" );
 #endif
 } );
 
-ASEXT_RegisterDocInitCallback( []( CASDocumentation* pASDoc ) 
+ASEXT_RegisterDocInitCallback( []( CASDocumentation* pASDoc )
 {
+ASEXT_SetDefaultNamespace( pASDoc, NAMESPACE_ASLP );
+#pragma region FileOperations
+ASEXT_RegisterGlobalFunction( pASDoc, "Load all of a file content in one go, Return whatever the given file exists and could've opened.",
+    "bool FileLoad( const string &in path, string &out content )", (void*)CASFileLoad, asCALL_CDECL );
+ASEXT_RegisterGlobalFunction( pASDoc, "Return whatever the given file exists.",
+    "bool FileExists( const string &in path )", (void*)CASFileExists, asCALL_CDECL );
+#pragma endregion
+
 ASEXT_SetDefaultNamespace( pASDoc, NAMESPACE_ASLP "::json" );
 #pragma region Json
 ASEXT_RegisterGlobalFunction( pASDoc, "Deserialize a string json-format into a dictionary. if str ends with .json it will be a file to open",
@@ -690,6 +698,6 @@ CREATE_AS_HOOK( pGrappleCheckMonsterType,
 }
 #undef CREATE_AS_HOOK
 
-void CloseAngelScriptsItem() 
+void CloseAngelScriptsItem()
 {
 }

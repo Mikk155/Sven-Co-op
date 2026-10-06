@@ -17,6 +17,11 @@ namespace aslp
         bool Deserialize( const string &in str, dictionary &out obj );
     }
 
+    // Load all of a file content in one go, Return whatever the given file exists and could've opened.
+    bool FileLoad( const string &in path, string &out content );
+    // Return whatever the given file exists.
+    bool FileExists( const string &in path );
+
     class PhysicalEntity
     {
         const string name;
