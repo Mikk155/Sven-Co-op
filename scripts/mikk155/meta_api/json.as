@@ -128,6 +128,7 @@ namespace meta_api
         enum Null { Null = 0 };
 
         /// Type of value
+        // DO NOT MODIFY ORDERING! METAMOD IDENTIFY THEM THAT WAY!
         enum Type
         {
             Undefined = 0,
@@ -187,6 +188,7 @@ namespace meta_api
         namespace parser
         {
             /// Represents a key-value pair. type defines in what "value_" the value is stored
+            // DO NOT MODIFY NAMES! METAMOD IDENTIFY THEM THAT WAY!
             class KeyValuePair
             {
                 string key;
@@ -795,22 +797,22 @@ namespace meta_api
                         }
                     }
 
-/// Now that we have this.m_Buffer initialised we can load it.
+/// Metamod uses nlohmann/json to parse the string and format to a dictionary object.
 #if METAMOD_PLUGIN_ASLP
-                        if( __METAMOD__ )
-                        {
-                            string errMessage;
-                            meta_api::json::Type metaType = meta_api::json::Type( aslp::json::Load( this.m_Buffer, errMessage ) );
+                    if( __METAMOD__ )
+                    {
+                        string errMessage;
+                        meta_api::json::Type metaType = meta_api::json::Type( aslp::json::Load( this.m_Buffer, errMessage ) );
 
-                            if( meta_api::json::Type::Undefined == metaType )
-                            {
-                                this.error++;
-                                this.Logger.error( errMessage );
-                                this.m_ErrorCode = meta_api::json::Error::SYNTAX_ERROR;
-                                return metaType;
-                            }
-//                            return metaType; -TODO Add back when aslp:json::Advance is introduced.
+                        if( meta_api::json::Type::Undefined == metaType )
+                        {
+                            this.error++;
+                            this.Logger.error( errMessage );
+                            this.m_ErrorCode = meta_api::json::Error::SYNTAX_ERROR;
+                            return metaType;
                         }
+//                            return metaType; -TODO Add back when aslp:json::Advance is introduced.
+                    }
 #endif
 /// Otherwise we parse the string character by character x[
 
@@ -938,11 +940,6 @@ namespace meta_api
 #if METAMOD_PLUGIN_ASLP
                     if( __METAMOD__ )
                     {
-                        /*
-                        if( aslp::json::Update( pair ) )
-                            return true;
-                        return false;
-                        */
                     }
 #endif
 
