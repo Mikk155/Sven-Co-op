@@ -2,4 +2,4 @@ This folder contains random scripts which i won't take my time on releasing but 
 
 This is a mess but i ain't fixing these stuff soon.
 
-Do whatever you want respecting the [licence](https://github.com/Mikk155/Sven-Co-op/blob/main/header.ini)
+Do whatever you want respecting the [licence](https://github.com/Mikk155/Sven-Co-op/tree/legacy-2?tab=License-1-ov-file)
