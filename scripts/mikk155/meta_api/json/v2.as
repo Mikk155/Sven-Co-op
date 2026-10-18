@@ -658,8 +658,10 @@ namespace meta_api
                     meta_api::json::v2::json@ value;
                     this.Get( key, value );
 
-                    this.m_KeyValues.delete( key );
-					this.m_KeyNames.removeAt( this.m_KeyNames.find( key ) );
+					if( this.m_KeyValues.delete( key ) )
+					{
+						this.m_KeyNames.removeAt( this.m_KeyNames.find( key ) );
+					}
 
                     return value;
                 }
@@ -672,14 +674,12 @@ namespace meta_api
                         Logger.error( snprintf( cout, "Can not Remove value at index %1 from a json that is not an object! type: %2", index, Type::ToString( this.Type ) ) );
                     }
 
-                    meta_api::json::v2::json@ value;
-                    if( index < this.Length() )
-                    {
-                        @value = this.opIndex(index);
-                        this.m_KeyValues.delete( this.m_KeyNames[index] );
-                    }
+					if( index < this.Length() )
+					{
+						return this.Remove( this.m_KeyNames[index] );
+					}
 
-                    return value;
+                    return null;
                 }
 
                 /// Get the value converted to string.
