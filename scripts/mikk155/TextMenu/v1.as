@@ -4,11 +4,10 @@ namespace TextMenu
     {
         abstract class ASMenuTextHolder
         {
-            protected
-                MenuText m_Content();
+            MenuText m_Content();
 
             // Get string content.
-            const string& get_Content() const
+            const string& get_Content()
             {
                 return this.m_Content.String;
             }
@@ -37,15 +36,9 @@ namespace TextMenu
         {
             MenuText() {}
 
-            private
-                string m_Content;
+            string m_Content;
 
-            const string& get_String() const
-            {
-                return this.m_Content;
-            }
-
-            string& get_String()
+            const string& get_String()
             {
                 return this.m_Content;
             }
@@ -137,16 +130,23 @@ namespace TextMenu
         }
 
         // Callback for when a option is selected from a menu.
-        funcdef void MenuOptionSelect( CBasePlayer@ player, const MenuOption@ option );
+        funcdef void MenuOptionSelect( CBasePlayer@ player, MenuOption@ option );
 
         class MenuOption : ASMenuTextHolder
         {
-            private
-                dictionary m_Data;
+            dictionary@ m_Data;
 
-            dictionary get_DataCopy() const
+            MenuOption@ SetData( dictionary@ data )
             {
-                return this.m_Data;
+                @this.m_Data = data;
+                return this;
+            }
+
+            dictionary get_DataCopy()
+            {
+                if( this.m_Data !is null )
+                    return this.m_Data;
+                return {};
             }
 
             dictionary@ get_Data()
@@ -154,33 +154,25 @@ namespace TextMenu
                 return @this.m_Data;
             }
 
-            const dictionary@ get_Data() const
-            {
-                return @this.m_Data;
-            }
-
             // Any constructor
             MenuOption() {}
 
-            private
-                Menu@ m_Owner;
+            Menu@ m_Owner;
 
             // Get menu owning this option.
-            const Menu@ GetMenu() const
+            Menu@ GetMenu()
             {
                 return this.m_Owner;
             }
 
-            private
-                uint m_Id;
+            uint m_Id;
 
-            const uint get_Id() const
+            uint get_Id()
             {
                 return this.m_Id;
             }
 
-            private
-                MenuOptionSelect@ m_Callback = null;
+            MenuOptionSelect@ m_Callback = null;
 
             MenuOption@ SetCallback( MenuOptionSelect@ callback )
             {
@@ -188,7 +180,7 @@ namespace TextMenu
                 return this;
             }
 
-            MenuOptionSelect@ GetCallback() const
+            MenuOptionSelect@ GetCallback()
             {
                 return this.m_Callback;
             }
@@ -202,18 +194,11 @@ namespace TextMenu
 
         class Menu : ASMenuTextHolder
         {
-            private
-                array<CTextMenu@> m_Menus;
+            array<CTextMenu@> m_Menus;
 
-            private
-                array<MenuOption@> m_Options;
+            array<MenuOption@> m_Options;
 
             array<MenuOption@>@ get_Options()
-            {
-                return @this.m_Options;
-            }
-
-            const array<MenuOption@>@ get_Options() const
             {
                 return @this.m_Options;
             }
@@ -242,15 +227,15 @@ namespace TextMenu
                 }
             }
 
-            uint Length() const
+            uint Length()
             {
                 return this.m_Options.length();
             }
 
             // Get the number of pages.
-            uint get_Pages() const
+            uint get_Pages()
             {
-                return ( this.m_Options.length() + 6 ) / 7;
+                return int( ( this.m_Options.length() + 6 ) / 7 );
             }
 
             // Add a menu option.
@@ -274,27 +259,26 @@ namespace TextMenu
                 return index;
             }
 
-            private
-                void InternalCallback( CTextMenu@ menu, CBasePlayer@ player, int slot, const CTextMenuItem@ item )
+            void InternalCallback( CTextMenu@ menu, CBasePlayer@ player, int slot, const CTextMenuItem@ item )
+            {
+                if( item !is null )
                 {
-                    if( item !is null )
+                    MenuOption@ option;
+
+                    if( item.m_pUserData !is null )
                     {
-                        MenuOption@ option;
-
-                        if( item.m_pUserData !is null )
+                        if( item.m_pUserData.retrieve( @option ) )
                         {
-                            if( item.m_pUserData.retrieve( @option ) )
-                            {
-                                MenuOptionSelect@ callback = option.GetCallback();
+                            MenuOptionSelect@ callback = option.GetCallback();
 
-                                if( callback !is null )
-                                {
-                                    callback( player, option );
-                                }
+                            if( callback !is null )
+                            {
+                                callback( player, option );
                             }
                         }
                     }
                 }
+            }
 
             // Open menu for a target player
             void Open( CBasePlayer@ player, uint displayTime = 10, uint page = 0 )
