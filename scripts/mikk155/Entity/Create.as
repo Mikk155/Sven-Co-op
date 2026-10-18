@@ -38,7 +38,7 @@ namespace Entity
         return Create( keyvalues, owner, spawnNow);
     }
 
-    CBaseEntity@ Create( const string&in classname, dictionary&in keyvalues, CBaseEntity@ owner = null, bool spawnNow = true )
+    CBaseEntity@ Create( const string&in classname, dictionary&in keyvalues, CBaseEntity@ owner, bool spawnNow = true )
     {
         return Create( classname, keyvalues, ( owner !is null ? owner.edict() : null ), spawnNow );
     }
