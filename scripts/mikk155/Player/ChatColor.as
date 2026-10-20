@@ -37,30 +37,33 @@ namespace ChatColor
         g_Scheduler.SetTimeout( "__ResetChatColor__", 0.1f, EHandle( player ) );
     }
 
-    // This method does NOT set color. call SetColor yourself before calling this.
-    void Say( CBasePlayer@ player, const Color&in color, const string&in message, CBasePlayer@ target )
+    // Say to a specific player. if target is null it will be the same player input
+    void Say( CBasePlayer@ player, const Color&in color, const string&in message, CBasePlayer@ target = null )
     {
-        if( target !is null )
-        {
-            NetworkMessage msg( MSG_ONE, NetworkMessages::NetworkMessageType(74), target.edict() );
-                msg.WriteByte( player.entindex() );
-                msg.WriteByte( 2 );
-                msg.WriteString( message );
-            msg.End();
-        }
+        SetColor( player, color );
+
+        if( target is null )
+            @target = player;
+
+        NetworkMessage m( MSG_ONE, NetworkMessages::SayText, target.edict() );
+            m.WriteByte( player.entindex() );
+            m.WriteByte( 2 );
+            m.WriteString( message );
+        m.End();
     }
 
-    void Say( CBasePlayer@ player, const Color&in color, const string&in message, array<CBasePlayer@>@ targets = null )
+    // Say to all, if targets is not null it will say only to these players.
+    void SayAll( CBasePlayer@ player, const Color&in color, const string&in message, array<CBasePlayer@>@ targets = null )
     {
         SetColor( player, color );
 
         if( targets is null )
         {
-            NetworkMessage msg( MSG_ALL, NetworkMessages::NetworkMessageType(74) );
-                msg.WriteByte( player.entindex() );
-                msg.WriteByte( 2 );
-                msg.WriteString( message );
-            msg.End();
+            NetworkMessage m( MSG_ALL, NetworkMessages::SayText );
+                m.WriteByte( player.entindex() );
+                m.WriteByte( 2 );
+                m.WriteString( message );
+            m.End();
         }
         else
         {
