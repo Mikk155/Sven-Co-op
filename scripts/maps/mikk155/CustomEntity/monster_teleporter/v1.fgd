@@ -1,0 +1,30 @@
+
+@PointClass = monster_teleporter : "Monster teleporter config"
+[
+    ondestroyfn(string) : "OnDestroy Function"
+    spawnflags(Flags) =
+    [
+        1 : "Start on" : 0
+        2048 : "Not in Deathmatch" : 0
+    ]
+
+    targetname(target_source) : "Name"
+    target(target_destination) : "Spawner monster name"
+    netname(target_destination) : "Target before spawn (spawner !activator)" : "" : "This is fired before spawning the child, the future child name is stored in 'noise' in this entity so you can use conditional entities."
+    message(target_destination) : "Target after spawn (child !activator)"
+    entity_template(target_destination) : "Entity template" : "" : "monster_teleporter_template containing values for spawned monsters"
+    summon_animation(sound) : "Animation name for summoning" : ""
+    summon_monster(string) : "Monster to summon" : "monster_alien_grunt" : "Separate with ':' to pick random monsters"
+    summon_template(target_destination) : "Teleport template"
+    summon_max(integer) : "Max living childrens (0=infinite)" : 1
+    summon_cooldown_1(float) : "Minimum cooldown to summon" : 10.0
+    summon_cooldown_2(float) : "Maximum cooldown to summon" : 40.0
+    summon_delay(float) : "Summon delay" : 0.2
+    summon_height(float) : "Summon Height" : 80.0
+    summon_distance(float) : "Summon Distance" : 256.0
+]
+
+@PointClass = monster_teleporter_template : "Monster teleported template keyvalues"
+[
+    targetname(target_source) : "Name"
+]
